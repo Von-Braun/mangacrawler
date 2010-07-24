@@ -16,13 +16,5 @@ namespace MangaCrawlerLib
         {
             return a_str.Remove(0, a_chars);
         }
-
-        public static String NoAsterix(this string a_str)
-        {
-            if (a_str.Last() == '*')
-                return a_str.RemoveFromRight(1);
-            else
-                return a_str;
-        }
     }
 }
