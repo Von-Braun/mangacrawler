@@ -18,7 +18,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlAgilityPack.HtmlDocument doc = doc = new HtmlWeb().Load(a_info.URL);
 
             var series = doc.DocumentNode.SelectNodes("//table[@class='ch-table']/tr/td[1]/a");
 
@@ -31,6 +31,7 @@ namespace MangaCrawlerLib
                     URLPart = serie.GetAttributeValue("href", "").RemoveFromLeft(1).RemoveFromRight(1)
                 };
             }
+            
         }
 
         internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
