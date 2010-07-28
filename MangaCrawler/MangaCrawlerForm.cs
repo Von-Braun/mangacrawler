@@ -127,9 +127,7 @@ namespace MangaCrawler
             if (SelectedServer == null)
                 return;
 
-            if (SelectedServer.DownloadingSeries)
-                UpdateSeries();
-            else if (SelectedServer.Series != null)
+            if (SelectedServer.Series != null)
                 UpdateSeries();
             else
             {
