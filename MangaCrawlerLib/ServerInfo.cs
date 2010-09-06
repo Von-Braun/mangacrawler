@@ -77,6 +77,8 @@ namespace MangaCrawlerLib
                 return from hf in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
                        where hf.IsClass
                        where !hf.IsAbstract
+                       where hf != typeof(Manga1000Crawler)
+                       where hf != typeof(OneMangaCrawler)
                        where typeof(Crawler).IsAssignableFrom(hf)
                        select new ServerInfo() { Crawler = (Crawler)Activator.CreateInstance(hf) };            
             }
