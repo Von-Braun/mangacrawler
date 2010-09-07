@@ -26,7 +26,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var numbers = doc.DocumentNode.SelectNodes("//ul[@id='pagination']/li[@class='current']");
             var number = numbers.Count;
@@ -38,7 +38,7 @@ namespace MangaCrawlerLib
 
             Parallel.For(1, number + 1, (page) =>
             {
-                HtmlAgilityPack.HtmlDocument page_doc;
+                HtmlDocument page_doc;
 
                 if (page == 1)
                 {
@@ -88,7 +88,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var chapters = doc.DocumentNode.SelectNodes("//table[@id='series_list']/tr/td[1]/a");
 
@@ -110,7 +110,7 @@ namespace MangaCrawlerLib
         {
             a_info.DownloadedPages = 0;
 
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@id='id_page_select']/option");
 
@@ -138,7 +138,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var node = doc.DocumentNode.SelectSingleNode("//img[@id='mangaPage']");
 

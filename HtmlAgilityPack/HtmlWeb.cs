@@ -872,6 +872,7 @@ namespace HtmlAgilityPack
             }
             string contentType = "";
 
+
             if (!SecurityManager.IsGranted(new RegistryPermission(PermissionState.Unrestricted)))
             {
                 if (MimeTypes.ContainsKey(extension))

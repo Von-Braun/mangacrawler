@@ -65,7 +65,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public string GetDecoratedName()
+        internal string GetDecoratedName()
         {
             if (!Downloading && (DownloadedPages == 0))
             {

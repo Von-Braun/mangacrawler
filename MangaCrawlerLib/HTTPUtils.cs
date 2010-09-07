@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Net;
+using HtmlAgilityPack;
 
 namespace MangaCrawlerLib
 {
     internal static class HTTPUtils
     {
-        internal static HtmlAgilityPack.HtmlDocument Submit(string a_url, Dictionary<string, string> a_parameters)
+        internal static HtmlDocument Submit(string a_url, Dictionary<string, string> a_parameters)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(a_url);
             request.Method = "POST";
@@ -32,7 +33,7 @@ namespace MangaCrawlerLib
             using (StreamReader reader = new StreamReader(response.GetResponseStream()))
             {
                 string html = reader.ReadToEnd();
-                var doc = new HtmlAgilityPack.HtmlDocument();
+                var doc = new HtmlDocument();
                 doc.LoadHtml(html);
                 return doc;
             }

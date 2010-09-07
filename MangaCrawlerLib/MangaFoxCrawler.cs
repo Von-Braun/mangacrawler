@@ -26,7 +26,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var numbers = doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/div[5]/ul/li/a");
             var number = Int32.Parse(numbers.Reverse().Take(2).Last().InnerText);
@@ -39,7 +39,7 @@ namespace MangaCrawlerLib
             Parallel.For(1, number+1, (page) =>
             {
                 String url = String.Format("http://www.mangafox.com/directory/all/{0}.htm", page);
-                HtmlAgilityPack.HtmlDocument page_doc = new HtmlWeb().Load(url);
+                HtmlDocument page_doc = new HtmlWeb().Load(url);
 
                 var page_series = page_doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/table/tr/td[1]/a");
 
@@ -74,7 +74,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var chapters = doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/table/tr/td/a[2]");
 
@@ -96,7 +96,7 @@ namespace MangaCrawlerLib
         {
             a_info.DownloadedPages = 0;
 
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var pages = doc.DocumentNode.SelectSingleNode("//select[@class='middle']").SelectNodes("option");
 
@@ -123,7 +123,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var node = doc.DocumentNode.SelectSingleNode("//img[@id='image']");
 

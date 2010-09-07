@@ -18,7 +18,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlAgilityPack.HtmlDocument doc = doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = doc = new HtmlWeb().Load(a_info.URL);
 
             var series = doc.DocumentNode.SelectNodes("//table[@class='ch-table']/tr/td[1]/a");
 
@@ -36,7 +36,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var chapters = doc.DocumentNode.SelectNodes("//table[@class='ch-table']/tr/td[1]/a");
 
@@ -58,7 +58,7 @@ namespace MangaCrawlerLib
         {
             a_info.DownloadedPages = 0;
 
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@id='id_page_select']/option");
 
@@ -86,7 +86,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var node = doc.DocumentNode.SelectSingleNode("/html/body/div/div[3]/div/div[4]/a/img");
 
@@ -105,7 +105,7 @@ namespace MangaCrawlerLib
 
         internal override string GetChapterURL(ChapterInfo a_info)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load("http://www.onemanga.com/" + a_info.URLPart + "/");
+            HtmlDocument doc = new HtmlWeb().Load("http://www.onemanga.com/" + a_info.URLPart + "/");
 
             var url = doc.DocumentNode.SelectSingleNode("/html/body/div[2]/div[3]/div/ul/li/a");
 

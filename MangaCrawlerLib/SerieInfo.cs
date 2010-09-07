@@ -75,27 +75,30 @@ namespace MangaCrawlerLib
             if (DownloadingChapters)
                 return;
 
-            DownloadingChapters = true;
-
-            try
+            if (m_chapters == null)
             {
-                if (a_progress_callback != null)
-                    a_progress_callback();
+                DownloadingChapters = true;
 
-                m_chapters = Crawler.DownloadChapters(this, (progress) =>
+                try
                 {
-                    m_downloadingProgress = progress;
                     if (a_progress_callback != null)
                         a_progress_callback();
-                }).ToList();
-            }
-            finally
-            {
-                DownloadingChapters = false;
-            }
 
-            if (a_progress_callback != null)
-                a_progress_callback();
+                    m_chapters = Crawler.DownloadChapters(this, (progress) =>
+                    {
+                        m_downloadingProgress = progress;
+                        if (a_progress_callback != null)
+                            a_progress_callback();
+                    }).ToList();
+                }
+                finally
+                {
+                    DownloadingChapters = false;
+                }
+
+                if (a_progress_callback != null)
+                    a_progress_callback();
+            }
         }
 
         public List<ChapterInfo> Chapters
@@ -106,7 +109,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public string GetDecoratedName()
+        internal string GetDecoratedName()
         {
             if (DownloadingChapters)
                 return String.Format("{0} ({1}%)", m_name, m_downloadingProgress);

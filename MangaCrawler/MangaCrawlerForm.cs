@@ -73,7 +73,7 @@ namespace MangaCrawler
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
             directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
-            serversListBox.Items.AddRange(ServerInfo.ServerInfos.ToArray());
+            serversListBox.Items.AddRange(ServerInfo.CreateServerInfos().ToArray());
             seriesFilterTextBox.Text = Settings.Instance.SeriesFilter;
 
             splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;

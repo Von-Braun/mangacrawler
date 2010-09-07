@@ -53,27 +53,19 @@ namespace MangaCrawlerLib
             
             FileInfo temp_file = new FileInfo(Path.GetTempFileName());
 
-            HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(a_info.ImageURL);
-
             try
             {
-                WebResponse myResp = myReq.GetResponse();
-
-                using (Stream image_stream = myResp.GetResponseStream())
-                {
-                    using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
-                    {
-                        image_stream.CopyTo(file_stream);
-                    }
-                }
+                using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
+                    a_info.ImageStream.CopyTo(file_stream);
 
                 if (image_file.Exists)
                     image_file.Delete();
                 temp_file.MoveTo(image_file.FullName);
             }
-            catch (WebException)
+            catch
             {
                 temp_file.Delete();
+                throw;
             }
         }
     }
