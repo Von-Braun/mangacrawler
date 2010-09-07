@@ -13,7 +13,7 @@ namespace MangaCrawlerLib
         private List<PageInfo> m_pages;
         private string m_url;
 
-        internal SerieInfo SerieInfo;
+        public SerieInfo SerieInfo;
         internal int PagesCount;
         public volatile int DownloadedPages;
         public volatile bool Downloading = false;
@@ -39,7 +39,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal string Name
+        public string Name
         {
             get
             {

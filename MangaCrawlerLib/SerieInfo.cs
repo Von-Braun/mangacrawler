@@ -14,7 +14,7 @@ namespace MangaCrawlerLib
         private volatile int m_downloadingProgress;
 
         public volatile bool DownloadingChapters;
-        internal ServerInfo ServerInfo;
+        public ServerInfo ServerInfo;
 
         internal Crawler Crawler
         {
