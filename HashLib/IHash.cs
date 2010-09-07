@@ -4,10 +4,6 @@ using System.IO;
 
 namespace HashLib
 {
-    // TODO: implementacja drugiej rundy sha3
-    // TODO: liczenie wydajnosc bajty/cykl w quality
-    // TODO: quality test, generacje domyslnie wlaczone wszystkie
-
     public interface IHash
     {
         string Name { get; }

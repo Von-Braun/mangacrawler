@@ -77,7 +77,6 @@
     <Compile Include="EncodingFoundException.cs" />
     <Compile Include="HtmlAttributeCollection.cs" />
     <Compile Include="HtmlCommentNode.cs" />
-    <Compile Include="HtmlConsoleListener.cs" />
     <Compile Include="HtmlElementFlag.cs" />
     <Compile Include="HtmlNameTable.cs" />
     <Compile Include="HtmlNodeCollection.cs" />
@@ -87,21 +86,13 @@
     <Compile Include="HtmlTextNode.cs" />
     <Compile Include="HtmlWebException.cs" />
     <Compile Include="IOLibrary.cs" />
-    <Compile Include="MixedCodeDocumentCodeFragment.cs" />
-    <Compile Include="MixedCodeDocumentFragment.cs" />
-    <Compile Include="MixedCodeDocumentFragmentList.cs" />
-    <Compile Include="MixedCodeDocumentFragmentType.cs" />
-    <Compile Include="MixedCodeDocumentTextFragment.cs" />
     <Compile Include="crc32.cs" />
-    <Compile Include="NameValuePairList.cs" />
     <Compile Include="HtmlAttribute.cs" />
     <Compile Include="HtmlDocument.cs" />
-    <Compile Include="HtmlEntity.cs" />
     <Compile Include="HtmlNode.cs" />
     <Compile Include="HtmlNodeNavigator.cs" />
     <Compile Include="HtmlWeb.cs" />
-    <Compile Include="MixedCodeDocument.cs" />
-    <Compile Include="HtmlCmdLine.cs" />
+    <Compile Include="NameValuePairList.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

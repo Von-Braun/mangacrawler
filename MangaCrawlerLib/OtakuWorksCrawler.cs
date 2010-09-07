@@ -32,8 +32,6 @@ namespace MangaCrawlerLib
 
             m_progress = 0;
 
-            number = 1; // TODO: 
-
             Parallel.For(1, number + 1, (page) =>
             {
                 HtmlDocument page_doc = new HtmlWeb().Load("http://www.otakuworks.com/manga/" + page);
