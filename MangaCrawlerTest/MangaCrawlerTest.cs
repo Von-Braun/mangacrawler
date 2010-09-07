@@ -5,12 +5,26 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MangaCrawlerLib;
 using HtmlAgilityPack;
+using System.IO;
 
 namespace MangaCrawlerTest
 {
     [TestClass]
     public class MangaCrawlerTest
     {
+        private TestContext m_testContextInstance;
+
+        public TestContext TestContext
+        {
+            get
+            {
+                return m_testContextInstance;
+            }
+            set
+            {
+                m_testContextInstance = value;
+            }
+        }
         private List<SerieInfo> TestServer(ServerInfo a_info, int a_count)
         {
             a_info.DownloadSeries();
@@ -54,7 +68,19 @@ namespace MangaCrawlerTest
 
             if (a_hash != null)
             {
+                Assert.AreEqual(a_hash, GetHash(stream));
             }
+            else
+            {
+                TestContext.WriteLine("serie: %s, chapter: %s, page: %d, hash: %s",
+                    a_page.ChapterInfo.SerieInfo.Name, a_page.ChapterInfo.Name, a_page.Index, GetHash(stream));
+            }
+
+        }
+
+        private string GetHash(MemoryStream stream)
+        {
+            return HashLib.HashFactory.Crypto.CreateSHA512().ComputeStream(stream).ToString();
         }
 
         [TestMethod]

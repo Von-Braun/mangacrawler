@@ -14,8 +14,8 @@ namespace MangaCrawlerLib
         private string m_name;
         private string m_url;
 
-        internal int Index;
-        internal ChapterInfo ChapterInfo;
+        public int Index;
+        public ChapterInfo ChapterInfo;
 
         internal string Name
         {

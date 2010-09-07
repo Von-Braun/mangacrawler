@@ -127,97 +127,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Crypto\Gost.cs" />
-    <Compile Include="Crypto\SHA3\CubeHash.cs" />
-    <Compile Include="Crypto\SHA3\Fugue.cs" />
-    <Compile Include="Crypto\SHA3\Groestl.cs" />
-    <Compile Include="Crypto\SHA3\Keccak.cs" />
     <Compile Include="HashSize.cs" />
-    <Compile Include="Crypto\SHA256Base.cs" />
-    <Compile Include="Crypto\SHA3\BlueMidnightWish.cs" />
-    <Compile Include="Crypto\SHA3\JH.cs" />
-    <Compile Include="Crypto\Snefru.cs" />
-    <Compile Include="HashAdapter.cs" />
-    <Compile Include="HashAlgorithmWrapper.cs" />
     <Compile Include="HashFactory.cs" />
-    <Compile Include="Checksum\Adler32.cs" />
-    <Compile Include="Checksum\CRC64.cs" />
-    <Compile Include="Hashes.cs" />
     <Compile Include="IHashInfo.cs" />
     <Compile Include="HashResult.cs" />
-    <Compile Include="HMACNotBuildInAdapter.cs" />
-    <Compile Include="Crypto\BuildIn\MD5CryptoServiceProvider.cs" />
-    <Compile Include="Crypto\BuildIn\RIPEMD160Managed .cs" />
-    <Compile Include="Crypto\BuildIn\SHA1Cng.cs" />
-    <Compile Include="Crypto\BuildIn\SHA1CryptoServiceProvider.cs" />
-    <Compile Include="Crypto\BuildIn\SHA1Managed.cs" />
-    <Compile Include="Crypto\BuildIn\SHA256Cng.cs" />
-    <Compile Include="Crypto\BuildIn\SHA256CryptoServiceProvider.cs" />
-    <Compile Include="Crypto\BuildIn\SHA256Managed.cs" />
-    <Compile Include="Crypto\BuildIn\SHA384Cng.cs" />
-    <Compile Include="Crypto\BuildIn\SHA384CryptoServiceProvider.cs" />
-    <Compile Include="Crypto\BuildIn\SHA384Managed.cs" />
-    <Compile Include="Crypto\BuildIn\SHA512Cng.cs" />
-    <Compile Include="Crypto\BuildIn\SHA512CryptoServiceProvider.cs" />
-    <Compile Include="Crypto\BuildIn\SHA512Managed.cs" />
-    <Compile Include="HMACBase.cs" />
-    <Compile Include="HMACBuildInAdapter.cs" />
-    <Compile Include="IEnumerableExtensions.cs" />
-    <Compile Include="ArrayExtensions.cs" />
-    <Compile Include="Crypto\HAS160.cs" />
-    <Compile Include="Crypto\Haval.cs" />
-    <Compile Include="Crypto\SHA224.cs" />
-    <Compile Include="Crypto\SHA256.cs" />
-    <Compile Include="Crypto\MDBase.cs" />
-    <Compile Include="Crypto\RIPEMD256.cs" />
-    <Compile Include="Crypto\RIPEMD320.cs" />
-    <Compile Include="Crypto\SHA384.cs" />
-    <Compile Include="Crypto\SHA512.cs" />
-    <Compile Include="Crypto\SHA512Base.cs" />
-    <Compile Include="Crypto\Tiger.cs" />
-    <Compile Include="Crypto\Tiger2.cs" />
+    <Compile Include="SHA512.cs" />
+    <Compile Include="SHA512Base.cs" />
     <Compile Include="MultipleTransformsNonBlock.cs" />
-    <Compile Include="TypeExtensions.cs" />
     <Compile Include="HashCryptoNotBuildIn.cs" />
-    <Compile Include="Crypto\RIPEMD128.cs" />
-    <Compile Include="Crypto\SHA1.cs" />
-    <Compile Include="Crypto\Whirlpool.cs" />
     <Compile Include="HashBuffer.cs" />
-    <Compile Include="HashCryptoBuildIn.cs" />
-    <Compile Include="Crypto\MD2.cs" />
-    <Compile Include="Crypto\MD4.cs" />
-    <Compile Include="Crypto\RIPEMD160.cs" />
     <Compile Include="Hash.cs" />
     <Compile Include="Converters.cs" />
-    <Compile Include="Crypto\MD5.cs" />
-    <Compile Include="Hash32\AP.cs" />
-    <Compile Include="Hash32\Bernstein.cs" />
-    <Compile Include="Hash32\Bernstein1.cs" />
-    <Compile Include="Hash32\BKDR.cs" />
-    <Compile Include="Checksum\CRC32.cs" />
-    <Compile Include="Hash32\DEK.cs" />
-    <Compile Include="Hash32\DJB.cs" />
-    <Compile Include="Hash32\ELF.cs" />
-    <Compile Include="Hash32\FNV1a.cs" />
-    <Compile Include="Hash64\FNV1a64.cs" />
-    <Compile Include="Hash32\FNV.cs" />
-    <Compile Include="Hash64\FNV64.cs" />
     <Compile Include="HashCrypto.cs" />
     <Compile Include="IHash.cs" />
-    <Compile Include="Hash32\DotNet.cs" />
-    <Compile Include="Hash32\Jenkins3.cs" />
-    <Compile Include="Hash32\JS.cs" />
-    <Compile Include="Hash32\Murmur2.cs" />
-    <Compile Include="Hash64\Murmur2_64.cs" />
-    <Compile Include="Hash32\OneAtTime.cs" />
-    <Compile Include="Hash32\PJW.cs" />
-    <Compile Include="IHMAC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Hash32\Rotating.cs" />
-    <Compile Include="Hash32\RS.cs" />
-    <Compile Include="Hash32\SDBM.cs" />
-    <Compile Include="Hash32\ShiftAndXor.cs" />
-    <Compile Include="Hash32\SuperFast.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -235,15 +158,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Crypto\SHA3\Blake.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Crypto\SHA3\Echo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Crypto\SHA3\Hamsi.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
