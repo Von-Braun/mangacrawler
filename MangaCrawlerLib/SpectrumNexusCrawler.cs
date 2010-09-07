@@ -18,7 +18,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var series = doc.DocumentNode.SelectSingleNode("/html/body/div/div[8]/div[2]").SelectNodes("select/option");
             foreach (var serie in series.Skip(2))
@@ -34,7 +34,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var link_strong_nodes = doc.DocumentNode.SelectNodes("//a/strong");
             var begin_reading_strong_node = link_strong_nodes.Where(n => n.InnerText == "Begin Reading");
@@ -60,7 +60,7 @@ namespace MangaCrawlerLib
             string[] ar = a_info.URLPart.Split(new[] { '\t' });
             String url = String.Format("{0}?ch={1}&page={2}", ar[0], ar[1], 1);
 
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(url);
+            HtmlDocument doc = new HtmlWeb().Load(url);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='page']/option");
 
@@ -88,7 +88,7 @@ namespace MangaCrawlerLib
             string[] ar = a_info.URLPart.Split(new[] { '\t' });
             String url = String.Format("{0}?ch={1}&page={2}", ar[0], ar[1], ar[2]);
 
-            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(url);
+            HtmlDocument doc = new HtmlWeb().Load(url);
 
             var img = doc.DocumentNode.SelectSingleNode("//div[@class='imgContainer']/a/img");
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Net;
 
 namespace MangaCrawlerLib
 {
@@ -75,6 +77,29 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return String.Format("{0}/{1}", Index, ChapterInfo.Pages.Count);
+        }
+
+        public MemoryStream ImageStream
+        {
+            get
+            {
+                try
+                {
+                    HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(ImageURL);
+
+                    using (Stream image_stream = myReq.GetResponse().GetResponseStream())
+                    {
+                        MemoryStream mem_stream = new MemoryStream();
+                        image_stream.CopyTo(mem_stream);
+                        mem_stream.Position = 0;
+                        return mem_stream;
+                    }
+                }
+                catch
+                {
+                    return null;
+                }
+            }
         }
     }
 }

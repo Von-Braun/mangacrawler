@@ -13,7 +13,7 @@ namespace MangaCrawlerLib
 
         internal Crawler Crawler;
 
-        public volatile bool DownloadingSeries;
+        internal volatile bool DownloadingSeries;
 
         public string URL
         {
@@ -39,23 +39,26 @@ namespace MangaCrawlerLib
             if (DownloadingSeries)
                 return;
 
-            DownloadingSeries = true;
-
-            try
+            if (m_series == null)
             {
-                if (a_progress_callback != null)
-                    a_progress_callback();
+                DownloadingSeries = true;
 
-                m_series = Crawler.DownloadSeries(this, (progress) =>
+                try
                 {
-                    m_downloadingProgress = progress;
                     if (a_progress_callback != null)
                         a_progress_callback();
-                }).ToList();
-            }
-            finally
-            {
-                DownloadingSeries = false;
+
+                    m_series = Crawler.DownloadSeries(this, (progress) =>
+                    {
+                        m_downloadingProgress = progress;
+                        if (a_progress_callback != null)
+                            a_progress_callback();
+                    }).ToList();
+                }
+                finally
+                {
+                    DownloadingSeries = false;
+                }
             }
 
             if (a_progress_callback != null)
@@ -70,21 +73,23 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static IEnumerable<ServerInfo> ServerInfos
+        public static ServerInfo CreateAnimeSource()
         {
-            get
-            {
-                return from hf in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
-                       where hf.IsClass
-                       where !hf.IsAbstract
-                       where hf != typeof(Manga1000Crawler)
-                       where hf != typeof(OneMangaCrawler)
-                       where typeof(Crawler).IsAssignableFrom(hf)
-                       select new ServerInfo() { Crawler = (Crawler)Activator.CreateInstance(hf) };            
-            }
+            return new ServerInfo { Crawler = new AnimeSourceCrawler() };
         }
 
-        public string GetDecoratedName()
+        public static IEnumerable<ServerInfo> CreateServerInfos()
+        {
+            return from hf in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
+                    where hf.IsClass
+                    where !hf.IsAbstract
+                    where hf != typeof(Manga1000Crawler)
+                    where hf != typeof(OneMangaCrawler)
+                    where typeof(Crawler).IsAssignableFrom(hf)
+                    select new ServerInfo() { Crawler = (Crawler)Activator.CreateInstance(hf) };            
+        }
+
+        internal string GetDecoratedName()
         {
             if (DownloadingSeries)
                 return String.Format("{0} ({1}%)", Crawler.Name, m_downloadingProgress);
