@@ -32,6 +32,8 @@ namespace MangaCrawlerLib
 
             m_progress = 0;
 
+            number = 1; // TODO: 
+
             Parallel.For(1, number + 1, (page) =>
             {
                 HtmlAgilityPack.HtmlDocument page_doc = new HtmlWeb().Load("http://www.otakuworks.com/manga/" + page);
@@ -71,52 +73,73 @@ namespace MangaCrawlerLib
         {
             HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
-            var pages = doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/div/div[3]/div[10]/div[27]/div/a").Reverse().Skip(1).Reverse();
+            var pages = doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/div/div[3]/div[10]/div[27]/div/a").AsEnumerable();
 
-            ConcurrentBag<Tuple<int, int, string, string>> chapters =
-                new ConcurrentBag<Tuple<int, int, string, string>>();
-
-            m_progress = 0;
-
-            Parallel.ForEach(pages, (page) =>
+            if (pages == null)
             {
-                int page_num = Int32.Parse(page.InnerText);
-
-                String url = "http://www.otakuworks.com/" + page.GetAttributeValue("href", "").RemoveFromLeft(1);
-
-                if (page_num == 1)
-                    url = a_info.URL;
-
-                HtmlAgilityPack.HtmlDocument page_doc = new HtmlWeb().Load(url);
+                HtmlAgilityPack.HtmlDocument page_doc = new HtmlWeb().Load(a_info.URL);
 
                 var page_chapters = page_doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/div/div[3]/div/div[@class='sbox3']/a[1]");
 
-                int index = 0;
                 foreach (var chapter in page_chapters)
                 {
-                    Tuple<int, int, string, string> s =
-                        new Tuple<int, int, string, string>(page_num, index++, chapter.InnerText,
-                                                            chapter.GetAttributeValue("href", ""));
-
-                    chapters.Add(s);
+                    yield return new ChapterInfo()
+                    {
+                        Name = chapter.InnerText,
+                        URLPart = chapter.GetAttributeValue("href", ""),
+                        SerieInfo = a_info
+                    };
                 }
-
-                m_progress++;
-                a_progress_callback(m_progress * 100 / pages.Count());
-            });
-
-            var sorted_chapters = from chapter in chapters
-                                orderby chapter.Item1, chapter.Item2
-                                select chapter;
-
-            foreach (var serie in sorted_chapters)
+            }
+            else
             {
-                yield return new ChapterInfo()
+                pages = pages.Reverse().Skip(1).Reverse();
+
+                ConcurrentBag<Tuple<int, int, string, string>> chapters =
+                    new ConcurrentBag<Tuple<int, int, string, string>>();
+
+                m_progress = 0;
+
+                Parallel.ForEach(pages, (page) =>
                 {
-                    Name = serie.Item3,
-                    URLPart = serie.Item4,
-                    SerieInfo = a_info
-                };
+                    int page_num = Int32.Parse(page.InnerText);
+
+                    String url = "http://www.otakuworks.com/" + page.GetAttributeValue("href", "").RemoveFromLeft(1);
+
+                    if (page_num == 1)
+                        url = a_info.URL;
+
+                    HtmlAgilityPack.HtmlDocument page_doc = new HtmlWeb().Load(url);
+
+                    var page_chapters = page_doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/div/div[3]/div/div[@class='sbox3']/a[1]");
+
+                    int index = 0;
+                    foreach (var chapter in page_chapters)
+                    {
+                        Tuple<int, int, string, string> s =
+                            new Tuple<int, int, string, string>(page_num, index++, chapter.InnerText,
+                                                                chapter.GetAttributeValue("href", ""));
+
+                        chapters.Add(s);
+                    }
+
+                    m_progress++;
+                    a_progress_callback(m_progress * 100 / pages.Count());
+                });
+
+                var sorted_chapters = from chapter in chapters
+                                      orderby chapter.Item1, chapter.Item2
+                                      select chapter;
+
+                foreach (var serie in sorted_chapters)
+                {
+                    yield return new ChapterInfo()
+                    {
+                        Name = serie.Item3,
+                        URLPart = serie.Item4,
+                        SerieInfo = a_info
+                    };
+                }
             }
         }
 
