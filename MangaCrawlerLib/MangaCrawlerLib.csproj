@@ -48,7 +48,7 @@
     <Compile Include="Crawler.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="HTTPUtils.cs" />
-    <Compile Include="Manga1000.cs" />
+    <Compile Include="Manga1000Crawler.cs" />
     <Compile Include="MangaFoxCrawler.cs" />
     <Compile Include="MangaRunCrawler.cs" />
     <Compile Include="MangaShareCrawler.cs" />
