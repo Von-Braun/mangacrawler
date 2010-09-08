@@ -114,5 +114,25 @@ namespace MangaCrawlerLib
         {
             return new ServerInfo { Crawler = new MangaRunCrawler() };
         }
+
+        public static ServerInfo CreateMangaShare()
+        {
+            return new ServerInfo { Crawler = new MangaShareCrawler() };
+        }
+
+        public static ServerInfo CreateMangaToshokan()
+        {
+            return new ServerInfo { Crawler = new MangaToshokanCrawler() };
+        }
+
+        public static ServerInfo CreateMangaVolume()
+        {
+            return new ServerInfo { Crawler = new MangaVolumeCrawler() };
+        }
+
+        public static ServerInfo CreateOtakuWorks()
+        {
+            return new ServerInfo { Crawler = new OtakuWorksCrawler() };
+        }
     }
 }

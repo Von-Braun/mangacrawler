@@ -20,15 +20,21 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
-            var series = doc.DocumentNode.SelectNodes("/html/body/div/div/div[6]/div[2]/div/table/tr/td/table[2]/tr/td[2]/table/tr/td[1]/a");
+            var rows = doc.DocumentNode.SelectNodes("/html/body/div/div/div[6]/div[2]/div/table/tr/td/table[2]/tr/td[2]/table/tr");
 
-            foreach (var serie in series)
+            foreach (var row in rows)
             {
+                if (row.ChildNodes.Count < 8)
+                    continue;
+
+                if (row.ChildNodes[3].InnerText == "None")
+                    continue;
+
                 yield return new SerieInfo()
                 {
                     ServerInfo = a_info,
-                    Name = serie.InnerText,
-                    URLPart = serie.GetAttributeValue("href", "")
+                    Name = row.ChildNodes[1].InnerText,
+                    URLPart = row.ChildNodes[1].GetAttributeValue("href", "")
                 };
             }
         }

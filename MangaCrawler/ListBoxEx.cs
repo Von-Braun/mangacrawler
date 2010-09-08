@@ -33,13 +33,14 @@ namespace MangaCrawler
 
             base.RefreshItems();
 
-            TopIndex = topIndex;
 
             if (selectedIndex != -1)
             {
                 SetSelected(selectedIndex, false);
                 SetSelected(selectedIndex, true);
             }
+
+            TopIndex = topIndex;
 
             EndUpdate();
             m_refreshing = false;
