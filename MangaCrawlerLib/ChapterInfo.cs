@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Web;
 
 namespace MangaCrawlerLib
 {
@@ -35,7 +36,7 @@ namespace MangaCrawlerLib
             }
             set
             {
-                m_URLPart = System.Web.HttpUtility.UrlDecode(value);
+                m_URLPart = value;
             }
         }
 
@@ -92,7 +93,7 @@ namespace MangaCrawlerLib
             get
             {
                 if (m_url == null)
-                    m_url = Crawler.GetChapterURL(this);
+                    m_url = HttpUtility.HtmlDecode(Crawler.GetChapterURL(this));
 
                 return m_url;
             }
