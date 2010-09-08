@@ -67,9 +67,6 @@ namespace MangaCrawlerLib
             }
         }
 
-        // http://www.anime-source.com/banzai/modules.php?name=Content&pa=showpage&pid=471 - ma byc
-        // http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=471
-
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
         {
             a_info.DownloadedPages = 0;

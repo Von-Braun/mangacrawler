@@ -145,13 +145,8 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
-            var begin_read = doc.DocumentNode.SelectSingleNode("/html/body/div/div/div[5]/div/div[3]/div[2]/div/div[3]/a");
-
-            String url = "http://www.otakuworks.com/" + begin_read.GetAttributeValue("href", "").RemoveFromLeft(1);
-
-            doc = new HtmlWeb().Load(url);
-
-            int pages = Int32.Parse(doc.DocumentNode.SelectSingleNode("//select[@id='fpage1']").ParentNode.ChildNodes[6].InnerText);
+            int pages = Int32.Parse(
+                doc.DocumentNode.SelectSingleNode("//select[@id='fpage1']").ParentNode.ChildNodes.Reverse().ElementAt(3).InnerText);
 
             a_info.PagesCount = pages;
 
@@ -161,7 +156,7 @@ namespace MangaCrawlerLib
                 {
                     ChapterInfo = a_info,
                     Index = index,
-                    URLPart = url + index
+                    URLPart = a_info.URL + "/" + index
                 };
 
                 yield return pi;
@@ -172,14 +167,19 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
-            var node = doc.DocumentNode.SelectSingleNode("/html/body/div/div/div[5]/div[4]/div/a/img");
+            var node = doc.DocumentNode.SelectSingleNode("//div[@id='filelist']/a/img");
 
             if (node != null)
                 return node.GetAttributeValue("src", "");
 
-            node = doc.DocumentNode.SelectSingleNode("/html/body/div/div/div[5]/div[4]/div/img");
+            node = doc.DocumentNode.SelectSingleNode("//div[@id='filelist']/img");
 
             return node.GetAttributeValue("src", "");
+        }
+
+        internal override string GetChapterURL(ChapterInfo a_info)
+        {
+            return "http://www.otakuworks.com" + a_info.URLPart;
         }
 
         internal override string GetServerURL()
