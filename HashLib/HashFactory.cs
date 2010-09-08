@@ -9,9 +9,9 @@ namespace HashLib
     {
         public static class Crypto
         {
-            public static IHash CreateSHA512()
+            public static IHash CreateSHA256()
             {
-                return new HashLib.SHA512();
+                return new HashLib.SHA256();
             }
         }
     }

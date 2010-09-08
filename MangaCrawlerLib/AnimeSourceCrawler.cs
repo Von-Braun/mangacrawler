@@ -52,8 +52,9 @@ namespace MangaCrawlerLib
 
             var chapters = doc.DocumentNode.SelectNodes("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/blockquote/a");
 
-            if (chapters == null)
-                yield break;
+            // TODO: 
+            //if (chapters == null)
+            //    yield break;
 
             foreach (var chapter in chapters.Skip(1))
             {
@@ -66,6 +67,9 @@ namespace MangaCrawlerLib
             }
         }
 
+        // http://www.anime-source.com/banzai/modules.php?name=Content&pa=showpage&pid=471 - ma byc
+        // http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=471
+
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
         {
             a_info.DownloadedPages = 0;
@@ -75,23 +79,42 @@ namespace MangaCrawlerLib
             var pages = doc.DocumentNode.SelectNodes("//select[@name='pageid']/option");
 
             if (pages == null)
-                yield break;
-
-            a_info.PagesCount = pages.Count;
-
-            int index = 0;
-            foreach (var page in pages)
             {
-                index++;
+                string pages_str = doc.DocumentNode.SelectSingleNode(
+                    "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/font[2]").ChildNodes[4].InnerText;
 
-                PageInfo pi = new PageInfo()
+                a_info.PagesCount = Int32.Parse(pages_str.Split(new char[] { '/' }).Last());
+
+                for (int page = 1; page <= a_info.PagesCount; page++)
                 {
-                    ChapterInfo = a_info,
-                    Index = index,
-                    URLPart = page.GetAttributeValue("value", "")
-                };
+                    PageInfo pi = new PageInfo()
+                    {
+                        ChapterInfo = a_info,
+                        Index = page,
+                        URLPart = a_info.URLPart + "&page=" + page
+                    };
 
-                yield return pi;
+                    yield return pi;
+                }                
+            }
+            else
+            {
+                a_info.PagesCount = pages.Count;
+
+                int index = 0;
+                foreach (var page in pages)
+                {
+                    index++;
+
+                    PageInfo pi = new PageInfo()
+                    {
+                        ChapterInfo = a_info,
+                        Index = index,
+                        URLPart = page.GetAttributeValue("value", "")
+                    };
+
+                    yield return pi;
+                }
             }
         }
 
@@ -107,7 +130,17 @@ namespace MangaCrawlerLib
 
             var node = doc.DocumentNode.SelectSingleNode(xpath);
 
-            return "http://www.anime-source.com/" + node.GetAttributeValue("src", "").RemoveFromLeft(1);
+            if (node == null)
+            {
+                node = doc.DocumentNode.SelectSingleNode("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/font[2]/p[2]/img");
+
+                if (node == null)
+                    node = doc.DocumentNode.SelectSingleNode("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/font[2]/p/img");
+
+                return node.GetAttributeValue("src", "");
+            }
+            else
+                return "http://www.anime-source.com/" + node.GetAttributeValue("src", "").RemoveFromLeft(1);
         }
 
         internal override string GetServerURL()

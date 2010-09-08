@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace MangaCrawlerLib
 {
@@ -20,7 +21,7 @@ namespace MangaCrawlerLib
             get
             {
                 if (m_url == null)
-                    m_url = Crawler.GetServerURL();
+                    m_url = HttpUtility.HtmlDecode(Crawler.GetServerURL());
 
                 return m_url;
             }
@@ -73,22 +74,6 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static ServerInfo CreateAnimeSource()
-        {
-            return new ServerInfo { Crawler = new AnimeSourceCrawler() };
-        }
-
-        public static IEnumerable<ServerInfo> CreateServerInfos()
-        {
-            return from hf in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
-                    where hf.IsClass
-                    where !hf.IsAbstract
-                    where hf != typeof(Manga1000Crawler)
-                    where hf != typeof(OneMangaCrawler)
-                    where typeof(Crawler).IsAssignableFrom(hf)
-                    select new ServerInfo() { Crawler = (Crawler)Activator.CreateInstance(hf) };            
-        }
-
         internal string GetDecoratedName()
         {
             if (DownloadingSeries)
@@ -102,6 +87,32 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return GetDecoratedName();
+        }
+
+        public static IEnumerable<ServerInfo> CreateServerInfos()
+        {
+            return from hf in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
+                   where hf.IsClass
+                   where !hf.IsAbstract
+                   where hf != typeof(Manga1000Crawler)
+                   where hf != typeof(OneMangaCrawler)
+                   where typeof(Crawler).IsAssignableFrom(hf)
+                   select new ServerInfo() { Crawler = (Crawler)Activator.CreateInstance(hf) };
+        }
+
+        public static ServerInfo CreateAnimeSource()
+        {
+            return new ServerInfo { Crawler = new AnimeSourceCrawler() };
+        }
+
+        public static ServerInfo CreateMangaFox()
+        {
+            return new ServerInfo { Crawler = new MangaFoxCrawler() };
+        }
+
+        public static ServerInfo CreateMangaRun()
+        {
+            return new ServerInfo { Crawler = new MangaRunCrawler() };
         }
     }
 }

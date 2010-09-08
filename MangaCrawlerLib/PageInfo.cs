@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Net;
+using System.Web;
+using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
@@ -37,7 +39,7 @@ namespace MangaCrawlerLib
             get
             {
                 if (m_url == null)
-                    m_url = Crawler.GetPageURL(this);
+                    m_url = HttpUtility.HtmlDecode(Crawler.GetPageURL(this));
 
                 return m_url;
             }
@@ -59,7 +61,7 @@ namespace MangaCrawlerLib
             }
             set
             {
-                m_URLPart = System.Web.HttpUtility.UrlDecode(value);
+                m_URLPart = value;
             }
         }
 
@@ -68,7 +70,7 @@ namespace MangaCrawlerLib
             get
             {
                 if (m_imageURL == null)
-                    m_imageURL = Crawler.GetImageURL(this);
+                    m_imageURL = HttpUtility.HtmlDecode(Crawler.GetImageURL(this));
 
                 return m_imageURL;
             }
@@ -87,6 +89,10 @@ namespace MangaCrawlerLib
                 {
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(ImageURL);
 
+                    myReq.UserAgent = 
+                        "Mozilla/5.0 (Windows; U; Windows NT 6.0; pl; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 ( .NET CLR 3.5.30729; .NET4.0E)";
+                    myReq.Referer = URL;
+
                     using (Stream image_stream = myReq.GetResponse().GetResponseStream())
                     {
                         MemoryStream mem_stream = new MemoryStream();
@@ -97,6 +103,7 @@ namespace MangaCrawlerLib
                 }
                 catch
                 {
+                    Debug.WriteLine(ImageURL);
                     return null;
                 }
             }

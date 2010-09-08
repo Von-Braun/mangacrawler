@@ -259,6 +259,11 @@ namespace MangaCrawler
                 {
                     ChapterInfo cs = (ChapterInfo)item;
 
+                    if (cs.Queue)
+                        continue;
+                    if (cs.Downloading)
+                        continue;
+
                     cs.Queue = true;
 
                     QueueChapter q = new QueueChapter()
