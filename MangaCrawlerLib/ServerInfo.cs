@@ -8,13 +8,11 @@ namespace MangaCrawlerLib
 {
     public class ServerInfo
     {
-        private List<SerieInfo> m_series;
+        public List<SerieInfo> Series;
         private volatile int m_downloadingProgress;
+        private volatile bool m_downloadingSeries;
         private string m_url;
-
         internal Crawler Crawler;
-
-        internal volatile bool DownloadingSeries;
 
         public string URL
         {
@@ -27,29 +25,21 @@ namespace MangaCrawlerLib
             }
         }
 
-        public List<SerieInfo> Series
-        {
-            get
-            {
-                return m_series;
-            }
-        }
-
         public void DownloadSeries(Action a_progress_callback = null)
         {
-            if (DownloadingSeries)
+            if (m_downloadingSeries)
                 return;
 
-            if (m_series == null)
+            if (Series == null)
             {
-                DownloadingSeries = true;
+                m_downloadingSeries = true;
 
                 try
                 {
                     if (a_progress_callback != null)
                         a_progress_callback();
 
-                    m_series = Crawler.DownloadSeries(this, (progress) =>
+                    Series = Crawler.DownloadSeries(this, (progress) =>
                     {
                         m_downloadingProgress = progress;
                         if (a_progress_callback != null)
@@ -58,7 +48,7 @@ namespace MangaCrawlerLib
                 }
                 finally
                 {
-                    DownloadingSeries = false;
+                    m_downloadingSeries = false;
                 }
             }
 
@@ -76,9 +66,9 @@ namespace MangaCrawlerLib
 
         internal string GetDecoratedName()
         {
-            if (DownloadingSeries)
+            if (m_downloadingSeries)
                 return String.Format("{0} ({1}%)", Crawler.Name, m_downloadingProgress);
-            else if (m_series == null)
+            else if (Series == null)
                 return Crawler.Name;
             else
                 return Crawler.Name + "*";
@@ -110,7 +100,7 @@ namespace MangaCrawlerLib
             return new ServerInfo { Crawler = new MangaFoxCrawler() };
         }
 
-        public static ServerInfo CreateMangaRun()
+        public static ServerInfo CreateMangaRunServerInfo()
         {
             return new ServerInfo { Crawler = new MangaRunCrawler() };
         }
@@ -133,6 +123,26 @@ namespace MangaCrawlerLib
         public static ServerInfo CreateOtakuWorks()
         {
             return new ServerInfo { Crawler = new OtakuWorksCrawler() };
+        }
+
+        public static ServerInfo CreateOurManga()
+        {
+            return new ServerInfo { Crawler = new OurMangaCrawler() };
+        }
+
+        public static ServerInfo CreateSpectrumNexus()
+        {
+            return new ServerInfo { Crawler = new SpectrumNexusCrawler() };
+        }
+
+        public static ServerInfo CreateStopTazmo()
+        {
+            return new ServerInfo { Crawler = new StopTazmoCrawler() };
+        }
+
+        public static ServerInfo CreateUnixManga()
+        {
+            return new ServerInfo { Crawler = new UnixMangaCrawler() };
         }
     }
 }

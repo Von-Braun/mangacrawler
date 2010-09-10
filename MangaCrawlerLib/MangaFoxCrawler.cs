@@ -78,10 +78,6 @@ namespace MangaCrawlerLib
 
             var chapters = doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/table/tr/td/a[2]");
 
-            // TODO: 
-            //if (chapters == null)
-            //    yield break;
-
             foreach (var chapter in chapters)
             {
                 yield return new ChapterInfo()
@@ -100,10 +96,6 @@ namespace MangaCrawlerLib
             HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var pages = doc.DocumentNode.SelectSingleNode("//select[@class='middle']").SelectNodes("option");
-
-            // TODO: 
-            //if (pages == null)
-            //    yield break;
 
             a_info.PagesCount = pages.Count;
 

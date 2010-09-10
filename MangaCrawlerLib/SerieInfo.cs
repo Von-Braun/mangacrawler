@@ -9,8 +9,8 @@ namespace MangaCrawlerLib
     public class SerieInfo
     {
         private string m_name;
-        private string m_URLPart;
-        private List<ChapterInfo> m_chapters;
+        internal string URLPart;
+        public List<ChapterInfo> Chapters;
         private string m_url;
         private volatile int m_downloadingProgress;
 
@@ -36,26 +36,6 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal string URLPart
-        {
-            get
-            {
-                return m_URLPart;
-            }
-            set
-            {
-                m_URLPart = value;
-            }
-        }
-
-        internal string InternalName
-        {
-            get
-            {
-                return m_name;
-            }
-        }
-
         public string Name
         {
             get
@@ -76,7 +56,7 @@ namespace MangaCrawlerLib
             if (DownloadingChapters)
                 return;
 
-            if (m_chapters == null)
+            if (Chapters == null)
             {
                 DownloadingChapters = true;
 
@@ -85,7 +65,7 @@ namespace MangaCrawlerLib
                     if (a_progress_callback != null)
                         a_progress_callback();
 
-                    m_chapters = Crawler.DownloadChapters(this, (progress) =>
+                    Chapters = Crawler.DownloadChapters(this, (progress) =>
                     {
                         m_downloadingProgress = progress;
                         if (a_progress_callback != null)
@@ -102,19 +82,11 @@ namespace MangaCrawlerLib
             }
         }
 
-        public List<ChapterInfo> Chapters
-        {
-            get
-            {
-                return m_chapters;
-            }
-        }
-
         internal string GetDecoratedName()
         {
             if (DownloadingChapters)
                 return String.Format("{0} ({1}%)", m_name, m_downloadingProgress);
-            else if (m_chapters == null)
+            else if (Chapters == null)
                 return m_name;
             else
                 return m_name + "*";

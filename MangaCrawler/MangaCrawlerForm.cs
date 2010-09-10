@@ -15,6 +15,15 @@ using MangaCrawlerLib;
 
 namespace MangaCrawler
 {
+    // TODO: wlasny system zrownoleglonego pobierania, powiedzenie od razu ile ma byc rownoczesnie dzialajacych watkow ?
+    // TODO: bookmarks
+    // TODO: wykrywanie zmian w obserwowanych seriach
+    // TODO: pobieranie jako archiwum
+    // TODO: cache, ladowanie w cachu, update w tle
+    // TODO: wpf, silverlight, telefony
+    // TODO: wbudowany browser
+    // TODO: widok wspolny dla wszystkich serwisow, scalac jakos serie, wykrywac zmiany ? gdzie najlepsza jakosc, gdzie duplikaty
+
     public partial class MangaCrawlerForm : Form
     {
         class ProgressData

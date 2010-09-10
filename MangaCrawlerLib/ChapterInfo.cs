@@ -10,7 +10,7 @@ namespace MangaCrawlerLib
     public class ChapterInfo
     {
         private string m_name;
-        private string m_URLPart;
+        internal string URLPart;
         private List<PageInfo> m_pages;
         private string m_url;
 
@@ -25,18 +25,6 @@ namespace MangaCrawlerLib
             get
             {
                 return SerieInfo.Crawler;
-            }
-        }
-
-        internal string URLPart
-        {
-            get
-            {
-                return m_URLPart;
-            }
-            set
-            {
-                m_URLPart = value;
             }
         }
 

@@ -20,7 +20,8 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
-            var series = doc.DocumentNode.SelectSingleNode("/html/body/div/div[8]/div[2]").SelectNodes("select/option");
+            var series = doc.DocumentNode.SelectNodes("//div[@class='mangaJump']/select/option");
+
             foreach (var serie in series.Skip(2))
             {
                 yield return new SerieInfo()
