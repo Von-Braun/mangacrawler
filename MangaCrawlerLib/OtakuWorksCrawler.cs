@@ -169,10 +169,8 @@ namespace MangaCrawlerLib
 
             var node = doc.DocumentNode.SelectSingleNode("//div[@id='filelist']/a/img");
 
-            if (node != null)
-                return node.GetAttributeValue("src", "");
-
-            node = doc.DocumentNode.SelectSingleNode("//div[@id='filelist']/img");
+            if (node == null)
+                node = doc.DocumentNode.SelectSingleNode("//div[@id='filelist']/img");
 
             return node.GetAttributeValue("src", "");
         }

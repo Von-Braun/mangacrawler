@@ -52,10 +52,6 @@ namespace MangaCrawlerLib
 
             var chapters = doc.DocumentNode.SelectNodes("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/blockquote/a");
 
-            // TODO: 
-            //if (chapters == null)
-            //    yield break;
-
             foreach (var chapter in chapters.Skip(1))
             {
                 yield return new ChapterInfo()

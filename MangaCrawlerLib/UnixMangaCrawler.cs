@@ -55,7 +55,7 @@ namespace MangaCrawlerLib
             {
                 List<PageInfo> pages = DownloadPages(new ChapterInfo()
                 {
-                    Name = a_info.InternalName,
+                    Name = a_info.Name,
                     URLPart = a_info.URLPart,
                     SerieInfo = a_info
                 }).ToList();

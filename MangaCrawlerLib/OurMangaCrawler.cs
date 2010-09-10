@@ -22,7 +22,7 @@ namespace MangaCrawlerLib
 
             var series = doc.DocumentNode.SelectNodes("//div[@class='m_s_title']/a");
 
-            foreach (var serie in series)
+            foreach (var serie in series.Skip(1))
             {
                 yield return new SerieInfo()
                 {
@@ -38,9 +38,6 @@ namespace MangaCrawlerLib
             HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
 
             var chapters = doc.DocumentNode.SelectNodes("//div[@class='manga_naruto_title']/a").AsEnumerable();
-
-            if (chapters == null)
-                yield break;
 
             chapters = from ch in chapters
                        where ch.ParentNode.ParentNode.ChildNodes[5].InnerText != "Soon!"
@@ -68,9 +65,6 @@ namespace MangaCrawlerLib
             doc = new HtmlWeb().Load(url.GetAttributeValue("href", ""));
 
             var pages = doc.DocumentNode.SelectNodes("//div[@class='inner_heading_right']/h3/select[2]/option");
-
-            if (pages == null)
-                yield break;
 
             a_info.PagesCount = pages.Count;
 

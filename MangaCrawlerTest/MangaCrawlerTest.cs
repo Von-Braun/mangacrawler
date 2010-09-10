@@ -42,6 +42,8 @@ namespace MangaCrawlerTest
             else
                 TestContext.WriteLine("series: {0}", series.Count);
 
+            Assert.IsFalse(a_info.Series.Any(s => String.IsNullOrWhiteSpace(s.Name)));
+
             return a_info.Series;
         }
 
@@ -152,7 +154,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaRunTest()
         {
-            var series = TestServer(ServerInfo.CreateMangaRun(), 382);
+            var series = TestServer(ServerInfo.CreateMangaRunServerInfo(), 382);
 
             var chapters = TestSerie(series.First(s => s.Name == "666satan"), 78);
 
@@ -263,7 +265,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void OtakuWorksTest()
         {
-            var series = TestServer(ServerInfo.CreateOtakuWorks(), -1);
+            var series = TestServer(ServerInfo.CreateOtakuWorks(), 3753);
 
             {
                 HtmlDocument doc = new HtmlWeb().Load(series.First(s => s.Name == "07 Ghost").URL);
@@ -272,7 +274,97 @@ namespace MangaCrawlerTest
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "07 Ghost"), -1);
+                var chapters = TestSerie(series.First(s => s.Name == "07 Ghost"), 62);
+
+                var pages = TestChapter(chapters.Last(), 46);
+
+                TestPage(pages.First(), "B1383DA2-73246011-0BE09DE8-FD57B9E7-F5B3E2CA-B5B7F0AE-9F73D1A9-0C2BEF39");
+                TestPage(pages.Last(), "48A19A0D-CAB66032-D86AE126-11419E07-5114D427-D26319FC-983393C3-9D5679E3");
+
+                pages = TestChapter(chapters.First(), 29);
+
+                TestPage(pages.First(), "1F62EB44-8F3CA812-EFC85ED3-BA37744F-D0839876-A4C81D90-2969B112-AE7FABD3");
+                TestPage(pages.Last(), "7E091916-B842DFFB-B34F5558-D7347A16-AD2EFFA8-4AE28ED0-120F1E34-C891A156");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Name == ".hack//G.U. The World"), 6);
+
+                var pages = TestChapter(chapters.Last(), 66);
+
+                TestPage(pages.First(), "E372B2BC-13EB7031-349A4744-94A7209B-C3FE37EF-3A90E372-CD21A0B1-584B3407");
+                TestPage(pages.Last(), "DBC71B57-5B6114B8-E164B273-C0EE132C-05C50B08-38BAE105-0E12C5D7-AF94D8C3");
+
+                pages = TestChapter(chapters.First(), 33);
+
+                TestPage(pages.First(), "C0EFCDE5-D4E47996-55CC010B-6F764374-001D9A03-79941192-20D589BA-42FA3A00");
+                TestPage(pages.Last(), "95308738-175DE63F-5E38814E-5E88F5D3-6FDF1452-36458087-CB126395-312B0502");
+            }
+        }
+
+        [TestMethod]
+        public void OurMangaTest()
+        {
+            var series = TestServer(ServerInfo.CreateOurManga(), 1703);
+
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "3x3 Eyes"), 542);
+
+                var pages = TestChapter(chapters.Last(), 34);
+
+                TestPage(pages.First(), "B966DB33-56D05253-F325D7DF-2D445889-B39F11D7-0B819587-F3A02925-31E16259");
+                TestPage(pages.Last(), "1A0614C0-7DACDA48-F462A919-0FC944EF-DF21684C-1F9207A8-6EB01E62-F1858B57");
+
+                pages = TestChapter(chapters.First(), 14);
+
+                TestPage(pages.First(), "5BBE54F6-DFA67019-357D1C96-A3F39A50-F863A20E-181F99E3-B1EF5E25-E6C7B423");
+                TestPage(pages.Last(), "FEF8CB95-FBB56858-FA8926CD-B2149F9B-34DFA8FC-301F134B-5CD51F9D-CE22CAE9");
+            }
+        }
+
+        [TestMethod]
+        public void SpectrumNexusTest()
+        {
+            var series = TestServer(ServerInfo.CreateSpectrumNexus(), 134);
+
+            var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 77);
+
+            var pages = TestChapter(chapters.Last(), 181);
+
+            TestPage(pages.First(), "4ED4679A-1F540803-152C6C75-C285E1DC-2DB76FC6-BFB812DF-3C995931-14E87EEF");
+            TestPage(pages.Last(), "0D49ADB7-500F512F-C7AE4D25-6ECE4C95-4F172FC4-D6D7A2A0-29B95D64-101222C6");
+
+            pages = TestChapter(chapters.First(), 21);
+
+            TestPage(pages.First(), "29308579-D1251789-821CB919-CAAACC56-8015BF92-8F432914-6364F4E7-4C722F1E");
+            TestPage(pages.Last(), "DF271CF4-A3583FD0-12C05077-8EEB2300-EAAA3B4C-0EDF690B-F0C8DC24-84964C47");
+        }
+
+        [TestMethod]
+        public void StopTazmoTest()
+        {
+            var series = TestServer(ServerInfo.CreateStopTazmo(), 1792);
+
+            var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 1792);
+
+            var pages = TestChapter(chapters.Last(), 19);
+
+            TestPage(pages.First(), "A98E1FDB-FC51F496-7797C15C-D756B016-6CBC412F-42A53FDD-17BB1B6D-A7678FA2");
+            TestPage(pages.Last(), "8A2A4703-FDF58BF9-0AAEC0A9-93F2876B-DBECD43E-D8DAE263-3F958C29-455D5E9F");
+
+            pages = TestChapter(chapters.First(), 57);
+
+            TestPage(pages.First(), "8D78D814-791583E2-19F0FC41-460F600B-982ABBF0-6278B2A9-3D6D5112-ADB86FA6");
+            TestPage(pages.Last(), "41838061-F5379AD8-FF615340-5FEF5C07-C9A68FF7-6F643947-7A203C17-5308D8A4");
+        }
+
+        [TestMethod]
+        public void UnixMangaTest()
+        {
+            var series = TestServer(ServerInfo.CreateUnixManga(), -1);
+
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), -1);
 
                 var pages = TestChapter(chapters.Last(), -1);
 
@@ -286,7 +378,7 @@ namespace MangaCrawlerTest
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == ".hack//G.U. The World"), -1);
+                var chapters = TestSerie(series.First(s => s.Name == "666 Satan"), -1);
 
                 var pages = TestChapter(chapters.Last(), -1);
 
@@ -298,24 +390,20 @@ namespace MangaCrawlerTest
                 TestPage(pages.First(), null);
                 TestPage(pages.Last(), null);
             }
-        }
 
-        [TestMethod]
-        public void xxxTest()
-        {
-            var series = TestServer(ServerInfo.CreateMangaToshokan(), -1);
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "Black God"), -1);
 
-            var chapters = TestSerie(series.First(s => s.Name == ""), -1);
+                var pages = TestChapter(chapters.Last(), -1);
 
-            var pages = TestChapter(chapters.Last(), -1);
+                TestPage(pages.First(), null);
+                TestPage(pages.Last(), null);
 
-            TestPage(pages.First(), null);
-            TestPage(pages.Last(), null);
+                pages = TestChapter(chapters.First(), -1);
 
-            pages = TestChapter(chapters.First(), -1);
-
-            TestPage(pages.First(), null);
-            TestPage(pages.Last(), null);
+                TestPage(pages.First(), null);
+                TestPage(pages.Last(), null);
+            }
         }
     }
 }
