@@ -23,7 +23,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/table/tr/td[2]");
 
@@ -34,12 +34,10 @@ namespace MangaCrawlerLib
                 if (serie.ChildNodes[7].InnerText.Trim() == "2")
                     continue;
 
-                list.Add(new SerieInfo()
-                {
-                    Name = serie.SelectSingleNode("font").FirstChild.InnerText,
-                    URLPart = serie.SelectSingleNode("a[2]").GetAttributeValue("href", ""),
-                    ServerInfo = a_info
-                });
+                list.Add(new SerieInfo(
+                    a_info, 
+                    serie.SelectSingleNode("a[2]").GetAttributeValue("href", ""), 
+                    serie.SelectSingleNode("font").FirstChild.InnerText));
                 
             }
 
@@ -48,18 +46,13 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var chapters = doc.DocumentNode.SelectNodes("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/blockquote/a");
 
             foreach (var chapter in chapters.Skip(1))
             {
-                yield return new ChapterInfo()
-                {
-                    URLPart = chapter.GetAttributeValue("href", ""),
-                    Name = chapter.InnerText, 
-                    SerieInfo = a_info
-                };
+                yield return new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
             }
         }
 
@@ -67,7 +60,7 @@ namespace MangaCrawlerLib
         {
             a_info.DownloadedPages = 0;
 
-            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='pageid']/option");
 
@@ -80,12 +73,7 @@ namespace MangaCrawlerLib
 
                 for (int page = 1; page <= a_info.PagesCount; page++)
                 {
-                    PageInfo pi = new PageInfo()
-                    {
-                        ChapterInfo = a_info,
-                        Index = page,
-                        URLPart = a_info.URLPart + "&page=" + page
-                    };
+                    PageInfo pi = new PageInfo(a_info, a_info.URLPart + "&page=" + page, page);
 
                     yield return pi;
                 }                
@@ -99,12 +87,7 @@ namespace MangaCrawlerLib
                 {
                     index++;
 
-                    PageInfo pi = new PageInfo()
-                    {
-                        ChapterInfo = a_info,
-                        Index = index,
-                        URLPart = page.GetAttributeValue("value", "")
-                    };
+                    PageInfo pi = new PageInfo(a_info, page.GetAttributeValue("value", ""), index);
 
                     yield return pi;
                 }
@@ -113,7 +96,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             string xpath;
             if (a_info.ChapterInfo.PagesCount == a_info.Index)
