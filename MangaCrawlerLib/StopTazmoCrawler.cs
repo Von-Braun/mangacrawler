@@ -17,35 +17,32 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes("/html/body/div[2]/div/div/div/ul/li/table[2]/tr/td[1]/a");
 
-            var series_filtered = from serie in series
-                                  where serie.InnerText.Trim() != "[LATEST_DOWNLOADS]"
-                                  where serie.InnerText.Trim() != "[VOLUMES]"
-                                  select serie;
+            var result = from serie in series
+                         where serie.InnerText.Trim() != "[LATEST_DOWNLOADS]"
+                         where serie.InnerText.Trim() != "[VOLUMES]"
+                         select new SerieInfo(a_info, serie.GetAttributeValue("href", ""), serie.InnerText);
 
-            foreach (var serie in series_filtered)
-            {
-                yield return new SerieInfo(a_info, serie.GetAttributeValue("href", ""), serie.InnerText);
-            }
+            a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var chapters = doc.DocumentNode.SelectNodes("/html/body/div[2]/div/div/div/ul[2]/li/table/tr");
 
-            foreach (var chapter in chapters.Skip(1))
-            {
-                yield return new ChapterInfo(a_info, 
-                    chapter.SelectSingleNode("td[3]/a").GetAttributeValue("href", ""), 
-                    Path.GetFileNameWithoutExtension(chapter.SelectSingleNode("td[1]").InnerText));
-            }
+            var result = from chapter in chapters
+                         select new ChapterInfo(a_info, 
+                                                chapter.SelectSingleNode("td[3]/a").GetAttributeValue("href", ""), 
+                                                Path.GetFileNameWithoutExtension(chapter.SelectSingleNode("td[1]").InnerText));
+
+            a_progress_callback(100, result);
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)

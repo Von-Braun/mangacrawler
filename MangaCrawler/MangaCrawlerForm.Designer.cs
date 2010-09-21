@@ -294,6 +294,7 @@
             this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.chaptersListBox.Size = new System.Drawing.Size(382, 368);
             this.chaptersListBox.TabIndex = 34;
+            this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
             this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
             // 
             // label7

@@ -20,7 +20,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -48,21 +48,16 @@ namespace MangaCrawlerLib
                     series.Add(s);
                 }
 
+                var result = from serie in series
+                             orderby serie.Item1, serie.Item2
+                             select new SerieInfo(a_info, serie.Item4, serie.Item3);
+
                 m_progress++;
-                a_progress_callback(m_progress * 100 / number);
+                a_progress_callback(m_progress * 100 / number, result);
             });
-
-            var sorted_series = from serie in series
-                                orderby serie.Item1, serie.Item2
-                                select serie;
-
-            foreach (var serie in sorted_series)
-            {
-                yield return new SerieInfo(a_info, serie.Item4, serie.Item3);
-            }
         }
 
-        internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -74,10 +69,10 @@ namespace MangaCrawlerLib
 
                 var page_chapters = page_doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/div/div[3]/div/div[@class='sbox3']/a[1]");
 
-                foreach (var chapter in page_chapters)
-                {
-                    yield return new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
-                }
+                var result = from chapter in page_chapters
+                             select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
+
+                a_progress_callback(100, result);
             }
             else
             {
@@ -111,18 +106,13 @@ namespace MangaCrawlerLib
                         chapters.Add(s);
                     }
 
+                    var result = from chapter in chapters
+                                 orderby chapter.Item1, chapter.Item2
+                                 select new ChapterInfo(a_info, chapter.Item4, chapter.Item3);
+
                     m_progress++;
-                    a_progress_callback(m_progress * 100 / pages.Count());
+                    a_progress_callback(m_progress * 100 / pages.Count(), result);
                 });
-
-                var sorted_chapters = from chapter in chapters
-                                      orderby chapter.Item1, chapter.Item2
-                                      select chapter;
-
-                foreach (var serie in sorted_chapters)
-                {
-                    yield return new ChapterInfo(a_info, serie.Item4, serie.Item3);
-                }
             }
         }
 

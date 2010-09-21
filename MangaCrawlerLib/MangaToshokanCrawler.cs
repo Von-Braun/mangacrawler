@@ -16,28 +16,23 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var rows = doc.DocumentNode.SelectNodes("/html/body/div/div/div[6]/div[2]/div/table/tr/td/table[2]/tr/td[2]/table/tr");
 
-            foreach (var row in rows)
-            {
-                if (row.ChildNodes.Count < 8)
-                    continue;
+            var result = from row in rows 
+                         where (row.ChildNodes.Count >= 8)
+                         where (row.ChildNodes[3].InnerText != "None")
+                         select new SerieInfo(a_info, 
+                                              row.ChildNodes[1].GetAttributeValue("href", ""), 
+                                              row.ChildNodes[1].InnerText);
 
-                if (row.ChildNodes[3].InnerText == "None")
-                    continue;
-
-                yield return new SerieInfo(
-                    a_info, 
-                    row.ChildNodes[1].GetAttributeValue("href", ""), 
-                    row.ChildNodes[1].InnerText);
-            }
+            a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -48,14 +43,12 @@ namespace MangaCrawlerLib
             doc = ConnectionsLimiter.DownloadDocument(a_info, url);
 
             chapters = doc.DocumentNode.SelectNodes("/html/body/div/div/table/tr/td[2]/select/option");
-            
-            foreach (var chapter in chapters.Reverse().Skip(3).Reverse())
-            {
-                if (chapter.NextSibling.InnerText == "[Series End]")
-                    continue;
 
-                yield return new ChapterInfo(a_info, chapter.GetAttributeValue("value", ""), chapter.NextSibling.InnerText);
-            }
+            var result = from chapter in chapters.Reverse().Skip(3).Reverse()
+                         where chapter.NextSibling.InnerText != "[Series End]"
+                         select new ChapterInfo(a_info, chapter.GetAttributeValue("value", ""), chapter.NextSibling.InnerText);
+
+            a_progress_callback(100, result);
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)

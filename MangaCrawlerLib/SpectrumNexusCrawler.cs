@@ -16,22 +16,21 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes("//div[@class='mangaJump']/select/option");
 
-            foreach (var serie in series.Skip(2))
-            {
-                yield return new SerieInfo(
-                    a_info, 
-                    GetServerURL() + serie.GetAttributeValue("value", "").RemoveFromLeft(1), 
-                    serie.NextSibling.InnerText);
-            }
+            var result = from serie in series.Skip(2) 
+                         select new SerieInfo(a_info, 
+                                              GetServerURL() + serie.GetAttributeValue("value", "").RemoveFromLeft(1), 
+                                              serie.NextSibling.InnerText);
+
+            a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -43,11 +42,11 @@ namespace MangaCrawlerLib
 
             var chapters = doc.DocumentNode.SelectNodes("//select[@name='ch']/option");
 
-            foreach (var chapter in chapters)
-            {
-                yield return new ChapterInfo(a_info, href + "\t" + chapter.GetAttributeValue("value", ""),
-                    chapter.NextSibling.InnerText);
-            }
+            var result = from chapter in chapters
+                         select new ChapterInfo(a_info, href + "\t" + chapter.GetAttributeValue("value", ""),
+                                                chapter.NextSibling.InnerText);
+
+            a_progress_callback(100, result);
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)

@@ -16,22 +16,21 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes("//div[@class='m_s_title']/a");
 
-            foreach (var serie in series.Skip(1))
-            {
-                yield return new SerieInfo(
-                    a_info,
-                    serie.GetAttributeValue("href", "").RemoveFromRight(1),
-                    serie.InnerText);
-            }
+            var result = from serie in series.Skip(1)
+                         select new SerieInfo(a_info,
+                                              serie.GetAttributeValue("href", "").RemoveFromRight(1),
+                                              serie.InnerText);
+
+            a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -41,10 +40,10 @@ namespace MangaCrawlerLib
                        where ch.ParentNode.ParentNode.ChildNodes[5].InnerText != "Soon!"
                        select ch;
 
-            foreach (var chapter in chapters)
-            {
-                yield return new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
-            }
+            var result = from chapter in chapters 
+                         select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
+
+            a_progress_callback(100, result);
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)

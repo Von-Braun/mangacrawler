@@ -20,22 +20,22 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/div[2]/table/tr/td/a");
 
-            foreach (var serie in series)
-            {
-                yield return new SerieInfo(
-                    a_info,
-                    serie.GetAttributeValue("href", ""),
-                    serie.GetAttributeValue("title", ""));
-            }
+            var result = from serie in series
+                         select new SerieInfo(
+                             a_info,
+                             serie.GetAttributeValue("href", ""),
+                             serie.GetAttributeValue("title", ""));
+
+            a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -77,15 +77,13 @@ namespace MangaCrawlerLib
                     }
                 }
 
+                var result = from chapter in chapters
+                             orderby chapter.Item1, chapter.Item2
+                             select chapter.Item3;
+
                 progress++;
-                a_progress_callback(progress * 100 / chapters_or_volumes.Count);
+                a_progress_callback(progress * 100 / chapters_or_volumes.Count, result);
             });
-
-            var chapters_sorted = (from chapter in chapters
-                                   orderby chapter.Item1, chapter.Item2
-                                   select chapter.Item3).ToList();
-
-            return chapters_sorted;
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)

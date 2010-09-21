@@ -12,7 +12,7 @@ namespace MangaCrawlerLib
         private string m_url;
         private volatile int m_downloadingProgress;
         private string m_urlPart;
-        private List<ChapterInfo> m_chapters;
+        private IEnumerable<ChapterInfo> m_chapters;
         private volatile bool m_downloadingChapters;
         private ServerInfo m_serverInfo;
 
@@ -94,29 +94,41 @@ namespace MangaCrawlerLib
             if (m_downloadingChapters)
                 return;
 
-            if (Chapters == null)
+            if (m_chapters != null)
+                return;
+
+            m_downloadingChapters = true;
+
+            try
             {
-                m_downloadingChapters = true;
-
-                try
-                {
-                    if (a_progress_callback != null)
-                        a_progress_callback();
-
-                    m_chapters = Crawler.DownloadChapters(this, (progress) =>
-                    {
-                        m_downloadingProgress = progress;
-                        if (a_progress_callback != null)
-                            a_progress_callback();
-                    }).ToList();
-                }
-                finally
-                {
-                    m_downloadingChapters = false;
-                }
-
                 if (a_progress_callback != null)
                     a_progress_callback();
+
+                Crawler.DownloadChapters(this, (progress, result) =>
+                {
+                    var chapters = result.ToList();
+
+                    if (m_chapters != null)
+                    {
+                        foreach (var chapter in m_chapters)
+                        {
+                            var el = chapters.Find(s => s.URL == chapter.URL);
+                            if (el != null)
+                                chapters[chapters.IndexOf(el)] = chapter;
+                        }
+                    }
+
+                    m_chapters = chapters;
+
+                    m_downloadingProgress = progress;
+
+                    if (a_progress_callback != null)
+                        a_progress_callback();
+                });
+            }
+            finally
+            {
+                m_downloadingChapters = false;
             }
         }
 
