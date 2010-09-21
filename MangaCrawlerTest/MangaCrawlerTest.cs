@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MangaCrawlerLib;
 using HtmlAgilityPack;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace MangaCrawlerTest
 {
@@ -30,7 +31,7 @@ namespace MangaCrawlerTest
                 m_testContextInstance = value;
             }
         }
-        private List<SerieInfo> TestServer(ServerInfo a_info, int a_count)
+        private IEnumerable<SerieInfo> TestServer(ServerInfo a_info, int a_count)
         {
             a_info.DownloadSeries();
             var series = a_info.Series;
@@ -38,16 +39,16 @@ namespace MangaCrawlerTest
             new HtmlWeb().Load(a_info.URL);
 
             if (a_count != -1)
-                Assert.IsTrue(series.Count >= a_count);
+                Assert.IsTrue(series.Count() >= a_count);
             else
-                TestContext.WriteLine("series: {0}", series.Count);
+                TestContext.WriteLine("series: {0}", series.Count());
 
             Assert.IsFalse(a_info.Series.Any(s => String.IsNullOrWhiteSpace(s.Name)));
 
             return a_info.Series;
         }
 
-        private List<ChapterInfo> TestSerie(SerieInfo a_serie, int a_count)
+        private IEnumerable<ChapterInfo> TestSerie(SerieInfo a_serie, int a_count)
         {
             a_serie.DownloadChapters();
             var chapters = a_serie.Chapters;
@@ -55,25 +56,25 @@ namespace MangaCrawlerTest
             new HtmlWeb().Load(a_serie.URL);
 
             if (a_count != -1)
-                Assert.IsTrue(chapters.Count >= a_count);
+                Assert.IsTrue(chapters.Count() >= a_count);
             else
-                TestContext.WriteLine("serie: {0}, chapters: {1}", a_serie.Name, chapters.Count);
+                TestContext.WriteLine("serie: {0}, chapters: {1}", a_serie.Name, chapters.Count());
 
             return chapters;
         }
 
-        private List<PageInfo> TestChapter(ChapterInfo a_chapter, int a_count)
+        private IEnumerable<PageInfo> TestChapter(ChapterInfo a_chapter, int a_count)
         {
             new HtmlWeb().Load(a_chapter.URL);
 
             var pages = a_chapter.Pages;
 
             if (a_count != -1)
-                Assert.IsTrue(pages.Count == a_count);
+                Assert.IsTrue(pages.Count() == a_count);
             else
             {
                 TestContext.WriteLine("serie: {0}, chapter: {1}, pages: {2}", 
-                    a_chapter.SerieInfo.Name, a_chapter.Name, pages.Count);
+                    a_chapter.SerieInfo.Name, a_chapter.Name, pages.Count());
             }
 
             return pages;
@@ -107,7 +108,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void AnimeSourceTest()
         {
-            var series = TestServer(ServerInfo.CreateAnimeSource(), 52);
+            var series = TestServer(ServerInfo.AnimeSource, 52);
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == "Kimagure Orange Road"), 167);
@@ -136,7 +137,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaFoxTest()
         {
-            var series = TestServer(ServerInfo.CreateMangaFox(), 6768);
+            var series = TestServer(ServerInfo.MangaFox, 6768);
 
             var chapters = TestSerie(series.First(s => s.Name == ".hack//G.U.+"), 26);
 
@@ -154,7 +155,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaRunTest()
         {
-            var series = TestServer(ServerInfo.CreateMangaRunServerInfo(), 382);
+            var series = TestServer(ServerInfo.MangaRun, 382);
 
             var chapters = TestSerie(series.First(s => s.Name == "666satan"), 78);
 
@@ -172,7 +173,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaShareTest()
         {
-            var series = TestServer(ServerInfo.CreateMangaShare(), 101);
+            var series = TestServer(ServerInfo.MangaShare, 101);
 
             var chapters = TestSerie(series.First(s => s.Name == "666 Satan"), 77);
 
@@ -190,7 +191,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaToshokanTest()
         {
-            var series = TestServer(ServerInfo.CreateMangaToshokan(), 946);
+            var series = TestServer(ServerInfo.MangaToshokan, 946);
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == "Angel Shop"), 15);
@@ -207,7 +208,7 @@ namespace MangaCrawlerTest
             }
 
             {
-                HtmlDocument doc = new HtmlWeb().Load(ServerInfo.CreateMangaToshokan().URL);
+                HtmlDocument doc = new HtmlWeb().Load(ServerInfo.MangaToshokan.URL);
 
                 var rows = doc.DocumentNode.SelectNodes("/html/body/div/div/div[6]/div[2]/div/table/tr/td/table[2]/tr/td[2]/table/tr");
 
@@ -247,7 +248,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaVolumeTest()
         {
-            var series = TestServer(ServerInfo.CreateMangaVolume(), 882);
+            var series = TestServer(ServerInfo.MangaVolume, 882);
 
             var chapters = TestSerie(series.First(s => s.Name == "A Wolf Warning"), 6);
 
@@ -265,7 +266,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void OtakuWorksTest()
         {
-            var series = TestServer(ServerInfo.CreateOtakuWorks(), 3753);
+            var series = TestServer(ServerInfo.OtakuWorks, 3753);
 
             {
                 HtmlDocument doc = new HtmlWeb().Load(series.First(s => s.Name == "07 Ghost").URL);
@@ -305,7 +306,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void OurMangaTest()
         {
-            var series = TestServer(ServerInfo.CreateOurManga(), 1703);
+            var series = TestServer(ServerInfo.OurManga, 1703);
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == "3x3 Eyes"), 542);
@@ -325,7 +326,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void SpectrumNexusTest()
         {
-            var series = TestServer(ServerInfo.CreateSpectrumNexus(), 134);
+            var series = TestServer(ServerInfo.SpectrumNexus, 134);
 
             var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 77);
 
@@ -343,7 +344,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void StopTazmoTest()
         {
-            var series = TestServer(ServerInfo.CreateStopTazmo(), 1792);
+            var series = TestServer(ServerInfo.StopTazmo, 1792);
 
             var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 1792);
 
@@ -361,49 +362,93 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void UnixMangaTest()
         {
-            var series = TestServer(ServerInfo.CreateUnixManga(), -1);
+            var series = TestServer(ServerInfo.UnixManga, 1532);
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), -1);
+                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 439);
 
-                var pages = TestChapter(chapters.Last(), -1);
+                var pages = TestChapter(chapters.Last(), 8);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "262ED4DC-7C5B3D1F-B0918BB3-3DACD75A-60D2119B-17A29A97-04E12601-051312D8");
+                TestPage(pages.Last(), "B8177447-C74F7AA8-0521B396-2B7119F8-E173C00B-27F6B894-C997C530-2566F1E6");
 
-                pages = TestChapter(chapters.First(), -1);
+                pages = TestChapter(chapters.First(), 15);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "99285B2F-50490ECA-D0D8A9E4-818032F2-186D0AC4-B75331FD-3818B301-FA0F2CA2");
+                TestPage(pages.Last(), "52B1C84E-03455C85-1C96BA7F-6F4FCF33-B839109A-E6F699D6-E9400BCB-13CC5B90");
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "666 Satan"), -1);
+                var chapters = TestSerie(series.First(s => s.Name == "666 Satan"), 80);
 
-                var pages = TestChapter(chapters.Last(), -1);
+                var pages = TestChapter(chapters.Last(), 25);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "408A4442-0CDE316E-1E41544D-B8DFB08C-402CDC6E-9128EF2E-6B2E1ECE-8496E9D7");
+                TestPage(pages.Last(), "1595E11D-A302BA42-7A33F0E1-4ADEF4BD-C5365FBF-0B89123E-B61C9E8B-E7E08A2D");
 
-                pages = TestChapter(chapters.First(), -1);
+                pages = TestChapter(chapters.First(), 30);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "6DC6CCF8-BB831044-DEDBEB18-D83FB748-C10D7698-FDDB65B8-506D7A06-2F455AAB");
+                TestPage(pages.Last(), "AC9DF68B-C07F380B-DBBCF4EA-4A79C0DB-EF00A7DC-5AF91C46-56E1F179-90EDB30F");
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "Black God"), -1);
+                var chapters = TestSerie(series.First(s => s.Name == "Kamisama no Tsukurikata"), 17);
 
-                var pages = TestChapter(chapters.Last(), -1);
+                var pages = TestChapter(chapters.Last(), 30);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "BA438114-F68B9CDD-42198F17-8C72B2D3-78882EC9-C9A2A995-BFE19D26-FDD0A9C5");
+                TestPage(pages.Last(), "A95CE474-FBFCFCEE-F98AB70E-C3B341C3-609F8871-7AD9F33C-A0EF7BFB-1BDF5B8D");
 
-                pages = TestChapter(chapters.First(), -1);
+                pages = TestChapter(chapters.First(), 30);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "49C0AACF-CEFCBFD1-626AF6D5-3E3F444A-252DCBCC-CB109F3A-BEB2FCB7-F2C39DA0");
+                TestPage(pages.Last(), "FFC3EBB9-9BDF5759-DE87C6D6-E2634C38-8982EC38-34CF67C6-2336B18D-28F7862E");
             }
+        }
+
+        private static IEnumerable<T> TakeRandom<T>(IEnumerable<T> a_enum, double a_percent)
+        {
+            List<T> list = a_enum.ToList();
+            Random random = new Random();
+
+            for (int i = 0; i < list.Count * a_percent; i++)
+            {
+                int r = random.Next(list.Count);
+                T el = list[r];
+                list.RemoveAt(r);
+                yield return el;
+            }
+        }
+
+        [TestMethod]
+        public void _RandomTestAll()
+        {
+            Parallel.ForEach(ServerInfo.ServersInfos, si => 
+            {
+                si.DownloadSeries();
+
+                Assert.IsTrue(si.Series.Count() > 0);
+
+                Parallel.ForEach(TakeRandom(si.Series, 0.1), serie =>
+                {
+                    serie.DownloadChapters();
+
+                    Assert.IsTrue(serie.Chapters.Count() > 0);
+
+                    Parallel.ForEach(TakeRandom(serie.Chapters, 0.1), chapter => 
+                    {
+                        Assert.IsTrue(chapter.Pages.Count() > 0);
+
+                        Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), page =>
+                        {
+                            var stream = page.ImageStream;
+                            Assert.IsTrue(stream.Length > 0);
+                            System.Drawing.Image.FromStream(stream);
+                        });
+                    });
+                });
+            });
         }
     }
 }

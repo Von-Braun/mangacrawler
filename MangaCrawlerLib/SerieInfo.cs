@@ -9,19 +9,56 @@ namespace MangaCrawlerLib
     public class SerieInfo
     {
         private string m_name;
-        internal string URLPart;
-        public List<ChapterInfo> Chapters;
         private string m_url;
         private volatile int m_downloadingProgress;
+        private string m_urlPart;
+        private List<ChapterInfo> m_chapters;
+        private volatile bool m_downloadingChapters;
+        private ServerInfo m_serverInfo;
 
-        public volatile bool DownloadingChapters;
-        public ServerInfo ServerInfo;
+        internal SerieInfo(ServerInfo a_serverInfo, string a_urlPart, string a_name)
+        {
+            m_urlPart = a_urlPart;
+            m_serverInfo = a_serverInfo;
+
+            m_name = a_name.Trim();
+            m_name = m_name.Replace("\t", " ");
+            while (m_name.IndexOf("  ") != -1)
+                m_name = m_name.Replace("  ", " ");
+        }
 
         internal Crawler Crawler
         {
             get
             {
-                return ServerInfo.Crawler;
+                return m_serverInfo.Crawler;
+            }
+        }
+
+        public IEnumerable<ChapterInfo> Chapters
+        {
+            get
+            {
+                if (m_chapters == null)
+                    return null;
+                return from ch in m_chapters
+                       select ch;
+            }
+        }
+
+        public bool DownloadingChapters
+        {
+            get
+            {
+                return m_downloadingChapters;
+            }
+        }
+
+        public ServerInfo ServerInfo
+        {
+            get
+            {
+                return m_serverInfo;
             }
         }
 
@@ -36,36 +73,37 @@ namespace MangaCrawlerLib
             }
         }
 
+        internal string URLPart
+        {
+            get
+            {
+                return m_urlPart;
+            }
+        }
+
         public string Name
         {
             get
             {
                 return m_name;
             }
-            set
-            {
-                m_name = value.Trim();
-                m_name = m_name.Replace("\t", " ");
-                while (m_name.IndexOf("  ") != -1)
-                    m_name = m_name.Replace("  ", " ");
-            }
         }
 
         public void DownloadChapters(Action a_progress_callback = null)
         {
-            if (DownloadingChapters)
+            if (m_downloadingChapters)
                 return;
 
             if (Chapters == null)
             {
-                DownloadingChapters = true;
+                m_downloadingChapters = true;
 
                 try
                 {
                     if (a_progress_callback != null)
                         a_progress_callback();
 
-                    Chapters = Crawler.DownloadChapters(this, (progress) =>
+                    m_chapters = Crawler.DownloadChapters(this, (progress) =>
                     {
                         m_downloadingProgress = progress;
                         if (a_progress_callback != null)
@@ -74,7 +112,7 @@ namespace MangaCrawlerLib
                 }
                 finally
                 {
-                    DownloadingChapters = false;
+                    m_downloadingChapters = false;
                 }
 
                 if (a_progress_callback != null)
@@ -82,19 +120,22 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal string GetDecoratedName()
+        internal string DecoratedName
         {
-            if (DownloadingChapters)
-                return String.Format("{0} ({1}%)", m_name, m_downloadingProgress);
-            else if (Chapters == null)
-                return m_name;
-            else
-                return m_name + "*";
+            get
+            {
+                if (m_downloadingChapters)
+                    return String.Format("{0} ({1}%)", m_name, m_downloadingProgress);
+                else if (Chapters == null)
+                    return m_name;
+                else
+                    return m_name + "*";
+            }
         }
 
         public override string ToString()
         {
-            return GetDecoratedName();
+            return DecoratedName;
         }
     }
 }

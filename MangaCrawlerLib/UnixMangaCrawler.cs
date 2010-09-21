@@ -12,8 +12,6 @@ namespace MangaCrawlerLib
 {
     internal class UnixMangaCrawler : Crawler
     {
-        private volatile int m_progress = 0;
-
         internal override string Name
         {
             get 
@@ -24,110 +22,77 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/div[2]/table/tr/td/a");
 
-            List<SerieInfo> list = new List<SerieInfo>();
-
             foreach (var serie in series)
             {
-                list.Add(new SerieInfo()
-                {
-                    Name = serie.GetAttributeValue("title", ""),
-                    URLPart = serie.GetAttributeValue("href", ""),
-                    ServerInfo = a_info
-                });
+                yield return new SerieInfo(
+                    a_info,
+                    serie.GetAttributeValue("href", ""),
+                    serie.GetAttributeValue("title", ""));
             }
-
-            return list;
         }
 
         internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
         {
-            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var chapters1 = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/div[2]/table/tr/td/a");
+            var chapters_or_volumes = 
+                doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/div[2]/table/tr/td/a").Skip(3).Reverse().Skip(1).Reverse().ToList();
 
-            List<ChapterInfo> list = new List<ChapterInfo>();
+            int progress = 0;
 
-            if (chapters1 == null)
+            ConcurrentBag<Tuple<int, int, ChapterInfo>> chapters = new ConcurrentBag<Tuple<int, int, ChapterInfo>>();
+
+            Parallel.ForEach(chapters_or_volumes, chapter_or_volume =>
             {
-                List<PageInfo> pages = DownloadPages(new ChapterInfo()
-                {
-                    Name = a_info.Name,
-                    URLPart = a_info.URLPart,
-                    SerieInfo = a_info
-                }).ToList();
+                doc = ConnectionsLimiter.DownloadDocument(a_info, chapter_or_volume.GetAttributeValue("href", ""));
 
-                if (pages.Count != 0)
+                var pages = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/fieldset/ul/label/a");
+
+                if (pages != null)
                 {
-                    list.Add(new ChapterInfo()
+                    chapters.Add(new Tuple<int, int, ChapterInfo>(
+                        chapters_or_volumes.IndexOf(chapter_or_volume), 
+                        0,
+                        new ChapterInfo(a_info, chapter_or_volume.GetAttributeValue("href", ""), chapter_or_volume.InnerText)
+                    ));
+                }
+                else
+                {
+                    var chapters1 = 
+                        doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/div[2]/table/tr/td/a").Skip(3).Reverse().Skip(1).Reverse().ToList();
+                    if (chapters1[0].InnerText.ToLower() == "thumbs.jpg")
+                        chapters1.RemoveAt(0);
+
+                    foreach (var chapter in chapters1)
                     {
-                        Name = "(no chapters - single serie)",
-                        URLPart = a_info.URLPart,
-                        SerieInfo = a_info
-
-                    });
+                        chapters.Add(new Tuple<int, int, ChapterInfo>(
+                            chapters_or_volumes.IndexOf(chapter_or_volume),
+                            chapters1.IndexOf(chapter),
+                            new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText)
+                        ));
+                    }
                 }
 
-                return list;
-            }
+                progress++;
+                a_progress_callback(progress * 100 / chapters_or_volumes.Count);
+            });
 
-            foreach (var chapter1 in chapters1.Skip(3).Reverse().Skip(1).Reverse())
-            {
-                if (chapter1.GetAttributeValue("title", "") == "Thumbs.jpg")
-                    continue;
+            var chapters_sorted = (from chapter in chapters
+                                   orderby chapter.Item1, chapter.Item2
+                                   select chapter.Item3).ToList();
 
-                list.Add(new ChapterInfo()
-                {
-                    URLPart = chapter1.GetAttributeValue("href", ""),
-                    Name = chapter1.GetAttributeValue("title", ""),
-                    SerieInfo = a_info
-                });
-            }
-
-            if (list.First().Pages.Count == 0)
-            {
-                List<ChapterInfo> volumes = new List<ChapterInfo>(list);
-                list.Clear();
-
-                m_progress = 0;
-
-                ConcurrentBag<Tuple<int, int, ChapterInfo>> tuples = new ConcurrentBag<Tuple<int, int, ChapterInfo>>();
-
-                Parallel.ForEach(volumes, volume =>
-                {
-                    var chapters2 = DownloadChapters(new SerieInfo()
-                    {
-                        Name = volume.Name,
-                        URLPart = volume.URLPart,
-                        ServerInfo = a_info.ServerInfo
-                    }, a_progress_callback).ToList();
-
-                    foreach (var chapter2 in chapters2)
-                    {
-                        chapter2.Name = volume.Name + " - " + chapter2.Name;
-                        tuples.Add(new Tuple<int, int, ChapterInfo>(volumes.IndexOf(volume), chapters2.IndexOf(chapter2), chapter2));
-                    }
-
-                    m_progress++;
-                    a_progress_callback(m_progress * 100 / volumes.Count);
-                });
-
-                list = (from tuple in tuples
-                        orderby tuple.Item1, tuple.Item2
-                        select tuple.Item3).ToList();
-            }
-
-            return list;
+            return chapters_sorted;
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
         {
             a_info.DownloadedPages = 0;
 
-            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var pages = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/fieldset/ul/label/a");
 
@@ -141,13 +106,8 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                PageInfo pi = new PageInfo()
-                {
-                    ChapterInfo = a_info,
-                    Index = index,
-                    URLPart = page.GetAttributeValue("href", ""),
-                    Name = Path.GetFileNameWithoutExtension(page.InnerText)
-                };
+                PageInfo pi = new PageInfo(a_info, page.GetAttributeValue("href", ""), index, 
+                    Path.GetFileNameWithoutExtension(page.InnerText));
 
                 yield return pi;
             }
@@ -155,7 +115,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = new HtmlWeb().Load(a_info.URL);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             string script = doc.DocumentNode.SelectSingleNode("/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
 

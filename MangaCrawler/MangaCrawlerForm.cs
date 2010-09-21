@@ -12,14 +12,16 @@ using System.Runtime.InteropServices;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using MangaCrawlerLib;
+using System.Threading.Tasks;
 
 namespace MangaCrawler
 {
-    // TODO: wlasny system zrownoleglonego pobierania, powiedzenie od razu ile ma byc rownoczesnie dzialajacych watkow ?
+    // TODO: zrownoleglic pobieranie, totalnie przerobic, log wypadnie, pojawi sie tabela, z przyciskiem delete, go to directory
+    // TODO: test rozlegly zrobic
+    // TODO: cache, ladowanie w cachu, update w tle
     // TODO: bookmarks
     // TODO: wykrywanie zmian w obserwowanych seriach
     // TODO: pobieranie jako archiwum
-    // TODO: cache, ladowanie w cachu, update w tle
     // TODO: wpf, silverlight, telefony
     // TODO: wbudowany browser
     // TODO: widok wspolny dla wszystkich serwisow, scalac jakos serie, wykrywac zmiany ? gdzie najlepsza jakosc, gdzie duplikaty
@@ -82,7 +84,7 @@ namespace MangaCrawler
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
             directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
-            serversListBox.Items.AddRange(ServerInfo.CreateServerInfos().ToArray());
+            serversListBox.Items.AddRange(ServerInfo.ServersInfos.ToArray());
             seriesFilterTextBox.Text = Settings.Instance.SeriesFilter;
 
             splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;
@@ -275,13 +277,7 @@ namespace MangaCrawler
 
                     cs.Queue = true;
 
-                    QueueChapter q = new QueueChapter()
-                    {
-                        ChapterInfo = cs,
-                        DirectoryBase = Settings.Instance.DirectoryPath
-                    };
-
-                    m_queue.Add(q);
+                    m_queue.Add(new QueueChapter(cs, Settings.Instance.DirectoryPath));
                 }
             }
 
@@ -345,8 +341,9 @@ namespace MangaCrawler
                         if (new DirectoryInfo(qc.Directory).Exists)
                             new DirectoryInfo(qc.Directory).Delete(true);
 
-                        foreach (var page in qc.ChapterInfo.Pages)
+                        Parallel.ForEach(qc.ChapterInfo.Pages, (page, state) =>
                         {
+
                             backgroundWorker.ReportProgress(0, new ProgressData()
                             {
                                 Text = "\t" + page.ToString()
@@ -355,11 +352,11 @@ namespace MangaCrawler
                             qc.DownloadAndSavePageImage(page);
 
                             if (backgroundWorker.CancellationPending)
-                                break;
+                                state.Stop();
 
                             if (qc.Deleted)
-                                break;
-                        }
+                                state.Stop();
+                        });
                     }
                     catch (Exception ex)
                     {
