@@ -11,7 +11,7 @@ namespace MangaCrawlerLib
         private volatile int m_downloadingProgress;
         private volatile bool m_downloadingSeries;
         private string m_url;
-        private SerieInfo[] m_series;
+        private IEnumerable<SerieInfo> m_series;
 
         internal readonly Crawler Crawler;
 
@@ -70,30 +70,42 @@ namespace MangaCrawlerLib
             if (m_downloadingSeries)
                 return;
 
-            if (m_series == null)
-            {
-                m_downloadingSeries = true;
+            if (m_series != null)
+                return;
 
-                try
+            m_downloadingSeries = true;
+
+            try
+            {
+                if (a_progress_callback != null)
+                    a_progress_callback();
+
+                Crawler.DownloadSeries(this, (progress, result) =>
                 {
+                    var series = result.ToList();
+
+                    if (m_series != null)
+                    {
+                        foreach (var serie in m_series)
+                        {
+                            var el = series.Find(s => s.URL == serie.URL);
+                            if (el != null)
+                                series[series.IndexOf(el)] = serie;
+                        }
+                    }
+
+                    m_series = series;
+
+                    m_downloadingProgress = progress;
+
                     if (a_progress_callback != null)
                         a_progress_callback();
-
-                    m_series = Crawler.DownloadSeries(this, (progress) =>
-                    {
-                        m_downloadingProgress = progress;
-                        if (a_progress_callback != null)
-                            a_progress_callback();
-                    }).ToArray();
-                }
-                finally
-                {
-                    m_downloadingSeries = false;
-                }
+                });
             }
-
-            if (a_progress_callback != null)
-                a_progress_callback();
+            finally
+            {
+                m_downloadingSeries = false;
+            }
         }
 
         public string Name

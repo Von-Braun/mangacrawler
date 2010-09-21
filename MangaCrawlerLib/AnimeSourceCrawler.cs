@@ -21,39 +21,32 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/table/tr/td[2]");
 
-            List<SerieInfo> list = new List<SerieInfo>();
+            var result = from serie in series 
+                         where (serie.ChildNodes[7].InnerText.Trim() != "2")
+                         orderby serie.SelectSingleNode("font").FirstChild.InnerText
+                         select new SerieInfo(a_info, 
+                                              serie.SelectSingleNode("a[2]").GetAttributeValue("href", ""), 
+                                              serie.SelectSingleNode("font").FirstChild.InnerText);
 
-            foreach (var serie in series)
-            {
-                if (serie.ChildNodes[7].InnerText.Trim() == "2")
-                    continue;
-
-                list.Add(new SerieInfo(
-                    a_info, 
-                    serie.SelectSingleNode("a[2]").GetAttributeValue("href", ""), 
-                    serie.SelectSingleNode("font").FirstChild.InnerText));
-                
-            }
-
-            return list.OrderBy(s => s.Name).ToList();
+            a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var chapters = doc.DocumentNode.SelectNodes("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/blockquote/a");
 
-            foreach (var chapter in chapters.Skip(1))
-            {
-                yield return new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
-            }
+            var result = from chapter in chapters.Skip(1)
+                         select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
+
+            a_progress_callback(100, result);
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)

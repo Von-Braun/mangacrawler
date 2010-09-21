@@ -9,8 +9,8 @@ namespace MangaCrawlerLib
     internal abstract class Crawler
     {
         internal abstract string Name { get; }
-        internal abstract IEnumerable<SerieInfo> DownloadSeries(ServerInfo a_info, Action<int> a_progress_callback);
-        internal abstract IEnumerable<ChapterInfo> DownloadChapters(SerieInfo a_info, Action<int> a_progress_callback);
+        internal abstract void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback);
+        internal abstract void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback);
         internal abstract IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info);
         internal abstract string GetImageURL(PageInfo a_info);
 

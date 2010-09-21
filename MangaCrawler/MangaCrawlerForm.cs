@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace MangaCrawler
 {
+    // TODO: jesli pobieraja sie serie, a kliknelismy w serie ma miec on wyzszy priorytet
     // TODO: zrownoleglic pobieranie, totalnie przerobic, log wypadnie, pojawi sie tabela, z przyciskiem delete, go to directory
     // TODO: test rozlegly zrobic
     // TODO: cache, ladowanie w cachu, update w tle
@@ -153,6 +154,9 @@ namespace MangaCrawler
                             UpdateSeries(si);
                         })));
                     }
+                    catch (ObjectDisposedException)
+                    {
+                    }
                     catch (Exception)
                     {
                         Invoke((Action)(() =>
@@ -198,6 +202,9 @@ namespace MangaCrawler
                         {
                             UpdateChapters(si);
                         })));
+                    }
+                    catch (ObjectDisposedException)
+                    {
                     }
                     catch (Exception)
                     {
