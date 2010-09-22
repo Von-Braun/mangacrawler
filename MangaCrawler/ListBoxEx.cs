@@ -74,6 +74,8 @@ namespace MangaCrawler
         public void ReloadItems<T>(IEnumerable<T> a_enum) where T : class
         {
             BeginUpdate();
+            m_refreshing = true;
+
             try
             {
                 int topIndex = IndexFromPoint(0, 0);
@@ -101,6 +103,7 @@ namespace MangaCrawler
             finally
             {
                 EndUpdate();
+                m_refreshing = false;
             }
         }
     }

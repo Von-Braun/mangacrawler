@@ -28,7 +28,7 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var numbers = doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/div[5]/ul/li/a");
+            var numbers = doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/div[6]/ul/li/a");
             var number = Int32.Parse(numbers.Reverse().Take(2).Last().InnerText);
 
             ConcurrentBag<Tuple<int, int, string, string>> series = 
