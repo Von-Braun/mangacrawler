@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 
 namespace MangaCrawler
 {
-    // TODO: jesli pobieraja sie serie, a kliknelismy w serie ma miec on wyzszy priorytet
     // TODO: zrownoleglic pobieranie, totalnie przerobic, log wypadnie, pojawi sie tabela, z przyciskiem delete, go to directory
     // TODO: test rozlegly zrobic
     // TODO: cache, ladowanie w cachu, update w tle
@@ -37,6 +36,12 @@ namespace MangaCrawler
 
         public List<QueueChapter> m_queue = new List<QueueChapter>();
         public AutoResetEvent m_close_event = new AutoResetEvent(false);
+        public ReprioritizableTaskScheduler m_scheduler = new ReprioritizableTaskScheduler();
+
+        public MangaCrawlerForm()
+        {
+            InitializeComponent();
+        }
 
         public SerieInfo SelectedSerie
         {
@@ -60,11 +65,6 @@ namespace MangaCrawler
             {
                 return (ChapterInfo)chaptersListBox.SelectedItem;
             }
-        }
-
-        public MangaCrawlerForm()
-        {
-            InitializeComponent();
         }
 
         private void directoryChooseButton_Click(object sender, EventArgs e)
@@ -125,8 +125,8 @@ namespace MangaCrawler
                 return;
 
             var filtered_series = (from serie in SelectedServer.Series
-                                  where serie.Name.ToLower().IndexOf(seriesFilterTextBox.Text.ToLower()) != -1
-                                  select serie).ToList();
+                                   where serie.Name.ToLower().IndexOf(seriesFilterTextBox.Text.ToLower()) != -1
+                                   select serie).ToList();
 
             seriesListBox.ReloadItems(filtered_series);
         }
@@ -143,30 +143,33 @@ namespace MangaCrawler
                 UpdateSeries();
             else
             {
-                System.Threading.Tasks.Task.Factory.StartNew((server) =>
+                Task task = new Task(server =>
                 {
                     ServerInfo si = (ServerInfo)server;
 
                     try
                     {
-                        si.DownloadSeries(() => Invoke((Action)(() =>
+                        si.DownloadSeries(() => TryInvoke(() =>
                         {
                             UpdateSeries(si);
-                        })));
+                        }));
                     }
                     catch (ObjectDisposedException)
                     {
                     }
                     catch (Exception)
                     {
-                        Invoke((Action)(() =>
-                            {
-                                MessageBox.Show("Downloading series from server '" + si.Name + "' failed.", Application.ProductName,
-                                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                UpdateSeries();
-                            }));
+                        TryInvoke(() =>
+                        {
+                            MessageBox.Show("Downloading series from server '" + si.Name + "' failed.", Application.ProductName,
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            UpdateSeries();
+                        });
                     }
                 }, SelectedServer);
+
+                task.Start(m_scheduler);
+
 
                 UpdateSeries();
             }
@@ -192,30 +195,33 @@ namespace MangaCrawler
                 UpdateChapters();
             else
             {
-                System.Threading.Tasks.Task.Factory.StartNew((serie) =>
+                Task task = new Task(serie =>
                 {
                     SerieInfo si = (SerieInfo)serie;
 
                     try
                     {
-                        si.DownloadChapters(() => Invoke((Action)(() =>
+                        si.DownloadChapters(() => TryInvoke(() =>
                         {
                             UpdateChapters(si);
-                        })));
+                        }));
                     }
                     catch (ObjectDisposedException)
                     {
                     }
                     catch (Exception)
                     {
-                        Invoke((Action)(() =>
+                        TryInvoke(() =>
                         {
-                            MessageBox.Show("Downloading chapters for series '" + SelectedSerie.Name + "' from server '" + 
+                            MessageBox.Show("Downloading chapters for series '" + SelectedSerie.Name + "' from server '" +
                                             SelectedServer.Name + "' failed.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             UpdateChapters();
-                        }));
+                        });
                     }
                 }, SelectedSerie);
+
+                task.Start(m_scheduler);
+                m_scheduler.Prioritize(task);
 
                 UpdateChapters();
             }
@@ -375,12 +381,12 @@ namespace MangaCrawler
                             Color = Color.Red
                         });
 
-                        Invoke((Action)(() =>
+                        TryInvoke(() =>
                         {
                             MessageBox.Show(String.Format("Downloading '{0}' failed.", qc.ToString() ), Application.ProductName,
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                             UpdateSeries();
-                        }));
+                        });
                     }
 
                     qc.ChapterInfo.Downloading = false;
@@ -405,6 +411,17 @@ namespace MangaCrawler
             finally
             {
                 m_close_event.Set();
+            }
+        }
+
+        private void TryInvoke(Action a_action)
+        {
+            try
+            {
+                BeginInvoke(a_action);
+            }
+            catch (ObjectDisposedException)
+            {
             }
         }
 
