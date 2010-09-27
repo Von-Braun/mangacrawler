@@ -8,8 +8,6 @@ namespace MangaCrawlerLib
 {
     public class ServerInfo
     {
-        private volatile int m_downloadingProgress; // TODO: przesunac do formy wraz z formatowaniem tesktu
-        private volatile bool m_downloadingSeries;
         private string m_url;
         private IEnumerable<SerieInfo> m_series;
 
@@ -63,47 +61,30 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void DownloadSeries(Action a_progress_callback = null)
+        public void DownloadSeries(Action<int> a_progress_callback = null)
         {
-            if (m_downloadingSeries)
-                return;
+            if (a_progress_callback != null)
+                a_progress_callback(0);
 
-            if (m_series != null)
-                return;
-
-            m_downloadingSeries = true;
-
-            try
+            Crawler.DownloadSeries(this, (progress, result) =>
             {
-                if (a_progress_callback != null)
-                    a_progress_callback();
+                var series = result.ToList();
 
-                Crawler.DownloadSeries(this, (progress, result) =>
+                if (m_series != null)
                 {
-                    var series = result.ToList();
-
-                    if (m_series != null)
+                    foreach (var serie in m_series)
                     {
-                        foreach (var serie in m_series)
-                        {
-                            var el = series.Find(s => s.URL == serie.URL);
-                            if (el != null)
-                                series[series.IndexOf(el)] = serie;
-                        }
+                        var el = series.Find(s => s.URL == serie.URL);
+                        if (el != null)
+                            series[series.IndexOf(el)] = serie;
                     }
+                }
 
-                    m_series = series;
+                m_series = series;
 
-                    m_downloadingProgress = progress;
-
-                    if (a_progress_callback != null)
-                        a_progress_callback();
-                });
-            }
-            finally
-            {
-                m_downloadingSeries = false;
-            }
+                if (a_progress_callback != null)
+                    a_progress_callback(progress);
+            });
         }
 
         public string Name
@@ -112,24 +93,6 @@ namespace MangaCrawlerLib
             {
                 return Crawler.Name;
             }
-        }
-
-        internal string DecoratedName
-        {
-            get
-            {
-                if (m_downloadingSeries)
-                    return String.Format("{0} ({1}%)", Crawler.Name, m_downloadingProgress);
-                else if (m_series == null)
-                    return Crawler.Name;
-                else
-                    return Crawler.Name + "*";
-            }
-        }
-
-        public override string ToString()
-        {
-            return DecoratedName;
         }
 
         public static ServerInfo AnimeSource

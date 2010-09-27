@@ -26,10 +26,7 @@ namespace MangaCrawler
         public new virtual void RefreshItems()
         {
             if (Capture)
-            {
-                System.Media.SystemSounds.Beep.Play();
                 return;
-            }
 
             BeginUpdate();
             m_refreshing = true;
@@ -80,10 +77,7 @@ namespace MangaCrawler
         public void ReloadItems<T>(IEnumerable<T> a_enum) where T : class
         {
             if (Capture)
-            {
-                System.Media.SystemSounds.Beep.Play();
                 return;
-            }
 
             BeginUpdate();
             m_refreshing = true;
