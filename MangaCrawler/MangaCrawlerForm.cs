@@ -266,7 +266,7 @@ namespace MangaCrawler
             {
                 ChapterItem chapter_item = (ChapterItem)item;
 
-                if (chapter_item.Waiting || chapter_item.Downloading || chapter_item.Finished)
+                if (chapter_item.Waiting || chapter_item.Downloading)
                     continue;
 
                 chapter_item.Initialize();
@@ -274,7 +274,21 @@ namespace MangaCrawler
 
                 Task task = new Task(() => 
                 {
-                    ConnectionsLimiter.BeginDownloadPages(chapter_item.ChapterInfo);
+                    try
+                    {
+                        ConnectionsLimiter.BeginDownloadPages(chapter_item.ChapterInfo, chapter_item.Token);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        chapter_item.Finish(true);
+
+                        TryInvoke(() =>
+                        {
+                            UpdateTasks();
+                        });
+
+                        return;
+                    }
 
                     try
                     {
@@ -345,15 +359,28 @@ namespace MangaCrawler
 
         private void UpdateTasks()
         {
-            List<ChapterItem> list = new List<ChapterItem>();
+            BindingList<ChapterItem> list;
+
+            if (tasksGridView.DataSource == null)
+                list = new BindingList<ChapterItem>();
+            else
+                list = (BindingList<ChapterItem>)tasksGridView.DataSource;
 
             foreach (var ch in m_chapters.Values)
             {
                 if (ch.Waiting || (ch.Finished && ch.Error) || ch.Downloading)
-                    list.Add(ch);
+                {
+                    if (!list.Contains(ch))
+                        list.Add(ch);
+                }
+                else
+                    list.Remove(ch);
             }
 
-            tasksGridView.DataSource = list;
+            if (tasksGridView.DataSource == null)
+                tasksGridView.DataSource = list;
+            else
+                list.ResetBindings();
 
             UpdateChapters();
         }
@@ -448,7 +475,7 @@ namespace MangaCrawler
         {
             if ((e.ColumnIndex == 0) && (e.RowIndex >= 0))
             {
-                List<ChapterItem> list = (List<ChapterItem>)tasksGridView.DataSource;
+                BindingList<ChapterItem> list = (BindingList<ChapterItem>)tasksGridView.DataSource;
                 list[e.RowIndex].Delete();
                 UpdateTasks();
             }

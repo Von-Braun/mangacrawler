@@ -15,7 +15,7 @@ namespace MangaCrawlerLib
         public const int MAX_CONNECTIONS = 100;
         public const int MAX_CONNECTIONS_PER_SERVER = 4;
 
-        private static Dictionary<ServerInfo, Semaphore> s_serverPages = new Dictionary<ServerInfo, Semaphore>();
+        private static Dictionary<ServerInfo, Mutex> s_serverPages = new Dictionary<ServerInfo, Mutex>();
         private static Dictionary<ServerInfo, Semaphore> s_serverConnections = new Dictionary<ServerInfo, Semaphore>();
         private static Semaphore m_connections = new Semaphore(MAX_CONNECTIONS, MAX_CONNECTIONS);
 
@@ -24,17 +24,18 @@ namespace MangaCrawlerLib
             foreach (var si in ServerInfo.ServersInfos)
                 s_serverConnections.Add(si, new Semaphore(MAX_CONNECTIONS_PER_SERVER, MAX_CONNECTIONS_PER_SERVER));
             foreach (var si in ServerInfo.ServersInfos)
-                s_serverPages.Add(si, new Semaphore(1, 1));
+                s_serverPages.Add(si, new Mutex());
         }
 
-        public static void BeginDownloadPages(ChapterInfo a_info)
+        public static void BeginDownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
-            s_serverPages[a_info.SerieInfo.ServerInfo].WaitOne();
+            while (!s_serverPages[a_info.SerieInfo.ServerInfo].WaitOne(100))
+                a_token.ThrowIfCancellationRequested();
         }
 
         public static void EndDownloadPages(ChapterInfo a_info)
         {
-            s_serverPages[a_info.SerieInfo.ServerInfo].Release();
+            s_serverPages[a_info.SerieInfo.ServerInfo].ReleaseMutex();
         }
 
         private static void Aquire(ServerInfo a_info)
