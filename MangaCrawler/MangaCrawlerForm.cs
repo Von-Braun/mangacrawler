@@ -30,8 +30,9 @@ namespace MangaCrawler
     public partial class MangaCrawlerForm : Form
     {
         public ReprioritizableTaskScheduler m_scheduler = new ReprioritizableTaskScheduler();
-        public List<ChapterItem> m_chapters = new List<ChapterItem>();
+        public List<ChapterItem> m_chapters = new List<ChapterItem>();//TODO: bindinglist
         public List<SerieItem> m_series = new List<SerieItem>();
+        public List<ServerItem> m_servers = new List<ServerItem>();
 
         public MangaCrawlerForm()
         {
@@ -46,11 +47,11 @@ namespace MangaCrawler
             }
         }
 
-        public ServerInfo SelectedServer
+        public ServerItem SelectedServer
         {
             get
             {
-                return (ServerInfo)serversListBox.SelectedItem;
+                return (ServerItem)serversListBox.SelectedItem;
             }
         }
 
@@ -80,7 +81,12 @@ namespace MangaCrawler
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
             directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
-            serversListBox.Items.AddRange(ServerInfo.ServersInfos.ToArray());
+
+            m_servers = (from server in ServerInfo.ServersInfos
+                         select new ServerItem(server)).ToList();
+
+            serversListBox.Items.AddRange(m_servers.ToArray());
+
             seriesFilterTextBox.Text = Settings.Instance.SeriesFilter;
 
             splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;
@@ -89,7 +95,7 @@ namespace MangaCrawler
 
         }
 
-        private void UpdateSeries(ServerInfo a_info = null)
+        private void UpdateSeries(ServerItem a_info = null)
         {
             if (IsDisposed)
                 return;
@@ -100,10 +106,10 @@ namespace MangaCrawler
                 return;
             if ((a_info != null) && (SelectedServer != a_info))
                 return;
-            if (SelectedServer.Series == null)
+            if (SelectedServer.ServerInfo.Series == null)
                 return;
 
-            foreach (var serie in SelectedServer.Series)
+            foreach (var serie in SelectedServer.ServerInfo.Series)
             {
                 if (m_series.Any(s => s.SerieInfo == serie))
                     continue;
@@ -112,7 +118,7 @@ namespace MangaCrawler
             }
 
             var filtered_series = from si in m_series
-                                  from serie in SelectedServer.Series
+                                  from serie in SelectedServer.ServerInfo.Series
                                   where si.SerieInfo == serie
                                   where serie.Name.ToLower().IndexOf(seriesFilterTextBox.Text.ToLower()) != -1
                                   select si;
@@ -128,20 +134,28 @@ namespace MangaCrawler
             if (SelectedServer == null)
                 return;
 
-            if (SelectedServer.Series != null)
+            ServerItem server = SelectedServer;
+
+            if (server.Downloading || (server.Finished && !server.Error))
                 UpdateSeries();
             else
             {
-                Task task = new Task(server =>
-                {
-                    ServerInfo si = (ServerInfo)server;
+                server.Initialize();
+                server.Downloading = true;
 
+                Task task = new Task(() => 
+                {
                     try
                     {
-                        si.DownloadSeries(() => TryInvoke(() =>
+                        server.ServerInfo.DownloadSeries((progress) => 
                         {
-                            UpdateSeries(si);
-                        }));
+                            server.SetProgress(progress);
+
+                            TryInvoke(() =>
+                            {
+                                UpdateSeries(server);
+                            });
+                        });
                     }
                     catch (ObjectDisposedException)
                     {
@@ -150,12 +164,18 @@ namespace MangaCrawler
                     {
                         TryInvoke(() =>
                         {
-                            MessageBox.Show("Downloading series from server '" + si.Name + "' failed.", Application.ProductName,
-                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            UpdateSeries();
+                            server.Error = true;
                         });
                     }
-                }, SelectedServer);
+
+                    server.Downloading = false;
+                    server.Finished = true;
+
+                    TryInvoke(() =>
+                    {
+                        UpdateSeries(server);
+                    });
+                });
 
                 
                 task.Start(m_scheduler);
@@ -189,11 +209,6 @@ namespace MangaCrawler
 
                 Task task = new Task(() => 
                 {
-                    TryInvoke(() =>
-                    {
-                        UpdateChapters(serie);
-                    });
-
                     try
                     {
                         serie.SerieInfo.DownloadChapters((progress) => 
@@ -474,7 +489,7 @@ namespace MangaCrawler
         private void serverURLButton_Click(object sender, EventArgs e)
         {
             if (SelectedServer != null)
-                System.Diagnostics.Process.Start(SelectedServer.URL);
+                System.Diagnostics.Process.Start(SelectedServer.ServerInfo.URL);
             else
                 System.Media.SystemSounds.Beep.Play();
         }
