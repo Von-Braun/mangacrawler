@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
 using System.IO;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
@@ -45,18 +46,14 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
-            a_info.DownloadedPages = 0;
-
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             var serie = doc.DocumentNode.SelectSingleNode("//select[@name='series']/option[@selected]").GetAttributeValue("value", "");
             var chapter = doc.DocumentNode.SelectSingleNode("//select[@name='chapter']/option[@selected]").GetAttributeValue("value", "");
             var pages = doc.DocumentNode.SelectNodes("//select[@class='selectpage']/option");
             var post_url = doc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div/table/tr/td/form").GetAttributeValue("action", "");
-
-            a_info.PagesCount = pages.Count;
 
             int index = 0;
             foreach (var page in pages)
@@ -71,26 +68,17 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override string GetImageURL(PageInfo a_info)
+        internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
         {
             string[] ar = a_info.URLPart.Split(new[] { '\t' });
 
-            ConnectionsLimiter.Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
+            HtmlDocument doc = ConnectionsLimiter.Submit(a_info, a_token, ar[3],
+                new Dictionary<string, string>() { { "manga_hid", ar[0] }, { "chapter_hid", ar[1] }, { "image_hid", ar[2] }, 
+                                                    { "series", ar[0] }, { "chapter", ar[1] }, { "pagesel1", ar[2] }});
 
-            try
-            {
-                HtmlDocument doc = HTTPUtils.Submit(ar[3],
-                    new Dictionary<string, string>() { { "manga_hid", ar[0] }, { "chapter_hid", ar[1] }, { "image_hid", ar[2] }, 
-                                                       { "series", ar[0] }, { "chapter", ar[1] }, { "pagesel1", ar[2] }});
+            var image = doc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div/table/tr/td").SelectSingleNode("table/tr[2]/td/a/img");
 
-                var image = doc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div/table/tr/td").SelectSingleNode("table/tr[2]/td/a/img");
-
-                return image.GetAttributeValue("src", "");
-            }
-            finally
-            {
-                ConnectionsLimiter.Release(a_info.ChapterInfo.SerieInfo.ServerInfo);
-            }
+            return image.GetAttributeValue("src", "");
         }
 
         internal override string GetServerURL()

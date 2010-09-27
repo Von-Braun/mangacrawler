@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
@@ -51,17 +52,15 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             var pages = doc.DocumentNode.SelectNodes("/html/body/div/div/table/tr/td[3]/select/option").AsEnumerable();
 
             pages = from page in pages
                     where page.GetAttributeValue("value", "").Trim() != ""
                     select page;
-
-            a_info.PagesCount = pages.Count();
 
             int index = 0;
 
@@ -73,9 +72,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override string GetImageURL(PageInfo a_info)
+        internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             var image = doc.DocumentNode.SelectSingleNode("//*[@id=\"readerPage\"]");
 

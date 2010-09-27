@@ -7,6 +7,7 @@ using MangaCrawlerLib;
 using HtmlAgilityPack;
 using System.IO;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace MangaCrawlerTest
 {
@@ -82,7 +83,7 @@ namespace MangaCrawlerTest
 
         private void TestPage(PageInfo a_page, string a_hash = null)
         {
-            var stream = a_page.ImageStream;
+            var stream = a_page.GetImageStream(new CancellationToken());
 
             Assert.IsTrue(stream.Length > 0);
 
@@ -438,11 +439,13 @@ namespace MangaCrawlerTest
 
                     Parallel.ForEach(TakeRandom(serie.Chapters, 0.1), chapter => 
                     {
+                        chapter.DownloadPages(new CancellationToken());
+
                         Assert.IsTrue(chapter.Pages.Count() > 0);
 
                         Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), page =>
                         {
-                            var stream = page.ImageStream;
+                            var stream = page.GetImageStream(new CancellationToken());
                             Assert.IsTrue(stream.Length > 0);
                             System.Drawing.Image.FromStream(stream);
                         });

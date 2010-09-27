@@ -8,6 +8,7 @@ using System.Xml;
 using System.Net;
 using System.IO;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
@@ -49,11 +50,9 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
-            a_info.DownloadedPages = 0;
-
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='pageid']/option");
 
@@ -62,9 +61,9 @@ namespace MangaCrawlerLib
                 string pages_str = doc.DocumentNode.SelectSingleNode(
                     "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/font[2]").ChildNodes[4].InnerText;
 
-                a_info.PagesCount = Int32.Parse(pages_str.Split(new char[] { '/' }).Last());
+                int pages_count = Int32.Parse(pages_str.Split(new char[] { '/' }).Last());
 
-                for (int page = 1; page <= a_info.PagesCount; page++)
+                for (int page = 1; page <= pages_count; page++)
                 {
                     PageInfo pi = new PageInfo(a_info, a_info.URLPart + "&page=" + page, page);
 
@@ -73,8 +72,6 @@ namespace MangaCrawlerLib
             }
             else
             {
-                a_info.PagesCount = pages.Count;
-
                 int index = 0;
                 foreach (var page in pages)
                 {
@@ -87,12 +84,12 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override string GetImageURL(PageInfo a_info)
+        internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             string xpath;
-            if (a_info.ChapterInfo.PagesCount == a_info.Index)
+            if (a_info.ChapterInfo.Pages.Count() == a_info.Index)
                 xpath = "/html/body/center/table/tr/td/table[5]/tr/td/div/img";
             else
                 xpath = "/html/body/center/table/tr/td/table[5]/tr/td/div/a/img";

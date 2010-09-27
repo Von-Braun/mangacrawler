@@ -8,7 +8,7 @@ namespace MangaCrawlerLib
 {
     public class ServerInfo
     {
-        private volatile int m_downloadingProgress;
+        private volatile int m_downloadingProgress; // TODO: przesunac do formy wraz z formatowaniem tesktu
         private volatile bool m_downloadingSeries;
         private string m_url;
         private IEnumerable<SerieInfo> m_series;
@@ -22,8 +22,6 @@ namespace MangaCrawlerLib
             m_serversInfos = (from hf in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
                               where hf.IsClass
                               where !hf.IsAbstract
-                              where hf != typeof(Manga1000Crawler)
-                              where hf != typeof(OneMangaCrawler)
                               where typeof(Crawler).IsAssignableFrom(hf)
                               select new ServerInfo((Crawler)Activator.CreateInstance(hf))).ToArray();
         }

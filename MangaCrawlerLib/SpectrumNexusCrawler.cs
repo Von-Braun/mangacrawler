@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
@@ -49,16 +50,14 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
             string[] ar = a_info.URLPart.Split(new[] { '\t' });
             String url = String.Format("{0}?ch={1}&page={2}", ar[0], ar[1], 1);
 
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, url);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token, url);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='page']/option");
-
-            a_info.PagesCount = pages.Count;
 
             int index = 0;
             foreach (var page in pages)
@@ -72,12 +71,12 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override string GetImageURL(PageInfo a_info)
+        internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
         {
             string[] ar = a_info.URLPart.Split(new[] { '\t' });
             String url = String.Format("{0}?ch={1}&page={2}", ar[0], ar[1], ar[2]);
 
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, url);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token, url);
 
             var img = doc.DocumentNode.SelectSingleNode("//div[@class='imgContainer']/a/img");
 

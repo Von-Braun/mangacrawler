@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Web;
 using System.Diagnostics;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
@@ -25,7 +26,7 @@ namespace MangaCrawlerLib
             m_index = a_index;
 
             if (a_name != null)
-                m_name = Crawler.RemoveInvalidFileDirectoryCharacters(a_name);
+                m_name = PageInfo.RemoveInvalidFileDirectoryCharacters(a_name);
         }
 
         internal ChapterInfo ChapterInfo
@@ -82,15 +83,12 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal string ImageURL
+        internal string GetImageURL(CancellationToken a_token)
         {
-            get
-            {
-                if (m_imageURL == null)
-                    m_imageURL = HttpUtility.HtmlDecode(Crawler.GetImageURL(this));
+            if (m_imageURL == null)
+                m_imageURL = HttpUtility.HtmlDecode(Crawler.GetImageURL(this, a_token));
 
-                return m_imageURL;
-            }
+            return m_imageURL;
         }
 
         public override string ToString()
@@ -98,41 +96,46 @@ namespace MangaCrawlerLib
             return String.Format("{0}/{1}", m_index, m_chapterInfo.Pages.Count());
         }
 
-        public MemoryStream ImageStream
+        internal MemoryStream GetImageStream(CancellationToken a_token)
         {
-            get
+            return ConnectionsLimiter.GetImageStream(this, a_token);
+        }
+
+        public void DownloadAndSavePageImage(CancellationToken a_token, string a_dir)
+        {
+            if (new DirectoryInfo(a_dir).Exists)
+                new DirectoryInfo(a_dir).Delete(true);
+
+            FileInfo image_file = new FileInfo(a_dir +
+                PageInfo.RemoveInvalidFileDirectoryCharacters(Name) +
+                PageInfo.RemoveInvalidFileDirectoryCharacters(Path.GetExtension(GetImageURL(a_token))));
+
+            new DirectoryInfo(a_dir).Create();
+
+            FileInfo temp_file = new FileInfo(Path.GetTempFileName());
+
+            try
             {
-                try
-                {
-                    ConnectionsLimiter.Aquire(ChapterInfo.SerieInfo.ServerInfo);
+                using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
+                    GetImageStream(a_token).CopyTo(file_stream);
 
-                    try
-                    {
-                        HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(ImageURL);
-
-                        myReq.UserAgent =
-                            "Mozilla/5.0 (Windows; U; Windows NT 6.0; pl; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 ( .NET CLR 3.5.30729; .NET4.0E)";
-                        myReq.Referer = URL;
-
-                        using (Stream image_stream = myReq.GetResponse().GetResponseStream())
-                        {
-                            MemoryStream mem_stream = new MemoryStream();
-                            image_stream.CopyTo(mem_stream);
-                            mem_stream.Position = 0;
-                            return mem_stream;
-                        }
-                    }
-                    finally
-                    {
-                        ConnectionsLimiter.Release(ChapterInfo.SerieInfo.ServerInfo);
-                    }
-                }
-                catch
-                {
-                    Debug.WriteLine(ImageURL);
-                    return null;
-                }
+                if (image_file.Exists)
+                    image_file.Delete();
+                temp_file.MoveTo(image_file.FullName);
             }
+            catch
+            {
+                temp_file.Delete();
+                throw;
+            }
+        }
+
+        //TODO:
+        public static string RemoveInvalidFileDirectoryCharacters(string a_path)
+        {
+            foreach (char c in Path.GetInvalidFileNameChars().Concat(Path.GetInvalidPathChars()).Distinct())
+                a_path = a_path.Replace(new String(new char[] { c }), "");
+            return a_path;
         }
     }
 }
