@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
@@ -11,8 +12,8 @@ namespace MangaCrawlerLib
         internal abstract string Name { get; }
         internal abstract void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback);
         internal abstract void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback);
-        internal abstract IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info);
-        internal abstract string GetImageURL(PageInfo a_info);
+        internal abstract IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token);
+        internal abstract string GetImageURL(PageInfo a_info, CancellationToken a_token);
 
         internal abstract string GetServerURL();
 
@@ -29,13 +30,6 @@ namespace MangaCrawlerLib
         internal virtual string GetPageURL(PageInfo a_info)
         {
             return a_info.URLPart;
-        }
-
-        internal static string RemoveInvalidFileDirectoryCharacters(string a_path)
-        {
-            foreach (char c in Path.GetInvalidFileNameChars().Concat(Path.GetInvalidPathChars()).Distinct())
-                a_path = a_path.Replace(new String(new char[] { c }), "");
-            return a_path;
         }
     }
 }

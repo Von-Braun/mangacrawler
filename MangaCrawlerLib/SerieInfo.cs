@@ -10,7 +10,7 @@ namespace MangaCrawlerLib
     {
         private string m_name;
         private string m_url;
-        private volatile int m_downloadingProgress;
+        private volatile int m_downloadingProgress; // TODO: przesunac do formy, wraz z formatowaniem tekstu
         private string m_urlPart;
         private IEnumerable<ChapterInfo> m_chapters;
         private volatile bool m_downloadingChapters;

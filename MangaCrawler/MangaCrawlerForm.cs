@@ -13,10 +13,10 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using MangaCrawlerLib;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace MangaCrawler
 {
-    // TODO: zrownoleglic pobieranie, totalnie przerobic, log wypadnie, pojawi sie tabela, z przyciskiem delete, go to directory
     // TODO: test rozlegly zrobic
     // TODO: cache, ladowanie w cachu, update w tle
     // TODO: bookmarks
@@ -26,17 +26,222 @@ namespace MangaCrawler
     // TODO: wbudowany browser
     // TODO: widok wspolny dla wszystkich serwisow, scalac jakos serie, wykrywac zmiany ? gdzie najlepsza jakosc, gdzie duplikaty
 
+    // TODO: przyciski - usun bledne, usun skonczone, usun waszystkie
     public partial class MangaCrawlerForm : Form
     {
-        class ProgressData
-        {
-            public string Text = "";
-            public Color Color = Color.Black;
-        }
-
-        public List<QueueChapter> m_queue = new List<QueueChapter>();
-        public AutoResetEvent m_close_event = new AutoResetEvent(false);
         public ReprioritizableTaskScheduler m_scheduler = new ReprioritizableTaskScheduler();
+        public ConcurrentDictionary<ChapterInfo, ChapterItem> m_chapters = new ConcurrentDictionary<ChapterInfo, ChapterItem>();
+
+        public class ChapterItem
+        {
+            private Object m_lock = new Object();
+            private MangaCrawlerForm m_form;
+            private CancellationTokenSource m_cancellationTokenSource;
+            private int m_downloadedPages;
+
+            private bool m_error;
+            private bool m_waiting;
+            private bool m_downloading;
+            private bool m_finished;
+
+            public readonly ChapterInfo ChapterInfo;
+
+            public ChapterItem(MangaCrawlerForm a_form, ChapterInfo a_chapterInfo)
+            {
+                m_form = a_form;
+
+                ChapterInfo = a_chapterInfo;
+                Initialize();
+            }
+
+            public int DownloadedPages
+            {
+                get
+                {
+                    lock (m_lock)
+                    {
+                        return m_downloadedPages;
+                    }
+                }
+            }
+
+            public void PageDownloaded()
+            {
+                lock (m_lock)
+                {
+                    m_downloadedPages++;
+                }
+            }
+
+            public bool Error
+            {
+                get
+                {
+                    lock (m_lock)
+                    {
+                        return m_error;
+                    }
+                }
+            }
+
+            public bool Waiting
+            {
+                get
+                {
+                    lock (m_lock)
+                    {
+                        return m_waiting;
+                    }
+                }
+                set
+                {
+                    lock (m_lock)
+                    {
+                        m_waiting = value;
+                    }
+                }
+            }
+
+            public bool Downloading
+            {
+                get
+                {
+                    lock (m_lock)
+                    {
+                        return m_downloading;
+                    }
+                }
+                set
+                {
+                    lock (m_lock)
+                    {
+                        m_downloading = value;
+                    }
+                }
+            }
+
+            public bool Finished
+            {
+                get
+                {
+                    lock (m_lock)
+                    {
+                        return m_finished;
+                    }
+                }
+            }
+
+            public CancellationToken Token
+            {
+                get
+                {
+                    return m_cancellationTokenSource.Token;
+                }
+            }
+
+            public string Chapter
+            {
+                get
+                {
+                    lock (m_lock)
+                    {
+                        return String.Format("server: {0}\nserie: {1}\nchapter: {2}",
+                            ChapterInfo.SerieInfo.ServerInfo.Name, ChapterInfo.SerieInfo.Name, ChapterInfo.Name);
+                    }
+                }
+            }
+
+            public void Delete()
+            {
+                lock (m_lock)
+                {
+                    if (Finished)
+                        Initialize();
+                    else
+                        m_cancellationTokenSource.Cancel();
+                }
+            }
+
+            public string Progress 
+            {
+                get
+                {
+                    lock (m_lock)
+                    {
+                        if (m_cancellationTokenSource.IsCancellationRequested & !Finished)
+                            return "Deleting";
+                        else if (Error)
+                            return String.Format("Error ({0}/{1})", DownloadedPages, ChapterInfo.Pages.Count());
+                        else if (Finished)
+                            return String.Format("Downloaded");
+                        else if (Downloading)
+                        {
+                            if (ChapterInfo.Pages == null)
+                                return "Downloading";
+                            else
+                                return String.Format("Downloading ({0}/{1})", DownloadedPages, ChapterInfo.Pages.Count());
+                        }
+                        else if (Waiting)
+                            return "Waiting";
+                        else
+                            return "";
+                    }
+                }
+            }
+
+            public void Finish(bool a_error)
+            {
+                lock (m_lock)
+                {
+                    m_error = a_error;
+                    m_finished = true;
+                    m_downloading = false;
+
+                    if (m_cancellationTokenSource.IsCancellationRequested)
+                        Initialize();
+                }
+            }
+
+            public void Initialize()
+            {
+                lock (m_lock)
+                {
+                    m_waiting = false;
+                    m_finished = false;
+                    m_cancellationTokenSource = new CancellationTokenSource();
+                    m_downloadedPages = 0;
+                    m_downloading = false;
+                    m_error = false;
+                }
+            }
+
+            public override string ToString()
+            {
+                lock (m_lock)
+                {
+                    if (Progress == "")
+                        return ChapterInfo.Name;
+                    else
+                        return String.Format("{0} - {1}", ChapterInfo.Name, Progress);
+                }
+            }
+
+            public string GetImageDirectory(string a_directoryBase)
+            {
+                if (a_directoryBase.Last() == Path.DirectorySeparatorChar)
+                    a_directoryBase = a_directoryBase.RemoveFromRight(1);
+
+                return a_directoryBase +
+                       Path.DirectorySeparatorChar +
+                       PageInfo.RemoveInvalidFileDirectoryCharacters(ChapterInfo.SerieInfo.ServerInfo.Name) +
+                       Path.DirectorySeparatorChar +
+                       PageInfo.RemoveInvalidFileDirectoryCharacters(ChapterInfo.SerieInfo.Name) +
+                       Path.DirectorySeparatorChar +
+                       PageInfo.RemoveInvalidFileDirectoryCharacters(ChapterInfo.Name) +
+                       Path.DirectorySeparatorChar;
+            }
+
+        }
 
         public MangaCrawlerForm()
         {
@@ -63,7 +268,7 @@ namespace MangaCrawler
         {
             get
             {
-                return (ChapterInfo)chaptersListBox.SelectedItem;
+                return ((ChapterItem)chaptersListBox.SelectedItem).ChapterInfo;
             }
         }
 
@@ -89,25 +294,9 @@ namespace MangaCrawler
             seriesFilterTextBox.Text = Settings.Instance.SeriesFilter;
 
             splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;
-            backgroundWorker.RunWorkerAsync();
-        }
 
-        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (IsDisposed)
-                return;
+            tasksGridView.AutoGenerateColumns = false;
 
-            ProgressData pd = (ProgressData)e.UserState;
-
-            UpdateQueue();
-
-            chaptersListBox.RefreshItems();
-
-            logRichTextBox.SelectionStart = logRichTextBox.TextLength;
-            logRichTextBox.ScrollToCaret();
-
-            logRichTextBox.SelectionColor = pd.Color;
-            logRichTextBox.SelectedText = pd.Text + System.Environment.NewLine;
         }
 
         private void UpdateSeries(ServerInfo a_info = null)
@@ -168,9 +357,9 @@ namespace MangaCrawler
                     }
                 }, SelectedServer);
 
+                
                 task.Start(m_scheduler);
-
-
+                
                 UpdateSeries();
             }
         }
@@ -201,10 +390,13 @@ namespace MangaCrawler
 
                     try
                     {
-                        si.DownloadChapters(() => TryInvoke(() =>
+                        si.DownloadChapters(() => 
                         {
-                            UpdateChapters(si);
-                        }));
+                            TryInvoke(() =>
+                            {
+                                UpdateChapters(si);
+                            });
+                        });
                     }
                     catch (ObjectDisposedException)
                     {
@@ -241,7 +433,10 @@ namespace MangaCrawler
             if (SelectedSerie.Chapters == null)
                 return;
 
-            chaptersListBox.ReloadItems(SelectedSerie.Chapters);
+            var list = from ch in SelectedSerie.Chapters
+                       select m_chapters.GetOrAdd(ch, new ChapterItem(this, ch));
+
+            chaptersListBox.ReloadItems(list);
         }
 
         private void downloadButton_Click(object sender, EventArgs e)
@@ -263,7 +458,8 @@ namespace MangaCrawler
             }
             catch
             {
-                MessageBox.Show("Directory path is invalid.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(String.Format("Directory path is invalid: '{0}'.", Settings.Instance.DirectoryPath), 
+                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -273,145 +469,98 @@ namespace MangaCrawler
             }
             catch
             {
-                MessageBox.Show("Cannot create directory.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(String.Format("Can't create directory: '{0}'.", Settings.Instance.DirectoryPath), 
+                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            lock (m_queue)
+            foreach (var item in chaptersListBox.SelectedItems)
             {
-                foreach (var item in chaptersListBox.SelectedItems)
+                ChapterItem chapter_item = (ChapterItem)item;
+
+                if (chapter_item.Waiting || chapter_item.Downloading || chapter_item.Finished)
+                    continue;
+
+                chapter_item.Initialize();
+                chapter_item.Waiting = true;
+
+                Task task = new Task(() => 
                 {
-                    ChapterInfo cs = (ChapterInfo)item;
-
-                    if (cs.Queue)
-                        continue;
-                    if (cs.Downloading)
-                        continue;
-
-                    cs.Queue = true;
-
-                    m_queue.Add(new QueueChapter(cs, Settings.Instance.DirectoryPath));
-                }
-            }
-
-            UpdateQueue();
-        }
-
-        private void UpdateQueue()
-        {
-            if (IsDisposed)
-                return;
-
-            lock (m_queue)
-            {
-                queueListBox.ReloadItems(m_queue);
-            }
-        }
-
-        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            try
-            {
-                while (!backgroundWorker.CancellationPending)
-                {
-                    QueueChapter qc;
+                    ConnectionsLimiter.BeginDownloadPages(chapter_item.ChapterInfo);
 
                     try
                     {
-                        lock (m_queue)
+                        try
                         {
-                            if (m_queue.Count != 0)
-                                qc = m_queue[0];
-                            else
-                                qc = null;
-                        }
+                            chapter_item.Token.ThrowIfCancellationRequested();
 
-                        if (qc == null)
-                        {
-                            Thread.Sleep(500);
-                            continue;
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        break;
-                    }
+                            chapter_item.Waiting = false;
+                            chapter_item.Downloading = true;
 
-                    qc.Processing = true;
-
-                    try
-                    {
-                        qc.ChapterInfo.Queue = false;
-                        qc.ChapterInfo.DownloadedPages = 0;
-                        qc.ChapterInfo.Downloading = true;
-
-                        backgroundWorker.ReportProgress(0, new ProgressData()
-                        {
-                            Text = qc.ToString(),
-                            Color = Color.Blue
-                        });
-
-                        if (new DirectoryInfo(qc.Directory).Exists)
-                            new DirectoryInfo(qc.Directory).Delete(true);
-
-                        Parallel.ForEach(qc.ChapterInfo.Pages, (page, state) =>
-                        {
-
-                            backgroundWorker.ReportProgress(0, new ProgressData()
+                            TryInvoke(() =>
                             {
-                                Text = "\t" + page.ToString()
+                                UpdateTasks();
                             });
 
-                            qc.DownloadAndSavePageImage(page);
+                            chapter_item.ChapterInfo.DownloadPages(chapter_item.Token);
 
-                            if (backgroundWorker.CancellationPending)
-                                state.Stop();
+                            chapter_item.Token.ThrowIfCancellationRequested();
 
-                            if (qc.Deleted)
-                                state.Stop();
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
+                            Parallel.ForEach(chapter_item.ChapterInfo.Pages, (page, state) =>
+                            {
+                                page.DownloadAndSavePageImage(chapter_item.Token, 
+                                    chapter_item.GetImageDirectory(Settings.Instance.DirectoryPath));
 
-                        backgroundWorker.ReportProgress(0, new ProgressData()
+                                chapter_item.PageDownloaded();
+
+                                TryInvoke(() =>
+                                {
+                                    UpdateTasks();
+                                });
+                            });
+
+                            chapter_item.Finish(false);
+                        }
+                        catch (OperationCanceledException)
                         {
-                            Text = "ERROR: " + qc.ToString(),
-                            Color = Color.Red
-                        });
-
-                        TryInvoke(() =>
+                            throw;
+                        }
+                        catch
                         {
-                            MessageBox.Show(String.Format("Downloading '{0}' failed.", qc.ToString() ), Application.ProductName,
-                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            UpdateSeries();
-                        });
+                            chapter_item.Finish(true);
+                        }
                     }
-
-                    qc.ChapterInfo.Downloading = false;
-                    qc.Processing = false;
-
-                    lock (m_queue)
+                    finally
                     {
-                        qc.Deleted = true;
-                        m_queue.Remove(qc);
+                        ConnectionsLimiter.EndDownloadPages(chapter_item.ChapterInfo);
                     }
 
-                    if (m_queue.Count == 0)
+                    TryInvoke(() =>
                     {
-                        backgroundWorker.ReportProgress(0, new ProgressData()
-                        {
-                            Text = "Done",
-                            Color = Color.Green
-                        });
-                    }
-                }
+                        UpdateTasks();
+                    });
+
+                }, chapter_item.Token);
+
+                task.Start(m_scheduler);
             }
-            finally
+
+            UpdateTasks();
+        }
+
+        private void UpdateTasks()
+        {
+            List<ChapterItem> list = new List<ChapterItem>();
+
+            foreach (var ch in m_chapters.Values)
             {
-                m_close_event.Set();
+                if (ch.Waiting || ch.Finished || ch.Downloading)
+                    list.Add(ch);
             }
+
+            tasksGridView.DataSource = list;
+
+            UpdateChapters();
         }
 
         private void TryInvoke(Action a_action)
@@ -427,43 +576,21 @@ namespace MangaCrawler
 
         private void MangaCrawlerForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            backgroundWorker.CancelAsync();
-
-            m_close_event.WaitOne();
-        }
-
-        private void deleteButton_Click(object sender, EventArgs e)
-        {
-            if (queueListBox.SelectedItems.Count == 0)
-                System.Media.SystemSounds.Beep.Play();
-            else
-            {
-                lock (m_queue)
-                {
-                    foreach (var item in queueListBox.SelectedItems)
-                    {
-                        QueueChapter qc = (QueueChapter)item;
-
-                        qc.Deleted = true;
-                        qc.ChapterInfo.Queue = false;
-
-                        if (!qc.Processing)
-                            m_queue.Remove(qc);
-                    }
-                }
-
-                UpdateQueue();
-            }
+            foreach (var c in m_chapters.Values)
+                c.Delete();
         }
 
         private void MangaCrawlerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (m_queue.Count > 0)
+            if (m_chapters.Values.Any(chi => chi.Downloading))
             {
                 if ((e.CloseReason != CloseReason.WindowsShutDown) || (e.CloseReason != CloseReason.TaskManagerClosing))
                 {
-                    if (MessageBox.Show("Downloading in progress. Exit anyway ?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    if (MessageBox.Show("Downloading in progress. Exit anyway ?",
+                            Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    {
                         e.Cancel = true;
+                    }
                 }
             }
         }
@@ -510,8 +637,6 @@ namespace MangaCrawler
                 System.Diagnostics.Process.Start(SelectedChapter.URL);
             else
                 System.Media.SystemSounds.Beep.Play();
-
-            return;
         }
 
         private void splitContainer_SplitterMoved(object sender, SplitterEventArgs e)
@@ -522,6 +647,16 @@ namespace MangaCrawler
         private void chaptersListBox_DoubleClick(object sender, EventArgs e)
         {
             AddChaptersToQueue();
+        }
+
+        private void tasksGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if ((e.ColumnIndex == 0) && (e.RowIndex >= 0))
+            {
+                List<ChapterItem> list = (List<ChapterItem>)tasksGridView.DataSource;
+                list[e.RowIndex].Delete();
+                UpdateTasks();
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
@@ -86,18 +87,14 @@ namespace MangaCrawlerLib
             });
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
-            a_info.DownloadedPages = 0;
-
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             var pages = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/fieldset/ul/label/a");
 
             if (pages == null)
                 yield break;
-
-            a_info.PagesCount = pages.Count;
 
             int index = 0;
             foreach (var page in pages)
@@ -111,9 +108,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override string GetImageURL(PageInfo a_info)
+        internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             string script = doc.DocumentNode.SelectSingleNode("/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
 

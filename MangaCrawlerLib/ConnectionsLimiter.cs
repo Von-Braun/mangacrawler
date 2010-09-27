@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading;
 using HtmlAgilityPack;
 using System.Diagnostics;
+using System.IO;
+using System.Net;
 
 namespace MangaCrawlerLib
 {
@@ -13,25 +15,38 @@ namespace MangaCrawlerLib
         public const int MAX_CONNECTIONS = 100;
         public const int MAX_CONNECTIONS_PER_SERVER = 4;
 
-        private static Dictionary<ServerInfo, Semaphore> s_dict = new Dictionary<ServerInfo, Semaphore>();
+        private static Dictionary<ServerInfo, Semaphore> s_serverPages = new Dictionary<ServerInfo, Semaphore>();
+        private static Dictionary<ServerInfo, Semaphore> s_serverConnections = new Dictionary<ServerInfo, Semaphore>();
         private static Semaphore m_connections = new Semaphore(MAX_CONNECTIONS, MAX_CONNECTIONS);
 
         static ConnectionsLimiter()
         {
             foreach (var si in ServerInfo.ServersInfos)
-                s_dict.Add(si, new Semaphore(MAX_CONNECTIONS_PER_SERVER, MAX_CONNECTIONS_PER_SERVER));
+                s_serverConnections.Add(si, new Semaphore(MAX_CONNECTIONS_PER_SERVER, MAX_CONNECTIONS_PER_SERVER));
+            foreach (var si in ServerInfo.ServersInfos)
+                s_serverPages.Add(si, new Semaphore(1, 1));
         }
 
-        internal static void Aquire(ServerInfo a_serverInfo)
+        public static void BeginDownloadPages(ChapterInfo a_info)
+        {
+            s_serverPages[a_info.SerieInfo.ServerInfo].WaitOne();
+        }
+
+        public static void EndDownloadPages(ChapterInfo a_info)
+        {
+            s_serverPages[a_info.SerieInfo.ServerInfo].Release();
+        }
+
+        private static void Aquire(ServerInfo a_info)
         {
             m_connections.WaitOne();
-            s_dict[a_serverInfo].WaitOne();
+            s_serverConnections[a_info].WaitOne();
         }
 
-        internal static void Release(ServerInfo a_serverInfo)
+        private static void Release(ServerInfo a_info)
         {
+            s_serverConnections[a_info].Release();
             m_connections.Release();
-            s_dict[a_serverInfo].Release();
         }
 
         internal static HtmlDocument DownloadDocument(ServerInfo a_info, string a_url = null)
@@ -68,12 +83,16 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal static HtmlDocument DownloadDocument(ChapterInfo a_info, string a_url = null)
+        internal static HtmlDocument DownloadDocument(ChapterInfo a_info, CancellationToken a_token, string a_url = null)
         {
+            a_token.ThrowIfCancellationRequested();
+
             Aquire(a_info.SerieInfo.ServerInfo);
 
             try
             {
+                a_token.ThrowIfCancellationRequested();
+
                 if (a_url == null)
                     a_url = a_info.URL;
 
@@ -85,16 +104,72 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal static HtmlDocument DownloadDocument(PageInfo a_info, string a_url = null)
+        internal static HtmlDocument DownloadDocument(PageInfo a_info, CancellationToken a_token, string a_url = null)
         {
+            a_token.ThrowIfCancellationRequested();
+
             Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
 
             try
             {
+                a_token.ThrowIfCancellationRequested();
+
                 if (a_url == null)
                     a_url = a_info.URL;
 
                 return new HtmlWeb().Load(a_url);
+            }
+            finally
+            {
+                Release(a_info.ChapterInfo.SerieInfo.ServerInfo);
+            }
+        }
+
+        internal static HtmlDocument Submit(PageInfo a_info, CancellationToken a_token, string a_url, Dictionary<string, string> a_parameters)
+        {
+            a_token.ThrowIfCancellationRequested();
+
+            Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
+
+            try
+            {
+                a_token.ThrowIfCancellationRequested();
+
+                return new HtmlWeb().Load(a_url);
+            }
+            finally
+            {
+                Release(a_info.ChapterInfo.SerieInfo.ServerInfo);
+            }
+        }
+
+        public static MemoryStream GetImageStream(PageInfo a_info, CancellationToken a_token)
+        {
+            try
+            {
+                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
+
+                try
+                {
+                    HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(a_info.GetImageURL(a_token));
+
+                    myReq.UserAgent =
+                        "Mozilla/5.0 (Windows; U; Windows NT 6.0; pl; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 ( .NET CLR 3.5.30729; .NET4.0E)";
+                    myReq.Referer = a_info.URL;
+
+                    using (Stream image_stream = myReq.GetResponse().GetResponseStream())
+                    {
+                        MemoryStream mem_stream = new MemoryStream();
+                        image_stream.CopyTo(mem_stream);
+                        mem_stream.Position = 0;
+                        return mem_stream;
+                    }
+                }
+                catch
+                {
+                    Debug.WriteLine(a_info.GetImageURL(a_token));
+                    return null;
+                }
             }
             finally
             {

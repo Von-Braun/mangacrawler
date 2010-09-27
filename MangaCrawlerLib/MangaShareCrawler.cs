@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
@@ -44,15 +45,11 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
-            a_info.DownloadedPages = 0;
-
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='pagejump']/option");
-
-            a_info.PagesCount = pages.Count;
 
             int index = 0;
             foreach (var page in pages)
@@ -65,9 +62,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override string GetImageURL(PageInfo a_info)
+        internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             HtmlNode node = doc.DocumentNode.SelectSingleNode("//div[@id='page']/a/img");
 
