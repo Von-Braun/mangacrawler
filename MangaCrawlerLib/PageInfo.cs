@@ -26,7 +26,7 @@ namespace MangaCrawlerLib
             m_index = a_index;
 
             if (a_name != null)
-                m_name = PageInfo.RemoveInvalidFileDirectoryCharacters(a_name);
+                m_name = FileUtils.RemoveInvalidFileDirectoryCharacters(a_name);
         }
 
         internal ChapterInfo ChapterInfo
@@ -103,12 +103,9 @@ namespace MangaCrawlerLib
 
         public void DownloadAndSavePageImage(CancellationToken a_token, string a_dir)
         {
-            if (new DirectoryInfo(a_dir).Exists)
-                new DirectoryInfo(a_dir).Delete(true);
-
             FileInfo image_file = new FileInfo(a_dir +
-                PageInfo.RemoveInvalidFileDirectoryCharacters(Name) +
-                PageInfo.RemoveInvalidFileDirectoryCharacters(Path.GetExtension(GetImageURL(a_token))));
+                FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
+                FileUtils.RemoveInvalidFileDirectoryCharacters(Path.GetExtension(GetImageURL(a_token))));
 
             new DirectoryInfo(a_dir).Create();
 
@@ -128,14 +125,6 @@ namespace MangaCrawlerLib
                 temp_file.Delete();
                 throw;
             }
-        }
-
-        //TODO:
-        public static string RemoveInvalidFileDirectoryCharacters(string a_path)
-        {
-            foreach (char c in Path.GetInvalidFileNameChars().Concat(Path.GetInvalidPathChars()).Distinct())
-                a_path = a_path.Replace(new String(new char[] { c }), "");
-            return a_path;
         }
     }
 }
