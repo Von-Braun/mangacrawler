@@ -10,10 +10,8 @@ namespace MangaCrawlerLib
     {
         private string m_name;
         private string m_url;
-        private volatile int m_downloadingProgress; // TODO: przesunac do formy, wraz z formatowaniem tekstu
         private string m_urlPart;
         private IEnumerable<ChapterInfo> m_chapters;
-        private volatile bool m_downloadingChapters;
         private ServerInfo m_serverInfo;
 
         internal SerieInfo(ServerInfo a_serverInfo, string a_urlPart, string a_name)
@@ -43,14 +41,6 @@ namespace MangaCrawlerLib
                     return null;
                 return from ch in m_chapters
                        select ch;
-            }
-        }
-
-        public bool DownloadingChapters
-        {
-            get
-            {
-                return m_downloadingChapters;
             }
         }
 
@@ -89,65 +79,30 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void DownloadChapters(Action a_progress_callback = null)
+        public void DownloadChapters(Action<int> a_progress_callback = null)
         {
-            if (m_downloadingChapters)
-                return;
+            if (a_progress_callback != null)
+                a_progress_callback(0);
 
-            if (m_chapters != null)
-                return;
-
-            m_downloadingChapters = true;
-
-            try
+            Crawler.DownloadChapters(this, (progress, result) =>
             {
-                if (a_progress_callback != null)
-                    a_progress_callback();
+                var chapters = result.ToList();
 
-                Crawler.DownloadChapters(this, (progress, result) =>
+                if (m_chapters != null)
                 {
-                    var chapters = result.ToList();
-
-                    if (m_chapters != null)
+                    foreach (var chapter in m_chapters)
                     {
-                        foreach (var chapter in m_chapters)
-                        {
-                            var el = chapters.Find(s => s.URL == chapter.URL);
-                            if (el != null)
-                                chapters[chapters.IndexOf(el)] = chapter;
-                        }
+                        var el = chapters.Find(s => s.URL == chapter.URL);
+                        if (el != null)
+                            chapters[chapters.IndexOf(el)] = chapter;
                     }
+                }
 
-                    m_chapters = chapters;
+                m_chapters = chapters;
 
-                    m_downloadingProgress = progress;
-
-                    if (a_progress_callback != null)
-                        a_progress_callback();
-                });
-            }
-            finally
-            {
-                m_downloadingChapters = false;
-            }
-        }
-
-        internal string DecoratedName
-        {
-            get
-            {
-                if (m_downloadingChapters)
-                    return String.Format("{0} ({1}%)", m_name, m_downloadingProgress);
-                else if (Chapters == null)
-                    return m_name;
-                else
-                    return m_name + "*";
-            }
-        }
-
-        public override string ToString()
-        {
-            return DecoratedName;
+                if (a_progress_callback != null)
+                    a_progress_callback(progress);
+            });
         }
     }
 }
