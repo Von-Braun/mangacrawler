@@ -17,6 +17,7 @@ using System.Reflection;
 
 namespace MangaCrawler
 {
+    // TODO: wiecej kolorow dla statusow, downloading, error, downloaded
     // TODO: test rozlegly zrobic
     // TODO: cache, ladowanie w cachu, update w tle
     // TODO: bookmarks
@@ -29,18 +30,19 @@ namespace MangaCrawler
     public partial class MangaCrawlerForm : Form
     {
         public ReprioritizableTaskScheduler m_scheduler = new ReprioritizableTaskScheduler();
-        public ConcurrentDictionary<ChapterInfo, ChapterItem> m_chapters = new ConcurrentDictionary<ChapterInfo, ChapterItem>();
+        public List<ChapterItem> m_chapters = new List<ChapterItem>();
+        public List<SerieItem> m_series = new List<SerieItem>();
 
         public MangaCrawlerForm()
         {
             InitializeComponent();
         }
 
-        public SerieInfo SelectedSerie
+        public SerieItem SelectedSerie
         {
             get
             {
-                return (SerieInfo)seriesListBox.SelectedItem;
+                return (SerieItem)seriesListBox.SelectedItem;
             }
         }
 
@@ -101,9 +103,19 @@ namespace MangaCrawler
             if (SelectedServer.Series == null)
                 return;
 
-            var filtered_series = (from serie in SelectedServer.Series
-                                   where serie.Name.ToLower().IndexOf(seriesFilterTextBox.Text.ToLower()) != -1
-                                   select serie).ToList();
+            foreach (var serie in SelectedServer.Series)
+            {
+                if (m_series.Any(s => s.SerieInfo == serie))
+                    continue;
+
+                m_series.Add(new SerieItem(serie));
+            }
+
+            var filtered_series = from si in m_series
+                                  from serie in SelectedServer.Series
+                                  where si.SerieInfo == serie
+                                  where serie.Name.ToLower().IndexOf(seriesFilterTextBox.Text.ToLower()) != -1
+                                  select si;
 
             seriesListBox.ReloadItems(filtered_series);
         }
@@ -166,23 +178,31 @@ namespace MangaCrawler
             if (SelectedSerie == null)
                 return;
 
-            if (SelectedSerie.DownloadingChapters)
-                UpdateChapters();
-            else if (SelectedSerie.Chapters!= null)
+            SerieItem serie = SelectedSerie;
+
+            if (serie.Downloading || (serie.Finished && !serie.Error))
                 UpdateChapters();
             else
             {
-                Task task = new Task(serie =>
+                serie.Initialize();
+                serie.Downloading = true;
+
+                Task task = new Task(() => 
                 {
-                    SerieInfo si = (SerieInfo)serie;
+                    TryInvoke(() =>
+                    {
+                        UpdateChapters(serie);
+                    });
 
                     try
                     {
-                        si.DownloadChapters(() => 
+                        serie.SerieInfo.DownloadChapters((progress) => 
                         {
+                            serie.SetProgress(progress);
+
                             TryInvoke(() =>
                             {
-                                UpdateChapters(si);
+                                UpdateChapters(serie);
                             });
                         });
                     }
@@ -191,14 +211,19 @@ namespace MangaCrawler
                     }
                     catch (Exception)
                     {
-                        TryInvoke(() =>
-                        {
-                            MessageBox.Show("Downloading chapters for series '" + SelectedSerie.Name + "' from server '" +
-                                            SelectedServer.Name + "' failed.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            UpdateChapters();
-                        });
+                        serie.Error = true;
+                        
                     }
-                }, SelectedSerie);
+
+                    serie.Downloading = false;
+                    serie.Finished = true;
+
+                    TryInvoke(() =>
+                    {
+                        UpdateChapters();
+                    });
+
+                });
 
                 task.Start(m_scheduler);
                 m_scheduler.Prioritize(task);
@@ -207,7 +232,7 @@ namespace MangaCrawler
             }
         }
 
-        private void UpdateChapters(SerieInfo a_serie = null)
+        private void UpdateChapters(SerieItem a_serie = null)
         {
             if (IsDisposed)
                 return;
@@ -218,11 +243,20 @@ namespace MangaCrawler
                 return;
             if ((a_serie != null) && (a_serie != SelectedSerie))
                 return;
-            if (SelectedSerie.Chapters == null)
+            if (SelectedSerie.SerieInfo.Chapters == null)
                 return;
 
-            var list = from ch in SelectedSerie.Chapters
-                       select m_chapters.GetOrAdd(ch, new ChapterItem(ch));
+            foreach (var ch in SelectedSerie.SerieInfo.Chapters)
+            {
+                if (m_chapters.Any(chi => chi.ChapterInfo == ch))
+                    continue;
+                m_chapters.Add(new ChapterItem(ch));
+            }
+
+            var list = from chi in m_chapters
+                       from ch in SelectedSerie.SerieInfo.Chapters
+                       where chi.ChapterInfo == ch
+                       select chi;
 
             chaptersListBox.ReloadItems(list);
         }
@@ -366,7 +400,7 @@ namespace MangaCrawler
             else
                 list = (BindingList<ChapterItem>)tasksGridView.DataSource;
 
-            foreach (var ch in m_chapters.Values)
+            foreach (var ch in m_chapters)
             {
                 if (ch.Waiting || (ch.Finished && ch.Error) || ch.Downloading)
                 {
@@ -398,13 +432,13 @@ namespace MangaCrawler
 
         private void MangaCrawlerForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            foreach (var c in m_chapters.Values)
+            foreach (var c in m_chapters)
                 c.Delete();
         }
 
         private void MangaCrawlerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (m_chapters.Values.Any(chi => chi.Downloading))
+            if (m_chapters.Any(chi => chi.Downloading))
             {
                 if ((e.CloseReason != CloseReason.WindowsShutDown) || (e.CloseReason != CloseReason.TaskManagerClosing))
                 {
@@ -448,7 +482,7 @@ namespace MangaCrawler
         private void seriesURLButton_Click(object sender, EventArgs e)
         {
             if (SelectedSerie != null)
-                System.Diagnostics.Process.Start(SelectedSerie.URL);
+                System.Diagnostics.Process.Start(SelectedSerie.SerieInfo.URL);
             else
                 System.Media.SystemSounds.Beep.Play();
         }

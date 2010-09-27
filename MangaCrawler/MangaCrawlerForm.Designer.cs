@@ -58,10 +58,10 @@
             this.directoryPathTextBox = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tasksGridView = new System.Windows.Forms.DataGridView();
-            this.mangaCrawlerFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Chapter = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.mangaCrawlerFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -409,10 +409,6 @@
             this.tasksGridView.TabIndex = 32;
             this.tasksGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tasksGridView_CellContentClick);
             // 
-            // mangaCrawlerFormBindingSource
-            // 
-            this.mangaCrawlerFormBindingSource.DataSource = typeof(MangaCrawler.MangaCrawlerForm);
-            // 
             // Delete
             // 
             this.Delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
@@ -442,6 +438,10 @@
             this.Progress.Name = "Progress";
             this.Progress.ReadOnly = true;
             this.Progress.Width = 200;
+            // 
+            // mangaCrawlerFormBindingSource
+            // 
+            this.mangaCrawlerFormBindingSource.DataSource = typeof(MangaCrawler.MangaCrawlerForm);
             // 
             // MangaCrawlerForm
             // 
