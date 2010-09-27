@@ -127,6 +127,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChapterItem.cs" />
     <Compile Include="ListBoxEx.cs">
       <SubType>Component</SubType>
     </Compile>
