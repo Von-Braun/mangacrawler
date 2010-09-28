@@ -74,7 +74,7 @@ namespace MangaCrawlerLib
                 {
                     foreach (var serie in m_series)
                     {
-                        var el = series.Find(s => s.URL == serie.URL);
+                        var el = series.Find(s => (s.Name == serie.Name) && (s.URL == serie.URL));
                         if (el != null)
                             series[series.IndexOf(el)] = serie;
                     }
@@ -181,6 +181,11 @@ namespace MangaCrawlerLib
             {
                 return ServersInfos.First(si => si.Name == new UnixMangaCrawler().Name);
             }
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

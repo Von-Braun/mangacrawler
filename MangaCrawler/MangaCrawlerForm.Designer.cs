@@ -43,13 +43,16 @@
             this.panel8 = new System.Windows.Forms.Panel();
             this.seriesURLButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.seriesListBox = new MangaCrawler.ListBoxEx();
             this.panel3 = new System.Windows.Forms.Panel();
             this.chapterURLButton = new System.Windows.Forms.Button();
             this.downloadButton = new System.Windows.Forms.Button();
+            this.chaptersListBox = new MangaCrawler.ListBoxEx();
             this.label7 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.serverURLButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.serversListBox = new MangaCrawler.ListBoxEx();
             this.directoryChooseButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.directoryPathTextBox = new System.Windows.Forms.TextBox();
@@ -58,9 +61,6 @@
             this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Chapter = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.seriesListBox = new MangaCrawler.ListBoxEx();
-            this.chaptersListBox = new MangaCrawler.ListBoxEx();
-            this.serversListBox = new MangaCrawler.ListBoxEx();
             this.mangaCrawlerFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -222,6 +222,19 @@
             this.label4.TabIndex = 31;
             this.label4.Text = "Series:";
             // 
+            // seriesListBox
+            // 
+            this.seriesListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.seriesListBox.FormattingEnabled = true;
+            this.seriesListBox.HorizontalScrollbar = true;
+            this.seriesListBox.Location = new System.Drawing.Point(0, 19);
+            this.seriesListBox.Name = "seriesListBox";
+            this.seriesListBox.Size = new System.Drawing.Size(359, 368);
+            this.seriesListBox.TabIndex = 30;
+            this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
+            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.chapterURLButton);
@@ -257,6 +270,21 @@
             this.downloadButton.Text = "Download";
             this.downloadButton.UseVisualStyleBackColor = true;
             this.downloadButton.Click += new System.EventHandler(this.downloadButton_Click);
+            // 
+            // chaptersListBox
+            // 
+            this.chaptersListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.chaptersListBox.FormattingEnabled = true;
+            this.chaptersListBox.HorizontalScrollbar = true;
+            this.chaptersListBox.Location = new System.Drawing.Point(0, 19);
+            this.chaptersListBox.Name = "chaptersListBox";
+            this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.chaptersListBox.Size = new System.Drawing.Size(341, 368);
+            this.chaptersListBox.TabIndex = 34;
+            this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
+            this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
             // 
             // label7
             // 
@@ -298,6 +326,20 @@
             this.label5.Size = new System.Drawing.Size(41, 13);
             this.label5.TabIndex = 29;
             this.label5.Text = "Server:";
+            // 
+            // serversListBox
+            // 
+            this.serversListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.serversListBox.FormattingEnabled = true;
+            this.serversListBox.HorizontalScrollbar = true;
+            this.serversListBox.Location = new System.Drawing.Point(0, 19);
+            this.serversListBox.Name = "serversListBox";
+            this.serversListBox.Size = new System.Drawing.Size(201, 368);
+            this.serversListBox.Sorted = true;
+            this.serversListBox.TabIndex = 28;
+            this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
             // 
             // directoryChooseButton
             // 
@@ -397,47 +439,6 @@
             this.Progress.Name = "Progress";
             this.Progress.ReadOnly = true;
             this.Progress.Width = 200;
-            // 
-            // seriesListBox
-            // 
-            this.seriesListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.seriesListBox.FormattingEnabled = true;
-            this.seriesListBox.HorizontalScrollbar = true;
-            this.seriesListBox.Location = new System.Drawing.Point(0, 19);
-            this.seriesListBox.Name = "seriesListBox";
-            this.seriesListBox.Size = new System.Drawing.Size(359, 368);
-            this.seriesListBox.TabIndex = 30;
-            this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
-            // 
-            // chaptersListBox
-            // 
-            this.chaptersListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.chaptersListBox.FormattingEnabled = true;
-            this.chaptersListBox.HorizontalScrollbar = true;
-            this.chaptersListBox.Location = new System.Drawing.Point(0, 19);
-            this.chaptersListBox.Name = "chaptersListBox";
-            this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.chaptersListBox.Size = new System.Drawing.Size(341, 368);
-            this.chaptersListBox.TabIndex = 34;
-            this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
-            this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
-            // 
-            // serversListBox
-            // 
-            this.serversListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.serversListBox.FormattingEnabled = true;
-            this.serversListBox.HorizontalScrollbar = true;
-            this.serversListBox.Location = new System.Drawing.Point(0, 19);
-            this.serversListBox.Name = "serversListBox";
-            this.serversListBox.Size = new System.Drawing.Size(201, 368);
-            this.serversListBox.TabIndex = 28;
-            this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
             // 
             // mangaCrawlerFormBindingSource
             // 

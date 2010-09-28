@@ -86,5 +86,10 @@ namespace MangaCrawlerLib
                 return m_url;
             }
         }
+
+        public override string ToString()
+        {
+            return String.Format("{0} - {1}", SerieInfo, Name);
+        }
     }
 }
