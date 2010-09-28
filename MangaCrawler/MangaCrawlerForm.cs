@@ -17,15 +17,22 @@ using System.Reflection;
 
 namespace MangaCrawler
 {
-    // TODO: wiecej kolorow dla statusow, downloading, error, downloaded
+    // TODO: uzupelnic testy o testy rownoleglosci
     // TODO: test rozlegly zrobic
+    // TODO: wiecej kolorow dla statusow, downloading, error, downloaded
+    //
     // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, podczas ponownego uruchomienia weryfikacja tego, 
     //       pamietanie urli obrazkow, dat modyfikacji zdalnych, szybka weryfikacja
+    //
     // TODO: bookmarks,
     // TODO: wykrywanie zmian w obserwowanych seriach, praca w tle
+    //
     // TODO: pobieranie jako archiwum
+    //
     // TODO: wpf, silverlight, telefony
+    //
     // TODO: wbudowany browser
+    //
     // TODO: widok wspolny dla wszystkich serwisow, scalac jakos serie, wykrywac zmiany ? gdzie najlepsza jakosc, gdzie duplikaty
 
     public partial class MangaCrawlerForm : Form
