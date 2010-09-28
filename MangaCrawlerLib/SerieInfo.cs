@@ -92,7 +92,7 @@ namespace MangaCrawlerLib
                 {
                     foreach (var chapter in m_chapters)
                     {
-                        var el = chapters.Find(s => s.URL == chapter.URL);
+                        var el = chapters.Find(s => (s.Name == chapter.Name) && (s.URL == chapter.URL));
                         if (el != null)
                             chapters[chapters.IndexOf(el)] = chapter;
                     }
@@ -103,6 +103,11 @@ namespace MangaCrawlerLib
                 if (a_progress_callback != null)
                     a_progress_callback(progress);
             });
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0} - {1}", ServerInfo, Name);
         }
     }
 }

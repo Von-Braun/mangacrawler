@@ -5,12 +5,16 @@ using System.Text;
 using System.Threading;
 using MangaCrawlerLib;
 using System.IO;
+using System.Diagnostics;
 
 namespace MangaCrawler
 {
+    [DebuggerDisplay("{ChapterInfo}")]
     public class ChapterItem
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Object m_lock = new Object();
+
         private CancellationTokenSource m_cancellationTokenSource;
         private int m_downloadedPages;
 

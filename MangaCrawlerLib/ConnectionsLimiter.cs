@@ -7,15 +7,59 @@ using HtmlAgilityPack;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Collections.Concurrent;
 
 namespace MangaCrawlerLib
 {
+    public class QueuedMutex
+    {
+        private Object m_lock = new Object();
+        private SpinLock m_spinLock = new SpinLock();
+        private ConcurrentQueue<ManualResetEvent> m_queue = new ConcurrentQueue<ManualResetEvent>();
+
+        public void WaitOne(CancellationToken a_token)
+        {
+            ManualResetEvent mre = null;
+
+            lock (m_lock)
+            {
+                if (m_spinLock.IsHeld && !m_spinLock.IsHeldByCurrentThread)
+                {
+                    mre = new ManualResetEvent(false);
+                    m_queue.Enqueue(mre);
+                }
+            }
+
+            if (mre != null)
+            {
+                while (!mre.WaitOne(100))
+                    a_token.ThrowIfCancellationRequested();
+            }
+
+            bool taken = false;
+            m_spinLock.Enter(ref taken);
+        }
+
+        public void ReleaseMutex()
+        {
+            lock (m_lock)
+            {
+                m_spinLock.Exit();
+
+                ManualResetEvent mre;
+                if (!m_queue.TryDequeue(out mre))
+                    throw new InvalidOperationException();
+
+                mre.Set();
+            }
+        }
+    }
     public static class ConnectionsLimiter
     {
         public const int MAX_CONNECTIONS = 100;
         public const int MAX_CONNECTIONS_PER_SERVER = 4;
 
-        private static Dictionary<ServerInfo, Mutex> s_serverPages = new Dictionary<ServerInfo, Mutex>();
+        private static Dictionary<ServerInfo, QueuedMutex> s_serverPages = new Dictionary<ServerInfo, QueuedMutex>();
         private static Dictionary<ServerInfo, Semaphore> s_serverConnections = new Dictionary<ServerInfo, Semaphore>();
         private static Semaphore m_connections = new Semaphore(MAX_CONNECTIONS, MAX_CONNECTIONS);
 
@@ -24,13 +68,12 @@ namespace MangaCrawlerLib
             foreach (var si in ServerInfo.ServersInfos)
                 s_serverConnections.Add(si, new Semaphore(MAX_CONNECTIONS_PER_SERVER, MAX_CONNECTIONS_PER_SERVER));
             foreach (var si in ServerInfo.ServersInfos)
-                s_serverPages.Add(si, new Mutex());
+                s_serverPages.Add(si, new QueuedMutex());
         }
 
         public static void BeginDownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
-            while (!s_serverPages[a_info.SerieInfo.ServerInfo].WaitOne(100))
-                a_token.ThrowIfCancellationRequested();
+            s_serverPages[a_info.SerieInfo.ServerInfo].WaitOne(a_token);
         }
 
         public static void EndDownloadPages(ChapterInfo a_info)
@@ -150,26 +193,18 @@ namespace MangaCrawlerLib
             {
                 Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
 
-                try
-                {
-                    HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(a_info.GetImageURL(a_token));
+                HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(a_info.GetImageURL(a_token));
 
-                    myReq.UserAgent =
-                        "Mozilla/5.0 (Windows; U; Windows NT 6.0; pl; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 ( .NET CLR 3.5.30729; .NET4.0E)";
-                    myReq.Referer = a_info.URL;
+                myReq.UserAgent =
+                    "Mozilla/5.0 (Windows; U; Windows NT 6.0; pl; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 ( .NET CLR 3.5.30729; .NET4.0E)";
+                myReq.Referer = a_info.URL;
 
-                    using (Stream image_stream = myReq.GetResponse().GetResponseStream())
-                    {
-                        MemoryStream mem_stream = new MemoryStream();
-                        image_stream.CopyTo(mem_stream);
-                        mem_stream.Position = 0;
-                        return mem_stream;
-                    }
-                }
-                catch
+                using (Stream image_stream = myReq.GetResponse().GetResponseStream())
                 {
-                    Debug.WriteLine(a_info.GetImageURL(a_token));
-                    return null;
+                    MemoryStream mem_stream = new MemoryStream();
+                    image_stream.CopyTo(mem_stream);
+                    mem_stream.Position = 0;
+                    return mem_stream;
                 }
             }
             finally

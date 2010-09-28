@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MangaCrawlerLib;
+using System.Diagnostics;
 
 namespace MangaCrawler
 {
+    [DebuggerDisplay("{ServerInfo}")]
     public class ServerItem
     {
         public readonly ServerInfo ServerInfo;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Object m_lock = new Object();
 
         private int m_progress;

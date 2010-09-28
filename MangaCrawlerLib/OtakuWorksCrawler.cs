@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using HtmlAgilityPack;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
@@ -40,6 +41,7 @@ namespace MangaCrawlerLib
                 var page_series = page_doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/table/tr/td[@class='box3']/a");
 
                 int index = 0;
+
                 foreach (var serie in page_series)
                 {
                     Tuple<int, int, string, string> s =
@@ -49,9 +51,9 @@ namespace MangaCrawlerLib
                     series.Add(s);
                 }
 
-                var result = from serie in series
-                             orderby serie.Item1, serie.Item2
-                             select new SerieInfo(a_info, serie.Item4, serie.Item3);
+                var result = (from serie in series
+                              orderby serie.Item1, serie.Item2
+                              select new SerieInfo(a_info, serie.Item4, serie.Item3)).ToArray();
 
                 m_progress++;
                 a_progress_callback(m_progress * 100 / number, result);
@@ -107,9 +109,9 @@ namespace MangaCrawlerLib
                         chapters.Add(s);
                     }
 
-                    var result = from chapter in chapters
-                                 orderby chapter.Item1, chapter.Item2
-                                 select new ChapterInfo(a_info, chapter.Item4, chapter.Item3);
+                    var result = (from chapter in chapters
+                                  orderby chapter.Item1, chapter.Item2
+                                  select new ChapterInfo(a_info, chapter.Item4, chapter.Item3)).ToArray();
 
                     m_progress++;
                     a_progress_callback(m_progress * 100 / pages.Count(), result);
