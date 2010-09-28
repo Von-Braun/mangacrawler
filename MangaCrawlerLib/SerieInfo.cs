@@ -100,6 +100,14 @@ namespace MangaCrawlerLib
 
                 m_chapters = chapters;
 
+                foreach (var chapter in m_chapters)
+                {
+                    if (DownloadManager.Chapters.ContainsKey(chapter))
+                        continue;
+
+                    DownloadManager.Chapters[chapter] = new ChapterItem(chapter);
+                }
+
                 if (a_progress_callback != null)
                     a_progress_callback(progress);
             });

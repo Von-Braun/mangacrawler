@@ -30,12 +30,6 @@ namespace MangaCrawler
 
     public partial class MangaCrawlerForm : Form
     {
-        public ReprioritizableTaskScheduler m_scheduler = new ReprioritizableTaskScheduler();
-
-        public Dictionary<ChapterInfo, ChapterItem> m_chapters = new Dictionary<ChapterInfo, ChapterItem>();
-        public Dictionary<SerieInfo, SerieItem> m_series = new Dictionary<SerieInfo, SerieItem>();
-        public BindingList<ServerItem> m_servers = new BindingList<ServerItem>();
-
         public SerieItem SelectedSerie;
         public ServerItem SelectedServer;
         public ChapterItem SelectedChapter;
@@ -62,18 +56,20 @@ namespace MangaCrawler
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
-            directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
+            tasksGridView.AutoGenerateColumns = false;
 
-            foreach (var server in ServerInfo.ServersInfos)
-                m_servers.Add(new ServerItem(server));
+            DownloadManager.Form = this;
+            DownloadManager.ChaptersChanged += () => UpdateChapters();
+            DownloadManager.SeriesChanged += () => UpdateSeries();
+            DownloadManager.ServersChanged += () => UpdateServers();
+
+            directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
 
             UpdateServers();
 
             seriesFilterTextBox.Text = Settings.Instance.SeriesFilter;
 
             splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;
-
-            tasksGridView.AutoGenerateColumns = false;
         }
 
         private void UpdateSeries()
@@ -85,17 +81,9 @@ namespace MangaCrawler
 
             if ((SelectedServer != null) && (SelectedServer.ServerInfo.Series != null))
             {
-                foreach (var serie in SelectedServer.ServerInfo.Series)
-                {
-                    if (m_series.ContainsKey(serie))
-                        continue;
-
-                    m_series[serie] = new SerieItem(serie);
-                }
-
                 list = (from serie in SelectedServer.ServerInfo.Series
                         where serie.Name.ToLower().IndexOf(seriesFilterTextBox.Text.ToLower()) != -1
-                        select m_series[serie]).ToList();
+                        select DownloadManager.Series[serie]).ToList();
             }
 
             seriesListBox.ReloadItems(list);
@@ -105,7 +93,7 @@ namespace MangaCrawler
 
         private void UpdateServers()
         {
-            serversListBox.ReloadItems(m_servers);
+            serversListBox.ReloadItems(DownloadManager.Servers);
             UpdateSeries();
         }
 
@@ -116,51 +104,9 @@ namespace MangaCrawler
             SelectedServer = (ServerItem)serversListBox.SelectedItem;
 
             if (SelectedServer != null)
-            {
-                if (!(SelectedServer.Downloading || (SelectedServer.Finished && !SelectedServer.Error)))
-                {
-                    SelectedServer.Initialize();
-                    SelectedServer.Downloading = true;
-
-                    Task task = new Task((s) =>
-                    {
-                        ServerItem server = (ServerItem)s;
-
-                        try
-                        {
-                            server.ServerInfo.DownloadSeries((progress) =>
-                            {
-                                server.SetProgress(progress);
-
-                                TryInvoke(() =>
-                                {
-                                    UpdateServers();
-                                });
-                            });
-                        }
-                        catch (ObjectDisposedException)
-                        {
-                        }
-                        catch (Exception)
-                        {
-                            server.Error = true;
-                        }
-
-                        server.Downloading = false;
-                        server.Finished = true;
-
-                        TryInvoke(() =>
-                        {
-                            UpdateServers();
-                        });
-                    }, SelectedServer);
-
-                    task.Start(m_scheduler);
-                }
-            }
-
-            UpdateServers();
-            seriesListBox.SelectedIndex = -1;
+                DownloadManager.DownloadSeries(SelectedServer);
+            else
+                UpdateSeries();
         }
 
         private void seriesFilterTextBox_TextChanged(object sender, EventArgs e)
@@ -177,53 +123,9 @@ namespace MangaCrawler
             SelectedSerie = (SerieItem)seriesListBox.SelectedItem;
 
             if (SelectedSerie != null)
-            {
-                if (!(SelectedSerie.Downloading || (SelectedSerie.Finished && !SelectedSerie.Error)))
-                {
-                    SelectedSerie.Initialize();
-                    SelectedSerie.Downloading = true;
-
-                    Task task = new Task((s) =>
-                    {
-                        SerieItem serie = (SerieItem)s;
-                        try
-                        {
-                            serie.SerieInfo.DownloadChapters((progress) =>
-                            {
-                                serie.SetProgress(progress);
-
-                                TryInvoke(() =>
-                                {
-                                    UpdateSeries();
-                                });
-                            });
-                        }
-                        catch (ObjectDisposedException)
-                        {
-                        }
-                        catch (Exception)
-                        {
-                            serie.Error = true;
-
-                        }
-
-                        serie.Downloading = false;
-                        serie.Finished = true;
-
-                        TryInvoke(() =>
-                        {
-                            UpdateSeries();
-                        });
-
-                    }, SelectedSerie);
-
-                    task.Start(m_scheduler);
-                    m_scheduler.Prioritize(task);
-                }
-            }
-
-            UpdateSeries();
-            chaptersListBox.SelectedIndex = -1;
+                DownloadManager.DownloadChapters(SelectedSerie);
+            else
+                UpdateChapters();
         }
 
         private void UpdateChapters()
@@ -235,19 +137,13 @@ namespace MangaCrawler
 
             if ((SelectedSerie != null) && (SelectedSerie.SerieInfo.Chapters != null))
             {
-                foreach (var ch in SelectedSerie.SerieInfo.Chapters)
-                {
-                    if (m_chapters.ContainsKey(ch))
-                        continue;
-
-                    m_chapters[ch] = new ChapterItem(ch);
-                }
-
                 list = (from ch in SelectedSerie.SerieInfo.Chapters
-                        select m_chapters[ch]).ToList();
+                        select DownloadManager.Chapters[ch]).ToList();
             }
 
             chaptersListBox.ReloadItems(list);
+
+            UpdateTasks();
         }
 
         private void downloadButton_Click(object sender, EventArgs e)
@@ -263,121 +159,7 @@ namespace MangaCrawler
                 return;
             }
 
-            try
-            {
-                new DirectoryInfo(Settings.Instance.DirectoryPath);
-            }
-            catch
-            {
-                MessageBox.Show(String.Format("Directory path is invalid: '{0}'.", Settings.Instance.DirectoryPath), 
-                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            try
-            {
-                new DirectoryInfo(Settings.Instance.DirectoryPath).Create();
-            }
-            catch
-            {
-                MessageBox.Show(String.Format("Can't create directory: '{0}'.", Settings.Instance.DirectoryPath), 
-                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            foreach (var item in chaptersListBox.SelectedItems)
-            {
-                ChapterItem chapter_item = (ChapterItem)item;
-
-                if (chapter_item.Waiting || chapter_item.Downloading)
-                    continue;
-
-                chapter_item.Initialize();
-                chapter_item.Waiting = true;
-
-                Task task = new Task(() => 
-                {
-                    try
-                    {
-                        ConnectionsLimiter.BeginDownloadPages(chapter_item.ChapterInfo, chapter_item.Token);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        chapter_item.Finish(true);
-
-                        TryInvoke(() =>
-                        {
-                            UpdateTasks();
-                        });
-
-                        return;
-                    }
-
-                    try
-                    {
-                        try
-                        {
-                            chapter_item.Token.ThrowIfCancellationRequested();
-
-                            chapter_item.Waiting = false;
-                            chapter_item.Downloading = true;
-
-                            TryInvoke(() =>
-                            {
-                                UpdateTasks();
-                            });
-
-                            chapter_item.ChapterInfo.DownloadPages(chapter_item.Token);
-
-                            chapter_item.Token.ThrowIfCancellationRequested();
-
-                            string dir = chapter_item.GetImageDirectory(Settings.Instance.DirectoryPath);
-
-                            if (new DirectoryInfo(dir).Exists)
-                                new DirectoryInfo(dir).Delete(true);
-
-                            Parallel.ForEach(chapter_item.ChapterInfo.Pages, (page, state) =>
-                            {
-                                try
-                                {
-                                    page.DownloadAndSavePageImage(chapter_item.Token, dir);
-                                }
-                                catch (OperationCanceledException)
-                                {
-                                    state.Break();
-                                }
-
-                                chapter_item.PageDownloaded();
-
-                                TryInvoke(() =>
-                                {
-                                    UpdateTasks();
-                                });
-                            });
-
-                            chapter_item.Finish(false);
-                        }
-                        catch
-                        {
-                            chapter_item.Finish(true);
-                        }
-                    }
-                    finally
-                    {
-                        ConnectionsLimiter.EndDownloadPages(chapter_item.ChapterInfo);
-                    }
-
-                    TryInvoke(() =>
-                    {
-                        UpdateTasks();
-                    });
-
-                }, chapter_item.Token);
-
-                task.Start(m_scheduler);
-            }
-
-            UpdateTasks();
+            DownloadManager.DownloadPages(chaptersListBox.SelectedItems.Cast<ChapterItem>(), Settings.Instance.DirectoryPath);
         }
 
         private void UpdateTasks()
@@ -389,16 +171,18 @@ namespace MangaCrawler
             else
                 list = (BindingList<ChapterItem>)tasksGridView.DataSource;
 
-            foreach (var ch in m_chapters.Values)
-            {
-                if (ch.Waiting || (ch.Finished && ch.Error) || ch.Downloading)
-                {
-                    if (!list.Contains(ch))
-                        list.Add(ch);
-                }
-                else
-                    list.Remove(ch);
-            }
+            var add = (from task in DownloadManager.Tasks
+                       where !list.Contains(task)
+                       select task).ToList();
+
+            var remove = (from task in list
+                          where !DownloadManager.Tasks.Contains(task)
+                          select task).ToList();
+
+            foreach (var el in add)
+                list.Add(el);
+            foreach (var el in remove)
+                list.Remove(el);
 
             if (tasksGridView.DataSource == null)
                 tasksGridView.DataSource = list;
@@ -412,30 +196,11 @@ namespace MangaCrawler
                         list.ResetItem(i);
                 }
             }
-
-            UpdateChapters();
-        }
-
-        private void TryInvoke(Action a_action)
-        {
-            try
-            {
-                BeginInvoke(a_action);
-            }
-            catch (ObjectDisposedException)
-            {
-            }
-        }
-
-        private void MangaCrawlerForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            foreach (var c in m_chapters.Values)
-                c.Delete();
         }
 
         private void MangaCrawlerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (m_chapters.Values.Any(chi => chi.Downloading))
+            if (DownloadManager.DownloadingPages)
             {
                 if ((e.CloseReason != CloseReason.WindowsShutDown) || (e.CloseReason != CloseReason.TaskManagerClosing))
                 {
@@ -518,23 +283,6 @@ namespace MangaCrawler
                 return;
 
             SelectedChapter = (ChapterItem)chaptersListBox.SelectedItem;
-        }
-
-        class TestItem
-        {
-            public int V;
-            private static readonly Random r = new Random();
-
-            public TestItem()
-            {
-                V = r.Next(1000000);
-            }
-
-            public override string ToString()
-            {
-                return V.ToString() + V.ToString() + V.ToString() + V.ToString() + V.ToString() + 
-                V.ToString() + V.ToString() + V.ToString() + V.ToString() + V.ToString();
-            }
         }
     }
 }
