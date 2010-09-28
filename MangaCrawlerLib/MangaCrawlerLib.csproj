@@ -60,6 +60,8 @@
     <Compile Include="OurMangaCrawler.cs" />
     <Compile Include="PageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueueMutex.cs" />
+    <Compile Include="ReprioritizableTaskScheduler.cs" />
     <Compile Include="SerieInfo.cs" />
     <Compile Include="SerieItem.cs" />
     <Compile Include="ServerInfo.cs" />
