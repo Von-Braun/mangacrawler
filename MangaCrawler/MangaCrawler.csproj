@@ -127,14 +127,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChapterItem.cs" />
     <Compile Include="ListBoxEx.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="ReprioritizableTaskScheduler.cs" />
-    <Compile Include="SerieItem.cs" />
-    <Compile Include="ServerItem.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="MangaCrawlerForm.cs">
       <SubType>Form</SubType>
