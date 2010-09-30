@@ -51,16 +51,11 @@ namespace MangaCrawlerLib
             lock (m_lock)
             {
                 if (m_error)
-                    return ServerInfo.Name + " - error";
+                    return ServerInfo.Name + " (Error)";
                 if (m_downloading)
-                {
-                    if (m_progress != 0)
-                        return String.Format("{0} - downloading {1}%", ServerInfo.Name, m_progress);
-                    else
-                        return ServerInfo.Name + " - downloading";
-                }
+                    return String.Format("{0} ({1}%)", ServerInfo.Name, m_progress);
                 else if (m_finished)
-                    return ServerInfo.Name + " - downloaded";
+                    return ServerInfo.Name + "*";
                 else
                     return ServerInfo.Name;
             }

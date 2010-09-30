@@ -38,7 +38,7 @@ namespace MangaCrawlerLib
             get
             {
                 if (m_chapters == null)
-                    return null;
+                    return new ChapterInfo[0];
                 return from ch in m_chapters
                        select ch;
             }
@@ -99,14 +99,6 @@ namespace MangaCrawlerLib
                 }
 
                 m_chapters = chapters;
-
-                foreach (var chapter in m_chapters)
-                {
-                    if (DownloadManager.Chapters.ContainsKey(chapter))
-                        continue;
-
-                    DownloadManager.Chapters[chapter] = new ChapterItem(chapter);
-                }
 
                 if (a_progress_callback != null)
                     a_progress_callback(progress);

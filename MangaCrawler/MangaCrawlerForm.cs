@@ -17,7 +17,9 @@ using System.Reflection;
 
 namespace MangaCrawler
 {
-    // TODO: uzupelnic testy o testy rownoleglosci
+    // seleckaj chapter i serie ma pamietac stan - selekcja i top index, scrollbar horz itp
+    // podczas selekecji i ladowania rozleglego serie lub server cos sie dzieje nie tak
+
     // TODO: test rozlegly zrobic
     // TODO: wiecej kolorow dla statusow, downloading, error, downloaded
     //
@@ -37,13 +39,31 @@ namespace MangaCrawler
 
     public partial class MangaCrawlerForm : Form
     {
-        public SerieItem SelectedSerie;
-        public ServerItem SelectedServer;
-        public ChapterItem SelectedChapter;
-
         public MangaCrawlerForm()
         {
             InitializeComponent();
+        }
+
+        private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
+        {
+            tasksGridView.AutoGenerateColumns = false;
+            tasksGridView.DataSource = new BindingList<ChapterItem>();
+
+            DownloadManager.Form = this;
+            DownloadManager.ChaptersChanged = (chapters, selection) => UpdateChapters(chapters, selection);
+            DownloadManager.SeriesChanged = (series, selection) => UpdateSeries(series, selection);
+            DownloadManager.ServersChanged = (servers) => UpdateServers(servers);
+            DownloadManager.GetSeriesFilter = () => seriesFilterTextBox.Text;
+            DownloadManager.GetDirectoryPath = () => Settings.Instance.DirectoryPath;
+            DownloadManager.TasksChanged = (tasks) => UpdateTasks(tasks);
+
+            directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
+
+            DownloadManager.OnServersChanged();
+
+            seriesFilterTextBox.Text = Settings.Instance.SeriesFilter;
+
+            splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;
         }
 
         private void directoryChooseButton_Click(object sender, EventArgs e)
@@ -61,96 +81,42 @@ namespace MangaCrawler
             Settings.Instance.DirectoryPath = directoryPathTextBox.Text;
         }
 
-        private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
-        {
-            tasksGridView.AutoGenerateColumns = false;
-
-            DownloadManager.Form = this;
-            DownloadManager.ChaptersChanged += () => UpdateChapters();
-            DownloadManager.SeriesChanged += () => UpdateSeries();
-            DownloadManager.ServersChanged += () => UpdateServers();
-
-            directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
-
-            UpdateServers();
-
-            seriesFilterTextBox.Text = Settings.Instance.SeriesFilter;
-
-            splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;
-        }
-
-        private void UpdateSeries()
-        {
-            if (IsDisposed)
-                return;
-
-            List<SerieItem> list = new List<SerieItem>();
-
-            if ((SelectedServer != null) && (SelectedServer.ServerInfo.Series != null))
-            {
-                list = (from serie in SelectedServer.ServerInfo.Series
-                        where serie.Name.ToLower().IndexOf(seriesFilterTextBox.Text.ToLower()) != -1
-                        select DownloadManager.Series[serie]).ToList();
-            }
-
-            seriesListBox.ReloadItems(list);
-
-            UpdateChapters();
-        }
-
-        private void UpdateServers()
-        {
-            serversListBox.ReloadItems(DownloadManager.Servers);
-            UpdateSeries();
-        }
-
         private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Object.ReferenceEquals(serversListBox.SelectedItem, SelectedServer))
-                return;
-            SelectedServer = (ServerItem)serversListBox.SelectedItem;
+            DownloadManager.SelectedServerSerieListBoxState = new ListBoxState(seriesListBox);
+            DownloadManager.SelectedServer = (ServerItem)serversListBox.SelectedItem;
+        }
 
-            if (SelectedServer != null)
-                DownloadManager.DownloadSeries(SelectedServer);
-            else
-                UpdateSeries();
+        private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DownloadManager.SelectedSerieChapterListBoxState = new ListBoxState(chaptersListBox);
+            DownloadManager.SelectedSerie = (SerieItem)seriesListBox.SelectedItem;
+        }
+
+        private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DownloadManager.SelectedChapter = (ChapterItem)chaptersListBox.SelectedItem;
         }
 
         private void seriesFilterTextBox_TextChanged(object sender, EventArgs e)
         {
             Settings.Instance.SeriesFilter = seriesFilterTextBox.Text;
-
-            UpdateSeries();
+            DownloadManager.OnSeriesChanged();
         }
 
-        private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void UpdateServers(IList<ServerItem> a_servers)
         {
-            if (Object.ReferenceEquals(seriesListBox.SelectedItem, SelectedSerie))
-                return;
-            SelectedSerie = (SerieItem)seriesListBox.SelectedItem;
-
-            if (SelectedSerie != null)
-                DownloadManager.DownloadChapters(SelectedSerie);
-            else
-                UpdateChapters();
+            serversListBox.ReloadItems(a_servers);
         }
 
-        private void UpdateChapters()
+        private void UpdateSeries(IList<SerieItem> a_series, ListBoxState a_state)
         {
-            if (IsDisposed)
-                return;
+            seriesListBox.ReloadItems(a_series, a_state);
+        }
 
-            List<ChapterItem> list = new List<ChapterItem>();
-
-            if ((SelectedSerie != null) && (SelectedSerie.SerieInfo.Chapters != null))
-            {
-                list = (from ch in SelectedSerie.SerieInfo.Chapters
-                        select DownloadManager.Chapters[ch]).ToList();
-            }
-
-            chaptersListBox.ReloadItems(list);
-
-            UpdateTasks();
+        private void UpdateChapters(IList<ChapterItem> a_chapters, ListBoxState a_state)
+        {
+            chaptersListBox.ReloadItems(a_chapters, a_state);
         }
 
         private void downloadButton_Click(object sender, EventArgs e)
@@ -161,29 +127,21 @@ namespace MangaCrawler
         private void DownloadSelectedChapters()
         {
             if (chaptersListBox.SelectedItems.Count == 0)
-            {
                 System.Media.SystemSounds.Beep.Play();
-                return;
-            }
-
-            DownloadManager.DownloadPages(chaptersListBox.SelectedItems.Cast<ChapterItem>(), Settings.Instance.DirectoryPath);
+            else
+                DownloadManager.DownloadPages(chaptersListBox.SelectedItems.Cast<ChapterItem>());
         }
 
-        private void UpdateTasks()
+        private void UpdateTasks(IList<ChapterItem> a_tasks)
         {
-            BindingList<ChapterItem> list;
+            BindingList<ChapterItem> list = (BindingList<ChapterItem>)tasksGridView.DataSource;
 
-            if (tasksGridView.DataSource == null)
-                list = new BindingList<ChapterItem>();
-            else
-                list = (BindingList<ChapterItem>)tasksGridView.DataSource;
-
-            var add = (from task in DownloadManager.Tasks
+            var add = (from task in a_tasks
                        where !list.Contains(task)
                        select task).ToList();
 
             var remove = (from task in list
-                          where !DownloadManager.Tasks.Contains(task)
+                          where !a_tasks.Contains(task)
                           select task).ToList();
 
             foreach (var el in add)
@@ -191,18 +149,7 @@ namespace MangaCrawler
             foreach (var el in remove)
                 list.Remove(el);
 
-            if (tasksGridView.DataSource == null)
-                tasksGridView.DataSource = list;
-            else
-            {
-                if (list.Count == 0)
-                    list.ResetBindings();
-                else
-                {
-                    for (int i = 0; i < list.Count; i++)
-                        list.ResetItem(i);
-                }
-            }
+            tasksGridView.Invalidate();
         }
 
         private void MangaCrawlerForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -242,24 +189,24 @@ namespace MangaCrawler
 
         private void serverURLButton_Click(object sender, EventArgs e)
         {
-            if (SelectedServer != null)
-                System.Diagnostics.Process.Start(SelectedServer.ServerInfo.URL);
+            if (DownloadManager.SelectedServer != null)
+                System.Diagnostics.Process.Start(DownloadManager.SelectedServer.ServerInfo.URL);
             else
                 System.Media.SystemSounds.Beep.Play();
         }
 
         private void seriesURLButton_Click(object sender, EventArgs e)
         {
-            if (SelectedSerie != null)
-                System.Diagnostics.Process.Start(SelectedSerie.SerieInfo.URL);
+            if (DownloadManager.SelectedSerie != null)
+                System.Diagnostics.Process.Start(DownloadManager.SelectedSerie.SerieInfo.URL);
             else
                 System.Media.SystemSounds.Beep.Play();
         }
 
         private void chapterURLButton_Click(object sender, EventArgs e)
         {
-            if (SelectedChapter != null)
-                System.Diagnostics.Process.Start(SelectedChapter.ChapterInfo.URL);
+            if (DownloadManager.SelectedChapter != null)
+                System.Diagnostics.Process.Start(DownloadManager.SelectedChapter.ChapterInfo.URL);
             else
                 System.Media.SystemSounds.Beep.Play();
         }
@@ -279,17 +226,8 @@ namespace MangaCrawler
             if ((e.ColumnIndex == 0) && (e.RowIndex >= 0))
             {
                 BindingList<ChapterItem> list = (BindingList<ChapterItem>)tasksGridView.DataSource;
-                list[e.RowIndex].Delete();
-                UpdateTasks();
+                DownloadManager.DeleteTask(list[e.RowIndex]);
             }
-        }
-
-        private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (Object.ReferenceEquals(SelectedChapter, chaptersListBox.SelectedItem))
-                return;
-
-            SelectedChapter = (ChapterItem)chaptersListBox.SelectedItem;
         }
     }
 }
