@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
+using MangaCrawlerLib;
 
 namespace MangaCrawler
 {
@@ -50,7 +51,7 @@ namespace MangaCrawler
             }
         }
 
-        public void ReloadItems<T>(IEnumerable<T> a_enum) where T : class
+        public void ReloadItems<T>(IEnumerable<T> a_enum, ListBoxState a_state = null) where T : class
         {
             if (Capture)
                 return;
@@ -58,39 +59,27 @@ namespace MangaCrawler
             BeginUpdate();
             m_reloading = true;
 
+            var prev_state = new ListBoxState(this);
+
             try
             {
-                int top_index = IndexFromPoint(0, 0);
-                T top_item = null;
-                if (top_index != -1)
-                    top_item = (T)Items[top_index];
-
-                var sel_items = SelectedItems.Cast<object>().Intersect(a_enum).Cast<T>().ToList();
-
-                int selected_index = SelectedIndex;
-                T selected_item = (T)SelectedItem;
+                if (a_state == null)
+                    a_state = new ListBoxState(this);
 
                 Items.Clear();
                 Items.AddRange(a_enum.ToArray());
 
-                if ((top_item != null) && (a_enum.Contains(top_item)))
-                    TopIndex = Items.IndexOf(top_item);
-                else
-                    TopIndex = top_index;
-
-                foreach (var sel_item in sel_items)
-                    SetSelected(Items.IndexOf(sel_item), true);
-
-                if ((selected_item != null) && (a_enum.Contains(selected_item)))
-                    SelectedItem = selected_item;
-                else if ((selected_index != -1) && (selected_index < Items.Count))
-                    SelectedIndex = selected_index;
+                a_state.Restore();
             }
             finally
             {
                 EndUpdate();
                 m_reloading = false;
             }
+
+            if (a_state.SelectedItem != prev_state.SelectedItem)
+                a_state.RaiseSelectionChanged();
+
         }
     }
 }

@@ -196,10 +196,26 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                if (Progress == "")
-                    return ChapterInfo.Name;
-                else
-                    return String.Format("{0} - {1}", ChapterInfo.Name, Progress);
+                lock (m_lock)
+                {
+                    if (m_cancellationTokenSource.IsCancellationRequested & !Finished)
+                        return String.Format("{0} (Deleting)", ChapterInfo.Name);
+                    else if (Error)
+                        return String.Format("{0} (Error)", ChapterInfo.Name);
+                    else if (Finished)
+                        return String.Format("{0}*", ChapterInfo.Name);
+                    else if (Downloading)
+                    {
+                        if (ChapterInfo.Pages == null)
+                            return String.Format("{0} (Downloading)", ChapterInfo.Name);
+                        else
+                            return String.Format("{0} ({1}/{2})", ChapterInfo.Name, DownloadedPages, ChapterInfo.Pages.Count());
+                    }
+                    else if (Waiting)
+                        return String.Format("{0} (...)", ChapterInfo.Name);
+                    else
+                        return ChapterInfo.Name;
+                }
             }
         }
 

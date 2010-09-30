@@ -43,10 +43,8 @@ namespace MangaCrawlerLib
                 m_spinLock.Exit();
 
                 ManualResetEvent mre;
-                if (!m_queue.TryDequeue(out mre))
-                    throw new InvalidOperationException();
-
-                mre.Set();
+                if (m_queue.TryDequeue(out mre))
+                    mre.Set();
             }
         }
     }

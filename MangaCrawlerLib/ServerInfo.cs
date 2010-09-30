@@ -54,7 +54,7 @@ namespace MangaCrawlerLib
             get
             {
                 if (m_series == null)
-                    return null;
+                    return new SerieInfo[0];
 
                 return from serie in m_series
                        select serie;
@@ -81,14 +81,6 @@ namespace MangaCrawlerLib
                 }
 
                 m_series = series;
-
-                foreach (var serie in m_series)
-                {
-                    if (DownloadManager.Series.ContainsKey(serie))
-                        continue;
-
-                    DownloadManager.Series[serie] = new SerieItem(serie);
-                }
 
                 if (a_progress_callback != null)
                     a_progress_callback(progress);

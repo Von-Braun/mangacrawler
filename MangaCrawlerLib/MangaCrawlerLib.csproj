@@ -49,10 +49,12 @@
     <Compile Include="ChapterItem.cs" />
     <Compile Include="ConnectionsLimiter.cs" />
     <Compile Include="Crawler.cs" />
+    <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="DownloadManager.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileUtils.cs" />
     <Compile Include="HTTPUtils.cs" />
+    <Compile Include="ListBoxState.cs" />
     <Compile Include="MangaFoxCrawler.cs" />
     <Compile Include="MangaRunCrawler.cs" />
     <Compile Include="MangaShareCrawler.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="PageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueMutex.cs" />
+    <Compile Include="ReadOnlyDictionary.cs" />
     <Compile Include="ReprioritizableTaskScheduler.cs" />
     <Compile Include="SerieInfo.cs" />
     <Compile Include="SerieItem.cs" />
@@ -77,6 +80,9 @@
       <Project>{193BB801-054F-4729-9D5D-FCE1E32594BF}</Project>
       <Name>HtmlAgilityPack</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
