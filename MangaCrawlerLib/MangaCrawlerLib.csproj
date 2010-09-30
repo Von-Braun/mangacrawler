@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimeSourceCrawler.cs" />
+    <Compile Include="Crawlers\AnimeSourceCrawler.cs" />
     <Compile Include="ChapterInfo.cs" />
     <Compile Include="ChapterItem.cs" />
     <Compile Include="ConnectionsLimiter.cs" />
@@ -55,13 +55,13 @@
     <Compile Include="FileUtils.cs" />
     <Compile Include="HTTPUtils.cs" />
     <Compile Include="ListBoxState.cs" />
-    <Compile Include="MangaFoxCrawler.cs" />
-    <Compile Include="MangaRunCrawler.cs" />
-    <Compile Include="MangaShareCrawler.cs" />
-    <Compile Include="MangaToshokanCrawler.cs" />
-    <Compile Include="MangaVolumeCrawler.cs" />
-    <Compile Include="OtakuWorksCrawler.cs" />
-    <Compile Include="OurMangaCrawler.cs" />
+    <Compile Include="Crawlers\MangaFoxCrawler.cs" />
+    <Compile Include="Crawlers\MangaRunCrawler.cs" />
+    <Compile Include="Crawlers\MangaShareCrawler.cs" />
+    <Compile Include="Crawlers\MangaToshokanCrawler.cs" />
+    <Compile Include="Crawlers\MangaVolumeCrawler.cs" />
+    <Compile Include="Crawlers\OtakuWorksCrawler.cs" />
+    <Compile Include="Crawlers\OurMangaCrawler.cs" />
     <Compile Include="PageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueMutex.cs" />
@@ -71,18 +71,15 @@
     <Compile Include="SerieItem.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="ServerItem.cs" />
-    <Compile Include="SpectrumNexusCrawler.cs" />
-    <Compile Include="StopTazmoCrawler.cs" />
-    <Compile Include="UnixMangaCrawler.cs" />
+    <Compile Include="Crawlers\SpectrumNexusCrawler.cs" />
+    <Compile Include="Crawlers\StopTazmoCrawler.cs" />
+    <Compile Include="Crawlers\UnixMangaCrawler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HtmlAgilityPack\HtmlAgilityPack.csproj">
       <Project>{193BB801-054F-4729-9D5D-FCE1E32594BF}</Project>
       <Name>HtmlAgilityPack</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
