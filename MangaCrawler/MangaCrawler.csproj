@@ -131,7 +131,7 @@
     <Compile Include="ListBoxEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ListBoxState.cs" />
+    <Compile Include="ListBoxVisualState.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="MangaCrawlerForm.cs">
       <SubType>Form</SubType>

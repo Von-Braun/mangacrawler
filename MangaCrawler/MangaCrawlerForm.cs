@@ -53,9 +53,9 @@ namespace MangaCrawler
             DownloadManager.GetSeriesFilter += () => seriesFilterTextBox.Text;
             DownloadManager.GetDirectoryPath += () => Settings.Instance.DirectoryPath;
 
-            DownloadManager.GetServersVisualState += () => new ListBoxState(serversListBox);
-            DownloadManager.GetSeriesVisualState += () => new ListBoxState(seriesListBox);
-            DownloadManager.GetChaptersVisualState += () => new ListBoxState(chaptersListBox);
+            DownloadManager.GetServersVisualState += () => new ListBoxVisualState(serversListBox);
+            DownloadManager.GetSeriesVisualState += () => new ListBoxVisualState(seriesListBox);
+            DownloadManager.GetChaptersVisualState += () => new ListBoxVisualState(chaptersListBox);
 
             directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
 
