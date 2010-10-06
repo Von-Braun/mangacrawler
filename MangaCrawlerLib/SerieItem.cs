@@ -19,7 +19,7 @@ namespace MangaCrawlerLib
 
         private bool m_error;
         private bool m_downloading;
-        private bool m_finished;
+        private bool m_downloaded;
 
 
         public SerieItem(SerieInfo a_info)
@@ -28,11 +28,18 @@ namespace MangaCrawlerLib
             Initialize();
         }
 
-        public void SetProgress(int a_progress)
+        public int Progress
         {
-            lock (m_lock)
+            get
             {
-                m_progress = a_progress;
+                return m_progress;
+            }
+            set
+            {
+                lock (m_lock)
+                {
+                    m_progress = value;
+                }
             }
         }
 
@@ -43,7 +50,7 @@ namespace MangaCrawlerLib
                 m_progress = 0;
                 m_error = false;
                 m_downloading = false;
-                m_finished = false;
+                m_downloaded = false;
             }
         }
 
@@ -53,10 +60,10 @@ namespace MangaCrawlerLib
             {
                 if (m_error)
                     return SerieInfo.Name + " (Error)";
-                if (m_downloading)
+                else if (m_downloading)
                     return String.Format("{0} ({1}%)", SerieInfo.Name, m_progress);
-                else if (m_finished)
-                    return SerieInfo.Name + "*";
+                else if (m_downloaded)
+                    return SerieInfo.Name + " (OK)";
                 else
                     return SerieInfo.Name;
             }
@@ -66,10 +73,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                lock (m_lock)
-                {
-                    return m_error;
-                }
+                return m_error;
             }
             set
             {
@@ -84,10 +88,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                lock (m_lock)
-                {
-                    return m_downloading;
-                }
+                return m_downloading;
             }
             set
             {
@@ -98,20 +99,17 @@ namespace MangaCrawlerLib
             }
         }
 
-        public bool Finished
+        public bool Downloaded
         {
             get
             {
-                lock (m_lock)
-                {
-                    return m_finished;
-                }
+                return m_downloaded;
             }
             set
             {
                 lock (m_lock)
                 {
-                    m_finished = value;
+                    m_downloaded = value;
                 }
             }
         }

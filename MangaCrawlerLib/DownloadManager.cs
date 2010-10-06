@@ -28,12 +28,12 @@ namespace MangaCrawlerLib
 
         public static event Action<IEnumerable<ChapterItem>> TasksChanged;
 
-        public static event Func<string> GetSeriesFilter;
-        public static event Func<string> GetDirectoryPath;
+        public static Func<string> GetSeriesFilter;
+        public static Func<string> GetDirectoryPath;
 
-        public static event Func<VisualState> GetServersVisualState;
-        public static event Func<VisualState> GetSeriesVisualState;
-        public static event Func<VisualState> GetChaptersVisualState;
+        public static Func<VisualState> GetServersVisualState;
+        public static Func<VisualState> GetSeriesVisualState;
+        public static Func<VisualState> GetChaptersVisualState;
 
         static DownloadManager()
         {
@@ -41,7 +41,7 @@ namespace MangaCrawlerLib
                 m_servers.Add(new ServerItem(server));
         }
 
-        private static VisualState SelectedServerSerieListBoxState
+        public static VisualState SeriesVisualState
         {
             get
             {
@@ -59,7 +59,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        private static VisualState SelectedSerieChapterListBoxState
+        public static VisualState ChaptersVisualState
         {
             get
             {
@@ -91,20 +91,16 @@ namespace MangaCrawlerLib
             }
             set
             {
-                SelectedSerieChapterListBoxState = GetChaptersVisualState();
-                SelectedServerSerieListBoxState = GetSeriesVisualState();
+                ChaptersVisualState = GetChaptersVisualState();
 
                 if (Object.ReferenceEquals(value, SelectedSerie))
                     return;
                 m_selectedSerie[SelectedServer] = value;
 
-                if (SelectedSerie != null)
-                {
-                    if (!DownloadChapters(SelectedSerie))
-                        OnChaptersChanged();
-                }
-                else
+                if (!DownloadChapters(SelectedSerie))
                     OnChaptersChanged();
+
+                SeriesVisualState = GetSeriesVisualState();
             }
         }
 
@@ -116,16 +112,13 @@ namespace MangaCrawlerLib
             }
             set
             {
-                SelectedServerSerieListBoxState = GetSeriesVisualState();
+                SeriesVisualState = GetSeriesVisualState();
 
                 if (Object.ReferenceEquals(SelectedServer, value))
                     return;
                 m_selectedServer = value;
 
-                if (m_selectedServer != null)
-                    if (!DownloadManager.DownloadSeries(m_selectedServer))
-                        OnSeriesChanged();
-                else
+                if (!DownloadSeries(m_selectedServer))
                     OnSeriesChanged();
             }
         }
@@ -144,18 +137,20 @@ namespace MangaCrawlerLib
             }
             set
             {
-                SelectedSerieChapterListBoxState = GetChaptersVisualState();
-
                 if (Object.ReferenceEquals(SelectedChapter, value))
                     return;
 
                 m_selectedChapter[SelectedSerie] = value;
+
+                ChaptersVisualState = GetChaptersVisualState();
             }
         }
 
         private static bool DownloadSeries(ServerItem a_item)
         {
-            if (a_item.Downloading || (a_item.Finished && !a_item.Error))
+            if (a_item == null)
+                return false;
+            if (a_item.Downloading || a_item.Downloaded)
                 return false;
 
             a_item.Initialize();
@@ -175,11 +170,13 @@ namespace MangaCrawlerLib
                             m_series[serie] = new SerieItem(serie);
                         }
 
-                        a_item.SetProgress(progress);
+                        a_item.Progress = progress;
 
                         if (progress != 100)
                             OnServersChanged();
                     });
+
+                    a_item.Downloaded = true;
                 }
                 catch (ObjectDisposedException)
                 {
@@ -190,7 +187,6 @@ namespace MangaCrawlerLib
                 }
 
                 a_item.Downloading = false;
-                a_item.Finished = true;
 
                 OnServersChanged();
             });
@@ -204,7 +200,9 @@ namespace MangaCrawlerLib
 
         private static bool DownloadChapters(SerieItem a_item)
         {
-            if (a_item.Downloading || (a_item.Finished && !a_item.Error))
+            if (a_item == null)
+                return false;
+            if (a_item.Downloading || a_item.Downloaded)
                 return false;
 
             a_item.Initialize();
@@ -224,11 +222,13 @@ namespace MangaCrawlerLib
                             m_chapters[chapter] = new ChapterItem(chapter);
                         }
 
-                        a_item.SetProgress(progress);
+                        a_item.Progress = progress;
 
                         if (progress != 100)
                             OnSeriesChanged();
                     });
+
+                    a_item.Downloaded = true;
                 }
                 catch (ObjectDisposedException)
                 {
@@ -239,7 +239,6 @@ namespace MangaCrawlerLib
                 }
 
                 a_item.Downloading = false;
-                a_item.Finished = true;
 
                 OnSeriesChanged();
 
@@ -414,7 +413,7 @@ namespace MangaCrawlerLib
             TryInvoke(() =>
             {
                 if (!Form.IsDisposed)
-                    SelectedServerSerieListBoxState.ReloadItems(list.AsReadOnly());
+                    SeriesVisualState.ReloadItems(list.AsReadOnly());
             });
 
             OnChaptersChanged();
@@ -433,7 +432,7 @@ namespace MangaCrawlerLib
             TryInvoke(() =>
             {
                 if (!Form.IsDisposed)
-                    SelectedSerieChapterListBoxState.ReloadItems(list.AsReadOnly());
+                    ChaptersVisualState.ReloadItems(list.AsReadOnly());
             });
 
             OnTasksChanged();
@@ -446,7 +445,7 @@ namespace MangaCrawlerLib
                 TryInvoke(() =>
                 {
                     var all_tasks = (from ch in m_chapters.Values
-                                    where (ch.Waiting || (ch.Finished && ch.Error) || ch.Downloading)
+                                    where (ch.Waiting || ch.Error || ch.Downloading)
                                     select ch).ToList();
 
                     var add = (from task in all_tasks

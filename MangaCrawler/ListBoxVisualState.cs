@@ -74,27 +74,16 @@ namespace MangaCrawler
             m_listBox.SelectedItem = m_listBox.SelectedItem;
         }
 
-        protected override void Update<T>(IEnumerable<T> a_newItems)
-        {
-            //if (a_newItems.Intersect(m_listBox.Items.Cast<Object>()).Count() == 0)
-            //    Clear();
-            //else
-            //{
-            //    if (m_selectedItems.Intersect(m_listBox.Items.Cast<Object>()).Count() > 0)
-            //        SaveState();
-            //    else if (m_selectedIndex == -1)
-            //    {
-            //        if (a_newItems.Intersect(m_listBox.Items.Cast<Object>()).Count() > 0)
-            //            SaveState();
-            //    }
-            //}
-        }
-
         public override void ReloadItems<T>(IEnumerable<T> a_enum)
         {
             var prev_state = new ListBoxVisualState(m_listBox);
 
-            Update(a_enum);
+            if ((m_selectedItem != null) && (!a_enum.Contains(m_selectedItem)))
+                Clear();
+
+            if (a_enum.Count() == 0)
+                Clear();
+
             m_listBox.ReloadItems(a_enum, this);
 
             if (m_selectedItem != prev_state.m_selectedItem)

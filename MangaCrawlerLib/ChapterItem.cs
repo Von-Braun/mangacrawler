@@ -21,7 +21,7 @@ namespace MangaCrawlerLib
         private bool m_error;
         private bool m_waiting;
         private bool m_downloading;
-        private bool m_finished;
+        private bool m_downloaded;
 
         public readonly ChapterInfo ChapterInfo;
 
@@ -35,29 +35,20 @@ namespace MangaCrawlerLib
         {
             get
             {
-                lock (m_lock)
-                {
-                    return m_downloadedPages;
-                }
+                return m_downloadedPages;
             }
         }
 
         public void PageDownloaded()
         {
-            lock (m_lock)
-            {
-                m_downloadedPages++;
-            }
+            Interlocked.Increment(ref m_downloadedPages);
         }
 
         public bool Error
         {
             get
             {
-                lock (m_lock)
-                {
-                    return m_error;
-                }
+                return m_error;
             }
         }
 
@@ -65,10 +56,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                lock (m_lock)
-                {
-                    return m_waiting;
-                }
+                return m_waiting;
             }
             set
             {
@@ -83,10 +71,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                lock (m_lock)
-                {
-                    return m_downloading;
-                }
+                return m_downloading;
             }
             set
             {
@@ -97,14 +82,11 @@ namespace MangaCrawlerLib
             }
         }
 
-        public bool Finished
+        public bool Downloaded
         {
             get
             {
-                lock (m_lock)
-                {
-                    return m_finished;
-                }
+                return m_downloaded;
             }
         }
 
@@ -132,31 +114,41 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                if (Finished)
+                if (Downloaded || Error)
                     Initialize();
                 else
                     m_cancellationTokenSource.Cancel();
             }
         }
 
-        public string Progress
+        public bool Deleting
+        {
+            get
+            {
+                return m_cancellationTokenSource.IsCancellationRequested & !(Downloaded || Error);
+            }
+        }
+        
+        // TODO: owner draw
+        public string TaskProgress
         {
             get
             {
                 lock (m_lock)
                 {
-                    if (m_cancellationTokenSource.IsCancellationRequested & !Finished)
+                    if (Deleting)
                         return "Deleting";
                     else if (Error)
-                        return String.Format("Error ({0}/{1})", DownloadedPages, ChapterInfo.Pages.Count());
-                    else if (Finished)
+                    {
+                        return String.Format("Error ({0}/{1})", DownloadedPages,
+                            (ChapterInfo.Pages == null) ? 0 : ChapterInfo.Pages.Count());
+                    }
+                    else if (Downloaded)
                         return String.Format("Downloaded");
                     else if (Downloading)
                     {
-                        if (ChapterInfo.Pages == null)
-                            return "Downloading";
-                        else
-                            return String.Format("Downloading ({0}/{1})", DownloadedPages, ChapterInfo.Pages.Count());
+                        return String.Format("{0}/{1}", DownloadedPages,
+                            (ChapterInfo.Pages == null) ? 0 : ChapterInfo.Pages.Count());
                     }
                     else if (Waiting)
                         return "Waiting";
@@ -171,7 +163,7 @@ namespace MangaCrawlerLib
             lock (m_lock)
             {
                 m_error = a_error;
-                m_finished = true;
+                m_downloaded = !a_error;
                 m_downloading = false;
 
                 if (m_cancellationTokenSource.IsCancellationRequested)
@@ -184,7 +176,7 @@ namespace MangaCrawlerLib
             lock (m_lock)
             {
                 m_waiting = false;
-                m_finished = false;
+                m_downloaded = false;
                 m_cancellationTokenSource = new CancellationTokenSource();
                 m_downloadedPages = 0;
                 m_downloading = false;
@@ -194,29 +186,7 @@ namespace MangaCrawlerLib
 
         public override string ToString()
         {
-            lock (m_lock)
-            {
-                lock (m_lock)
-                {
-                    if (m_cancellationTokenSource.IsCancellationRequested & !Finished)
-                        return String.Format("{0} (Deleting)", ChapterInfo.Name);
-                    else if (Error)
-                        return String.Format("{0} (Error)", ChapterInfo.Name);
-                    else if (Finished)
-                        return String.Format("{0}*", ChapterInfo.Name);
-                    else if (Downloading)
-                    {
-                        if (ChapterInfo.Pages == null)
-                            return String.Format("{0} (Downloading)", ChapterInfo.Name);
-                        else
-                            return String.Format("{0} ({1}/{2})", ChapterInfo.Name, DownloadedPages, ChapterInfo.Pages.Count());
-                    }
-                    else if (Waiting)
-                        return String.Format("{0} (...)", ChapterInfo.Name);
-                    else
-                        return ChapterInfo.Name;
-                }
-            }
+            return ChapterInfo.Name + " " + TaskProgress;
         }
 
         public string GetImageDirectory(string a_directoryBase)

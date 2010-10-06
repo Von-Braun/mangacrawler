@@ -14,6 +14,13 @@ namespace MangaCrawler
     {
         private bool m_reloading;
 
+        private const int WM_VSCROLL = 0x0115;
+        private const int SB_THUMBTRACK = 5;
+        private const int SB_ENDSCROLL = 8;
+
+        public delegate void ListBoxScrollDelegate(object a_sender, int a_topIndex, bool a_tracking);
+        public event ListBoxScrollDelegate HorizontalScroll;
+
         protected override void OnSelectedIndexChanged(EventArgs e)
         {
             if (!m_reloading)
@@ -24,6 +31,18 @@ namespace MangaCrawler
         {
             if (!m_reloading)
                 base.OnSelectedValueChanged(e);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+
+            if (m.Msg == WM_VSCROLL)
+            {
+                int nfy = m.WParam.ToInt32() & 0xFFFF;
+                if (HorizontalScroll != null && (nfy == SB_THUMBTRACK || nfy == SB_ENDSCROLL))
+                    HorizontalScroll(this, this.TopIndex, nfy == SB_THUMBTRACK);
+            }
         }
 
         public void SelectAll()
