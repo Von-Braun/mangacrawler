@@ -12,7 +12,7 @@ namespace MangaCrawlerLib
         protected abstract void Clear();
         public abstract void Restore();
         public abstract void RaiseSelectionChanged();
-        public abstract void Update<T>(IEnumerable<T> a_newItems) where T : class;
+        protected abstract void Update<T>(IEnumerable<T> a_newItems) where T : class;
         public abstract void ReloadItems<T>(IEnumerable<T> a_enum) where T : class;
     }
 }

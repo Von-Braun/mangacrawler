@@ -43,14 +43,6 @@ namespace MangaCrawlerLib
                 m_servers.Add(new ServerItem(server));
         }
 
-        public static IDictionary<ChapterInfo, ChapterItem> Chapters
-        {
-            get
-            {
-                return m_chapters.AsReadOnly();
-            }
-        }
-
         private static VisualState SelectedServerSerieListBoxState
         {
             get
@@ -84,30 +76,6 @@ namespace MangaCrawlerLib
             {
                 if (SelectedSerie != null)
                     m_chaptersListBoxState[SelectedSerie] = value;
-            }
-        }
-
-        public static IList<ChapterItem> Tasks
-        {
-            get
-            {
-                return m_tasks.AsReadOnly();
-            }
-        }
-
-        public static IDictionary<SerieInfo, SerieItem> Series
-        {
-            get
-            {
-                return m_series.AsReadOnly();
-            }
-        }
-
-        public static IList<ServerItem> Servers
-        {
-            get
-            {
-                return m_servers.AsReadOnly();
             }
         }
 
@@ -187,7 +155,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static bool DownloadSeries(ServerItem a_item)
+        private static bool DownloadSeries(ServerItem a_item)
         {
             if (a_item.Downloading || (a_item.Finished && !a_item.Error))
                 return false;
@@ -236,7 +204,7 @@ namespace MangaCrawlerLib
             return true;
         }
 
-        public static bool DownloadChapters(SerieItem a_item)
+        private static bool DownloadChapters(SerieItem a_item)
         {
             if (a_item.Downloading || (a_item.Finished && !a_item.Error))
                 return false;
@@ -417,21 +385,26 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static void OnServersChanged()
+        public static void UpdateVisuals()
+        {
+            OnServersChanged();
+        }
+
+        private static void OnServersChanged()
         {
             if (ServersChanged != null)
             {
                 TryInvoke(() =>
                 {
                     if (!Form.IsDisposed)
-                        ServersChanged(Servers);
+                        ServersChanged(m_servers.AsReadOnly());
                 });
             }
 
             OnSeriesChanged();
         }
 
-        public static void OnSeriesChanged()
+        private static void OnSeriesChanged()
         {
             if (SeriesChanged != null)
             {
@@ -455,7 +428,7 @@ namespace MangaCrawlerLib
             OnChaptersChanged();
         }
 
-        public static void OnChaptersChanged()
+        private static void OnChaptersChanged()
         {
             if (ChaptersChanged != null)
             {
@@ -477,7 +450,7 @@ namespace MangaCrawlerLib
             OnTasksChanged();
         }
 
-        public static void OnTasksChanged()
+        private static void OnTasksChanged()
         {
             if (TasksChanged != null)
             {

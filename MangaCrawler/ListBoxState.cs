@@ -67,7 +67,7 @@ namespace MangaCrawler
             m_listBox.SelectedItem = m_listBox.SelectedItem;
         }
 
-        public override void Update<T>(IEnumerable<T> a_newItems)
+        protected override void Update<T>(IEnumerable<T> a_newItems)
         {
             if (a_newItems.Intersect(m_listBox.Items.Cast<Object>()).Count() == 0)
                 Clear();
@@ -85,16 +85,13 @@ namespace MangaCrawler
 
         public override void ReloadItems<T>(IEnumerable<T> a_enum)
         {
+            var prev_state = new ListBoxState(m_listBox);
+
+            Update(a_enum);
             m_listBox.ReloadItems(a_enum, this);
-        }
 
-        public Object SelectedItem
-        {
-            get
-            {
-                return m_selectedItem;
-            }
+            if (m_selectedItem != prev_state.m_selectedItem)
+                RaiseSelectionChanged();
         }
-
     }
 }
