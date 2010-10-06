@@ -37,30 +37,41 @@ namespace MangaCrawlerLib
 
             m_progress = 0;
 
-            Parallel.For(1, number + 1, (page) =>
+            Parallel.For(1, number + 1, (page, state) =>
             {
-                String url = String.Format("http://www.mangafox.com/directory/all/{0}.htm", page);
-
-                HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, url);
-
-                var page_series = page_doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/table/tr/td[1]/a");
-
-                int index = 0;
-                foreach (var serie in page_series)
+                try
                 {
-                    Tuple<int, int, string, string> s = 
-                        new Tuple<int, int, string, string>(page, index++, serie.InnerText, 
-                                                            serie.GetAttributeValue("href", "").RemoveFromLeft(1).RemoveFromRight(1));
+                    String url = String.Format("http://www.mangafox.com/directory/all/{0}.htm", page);
 
-                    series.Add(s);
+                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, url);
+
+                    var page_series = page_doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/table/tr/td[1]/a");
+
+                    if (page == 10)
+                        throw new Exception();
+
+                    int index = 0;
+                    foreach (var serie in page_series)
+                    {
+                        Tuple<int, int, string, string> s =
+                            new Tuple<int, int, string, string>(page, index++, serie.InnerText,
+                                                                serie.GetAttributeValue("href", "").RemoveFromLeft(1).RemoveFromRight(1));
+
+                        series.Add(s);
+                    }
+
+                    var result = from serie in series
+                                 orderby serie.Item1, serie.Item2
+                                 select new SerieInfo(a_info, serie.Item4, serie.Item3);
+
+                    m_progress++;
+                    a_progress_callback(m_progress * 100 / number, result);
                 }
-
-                var result = from serie in series
-                             orderby serie.Item1, serie.Item2
-                             select new SerieInfo(a_info, serie.Item4, serie.Item3);
-
-                m_progress++;
-                a_progress_callback(m_progress * 100 / number, result);
+                catch
+                {
+                    state.Break();
+                    throw;
+                }
             });
         }
 

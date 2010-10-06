@@ -10,8 +10,8 @@ namespace MangaCrawlerLib
     public class QueuedMutex
     {
         private Object m_lock = new Object();
-        private SpinLock m_spinLock = new SpinLock();
-        private ConcurrentQueue<ManualResetEvent> m_queue = new ConcurrentQueue<ManualResetEvent>();
+        private Queue<ManualResetEvent> m_queue = new Queue<ManualResetEvent>();
+        private bool m_firstGo = false;
 
         public void WaitOne(CancellationToken a_token)
         {
@@ -19,16 +19,13 @@ namespace MangaCrawlerLib
 
             lock (m_lock)
             {
-                if (m_spinLock.IsHeld && !m_spinLock.IsHeldByCurrentThread)
+                if (m_firstGo)
                 {
                     mre = new ManualResetEvent(false);
                     m_queue.Enqueue(mre);
                 }
                 else
-                {
-                    bool taken = false;
-                    m_spinLock.Enter(ref taken);
-                }
+                    m_firstGo = true;
             }
 
             if (mre != null)
@@ -42,11 +39,11 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                m_spinLock.Exit();
+                if (m_queue.Count != 0)
+                    m_queue.Dequeue().Set();
 
-                ManualResetEvent mre;
-                if (m_queue.TryDequeue(out mre))
-                    mre.Set();
+                if (m_queue.Count == 0)
+                    m_firstGo = false;
             }
         }
     }

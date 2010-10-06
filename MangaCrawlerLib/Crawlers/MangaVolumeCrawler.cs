@@ -37,43 +37,51 @@ namespace MangaCrawlerLib
 
             m_progress = 0;
 
-            Parallel.For(1, number + 1, (page) =>
+            Parallel.For(1, number + 1, (page, state) =>
             {
-                HtmlDocument page_doc;
-
-                if (page == 1)
+                try
                 {
-                    page_doc = doc;
+                    HtmlDocument page_doc;
+
+                    if (page == 1)
+                    {
+                        page_doc = doc;
+                    }
+                    else
+                    {
+                        String url = "http://www.mangavolume.com" +
+                            numbers[page - 1].ChildNodes[0].GetAttributeValue("href", "");
+
+                        page_doc = ConnectionsLimiter.DownloadDocument(a_info, url);
+                    }
+
+                    var page_series = page_doc.DocumentNode.SelectNodes("//table[@id='series_list']/tr/td[1]/a");
+
+                    int index = 0;
+                    foreach (var serie in page_series)
+                    {
+                        if (serie.ParentNode.ParentNode.ChildNodes[3].InnerText == "0")
+                            continue;
+
+                        Tuple<int, int, string, string> s =
+                            new Tuple<int, int, string, string>(page, index++, serie.InnerText,
+                                                                serie.GetAttributeValue("href", "").RemoveFromLeft(1));
+
+                        series.Add(s);
+                    }
+
+                    var result = from serie in series
+                                 orderby serie.Item1, serie.Item2
+                                 select new SerieInfo(a_info, serie.Item4, serie.Item3);
+
+                    m_progress++;
+                    a_progress_callback(m_progress * 100 / number, result);
                 }
-                else
+                catch
                 {
-                    String url = "http://www.mangavolume.com" +
-                        numbers[page - 1].ChildNodes[0].GetAttributeValue("href", "");
-
-                    page_doc = ConnectionsLimiter.DownloadDocument(a_info, url);
+                    state.Break();
+                    throw;
                 }
-
-                var page_series = page_doc.DocumentNode.SelectNodes("//table[@id='series_list']/tr/td[1]/a");
-
-                int index = 0;
-                foreach (var serie in page_series)
-                {
-                    if (serie.ParentNode.ParentNode.ChildNodes[3].InnerText == "0")
-                        continue;
-
-                    Tuple<int, int, string, string> s =
-                        new Tuple<int, int, string, string>(page, index++, serie.InnerText,
-                                                            serie.GetAttributeValue("href", "").RemoveFromLeft(1));
-
-                    series.Add(s);
-                }
-
-                var result = from serie in series
-                             orderby serie.Item1, serie.Item2
-                             select new SerieInfo(a_info, serie.Item4, serie.Item3);
-
-                m_progress++;
-                a_progress_callback(m_progress * 100 / number, result);
             });
         }
 
