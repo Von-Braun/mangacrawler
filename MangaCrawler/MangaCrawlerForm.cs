@@ -48,14 +48,12 @@ namespace MangaCrawler
 
             DownloadManager.Form = this;
 
-            DownloadManager.ChaptersChanged += (chapters, visual_state) => visual_state.ReloadItems(chapters);
-            DownloadManager.SeriesChanged += (series, visual_state) => visual_state.ReloadItems(series);
-            DownloadManager.ServersChanged += (servers) => new ListBoxState(serversListBox).ReloadItems(servers);
             DownloadManager.TasksChanged += (tasks) => UpdateTasks(tasks);
 
             DownloadManager.GetSeriesFilter += () => seriesFilterTextBox.Text;
             DownloadManager.GetDirectoryPath += () => Settings.Instance.DirectoryPath;
 
+            DownloadManager.GetServersVisualState += () => new ListBoxState(serversListBox);
             DownloadManager.GetSeriesVisualState += () => new ListBoxState(seriesListBox);
             DownloadManager.GetChaptersVisualState += () => new ListBoxState(chaptersListBox);
 
