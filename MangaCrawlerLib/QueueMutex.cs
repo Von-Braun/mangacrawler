@@ -24,6 +24,11 @@ namespace MangaCrawlerLib
                     mre = new ManualResetEvent(false);
                     m_queue.Enqueue(mre);
                 }
+                else
+                {
+                    bool taken = false;
+                    m_spinLock.Enter(ref taken);
+                }
             }
 
             if (mre != null)
@@ -31,9 +36,6 @@ namespace MangaCrawlerLib
                 while (!mre.WaitOne(100))
                     a_token.ThrowIfCancellationRequested();
             }
-
-            bool taken = false;
-            m_spinLock.Enter(ref taken);
         }
 
         public void ReleaseMutex()
