@@ -65,7 +65,7 @@ namespace MangaCrawler
 
             splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;
 
-            DownloadManager.OnServersChanged();
+            DownloadManager.UpdateVisuals();
         }
 
         private void directoryChooseButton_Click(object sender, EventArgs e)
@@ -101,7 +101,7 @@ namespace MangaCrawler
         private void seriesFilterTextBox_TextChanged(object sender, EventArgs e)
         {
             Settings.Instance.SeriesFilter = seriesFilterTextBox.Text;
-            DownloadManager.OnSeriesChanged();
+            DownloadManager.UpdateVisuals();
         }
 
         private void downloadButton_Click(object sender, EventArgs e)

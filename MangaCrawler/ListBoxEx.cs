@@ -29,6 +29,7 @@ namespace MangaCrawler
         public void SelectAll()
         {
             BeginUpdate();
+
             try
             {
                 int topIndex = IndexFromPoint(0, 0);
@@ -51,7 +52,7 @@ namespace MangaCrawler
             }
         }
 
-        public void ReloadItems<T>(IEnumerable<T> a_enum, ListBoxState a_state = null) where T : class
+        public void ReloadItems<T>(IEnumerable<T> a_enum, ListBoxState a_state) where T : class
         {
             if (Capture)
                 return;
@@ -59,15 +60,8 @@ namespace MangaCrawler
             BeginUpdate();
             m_reloading = true;
 
-            var prev_state = new ListBoxState(this);
-
             try
             {
-                if (a_state == null)
-                    a_state = new ListBoxState(this);
-
-                a_state.Update(a_enum);
-                
                 Items.Clear();
                 Items.AddRange(a_enum.ToArray());
 
@@ -78,10 +72,6 @@ namespace MangaCrawler
                 EndUpdate();
                 m_reloading = false;
             }
-
-            if (a_state.SelectedItem != prev_state.SelectedItem)
-                a_state.RaiseSelectionChanged();
-
         }
     }
 }
