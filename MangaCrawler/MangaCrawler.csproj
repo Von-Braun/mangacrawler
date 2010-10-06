@@ -127,10 +127,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
     <Compile Include="ListBoxEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Config.cs" />
+    <Compile Include="ListBoxState.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="MangaCrawlerForm.cs">
       <SubType>Form</SubType>

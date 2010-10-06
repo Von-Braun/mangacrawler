@@ -66,6 +66,8 @@ namespace MangaCrawler
                 if (a_state == null)
                     a_state = new ListBoxState(this);
 
+                a_state.Update(a_enum);
+                
                 Items.Clear();
                 Items.AddRange(a_enum.ToArray());
 

@@ -54,7 +54,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="FileUtils.cs" />
     <Compile Include="HTTPUtils.cs" />
-    <Compile Include="ListBoxState.cs" />
     <Compile Include="Crawlers\MangaFoxCrawler.cs" />
     <Compile Include="Crawlers\MangaRunCrawler.cs" />
     <Compile Include="Crawlers\MangaShareCrawler.cs" />
@@ -62,6 +61,7 @@
     <Compile Include="Crawlers\MangaVolumeCrawler.cs" />
     <Compile Include="Crawlers\OtakuWorksCrawler.cs" />
     <Compile Include="Crawlers\OurMangaCrawler.cs" />
+    <Compile Include="VisualState.cs" />
     <Compile Include="PageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueMutex.cs" />
