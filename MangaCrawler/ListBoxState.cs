@@ -23,6 +23,13 @@ namespace MangaCrawler
             SaveState();
         }
 
+        public override string ToString()
+        {
+            return String.Format("selected_item: {0}; selected_index: {1}; top_item: {2}; top_index: {3}",
+                       (m_selectedItem != null) ? m_selectedItem : "null",
+                       m_selectedIndex, (m_topItem != null) ? m_topItem : "null", m_topIndex);
+        }
+
         private void SaveState()
         {
             m_topIndex = m_listBox.TopIndex;
@@ -69,18 +76,18 @@ namespace MangaCrawler
 
         protected override void Update<T>(IEnumerable<T> a_newItems)
         {
-            if (a_newItems.Intersect(m_listBox.Items.Cast<Object>()).Count() == 0)
-                Clear();
-            else
-            {
-                if (m_selectedItems.Intersect(m_listBox.Items.Cast<Object>()).Count() > 0)
-                    SaveState();
-                else if (m_selectedIndex == -1)
-                {
-                    if (a_newItems.Intersect(m_listBox.Items.Cast<Object>()).Count() > 0)
-                        SaveState();
-                }
-            }
+            //if (a_newItems.Intersect(m_listBox.Items.Cast<Object>()).Count() == 0)
+            //    Clear();
+            //else
+            //{
+            //    if (m_selectedItems.Intersect(m_listBox.Items.Cast<Object>()).Count() > 0)
+            //        SaveState();
+            //    else if (m_selectedIndex == -1)
+            //    {
+            //        if (a_newItems.Intersect(m_listBox.Items.Cast<Object>()).Count() > 0)
+            //            SaveState();
+            //    }
+            //}
         }
 
         public override void ReloadItems<T>(IEnumerable<T> a_enum)
