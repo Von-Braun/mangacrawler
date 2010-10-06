@@ -38,8 +38,8 @@ namespace MangaCrawler
     {
         private static readonly string ERROR = "ERROR";
         private static readonly string DOWNLOADED = "OK";
-        private static readonly string WAITING = "WAIT";
-        private static readonly string DELETING = "DEL";
+        private static readonly string WAITING = "WAITING";
+        private static readonly string DELETING = "DELETING";
 
         public MangaCrawlerForm()
         {

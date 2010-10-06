@@ -47,43 +47,51 @@ namespace MangaCrawlerLib
 
             ConcurrentBag<Tuple<int, int, ChapterInfo>> chapters = new ConcurrentBag<Tuple<int, int, ChapterInfo>>();
 
-            Parallel.ForEach(chapters_or_volumes, chapter_or_volume =>
+            Parallel.ForEach(chapters_or_volumes, (chapter_or_volume, state) =>
             {
-                doc = ConnectionsLimiter.DownloadDocument(a_info, chapter_or_volume.GetAttributeValue("href", ""));
-
-                var pages = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/fieldset/ul/label/a");
-
-                if (pages != null)
+                try
                 {
-                    chapters.Add(new Tuple<int, int, ChapterInfo>(
-                        chapters_or_volumes.IndexOf(chapter_or_volume), 
-                        0,
-                        new ChapterInfo(a_info, chapter_or_volume.GetAttributeValue("href", ""), chapter_or_volume.InnerText)
-                    ));
-                }
-                else
-                {
-                    var chapters1 = 
-                        doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/div[2]/table/tr/td/a").Skip(3).Reverse().Skip(1).Reverse().ToList();
-                    if (chapters1[0].InnerText.ToLower() == "thumbs.jpg")
-                        chapters1.RemoveAt(0);
+                    doc = ConnectionsLimiter.DownloadDocument(a_info, chapter_or_volume.GetAttributeValue("href", ""));
 
-                    foreach (var chapter in chapters1)
+                    var pages = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/fieldset/ul/label/a");
+
+                    if (pages != null)
                     {
                         chapters.Add(new Tuple<int, int, ChapterInfo>(
                             chapters_or_volumes.IndexOf(chapter_or_volume),
-                            chapters1.IndexOf(chapter),
-                            new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText)
+                            0,
+                            new ChapterInfo(a_info, chapter_or_volume.GetAttributeValue("href", ""), chapter_or_volume.InnerText)
                         ));
                     }
+                    else
+                    {
+                        var chapters1 =
+                            doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/div[2]/table/tr/td/a").Skip(3).Reverse().Skip(1).Reverse().ToList();
+                        if (chapters1[0].InnerText.ToLower() == "thumbs.jpg")
+                            chapters1.RemoveAt(0);
+
+                        foreach (var chapter in chapters1)
+                        {
+                            chapters.Add(new Tuple<int, int, ChapterInfo>(
+                                chapters_or_volumes.IndexOf(chapter_or_volume),
+                                chapters1.IndexOf(chapter),
+                                new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText)
+                            ));
+                        }
+                    }
+
+                    var result = from chapter in chapters
+                                 orderby chapter.Item1, chapter.Item2
+                                 select chapter.Item3;
+
+                    progress++;
+                    a_progress_callback(progress * 100 / chapters_or_volumes.Count, result);
                 }
-
-                var result = from chapter in chapters
-                             orderby chapter.Item1, chapter.Item2
-                             select chapter.Item3;
-
-                progress++;
-                a_progress_callback(progress * 100 / chapters_or_volumes.Count, result);
+                catch
+                {
+                    state.Break();
+                    throw;
+                }
             });
         }
 

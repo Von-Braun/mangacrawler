@@ -34,31 +34,39 @@ namespace MangaCrawlerLib
 
             m_progress = 0;
 
-            Parallel.For(1, number + 1, (page) =>
+            Parallel.For(1, number + 1, (page, state) =>
             {
-                page = number + 1 - page;
-
-                HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, "http://www.otakuworks.com/manga/" + page);
-
-                var page_series = page_doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/table/tr/td[@class='box3']/a");
-
-                int index = 0;
-
-                foreach (var serie in page_series)
+                try
                 {
-                    Tuple<int, int, string, string> s =
-                        new Tuple<int, int, string, string>(page, index++, serie.InnerText,
-                                                            serie.GetAttributeValue("href", ""));
+                    page = number + 1 - page;
 
-                    series.Add(s);
+                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, "http://www.otakuworks.com/manga/" + page);
+
+                    var page_series = page_doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/table/tr/td[@class='box3']/a");
+
+                    int index = 0;
+
+                    foreach (var serie in page_series)
+                    {
+                        Tuple<int, int, string, string> s =
+                            new Tuple<int, int, string, string>(page, index++, serie.InnerText,
+                                                                serie.GetAttributeValue("href", ""));
+
+                        series.Add(s);
+                    }
+
+                    var result = (from serie in series
+                                  orderby serie.Item1, serie.Item2
+                                  select new SerieInfo(a_info, serie.Item4, serie.Item3)).ToArray();
+
+                    m_progress++;
+                    a_progress_callback(m_progress * 100 / number, result);
                 }
-
-                var result = (from serie in series
-                              orderby serie.Item1, serie.Item2
-                              select new SerieInfo(a_info, serie.Item4, serie.Item3)).ToArray();
-
-                m_progress++;
-                a_progress_callback(m_progress * 100 / number, result);
+                catch
+                {
+                    state.Break();
+                    throw;
+                }
             });
         }
 
@@ -88,35 +96,43 @@ namespace MangaCrawlerLib
 
                 m_progress = 0;
 
-                Parallel.ForEach(pages, (page) =>
+                Parallel.ForEach(pages, (page, state) =>
                 {
-                    int page_num = Int32.Parse(page.InnerText);
-
-                    String url = "http://www.otakuworks.com/" + page.GetAttributeValue("href", "").RemoveFromLeft(1);
-
-                    if (page_num == 1)
-                        url = a_info.URL;
-
-                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, url);
-
-                    var page_chapters = page_doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/div/div[3]/div/div[@class='sbox3']/a[1]");
-
-                    int index = 0;
-                    foreach (var chapter in page_chapters)
+                    try
                     {
-                        Tuple<int, int, string, string> s =
-                            new Tuple<int, int, string, string>(page_num, index++, chapter.InnerText,
-                                                                chapter.GetAttributeValue("href", ""));
+                        int page_num = Int32.Parse(page.InnerText);
 
-                        chapters.Add(s);
+                        String url = "http://www.otakuworks.com/" + page.GetAttributeValue("href", "").RemoveFromLeft(1);
+
+                        if (page_num == 1)
+                            url = a_info.URL;
+
+                        HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, url);
+
+                        var page_chapters = page_doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/div/div[3]/div/div[@class='sbox3']/a[1]");
+
+                        int index = 0;
+                        foreach (var chapter in page_chapters)
+                        {
+                            Tuple<int, int, string, string> s =
+                                new Tuple<int, int, string, string>(page_num, index++, chapter.InnerText,
+                                                                    chapter.GetAttributeValue("href", ""));
+
+                            chapters.Add(s);
+                        }
+
+                        var result = (from chapter in chapters
+                                      orderby chapter.Item1, chapter.Item2
+                                      select new ChapterInfo(a_info, chapter.Item4, chapter.Item3)).ToArray();
+
+                        m_progress++;
+                        a_progress_callback(m_progress * 100 / pages.Count(), result);
                     }
-
-                    var result = (from chapter in chapters
-                                  orderby chapter.Item1, chapter.Item2
-                                  select new ChapterInfo(a_info, chapter.Item4, chapter.Item3)).ToArray();
-
-                    m_progress++;
-                    a_progress_callback(m_progress * 100 / pages.Count(), result);
+                    catch
+                    {
+                        state.Break();
+                        throw;
+                    }
                 });
             }
         }

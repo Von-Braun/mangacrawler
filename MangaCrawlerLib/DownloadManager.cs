@@ -320,7 +320,7 @@ namespace MangaCrawlerLib
 
                             if (new DirectoryInfo(dir).Exists)
                                 new DirectoryInfo(dir).Delete(true);
-
+                            
                             Parallel.ForEach(chapter_item.ChapterInfo.Pages, (page, state) =>
                             {
                                 try
@@ -330,6 +330,11 @@ namespace MangaCrawlerLib
                                 catch (OperationCanceledException)
                                 {
                                     state.Break();
+                                }
+                                catch
+                                {
+                                    state.Break();
+                                    throw;
                                 }
 
                                 chapter_item.PageDownloaded();

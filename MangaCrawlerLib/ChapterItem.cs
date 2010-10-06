@@ -139,12 +139,9 @@ namespace MangaCrawlerLib
                     if (Deleting)
                         return "Deleting";
                     else if (Error)
-                    {
-                        return String.Format("Error ({0}/{1})", DownloadedPages,
-                            (ChapterInfo.Pages == null) ? 0 : ChapterInfo.Pages.Count());
-                    }
+                        return "Error";
                     else if (Downloaded)
-                        return String.Format("Downloaded");
+                        return "Downloaded";
                     else if (Downloading)
                     {
                         return String.Format("{0}/{1}", DownloadedPages,
