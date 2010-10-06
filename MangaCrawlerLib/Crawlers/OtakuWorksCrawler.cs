@@ -36,6 +36,8 @@ namespace MangaCrawlerLib
 
             Parallel.For(1, number + 1, (page) =>
             {
+                page = number + 1 - page;
+
                 HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, "http://www.otakuworks.com/manga/" + page);
 
                 var page_series = page_doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/table/tr/td[@class='box3']/a");

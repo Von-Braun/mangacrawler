@@ -14,24 +14,28 @@ namespace MangaCrawlerLib
 
         private static ServerItem m_selectedServer;
         private static Dictionary<ServerItem, SerieItem> m_selectedSerie = new Dictionary<ServerItem,SerieItem>();
-        private static Dictionary<ServerItem, ListBoxState> m_seriesListBoxState = new Dictionary<ServerItem, ListBoxState>();
+        private static Dictionary<ServerItem, VisualState> m_seriesListBoxState = new Dictionary<ServerItem, VisualState>();
         private static Dictionary<SerieItem, ChapterItem> m_selectedChapter = new Dictionary<SerieItem,ChapterItem>();
-        private static Dictionary<SerieItem, ListBoxState> m_chaptersListBoxState = new Dictionary<SerieItem, ListBoxState>();
+        private static Dictionary<SerieItem, VisualState> m_chaptersListBoxState = new Dictionary<SerieItem, VisualState>();
 
         private static Dictionary<ChapterInfo, ChapterItem> m_chapters = new Dictionary<ChapterInfo, ChapterItem>();
         private static Dictionary<SerieInfo, SerieItem> m_series = new Dictionary<SerieInfo, SerieItem>();
         private static List<ServerItem> m_servers = new List<ServerItem>();
         private static List<ChapterItem> m_tasks = new List<ChapterItem>();
 
+
         public static Form Form;
 
-        // TODO: dodac begininvoke
-        public static Action<IList<ServerItem>> ServersChanged;
-        public static Action<IList<SerieItem>, ListBoxState> SeriesChanged;
-        public static Action<IList<ChapterItem>, ListBoxState> ChaptersChanged;
-        public static Action<IList<ChapterItem>> TasksChanged;
-        public static Func<string> GetSeriesFilter;
-        public static Func<string> GetDirectoryPath;
+        public static event Action<IEnumerable<ServerItem>> ServersChanged;
+        public static event Action<IEnumerable<SerieItem>, VisualState> SeriesChanged;
+        public static event Action<IEnumerable<ChapterItem>, VisualState> ChaptersChanged;
+        public static event Action<IEnumerable<ChapterItem>> TasksChanged;
+
+        public static event Func<string> GetSeriesFilter;
+        public static event Func<string> GetDirectoryPath;
+
+        public static event Func<VisualState> GetSeriesVisualState;
+        public static event Func<VisualState> GetChaptersVisualState;
 
         static DownloadManager()
         {
@@ -47,7 +51,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static ListBoxState SelectedServerSerieListBoxState
+        private static VisualState SelectedServerSerieListBoxState
         {
             get
             {
@@ -60,11 +64,12 @@ namespace MangaCrawlerLib
             }
             set
             {
-                m_seriesListBoxState[SelectedServer] = value;
+                if (SelectedServer != null)
+                    m_seriesListBoxState[SelectedServer] = value;
             }
         }
 
-        public static ListBoxState SelectedSerieChapterListBoxState
+        private static VisualState SelectedSerieChapterListBoxState
         {
             get
             {
@@ -77,7 +82,8 @@ namespace MangaCrawlerLib
             }
             set
             {
-                m_chaptersListBoxState[SelectedSerie] = value;
+                if (SelectedSerie != null)
+                    m_chaptersListBoxState[SelectedSerie] = value;
             }
         }
 
@@ -119,6 +125,9 @@ namespace MangaCrawlerLib
             }
             set
             {
+                SelectedSerieChapterListBoxState = GetChaptersVisualState();
+                SelectedServerSerieListBoxState = GetSeriesVisualState();
+
                 if (Object.ReferenceEquals(value, SelectedSerie))
                     return;
                 m_selectedSerie[SelectedServer] = value;
@@ -141,6 +150,8 @@ namespace MangaCrawlerLib
             }
             set
             {
+                SelectedServerSerieListBoxState = GetSeriesVisualState();
+
                 if (Object.ReferenceEquals(SelectedServer, value))
                     return;
                 m_selectedServer = value;
@@ -167,6 +178,8 @@ namespace MangaCrawlerLib
             }
             set
             {
+                SelectedSerieChapterListBoxState = GetChaptersVisualState();
+
                 if (Object.ReferenceEquals(SelectedChapter, value))
                     return;
 
@@ -392,6 +405,18 @@ namespace MangaCrawlerLib
             }
         }
 
+        private static T TryInvoke<T>(Func<T> a_action)
+        {
+            try
+            {
+                return (T)Form.Invoke(a_action);
+            }
+            catch (ObjectDisposedException)
+            {
+                return default(T);
+            }
+        }
+
         public static void OnServersChanged()
         {
             if (ServersChanged != null)
@@ -402,6 +427,8 @@ namespace MangaCrawlerLib
                         ServersChanged(Servers);
                 });
             }
+
+            OnSeriesChanged();
         }
 
         public static void OnSeriesChanged()
@@ -424,6 +451,8 @@ namespace MangaCrawlerLib
                         SeriesChanged(list.AsReadOnly(), SelectedServerSerieListBoxState);
                 });
             }
+
+            OnChaptersChanged();
         }
 
         public static void OnChaptersChanged()
