@@ -26,14 +26,12 @@ namespace MangaCrawlerLib
 
         public static Form Form;
 
-        public static event Action<IEnumerable<ServerItem>> ServersChanged;
-        public static event Action<IEnumerable<SerieItem>, VisualState> SeriesChanged;
-        public static event Action<IEnumerable<ChapterItem>, VisualState> ChaptersChanged;
         public static event Action<IEnumerable<ChapterItem>> TasksChanged;
 
         public static event Func<string> GetSeriesFilter;
         public static event Func<string> GetDirectoryPath;
 
+        public static event Func<VisualState> GetServersVisualState;
         public static event Func<VisualState> GetSeriesVisualState;
         public static event Func<VisualState> GetChaptersVisualState;
 
@@ -48,9 +46,9 @@ namespace MangaCrawlerLib
             get
             {
                 if (SelectedServer == null)
-                    return null;
+                    return GetSeriesVisualState();
                 if (!m_seriesListBoxState.ContainsKey(SelectedServer))
-                    return null;
+                    return GetSeriesVisualState();
 
                 return m_seriesListBoxState[SelectedServer];
             }
@@ -66,9 +64,9 @@ namespace MangaCrawlerLib
             get
             {
                 if (SelectedSerie == null)
-                    return null;
+                    return GetChaptersVisualState();
                 if (!m_chaptersListBoxState.ContainsKey(SelectedSerie))
-                    return null;
+                    return GetChaptersVisualState();
 
                 return m_chaptersListBoxState[SelectedSerie];
             }
@@ -392,60 +390,51 @@ namespace MangaCrawlerLib
 
         private static void OnServersChanged()
         {
-            if (ServersChanged != null)
+            TryInvoke(() =>
             {
-                TryInvoke(() =>
-                {
-                    if (!Form.IsDisposed)
-                        ServersChanged(m_servers.AsReadOnly());
-                });
-            }
+                if (!Form.IsDisposed)
+                    GetServersVisualState().ReloadItems(m_servers.AsReadOnly());
+            });
 
             OnSeriesChanged();
         }
 
         private static void OnSeriesChanged()
         {
-            if (SeriesChanged != null)
+            List<SerieItem> list = new List<SerieItem>();
+
+            if (m_selectedServer != null)
             {
-                List<SerieItem> list = new List<SerieItem>();
-
-                if (m_selectedServer != null)
-                {
-                    string filter = GetSeriesFilter().ToLower();
-                    list = (from serie in m_selectedServer.ServerInfo.Series
-                            where serie.Name.ToLower().IndexOf(filter) != -1
-                            select m_series[serie]).ToList();
-                }
-
-                TryInvoke(() =>
-                {
-                    if (!Form.IsDisposed)
-                        SeriesChanged(list.AsReadOnly(), SelectedServerSerieListBoxState);
-                });
+                string filter = GetSeriesFilter().ToLower();
+                list = (from serie in m_selectedServer.ServerInfo.Series
+                        where serie.Name.ToLower().IndexOf(filter) != -1
+                        select m_series[serie]).ToList();
             }
+
+            TryInvoke(() =>
+            {
+                if (!Form.IsDisposed)
+                    SelectedServerSerieListBoxState.ReloadItems(list.AsReadOnly());
+            });
 
             OnChaptersChanged();
         }
 
         private static void OnChaptersChanged()
         {
-            if (ChaptersChanged != null)
+            List<ChapterItem> list = new List<ChapterItem>();
+
+            if (SelectedSerie != null)
             {
-                List<ChapterItem> list = new List<ChapterItem>();
-
-                if (SelectedSerie != null)
-                {
-                    list = (from ch in SelectedSerie.SerieInfo.Chapters
-                            select m_chapters[ch]).ToList();
-                }
-
-                TryInvoke(() =>
-                {
-                    if (!Form.IsDisposed)
-                        ChaptersChanged(list.AsReadOnly(), SelectedSerieChapterListBoxState);
-                });
+                list = (from ch in SelectedSerie.SerieInfo.Chapters
+                        select m_chapters[ch]).ToList();
             }
+
+            TryInvoke(() =>
+            {
+                if (!Form.IsDisposed)
+                    SelectedSerieChapterListBoxState.ReloadItems(list.AsReadOnly());
+            });
 
             OnTasksChanged();
         }

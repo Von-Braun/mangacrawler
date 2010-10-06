@@ -57,7 +57,7 @@ namespace MangaCrawler
         {
             m_topIndex = -1;
             m_topItem = null;
-            m_selectedItems.Clear();
+            m_selectedItems = new Object[0];
             m_selectedItem = null;
             m_selectedIndex = -1;
         }
