@@ -14,7 +14,6 @@ using System.Diagnostics;
 using MangaCrawlerLib;
 using System.Threading.Tasks;
 using System.Reflection;
-using System.Drawing.Html;
 
 namespace MangaCrawler
 {
