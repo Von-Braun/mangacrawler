@@ -30,6 +30,7 @@ namespace MangaCrawlerLib
 
         public static Func<string> GetSeriesFilter;
         public static Func<string> GetDirectoryPath;
+        public static Func<bool> UseCBZ;
 
         public static Func<VisualState> GetServersVisualState;
         public static Func<VisualState> GetSeriesVisualState;
@@ -150,11 +151,11 @@ namespace MangaCrawlerLib
         {
             if (a_item == null)
                 return false;
-            if (a_item.Downloading || a_item.Downloaded)
+            if (!a_item.DownloadRequired)
                 return false;
 
             a_item.Initialize();
-            a_item.Downloading = true;
+            a_item.State = ItemState.Downloading;
 
             Task task = new Task(() =>
             {
@@ -176,17 +177,15 @@ namespace MangaCrawlerLib
                             OnServersChanged();
                     });
 
-                    a_item.Downloaded = true;
+                    a_item.State = ItemState.Downloaded;
                 }
                 catch (ObjectDisposedException)
                 {
                 }
                 catch (Exception)
                 {
-                    a_item.Error = true;
+                    a_item.State = ItemState.Error;
                 }
-
-                a_item.Downloading = false;
 
                 OnServersChanged();
             });
@@ -202,11 +201,11 @@ namespace MangaCrawlerLib
         {
             if (a_item == null)
                 return false;
-            if (a_item.Downloading || a_item.Downloaded)
+            if (!a_item.DownloadRequired)
                 return false;
 
             a_item.Initialize();
-            a_item.Downloading = true;
+            a_item.State = ItemState.Downloading;
 
             Task task = new Task(() =>
             {
@@ -228,17 +227,15 @@ namespace MangaCrawlerLib
                             OnSeriesChanged();
                     });
 
-                    a_item.Downloaded = true;
+                    a_item.State = ItemState.Downloaded;
                 }
                 catch (ObjectDisposedException)
                 {
                 }
                 catch (Exception)
                 {
-                    a_item.Error = true;
+                    a_item.State = ItemState.Error;
                 }
-
-                a_item.Downloading = false;
 
                 OnSeriesChanged();
 
@@ -282,11 +279,11 @@ namespace MangaCrawlerLib
             {
                 ChapterItem chapter_item = (ChapterItem)item;
 
-                if (chapter_item.Waiting || chapter_item.Downloading)
+                if (chapter_item.Working)
                     continue;
 
                 chapter_item.Initialize();
-                chapter_item.Waiting = true;
+                chapter_item.State = ItemState.Waiting;
 
                 Task task = new Task(() =>
                 {
@@ -307,8 +304,7 @@ namespace MangaCrawlerLib
                         {
                             chapter_item.Token.ThrowIfCancellationRequested();
 
-                            chapter_item.Waiting = false;
-                            chapter_item.Downloading = true;
+                            chapter_item.State = ItemState.Downloading;
 
                             OnChaptersChanged();
 
@@ -342,11 +338,11 @@ namespace MangaCrawlerLib
                                 OnChaptersChanged();
                             });
 
-                            chapter_item.Finish(false);
+                            chapter_item.Finish(a_error: false);
                         }
                         catch
                         {
-                            chapter_item.Finish(true);
+                            chapter_item.Finish(a_error: true);
                         }
                     }
                     finally
@@ -450,7 +446,7 @@ namespace MangaCrawlerLib
                 TryInvoke(() =>
                 {
                     var all_tasks = (from ch in m_chapters.Values
-                                    where (ch.Waiting || ch.Error || ch.Downloading)
+                                    where ch.IsTask
                                     select ch).ToList();
 
                     var add = (from task in all_tasks
@@ -476,7 +472,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return m_chapters.Values.Any(chi => chi.Downloading);
+                return m_chapters.Values.Any(chi => chi.State == ItemState.Downloading);
             }
         }
 

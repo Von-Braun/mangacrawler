@@ -25,8 +25,6 @@ namespace MangaCrawler
     // TODO: bookmarks,
     // TODO: wykrywanie zmian w obserwowanych seriach, praca w tle
     //
-    // TODO: pobieranie jako archiwum
-    //
     // TODO: wpf, silverlight, telefony
     //
     // TODO: wbudowany browser
@@ -39,6 +37,7 @@ namespace MangaCrawler
         private static readonly string DOWNLOADED = "OK";
         private static readonly string WAITING = "WAITING";
         private static readonly string DELETING = "DELETING";
+        private static readonly string ZIPPING = "CBZ";
 
         public MangaCrawlerForm()
         {
@@ -54,18 +53,18 @@ namespace MangaCrawler
 
             DownloadManager.TasksChanged += (tasks) => UpdateTasks(tasks);
 
-            DownloadManager.GetSeriesFilter += () => seriesFilterTextBox.Text;
-            DownloadManager.GetDirectoryPath += () => Settings.Instance.DirectoryPath;
+            DownloadManager.GetSeriesFilter = () => seriesFilterTextBox.Text;
+            DownloadManager.GetDirectoryPath = () => Settings.Instance.DirectoryPath;
+            DownloadManager.UseCBZ = () => Settings.Instance.UseCBZ;
 
             DownloadManager.GetServersVisualState += () => new ListBoxVisualState(serversListBox);
             DownloadManager.GetSeriesVisualState += () => new ListBoxVisualState(seriesListBox);
             DownloadManager.GetChaptersVisualState += () => new ListBoxVisualState(chaptersListBox);
 
             directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
-
             seriesFilterTextBox.Text = Settings.Instance.SeriesFilter;
-
             splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;
+            cbzCheckBox.Checked = Settings.Instance.UseCBZ;
 
             DownloadManager.UpdateVisuals();
         }
@@ -227,9 +226,10 @@ namespace MangaCrawler
             DownloadManager.ChaptersVisualState = DownloadManager.GetChaptersVisualState();
         }
 
-        private void ListBox_DrawItem(DrawItemEventArgs e, string a_text, bool a_downloading, string a_progress, 
-                                      bool a_error, bool a_downloaded, bool a_waiting, bool a_deleting)
+        private void ListBox_DrawItem(DrawItemEventArgs e, string a_text, ItemState a_state, string a_progress)
         {
+            e.DrawBackground();
+
             var size = e.Graphics.MeasureString(a_text, e.Font);
             Rectangle bounds = new Rectangle(e.Bounds.X, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2, e.Bounds.Width, size.ToSize().Height);
 
@@ -240,25 +240,22 @@ namespace MangaCrawler
             size = e.Graphics.MeasureString("(ABGHRTW%)", font).ToSize();
             bounds = new Rectangle(left, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2 - 1, bounds.Width - left, bounds.Height);
 
-            if (a_error)
-                e.Graphics.DrawString(ERROR, font, Brushes.Tomato, bounds, StringFormat.GenericDefault);
-            else if (!a_downloaded)
-                e.Graphics.DrawString(DOWNLOADED, font, Brushes.LightGreen, bounds, StringFormat.GenericDefault);
-            else if (a_waiting)
-                e.Graphics.DrawString(WAITING, font, Brushes.LightBlue, bounds, StringFormat.GenericDefault);
-            else if (a_deleting)
-                e.Graphics.DrawString(DELETING, font, Brushes.Tomato, bounds, StringFormat.GenericDefault);
-            else if (a_downloading)
+            switch (a_state)
             {
-                e.Graphics.DrawString(a_progress, font, Brushes.LightBlue, bounds,
-                    StringFormat.GenericDefault);
+                case ItemState.Error: e.Graphics.DrawString(ERROR, font, Brushes.Tomato, bounds, StringFormat.GenericDefault); break;
+                case ItemState.Downloaded: e.Graphics.DrawString(DOWNLOADED, font, Brushes.LightGreen, bounds, StringFormat.GenericDefault); break;
+                case ItemState.Waiting: e.Graphics.DrawString(WAITING, font, Brushes.LightBlue, bounds, StringFormat.GenericDefault); break;
+                case ItemState.Deleting: e.Graphics.DrawString(DELETING, font, Brushes.Tomato, bounds, StringFormat.GenericDefault); break;
+                case ItemState.Downloading: e.Graphics.DrawString(a_progress, font, Brushes.LightBlue, bounds, StringFormat.GenericDefault); break;
+                case ItemState.Zipping: e.Graphics.DrawString(ZIPPING, font, Brushes.LightBlue, bounds, StringFormat.GenericDefault); break;
+                case ItemState.Initial: break;
+                default: throw new NotImplementedException();
             }
 
             e.DrawFocusRectangle();
         }
 
-        private void ListBox_MeasureItem(MeasureItemEventArgs e, ListBox a_listBox, string a_text, bool a_downloading,
-                                         string a_progress, bool a_error, bool a_downloaded, bool a_waiting, bool a_deleting)
+        private void ListBox_MeasureItem(MeasureItemEventArgs e, ListBox a_listBox, string a_text, ItemState a_state, string a_progress)
         { 
             e.ItemWidth = (int)Math.Round(e.Graphics.MeasureString(a_text, a_listBox.Font,
                  Int32.MaxValue, StringFormat.GenericDefault).Width);
@@ -267,87 +264,96 @@ namespace MangaCrawler
             int space = e.ItemWidth += e.Graphics.MeasureString(" ", a_listBox.Font,
                     Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
 
-            if (a_error)
+            switch (a_state)
             {
-                e.ItemWidth += space + e.Graphics.MeasureString(ERROR, font,
-                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-            }
-            else if (a_downloaded)
-            {
-                e.ItemWidth += space + e.Graphics.MeasureString(DOWNLOADED, font,
-                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-            }
-            else if (a_downloading)
-            {
-                e.ItemWidth += space + e.Graphics.MeasureString(a_progress, font,
-                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-            }
-            else if (a_waiting)
-            {
-                e.ItemWidth += space + e.Graphics.MeasureString(WAITING, font,
-                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-            }
-            else if (a_deleting)
-            {
-                e.ItemWidth += space + e.Graphics.MeasureString(DELETING, font,
-                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
+                case ItemState.Error:
+
+                    e.ItemWidth += space + e.Graphics.MeasureString(ERROR, font,
+                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
+                    break;
+
+                case ItemState.Downloaded:
+
+                    e.ItemWidth += space + e.Graphics.MeasureString(DOWNLOADED, font,
+                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
+                    break;
+
+                case ItemState.Waiting:
+
+                    e.ItemWidth += space + e.Graphics.MeasureString(WAITING, font,
+                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
+                    break;
+
+                case ItemState.Deleting:
+
+                    e.ItemWidth += space + e.Graphics.MeasureString(DELETING, font,
+                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
+                    break;
+
+                case ItemState.Zipping:
+
+                    e.ItemWidth += space + e.Graphics.MeasureString(ZIPPING, font,
+                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
+                    break;
+
+                case ItemState.Downloading:
+
+                    e.ItemWidth += space + e.Graphics.MeasureString(a_progress, font,
+                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
+                    break;
+
+                case ItemState.Initial: break;
+                default: throw new NotImplementedException();
             }
         }
 
         private void serversListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             ServerItem server = (ServerItem)serversListBox.Items[e.Index];
-            ListBox_DrawItem(e, server.ServerInfo.Name, server.Downloading, 
-                String.Format("({0}%)", server.Progress), server.Error, server.Downloaded, false, false);
+            ListBox_DrawItem(e, server.ServerInfo.Name, server.State, 
+                String.Format("({0}%)", server.Progress));
         }
 
         private void serversListBox_MeasureItem(object sender, MeasureItemEventArgs e)
         {
             ServerItem server = (ServerItem)serversListBox.Items[e.Index];
-            ListBox_MeasureItem(e, serversListBox, server.ServerInfo.Name, server.Downloading, 
-                String.Format("({0}%)", server.Progress), server.Error, server.Downloaded, false, false);
+            ListBox_MeasureItem(e, serversListBox, server.ServerInfo.Name, server.State, 
+                String.Format("({0}%)", server.Progress));
         }
 
         private void seriesListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             SerieItem serie = (SerieItem)seriesListBox.Items[e.Index];
-            ListBox_DrawItem(e, serie.SerieInfo.Name, serie.Downloading, 
-                String.Format("({0}%)", serie.Progress), serie.Error, serie.Downloaded, false, false);
+            ListBox_DrawItem(e, serie.SerieInfo.Name, serie.State, 
+                String.Format("({0}%)", serie.Progress));
         }
 
         private void seriesListBox_MeasureItem(object sender, MeasureItemEventArgs e)
         {
             SerieItem serie = (SerieItem)seriesListBox.Items[e.Index];
-            ListBox_MeasureItem(e, serversListBox, serie.SerieInfo.Name, serie.Downloading, 
-                String.Format("({0}%)", serie.Progress), serie.Error, serie.Downloaded, false, false);
+            ListBox_MeasureItem(e, serversListBox, serie.SerieInfo.Name, serie.State, 
+                String.Format("({0}%)", serie.Progress));
         }
 
         private void chaptersListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             ChapterItem chapter = (ChapterItem)chaptersListBox.Items[e.Index];
-            ListBox_DrawItem(e, chapter.ChapterInfo.Name, chapter.Downloading, 
+            ListBox_DrawItem(e, chapter.ChapterInfo.Name, chapter.State, 
                 String.Format("{0}/{1}", chapter.DownloadedPages, 
-                (chapter.ChapterInfo.Pages == null) ? 0 : chapter.ChapterInfo.Pages.Count()), 
-                chapter.Error, chapter.Downloaded, chapter.Waiting, chapter.Deleting);
+                (chapter.ChapterInfo.Pages == null) ? 0 : chapter.ChapterInfo.Pages.Count()));
         }
 
         private void chaptersListBox_MeasureItem(object sender, MeasureItemEventArgs e)
         {
             ChapterItem chapter = (ChapterItem)chaptersListBox.Items[e.Index];
-            ListBox_MeasureItem(e, serversListBox, chapter.ChapterInfo.Name, chapter.Downloading,
+            ListBox_MeasureItem(e, serversListBox, chapter.ChapterInfo.Name, chapter.State,
                 String.Format("{0}/{1}", chapter.DownloadedPages, 
-                (chapter.ChapterInfo.Pages == null) ? 0 : chapter.ChapterInfo.Pages.Count()), 
-                chapter.Error, chapter.Downloaded, chapter.Waiting, chapter.Deleting);
+                (chapter.ChapterInfo.Pages == null) ? 0 : chapter.ChapterInfo.Pages.Count()));
         }
 
-        private void tasksGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void cbzCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            e.FormattingApplied = false;
-        }
-
-        private void tasksGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
-        {
-            e.Handled = false;
+            Settings.Instance.UseCBZ = cbzCheckBox.Checked;
         }
     }
 }

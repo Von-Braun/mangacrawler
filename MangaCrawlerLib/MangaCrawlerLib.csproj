@@ -60,6 +60,7 @@
     <Compile Include="Crawlers\MangaVolumeCrawler.cs" />
     <Compile Include="Crawlers\OtakuWorksCrawler.cs" />
     <Compile Include="Crawlers\OurMangaCrawler.cs" />
+    <Compile Include="ItemState.cs" />
     <Compile Include="VisualState.cs" />
     <Compile Include="PageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
