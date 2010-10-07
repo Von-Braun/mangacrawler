@@ -14,6 +14,7 @@ using System.Diagnostics;
 using MangaCrawlerLib;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Drawing.Html;
 
 namespace MangaCrawler
 {
@@ -230,8 +231,6 @@ namespace MangaCrawler
         private void ListBox_DrawItem(DrawItemEventArgs e, string a_text, bool a_downloading, string a_progress, 
                                       bool a_error, bool a_downloaded, bool a_waiting, bool a_deleting)
         {
-            e.DrawBackground();
-
             var size = e.Graphics.MeasureString(a_text, e.Font);
             Rectangle bounds = new Rectangle(e.Bounds.X, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2, e.Bounds.Width, size.ToSize().Height);
 
@@ -244,7 +243,7 @@ namespace MangaCrawler
 
             if (a_error)
                 e.Graphics.DrawString(ERROR, font, Brushes.Tomato, bounds, StringFormat.GenericDefault);
-            else if (a_downloaded)
+            else if (!a_downloaded)
                 e.Graphics.DrawString(DOWNLOADED, font, Brushes.LightGreen, bounds, StringFormat.GenericDefault);
             else if (a_waiting)
                 e.Graphics.DrawString(WAITING, font, Brushes.LightBlue, bounds, StringFormat.GenericDefault);
@@ -261,7 +260,7 @@ namespace MangaCrawler
 
         private void ListBox_MeasureItem(MeasureItemEventArgs e, ListBox a_listBox, string a_text, bool a_downloading,
                                          string a_progress, bool a_error, bool a_downloaded, bool a_waiting, bool a_deleting)
-        {
+        { 
             e.ItemWidth = (int)Math.Round(e.Graphics.MeasureString(a_text, a_listBox.Font,
                  Int32.MaxValue, StringFormat.GenericDefault).Width);
 
