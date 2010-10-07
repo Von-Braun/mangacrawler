@@ -139,7 +139,6 @@ namespace Html_Demo
                 tmrCount = 0;
                 tmrRepaint.Enabled = false;
                 panel.Text = rtf.Text;
-                Console.WriteLine("Parse");
             }
         }
 

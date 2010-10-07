@@ -84,6 +84,17 @@ namespace System.Drawing.Html
             if (clip) g.SetClip(prevClip, System.Drawing.Drawing2D.CombineMode.Replace);
         }
 
+        public static Size Measure(Graphics g, string html)
+        {
+            InitialContainer container = new InitialContainer(html);
+            
+            g.SetClip(new Rectangle(0, 0, 0, 0));
+            container.SetBounds(new Rectangle(0,0,10,10));
+            container.MeasureBounds(g);
+
+            return container.MaximumSize.ToSize(); ;
+        }
+
         #endregion
     }
 }
