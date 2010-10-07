@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
@@ -300,26 +301,25 @@ namespace MangaCrawlerLib
 
                     try
                     {
+                        string dir = chapter_item.GetImageDirectory(baseDir);
+
                         try
                         {
                             chapter_item.Token.ThrowIfCancellationRequested();
 
                             chapter_item.State = ItemState.Downloading;
-
                             OnChaptersChanged();
 
                             chapter_item.ChapterInfo.DownloadPages(chapter_item.Token);
 
                             chapter_item.Token.ThrowIfCancellationRequested();
 
-                            string dir = chapter_item.GetImageDirectory(baseDir);
-
                             if (new DirectoryInfo(dir).Exists)
                                 new DirectoryInfo(dir).Delete(true);
-                             
+
                             Parallel.ForEach(chapter_item.ChapterInfo.Pages, (page, state) =>
                             {
-                                try  
+                                try
                                 {
                                     page.DownloadAndSavePageImage(chapter_item.Token, dir);
                                 }
@@ -337,18 +337,33 @@ namespace MangaCrawlerLib
 
                                 OnChaptersChanged();
                             });
-
-                            chapter_item.Finish(a_error: false);
                         }
-                        catch
+                        finally
                         {
-                            chapter_item.Finish(a_error: true);
+                            ConnectionsLimiter.EndDownloadPages(chapter_item.ChapterInfo);
                         }
+
+                        if (UseCBZ())
+                        {
+                            chapter_item.State = ItemState.Zipping;
+                            OnChaptersChanged();
+
+                            try
+                            {
+                                CreateCBZ(dir, chapter_item.Token);
+                            }
+                            catch (OperationCanceledException)
+                            {
+                            }
+                        }
+
+                        chapter_item.Finish(a_error: false);
                     }
-                    finally
+                    catch
                     {
-                        ConnectionsLimiter.EndDownloadPages(chapter_item.ChapterInfo);
+                        chapter_item.Finish(a_error: true);
                     }
+
 
                     OnChaptersChanged();
 
@@ -358,6 +373,18 @@ namespace MangaCrawlerLib
 
                 OnChaptersChanged();
             }
+        }
+
+        private static void CreateCBZ(string a_dir, CancellationToken a_token)
+        {
+            var di = new DirectoryInfo(a_dir);
+
+            string cbz_name = di.Name;
+            string cbz_dir = di.Parent.FullName;
+
+            var files = di.GetFiles();
+
+
         }
 
         private static void TryInvoke(Action a_action)
