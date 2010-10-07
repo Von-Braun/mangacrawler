@@ -47,9 +47,6 @@ namespace MangaCrawlerLib
 
                     var page_series = page_doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/table/tr/td[1]/a");
 
-                    if (page == 10)
-                        throw new Exception();
-
                     int index = 0;
                     foreach (var serie in page_series)
                     {

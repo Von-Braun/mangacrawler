@@ -6,7 +6,7 @@ using HtmlAgilityPack;
 using System.IO;
 using System.Threading;
 
-namespace MangaCrawlerLib
+namespace MangaCrawlerLib 
 {
     internal class MangaRunCrawler : Crawler
     {
@@ -14,7 +14,7 @@ namespace MangaCrawlerLib
         {
             get 
             {
-                return "MangaRun";
+                return "MangaRun"; 
             }
         }
 

@@ -18,7 +18,6 @@ using System.Reflection;
 namespace MangaCrawler
 {
     // TODO: test rozlegly zrobic
-    // TODO: wiecej kolorow dla statusow, downloading, error, downloaded
     //
     // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, podczas ponownego uruchomienia weryfikacja tego, 
     //       pamietanie urli obrazkow, dat modyfikacji zdalnych, szybka weryfikacja
@@ -228,19 +227,20 @@ namespace MangaCrawler
             DownloadManager.ChaptersVisualState = DownloadManager.GetChaptersVisualState();
         }
 
-        private void ListBox_DrawItem(DrawItemEventArgs e, string a_text, bool a_downloading, 
-            string a_progress, bool a_error, bool a_downloaded, bool a_waiting, bool a_deleting)
+        private void ListBox_DrawItem(DrawItemEventArgs e, string a_text, bool a_downloading, string a_progress, 
+                                      bool a_error, bool a_downloaded, bool a_waiting, bool a_deleting)
         {
             e.DrawBackground();
 
-            e.Graphics.DrawString(a_text, e.Font, Brushes.Black, e.Bounds, StringFormat.GenericDefault);
-
             var size = e.Graphics.MeasureString(a_text, e.Font);
+            Rectangle bounds = new Rectangle(e.Bounds.X, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2, e.Bounds.Width, size.ToSize().Height);
+
+            e.Graphics.DrawString(a_text, e.Font, Brushes.Black, bounds, StringFormat.GenericDefault);
+
             int left = (int)Math.Round(size.Width + e.Graphics.MeasureString(" ", e.Font).Width);
-
-            Rectangle bounds = new Rectangle(left, e.Bounds.Y, e.Bounds.Width - left, e.Bounds.Height);
-
             Font font = new Font(e.Font.FontFamily, e.Font.Size * 8 / 10, FontStyle.Bold);
+            size = e.Graphics.MeasureString("(ABGHRTW%)", font).ToSize();
+            bounds = new Rectangle(left, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2 - 1, bounds.Width - left, bounds.Height);
 
             if (a_error)
                 e.Graphics.DrawString(ERROR, font, Brushes.Tomato, bounds, StringFormat.GenericDefault);
@@ -260,48 +260,39 @@ namespace MangaCrawler
         }
 
         private void ListBox_MeasureItem(MeasureItemEventArgs e, ListBox a_listBox, string a_text, bool a_downloading,
-            string a_progress, bool a_error, bool a_downloaded, bool a_waiting, bool a_deleting)
+                                         string a_progress, bool a_error, bool a_downloaded, bool a_waiting, bool a_deleting)
         {
             e.ItemWidth = (int)Math.Round(e.Graphics.MeasureString(a_text, a_listBox.Font,
                  Int32.MaxValue, StringFormat.GenericDefault).Width);
 
             Font font = new Font(a_listBox.Font.FontFamily, a_listBox.Font.Size * 8 / 10, FontStyle.Bold);
+            int space = e.ItemWidth += e.Graphics.MeasureString(" ", a_listBox.Font,
+                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
 
             if (a_error)
             {
-                e.ItemWidth += (int)Math.Round(e.Graphics.MeasureString(" ", a_listBox.Font,
-                    Int32.MaxValue, StringFormat.GenericDefault).Width);
-                e.ItemWidth += (int)Math.Round(e.Graphics.MeasureString(ERROR, font,
-                    Int32.MaxValue, StringFormat.GenericDefault).Width);
+                e.ItemWidth += space + e.Graphics.MeasureString(ERROR, font,
+                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
             }
             else if (a_downloaded)
             {
-
-                e.ItemWidth += (int)Math.Round(e.Graphics.MeasureString(" ", a_listBox.Font,
-                    Int32.MaxValue, StringFormat.GenericDefault).Width);
-                e.ItemWidth += (int)Math.Round(e.Graphics.MeasureString(DOWNLOADED, font,
-                    Int32.MaxValue, StringFormat.GenericDefault).Width);
+                e.ItemWidth += space + e.Graphics.MeasureString(DOWNLOADED, font,
+                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
             }
             else if (a_downloading)
             {
-                e.ItemWidth += (int)Math.Round(e.Graphics.MeasureString(" ", a_listBox.Font,
-                    Int32.MaxValue, StringFormat.GenericDefault).Width);
-                e.ItemWidth += (int)Math.Round(e.Graphics.MeasureString(a_progress, font,
-                    Int32.MaxValue, StringFormat.GenericDefault).Width);
+                e.ItemWidth += space + e.Graphics.MeasureString(a_progress, font,
+                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
             }
             else if (a_waiting)
             {
-                e.ItemWidth += (int)Math.Round(e.Graphics.MeasureString(" ", a_listBox.Font,
-                    Int32.MaxValue, StringFormat.GenericDefault).Width);
-                e.ItemWidth += (int)Math.Round(e.Graphics.MeasureString(WAITING, font,
-                    Int32.MaxValue, StringFormat.GenericDefault).Width);
+                e.ItemWidth += space + e.Graphics.MeasureString(WAITING, font,
+                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
             }
             else if (a_deleting)
             {
-                e.ItemWidth += (int)Math.Round(e.Graphics.MeasureString(" ", a_listBox.Font,
-                    Int32.MaxValue, StringFormat.GenericDefault).Width);
-                e.ItemWidth += (int)Math.Round(e.Graphics.MeasureString(DELETING, font,
-                    Int32.MaxValue, StringFormat.GenericDefault).Width);
+                e.ItemWidth += space + e.Graphics.MeasureString(DELETING, font,
+                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
             }
         }
 
@@ -349,6 +340,16 @@ namespace MangaCrawler
                 String.Format("{0}/{1}", chapter.DownloadedPages, 
                 (chapter.ChapterInfo.Pages == null) ? 0 : chapter.ChapterInfo.Pages.Count()), 
                 chapter.Error, chapter.Downloaded, chapter.Waiting, chapter.Deleting);
+        }
+
+        private void tasksGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            e.FormattingApplied = false;
+        }
+
+        private void tasksGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            e.Handled = false;
         }
     }
 }
