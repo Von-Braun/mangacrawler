@@ -320,10 +320,10 @@ namespace MangaCrawlerLib
 
                             if (new DirectoryInfo(dir).Exists)
                                 new DirectoryInfo(dir).Delete(true);
-                            
+                             
                             Parallel.ForEach(chapter_item.ChapterInfo.Pages, (page, state) =>
                             {
-                                try
+                                try  
                                 {
                                     page.DownloadAndSavePageImage(chapter_item.Token, dir);
                                 }
