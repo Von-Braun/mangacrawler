@@ -86,7 +86,6 @@ namespace MangaCrawlerLib
             }
         }
         
-        // TODO: owner draw
         public string TaskProgress
         {
             get
@@ -99,7 +98,7 @@ namespace MangaCrawlerLib
                         case ItemState.Downloaded: return "Downloaded";
                         case ItemState.Waiting: return "Waiting";
                         case ItemState.Deleting: return "Deleting";
-                        case ItemState.Zipping: return "CBZ";
+                        case ItemState.Zipping: return "Zipping";
                         case ItemState.Downloading: return String.Format("{0}/{1}", DownloadedPages, (ChapterInfo.Pages == null) ? 0 :
                                                            ChapterInfo.Pages.Count());
                         case ItemState.Initial: return ""; ;

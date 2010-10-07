@@ -38,7 +38,7 @@ namespace MangaCrawler
         private static readonly string DOWNLOADED = "OK";
         private static readonly string WAITING = "WAITING";
         private static readonly string DELETING = "DELETING";
-        private static readonly string ZIPPING = "CBZ";
+        private static readonly string ZIPPING = "ZIPPING";
 
         public MangaCrawlerForm()
         {

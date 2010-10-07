@@ -392,6 +392,8 @@ namespace MangaCrawlerLib
                     {
                         zip.AddFile(fi.FullName, "");
                         a_token.ThrowIfCancellationRequested();
+
+                        Thread.Sleep(1000);
                     }
 
                     zip.Save(zip_file);
