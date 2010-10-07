@@ -7,20 +7,13 @@ using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
-    [DebuggerDisplay("{SerieInfo}")]
     public class SerieItem
     {
         public readonly SerieInfo SerieInfo;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Object m_lock = new Object();
-
         private int m_progress;
-
-        private bool m_error;
-        private bool m_downloading;
-        private bool m_downloaded;
-
+        private ItemState m_state;
 
         public SerieItem(SerieInfo a_info)
         {
@@ -48,9 +41,7 @@ namespace MangaCrawlerLib
             lock (m_lock)
             {
                 m_progress = 0;
-                m_error = false;
-                m_downloading = false;
-                m_downloaded = false;
+                m_state = ItemState.Initial;
             }
         }
 
@@ -58,58 +49,29 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                if (m_error)
-                    return SerieInfo.Name + " (Error)";
-                else if (m_downloading)
-                    return String.Format("{0} ({1}%)", SerieInfo.Name, m_progress);
-                else if (m_downloaded)
-                    return SerieInfo.Name + " (OK)";
-                else
-                    return SerieInfo.Name;
+                return String.Format("name: {0}, state: {1}", SerieInfo.Name, m_state);
             }
         }
 
-        public bool Error
+        public bool DownloadRequired
         {
             get
             {
-                return m_error;
+                return (m_state == ItemState.Error) || (m_state == ItemState.Initial);
+            }
+        }
+
+        public ItemState State
+        {
+            get
+            {
+                return m_state;
             }
             set
             {
                 lock (m_lock)
                 {
-                    m_error = value;
-                }
-            }
-        }
-
-        public bool Downloading
-        {
-            get
-            {
-                return m_downloading;
-            }
-            set
-            {
-                lock (m_lock)
-                {
-                    m_downloading = value;
-                }
-            }
-        }
-
-        public bool Downloaded
-        {
-            get
-            {
-                return m_downloaded;
-            }
-            set
-            {
-                lock (m_lock)
-                {
-                    m_downloaded = value;
+                    m_state = value;
                 }
             }
         }

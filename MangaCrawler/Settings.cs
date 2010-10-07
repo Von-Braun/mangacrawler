@@ -84,5 +84,19 @@ namespace MangaCrawler
                 Config.Instance.Save();
             }
         }
+
+        [ConfigurationProperty("useCBZ", DefaultValue = false, IsRequired = false)]
+        public bool UseCBZ
+        {
+            get
+            {
+                return (bool)base["useCBZ"];
+            }
+            set
+            {
+                base["useCBZ"] = value;
+                Config.Instance.Save();
+            }
+        }
     }
 }
