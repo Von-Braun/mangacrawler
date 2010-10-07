@@ -193,6 +193,10 @@
       <Project>{5CE21DA4-9AD1-4D26-B7AE-2CDF133E6ECC}</Project>
       <Name>MangaCrawlerLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\System.Drawing.Html\System.Drawing.Html.csproj">
+      <Project>{1B058920-24B4-4140-8AE7-C8C6C38CA52D}</Project>
+      <Name>System.Drawing.Html</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
