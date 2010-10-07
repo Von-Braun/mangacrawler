@@ -18,6 +18,7 @@ using System.Reflection;
 namespace MangaCrawler
 {
     // TODO: test rozlegly zrobic
+    // TODO: instalator
     //
     // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, podczas ponownego uruchomienia weryfikacja tego, 
     //       pamietanie urli obrazkow, dat modyfikacji zdalnych, szybka weryfikacja
