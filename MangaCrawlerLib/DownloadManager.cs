@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading;
+using Ionic.Zip;
 
 namespace MangaCrawlerLib
 {
@@ -379,11 +380,30 @@ namespace MangaCrawlerLib
         {
             var di = new DirectoryInfo(a_dir);
 
-            string cbz_name = di.Name;
-            string cbz_dir = di.Parent.FullName;
-
             var files = di.GetFiles();
+            var zip_file = a_dir.RemoveFromRight(1) + ".zip";
+            try
+            {
+                using (ZipFile zip = new ZipFile())
+                {
+                    zip.UseUnicodeAsNecessary = true;
 
+                    foreach (var fi in di.GetFiles())
+                    {
+                        zip.AddFile(fi.FullName, "");
+                        a_token.ThrowIfCancellationRequested();
+                    }
+
+                    zip.Save(zip_file);
+                    di.Delete(true);
+                }
+            }
+            catch
+            {
+                if (new FileInfo(zip_file).Exists)
+                    new FileInfo(zip_file).Delete();
+                throw;
+            }
 
         }
 
