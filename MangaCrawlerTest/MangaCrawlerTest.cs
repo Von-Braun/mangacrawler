@@ -363,6 +363,7 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
+        // TODO: nie chce przejsc testow, jak idzie szeregowo to dziala, napisac osoba wersje dla testow nie zrownoleglona,
         public void UnixMangaTest()
         {
             var series = TestServer(ServerInfo.UnixManga, 1532);
