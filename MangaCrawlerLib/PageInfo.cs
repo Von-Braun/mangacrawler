@@ -17,6 +17,7 @@ namespace MangaCrawlerLib
         private string m_url;
         private string m_urlPart;
         private int m_index;
+        private string m_imageFilePath;
         private ChapterInfo m_chapterInfo;
 
         internal PageInfo(ChapterInfo a_chapterInfo, string a_urlPart, int a_index, string a_name = null)
@@ -101,11 +102,23 @@ namespace MangaCrawlerLib
             return ConnectionsLimiter.GetImageStream(this, a_token);
         }
 
+        internal MemoryStream GetImageStream()
+        {
+            return GetImageStream(new CancellationTokenSource().Token);
+        }
+
+        public string GetImageFilePath()
+        {
+            return m_imageFilePath;
+        }
+
         public void DownloadAndSavePageImage(CancellationToken a_token, string a_dir)
         {
-            FileInfo image_file = new FileInfo(a_dir +
+            m_imageFilePath = a_dir +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
-                FileUtils.RemoveInvalidFileDirectoryCharacters(Path.GetExtension(GetImageURL(a_token))));
+                FileUtils.RemoveInvalidFileDirectoryCharacters(Path.GetExtension(GetImageURL(a_token)));
+
+            FileInfo image_file = new FileInfo(m_imageFilePath);
 
             new DirectoryInfo(a_dir).Create();
 

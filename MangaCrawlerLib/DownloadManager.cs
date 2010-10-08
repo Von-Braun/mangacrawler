@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Threading;
 using Ionic.Zip;
+using System.Resources;
 
 namespace MangaCrawlerLib
 {
@@ -255,27 +256,7 @@ namespace MangaCrawlerLib
         {
             string baseDir = GetDirectoryPath();
 
-            try
-            {
-                new DirectoryInfo(baseDir);
-            }
-            catch
-            {
-                MessageBox.Show(String.Format("Directory path is invalid: '{0}'.", baseDir),
-                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            try
-            {
-                new DirectoryInfo(baseDir).Create();
-            }
-            catch
-            {
-                MessageBox.Show(String.Format("Can't create directory: '{0}'.", baseDir),
-                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            bool cbz = UseCBZ();
 
             foreach (var item in a_items)
             {
@@ -315,9 +296,6 @@ namespace MangaCrawlerLib
 
                             chapter_item.Token.ThrowIfCancellationRequested();
 
-                            if (new DirectoryInfo(dir).Exists)
-                                new DirectoryInfo(dir).Delete(true);
-
                             Parallel.ForEach(chapter_item.ChapterInfo.Pages, (page, state) =>
                             {
                                 try
@@ -344,14 +322,14 @@ namespace MangaCrawlerLib
                             ConnectionsLimiter.EndDownloadPages(chapter_item.ChapterInfo);
                         }
 
-                        if (UseCBZ())
+                        if (cbz)
                         {
                             chapter_item.State = ItemState.Zipping;
                             OnChaptersChanged();
 
                             try
                             {
-                                CreateCBZ(dir, chapter_item.Token);
+                                CreateCBZ(chapter_item);
                             }
                             catch (OperationCanceledException)
                             {
@@ -376,35 +354,42 @@ namespace MangaCrawlerLib
             }
         }
 
-        private static void CreateCBZ(string a_dir, CancellationToken a_token)
+        private static void CreateCBZ(ChapterItem a_chapter)
         {
-            var di = new DirectoryInfo(a_dir);
+            var dir = new DirectoryInfo(a_chapter.ChapterInfo.Pages.First().GetImageFilePath()).Parent;
 
-            var files = di.GetFiles();
-            var zip_file = a_dir.RemoveFromRight(1) + ".zip";
+            var zip_file = dir.FullName + ".zip";
+
+            int counter = 1;
+            while (new FileInfo(zip_file).Exists)
+            {
+                zip_file = String.Format("{0} ({1}).zip", dir.FullName, counter);
+                counter++;
+            }
+
+            using (ZipFile zip = new ZipFile())
+            {
+                zip.UseUnicodeAsNecessary = true;
+
+                foreach (var page in a_chapter.ChapterInfo.Pages)
+                {
+                    zip.AddFile(page.GetImageFilePath(), "");
+                    a_chapter.Token.ThrowIfCancellationRequested();
+                }
+
+                zip.Save(zip_file);
+            }
+
             try
             {
-                using (ZipFile zip = new ZipFile())
-                {
-                    zip.UseUnicodeAsNecessary = true;
+                foreach (var page in a_chapter.ChapterInfo.Pages)
+                    new FileInfo(page.GetImageFilePath()).Delete();
 
-                    foreach (var fi in di.GetFiles())
-                    {
-                        zip.AddFile(fi.FullName, "");
-                        a_token.ThrowIfCancellationRequested();
-
-                        Thread.Sleep(1000);
-                    }
-
-                    zip.Save(zip_file);
-                    di.Delete(true);
-                }
+                if ((dir.GetFiles().Count() == 0) && (dir.GetDirectories().Count() == 0))
+                    dir.Delete();
             }
             catch
             {
-                if (new FileInfo(zip_file).Exists)
-                    new FileInfo(zip_file).Delete();
-                throw;
             }
 
         }

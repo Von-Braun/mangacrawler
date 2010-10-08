@@ -94,14 +94,13 @@ namespace MangaCrawlerLib
                 {
                     switch (m_state)
                     {
-                        case ItemState.Error: return "Error";
-                        case ItemState.Downloaded: return "Downloaded";
-                        case ItemState.Waiting: return "Waiting";
-                        case ItemState.Deleting: return "Deleting";
-                        case ItemState.Zipping: return "Zipping";
-                        case ItemState.Downloading: return String.Format("{0}/{1}", DownloadedPages, (ChapterInfo.Pages == null) ? 0 :
-                                                           ChapterInfo.Pages.Count());
-                        case ItemState.Initial: return ""; ;
+                        case ItemState.Error: return MangaCrawlerLib.Properties.Resources.Task_Progress_Error;
+                        case ItemState.Downloaded: return MangaCrawlerLib.Properties.Resources.Task_Progress_Downloaded;
+                        case ItemState.Waiting: return MangaCrawlerLib.Properties.Resources.Task_Progress_Waiting;
+                        case ItemState.Deleting: return MangaCrawlerLib.Properties.Resources.Task_Progress_Deleting;
+                        case ItemState.Zipping: return MangaCrawlerLib.Properties.Resources.Task_Progress_Zipping;
+                        case ItemState.Downloading: return String.Format("{0}/{1}", DownloadedPages, ChapterInfo.Pages.Count());
+                        case ItemState.Initial: return "";
                         default: throw new NotImplementedException();
                     }
                 }

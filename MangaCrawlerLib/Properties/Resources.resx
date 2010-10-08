@@ -117,34 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CHAPTERS" xml:space="preserve">
-    <value>Chapters: {0}</value>
+  <data name="Task_Progress_Deleting" xml:space="preserve">
+    <value>Deleting</value>
   </data>
-  <data name="DELETING" xml:space="preserve">
-    <value>DELETING</value>
+  <data name="Task_Progress_Downloaded" xml:space="preserve">
+    <value>Downloaded</value>
   </data>
-  <data name="DIR_ERROR_1" xml:space="preserve">
-    <value>Directory path is invalid: '{0}'</value>
+  <data name="Task_Progress_Error" xml:space="preserve">
+    <value>Error</value>
   </data>
-  <data name="DIR_ERROR_2" xml:space="preserve">
-    <value>Can't create directory: '{0}'</value>
+  <data name="Task_Progress_Waiting" xml:space="preserve">
+    <value>Waiting</value>
   </data>
-  <data name="DOWNLOADED" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>ERROR</value>
-  </data>
-  <data name="EXIT_QUESTION" xml:space="preserve">
-    <value>Downloading in progress. Exit anyway?</value>
-  </data>
-  <data name="SERIES" xml:space="preserve">
-    <value>Series: {0}</value>
-  </data>
-  <data name="WAITING" xml:space="preserve">
-    <value>WAITING</value>
-  </data>
-  <data name="ZIPPING" xml:space="preserve">
-    <value>ZIPPING</value>
+  <data name="Task_Progress_Zipping" xml:space="preserve">
+    <value>Zipping</value>
   </data>
 </root>
