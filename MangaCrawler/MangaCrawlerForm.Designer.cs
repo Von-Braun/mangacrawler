@@ -309,11 +309,11 @@
             // 
             this.cbzCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbzCheckBox.AutoSize = true;
-            this.cbzCheckBox.Location = new System.Drawing.Point(784, 7);
+            this.cbzCheckBox.Location = new System.Drawing.Point(789, 7);
             this.cbzCheckBox.Name = "cbzCheckBox";
-            this.cbzCheckBox.Size = new System.Drawing.Size(117, 17);
+            this.cbzCheckBox.Size = new System.Drawing.Size(112, 17);
             this.cbzCheckBox.TabIndex = 38;
-            this.cbzCheckBox.Text = "Zip chapters to cbz";
+            this.cbzCheckBox.Text = "Zip chapter to cbz";
             this.cbzCheckBox.UseVisualStyleBackColor = true;
             this.cbzCheckBox.CheckedChanged += new System.EventHandler(this.cbzCheckBox_CheckedChanged);
             // 
