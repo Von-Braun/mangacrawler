@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MangaCrawler.Properties {
+namespace MangaCrawlerLib.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace MangaCrawler.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MangaCrawler.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MangaCrawlerLib.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,92 +61,47 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chapters: {0}.
+        ///   Looks up a localized string similar to Deleting.
         /// </summary>
-        internal static string CHAPTERS {
+        internal static string Task_Progress_Deleting {
             get {
-                return ResourceManager.GetString("CHAPTERS", resourceCulture);
+                return ResourceManager.GetString("Task_Progress_Deleting", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DELETING.
+        ///   Looks up a localized string similar to Downloaded.
         /// </summary>
-        internal static string DELETING {
+        internal static string Task_Progress_Downloaded {
             get {
-                return ResourceManager.GetString("DELETING", resourceCulture);
+                return ResourceManager.GetString("Task_Progress_Downloaded", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directory path is invalid: &apos;{0}&apos;.
+        ///   Looks up a localized string similar to Error.
         /// </summary>
-        internal static string DIR_ERROR_1 {
+        internal static string Task_Progress_Error {
             get {
-                return ResourceManager.GetString("DIR_ERROR_1", resourceCulture);
+                return ResourceManager.GetString("Task_Progress_Error", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t create directory: &apos;{0}&apos;.
+        ///   Looks up a localized string similar to Waiting.
         /// </summary>
-        internal static string DIR_ERROR_2 {
+        internal static string Task_Progress_Waiting {
             get {
-                return ResourceManager.GetString("DIR_ERROR_2", resourceCulture);
+                return ResourceManager.GetString("Task_Progress_Waiting", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OK.
+        ///   Looks up a localized string similar to Zipping.
         /// </summary>
-        internal static string DOWNLOADED {
+        internal static string Task_Progress_Zipping {
             get {
-                return ResourceManager.GetString("DOWNLOADED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ERROR.
-        /// </summary>
-        internal static string ERROR {
-            get {
-                return ResourceManager.GetString("ERROR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Downloading in progress. Exit anyway?.
-        /// </summary>
-        internal static string EXIT_QUESTION {
-            get {
-                return ResourceManager.GetString("EXIT_QUESTION", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Series: {0}.
-        /// </summary>
-        internal static string SERIES {
-            get {
-                return ResourceManager.GetString("SERIES", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WAITING.
-        /// </summary>
-        internal static string WAITING {
-            get {
-                return ResourceManager.GetString("WAITING", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ZIPPING.
-        /// </summary>
-        internal static string ZIPPING {
-            get {
-                return ResourceManager.GetString("ZIPPING", resourceCulture);
+                return ResourceManager.GetString("Task_Progress_Zipping", resourceCulture);
             }
         }
     }

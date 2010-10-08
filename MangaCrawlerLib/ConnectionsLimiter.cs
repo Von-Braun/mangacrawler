@@ -136,7 +136,7 @@ namespace MangaCrawlerLib
             {
                 a_token.ThrowIfCancellationRequested();
 
-                return new HtmlWeb().Load(a_url);
+                return HTTPUtils.Submit(a_url, a_parameters);
             }
             finally
             {

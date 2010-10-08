@@ -38,7 +38,7 @@ namespace MangaCrawlerLib
 
             var chapters = doc.DocumentNode.SelectNodes("/html/body/div[2]/div/div/div/ul[2]/li/table/tr");
 
-            var result = from chapter in chapters
+            var result = from chapter in chapters.Skip(1)
                          select new ChapterInfo(a_info, 
                                                 chapter.SelectSingleNode("td[3]/a").GetAttributeValue("href", ""), 
                                                 Path.GetFileNameWithoutExtension(chapter.SelectSingleNode("td[1]").InnerText));

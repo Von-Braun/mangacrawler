@@ -39,6 +39,7 @@ namespace MangaCrawlerLib
             {
                 if (m_chapters == null)
                     return new ChapterInfo[0];
+
                 return from ch in m_chapters
                        select ch;
             }

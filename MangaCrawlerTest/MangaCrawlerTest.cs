@@ -68,6 +68,8 @@ namespace MangaCrawlerTest
         {
             new HtmlWeb().Load(a_chapter.URL);
 
+            a_chapter.DownloadPages();
+
             var pages = a_chapter.Pages;
 
             if (a_count != -1)
@@ -83,14 +85,14 @@ namespace MangaCrawlerTest
 
         private void TestPage(PageInfo a_page, string a_hash = null)
         {
-            var stream = a_page.GetImageStream(new CancellationToken());
+            var stream = a_page.GetImageStream();
 
             Assert.IsTrue(stream.Length > 0);
 
             System.Drawing.Image.FromStream(stream);
             stream.Position = 0;
 
-            if (a_hash != null)
+            if (a_hash != "")
             {
                 Assert.AreEqual(a_hash, GetHash(stream));
             }
@@ -347,11 +349,11 @@ namespace MangaCrawlerTest
         {
             var series = TestServer(ServerInfo.StopTazmo, 1792);
 
-            var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 1792);
+            var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 422);
 
-            var pages = TestChapter(chapters.Last(), 19);
+            var pages = TestChapter(chapters.Last(), 20);
 
-            TestPage(pages.First(), "A98E1FDB-FC51F496-7797C15C-D756B016-6CBC412F-42A53FDD-17BB1B6D-A7678FA2");
+            TestPage(pages.First(), "E1DFC992-4C0F8D25-3A1AE1FA-2429B7EE-6937A312-C5A26D4D-88F42644-B94B2A6A");
             TestPage(pages.Last(), "8A2A4703-FDF58BF9-0AAEC0A9-93F2876B-DBECD43E-D8DAE263-3F958C29-455D5E9F");
 
             pages = TestChapter(chapters.First(), 57);
@@ -425,29 +427,75 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void _RandomTestAll()
         {
-            Parallel.ForEach(ServerInfo.ServersInfos, si => 
+            Parallel.ForEach(ServerInfo.ServersInfos, server => 
             {
-                si.DownloadSeries();
-
-                Assert.IsTrue(si.Series.Count() > 0);
-
-                Parallel.ForEach(TakeRandom(si.Series, 0.1), serie =>
+                try
                 {
-                    serie.DownloadChapters();
+                    server.DownloadSeries();
+                }
+                catch
+                {
+                    TestContext.WriteLine("Exception while downloading series from server {0}", server);
+                    return;
+                }
 
-                    Assert.IsTrue(serie.Chapters.Count() > 0);
+                if (server.Series.Count() == 0)
+                    TestContext.WriteLine("Server {0} has no series", server);
+                
+                Parallel.ForEach(TakeRandom(server.Series, 0.1), serie =>
+                {
+                    try
+                    {
+                        serie.DownloadChapters();
+                    }
+                    catch
+                    {
+                        TestContext.WriteLine("Exception while downloading chapters from serie {0}", serie);
+                        return;
+                    }
+
+                    if (serie.Chapters.Count() == 0)
+                        TestContext.WriteLine("Serie {0} has no chapters", serie);
 
                     Parallel.ForEach(TakeRandom(serie.Chapters, 0.1), chapter => 
                     {
-                        chapter.DownloadPages(new CancellationToken());
+                        try
+                        {
+                            chapter.DownloadPages();
+                        }
+                        catch
+                        {
+                            TestContext.WriteLine("Exception while downloading pages from chapter {0}", chapter);
+                            return;
+                        }
 
-                        Assert.IsTrue(chapter.Pages.Count() > 0);
+                        if (chapter.Pages.Count() == 0)
+                            TestContext.WriteLine("Chapter {0} has no pages", chapter);
 
                         Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), page =>
                         {
-                            var stream = page.GetImageStream(new CancellationToken());
-                            Assert.IsTrue(stream.Length > 0);
-                            System.Drawing.Image.FromStream(stream);
+                            MemoryStream stream = null;
+
+                            try
+                            {
+                                stream = page.GetImageStream();
+                            }
+                            catch
+                            {
+                                TestContext.WriteLine("Exception while downloading image from page {0}", page);
+                            }
+
+                            if (stream.Length == 0)
+                                TestContext.WriteLine("Image stream has zero size for page {0}", page);
+
+                            try
+                            {
+                                System.Drawing.Image.FromStream(stream);
+                            }
+                            catch
+                            {
+                                TestContext.WriteLine("Exception while creating image from stream for page {0}", page);
+                            }
                         });
                     });
                 });
