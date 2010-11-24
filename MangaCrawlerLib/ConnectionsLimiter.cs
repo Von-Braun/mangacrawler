@@ -59,7 +59,13 @@ namespace MangaCrawlerLib
                 if (a_url == null)
                     a_url = a_info.URL;
 
-                return new HtmlWeb().Load(a_url);
+                var web = new HtmlWeb();
+                var page = web.Load(a_url);
+
+                if (web.StatusCode == HttpStatusCode.NotFound)
+                    return null;
+
+                return page;
             }
             finally
             {
