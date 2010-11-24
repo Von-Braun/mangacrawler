@@ -120,8 +120,22 @@ namespace MangaCrawler
             }
         }
 
+        public static System.Collections.Concurrent.ConcurrentDictionary<string, int> d = 
+            new System.Collections.Concurrent.ConcurrentDictionary<string, int>();
+
+
         public void ReloadItems<T>(IEnumerable<T> a_enum, VisualState a_state) where T : class
         {
+            int t = 0;
+            if (!d.TryGetValue(Name, out t))
+                d[Name] = System.Environment.TickCount;
+            else
+            {
+                int t1 = System.Environment.TickCount;
+                Debug.WriteLine(String.Format("reloading items: {0}, {1}", t1 - t, Name));
+                d[Name] = t1;
+            }
+
             if (Capture)
                 return;
 

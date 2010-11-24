@@ -358,12 +358,12 @@ namespace MangaCrawlerLib
         {
             var dir = new DirectoryInfo(a_chapter.ChapterInfo.Pages.First().GetImageFilePath()).Parent;
 
-            var zip_file = dir.FullName + ".zip";
+            var zip_file = dir.FullName + ".cbz";
 
             int counter = 1;
             while (new FileInfo(zip_file).Exists)
             {
-                zip_file = String.Format("{0} ({1}).zip", dir.FullName, counter);
+                zip_file = String.Format("{0} ({1}).cbz", dir.FullName, counter);
                 counter++;
             }
 

@@ -37,10 +37,11 @@ namespace MangaCrawlerLib
             string url = String.Format("{0}/chapter-001/page001.html", a_info.URL);
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var chapters = doc.DocumentNode.SelectNodes("//select[@name='chapterjump']/option");
+            var chapters = doc.DocumentNode.SelectNodes("//table[@class='datalist']/tr/td[4]/a");
 
             var result = from chapter in chapters 
-                         select new ChapterInfo(a_info, chapter.GetAttributeValue("Value", ""), chapter.NextSibling.InnerText);
+                         select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""),
+                             chapter.ParentNode.ParentNode.ChildNodes[3].InnerText);
 
             a_progress_callback(100, result);
         }
@@ -86,14 +87,16 @@ namespace MangaCrawlerLib
 
         internal override string GetChapterURL(ChapterInfo a_info)
         {
-            return String.Format("http://read.mangashare.com/{0}/chapter-{1}/page001.html",
-                a_info.SerieInfo.URLPart, a_info.URLPart);
+            return a_info.URLPart;
         }
 
         internal override string GetPageURL(PageInfo a_info)
         {
-            return String.Format("http://read.mangashare.com/{0}/chapter-{1}/page{2}.html",
-                                 a_info.ChapterInfo.SerieInfo.URLPart, a_info.ChapterInfo.URLPart, a_info.URLPart);
+            string str = a_info.ChapterInfo.URLPart;
+            int index = str.LastIndexOf("/page");
+            str = str.Left(index + 5);
+            str += a_info.URLPart + ".html";
+            return str;
         }
     }
 }

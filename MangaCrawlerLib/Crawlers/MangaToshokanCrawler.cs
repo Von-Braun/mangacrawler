@@ -27,8 +27,8 @@ namespace MangaCrawlerLib
                          where (row.ChildNodes.Count >= 8)
                          where (row.ChildNodes[3].InnerText != "None")
                          select new SerieInfo(a_info, 
-                                              row.ChildNodes[1].GetAttributeValue("href", ""), 
-                                              row.ChildNodes[1].InnerText);
+                                              row.ChildNodes[1].ChildNodes[0].GetAttributeValue("href", ""), 
+                                              row.ChildNodes[1].ChildNodes[0].InnerText);
 
             a_progress_callback(100, result);
         }

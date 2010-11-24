@@ -15,7 +15,8 @@ namespace MangaCrawlerLib
 {
     internal class MangaVolumeCrawler : Crawler
     {
-        private int m_progress;
+        private int m_series_progress;
+        private int m_chapters_progress;
 
         internal override string Name
         {
@@ -29,33 +30,61 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var numbers = doc.DocumentNode.SelectNodes("//ul[@id='pagination']/li[@class='current']");
-            var number = numbers.Count;
+            List<string> pages = new List<string>();
+            pages.Add(a_info.URL);
+
+            do
+            {
+                var  nodes_enum = doc.DocumentNode.SelectNodes("//div[@id='NavigationPanel']/ul/li/a");
+
+                // TODO: some bug in their code
+                if (nodes_enum == null)
+                {
+                    doc = ConnectionsLimiter.DownloadDocument(a_info);
+                    continue;
+                }
+
+                var nodes = nodes_enum.ToList();
+                    
+
+                if (nodes.First().InnerText.ToLower() == "prev")
+                    nodes.RemoveAt(0);
+                if (nodes.Last().InnerText.ToLower() == "next")
+                    nodes.RemoveLast();
+
+                pages.AddRange(from node in nodes
+                               select "http://www.mangavolume.com" + node.GetAttributeValue("href", ""));
+
+                string next_pages_group = String.Format("http://www.mangavolume.com/manga-archive/mangas/npage-{0}",
+                    Int32.Parse(nodes.Last().InnerText) + 1);
+
+                doc = ConnectionsLimiter.DownloadDocument(a_info, next_pages_group);
+
+                if (doc != null)
+                    pages.Add(next_pages_group);
+            }
+            while (doc != null);
+
+            pages = pages.Distinct().ToList();
 
             ConcurrentBag<Tuple<int, int, string, string>> series =
                 new ConcurrentBag<Tuple<int, int, string, string>>();
 
-            m_progress = 0;
+            m_series_progress = 0;
 
-            Parallel.For(1, number + 1, (page, state) =>
+            Parallel.For(0, pages.Count, (page, state) =>
             {
                 try
                 {
-                    HtmlDocument page_doc;
+                    IEnumerable<HtmlNode> page_series = null;
 
-                    if (page == 1)
+                    // TODO: some bug in their code
+                    while (page_series == null)
                     {
-                        page_doc = doc;
-                    }
-                    else
-                    {
-                        String url = "http://www.mangavolume.com" +
-                            numbers[page - 1].ChildNodes[0].GetAttributeValue("href", "");
+                        HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, pages[page]);
 
-                        page_doc = ConnectionsLimiter.DownloadDocument(a_info, url);
+                        page_series = page_doc.DocumentNode.SelectNodes("//table[@id='MainList']/tr/td[1]/a");
                     }
-
-                    var page_series = page_doc.DocumentNode.SelectNodes("//table[@id='series_list']/tr/td[1]/a");
 
                     int index = 0;
                     foreach (var serie in page_series)
@@ -74,8 +103,8 @@ namespace MangaCrawlerLib
                                  orderby serie.Item1, serie.Item2
                                  select new SerieInfo(a_info, serie.Item4, serie.Item3);
 
-                    m_progress++;
-                    a_progress_callback(m_progress * 100 / number, result);
+                    m_series_progress++;
+                    a_progress_callback(m_series_progress * 100 / pages.Count, result);
                 }
                 catch
                 {
@@ -89,19 +118,83 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var chapters = doc.DocumentNode.SelectNodes("//table[@id='series_list']/tr/td[1]/a");
+            List<string> pages = new List<string>();
+            pages.Add(a_info.URL);
 
-            var result = from chapter in chapters
-                         select new ChapterInfo(a_info, chapter.GetAttributeValue("href", "").RemoveFromLeft(1), chapter.InnerText);
+            do
+            {
+                var nodes_enum = doc.DocumentNode.SelectNodes("//div[@id='NavigationPanel']/ul/li/a");
 
-            a_progress_callback(100, result);
+                if (nodes_enum == null)
+                {
+                    pages.RemoveLast();
+                    break;
+                }
+
+                var nodes = nodes_enum.ToList();
+
+                if (nodes.First().InnerText.ToLower() == "prev")
+                    nodes.RemoveAt(0);
+                if (nodes.Last().InnerText.ToLower() == "next")
+                    nodes.RemoveLast();
+
+                pages.AddRange(from node in nodes
+                               select "http://www.mangavolume.com" + node.GetAttributeValue("href", ""));
+
+                string next_pages_group = String.Format("{0}npage-{1}", a_info.URL, Int32.Parse(nodes.Last().InnerText) + 1);
+
+                doc = ConnectionsLimiter.DownloadDocument(a_info, next_pages_group);
+
+                if (doc != null)
+                    pages.Add(next_pages_group);
+            }
+            while (doc != null);
+
+            pages = pages.Distinct().ToList();
+
+            ConcurrentBag<Tuple<int, int, string, string>> series =
+                new ConcurrentBag<Tuple<int, int, string, string>>();
+
+            m_chapters_progress = 0;
+
+            Parallel.For(0, pages.Count, (page, state) =>
+            {
+                try
+                {
+                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, pages[page]);
+
+                    var page_series = page_doc.DocumentNode.SelectNodes("//table[@id='MainList']/tr/td[1]/a");
+
+                    int index = 0;
+                    foreach (var serie in page_series)
+                    {
+                        Tuple<int, int, string, string> s =
+                            new Tuple<int, int, string, string>(page, index++, serie.InnerText,
+                                                                serie.GetAttributeValue("href", "").RemoveFromLeft(1));
+
+                        series.Add(s);
+                    }
+
+                    var result = from serie in series
+                                 orderby serie.Item1, serie.Item2
+                                 select new ChapterInfo(a_info, serie.Item4, serie.Item3);
+
+                    m_chapters_progress++;
+                    a_progress_callback(m_chapters_progress * 100 / pages.Count, result);
+                }
+                catch
+                {
+                    state.Break();
+                    throw;
+                }
+            });
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            var pages = doc.DocumentNode.SelectNodes("//select[@id='id_page_select']/option");
+            var pages = doc.DocumentNode.SelectNodes("//select[@id='pages']/option");
 
             int index = 0;
             foreach (var page in pages)
@@ -110,8 +203,7 @@ namespace MangaCrawlerLib
 
                 PageInfo pi = new PageInfo(
                     a_info,
-                    String.Format("http://www.mangavolume.com/{0}index.php?serie={1}&page_nr={2}",
-                        a_info.URLPart, a_info.URLPart.Replace("/chapter-", "&chapter=").RemoveFromRight(1), page.GetAttributeValue("value", "")),
+                    String.Format("http://www.mangavolume.com{0}", page.GetAttributeValue("value", "")),
                     index);
 
                 yield return pi;
@@ -122,9 +214,15 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            var node = doc.DocumentNode.SelectSingleNode("//img[@id='mangaPage']");
+            var img = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/div[3]/div[1]/table[2]/tr[5]/td[1]/a[1]/img[1]");
+            if (img == null)
+                img = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/div[3]/div[1]/table[2]/tr[5]/td[1]/img[1]");
+            if (img == null)
+                img = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/div[3]/div[1]/table[1]/tr[5]/td[1]/a[1]/img[1]");
+            if (img == null)
+                img = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/div[3]/div[1]/table[1]/tr[5]/td[1]/img[1]");
 
-            return node.GetAttributeValue("src", "");
+            return img.GetAttributeValue("src", "");
         }
 
         internal override string GetServerURL()
