@@ -13,7 +13,6 @@ namespace MangaCrawlerLib
     internal class OtakuWorksCrawler : Crawler
     {
         private int m_series_progress;
-        private int m_chapters_progress;
 
         internal override string Name
         {
@@ -75,76 +74,17 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            //var pages = doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/div/div[3]/div[10]/div[27]/div/a").AsEnumerable();
+            var page_chapters = doc.DocumentNode.SelectNodes("//div[@id='filelist']/div[@class='sbox3']/a");
 
-            //if (pages == null)
-            //{
-                HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info);
+            if (page_chapters != null)
+            {
+                var result = from chapter in page_chapters
+                                select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
 
-                var page_chapters = page_doc.DocumentNode.SelectNodes("//div[@id='filelist']/div[@class='sbox3']/a");
-
-                if (page_chapters != null)
-                {
-
-                    var result = from chapter in page_chapters
-                                 select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
-
-                    a_progress_callback(100, result);
-                }
-                else
-                {
-                    a_progress_callback(100, new List<ChapterInfo>());
-                }
-
-            //}
-            //else
-            //{
-            //    pages = pages.Reverse().Skip(1).Reverse();
-
-            //    ConcurrentBag<Tuple<int, int, string, string>> chapters =
-            //        new ConcurrentBag<Tuple<int, int, string, string>>();
-
-            //    m_chapters_progress = 0;
-
-            //    Parallel.ForEach(pages, (page, state) =>
-            //    {
-            //        try
-            //        {
-            //            int page_num = Int32.Parse(page.InnerText);
-
-            //            String url = "http://www.otakuworks.com/" + page.GetAttributeValue("href", "").RemoveFromLeft(1);
-
-            //            if (page_num == 1)
-            //                url = a_info.URL;
-
-            //            HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, url);
-
-            //            var page_chapters = page_doc.DocumentNode.SelectNodes("/html/body/div/div/div[5]/div/div[3]/div/div[@class='sbox3']/a[1]");
-
-            //            int index = 0;
-            //            foreach (var chapter in page_chapters)
-            //            {
-            //                Tuple<int, int, string, string> s =
-            //                    new Tuple<int, int, string, string>(page_num, index++, chapter.InnerText,
-            //                                                        chapter.GetAttributeValue("href", ""));
-
-            //                chapters.Add(s);
-            //            }
-
-            //            var result = (from chapter in chapters
-            //                          orderby chapter.Item1, chapter.Item2
-            //                          select new ChapterInfo(a_info, chapter.Item4, chapter.Item3)).ToArray();
-
-            //            m_chapters_progress++;
-            //            a_progress_callback(m_chapters_progress * 100 / pages.Count(), result);
-            //        }
-            //        catch
-            //        {
-            //            state.Break();
-            //            throw;
-            //        }
-            //    });
-            //}
+                a_progress_callback(100, result);
+            }
+            else
+                a_progress_callback(100, new List<ChapterInfo>());
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)

@@ -9,15 +9,17 @@ namespace MangaCrawlerLib
 {
     public class SerieItem
     {
-        public readonly SerieInfo SerieInfo;
-
         private Object m_lock = new Object();
         private int m_progress;
         private ItemState m_state;
 
-        public SerieItem(SerieInfo a_info)
+        public readonly SerieInfo SerieInfo;
+        public readonly ServerItem ServerItem;
+
+        public SerieItem(SerieInfo a_serieInfo, ServerItem a_serverItem)
         {
-            SerieInfo = a_info;
+            ServerItem = a_serverItem;
+            SerieInfo = a_serieInfo;
             Initialize();
         }
 
