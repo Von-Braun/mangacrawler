@@ -17,9 +17,11 @@ namespace MangaCrawlerLib
         private ItemState m_state;
 
         public readonly ChapterInfo ChapterInfo;
+        public readonly SerieItem SerieItem;
 
-        public ChapterItem(ChapterInfo a_chapterInfo)
+        public ChapterItem(ChapterInfo a_chapterInfo, SerieItem a_serieItem)
         {
+            SerieItem = a_serieItem;
             ChapterInfo = a_chapterInfo;
             Initialize();
         }
