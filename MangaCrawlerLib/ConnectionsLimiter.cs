@@ -18,7 +18,7 @@ namespace MangaCrawlerLib
 
         private static Dictionary<ServerInfo, QueuedMutex> s_serverPages = new Dictionary<ServerInfo, QueuedMutex>();
         private static Dictionary<ServerInfo, Semaphore> s_serverConnections = new Dictionary<ServerInfo, Semaphore>();
-        private static Semaphore m_connections = new Semaphore(MAX_CONNECTIONS, MAX_CONNECTIONS);
+        private static Semaphore s_connections = new Semaphore(MAX_CONNECTIONS, MAX_CONNECTIONS);
 
         static ConnectionsLimiter()
         {
@@ -40,14 +40,14 @@ namespace MangaCrawlerLib
 
         private static void Aquire(ServerInfo a_info)
         {
-            m_connections.WaitOne();
+            s_connections.WaitOne();
             s_serverConnections[a_info].WaitOne();
         }
 
         private static void Release(ServerInfo a_info)
         {
             s_serverConnections[a_info].Release();
-            m_connections.Release();
+            s_connections.Release();
         }
 
         internal static HtmlDocument DownloadDocument(ServerInfo a_info, string a_url = null)
@@ -132,7 +132,8 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal static HtmlDocument Submit(PageInfo a_info, CancellationToken a_token, string a_url, Dictionary<string, string> a_parameters)
+        internal static HtmlDocument Submit(PageInfo a_info, CancellationToken a_token, string a_url, 
+            Dictionary<string, string> a_parameters)
         {
             a_token.ThrowIfCancellationRequested();
 

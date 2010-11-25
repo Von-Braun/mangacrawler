@@ -21,23 +21,26 @@ namespace MangaCrawlerLib
 
         public void Update(Action a_callback)
         {
-            lock (m_lock)
-            {
-                if (System.Environment.TickCount - m_last < m_freq)
-                {
-                    if (!m_queued)
-                    {
-                        m_queued = true;
-                        Queue(a_callback);
-                    }
-                }
-                else
-                {
-                    m_queued = false;
-                    m_last = System.Environment.TickCount;
-                    a_callback();
-                }
-            }
+            //lock (m_lock)
+            //{
+            //    if (System.Environment.TickCount - m_last < m_freq)
+            //    {
+            //        if (!m_queued)
+            //        {
+            //            m_queued = true;
+            //            Queue(a_callback);
+            //        }
+
+            //        return;
+            //    }
+            //    else
+            //    {
+            //        m_queued = false;
+            //        m_last = System.Environment.TickCount;
+            //    }
+            //}
+            
+            a_callback();
         }
 
         private void Queue(Action a_callback)
