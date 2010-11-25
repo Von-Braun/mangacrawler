@@ -41,7 +41,7 @@ namespace MangaCrawlerLib
 
         public static Func<VisualState> GetServersVisualState;
         public static Func<VisualState> GetSeriesVisualState;
-        public static Func<VisualState> GetChaptersVisualState;
+        public static Func<VisualState > GetChaptersVisualState;
 
         static DownloadManager()
         {
@@ -468,6 +468,7 @@ namespace MangaCrawlerLib
                 string filter = GetSeriesFilter().ToLower();
                 list = (from serie in s_selectedServer.ServerInfo.Series
                         where serie.Name.ToLower().IndexOf(filter) != -1
+                        where s_series.ContainsKey(serie) // moze zostac wywolane poprzez s_seriesUpdateLimiter, moga istniec serie w Series nie dodane do s_series.
                         select s_series[serie]).ToList();
             }
 

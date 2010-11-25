@@ -42,13 +42,6 @@ namespace MangaCrawler
 
         public override void Restore()
         {
-            if ((m_topItem != null) && (m_listBox.Items.Contains(m_topItem)) && (m_selectedItems.Count > 0))
-                m_listBox.TopIndex = m_listBox.Items.IndexOf(m_topItem);
-            else if (m_topIndex < m_listBox.Items.Count)
-                m_listBox.TopIndex = m_topIndex;
-            else if (m_topIndex != -1)
-                m_listBox.TopIndex = m_listBox.Items.Count - 1;
-
             foreach (var sel_item in m_selectedItems)
                 m_listBox.SetSelected(m_listBox.Items.IndexOf(sel_item), true);
 
@@ -58,6 +51,13 @@ namespace MangaCrawler
                 m_listBox.SelectedIndex = m_selectedIndex;
             else if (m_selectedIndex != -1)
                 m_listBox.SelectedIndex = m_listBox.Items.Count - 1;
+
+            if ((m_topItem != null) && (m_listBox.Items.Contains(m_topItem)) && (m_selectedItems.Count > 0))
+                m_listBox.TopIndex = m_listBox.Items.IndexOf(m_topItem);
+            else if (m_topIndex < m_listBox.Items.Count)
+                m_listBox.TopIndex = m_topIndex;
+            else if (m_topIndex != -1)
+                m_listBox.TopIndex = m_listBox.Items.Count - 1;
         }
 
         protected override void Clear()

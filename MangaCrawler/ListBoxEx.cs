@@ -28,19 +28,6 @@ namespace MangaCrawler
             DrawMode = DrawMode.OwnerDrawFixed;  
         }
 
-        protected override void OnDrawItem(DrawItemEventArgs e)
-        {
-            //if (Items.Count > 0)
-            //{
-            //    e.DrawBackground();
-            //    e.Graphics.DrawString(Items[e.Index].ToString(), e.Font, new SolidBrush(ForeColor),
-            //        new PointF(e.Bounds.X, e.Bounds.Y));
-            //    e.DrawFocusRectangle();
-            //}
-
-            base.OnDrawItem(e);
-        }
-
         protected override void OnPaint(PaintEventArgs e)
         {
             Region region = new Region(e.ClipRectangle);
