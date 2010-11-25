@@ -20,6 +20,9 @@ namespace MangaCrawler
     // TODO: test rozlegly zrobic
     // TODO: instalator
     //
+    // TODO: jesli sciagaja sie serie, a my naciskamy na sciaganie chapterow to one ida pierwsze
+    //       chaptery sciagaja sie w kolejnosci klikania w nie, podstrony seri sciagaja sie w kolejnosci
+    //
     // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, podczas ponownego uruchomienia 
     //       weryfikacja tego, pamietanie urli obrazkow, dat modyfikacji zdalnych, szybka weryfikacja
     //
@@ -315,71 +318,10 @@ namespace MangaCrawler
             e.DrawFocusRectangle();
         }
 
-        private void ListBox_MeasureItem(MeasureItemEventArgs e, ListBox a_listBox, string a_text, ItemState a_state, 
-            string a_downloading, string a_downloaded)
-        { 
-            e.ItemWidth = (int)Math.Round(e.Graphics.MeasureString(a_text, a_listBox.Font,
-                 Int32.MaxValue, StringFormat.GenericDefault).Width);
-
-            Font font = new Font(a_listBox.Font.FontFamily, a_listBox.Font.Size * 9 / 10, FontStyle.Bold);
-            int space = e.ItemWidth += e.Graphics.MeasureString(" ", a_listBox.Font,
-                    Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-
-            switch (a_state)
-            {
-                case ItemState.Error:
-
-                    e.ItemWidth += space + e.Graphics.MeasureString(MangaCrawler.Properties.Resources.ERROR, font,
-                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-                    break;
-
-                case ItemState.Downloaded:
-
-                    e.ItemWidth += space + e.Graphics.MeasureString(a_downloaded, font,
-                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-                    break;
-
-                case ItemState.Waiting:
-
-                    e.ItemWidth += space + e.Graphics.MeasureString(MangaCrawler.Properties.Resources.WAITING, font,
-                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-                    break;
-
-                case ItemState.Deleting:
-
-                    e.ItemWidth += space + e.Graphics.MeasureString(MangaCrawler.Properties.Resources.DELETING, font,
-                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-                    break;
-
-                case ItemState.Zipping:
-
-                    e.ItemWidth += space + e.Graphics.MeasureString(MangaCrawler.Properties.Resources.ZIPPING, font,
-                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-                    break;
-
-                case ItemState.Downloading:
-
-                    e.ItemWidth += space + e.Graphics.MeasureString(a_downloading, font,
-                        Int32.MaxValue, StringFormat.GenericDefault).ToSize().Width;
-                    break;
-
-                case ItemState.Initial: break;
-                default: throw new NotImplementedException();
-            }
-        }
-
         private void serversListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             ServerItem server = (ServerItem)serversListBox.Items[e.Index];
             ListBox_DrawItem(e, server.ServerInfo.Name, server.State,
-                String.Format("({0}%)", server.Progress), String.Format(MangaCrawler.Properties.Resources.SERIES,
-                server.ServerInfo.Series.Count()));
-        }
-
-        private void serversListBox_MeasureItem(object sender, MeasureItemEventArgs e)
-        {
-            ServerItem server = (ServerItem)serversListBox.Items[e.Index];
-            ListBox_MeasureItem(e, serversListBox, server.ServerInfo.Name, server.State,
                 String.Format("({0}%)", server.Progress), String.Format(MangaCrawler.Properties.Resources.SERIES,
                 server.ServerInfo.Series.Count()));
         }
@@ -392,14 +334,6 @@ namespace MangaCrawler
                 serie.SerieInfo.Chapters.Count()));
         }
 
-        private void seriesListBox_MeasureItem(object sender, MeasureItemEventArgs e)
-        {
-            SerieItem serie = (SerieItem)seriesListBox.Items[e.Index];
-            ListBox_MeasureItem(e, serversListBox, serie.SerieInfo.Name, serie.State,
-                String.Format("({0}%)", serie.Progress), String.Format(MangaCrawler.Properties.Resources.CHAPTERS, 
-                serie.SerieInfo.Chapters.Count()));
-        }
-
         private void chaptersListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             ChapterItem chapter = (ChapterItem)chaptersListBox.Items[e.Index];
@@ -408,17 +342,24 @@ namespace MangaCrawler
                 chapter.ChapterInfo.Pages.Count()), MangaCrawler.Properties.Resources.DOWNLOADED);
         }
 
-        private void chaptersListBox_MeasureItem(object sender, MeasureItemEventArgs e)
-        {
-            ChapterItem chapter = (ChapterItem)chaptersListBox.Items[e.Index];
-            ListBox_MeasureItem(e, serversListBox, chapter.ChapterInfo.Name, chapter.State,
-                String.Format("{0}/{1}", chapter.DownloadedPages,
-                chapter.ChapterInfo.Pages.Count()), MangaCrawler.Properties.Resources.DOWNLOADED);
-        }
-
         private void cbzCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Instance.UseCBZ = cbzCheckBox.Checked;
+        }
+
+        private void seriesListBox_MeasureItem(object sender, MeasureItemEventArgs e)
+        {
+
+        }
+
+        private void chaptersListBox_MeasureItem(object sender, MeasureItemEventArgs e)
+        {
+
+        }
+
+        private void serversListBox_MeasureItem(object sender, MeasureItemEventArgs e)
+        {
+
         }
     }
 }

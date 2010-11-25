@@ -12,8 +12,6 @@ namespace MangaCrawlerLib
 {
     internal class OtakuWorksCrawler : Crawler
     {
-        private int m_series_progress;
-
         internal override string Name
         {
             get 
@@ -32,7 +30,7 @@ namespace MangaCrawlerLib
             ConcurrentBag<Tuple<int, int, string, string>> series =
                 new ConcurrentBag<Tuple<int, int, string, string>>();
 
-            m_series_progress = 0;
+            int series_progress = 0;
 
             Parallel.For(1, number + 1, (page, state) =>
             {
@@ -59,8 +57,8 @@ namespace MangaCrawlerLib
                                   orderby serie.Item1, serie.Item2
                                   select new SerieInfo(a_info, serie.Item4, serie.Item3)).ToArray();
 
-                    m_series_progress++;
-                    a_progress_callback(m_series_progress * 100 / number, result);
+                    series_progress++;
+                    a_progress_callback(series_progress * 100 / number, result);
                 }
                 catch
                 {

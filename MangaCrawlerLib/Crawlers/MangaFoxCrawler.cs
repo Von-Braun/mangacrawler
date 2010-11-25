@@ -15,8 +15,6 @@ namespace MangaCrawlerLib
 {
     internal class MangaFoxCrawler : Crawler
     {
-        private int m_series_progress;
-
         internal override string Name
         {
             get 
@@ -35,7 +33,7 @@ namespace MangaCrawlerLib
             ConcurrentBag<Tuple<int, int, string, string>> series = 
                 new ConcurrentBag<Tuple<int, int, string, string>>();
 
-            m_series_progress = 0;
+            int series_progress = 0;
 
             Parallel.For(1, number + 1, (page, state) =>
             {
@@ -61,8 +59,8 @@ namespace MangaCrawlerLib
                                  orderby serie.Item1, serie.Item2
                                  select new SerieInfo(a_info, serie.Item4, serie.Item3);
 
-                    m_series_progress++;
-                    a_progress_callback(m_series_progress * 100 / number, result);
+                    series_progress++;
+                    a_progress_callback(series_progress * 100 / number, result);
                 }
                 catch
                 {
@@ -78,9 +76,19 @@ namespace MangaCrawlerLib
 
             var chapters = doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/table/tr/td/a[2]");
 
+            if (chapters == null)
+            {
+                var adult_warning = doc.DocumentNode.SelectSingleNode("//div[@class='cr warning']/a");
+
+                doc = ConnectionsLimiter.DownloadDocument(a_info, a_info.URL + adult_warning.GetAttributeValue("href", ""));
+
+                chapters = doc.DocumentNode.SelectNodes("//table[@id='listing']/tr/td/a[@class='chico']");
+            }
+
             var result = from chapter in chapters
                          select new ChapterInfo(a_info, 
-                                                chapter.GetAttributeValue("href", "").RemoveFromLeft(1).RemoveFromRight(1), chapter.InnerText);
+                                                chapter.GetAttributeValue("href", "").RemoveFromLeft(1).RemoveFromRight(1), 
+                                                chapter.InnerText);
 
             a_progress_callback(100, result);            
         }
