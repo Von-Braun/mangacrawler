@@ -20,8 +20,8 @@ namespace MangaCrawler
     // TODO: test rozlegly zrobic
     // TODO: instalator
     //
-    // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, podczas ponownego uruchomienia weryfikacja tego, 
-    //       pamietanie urli obrazkow, dat modyfikacji zdalnych, szybka weryfikacja
+    // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, podczas ponownego uruchomienia 
+    //       weryfikacja tego, pamietanie urli obrazkow, dat modyfikacji zdalnych, szybka weryfikacja
     //
     // TODO: bookmarks,
     // TODO: wykrywanie zmian w obserwowanych seriach, praca w tle, 
@@ -53,9 +53,9 @@ namespace MangaCrawler
             DownloadManager.UseCBZ = () => Settings.Instance.UseCBZ;
 
             DownloadManager.GetServersVisualState += () => new ListBoxVisualState(serversListBox);
-            DownloadManager.GetSeriesVisualState += () => new ListBoxVisualState(seriesListBox);
+            DownloadManager.GetSeriesVisualState += () => new ListBoxVisualState(seriesListBox); ;
             DownloadManager.GetChaptersVisualState += () => new ListBoxVisualState(chaptersListBox);
-
+            
             directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
             seriesFilterTextBox.Text = Settings.Instance.SeriesFilter;
             splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;
@@ -249,7 +249,8 @@ namespace MangaCrawler
             DownloadManager.ChaptersVisualState = DownloadManager.GetChaptersVisualState();
         }
 
-        private void ListBox_DrawItem(DrawItemEventArgs e, string a_text, ItemState a_state, string a_downloading, string a_downloaded)
+        private void ListBox_DrawItem(DrawItemEventArgs e, string a_text, ItemState a_state, 
+            string a_downloading, string a_downloaded)
         {
             e.DrawBackground();
 
@@ -257,14 +258,16 @@ namespace MangaCrawler
                 e.Graphics.FillRectangle(Brushes.LightBlue, e.Bounds);
 
             var size = e.Graphics.MeasureString(a_text, e.Font);
-            Rectangle bounds = new Rectangle(e.Bounds.X, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2, e.Bounds.Width, size.ToSize().Height);
+            Rectangle bounds = new Rectangle(e.Bounds.X, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2, 
+                e.Bounds.Width, size.ToSize().Height);
 
             e.Graphics.DrawString(a_text, e.Font, Brushes.Black, bounds, StringFormat.GenericDefault);
 
             int left = (int)Math.Round(size.Width + e.Graphics.MeasureString(" ", e.Font).Width);
             Font font = new Font(e.Font.FontFamily, e.Font.Size * 9 / 10, FontStyle.Bold);
             size = e.Graphics.MeasureString("(ABGHRTW%)", font).ToSize();
-            bounds = new Rectangle(left, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2 - 1, bounds.Width - left, bounds.Height);
+            bounds = new Rectangle(left, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2 - 1, 
+                bounds.Width - left, bounds.Height);
 
             switch (a_state)
             {
@@ -312,8 +315,8 @@ namespace MangaCrawler
             e.DrawFocusRectangle();
         }
 
-        private void ListBox_MeasureItem(MeasureItemEventArgs e, ListBox a_listBox, string a_text, ItemState a_state, string a_downloading, 
-            string a_downloaded)
+        private void ListBox_MeasureItem(MeasureItemEventArgs e, ListBox a_listBox, string a_text, ItemState a_state, 
+            string a_downloading, string a_downloaded)
         { 
             e.ItemWidth = (int)Math.Round(e.Graphics.MeasureString(a_text, a_listBox.Font,
                  Int32.MaxValue, StringFormat.GenericDefault).Width);
