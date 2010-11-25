@@ -80,9 +80,22 @@ namespace MangaCrawlerLib
             {
                 var adult_warning = doc.DocumentNode.SelectSingleNode("//div[@class='cr warning']/a");
 
-                doc = ConnectionsLimiter.DownloadDocument(a_info, a_info.URL + adult_warning.GetAttributeValue("href", ""));
+                if (adult_warning != null)
+                {
+                    doc = ConnectionsLimiter.DownloadDocument(a_info, a_info.URL + adult_warning.GetAttributeValue("href", ""));
 
-                chapters = doc.DocumentNode.SelectNodes("//table[@id='listing']/tr/td/a[@class='chico']");
+                    chapters = doc.DocumentNode.SelectNodes("//table[@id='listing']/tr/td/a[@class='chico']");
+                }
+                else
+                {
+                    var licensed = doc.DocumentNode.SelectSingleNode("//div[@class='cr warning']");
+
+                    if (licensed != null)
+                    {
+                        a_progress_callback(100, new ChapterInfo[0] );
+                        return;
+                    }
+                }
             }
 
             var result = from chapter in chapters

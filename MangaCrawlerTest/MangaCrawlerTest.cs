@@ -182,17 +182,41 @@ namespace MangaCrawlerTest
         {
             var series = TestServer(ServerInfo.MangaFox, 6600);
 
-            var chapters = TestSerie(series.First(s => s.Name == ".hack//G.U.+"), 26);
+            {
+                var chapters = TestSerie(series.First(s => s.Name == ".hack//G.U.+"), 26);
 
-            var pages = TestChapter(chapters.Last(), 68);
+                var pages = TestChapter(chapters.Last(), 68);
 
-            TestPage(pages.First(), "BB93A387-185223CB-8EC50E70-899AA5F4-1B70222B-A39ED542-BAA71897-C5ECB461");
-            TestPage(pages.Last(), "A08602B0-41A27AAD-D870271E-F8AD256A-68D2C903-3C775B39-DF207BB2-95D1C137");
+                TestPage(pages.First(), "BB93A387-185223CB-8EC50E70-899AA5F4-1B70222B-A39ED542-BAA71897-C5ECB461");
+                TestPage(pages.Last(), "A08602B0-41A27AAD-D870271E-F8AD256A-68D2C903-3C775B39-DF207BB2-95D1C137");
 
-            pages = TestChapter(chapters.First(), 33);
+                pages = TestChapter(chapters.First(), 33);
 
-            TestPage(pages.First(), "454E0B8D-03CA4892-BEE861B4-ABE79154-56FB60F2-8910BE2A-BDC107C0-9388DED0");
-            TestPage(pages.Last(), "DED6595F-377DBE4F-D204100F-4A697979-A717AA9D-E24314C3-4E209759-650680B9");
+                TestPage(pages.First(), "454E0B8D-03CA4892-BEE861B4-ABE79154-56FB60F2-8910BE2A-BDC107C0-9388DED0");
+                TestPage(pages.Last(), "DED6595F-377DBE4F-D204100F-4A697979-A717AA9D-E24314C3-4E209759-650680B9");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "(G) Edition"), 3);
+
+                var pages = TestChapter(chapters.Last(), 17);
+
+                TestPage(pages.First(), "6CC9C11F-4E614BFE-CB4AF33F-F4344834-717C52C9-C67672EB-B2CD6178-A3C24814");
+                TestPage(pages.Last(), "0CBD3787-E149EF52-00065BE3-1AD2C925-29D905EC-581835B8-DC637B3D-2ACEC1CD");
+
+                pages = TestChapter(chapters.First(), 17);
+
+                TestPage(pages.First(), "599A16FB-AA9EF0B2-CCA60F9D-3DBB4CA5-223B3C8D-358EC73D-B09616B8-0C39AE04");
+                TestPage(pages.Last(), "BB09C661-C715F7CF-FEAAA554-58BB887E-6480410E-7BB6E6E3-EE8D7EF8-07F250A3");
+
+                
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "[switch]"), -1);
+
+                Assert.IsTrue(chapters.Count() == 0);
+            }
 
             Assert.IsFalse(m_error);
         }
@@ -467,6 +491,17 @@ namespace MangaCrawlerTest
 
                 TestPage(pages.First(), "49C0AACF-CEFCBFD1-626AF6D5-3E3F444A-252DCBCC-CB109F3A-BEB2FCB7-F2C39DA0");
                 TestPage(pages.Last(), "FFC3EBB9-9BDF5759-DE87C6D6-E2634C38-8982EC38-34CF67C6-2336B18D-28F7862E");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "16 Sai Kissu Complete"), -1);
+
+                Assert.IsTrue(chapters.Count() == 1);
+
+                var pages = TestChapter(chapters.First(), 30);
+
+                TestPage(pages.First(), "ABC41912-39037D79-66ED232B-E4F0EC7B-907F9E02-18CB640D-FF6E32D2-68750D27");
+                TestPage(pages.Last(), "3048567C-DF4072AC-01C71054-734C7736-BB6CD48E-92E1EA56-BB5DD04A-4C1048EC");
             }
 
             Assert.IsFalse(m_error);

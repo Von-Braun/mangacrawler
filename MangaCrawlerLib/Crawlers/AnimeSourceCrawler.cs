@@ -16,7 +16,7 @@ namespace MangaCrawlerLib
     {
         internal override string Name
         {
-            get 
+            get
             {
                 return "Anime-Source";
             }
@@ -28,11 +28,11 @@ namespace MangaCrawlerLib
 
             var series = doc.DocumentNode.SelectNodes("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/table/tr/td[2]");
 
-            var result = from serie in series 
+            var result = from serie in series
                          where (serie.ChildNodes[7].InnerText.Trim() != "2")
                          orderby serie.SelectSingleNode("font").FirstChild.InnerText
-                         select new SerieInfo(a_info, 
-                                              serie.SelectSingleNode("a[2]").GetAttributeValue("href", ""), 
+                         select new SerieInfo(a_info,
+                                              serie.SelectSingleNode("a[2]").GetAttributeValue("href", ""),
                                               serie.SelectSingleNode("font").FirstChild.InnerText);
 
             a_progress_callback(100, result);
@@ -68,7 +68,7 @@ namespace MangaCrawlerLib
                     PageInfo pi = new PageInfo(a_info, a_info.URLPart + "&page=" + page, page);
 
                     yield return pi;
-                }                
+                }
             }
             else
             {
