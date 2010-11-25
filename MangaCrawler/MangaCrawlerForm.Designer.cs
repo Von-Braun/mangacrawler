@@ -358,7 +358,7 @@
             this.serversListBox.ItemHeight = 17;
             this.serversListBox.Location = new System.Drawing.Point(0, 19);
             this.serversListBox.Name = "serversListBox";
-            this.serversListBox.Size = new System.Drawing.Size(201, 344);
+            this.serversListBox.Size = new System.Drawing.Size(201, 361);
             this.serversListBox.Sorted = true;
             this.serversListBox.TabIndex = 28;
             this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);
