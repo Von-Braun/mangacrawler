@@ -26,11 +26,6 @@ namespace MangaCrawlerLib
         private static List<ServerItem> s_servers = new List<ServerItem>();
         private static List<ChapterItem> s_tasks = new List<ChapterItem>();
 
-        private static UpdateLimiter s_chaptersUpdateLimiter = new UpdateLimiter(500);
-        private static UpdateLimiter s_seriesUpdateLimiter = new UpdateLimiter(500);
-        private static UpdateLimiter s_serversUpdateLimiter = new UpdateLimiter(500);
-        private static UpdateLimiter s_tasksUpdateLimiter = new UpdateLimiter(500);
-
         public static Form Form;
 
         public static event Action<IEnumerable<ChapterItem>> TasksChanged;
@@ -428,14 +423,6 @@ namespace MangaCrawlerLib
 
         private static void OnServersChanged(bool a_fromGUI)
         {
-            if (!a_fromGUI)
-                s_serversUpdateLimiter.Update(() => DoServersChanged(a_fromGUI));
-            else
-                DoServersChanged(a_fromGUI);
-        }
-
-        private static void DoServersChanged(bool a_fromGUI)
-        {
             TryInvoke(() =>
             {
                 if (!Form.IsDisposed)
@@ -453,27 +440,19 @@ namespace MangaCrawlerLib
                     return;
             }
 
-            if (!a_fromGUI)
-                s_seriesUpdateLimiter.Update(() => DoSeriesChanged(a_fromGUI, a_serverItem));
-            else
-                DoSeriesChanged(a_fromGUI, a_serverItem);
-        }
-
-        private static void DoSeriesChanged(bool a_fromGUI, ServerItem a_serverItem)
-        {
-            List<SerieItem> list = new List<SerieItem>();
-
-            if (s_selectedServer != null)
-            {
-                string filter = GetSeriesFilter().ToLower();
-                list = (from serie in s_selectedServer.ServerInfo.Series
-                        where serie.Name.ToLower().IndexOf(filter) != -1
-                        where s_series.ContainsKey(serie) // moze zostac wywolane poprzez s_seriesUpdateLimiter, moga istniec serie w Series nie dodane do s_series.
-                        select s_series[serie]).ToList();
-            }
-
             TryInvoke(() =>
             {
+                List<SerieItem> list = new List<SerieItem>();
+
+                if (s_selectedServer != null)
+                {
+                    string filter = GetSeriesFilter().ToLower();
+                    list = (from serie in s_selectedServer.ServerInfo.Series
+                            where serie.Name.ToLower().IndexOf(filter) != -1
+                            where s_series.ContainsKey(serie) // moze zostac wywolane poprzez s_seriesUpdateLimiter, moga istniec serie w Series nie dodane do s_series.
+                            select s_series[serie]).ToList();
+                }
+
                 if (!Form.IsDisposed)
                     SeriesVisualState.ReloadItems(list.AsReadOnly());
             });
@@ -489,14 +468,6 @@ namespace MangaCrawlerLib
                     return;
             }
 
-            if (!a_fromGUI)
-                s_chaptersUpdateLimiter.Update(() => DoChaptersChanged(a_fromGUI, a_serieItem));
-            else
-                DoChaptersChanged(a_fromGUI, a_serieItem);
-        }
-
-        private static void DoChaptersChanged(bool a_fromGUI, SerieItem a_serieItem)
-        {
             List<ChapterItem> list = new List<ChapterItem>();
 
             if (SelectedSerie != null)
@@ -519,14 +490,6 @@ namespace MangaCrawlerLib
             if (TasksChanged == null)
                 return;
 
-            if (!a_fromGUI)
-                s_tasksUpdateLimiter.Update(() => DoTasksChanged(a_fromGUI));
-            else
-                DoTasksChanged(a_fromGUI);
-        }
-
-        private static void DoTasksChanged(bool a_fromGUI)
-        {
             TryInvoke(() =>
             {
                 var all_tasks = (from ch in s_chapters.Values
