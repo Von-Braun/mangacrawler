@@ -284,55 +284,42 @@ namespace MangaCrawlerLib
                     {
                         string dir = chapter_item.GetImageDirectory(baseDir);
 
-                        try
+                        chapter_item.Token.ThrowIfCancellationRequested();
+
+                        chapter_item.State = ItemState.Downloading;
+                        OnChaptersChanged(false, chapter_item.SerieItem);
+
+                        chapter_item.ChapterInfo.DownloadPages(chapter_item.Token);
+
+                        chapter_item.Token.ThrowIfCancellationRequested();
+
+                        Parallel.ForEach(chapter_item.ChapterInfo.Pages, (page, state) =>
                         {
-                            chapter_item.Token.ThrowIfCancellationRequested();
-
-                            chapter_item.State = ItemState.Downloading;
-                            OnChaptersChanged(false, chapter_item.SerieItem);
-
-                            chapter_item.ChapterInfo.DownloadPages(chapter_item.Token);
-
-                            chapter_item.Token.ThrowIfCancellationRequested();
-
-                            Parallel.ForEach(chapter_item.ChapterInfo.Pages, (page, state) =>
+                            try
                             {
-                                try
-                                {
-                                    page.DownloadAndSavePageImage(chapter_item.Token, dir);
-                                }
-                                catch (OperationCanceledException)
-                                {
-                                    state.Break();
-                                }
-                                catch
-                                {
-                                    state.Break();
-                                    throw;
-                                }
+                                page.DownloadAndSavePageImage(chapter_item.Token, dir);
+                            }
+                            catch (OperationCanceledException)
+                            {
+                                state.Break();
+                            }
+                            catch
+                            {
+                                state.Break();
+                                throw;
+                            }
 
-                                chapter_item.PageDownloaded();
+                            chapter_item.PageDownloaded();
 
-                                OnChaptersChanged(false, chapter_item.SerieItem);
-                            });
-                        }
-                        finally
-                        {
-                            ConnectionsLimiter.EndDownloadPages(chapter_item.ChapterInfo);
-                        }
+                            OnChaptersChanged(false, chapter_item.SerieItem);
+                        });
 
                         if (cbz)
                         {
                             chapter_item.State = ItemState.Zipping;
                             OnChaptersChanged(false, chapter_item.SerieItem);
 
-                            try
-                            {
-                                CreateCBZ(chapter_item);
-                            }
-                            catch (OperationCanceledException)
-                            {
-                            }
+                            CreateCBZ(chapter_item);
                         }
 
                         chapter_item.Finish(a_error: false);
@@ -341,7 +328,10 @@ namespace MangaCrawlerLib
                     {
                         chapter_item.Finish(a_error: true);
                     }
-
+                    finally
+                    {
+                        ConnectionsLimiter.EndDownloadPages(chapter_item.ChapterInfo);
+                    }
 
                     OnChaptersChanged(false, chapter_item.SerieItem);
 
