@@ -38,9 +38,12 @@ namespace MangaCrawlerLib
                 {
                     page = number + 1 - page;
 
-                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, "http://www.otakuworks.com/manga/" + page);
+                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, 
+                        "http://www.otakuworks.com/manga/" + page);
 
-                    var page_series = page_doc.DocumentNode.SelectNodes("//div[@id='subframe']/table/tr/td[@class='box3']/a");
+                    var page_series = page_doc.DocumentNode.SelectNodes("//div[@id='subframe']/div").
+                        Where(n => n.GetAttributeValue("class", "").StartsWith("clchild")).
+                        Select(n => n.SelectSingleNode("div/a"));
 
                     int index = 0;
 
@@ -96,7 +99,8 @@ namespace MangaCrawlerLib
             doc = ConnectionsLimiter.DownloadDocument(a_info, a_token, url);
 
             int pages = Int32.Parse(
-                doc.DocumentNode.SelectSingleNode("//select[@id='fpage1']").ParentNode.ChildNodes.Reverse().ElementAt(3).InnerText);
+                doc.DocumentNode.SelectSingleNode("//select[@id='fpage1']").
+                    ParentNode.ChildNodes.Reverse().ElementAt(3).InnerText);
 
             for (int index=1; index<=pages; index++)
             {

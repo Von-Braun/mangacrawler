@@ -17,6 +17,10 @@ using System.Reflection;
 
 namespace MangaCrawler
 {
+    // TODO: czemu pojawia sie po waited 0/0 i troche na nim stoi
+    //
+    // TODO: dodac link do strony, dodac informacje o aktualizacji
+    //
     // TODO: cos jest nie tak z kasowaniem taskow, 
     // TODO: dodawanie serii di pobierania na unixmanga w trakcie pobierania chapterow prowadzi do deadlockow, 
     //       byc moze trzeba zaczac kasowac taski ?

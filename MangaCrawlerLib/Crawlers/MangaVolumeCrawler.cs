@@ -34,13 +34,6 @@ namespace MangaCrawlerLib
             {
                 var  nodes_enum = doc.DocumentNode.SelectNodes("//div[@id='NavigationPanel']/ul/li/a");
 
-                // TODO: some bug in their code
-                if (nodes_enum == null)
-                {
-                    doc = ConnectionsLimiter.DownloadDocument(a_info);
-                    continue;
-                }
-
                 var nodes = nodes_enum.ToList();
                     
 
@@ -75,13 +68,8 @@ namespace MangaCrawlerLib
                 {
                     IEnumerable<HtmlNode> page_series = null;
 
-                    // TODO: some bug in their code
-                    while (page_series == null)
-                    {
-                        HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, pages[page]);
-
-                        page_series = page_doc.DocumentNode.SelectNodes("//table[@id='MainList']/tr/td[1]/a");
-                    }
+                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, pages[page]);
+                    page_series = page_doc.DocumentNode.SelectNodes("//table[@id='MainList']/tr/td[1]/a");
 
                     int index = 0;
                     foreach (var serie in page_series)
