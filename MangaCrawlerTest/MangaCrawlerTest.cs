@@ -357,16 +357,16 @@ namespace MangaCrawlerTest
             var series = TestServer(ServerInfo.OtakuWorks, 4300);
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "07 Ghost"), 62);
+                var chapters = TestSerie(series.First(s => s.Name == "07 Ghost"), 64);
 
                 var pages = TestChapter(chapters.First(), -1);
 
                 TestPage(pages.Last(), null);
 
-                pages = TestChapter(chapters.First(), 34);
+                pages = TestChapter(chapters.First(), 32);
 
-                TestPage(pages.First(), "271DB7CB-F288861B-892F4125-B6133A21-3ADD0BC3-50564709-BB936014-A376FE46");
-                TestPage(pages.Last(), "8248A125-A11A1D82-38355BA7-9F7925CC-C2C1D9C0-76055B0A-ECC7C69F-EE49BB7A");
+                TestPage(pages.First(), "612C7ECB-38C987EE-DA982212-BD31E881-47E82A53-D4CB8A00-1FAB9981-790B34FF");
+                TestPage(pages.Last(), "2838B57C-B6F10ABF-2FDE2C00-8D19324A-FB1E407D-EDBE2314-1E93AC9E-66704A02");
             }
 
             {
@@ -383,7 +383,7 @@ namespace MangaCrawlerTest
         {
             var series = TestServer(ServerInfo.OurManga, 1703);
 
-            var chapters = TestSerie(series.First(s => s.Name == "3x3 Eyes"), 542);
+            var chapters = TestSerie(series.First(s => s.Name == "3x3 Eyes"), 558);
 
             var pages = TestChapter(chapters.Last(), 34);
 
@@ -392,8 +392,8 @@ namespace MangaCrawlerTest
 
             pages = TestChapter(chapters.First(), 15);
 
-            TestPage(pages.First(), "1039CC19-3948ECD0-472520E7-7BAE7181-7039B35B-73D63B33-6602257D-750FD54B");
-            TestPage(pages.Last(), "0622FB27-D50079C5-F67D9BF0-6E37E618-5CC195D7-29E24230-8CE9D4FE-79802546");
+            TestPage(pages.First(), "FB75E543-D84B9D8E-F35B7041-41A3D5B4-A5EDD861-D23BE057-46EF2E2A-2951C1A4");
+            TestPage(pages.Last(), "DDF19F32-3F35AF13-9EEE5F45-585AC5A7-4B456BE8-B80BB49B-77F047E7-15D2B90F");
 
             Assert.IsFalse(m_error);
         }
