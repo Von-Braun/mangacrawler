@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 
 namespace MangaCrawlerLib
 {
@@ -29,7 +30,31 @@ namespace MangaCrawlerLib
             if (mre != null)
             {
                 while (!mre.WaitOne(100))
-                    a_token.ThrowIfCancellationRequested();
+                {
+                    if (a_token.IsCancellationRequested)
+                    {
+                        lock (m_lock)
+                        {
+                            if (mre.WaitOne(0))
+                            {
+                                ReleaseMutex();
+                            }
+                            else if (m_queue.Contains(mre))
+                            {
+                                List<ManualResetEvent> list = new List<ManualResetEvent>();
+                                while (m_queue.Peek() != mre)
+                                    list.Add(m_queue.Dequeue());
+                                m_queue.Dequeue();
+                                while (list.Count != 0)
+                                {
+                                    m_queue.Enqueue(list.Last());
+                                    list.RemoveLast();
+                                }
+                            }
+                        }
+                        a_token.ThrowIfCancellationRequested();
+                    }
+                }
             }
         }
 

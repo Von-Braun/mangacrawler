@@ -18,12 +18,6 @@ using HtmlAgilityPack;
 
 namespace MangaCrawler
 {
-    // TODO: dodac link do strony, dodac informacje o aktualizacji
-    //
-    // TODO: cos jest nie tak z kasowaniem taskow, 
-    // TODO: dodawanie serii di pobierania na unixmanga w trakcie pobierania chapterow prowadzi do deadlockow, 
-    //       byc moze trzeba zaczac kasowac taski ?
-    //
     // TODO: test rozlegly zrobic
     // TODO: instalator
     //
