@@ -189,6 +189,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HtmlAgilityPack\HtmlAgilityPack.csproj">
+      <Project>{193BB801-054F-4729-9D5D-FCE1E32594BF}</Project>
+      <Name>HtmlAgilityPack</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MangaCrawlerLib\MangaCrawlerLib.csproj">
       <Project>{5CE21DA4-9AD1-4D26-B7AE-2CDF133E6ECC}</Project>
       <Name>MangaCrawlerLib</Name>
