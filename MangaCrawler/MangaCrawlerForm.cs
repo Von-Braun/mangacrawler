@@ -14,11 +14,10 @@ using System.Diagnostics;
 using MangaCrawlerLib;
 using System.Threading.Tasks;
 using System.Reflection;
+using HtmlAgilityPack;
 
 namespace MangaCrawler
 {
-    // TODO: czemu pojawia sie po waited 0/0 i troche na nim stoi
-    //
     // TODO: dodac link do strony, dodac informacje o aktualizacji
     //
     // TODO: cos jest nie tak z kasowaniem taskow, 
@@ -73,6 +72,8 @@ namespace MangaCrawler
             cbzCheckBox.Checked = Settings.Instance.UseCBZ;
 
             DownloadManager.UpdateVisuals();
+
+            System.Threading.Tasks.Task.Factory.StartNew(() => CheckNewVersion());
         }
 
         private void directoryChooseButton_Click(object sender, EventArgs e)
@@ -355,19 +356,33 @@ namespace MangaCrawler
             Settings.Instance.UseCBZ = cbzCheckBox.Checked;
         }
 
-        private void seriesListBox_MeasureItem(object sender, MeasureItemEventArgs e)
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            System.Diagnostics.Process.Start("http://mangacrawler.codeplex.com/");
         }
 
-        private void chaptersListBox_MeasureItem(object sender, MeasureItemEventArgs e)
+        private void CheckNewVersion()
         {
+            try
+            {
+                var doc = new HtmlWeb().Load("http://mangacrawler.codeplex.com/");
+                var node = doc.DocumentNode.SelectSingleNode("//td[@id='ReleaseName']");
+                var name = node.InnerText;
+                var version1 = Double.Parse(name.Replace("Manga Crawler", "").Trim().Replace(".", ","));
 
-        }
+                var assembly_version = System.Reflection.Assembly.GetAssembly(typeof(MangaCrawlerForm)).GetName().Version;
+                var version2 = Double.Parse(assembly_version.Major.ToString() + "," + assembly_version.Minor.ToString());
 
-        private void serversListBox_MeasureItem(object sender, MeasureItemEventArgs e)
-        {
-
-        }
+                if (version1 > version2)
+                {
+                    Action action = () => versionPanel.Visible = true;
+                    Invoke(action);
+                }
+            }
+            catch
+            {
+            }
+         }
+        
     }
 }
