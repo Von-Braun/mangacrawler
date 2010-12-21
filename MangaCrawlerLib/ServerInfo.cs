@@ -103,6 +103,14 @@ namespace MangaCrawlerLib
             }
         }
 
+        public static ServerInfo BleachExile
+        {
+            get
+            {
+                return ServersInfos.First(si => si.Name == new BleachExileCrawler().Name);
+            }
+        }
+
         public static ServerInfo MangaFox
         {
             get

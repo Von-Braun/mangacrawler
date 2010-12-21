@@ -178,6 +178,26 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
+        public void BleachExileTest()
+        {
+            var series = TestServer(ServerInfo.BleachExile, 1133);
+
+            var chapters = TestSerie(series.First(s => s.Name == "07-Ghost"), 51);
+
+            var pages = TestChapter(chapters.First(), 46);
+
+            TestPage(pages.First(), "982CACB9-37785E42-210238AC-E6F8C57B-19275887-4195D35D-38743C3B-E4459B46");
+            TestPage(pages.Last(), "917F2F90-74CA9047-8BDCA29E-5D05F5B2-5424EFB7-63F3E434-3585DF71-F68B1F0A");
+
+            pages = TestChapter(chapters.Last(), 26);
+
+            TestPage(pages.First(), "A06551F8-747B8BE0-EA1E49C3-74D32C8F-39860B65-8EA2DFF6-1A8F7C6E-618C1DEB");
+            TestPage(pages.Last(), "59AC6FA3-E9531AC0-3A3CC33B-8EC6B536-294957CB-B2130B92-EDCB0BDF-BCE63099");
+
+            Assert.IsFalse(m_error);
+        }
+
+        [TestMethod]
         public void MangaFoxTest()
         {
             var series = TestServer(ServerInfo.MangaFox, 6600);

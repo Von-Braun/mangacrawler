@@ -49,6 +49,7 @@
     <Compile Include="ChapterItem.cs" />
     <Compile Include="ConnectionsLimiter.cs" />
     <Compile Include="Crawler.cs" />
+    <Compile Include="Crawlers\BleachExileCrawler.cs" />
     <Compile Include="DownloadManager.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileUtils.cs" />
