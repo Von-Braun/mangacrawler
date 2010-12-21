@@ -18,11 +18,10 @@ using HtmlAgilityPack;
 
 namespace MangaCrawler
 {
+    // TODO: podczas sciagania chapteru, ustawiamy focus na inny wiersz, i przewijamy rolka, 
+    //       update ciagle cofa nas na zaznaczenie
     // TODO: test rozlegly zrobic
     // TODO: instalator
-    //
-    // TODO: jesli sciagaja sie serie, a my naciskamy na sciaganie chapterow to one ida pierwsze
-    //       chaptery sciagaja sie w kolejnosci klikania w nie, podstrony seri sciagaja sie w kolejnosci
     //
     // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, podczas ponownego uruchomienia 
     //       weryfikacja tego, pamietanie urli obrazkow, dat modyfikacji zdalnych, szybka weryfikacja
