@@ -13,7 +13,7 @@ namespace MangaCrawlerLib
         {
             get 
             {
-                return "Bleach Exile";
+                return "BleachExile";
             }
         }
 

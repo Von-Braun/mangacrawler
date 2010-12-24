@@ -4,6 +4,7 @@ namespace HtmlAgilityPack
     /// <summary>
     /// Represents an HTML text node.
     /// </summary>
+    /// [DebuggerDisplay("Name: {OriginalName}}, InnerText: {InnerText}")]
     public class HtmlTextNode : HtmlNode
     {
         #region Fields
