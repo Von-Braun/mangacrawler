@@ -16,7 +16,7 @@ namespace MangaCrawlerLib
         {
             get 
             {
-                return "Otaku Works";
+                return "Otakuworks";
             }
         }
 

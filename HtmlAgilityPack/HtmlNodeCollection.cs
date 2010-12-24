@@ -2,12 +2,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace HtmlAgilityPack
 {
     /// <summary>
     /// Represents a combined list and collection of HTML nodes.
     /// </summary>
+    [DebuggerDisplay("Count: {_items.Count}")]
     public class HtmlNodeCollection : IList<HtmlNode>
     {
         #region Fields

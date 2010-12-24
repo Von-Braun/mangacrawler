@@ -13,7 +13,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return "MangaShare";
+                return "Manga Share";
             }
         }
 

@@ -26,6 +26,11 @@ namespace MangaCrawlerLib
             m_urlPart = a_urlPart;
             m_index = a_index;
 
+            a_name = a_name.Trim();
+            a_name = a_name.Replace("\t", " ");
+            while (a_name.IndexOf("  ") != -1)
+                a_name = a_name.Replace("  ", " ");
+
             if (a_name != null)
                 m_name = FileUtils.RemoveInvalidFileDirectoryCharacters(a_name);
         }
