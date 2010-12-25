@@ -151,7 +151,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void AnimeSourceTest()
         {
-            var series = TestServer(ServerInfo.AnimeSource, 52);
+            var series = TestServer(ServerInfo.AnimeSource, 53);
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == "Kimagure Orange Road"), 167);
@@ -284,7 +284,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaToshokanTest()
         {
-            var series = TestServer(ServerInfo.MangaToshokan, 1050);
+            var series = TestServer(ServerInfo.MangaToshokan, 1097);
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == "Angel Shop"), 15);
@@ -328,9 +328,9 @@ namespace MangaCrawlerTest
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "1/2 Prince"), 47);
+                var chapters = TestSerie(series.First(s => s.Name == "1/2 Prince"), 49);
 
-                var pages = TestChapter(chapters.Last(), 30);
+                var pages = TestChapter(chapters.Last(), 41);
 
                 TestPage(pages.Last(), null);
 
