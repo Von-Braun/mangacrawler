@@ -18,6 +18,8 @@ using HtmlAgilityPack;
 
 namespace MangaCrawler
 {
+    // TODO: wybranie chapteru, zmiana filtru tak ze zaznaczenie seri znika, chapter zostaje zaznaczony.
+    //
     // TODO: podczas sciagania chapteru, ustawiamy focus na inny wiersz, i przewijamy rolka, 
     //       update ciagle cofa nas na zaznaczenie
     // TODO: test rozlegly zrobic
