@@ -23,7 +23,8 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, 
+            Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -32,14 +33,8 @@ namespace MangaCrawlerLib
 
             do
             {
-                var nodes_enum = doc.DocumentNode.SelectNodes("//div[@id='NavigationPanel']/ul/li/a");
-
-                // TODO: some bug in their code
-                if (nodes_enum == null)
-                {
-                    doc = ConnectionsLimiter.DownloadDocument(a_info);
-                    continue;
-                }
+                var nodes_enum = doc.DocumentNode.SelectNodes(
+                    "//div[@id='NavigationPanel']/ul/li/a");
 
                 var nodes = nodes_enum.ToList();
 
@@ -49,9 +44,11 @@ namespace MangaCrawlerLib
                     nodes.RemoveLast();
 
                 pages.AddRange(from node in nodes
-                               select "http://www.mangavolume.com" + node.GetAttributeValue("href", ""));
+                               select "http://www.mangavolume.com" +
+                               node.GetAttributeValue("href", ""));
 
-                string next_pages_group = String.Format("http://www.mangavolume.com/manga-archive/mangas/npage-{0}",
+                string next_pages_group = String.Format(
+                    "http://www.mangavolume.com/manga-archive/mangas/npage-{0}",
                     Int32.Parse(nodes.Last().InnerText) + 1);
 
                 doc = ConnectionsLimiter.DownloadDocument(a_info, next_pages_group);
@@ -74,22 +71,18 @@ namespace MangaCrawlerLib
                 {
                     IEnumerable<HtmlNode> page_series = null;
 
-                    // TODO: some bug in their code
-                    while (page_series == null)
-                    {
-                        HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, pages[page]);
-                        page_series = page_doc.DocumentNode.SelectNodes("//table[@id='MainList']/tr/td[1]/a");
-                    }
+                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(
+                        a_info, pages[page]);
+                    page_series = page_doc.DocumentNode.SelectNodes(
+                        "//table[@id='MostPopular']/tr/td/a");
 
                     int index = 0;
                     foreach (var serie in page_series)
                     {
-                        if (serie.ParentNode.ParentNode.ChildNodes[3].InnerText == "0")
-                            continue;
-
                         Tuple<int, int, string, string> s =
-                            new Tuple<int, int, string, string>(page, index++, serie.InnerText,
-                                                                serie.GetAttributeValue("href", "").RemoveFromLeft(1));
+                            new Tuple<int, int, string, string>(page, index++, 
+                                serie.SelectSingleNode("span").InnerText,
+                                serie.GetAttributeValue("href", "").RemoveFromLeft(1));
 
                         series.Add(s);
                     }
@@ -109,20 +102,28 @@ namespace MangaCrawlerLib
             });
         }
 
-        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, 
+            IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             List<string> pages = new List<string>();
             pages.Add(a_info.URL);
 
+            var license = doc.DocumentNode.SelectSingleNode("//div[@id='LicenseWarning']");
+
+            if (license != null)
+                return;
+
             do
             {
-                var nodes_enum = doc.DocumentNode.SelectNodes("//div[@id='NavigationPanel']/ul/li/a");
+                var nodes_enum = doc.DocumentNode.SelectNodes(
+                    "//div[@id='NavigationPanel']/ul/li/a");
 
                 if (nodes_enum == null)
                 {
-                    pages.RemoveLast();
+                    if (pages.Count > 1)
+                        pages.RemoveLast();
                     break;
                 }
 
@@ -134,9 +135,11 @@ namespace MangaCrawlerLib
                     nodes.RemoveLast();
 
                 pages.AddRange(from node in nodes
-                               select "http://www.mangavolume.com" + node.GetAttributeValue("href", ""));
+                               select "http://www.mangavolume.com" + 
+                               node.GetAttributeValue("href", ""));
 
-                string next_pages_group = String.Format("{0}npage-{1}", a_info.URL, Int32.Parse(nodes.Last().InnerText) + 1);
+                string next_pages_group = String.Format("{0}npage-{1}", a_info.URL, 
+                    Int32.Parse(nodes.Last().InnerText) + 1);
 
                 doc = ConnectionsLimiter.DownloadDocument(a_info, next_pages_group);
 
@@ -156,16 +159,18 @@ namespace MangaCrawlerLib
             {
                 try
                 {
-                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, pages[page]);
+                    HtmlDocument page_doc = 
+                        ConnectionsLimiter.DownloadDocument(a_info, pages[page]);
 
-                    var page_series = page_doc.DocumentNode.SelectNodes("//table[@id='MainList']/tr/td[1]/a");
+                    var page_series = page_doc.DocumentNode.SelectNodes(
+                        "//table[@id='MainList']/tr/td[1]/a");
 
                     int index = 0;
                     foreach (var serie in page_series)
                     {
                         Tuple<int, int, string, string> s =
                             new Tuple<int, int, string, string>(page, index++, serie.InnerText,
-                                                                serie.GetAttributeValue("href", "").RemoveFromLeft(1));
+                                serie.GetAttributeValue("href", "").RemoveFromLeft(1));
 
                         series.Add(s);
                     }
@@ -185,7 +190,8 @@ namespace MangaCrawlerLib
             });
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 
+            CancellationToken a_token)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
@@ -198,7 +204,8 @@ namespace MangaCrawlerLib
 
                 PageInfo pi = new PageInfo(
                     a_info,
-                    String.Format("http://www.mangavolume.com{0}", page.GetAttributeValue("value", "")),
+                    String.Format("http://www.mangavolume.com{0}", 
+                        page.GetAttributeValue("value", "")),
                     index);
 
                 yield return pi;
@@ -209,13 +216,23 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            var img = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/div[3]/div[1]/table[2]/tr[5]/td[1]/a[1]/img[1]");
+            var img = doc.DocumentNode.SelectSingleNode(
+                "/html[1]/body[1]/div[1]/div[3]/div[1]/table[2]/tr[5]/td[1]/a[1]/img[1]");
             if (img == null)
-                img = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/div[3]/div[1]/table[2]/tr[5]/td[1]/img[1]");
+            {
+                img = doc.DocumentNode.SelectSingleNode(
+                    "/html[1]/body[1]/div[1]/div[3]/div[1]/table[2]/tr[5]/td[1]/img[1]");
+            }
             if (img == null)
-                img = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/div[3]/div[1]/table[1]/tr[5]/td[1]/a[1]/img[1]");
+            {
+                img = doc.DocumentNode.SelectSingleNode(
+                    "/html[1]/body[1]/div[1]/div[3]/div[1]/table[1]/tr[5]/td[1]/a[1]/img[1]");
+            }
             if (img == null)
-                img = doc.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[1]/div[3]/div[1]/table[1]/tr[5]/td[1]/img[1]");
+            {
+                img = doc.DocumentNode.SelectSingleNode(
+                    "/html[1]/body[1]/div[1]/div[3]/div[1]/table[1]/tr[5]/td[1]/img[1]");
+            }
 
             return img.GetAttributeValue("src", "");
         }
