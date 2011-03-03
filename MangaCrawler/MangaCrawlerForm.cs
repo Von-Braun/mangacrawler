@@ -22,6 +22,7 @@ namespace MangaCrawler
     //
     // TODO: podczas sciagania chapteru, ustawiamy focus na inny wiersz, i przewijamy rolka, 
     //       update ciagle cofa nas na zaznaczenie
+    //
     // TODO: test rozlegly zrobic
     // TODO: instalator
     //

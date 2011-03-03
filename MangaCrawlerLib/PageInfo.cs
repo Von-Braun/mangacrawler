@@ -10,6 +10,11 @@ using System.Threading;
 
 namespace MangaCrawlerLib
 {
+    // TODO: strony sa pobierane calkiem losowo
+    // TODO: pobieranie serii, chapterow jesli jest wiecej stron jest 
+    //       calkiem losowe, obydwie rzeczy sa robione na petli ktora losowo 
+    //       wybiera elementy, dodac jakis porzadek. 
+    [DebuggerDisplay("PageInfo, {ToString()}")]
     public class PageInfo
     {
         private string m_imageURL;

@@ -5,9 +5,11 @@ using System.Text;
 using System.IO;
 using System.Web;
 using System.Threading;
+using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
+    [DebuggerDisplay("ChapterInfo, {ToString()}")]
     public class ChapterInfo
     {
         private string m_name;

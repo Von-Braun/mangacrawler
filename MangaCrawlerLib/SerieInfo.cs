@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
+    // TODO: podczas pobierania serii, stan listy chapterow nie jest zachowany, 
+    // zaznaczmy gorna serie i zjezdzamy na dol, po odswiezeniu przestawia nas
+    // TODO: podczas pobierania serii, pobieramy chapter, powinno sie to odbywac prawie 
+    // natychmiast po napotkaniu pierwszego wolnego slotu, a tak nie jest 
+    [DebuggerDisplay("SerieInfo, {ToString()}")]
     public class SerieInfo
     {
         private string m_name;
