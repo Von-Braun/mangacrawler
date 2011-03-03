@@ -62,7 +62,8 @@ namespace MangaCrawlerTest
             return a_info.Series;
         }
 
-        private IEnumerable<ChapterInfo> TestSerie(SerieInfo a_info, int a_count)
+        private IEnumerable<ChapterInfo> TestSerie(SerieInfo a_info, int a_count, 
+            bool a_ongoing = false)
         {
             TestContext.WriteLine("  Testing serie {0}", a_info.Name);
 
@@ -73,10 +74,22 @@ namespace MangaCrawlerTest
 
             if (a_count > 0)
             {
-                TestContext.WriteLine("  Chapters, expected {0}, finded: {1}", a_count, chapters.Count());
+                if (!a_ongoing)
+                {
+                    TestContext.WriteLine("  Chapters, expected {0}, finded: {1}", a_count,
+                        chapters.Count());
 
-                if (chapters.Count() < a_count)
-                    m_error = true;
+                    if (chapters.Count() != a_count)
+                        m_error = true;
+                }
+                else
+                {
+                    TestContext.WriteLine("  Chapters (ongoing), expected {0}, finded: {1}", 
+                        a_count, chapters.Count());
+
+                    if (chapters.Count() < a_count)
+                        m_error = true;
+                }
             }
             else if (a_count == 0)
             {
@@ -198,38 +211,44 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
+        // TODO: pozostale na wyroznienie ongoing, ongoing nie sprawdzamy hashy, tylko ze sie 
+        //       dobrze pobiera.
         public void MangaFoxTest()
         {
-            var series = TestServer(ServerInfo.MangaFox, 6600);
+            var series = TestServer(ServerInfo.MangaFox, 7070);
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == ".hack//G.U.+"), 26);
 
                 var pages = TestChapter(chapters.Last(), 68);
 
-                TestPage(pages.First(), "BB93A387-185223CB-8EC50E70-899AA5F4-1B70222B-A39ED542-BAA71897-C5ECB461");
-                TestPage(pages.Last(), "A08602B0-41A27AAD-D870271E-F8AD256A-68D2C903-3C775B39-DF207BB2-95D1C137");
+                TestPage(pages.First(), 
+                    "BB93A387-185223CB-8EC50E70-899AA5F4-1B70222B-A39ED542-BAA71897-C5ECB461");
+                TestPage(pages.Last(), 
+                    "A08602B0-41A27AAD-D870271E-F8AD256A-68D2C903-3C775B39-DF207BB2-95D1C137");
 
                 pages = TestChapter(chapters.First(), 33);
 
-                TestPage(pages.First(), "454E0B8D-03CA4892-BEE861B4-ABE79154-56FB60F2-8910BE2A-BDC107C0-9388DED0");
-                TestPage(pages.Last(), "DED6595F-377DBE4F-D204100F-4A697979-A717AA9D-E24314C3-4E209759-650680B9");
+                TestPage(pages.First(), 
+                    "454E0B8D-03CA4892-BEE861B4-ABE79154-56FB60F2-8910BE2A-BDC107C0-9388DED0");
+                TestPage(pages.Last(), 
+                    "DED6595F-377DBE4F-D204100F-4A697979-A717AA9D-E24314C3-4E209759-650680B9");
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "(G) Edition"), 3);
+                var chapters = TestSerie(series.First(s => s.Name == "(G) Edition"), 3, true);
 
                 var pages = TestChapter(chapters.Last(), 17);
 
-                TestPage(pages.First(), "6CC9C11F-4E614BFE-CB4AF33F-F4344834-717C52C9-C67672EB-B2CD6178-A3C24814");
-                TestPage(pages.Last(), "0CBD3787-E149EF52-00065BE3-1AD2C925-29D905EC-581835B8-DC637B3D-2ACEC1CD");
+                TestPage(pages.First(), 
+                    "6CC9C11F-4E614BFE-CB4AF33F-F4344834-717C52C9-C67672EB-B2CD6178-A3C24814");
+                TestPage(pages.Last(), 
+                    "0CBD3787-E149EF52-00065BE3-1AD2C925-29D905EC-581835B8-DC637B3D-2ACEC1CD");
 
                 pages = TestChapter(chapters.First(), 17);
 
-                TestPage(pages.First(), "599A16FB-AA9EF0B2-CCA60F9D-3DBB4CA5-223B3C8D-358EC73D-B09616B8-0C39AE04");
-                TestPage(pages.Last(), "BB09C661-C715F7CF-FEAAA554-58BB887E-6480410E-7BB6E6E3-EE8D7EF8-07F250A3");
-
-                
+                TestPage(pages.First(), null);
+                TestPage(pages.Last(), null);
             }
 
             {

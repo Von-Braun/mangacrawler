@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
+    [DebuggerDisplay("SerieItem, {ToString()}")]
     public class SerieItem
     {
         private Object m_lock = new Object();

@@ -23,7 +23,8 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, 
+            IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -39,18 +40,20 @@ namespace MangaCrawlerLib
             {
                 try
                 {
-                    String url = String.Format("http://www.mangafox.com/directory/all/{0}.htm", page);
+                    String url = String.Format("http://www.mangafox.com/directory/all/{0}.htm", 
+                        page);
 
                     HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, url);
 
-                    var page_series = page_doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/table/tr/td[1]/a");
+                    var page_series = page_doc.DocumentNode.SelectNodes(
+                        "/html/body/div[5]/div[3]/table/tr/td[1]/a");
 
                     int index = 0;
                     foreach (var serie in page_series)
                     {
-                        Tuple<int, int, string, string> s =
-                            new Tuple<int, int, string, string>(page, index++, serie.InnerText,
-                                                                serie.GetAttributeValue("href", "").RemoveFromLeft(1).RemoveFromRight(1));
+                        Tuple<int, int, string, string> s = new Tuple<int, int, string, string>(
+                            page, index++, serie.InnerText, serie.GetAttributeValue("href", "").
+                                RemoveFromLeft(1).RemoveFromRight(1));
 
                         series.Add(s);
                     }
@@ -70,25 +73,31 @@ namespace MangaCrawlerLib
             });
         }
 
-        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, 
+            IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var chapters = doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/table/tr/td/a[2]");
+            var chapters = doc.DocumentNode.SelectNodes(
+                "/html/body/div[5]/div[3]/table/tr/td/a[2]");
 
             if (chapters == null)
             {
-                var adult_warning = doc.DocumentNode.SelectSingleNode("//div[@class='cr warning']/a");
+                var adult_warning = doc.DocumentNode.SelectSingleNode(
+                    "//div[@class='cr warning']/a");
 
                 if (adult_warning != null)
                 {
-                    doc = ConnectionsLimiter.DownloadDocument(a_info, a_info.URL + adult_warning.GetAttributeValue("href", ""));
+                    doc = ConnectionsLimiter.DownloadDocument(
+                        a_info, a_info.URL + adult_warning.GetAttributeValue("href", ""));
 
-                    chapters = doc.DocumentNode.SelectNodes("//table[@id='listing']/tr/td/a[@class='chico']");
+                    chapters = doc.DocumentNode.SelectNodes(
+                        "//table[@id='listing']/tr/td/a[@class='chico']");
                 }
                 else
                 {
-                    var licensed = doc.DocumentNode.SelectSingleNode("//div[@class='cr warning']");
+                    var licensed = doc.DocumentNode.SelectSingleNode(
+                        "//div[@class='cr warning']");
 
                     if (licensed != null)
                     {
@@ -100,26 +109,30 @@ namespace MangaCrawlerLib
 
             var result = from chapter in chapters
                          select new ChapterInfo(a_info, 
-                                                chapter.GetAttributeValue("href", "").RemoveFromLeft(1).RemoveFromRight(1), 
+                                                chapter.GetAttributeValue("href", "").
+                                                    RemoveFromLeft(1), 
                                                 chapter.InnerText);
 
             a_progress_callback(100, result);            
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 
+            CancellationToken a_token)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            var pages = doc.DocumentNode.SelectSingleNode("//select[@class='middle']").SelectNodes("option");
+            var pages = doc.DocumentNode.SelectSingleNode("//select[@class='middle']").
+                SelectNodes("option");
 
             int index = 0;
             foreach (var page in pages)
             {
                 index++;
-
                 PageInfo pi = new PageInfo(
                     a_info,
-                    String.Format("http://www.mangafox.com/{0}/{1}.html", a_info.URLPart, page.GetAttributeValue("value", "")),
+                    String.Format("http://www.mangafox.com/{0}/{1}.html", 
+                    a_info.URLPart.RemoveFromRight(Path.GetFileName(a_info.URLPart).Length + 1), 
+                        page.GetAttributeValue("value", "")),
                     index);
 
                 yield return pi;
