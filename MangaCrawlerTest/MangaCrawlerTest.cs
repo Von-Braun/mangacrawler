@@ -48,7 +48,7 @@ namespace MangaCrawlerTest
             a_info.DownloadSeries();
             var series = a_info.Series;
 
-            new HtmlWeb().Load(a_info.URL);
+            ConnectionsLimiter.DownloadWithRetry(() => new HtmlWeb().Load(a_info.URL));
 
             if (a_count > 0)
             {
@@ -78,7 +78,7 @@ namespace MangaCrawlerTest
             a_info.DownloadChapters();
             var chapters = a_info.Chapters;
 
-            new HtmlWeb().Load(a_info.URL);
+            ConnectionsLimiter.DownloadWithRetry(() => new HtmlWeb().Load(a_info.URL));
 
             if (!a_ongoing)
             {
@@ -111,7 +111,7 @@ namespace MangaCrawlerTest
 
             TestContext.WriteLine("    Testing chapter {0}", a_info.Name);
 
-            new HtmlWeb().Load(a_info.URL);
+            ConnectionsLimiter.DownloadWithRetry(() => new HtmlWeb().Load(a_info.URL));
 
             a_info.DownloadPages();
             var pages = a_info.Pages;
@@ -253,7 +253,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaFoxTest()
         {
-            var series = TestServer(ServerInfo.MangaFox, 7070);
+            var series = TestServer(ServerInfo.MangaFox, 6803);
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == ".hack//G.U.+"), 26);
@@ -289,11 +289,7 @@ namespace MangaCrawlerTest
                 TestPage(pages.Last(), "", true);
             }
 
-            {
-                var chapters = TestSerie(series.First(s => s.Name == "[switch]"), -1);
-
-                Assert.IsTrue(chapters.Count() == 0);
-            }
+            Assert.IsTrue(series.All(s => s.Name != "[switch]"));
         }
 
         [TestMethod]
@@ -419,7 +415,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaVolumeTest()
         {
-            var series = TestServer(ServerInfo.MangaVolume, 1076);
+            var series = TestServer(ServerInfo.MangaVolume, 1077);
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == "3x3 Eyes"), 414, true);
@@ -438,9 +434,7 @@ namespace MangaCrawlerTest
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), -1);
-
-                Assert.IsTrue(chapters.Count() == 0);
+                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 0);
             }
 
             {
@@ -485,15 +479,13 @@ namespace MangaCrawlerTest
 
             {
                 var chapters = TestSerie(series.First(
-                    s => s.Name == ".hack//G.U. The World"), 0, true);
-
-                Assert.IsTrue(chapters.Count() == 0);
+                    s => s.Name == ".hack//G.U. The World"), 0);
             }
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 216, true);
 
-                var pages = TestChapter(chapters.First(), 0);
+                var pages = TestChapter(chapters.First(), 0, true);
 
                 TestPage(pages.First(), "", true);
                 TestPage(pages.Last(), "", true);
@@ -647,10 +639,10 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void UnixMangaTest()
         {
-            var series = TestServer(ServerInfo.UnixManga, 1532);
+            var series = TestServer(ServerInfo.UnixManga, 1572);
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 439);
+                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 458);
 
                 var pages = TestChapter(chapters.Last(), 8);
 
@@ -704,9 +696,7 @@ namespace MangaCrawlerTest
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "16 Sai Kissu Complete"), -1);
-
-                Assert.IsTrue(chapters.Count() == 1);
+                var chapters = TestSerie(series.First(s => s.Name == "16 Sai Kissu Complete"), 1);
 
                 var pages = TestChapter(chapters.First(), 30);
 

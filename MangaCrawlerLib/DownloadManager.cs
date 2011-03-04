@@ -271,7 +271,8 @@ namespace MangaCrawlerLib
                 {
                     try
                     {
-                        ConnectionsLimiter.BeginDownloadPages(chapter_item.ChapterInfo, chapter_item.Token);
+                        ConnectionsLimiter.BeginDownloadPages(chapter_item.ChapterInfo, 
+                            chapter_item.Token);
                     }
                     catch (OperationCanceledException)
                     {

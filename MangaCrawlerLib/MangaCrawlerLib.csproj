@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="QueueSemaphore.cs" />
     <Compile Include="Crawlers\AnimeSourceCrawler.cs" />
     <Compile Include="ChapterInfo.cs" />
     <Compile Include="ChapterItem.cs" />

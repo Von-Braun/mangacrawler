@@ -28,7 +28,7 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var numbers = doc.DocumentNode.SelectNodes("/html/body/div[5]/div[3]/div[6]/ul/li/a");
+            var numbers = doc.DocumentNode.SelectNodes("/html/body/div[5]/div[5]/div[6]/ul/li/a");
             var number = Int32.Parse(numbers.Reverse().Take(2).Last().InnerText);
 
             ConcurrentBag<Tuple<int, int, string, string>> series = 
@@ -46,11 +46,17 @@ namespace MangaCrawlerLib
                     HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, url);
 
                     var page_series = page_doc.DocumentNode.SelectNodes(
-                        "/html/body/div[5]/div[3]/table/tr/td[1]/a");
+                        "//table[@id='listing']/tr/td[1]/a");
 
                     int index = 0;
                     foreach (var serie in page_series)
                     {
+                        if (serie.ParentNode.ParentNode.SelectSingleNode(
+                            "td[5]").InnerText.Trim().ToLower() == "none")
+                        {
+                            continue;
+                        }
+
                         Tuple<int, int, string, string> s = new Tuple<int, int, string, string>(
                             page, index++, serie.InnerText, serie.GetAttributeValue("href", "").
                                 RemoveFromLeft(1).RemoveFromRight(1));
@@ -79,7 +85,7 @@ namespace MangaCrawlerLib
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var chapters = doc.DocumentNode.SelectNodes(
-                "/html/body/div[5]/div[3]/table/tr/td/a[2]");
+                "//table[@id='listing']/tr/td[1]/a[@class='chico']");
 
             if (chapters == null)
             {
