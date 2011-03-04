@@ -41,6 +41,7 @@ namespace MangaCrawlerLib
 
         public IEnumerable<ChapterInfo> Chapters
         {
+            [DebuggerStepThrough]
             get
             {
                 if (m_chapters == null)

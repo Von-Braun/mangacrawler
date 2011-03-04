@@ -35,6 +35,12 @@ namespace MangaCrawlerTest
 
         private bool m_error = false;
 
+        [TestCleanup]
+        public void CheckError()
+        {
+            Assert.IsTrue(m_error == false);
+        }
+
         private IEnumerable<SerieInfo> TestServer(ServerInfo a_info, int a_count)
         {
             TestContext.WriteLine("Testing server {0}", a_info.Name);
@@ -58,7 +64,8 @@ namespace MangaCrawlerTest
                 m_error = true;
             }
 
-            Assert.IsFalse(a_info.Series.Any(s => String.IsNullOrWhiteSpace(s.Name)));
+            Assert.IsTrue(a_info.Series.All(s => s.Name.Trim() == s.Name));
+            Assert.IsTrue(a_info.Series.All(s => !String.IsNullOrWhiteSpace(s.Name)));
 
             return a_info.Series;
         }
@@ -73,37 +80,35 @@ namespace MangaCrawlerTest
 
             new HtmlWeb().Load(a_info.URL);
 
-            if (a_count > 0)
+            if (!a_ongoing)
             {
-                if (!a_ongoing)
-                {
-                    TestContext.WriteLine("  Chapters, expected {0}, finded: {1}", a_count,
-                        chapters.Count());
-
-                    if (chapters.Count() != a_count)
-                        m_error = true;
-                }
-                else
-                {
-                    TestContext.WriteLine("  Chapters (ongoing), expected {0}, finded: {1}", 
-                        a_count, chapters.Count());
-
-                    if (chapters.Count() < a_count)
-                        m_error = true;
-                }
-            }
-            else if (a_count == 0)
-            {
-                TestContext.WriteLine("  serie: {0}, chapters: {1}", a_info.Name, 
+                TestContext.WriteLine("  Chapters, expected {0}, finded: {1}", a_count,
                     chapters.Count());
-                m_error = true;
+
+                if (chapters.Count() != a_count)
+                    m_error = true;
             }
+            else
+            {
+                TestContext.WriteLine("  Chapters (ongoing), expected {0}, finded: {1}", 
+                    a_count, chapters.Count());
+
+                if (chapters.Count() < a_count)
+                    m_error = true;
+            }
+
+            Assert.IsTrue(a_info.Chapters.All(s => s.Name.Trim() == s.Name));
+            Assert.IsTrue(a_info.Chapters.All(s => !String.IsNullOrWhiteSpace(s.Name)));
 
             return chapters;
         }
 
-        private IEnumerable<PageInfo> TestChapter(ChapterInfo a_info, int a_count)
+        private IEnumerable<PageInfo> TestChapter(ChapterInfo a_info, int a_count, 
+            bool a_ongoing = false)
         {
+            if (a_ongoing)
+                Assert.IsTrue(a_count == 0);
+
             TestContext.WriteLine("    Testing chapter {0}", a_info.Name);
 
             new HtmlWeb().Load(a_info.URL);
@@ -111,25 +116,34 @@ namespace MangaCrawlerTest
             a_info.DownloadPages();
             var pages = a_info.Pages;
 
-            if (a_count > 0)
+            if (!a_ongoing)
             {
-                TestContext.WriteLine("    Pages, expected {0}, finded: {1}", a_count, 
-                    pages.Count());
+                TestContext.WriteLine("    Pages, expected {0}, finded: {1}", 
+                    a_count, pages.Count());
 
                 if (pages.Count() != a_count)
                     m_error = true;
             }
-            else if (a_count == 0)
+            else
             {
-                TestContext.WriteLine("    serie: {0}, chapter: {1}, pages: {2}",
-                    a_info.SerieInfo.Name, a_info.Name, pages.Count());
-            }            
+                TestContext.WriteLine("    Ongoing");
+            }
+
+            Assert.IsTrue(a_info.Pages.All(s => s.Name.Trim() == s.Name));
+            Assert.IsTrue(a_info.Pages.All(s => !String.IsNullOrWhiteSpace(s.Name)));
 
             return pages;
         }
 
-        private void TestPage(PageInfo a_info, string a_hash = null)
+        private void TestPage(PageInfo a_info, string a_hash, bool a_ongoing = false)
         {
+            Assert.IsTrue(a_hash != null);
+
+            if (a_ongoing)
+                Assert.IsTrue(a_hash == "");
+            else
+                Assert.IsTrue(a_hash != "");
+
             TestContext.WriteLine("        Testing page {0}", a_info.Name);
 
             var stream = a_info.GetImageStream();
@@ -139,22 +153,12 @@ namespace MangaCrawlerTest
             System.Drawing.Image.FromStream(stream);
             stream.Position = 0;
 
-            if (a_hash != null)
+            if (!a_ongoing)
             {
-                if (a_hash != "")
+                string hash = GetHash(stream);
+                if (a_hash != hash)
                 {
-                    string hash = GetHash(stream);
-                    if (a_hash != hash)
-                    {
-                        TestContext.WriteLine("        Hash doestn't match, finded: {0}", hash);
-                        m_error = true;
-                    }
-                }
-                else
-                {
-                    TestContext.WriteLine("        serie: {0}, chapter: {1}, page: {2}, hash: {3}",
-                        a_info.ChapterInfo.SerieInfo.Name, a_info.ChapterInfo.Name, 
-                        a_info.Index, GetHash(stream));
+                    TestContext.WriteLine("        Hash doestn't match, finded: {0}", hash);
                     m_error = true;
                 }
             }
@@ -174,7 +178,14 @@ namespace MangaCrawlerTest
                 var chapters = TestSerie(series.First(
                     s => s.Name == "Kimagure Orange Road"), 167);
 
-                var pages = TestChapter(chapters.Last(), 4);
+                var pages = TestChapter(chapters.First(), 34);
+
+                TestPage(pages.First(),
+                    "38FBB6A5-D0D7B833-A2010C4A-BFC54B7F-286C7FD0-F6FB9C6B-5F5FC35F-16F91CCA");
+                TestPage(pages.Last(),
+                    "A1E7E121-0CCB6F23-9F29EE6A-72552092-5447D56B-5FCF9784-5F398237-B8DA9C61");
+
+                pages = TestChapter(chapters.Last(), 4);
 
                 TestPage(pages.First(), 
                     "97895BDE-0DE30690-79305713-6CCF2D22-A5B83C1F-586BA24C-AC7DC3F7-8826E214");
@@ -185,10 +196,10 @@ namespace MangaCrawlerTest
             {
                 var chapters = TestSerie(series.First(s => s.Name == "AIKI"), 61, true);
 
-                var pages = TestChapter(chapters.Last(), -1);
+                var pages = TestChapter(chapters.Last(), 0, true);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
 
                 pages = TestChapter(chapters.First(), 36);
 
@@ -232,13 +243,11 @@ namespace MangaCrawlerTest
                 TestPage(pages.Last(), 
                     "BB71EA96-80D001F8-B7244F62-32C002BF-4F911F96-DF6DBEBE-860025D9-D88DC9EE");
 
-                pages = TestChapter(chapters.Last(), -1);
+                pages = TestChapter(chapters.Last(), 0, true);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
             }
-
-            Assert.IsFalse(m_error);
         }
 
         [TestMethod]
@@ -274,10 +283,10 @@ namespace MangaCrawlerTest
                 TestPage(pages.Last(), 
                     "0CBD3787-E149EF52-00065BE3-1AD2C925-29D905EC-581835B8-DC637B3D-2ACEC1CD");
 
-                pages = TestChapter(chapters.First(), -1);
+                pages = TestChapter(chapters.First(), 0, true);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
             }
 
             {
@@ -285,8 +294,6 @@ namespace MangaCrawlerTest
 
                 Assert.IsTrue(chapters.Count() == 0);
             }
-
-            Assert.IsFalse(m_error);
         }
 
         [TestMethod]
@@ -315,10 +322,10 @@ namespace MangaCrawlerTest
             {
                 var chapters = TestSerie(series.First(s => s.Name == "bleach"), 434, true);
 
-                var pages = TestChapter(chapters.Last(), -1);
+                var pages = TestChapter(chapters.Last(), 0, true);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
 
                 pages = TestChapter(chapters.First(), 57);
 
@@ -327,8 +334,6 @@ namespace MangaCrawlerTest
                 TestPage(pages.Last(),
                     "41838061-F5379AD8-FF615340-5FEF5C07-C9A68FF7-6F643947-7A203C17-5308D8A4");
             }
-
-            Assert.IsFalse(m_error);
         }
 
         [TestMethod]
@@ -364,13 +369,11 @@ namespace MangaCrawlerTest
                 TestPage(pages.Last(),
                     "61482BCB-6B9C1FDA-8CCC87BF-7B53CCDB-4F711B76-195745D2-B9DC5217-94F9CB39");
 
-                pages = TestChapter(chapters.First(), -1);
+                pages = TestChapter(chapters.First(), 0, true);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
             }
-
-            Assert.IsFalse(m_error);
         }
 
         [TestMethod]
@@ -399,10 +402,10 @@ namespace MangaCrawlerTest
             {
                 var chapters = TestSerie(series.First(s => s.Name == "1/2 Prince"), 50, true);
 
-                var pages = TestChapter(chapters.Last(), -1);
+                var pages = TestChapter(chapters.Last(), 0, true);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
 
                 pages = TestChapter(chapters.First(), 71);
 
@@ -411,8 +414,6 @@ namespace MangaCrawlerTest
                 TestPage(pages.Last(), 
                     "B501E1E1-77699CF0-1C577390-C7384159-DCA79666-66F9BA6E-D2E3AE43-4877B517");
             }
-
-            Assert.IsFalse(m_error);
         }
 
         [TestMethod]
@@ -430,10 +431,10 @@ namespace MangaCrawlerTest
                 TestPage(pages.Last(), 
                     "3B443FB1-A263AE7D-E81A9ADA-5FF3AD75-F3B6CB50-011A31C2-9D214533-C2EB7E8B");
 
-                pages = TestChapter(chapters.First(), -1);
+                pages = TestChapter(chapters.First(), 0, true);
 
-                TestPage(pages.First(), null);
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
             }
 
             {
@@ -452,96 +453,155 @@ namespace MangaCrawlerTest
                 TestPage(pages.Last(),
                     "7180D10B-7B88A853-628DAD1D-016B18E8-1149D959-FA507C37-4132A670-B2E05E3C");
 
-                pages = TestChapter(chapters.First(), 51);
+                pages = TestChapter(chapters.First(), 0, true);
 
-                TestPage(pages.First(),
-                    "C84EA379-2A96641D-48761E38-24EC42AB-9DC28BF6-5C7861F1-1C64F97A-F0E0E609");
-                TestPage(pages.Last(),
-                    "824110C4-111ECDD9-0A6C7540-B6E0A754-40E4BE38-4B82C56C-70AC6755-F66F0838");
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
             }
-
-            Assert.IsFalse(m_error);
         }
 
         [TestMethod]
         public void OtakuWorksTest()
         {
-            var series = TestServer(ServerInfo.OtakuWorks, 4300);
+            var series = TestServer(ServerInfo.OtakuWorks, 4901);
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "07 Ghost"), 64);
+                var chapters = TestSerie(series.First(s => s.Name == "Ai Kora"), 92);
 
-                var pages = TestChapter(chapters.First(), -1);
+                var pages = TestChapter(chapters.First(), 23);
 
-                TestPage(pages.Last(), null);
+                TestPage(pages.First(),
+                    "0C5EFB64-5E316B49-2119FAB9-E8AFFC17-B379B298-25D0FC18-BD612E89-6DEA005E");
+                TestPage(pages.Last(),
+                    "2FBEA2C1-6001A412-816B7D2E-586AAFDC-A0832D5F-4DC80437-05BF14D5-F428DBAE");
 
-                pages = TestChapter(chapters.First(), 32);
+                pages = TestChapter(chapters.First(), 23);
 
-                TestPage(pages.First(), 
-                    "612C7ECB-38C987EE-DA982212-BD31E881-47E82A53-D4CB8A00-1FAB9981-790B34FF");
-                TestPage(pages.Last(), 
-                    "2838B57C-B6F10ABF-2FDE2C00-8D19324A-FB1E407D-EDBE2314-1E93AC9E-66704A02");
+                TestPage(pages.First(),
+                    "0C5EFB64-5E316B49-2119FAB9-E8AFFC17-B379B298-25D0FC18-BD612E89-6DEA005E");
+                TestPage(pages.Last(),
+                    "2FBEA2C1-6001A412-816B7D2E-586AAFDC-A0832D5F-4DC80437-05BF14D5-F428DBAE");
             }
 
             {
                 var chapters = TestSerie(series.First(
-                    s => s.Name == ".hack//G.U. The World"), -1);
+                    s => s.Name == ".hack//G.U. The World"), 0, true);
 
                 Assert.IsTrue(chapters.Count() == 0);
             }
 
-            Assert.IsFalse(m_error);
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 216, true);
+
+                var pages = TestChapter(chapters.First(), 0);
+
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
+
+                pages = TestChapter(chapters.Last(), 187);
+
+                TestPage(pages.First(),
+                    "8D78D814-791583E2-19F0FC41-460F600B-982ABBF0-6278B2A9-3D6D5112-ADB86FA6");
+                TestPage(pages.Last(),
+                    "6FD444E5-354E6D3F-120CF0AD-B9468CBF-D9D02BFB-D4DA860B-56EE5DAD-7FB794CE");
+            }
         }
 
         [TestMethod]
         public void OurMangaTest()
         {
-            var series = TestServer(ServerInfo.OurManga, 1703);
+            var series = TestServer(ServerInfo.OurManga, 2140);
 
-            var chapters = TestSerie(series.First(s => s.Name == "3x3 Eyes"), 558);
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "090 - Eko To Issho"), 61);
 
-            var pages = TestChapter(chapters.Last(), 34);
+                var pages = TestChapter(chapters.Last(), 25);
 
-            TestPage(pages.First(), 
-                "B966DB33-56D05253-F325D7DF-2D445889-B39F11D7-0B819587-F3A02925-31E16259");
-            TestPage(pages.Last(), 
-                "1A0614C0-7DACDA48-F462A919-0FC944EF-DF21684C-1F9207A8-6EB01E62-F1858B57");
+                TestPage(pages.First(),
+                    "7065E9C9-E1BC872F-3D3D72A7-6D4F8EB6-6C1B2A3F-1D64D446-E37EC166-BC51AA0E");
+                TestPage(pages.Last(),
+                    "E088EAE7-8D5A8A67-0A35FC77-BE548D2D-F6BBB3CE-02412A6E-E18F65B5-8B050E7E");
 
-            pages = TestChapter(chapters.First(), 15);
+                pages = TestChapter(chapters.First(), 14);
 
-            TestPage(pages.First(), 
-                "FB75E543-D84B9D8E-F35B7041-41A3D5B4-A5EDD861-D23BE057-46EF2E2A-2951C1A4");
-            TestPage(pages.Last(), 
-                "DDF19F32-3F35AF13-9EEE5F45-585AC5A7-4B456BE8-B80BB49B-77F047E7-15D2B90F");
+                TestPage(pages.First(),
+                    "17D80766-814B5B54-3B19921C-F20BA640-D8E81FF7-5F9CAB2A-AF5C85C4-591848ED");
+                TestPage(pages.Last(),
+                    "BC623819-7E7C4A77-48D825B6-6FB898F1-A5CD0904-2E5E93AB-EE2F4FE4-D1E65FFC");
+            }
 
-            Assert.IsFalse(m_error);
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "Fairy Tail"), 228, true);
+
+                var pages = TestChapter(chapters.Last(), 74);
+
+                TestPage(pages.First(),
+                    "6BFDF3BC-3DDED90E-47CF0B60-10FE37E5-EC0EA244-D55922B5-5421E513-51C69338");
+                TestPage(pages.Last(),
+                    "7CB8D9E4-334CBC77-6091EE52-D2BA5824-5D4CDC0E-594E1EC8-BFEEA60F-04859424");
+
+                pages = TestChapter(chapters.First(), 0, true);
+
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
+            }
         }
 
         [TestMethod]
         public void SpectrumNexusTest()
         {
-            var series = TestServer(ServerInfo.SpectrumNexus, 134);
+            var series = TestServer(ServerInfo.SpectrumNexus, 139);
 
-            var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 50);
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 65, true);
 
-            var pages = TestChapter(chapters.ToArray()[47], 173);
+                var pages = TestChapter(chapters.Last(), 0, true);
 
-            TestPage(pages.First(), 
-                "6F219A82-10B8F7B2-29BA5537-6483DB47-F90F8024-88C51B8F-7B61835E-6E1B7E2B");
-            TestPage(pages.Last(), 
-                "40AC5FF2-9D76CC6F-38D0A0B0-96C1CDB3-3955085D-5CED08F7-4BD57E1B-30CA46F4");
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
 
-            pages = TestChapter(chapters.First(), 187);
+                pages = TestChapter(chapters.First(), 187);
 
-            TestPage(pages.First(), 
-                "62A96AF0-2818D19A-0A35DAA7-FD513701-6E6670E0-663EC84E-AAA3579D-CC6B8733");
-            TestPage(pages.Last(), 
-                "7B541E33-09E0105D-A3B4EEE4-B2E6B819-330AF88E-8FA96087-BCE7DFE4-59A9CA55");
+                TestPage(pages.First(),
+                    "62A96AF0-2818D19A-0A35DAA7-FD513701-6E6670E0-663EC84E-AAA3579D-CC6B8733");
+                TestPage(pages.Last(),
+                    "7B541E33-09E0105D-A3B4EEE4-B2E6B819-330AF88E-8FA96087-BCE7DFE4-59A9CA55");
+            }
 
-            pages = TestChapter(chapters.Last(), -1);
-            TestPage(pages.Last(), null);
+            {
+                var chapters = TestSerie(series.First(
+                    s => s.Name == "Fullmetal Alchemist"), 27, true);
 
-            Assert.IsFalse(m_error);
+                var pages = TestChapter(chapters.Last(), 212);
+
+                TestPage(pages.First(), 
+                    "7E9DF42D-ED8C16A2-E67248FF-F57702BB-2ED646B3-0C9C60D3-83506320-328A86D4");
+                TestPage(pages.Last(), 
+                    "2C9D7E26-477ECEB2-F29C4CFC-7F5979B3-84DF750C-D270B456-B72AC73E-9012517F");
+
+                pages = TestChapter(chapters.First(), 177);
+
+                TestPage(pages.First(), 
+                    "3EB9F663-30BFA500-B792DC8E-63CB6950-E20635F7-4A7B0069-4E5E8B18-C36321E5");
+                TestPage(pages.Last(), 
+                    "4465CA14-0C186340-8C3DF8D0-13409713-C81030F1-344510E6-BBFB2A9C-308AC1F9");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "Air Gear"), 50, true);
+
+                var pages = TestChapter(chapters.Last(), 17);
+
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
+
+                pages = TestChapter(chapters.First(), 188);
+
+                TestPage(pages.First(), 
+                    "CBF5F8D4-7619396E-CED74CA5-5897E090-E302C4E5-355977BB-0E971488-F949D0A9");
+                TestPage(pages.Last(), 
+                    "1AEAE9E8-496A3A3B-23E9F5A0-68444A5A-E4E6B4D1-8885B265-A7D22E92-B2B00CF1");
+            }
         }
 
         [TestMethod]
@@ -565,12 +625,10 @@ namespace MangaCrawlerTest
             TestPage(pages.Last(), 
                 "41838061-F5379AD8-FF615340-5FEF5C07-C9A68FF7-6F643947-7A203C17-5308D8A4");
 
-            pages = TestChapter(chapters.Last(), -1);
+            pages = TestChapter(chapters.Last(), 0, true);
 
-            TestPage(pages.Last(), null);
-
-
-            Assert.IsFalse(m_error);
+            TestPage(pages.First(), "", true);
+            TestPage(pages.Last(), "", true);
         }
 
         [TestMethod]
@@ -644,8 +702,6 @@ namespace MangaCrawlerTest
                 TestPage(pages.Last(), 
                     "3048567C-DF4072AC-01C71054-734C7736-BB6CD48E-92E1EA56-BB5DD04A-4C1048EC");
             }
-
-            Assert.IsFalse(m_error);
         }
 
         private static IEnumerable<T> TakeRandom<T>(IEnumerable<T> a_enum, double a_percent)
