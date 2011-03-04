@@ -18,16 +18,16 @@ namespace MangaCrawlerLib
 
         private static Dictionary<ServerInfo, QueuedMutex> s_serverPages = 
             new Dictionary<ServerInfo, QueuedMutex>();
-        private static Dictionary<ServerInfo, Semaphore> s_serverConnections = 
-            new Dictionary<ServerInfo, Semaphore>();
-        private static Semaphore s_connections = 
-            new Semaphore(MAX_CONNECTIONS, MAX_CONNECTIONS);
+        private static Dictionary<ServerInfo, QueuedSemaphore> s_serverConnections =
+            new Dictionary<ServerInfo, QueuedSemaphore>();
+        private static QueuedSemaphore s_connections =
+            new QueuedSemaphore(MAX_CONNECTIONS);
 
         static ConnectionsLimiter()
         {
             foreach (var si in ServerInfo.ServersInfos)
-                s_serverConnections.Add(si, 
-                    new Semaphore(MAX_CONNECTIONS_PER_SERVER, MAX_CONNECTIONS_PER_SERVER));
+                s_serverConnections.Add(si,
+                    new QueuedSemaphore(MAX_CONNECTIONS_PER_SERVER));
             foreach (var si in ServerInfo.ServersInfos)
                 s_serverPages.Add(si, new QueuedMutex());
         }
@@ -45,6 +45,12 @@ namespace MangaCrawlerLib
         private static void Aquire(ServerInfo a_info)
         {
             s_connections.WaitOne();
+            s_serverConnections[a_info].WaitOne();
+        }
+
+        private static void Aquire(ServerInfo a_info, CancellationToken a_token)
+        {
+            s_connections.WaitOne(a_token);
             s_serverConnections[a_info].WaitOne();
         }
 
@@ -107,7 +113,7 @@ namespace MangaCrawlerLib
             {
                 a_token.ThrowIfCancellationRequested();
 
-                Aquire(a_info.SerieInfo.ServerInfo);
+                Aquire(a_info.SerieInfo.ServerInfo, a_token);
 
                 try
                 {
@@ -132,7 +138,7 @@ namespace MangaCrawlerLib
             {
                 a_token.ThrowIfCancellationRequested();
 
-                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
+                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token);
 
                 try
                 {
@@ -170,14 +176,14 @@ namespace MangaCrawlerLib
             throw ex1;
         }
 
-        internal static HtmlDocument Submit(PageInfo a_info, CancellationToken a_token, string a_url, 
-            Dictionary<string, string> a_parameters)
+        internal static HtmlDocument Submit(PageInfo a_info, CancellationToken a_token, 
+            string a_url, Dictionary<string, string> a_parameters)
         {
             return DownloadWithRetry(() =>
             {
                 a_token.ThrowIfCancellationRequested();
 
-                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
+                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token);
 
                 try
                 {
@@ -198,7 +204,7 @@ namespace MangaCrawlerLib
             {
                 try
                 {
-                    Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
+                    Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token);
 
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
                         a_info.GetImageURL(a_token));

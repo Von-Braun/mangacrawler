@@ -14,8 +14,8 @@ namespace MangaCrawlerLib
 {
     public static class DownloadManager
     {
-        private static QueuedTaskScheduler s_scheduler =
-            new QueuedTaskScheduler(ConnectionsLimiter.MAX_CONNECTIONS);
+        private static CustomTaskScheduler s_scheduler =
+            new CustomTaskScheduler(ConnectionsLimiter.MAX_CONNECTIONS);
 
         private static ServerItem s_selectedServer;
         private static Dictionary<ServerItem, SerieItem> s_selectedSerie = new Dictionary<ServerItem,SerieItem>();
@@ -203,7 +203,7 @@ namespace MangaCrawlerLib
                 OnServersChanged(false);
             });
 
-            task.Start(s_scheduler);
+            task.Start(s_scheduler.Scheduler(-1));
 
             OnServersChanged(true);
 
@@ -254,8 +254,7 @@ namespace MangaCrawlerLib
 
             });
 
-            task.Start(s_scheduler);
-            s_scheduler.Prioritize(task);
+            task.Start(s_scheduler.Scheduler(-2));
 
             OnSeriesChanged(true, a_serieItem.ServerItem);
 
@@ -349,7 +348,7 @@ namespace MangaCrawlerLib
 
                 });
 
-                task.Start(s_scheduler);
+                task.Start(s_scheduler.Scheduler(0));
 
                 OnChaptersChanged(true, chapter_item.SerieItem);
             }
