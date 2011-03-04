@@ -76,6 +76,7 @@ namespace MangaCrawlerLib
 
         public IEnumerable<PageInfo> Pages
         {
+            [DebuggerStepThrough]
             get
             {
                 if (m_pages == null)

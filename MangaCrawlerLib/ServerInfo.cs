@@ -53,6 +53,7 @@ namespace MangaCrawlerLib
 
         public IEnumerable<SerieInfo> Series
         {
+            [DebuggerStepThrough]
             get
             {
                 if (m_series == null)

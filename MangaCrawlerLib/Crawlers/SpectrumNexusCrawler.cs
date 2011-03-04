@@ -17,7 +17,8 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, 
+            IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -25,7 +26,9 @@ namespace MangaCrawlerLib
 
             var result = from serie in series.Skip(2) 
                          select new SerieInfo(a_info, 
-                                              GetServerURL() + serie.GetAttributeValue("value", "").RemoveFromLeft(1), 
+                                              GetServerURL() + 
+                                              serie.GetAttributeValue("value", "").
+                                                RemoveFromLeft(1), 
                                               serie.NextSibling.InnerText);
 
             a_progress_callback(100, result);
@@ -36,7 +39,8 @@ namespace MangaCrawlerLib
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var link_strong_nodes = doc.DocumentNode.SelectNodes("//a/strong");
-            var begin_reading_strong_node = link_strong_nodes.Where(n => n.InnerText.StartsWith("Begin Reading"));
+            var begin_reading_strong_node = link_strong_nodes.Where(
+                n => n.InnerText.StartsWith("Begin Reading"));
             var href = begin_reading_strong_node.First().ParentNode.GetAttributeValue("href", "");
 
             doc = ConnectionsLimiter.DownloadDocument(a_info, href);
@@ -44,18 +48,17 @@ namespace MangaCrawlerLib
             var chapters = doc.DocumentNode.SelectNodes("//select[@name='ch']/option");
 
             var result = from chapter in chapters
-                         select new ChapterInfo(a_info, href + "\t" + chapter.GetAttributeValue("value", ""),
-                                                chapter.NextSibling.InnerText);
+                            select new ChapterInfo(a_info, href + "?ch=" +
+                                chapter.GetAttributeValue("value", "").Replace(" ", "+"),
+                                chapter.NextSibling.InnerText);
 
             a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 
+            CancellationToken a_token)
         {
-            string[] ar = a_info.URLPart.Split(new[] { '\t' });
-            String url = String.Format("{0}?ch={1}&page={2}", ar[0], ar[1], 1);
-
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token, url);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='page']/option");
 
@@ -64,7 +67,8 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                PageInfo pi = new PageInfo(a_info, ar[0] + "\t" + ar[1] + "\t" + page.GetAttributeValue("value", ""), 
+                PageInfo pi = new PageInfo(a_info, a_info.URLPart + "&page=" + 
+                    page.GetAttributeValue("value", ""), 
                     index, page.NextSibling.InnerText);
 
                 yield return pi;
@@ -73,14 +77,25 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
         {
-            string[] ar = a_info.URLPart.Split(new[] { '\t' });
-            String url = String.Format("{0}?ch={1}&page={2}", ar[0], ar[1], ar[2]);
-
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token, url);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
             var img = doc.DocumentNode.SelectSingleNode("//div[@class='imgContainer']/a/img");
 
-            return "http://view.thespectrum.net/" + img.GetAttributeValue("src", "").RemoveFromLeft(1);
+            if (a_info.URL.ToLower().Contains("view.thespectrum.net"))
+            {
+                return "http://view.thespectrum.net/" + img.GetAttributeValue("src", "").
+                    RemoveFromLeft(1);
+            }
+            else
+            {
+                return "http://view.mangamonger.com/" + img.GetAttributeValue("src", "").
+                    RemoveFromLeft(1);
+            }
+        }
+
+        internal override string GetChapterURL(ChapterInfo a_info)
+        {
+            return a_info.URLPart + "&page=1";
         }
 
         internal override string GetServerURL()
