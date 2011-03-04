@@ -43,7 +43,7 @@ namespace MangaCrawlerLib
                         {
                             if (mre.WaitOne(0))
                             {
-                                ReleaseMutex();
+                                Release();
                             }
                             else if (m_queue.Contains(mre))
                             {
@@ -64,7 +64,26 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void ReleaseMutex()
+        public void WaitOne()
+        {
+            ManualResetEvent mre = null;
+
+            lock (m_lock)
+            {
+                if (m_working == m_count)
+                {
+                    mre = new ManualResetEvent(false);
+                    m_queue.Enqueue(mre);
+                }
+                else
+                    m_working++;
+            }
+
+            if (mre != null)
+                mre.WaitOne();
+        }
+
+        public void Release()
         {
             lock (m_lock)
             {

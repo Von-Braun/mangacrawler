@@ -1,12 +1,4 @@
-﻿//--------------------------------------------------------------------------
-//--------------------------------------------------------------------------
-// 
-//  Copyright (c) Microsoft Corporation.  All rights reserved. 
-// 
-//  File: QueuedTaskScheduler.cs
-//
-//--------------------------------------------------------------------------
-
+﻿
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,19 +12,19 @@ namespace MangaCrawlerLib
     /// <summary>
     /// Provides a TaskScheduler that provides control over priorities, fairness, and the underlying threads utilized.
     /// </summary>
-    [DebuggerTypeProxy(typeof(QueuedTaskSchedulerDebugView))]
+    [DebuggerTypeProxy(typeof(CustomTaskSchedulerDebugView))]
     [DebuggerDisplay("Id={Id}, Queues={DebugQueueCount}, ScheduledTasks = {DebugTaskCount}")]
-    public sealed class QueuedTaskScheduler : TaskScheduler, IDisposable
+    public sealed class CustomTaskScheduler : TaskScheduler, IDisposable
     {
-        /// <summary>Debug view for the QueuedTaskScheduler.</summary>
-        private class QueuedTaskSchedulerDebugView
+        /// <summary>Debug view for the CustomTaskScheduler.</summary>
+        private class CustomTaskSchedulerDebugView
         {
             /// <summary>The scheduler.</summary>
-            private QueuedTaskScheduler _scheduler;
+            private CustomTaskScheduler _scheduler;
 
             /// <summary>Initializes the debug view.</summary>
             /// <param name="scheduler">The scheduler.</param>
-            public QueuedTaskSchedulerDebugView(QueuedTaskScheduler scheduler)
+            public CustomTaskSchedulerDebugView(CustomTaskScheduler scheduler)
             {
                 if (scheduler == null) throw new ArgumentNullException("scheduler");
                 _scheduler = scheduler;
@@ -63,17 +55,22 @@ namespace MangaCrawlerLib
         }
 
         /// <summary>
-        /// A sorted list of round-robin queue lists.  Tasks with the smallest priority value
-        /// are preferred.  Priority groups are round-robin'd through in order of priority.
+        /// A sorted list of queue lists.  Tasks with the smallest priority value
+        /// are preferred.
         /// </summary>
-        private readonly SortedList<int, QueueGroup> _queueGroups = new SortedList<int, QueueGroup>();
+        private readonly SortedList<int, QueueGroup> _queueGroups = 
+            new SortedList<int, QueueGroup>();
+
         /// <summary>Cancellation token used for disposal.</summary>
-        private readonly CancellationTokenSource _disposeCancellation = new CancellationTokenSource();
+        private readonly CancellationTokenSource _disposeCancellation = 
+            new CancellationTokenSource();
+
         /// <summary>
         /// The maximum allowed concurrency level of this scheduler.  If custom threads are
         /// used, this represents the number of created threads.
         /// </summary>
         private readonly int _concurrencyLevel;
+
         /// <summary>Whether we're processing tasks on the current thread.</summary>
         private static ThreadLocal<bool> _taskProcessingThread = new ThreadLocal<bool>();
 
@@ -83,8 +80,10 @@ namespace MangaCrawlerLib
 
         /// <summary>The scheduler onto which actual work is scheduled.</summary>
         private readonly TaskScheduler _targetScheduler;
+
         /// <summary>The queue of tasks to process when using an underlying target scheduler.</summary>
         private readonly Queue<Task> _nonthreadsafeTaskQueue;
+
         /// <summary>The number of Tasks that have been queued or that are running whiel using an underlying scheduler.</summary>
         private int _delegatesQueuedOrRunning = 0;
 
@@ -94,24 +93,25 @@ namespace MangaCrawlerLib
 
         /// <summary>The threads used by the scheduler to process work.</summary>
         private readonly Thread[] _threads;
+
         /// <summary>The collection of tasks to be executed on our custom threads.</summary>
         private readonly BlockingCollection<Task> _blockingTaskQueue;
 
         // ***
 
         /// <summary>Initializes the scheduler.</summary>
-        public QueuedTaskScheduler() : this(TaskScheduler.Default, 0) { }
+        public CustomTaskScheduler() : this(TaskScheduler.Default, 0) { }
 
         /// <summary>Initializes the scheduler.</summary>
         /// <param name="targetScheduler">The target underlying scheduler onto which this sceduler's work is queued.</param>
-        public QueuedTaskScheduler(TaskScheduler targetScheduler) : this(targetScheduler, 0) { }
+        public CustomTaskScheduler(TaskScheduler targetScheduler) : this(targetScheduler, 0) 
+        { 
+        }
 
         /// <summary>Initializes the scheduler.</summary>
         /// <param name="targetScheduler">The target underlying scheduler onto which this sceduler's work is queued.</param>
         /// <param name="maxConcurrencyLevel">The maximum degree of concurrency allowed for this scheduler's work.</param>
-        public QueuedTaskScheduler(
-            TaskScheduler targetScheduler,
-            int maxConcurrencyLevel)
+        public CustomTaskScheduler(TaskScheduler targetScheduler, int maxConcurrencyLevel)
         {
             // Validate arguments
             if (targetScheduler == null) throw new ArgumentNullException("underlyingScheduler");
@@ -124,7 +124,8 @@ namespace MangaCrawlerLib
 
             // If 0, use the number of logical processors.  But make sure whatever value we pick
             // is not greater than the degree of parallelism allowed by the underlying scheduler.
-            _concurrencyLevel = maxConcurrencyLevel != 0 ? maxConcurrencyLevel : Environment.ProcessorCount;
+            _concurrencyLevel = maxConcurrencyLevel != 0 ? maxConcurrencyLevel : 
+                Environment.ProcessorCount;
             if (targetScheduler.MaximumConcurrencyLevel > 0 &&
                 targetScheduler.MaximumConcurrencyLevel < _concurrencyLevel)
             {
@@ -134,7 +135,10 @@ namespace MangaCrawlerLib
 
         /// <summary>Initializes the scheduler.</summary>
         /// <param name="threadCount">The number of threads to create and use for processing work items.</param>
-        public QueuedTaskScheduler(int threadCount) : this(threadCount, string.Empty, false, ThreadPriority.Normal, ApartmentState.MTA, 0, null, null) { }
+        public CustomTaskScheduler(int threadCount) : this(threadCount, string.Empty, false, 
+            ThreadPriority.Normal, ApartmentState.MTA, 0, null, null) 
+        { 
+        }
 
         /// <summary>Initializes the scheduler.</summary>
         /// <param name="threadCount">The number of threads to create and use for processing work items.</param>
@@ -145,7 +149,7 @@ namespace MangaCrawlerLib
         /// <param name="threadMaxStackSize">The stack size to use for each thread.</param>
         /// <param name="threadInit">An initialization routine to run on each thread.</param>
         /// <param name="threadFinally">A finalization routine to run on each thread.</param>
-        public QueuedTaskScheduler(
+        public CustomTaskScheduler(
             int threadCount,
             string threadName = "",
             bool useForegroundThreads = false,
@@ -215,11 +219,13 @@ namespace MangaCrawlerLib
                                 {
                                     // Find the next task based on our ordering rules...
                                     Task targetTask;
-                                    QueuedTaskSchedulerQueue queueForTargetTask;
-                                    lock (_queueGroups) FindNextTask_NeedsLock(out targetTask, out queueForTargetTask);
+                                    CustomTaskSchedulerQueue queueForTargetTask;
+                                    lock (_queueGroups)
+                                        FindNextTask_NeedsLock(out targetTask, out queueForTargetTask);
 
                                     // ... and if we found one, run it
-                                    if (targetTask != null) queueForTargetTask.ExecuteTask(targetTask);
+                                    if (targetTask != null)
+                                        queueForTargetTask.ExecuteTask(targetTask);
                                 }
                             }
                         }
@@ -251,7 +257,8 @@ namespace MangaCrawlerLib
             get
             {
                 int count = 0;
-                foreach (var group in _queueGroups) count += group.Value.Count;
+                foreach (var group in _queueGroups)
+                    count += group.Value.Count;
                 return count;
             }
         }
@@ -267,13 +274,61 @@ namespace MangaCrawlerLib
             }
         }
 
+        /// <summary>Creates and activates a new scheduling queue for this scheduler.</summary>
+        /// <returns>The newly created and activated queue at priority 0.</returns>
+        public TaskScheduler ActivateNewQueue() { return ActivateNewQueue(0); }
+
+        /// <summary>Creates and activates a new scheduling queue for this scheduler.</summary>
+        /// <param name="priority">The priority level for the new queue.</param>
+        /// <returns>The newly created and activated queue at the specified priority.</returns>
+        public TaskScheduler ActivateNewQueue(int priority)
+        {
+            // Create the queue
+            var createdQueue = new CustomTaskSchedulerQueue(priority, this);
+
+            // Add the queue to the appropriate queue group based on priority
+            lock (_queueGroups)
+            {
+                QueueGroup list;
+                if (!_queueGroups.TryGetValue(priority, out list))
+                {
+                    list = new QueueGroup();
+                    _queueGroups.Add(priority, list);
+                }
+                list.Add(createdQueue);
+            }
+
+            // Hand the new queue back
+            return createdQueue;
+        }
+
+        private Dictionary<int, TaskScheduler> m_schedulers = new Dictionary<int, TaskScheduler>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="a_priority">
+        /// Higher priority for lower a_priority.
+        /// </param>
+        /// <returns></returns>
+        public TaskScheduler Scheduler(int a_priority)
+        {
+            TaskScheduler sch;
+            if (m_schedulers.TryGetValue(a_priority, out sch))
+                return sch;
+
+            m_schedulers.Add(a_priority, ActivateNewQueue(a_priority));
+
+            return m_schedulers[a_priority];
+        }
+
         /// <summary>Find the next task that should be executed, based on priorities and fairness and the like.</summary>
         /// <param name="targetTask">The found task, or null if none was found.</param>
         /// <param name="queueForTargetTask">
         /// The scheduler associated with the found task.  Due to security checks inside of TPL,  
         /// this scheduler needs to be used to execute that task.
         /// </param>
-        private void FindNextTask_NeedsLock(out Task targetTask, out QueuedTaskSchedulerQueue queueForTargetTask)
+        private void FindNextTask_NeedsLock(out Task targetTask, out CustomTaskSchedulerQueue queueForTargetTask)
         {
             targetTask = null;
             queueForTargetTask = null;
@@ -284,10 +339,8 @@ namespace MangaCrawlerLib
             {
                 var queues = queueGroup.Value;
 
-                // Within each group, iterate through the queues in a round-robin
-                // fashion.  Every time we iterate again and successfully find a task, 
-                // we'll start in the next location in the group.
-                foreach (int i in queues.CreateSearchOrder())
+                // Within each group, iterate through the queues.
+                for (int i=0; i < queues.Count; i++)
                 {
                     queueForTargetTask = queues[i];
                     var items = queueForTargetTask._workItems;
@@ -298,7 +351,6 @@ namespace MangaCrawlerLib
                         {
                             RemoveQueue_NeedsLock(queueForTargetTask);
                         }
-                        queues.NextQueueIndex = (queues.NextQueueIndex + 1) % queueGroup.Value.Count;
                         return;
                     }
                 }
@@ -310,7 +362,8 @@ namespace MangaCrawlerLib
         protected override void QueueTask(Task task)
         {
             // If we've been disposed, no one should be queueing
-            if (_disposeCancellation.IsCancellationRequested) throw new ObjectDisposedException(GetType().Name);
+            if (_disposeCancellation.IsCancellationRequested) 
+                throw new ObjectDisposedException(GetType().Name);
 
             // If the target scheduler is null (meaning we're using our own threads),
             // add the task to the blocking queue
@@ -372,20 +425,22 @@ namespace MangaCrawlerLib
                             targetTask = _nonthreadsafeTaskQueue.Dequeue();
                         }
 
-                        // If the task is null, it's a placeholder for a task in the round-robin queues.
-                        // Find the next one that should be processed.
-                        QueuedTaskSchedulerQueue queueForTargetTask = null;
+                        // If the task is null, it's a placeholder for a task in the 
+                        // queues. Find the next one that should be processed.
+                        CustomTaskSchedulerQueue queueForTargetTask = null;
                         if (targetTask == null)
                         {
-                            lock (_queueGroups) FindNextTask_NeedsLock(out targetTask, out queueForTargetTask);
+                            lock (_queueGroups)
+                                FindNextTask_NeedsLock(out targetTask, out queueForTargetTask);
                         }
 
                         // Now if we finally have a task, run it.  If the task
-                        // was associated with one of the round-robin schedulers, we need to use it
+                        // was associated with one of the schedulers, we need to use it
                         // as a thunk to execute its task.
                         if (targetTask != null)
                         {
-                            if (queueForTargetTask != null) queueForTargetTask.ExecuteTask(targetTask);
+                            if (queueForTargetTask != null)
+                                queueForTargetTask.ExecuteTask(targetTask);
                             else TryExecuteTask(targetTask);
                         }
                     }
@@ -408,7 +463,8 @@ namespace MangaCrawlerLib
             }
         }
 
-        /// <summary>Notifies the pool that there's a new item to be executed in one of the round-robin queues.</summary>
+        /// <summary>Notifies the pool that there's a new item to be executed in one of the 
+        /// queues.</summary>
         private void NotifyNewWorkItem() { QueueTask(null); }
 
         /// <summary>Tries to execute a task synchronously on the current thread.</summary>
@@ -449,79 +505,37 @@ namespace MangaCrawlerLib
             _disposeCancellation.Cancel();
         }
 
-        /// <summary>Creates and activates a new scheduling queue for this scheduler.</summary>
-        /// <returns>The newly created and activated queue at priority 0.</returns>
-        public TaskScheduler ActivateNewQueue() { return ActivateNewQueue(0); }
-
-        /// <summary>Creates and activates a new scheduling queue for this scheduler.</summary>
-        /// <param name="priority">The priority level for the new queue.</param>
-        /// <returns>The newly created and activated queue at the specified priority.</returns>
-        public TaskScheduler ActivateNewQueue(int priority)
-        {
-            // Create the queue
-            var createdQueue = new QueuedTaskSchedulerQueue(priority, this);
-
-            // Add the queue to the appropriate queue group based on priority
-            lock (_queueGroups)
-            {
-                QueueGroup list;
-                if (!_queueGroups.TryGetValue(priority, out list))
-                {
-                    list = new QueueGroup();
-                    _queueGroups.Add(priority, list);
-                }
-                list.Add(createdQueue);
-            }
-
-            // Hand the new queue back
-            return createdQueue;
-        }
-
         /// <summary>Removes a scheduler from the group.</summary>
         /// <param name="queue">The scheduler to be removed.</param>
-        private void RemoveQueue_NeedsLock(QueuedTaskSchedulerQueue queue)
+        private void RemoveQueue_NeedsLock(CustomTaskSchedulerQueue queue)
         {
             // Find the group that contains the queue and the queue's index within the group
             var queueGroup = _queueGroups[queue._priority];
             int index = queueGroup.IndexOf(queue);
-
-            // We're about to remove the queue, so adjust the index of the next
-            // round-robin starting location if it'll be affected by the removal
-            if (queueGroup.NextQueueIndex >= index) queueGroup.NextQueueIndex--;
 
             // Remove it
             queueGroup.RemoveAt(index);
         }
 
         /// <summary>A group of queues a the same priority level.</summary>
-        private class QueueGroup : List<QueuedTaskSchedulerQueue>
+        private class QueueGroup : List<CustomTaskSchedulerQueue>
         {
-            /// <summary>The starting index for the next round-robin traversal.</summary>
-            public int NextQueueIndex = 0;
-
-            /// <summary>Creates a search order through this group.</summary>
-            /// <returns>An enumerable of indices for this group.</returns>
-            public IEnumerable<int> CreateSearchOrder()
-            {
-                for (int i = NextQueueIndex; i < Count; i++) yield return i;
-                for (int i = 0; i < NextQueueIndex; i++) yield return i;
-            }
         }
 
-        /// <summary>Provides a scheduling queue associatd with a QueuedTaskScheduler.</summary>
+        /// <summary>Provides a scheduling queue associatd with a CustomTaskScheduler.</summary>
         [DebuggerDisplay("QueuePriority = {_priority}, WaitingTasks = {WaitingTasks}")]
-        [DebuggerTypeProxy(typeof(QueuedTaskSchedulerQueueDebugView))]
-        private sealed class QueuedTaskSchedulerQueue : TaskScheduler, IDisposable
+        [DebuggerTypeProxy(typeof(CustomTaskSchedulerQueueDebugView))]
+        private sealed class CustomTaskSchedulerQueue : TaskScheduler, IDisposable
         {
             /// <summary>A debug view for the queue.</summary>
-            private sealed class QueuedTaskSchedulerQueueDebugView
+            private sealed class CustomTaskSchedulerQueueDebugView
             {
                 /// <summary>The queue.</summary>
-                private readonly QueuedTaskSchedulerQueue _queue;
+                private readonly CustomTaskSchedulerQueue _queue;
 
                 /// <summary>Initializes the debug view.</summary>
                 /// <param name="queue">The queue to be debugged.</param>
-                public QueuedTaskSchedulerQueueDebugView(QueuedTaskSchedulerQueue queue)
+                public CustomTaskSchedulerQueueDebugView(CustomTaskSchedulerQueue queue)
                 {
                     if (queue == null) throw new ArgumentNullException("queue");
                     _queue = queue;
@@ -533,12 +547,12 @@ namespace MangaCrawlerLib
                 public int Id { get { return _queue.Id; } }
                 /// <summary>Gets all of the tasks scheduled to this queue.</summary>
                 public IEnumerable<Task> ScheduledTasks { get { return _queue.GetScheduledTasks(); } }
-                /// <summary>Gets the QueuedTaskScheduler with which this queue is associated.</summary>
-                public QueuedTaskScheduler AssociatedScheduler { get { return _queue._pool; } }
+                /// <summary>Gets the CustomTaskScheduler with which this queue is associated.</summary>
+                public CustomTaskScheduler AssociatedScheduler { get { return _queue._pool; } }
             }
 
             /// <summary>The scheduler with which this pool is associated.</summary>
-            private readonly QueuedTaskScheduler _pool;
+            private readonly CustomTaskScheduler _pool;
             /// <summary>The work items stored in this queue.</summary>
             internal readonly Queue<Task> _workItems;
             /// <summary>Whether this queue has been disposed.</summary>
@@ -549,7 +563,7 @@ namespace MangaCrawlerLib
             /// <summary>Initializes the queue.</summary>
             /// <param name="priority">The priority associated with this queue.</param>
             /// <param name="pool">The scheduler with which this queue is associated.</param>
-            internal QueuedTaskSchedulerQueue(int priority, QueuedTaskScheduler pool)
+            internal CustomTaskSchedulerQueue(int priority, CustomTaskScheduler pool)
             {
                 _priority = priority;
                 _pool = pool;
@@ -557,11 +571,18 @@ namespace MangaCrawlerLib
             }
 
             /// <summary>Gets the number of tasks waiting in this scheduler.</summary>
-            internal int WaitingTasks { get { return _workItems.Count; } }
+            internal int WaitingTasks 
+            { 
+                get 
+                { 
+                    return _workItems.Count; } }
 
             /// <summary>Gets the tasks scheduled to this scheduler.</summary>
             /// <returns>An enumerable of all tasks queued to this scheduler.</returns>
-            protected override IEnumerable<Task> GetScheduledTasks() { return _workItems.ToList(); }
+            protected override IEnumerable<Task> GetScheduledTasks() 
+            { 
+                return _workItems.ToList(); 
+            }
 
             /// <summary>Queues a task to the scheduler.</summary>
             /// <param name="task">The task to be queued.</param>
@@ -571,7 +592,8 @@ namespace MangaCrawlerLib
 
                 // Queue up the task locally to this queue, and then notify
                 // the parent scheduler that there's work available
-                lock (_pool._queueGroups) _workItems.Enqueue(task);
+                lock (_pool._queueGroups) 
+                    _workItems.Enqueue(task);
                 _pool.NotifyNewWorkItem();
             }
 
@@ -601,7 +623,7 @@ namespace MangaCrawlerLib
                     lock (_pool._queueGroups)
                     {
                         // We only remove the queue if it's empty.  If it's not empty,
-                        // we still mark it as disposed, and the associated QueuedTaskScheduler
+                        // we still mark it as disposed, and the associated CustomTaskScheduler
                         // will remove the queue when its count hits 0 and its _disposed is true.
                         if (_workItems.Count == 0)
                         {
@@ -611,10 +633,6 @@ namespace MangaCrawlerLib
                     _disposed = true;
                 }
             }
-        }
-
-        internal void Prioritize(Task task)
-        {
         }
     }
 }

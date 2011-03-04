@@ -292,34 +292,37 @@ namespace MangaCrawlerTest
             Assert.IsTrue(series.All(s => s.Name != "[switch]"));
         }
 
-        private volatile int c1 = 0;
-        private volatile int c2 = 0;
+        private int c1 = 0;
+        private int c2 = 0;
 
         [TestMethod]
         public void CustomTaskScheduler_Order_Test()
         {
-            QueuedTaskScheduler ts = new QueuedTaskScheduler(20);
+            CustomTaskScheduler ts = new CustomTaskScheduler(20);
+
             List<int>  results = new List<int>();
 
             List<Task> tasks = new List<Task>();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 500; i++)
             {
                 Task task = new Task((n) =>  
                 {
-                    c1++;
+                    Interlocked.Increment(ref c1);
                     lock (results)
                     {
                         if (c2 < c1)
                             c2 = c1;
-                        results.Add((int)n);
+                        int nn = (int)n;
+                        results.Add(nn);
                     }
                     Thread.Sleep(Environment.TickCount % 500);
-                    c1--;
+                    Interlocked.Decrement(ref c1);
                     Assert.IsTrue(c1 >= 0);
                 }, i);
 
                 tasks.Add(task);
+
                 task.Start(ts);
             }
 
@@ -330,7 +333,7 @@ namespace MangaCrawlerTest
             int c3 = 0;
             for (int i = 0; i < results.Count; i++)
             {
-                TestContext.WriteLine("{0}: {1}, {2}", i, results[i], i - results[i]);
+                TestContext.WriteLine("{0}, {1}, {2}", i, results[i], Math.Abs(i - results[i]));
                 if (Math.Abs(i - results[i]) > c3)
                     c3 = Math.Abs(i - results[i]);
             }
@@ -338,6 +341,54 @@ namespace MangaCrawlerTest
             TestContext.WriteLine("Max disorder is {0}", c3);
 
             Assert.IsTrue(c3 >= 0);
+            Assert.IsTrue(c2 == ts.MaximumConcurrencyLevel);
+        }
+
+        [TestMethod]
+        public void CustomTaskScheduler_Priorities_Test()
+        {
+            CustomTaskScheduler ts = new CustomTaskScheduler(20);
+
+            List<int> results = new List<int>();
+
+            List<Task> tasks = new List<Task>();
+
+            for (int i = 0; i < 500; i++)
+            {
+                bool h = (i % 3) == 0;
+
+                Task task = new Task((n) =>
+                {
+                    Interlocked.Increment(ref c1);
+                    lock (results)
+                    {
+                        if (c2 < c1)
+                            c2 = c1;
+                        int nn = (int)n;
+                        results.Add(nn);
+                    }
+                    Thread.Sleep(Environment.TickCount % 500);
+                    Interlocked.Decrement(ref c1);
+                    Assert.IsTrue(c1 >= 0);
+                }, i + (h ? 1000 : 0));
+
+                tasks.Add(task);
+
+                if (h)
+                    task.Start(ts.Scheduler(-1));
+                else
+                    task.Start(ts.Scheduler(0));
+            }
+
+            Task.WaitAll(tasks.ToArray());
+
+            TestContext.WriteLine("Max threads is {0}", c2);
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                TestContext.WriteLine("{0}, {1}", i, results[i]);
+            }
+
             Assert.IsTrue(c2 == ts.MaximumConcurrencyLevel);
         }
 
