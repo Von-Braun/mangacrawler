@@ -607,28 +607,41 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void StopTazmoTest()
         {
-            var series = TestServer(ServerInfo.StopTazmo, 1792);
+            var series = TestServer(ServerInfo.StopTazmo, 1902);
 
-            var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 422);
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 438, true);
 
-            var pages = TestChapter(chapters.ToArray()[420], 22);
+                var pages = TestChapter(chapters.First(), 57);
 
-            TestPage(pages.First(), 
-                "C91EF566-472EBA2D-3C527AB5-98DEB6E6-621C59A4-AFB0A26E-D9BDDFAB-983F2F23");
-            TestPage(pages.Last(), 
-                "8A2A4703-FDF58BF9-0AAEC0A9-93F2876B-DBECD43E-D8DAE263-3F958C29-455D5E9F");
+                TestPage(pages.First(),
+                    "8D78D814-791583E2-19F0FC41-460F600B-982ABBF0-6278B2A9-3D6D5112-ADB86FA6");
+                TestPage(pages.Last(),
+                    "41838061-F5379AD8-FF615340-5FEF5C07-C9A68FF7-6F643947-7A203C17-5308D8A4");
 
-            pages = TestChapter(chapters.First(), 57);
+                pages = TestChapter(chapters.Last(), 0, true);
 
-            TestPage(pages.First(), 
-                "8D78D814-791583E2-19F0FC41-460F600B-982ABBF0-6278B2A9-3D6D5112-ADB86FA6");
-            TestPage(pages.Last(), 
-                "41838061-F5379AD8-FF615340-5FEF5C07-C9A68FF7-6F643947-7A203C17-5308D8A4");
+                TestPage(pages.First(), "", true);
+                TestPage(pages.Last(), "", true);
+            }
 
-            pages = TestChapter(chapters.Last(), 0, true);
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "666 Satan"), 78);
 
-            TestPage(pages.First(), "", true);
-            TestPage(pages.Last(), "", true);
+                var pages = TestChapter(chapters.First(), 25);
+
+                TestPage(pages.First(),
+                    "4C1EBC9E-132DC56A-56B47BD6-C567DE7A-9354C577-D2C7E01E-18B7209B-CFDC1D43");
+                TestPage(pages.Last(),
+                    "C7BBA2D4-579AD7C0-38DE23A8-E7BDC94A-0D1480F3-50D22B2F-F759BF7B-E684F834");
+
+                pages = TestChapter(chapters.Last(), 51);
+
+                TestPage(pages.First(),
+                    "6DC6CCF8-BB831044-DEDBEB18-D83FB748-C10D7698-FDDB65B8-506D7A06-2F455AAB");
+                TestPage(pages.Last(),
+                    "0D8475C4-E5D98687-C4DA831B-0D8F7003-6DF7F2EE-3747FC41-1E56B602-AF65CE0A");
+            }
         }
 
         [TestMethod]
