@@ -16,14 +16,18 @@ namespace MangaCrawlerLib
         public const int MAX_CONNECTIONS = 100;
         public const int MAX_CONNECTIONS_PER_SERVER = 4;
 
-        private static Dictionary<ServerInfo, QueuedMutex> s_serverPages = new Dictionary<ServerInfo, QueuedMutex>();
-        private static Dictionary<ServerInfo, Semaphore> s_serverConnections = new Dictionary<ServerInfo, Semaphore>();
-        private static Semaphore s_connections = new Semaphore(MAX_CONNECTIONS, MAX_CONNECTIONS);
+        private static Dictionary<ServerInfo, QueuedMutex> s_serverPages = 
+            new Dictionary<ServerInfo, QueuedMutex>();
+        private static Dictionary<ServerInfo, Semaphore> s_serverConnections = 
+            new Dictionary<ServerInfo, Semaphore>();
+        private static Semaphore s_connections = 
+            new Semaphore(MAX_CONNECTIONS, MAX_CONNECTIONS);
 
         static ConnectionsLimiter()
         {
             foreach (var si in ServerInfo.ServersInfos)
-                s_serverConnections.Add(si, new Semaphore(MAX_CONNECTIONS_PER_SERVER, MAX_CONNECTIONS_PER_SERVER));
+                s_serverConnections.Add(si, 
+                    new Semaphore(MAX_CONNECTIONS_PER_SERVER, MAX_CONNECTIONS_PER_SERVER));
             foreach (var si in ServerInfo.ServersInfos)
                 s_serverPages.Add(si, new QueuedMutex());
         }
@@ -146,7 +150,7 @@ namespace MangaCrawlerLib
             });
         }
 
-        private static T DownloadWithRetry<T>(Func<T> a_func)
+        internal static T DownloadWithRetry<T>(Func<T> a_func)
         {
             WebException ex1 = null;
 
