@@ -52,129 +52,170 @@ namespace MangaCrawlerLib
 
         internal static HtmlDocument DownloadDocument(ServerInfo a_info, string a_url = null)
         {
-            Aquire(a_info);
-
-            try
+            return DownloadWithRetry(() =>
             {
-                if (a_url == null)
-                    a_url = a_info.URL;
+                Aquire(a_info);
 
-                var web = new HtmlWeb();
-                var page = web.Load(a_url);
+                try
+                {
+                    if (a_url == null)
+                        a_url = a_info.URL;
 
-                if (web.StatusCode == HttpStatusCode.NotFound)
-                    return null;
+                    var web = new HtmlWeb();
+                    var page = web.Load(a_url);
 
-                return page;
-            }
-            finally
-            {
-                Release(a_info);
-            }
+                    if (web.StatusCode == HttpStatusCode.NotFound)
+                        return null;
+
+                    return page;
+                }
+                finally
+                {
+                    Release(a_info);
+                }
+            });
         }
 
         internal static HtmlDocument DownloadDocument(SerieInfo a_info, string a_url = null)
         {
-            Aquire(a_info.ServerInfo);
-
-            try
+            return DownloadWithRetry(() =>
             {
-                if (a_url == null)
-                    a_url = a_info.URL;
+                Aquire(a_info.ServerInfo);
 
-                return new HtmlWeb().Load(a_url);
-            }
-            finally
-            {
-                Release(a_info.ServerInfo);
-            }
+                try
+                {
+                    if (a_url == null)
+                        a_url = a_info.URL;
+
+                    return new HtmlWeb().Load(a_url);
+                }
+                finally
+                {
+                    Release(a_info.ServerInfo);
+                }
+            });
         }
 
-        internal static HtmlDocument DownloadDocument(ChapterInfo a_info, CancellationToken a_token, string a_url = null)
+        internal static HtmlDocument DownloadDocument(ChapterInfo a_info, 
+            CancellationToken a_token, string a_url = null)
         {
-            a_token.ThrowIfCancellationRequested();
-
-            Aquire(a_info.SerieInfo.ServerInfo);
-
-            try
+            return DownloadWithRetry(() =>
             {
                 a_token.ThrowIfCancellationRequested();
 
-                if (a_url == null)
-                    a_url = a_info.URL;
+                Aquire(a_info.SerieInfo.ServerInfo);
 
-                return new HtmlWeb().Load(a_url);
-            }
-            finally
-            {
-                Release(a_info.SerieInfo.ServerInfo);
-            }
+                try
+                {
+                    a_token.ThrowIfCancellationRequested();
+
+                    if (a_url == null)
+                        a_url = a_info.URL;
+
+                    return new HtmlWeb().Load(a_url);
+                }
+                finally
+                {
+                    Release(a_info.SerieInfo.ServerInfo);
+                }
+            });
         }
 
-        internal static HtmlDocument DownloadDocument(PageInfo a_info, CancellationToken a_token, string a_url = null)
+        internal static HtmlDocument DownloadDocument(PageInfo a_info, 
+            CancellationToken a_token, string a_url = null)
         {
-            a_token.ThrowIfCancellationRequested();
-
-            Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
-
-            try
+            return DownloadWithRetry(() =>
             {
                 a_token.ThrowIfCancellationRequested();
 
-                if (a_url == null)
-                    a_url = a_info.URL;
+                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
 
-                return new HtmlWeb().Load(a_url);
-            }
-            finally
+                try
+                {
+                    a_token.ThrowIfCancellationRequested();
+
+                    if (a_url == null)
+                        a_url = a_info.URL;
+
+                    return new HtmlWeb().Load(a_url);
+                }
+                finally
+                {
+                    Release(a_info.ChapterInfo.SerieInfo.ServerInfo);
+                }
+            });
+        }
+
+        private static T DownloadWithRetry<T>(Func<T> a_func)
+        {
+            WebException ex1 = null;
+
+            for (int i = 0; i<3; i++)
             {
-                Release(a_info.ChapterInfo.SerieInfo.ServerInfo);
+                try
+                {
+                    return a_func();
+                }
+                catch (WebException ex)
+                {
+                    ex1 = ex;
+                    continue;
+                }
             }
+
+            throw ex1;
         }
 
         internal static HtmlDocument Submit(PageInfo a_info, CancellationToken a_token, string a_url, 
             Dictionary<string, string> a_parameters)
         {
-            a_token.ThrowIfCancellationRequested();
-
-            Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
-
-            try
+            return DownloadWithRetry(() =>
             {
                 a_token.ThrowIfCancellationRequested();
 
-                return HTTPUtils.Submit(a_url, a_parameters);
-            }
-            finally
-            {
-                Release(a_info.ChapterInfo.SerieInfo.ServerInfo);
-            }
+                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
+
+                try
+                {
+                    a_token.ThrowIfCancellationRequested();
+
+                    return HTTPUtils.Submit(a_url, a_parameters);
+                }
+                finally
+                {
+                    Release(a_info.ChapterInfo.SerieInfo.ServerInfo);
+                }
+            });
         }
 
         public static MemoryStream GetImageStream(PageInfo a_info, CancellationToken a_token)
         {
-            try
+            return DownloadWithRetry(() =>
             {
-                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
-
-                HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(a_info.GetImageURL(a_token));
-
-                myReq.UserAgent =
-                    "Mozilla/5.0 (Windows; U; Windows NT 6.0; pl; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 ( .NET CLR 3.5.30729; .NET4.0E)";
-                myReq.Referer = a_info.URL;
-
-                using (Stream image_stream = myReq.GetResponse().GetResponseStream())
+                try
                 {
-                    MemoryStream mem_stream = new MemoryStream();
-                    image_stream.CopyTo(mem_stream);
-                    mem_stream.Position = 0;
-                    return mem_stream;
+                    Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo);
+
+                    HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
+                        a_info.GetImageURL(a_token));
+
+                    myReq.UserAgent =
+                        "Mozilla/5.0 (Windows; U; Windows NT 6.0; pl; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 ( .NET CLR 3.5.30729; .NET4.0E)";
+                    myReq.Referer = a_info.URL;
+
+                    using (Stream image_stream = myReq.GetResponse().GetResponseStream())
+                    {
+                        MemoryStream mem_stream = new MemoryStream();
+                        image_stream.CopyTo(mem_stream);
+                        mem_stream.Position = 0;
+                        return mem_stream;
+                    }
                 }
-            }
-            finally
-            {
-                Release(a_info.ChapterInfo.SerieInfo.ServerInfo);
-            }
+                finally
+                {
+                    Release(a_info.ChapterInfo.SerieInfo.ServerInfo);
+                }
+            });
         }
     }
 }
