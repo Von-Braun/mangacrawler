@@ -8,12 +8,14 @@ using System.IO;
 using System.Threading;
 using Ionic.Zip;
 using System.Resources;
+using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
     public static class DownloadManager
     {
-        private static ReprioritizableTaskScheduler s_scheduler = new ReprioritizableTaskScheduler();
+        private static QueuedTaskScheduler s_scheduler =
+            new QueuedTaskScheduler(ConnectionsLimiter.MAX_CONNECTIONS);
 
         private static ServerItem s_selectedServer;
         private static Dictionary<ServerItem, SerieItem> s_selectedSerie = new Dictionary<ServerItem,SerieItem>();
@@ -37,6 +39,15 @@ namespace MangaCrawlerLib
         public static Func<VisualState> GetServersVisualState;
         public static Func<VisualState> GetSeriesVisualState;
         public static Func<VisualState > GetChaptersVisualState;
+
+        private static RestrictedFrequencyAction SeriesUpdate = 
+            new RestrictedFrequencyAction(500);
+        private static RestrictedFrequencyAction ChaptersUpdate = 
+            new RestrictedFrequencyAction(500);
+        private static RestrictedFrequencyAction TasksUpdate = 
+            new RestrictedFrequencyAction(500);
+        private static RestrictedFrequencyAction ServersUpdate = 
+            new RestrictedFrequencyAction(500);
 
         static DownloadManager()
         {
@@ -414,13 +425,19 @@ namespace MangaCrawlerLib
 
         private static void OnServersChanged(bool a_fromGUI)
         {
-            TryInvoke(() =>
+            Action update = () =>
             {
-                if (!Form.IsDisposed)
-                    GetServersVisualState().ReloadItems(s_servers.AsReadOnly());
-            });
+                TryInvoke(() =>
+                {
+                    if (!Form.IsDisposed)
+                        GetServersVisualState().ReloadItems(s_servers.AsReadOnly());
+                });
+            };
+
+            ServersUpdate.Perform(update);
 
             OnSeriesChanged(a_fromGUI);
+
         }
 
         private static void OnSeriesChanged(bool a_fromGUI, ServerItem a_serverItem = null)
@@ -431,22 +448,27 @@ namespace MangaCrawlerLib
                     return;
             }
 
-            TryInvoke(() =>
+            Action update = () =>
             {
-                List<SerieItem> list = new List<SerieItem>();
-
-                if (s_selectedServer != null)
+                TryInvoke(() =>
                 {
-                    string filter = GetSeriesFilter().ToLower();
-                    list = (from serie in s_selectedServer.ServerInfo.Series
-                            where serie.Name.ToLower().IndexOf(filter) != -1
-                            where s_series.ContainsKey(serie) // moze zostac wywolane poprzez s_seriesUpdateLimiter, moga istniec serie w Series nie dodane do s_series.
-                            select s_series[serie]).ToList();
-                }
+                    List<SerieItem> list = new List<SerieItem>();
 
-                if (!Form.IsDisposed)
-                    SeriesVisualState.ReloadItems(list.AsReadOnly());
-            });
+                    if (s_selectedServer != null)
+                    {
+                        string filter = GetSeriesFilter().ToLower();
+                        list = (from serie in s_selectedServer.ServerInfo.Series
+                                where serie.Name.ToLower().IndexOf(filter) != -1
+                                where s_series.ContainsKey(serie) // moze zostac wywolane poprzez s_seriesUpdateLimiter, moga istniec serie w Series nie dodane do s_series.
+                                select s_series[serie]).ToList();
+                    }
+
+                    if (!Form.IsDisposed)
+                        SeriesVisualState.ReloadItems(list.AsReadOnly());
+                });
+            };
+
+            SeriesUpdate.Perform(update);
 
             OnChaptersChanged(a_fromGUI);
         }
@@ -459,19 +481,24 @@ namespace MangaCrawlerLib
                     return;
             }
 
-            List<ChapterItem> list = new List<ChapterItem>();
-
-            if (SelectedSerie != null)
+            Action update = () =>
             {
-                list = (from ch in SelectedSerie.SerieInfo.Chapters
-                        select s_chapters[ch]).ToList();
-            }
+                List<ChapterItem> list = new List<ChapterItem>();
 
-            TryInvoke(() =>
-            {
-                if (!Form.IsDisposed)
-                    ChaptersVisualState.ReloadItems(list.AsReadOnly());
-            });
+                if (SelectedSerie != null)
+                {
+                    list = (from ch in SelectedSerie.SerieInfo.Chapters
+                            select s_chapters[ch]).ToList();
+                }
+
+                TryInvoke(() =>
+                {
+                    if (!Form.IsDisposed)
+                        ChaptersVisualState.ReloadItems(list.AsReadOnly());
+                });
+            };
+
+            ChaptersUpdate.Perform(update);
 
             OnTasksChanged(a_fromGUI);
         }
@@ -481,28 +508,34 @@ namespace MangaCrawlerLib
             if (TasksChanged == null)
                 return;
 
-            TryInvoke(() =>
+            Action update = () =>
             {
-                var all_tasks = (from ch in s_chapters.Values
-                                where ch.IsTask
-                                select ch).ToList();
 
-                var add = (from task in all_tasks
-                            where !s_tasks.Contains(task)
-                            select task).ToList();
+                TryInvoke(() =>
+                {
+                    var all_tasks = (from ch in s_chapters.Values
+                                        where ch.IsTask
+                                        select ch).ToList();
 
-                var remove = (from task in s_tasks
-                                where !all_tasks.Contains(task)
+                    var add = (from task in all_tasks
+                                where !s_tasks.Contains(task)
                                 select task).ToList();
 
-                foreach (var el in add)
-                    s_tasks.Add(el);
-                foreach (var el in remove)
-                    s_tasks.Remove(el);
+                    var remove = (from task in s_tasks
+                                    where !all_tasks.Contains(task)
+                                    select task).ToList();
 
-                if (!Form.IsDisposed)
-                    TasksChanged(s_tasks.AsReadOnly());
-            });
+                    foreach (var el in add)
+                        s_tasks.Add(el);
+                    foreach (var el in remove)
+                        s_tasks.Remove(el);
+
+                    if (!Form.IsDisposed)
+                        TasksChanged(s_tasks.AsReadOnly());
+                });
+            };
+
+            TasksUpdate.Perform(update);
         }
 
         public static bool DownloadingPages

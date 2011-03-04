@@ -292,6 +292,55 @@ namespace MangaCrawlerTest
             Assert.IsTrue(series.All(s => s.Name != "[switch]"));
         }
 
+        private volatile int c1 = 0;
+        private volatile int c2 = 0;
+
+        [TestMethod]
+        public void CustomTaskScheduler_Order_Test()
+        {
+            QueuedTaskScheduler ts = new QueuedTaskScheduler(20);
+            List<int>  results = new List<int>();
+
+            List<Task> tasks = new List<Task>();
+
+            for (int i = 0; i < 100; i++)
+            {
+                Task task = new Task((n) =>  
+                {
+                    c1++;
+                    lock (results)
+                    {
+                        if (c2 < c1)
+                            c2 = c1;
+                        results.Add((int)n);
+                    }
+                    Thread.Sleep(Environment.TickCount % 500);
+                    c1--;
+                    Assert.IsTrue(c1 >= 0);
+                }, i);
+
+                tasks.Add(task);
+                task.Start(ts);
+            }
+
+            Task.WaitAll(tasks.ToArray());
+
+            TestContext.WriteLine("Max threads is {0}", c2);
+
+            int c3 = 0;
+            for (int i = 0; i < results.Count; i++)
+            {
+                TestContext.WriteLine("{0}: {1}, {2}", i, results[i], i - results[i]);
+                if (Math.Abs(i - results[i]) > c3)
+                    c3 = Math.Abs(i - results[i]);
+            }
+
+            TestContext.WriteLine("Max disorder is {0}", c3);
+
+            Assert.IsTrue(c3 >= 0);
+            Assert.IsTrue(c2 == ts.MaximumConcurrencyLevel);
+        }
+
         [TestMethod]
         public void MangaRunTest()
         {
