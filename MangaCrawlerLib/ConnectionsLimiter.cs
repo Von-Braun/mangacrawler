@@ -16,8 +16,12 @@ namespace MangaCrawlerLib
         public const int MAX_CONNECTIONS = 100;
         public const int MAX_CONNECTIONS_PER_SERVER = 4;
 
+        /// <summary>
+        /// To prevent from downloading from one server more than one chapter simultaneously.
+        /// </summary>
         private static Dictionary<ServerInfo, QueuedMutex> s_serverPages = 
             new Dictionary<ServerInfo, QueuedMutex>();
+
         private static Dictionary<ServerInfo, QueuedSemaphore> s_serverConnections =
             new Dictionary<ServerInfo, QueuedSemaphore>();
         private static QueuedSemaphore s_connections =
@@ -42,16 +46,17 @@ namespace MangaCrawlerLib
             s_serverPages[a_info.SerieInfo.ServerInfo].ReleaseMutex();
         }
 
-        private static void Aquire(ServerInfo a_info)
+        private static void Aquire(ServerInfo a_info, Priority a_priority)
         {
-            s_connections.WaitOne();
-            s_serverConnections[a_info].WaitOne();
+            s_connections.WaitOne(a_priority);
+            s_serverConnections[a_info].WaitOne(a_priority);
         }
 
-        private static void Aquire(ServerInfo a_info, CancellationToken a_token)
+        private static void Aquire(ServerInfo a_info, CancellationToken a_token, 
+            Priority a_priority)
         {
-            s_connections.WaitOne(a_token);
-            s_serverConnections[a_info].WaitOne();
+            s_connections.WaitOne(a_token, a_priority);
+            s_serverConnections[a_info].WaitOne(a_token, a_priority);
         }
 
         private static void Release(ServerInfo a_info)
@@ -64,7 +69,7 @@ namespace MangaCrawlerLib
         {
             return DownloadWithRetry(() =>
             {
-                Aquire(a_info);
+                Aquire(a_info, Priority.Series);
 
                 try
                 {
@@ -90,7 +95,7 @@ namespace MangaCrawlerLib
         {
             return DownloadWithRetry(() =>
             {
-                Aquire(a_info.ServerInfo);
+                Aquire(a_info.ServerInfo, Priority.Chapters);
 
                 try
                 {
@@ -113,7 +118,7 @@ namespace MangaCrawlerLib
             {
                 a_token.ThrowIfCancellationRequested();
 
-                Aquire(a_info.SerieInfo.ServerInfo, a_token);
+                Aquire(a_info.SerieInfo.ServerInfo, a_token, Priority.Pages);
 
                 try
                 {
@@ -138,7 +143,7 @@ namespace MangaCrawlerLib
             {
                 a_token.ThrowIfCancellationRequested();
 
-                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token);
+                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token, Priority.Pages);
 
                 try
                 {
@@ -183,7 +188,7 @@ namespace MangaCrawlerLib
             {
                 a_token.ThrowIfCancellationRequested();
 
-                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token);
+                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token, Priority.Pages);
 
                 try
                 {
@@ -204,7 +209,7 @@ namespace MangaCrawlerLib
             {
                 try
                 {
-                    Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token);
+                    Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token, Priority.Image);
 
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
                         a_info.GetImageURL(a_token));
