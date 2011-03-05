@@ -20,7 +20,6 @@ namespace MangaCrawler
 {
     // TODO: postarac sie powiesic nowa rownoleglosc, co z losowymi ze czegos nie jest w stanie 
     //       pobrac.
-    // TODO: wybranie chapteru, zmiana filtru tak ze zaznaczenie seri znika, chapter zostaje zaznaczony.
     // TODO: podczas sciagania chapteru, ustawiamy focus na inny wiersz, i przewijamy rolka, 
     //       update ciagle cofa nas na zaznaczenie
     //
@@ -327,6 +326,9 @@ namespace MangaCrawler
 
         private void serversListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
+            if (e.Index == -1)
+                return;
+
             ServerItem server = (ServerItem)serversListBox.Items[e.Index];
             ListBox_DrawItem(e, server.ServerInfo.Name, server.State,
                 String.Format("({0}%)", server.Progress), String.Format(MangaCrawler.Properties.Resources.SERIES,
@@ -335,6 +337,9 @@ namespace MangaCrawler
 
         private void seriesListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
+            if (e.Index == -1)
+                return;
+
             SerieItem serie = (SerieItem)seriesListBox.Items[e.Index];
             ListBox_DrawItem(e, serie.SerieInfo.Name, serie.State,
                 String.Format("({0}%)", serie.Progress), String.Format(MangaCrawler.Properties.Resources.CHAPTERS, 

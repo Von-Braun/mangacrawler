@@ -71,7 +71,7 @@ namespace MangaCrawler
 
         public override void RaiseSelectionChanged()
         {
-            m_listBox.SelectedItem = m_listBox.SelectedItem;
+            m_listBox.RaiseSelectionChanged();
         }
 
         public override void ReloadItems<T>(IEnumerable<T> a_enum)
