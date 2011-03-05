@@ -448,7 +448,7 @@
             this.seriesListBox.Name = "seriesListBox";
             this.seriesListBox.Size = new System.Drawing.Size(359, 361);
             this.seriesListBox.TabIndex = 30;
-            this.seriesListBox.HorizontalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_HorizontalScroll);
+            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
             this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
             this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
             // 
@@ -466,7 +466,7 @@
             this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.chaptersListBox.Size = new System.Drawing.Size(341, 361);
             this.chaptersListBox.TabIndex = 34;
-            this.chaptersListBox.HorizontalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chaptersListBox_HorizontalScroll);
+            this.chaptersListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
             this.chaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chaptersListBox_DrawItem);
             this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
             this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
