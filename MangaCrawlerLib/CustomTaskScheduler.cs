@@ -10,7 +10,7 @@ using System.Threading;
 namespace MangaCrawlerLib
 {
     /// <summary>
-    /// Provides a TaskScheduler that provides control over priorities, fairness, and the underlying threads utilized.
+    /// Provides control over number of threads and priorities. This is what we need.
     /// </summary>
     [DebuggerTypeProxy(typeof(CustomTaskSchedulerDebugView))]
     [DebuggerDisplay("Id={Id}, Queues={DebugQueueCount}, ScheduledTasks = {DebugTaskCount}")]
@@ -311,15 +311,15 @@ namespace MangaCrawlerLib
         /// Higher priority for lower a_priority.
         /// </param>
         /// <returns></returns>
-        public TaskScheduler Scheduler(int a_priority)
+        public TaskScheduler Scheduler(Priority a_priority)
         {
             TaskScheduler sch;
-            if (m_schedulers.TryGetValue(a_priority, out sch))
+            if (m_schedulers.TryGetValue((int)a_priority, out sch))
                 return sch;
 
-            m_schedulers.Add(a_priority, ActivateNewQueue(a_priority));
+            m_schedulers.Add((int)a_priority, ActivateNewQueue((int)a_priority));
 
-            return m_schedulers[a_priority];
+            return m_schedulers[(int)a_priority];
         }
 
         /// <summary>Find the next task that should be executed, based on priorities and fairness and the like.</summary>

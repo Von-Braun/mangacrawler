@@ -18,12 +18,14 @@ using HtmlAgilityPack;
 
 namespace MangaCrawler
 {
+    // TODO: postarac sie powiesic nowa rownoleglosc, co z losowymi ze czegos nie jest w stanie 
+    //       pobrac.
     // TODO: wybranie chapteru, zmiana filtru tak ze zaznaczenie seri znika, chapter zostaje zaznaczony.
-    //
     // TODO: podczas sciagania chapteru, ustawiamy focus na inny wiersz, i przewijamy rolka, 
     //       update ciagle cofa nas na zaznaczenie
     //
     // TODO: test rozlegly zrobic
+    //
     // TODO: instalator
     //
     // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, podczas ponownego uruchomienia 

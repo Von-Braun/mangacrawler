@@ -14,17 +14,23 @@ namespace MangaCrawlerLib
 {
     public static class DownloadManager
     {
-        private static CustomTaskScheduler s_scheduler =
-            new CustomTaskScheduler(ConnectionsLimiter.MAX_CONNECTIONS);
+        private static Dictionary<ServerInfo, CustomTaskScheduler> s_schedulers =
+            new Dictionary<ServerInfo, CustomTaskScheduler>();
 
         private static ServerItem s_selectedServer;
-        private static Dictionary<ServerItem, SerieItem> s_selectedSerie = new Dictionary<ServerItem,SerieItem>();
-        private static Dictionary<ServerItem, VisualState> s_seriesListBoxState = new Dictionary<ServerItem, VisualState>();
-        private static Dictionary<SerieItem, ChapterItem> s_selectedChapter = new Dictionary<SerieItem,ChapterItem>();
-        private static Dictionary<SerieItem, VisualState> s_chaptersListBoxState = new Dictionary<SerieItem, VisualState>();
+        private static Dictionary<ServerItem, SerieItem> s_selectedSerie = 
+            new Dictionary<ServerItem,SerieItem>();
+        private static Dictionary<ServerItem, VisualState> s_seriesListBoxState = 
+            new Dictionary<ServerItem, VisualState>();
+        private static Dictionary<SerieItem, ChapterItem> s_selectedChapter = 
+            new Dictionary<SerieItem,ChapterItem>();
+        private static Dictionary<SerieItem, VisualState> s_chaptersListBoxState = 
+            new Dictionary<SerieItem, VisualState>();
 
-        private static Dictionary<ChapterInfo, ChapterItem> s_chapters = new Dictionary<ChapterInfo, ChapterItem>();
-        private static Dictionary<SerieInfo, SerieItem> s_series = new Dictionary<SerieInfo, SerieItem>();
+        private static Dictionary<ChapterInfo, ChapterItem> s_chapters = 
+            new Dictionary<ChapterInfo, ChapterItem>();
+        private static Dictionary<SerieInfo, SerieItem> s_series = 
+            new Dictionary<SerieInfo, SerieItem>();
         private static List<ServerItem> s_servers = new List<ServerItem>();
         private static List<ChapterItem> s_tasks = new List<ChapterItem>();
 
@@ -51,6 +57,12 @@ namespace MangaCrawlerLib
 
         static DownloadManager()
         {
+            foreach (var si in ServerInfo.ServersInfos)
+            {
+                s_schedulers[si] = new CustomTaskScheduler(
+                    ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER * 4 / 3);
+            }
+
             foreach (var server in ServerInfo.ServersInfos)
                 s_servers.Add(new ServerItem(server));
         }
@@ -203,7 +215,7 @@ namespace MangaCrawlerLib
                 OnServersChanged(false);
             });
 
-            task.Start(s_scheduler.Scheduler(-1));
+            task.Start(s_schedulers[a_item.ServerInfo].Scheduler(Priority.Series));
 
             OnServersChanged(true);
 
@@ -254,7 +266,8 @@ namespace MangaCrawlerLib
 
             });
 
-            task.Start(s_scheduler.Scheduler(-2));
+            task.Start(
+                s_schedulers[a_serieItem.ServerItem.ServerInfo].Scheduler(Priority.Chapters));
 
             OnSeriesChanged(true, a_serieItem.ServerItem);
 
@@ -348,7 +361,8 @@ namespace MangaCrawlerLib
 
                 });
 
-                task.Start(s_scheduler.Scheduler(0));
+                task.Start(s_schedulers[chapter_item.SerieItem.ServerItem.ServerInfo].Scheduler(
+                    Priority.Pages));
 
                 OnChaptersChanged(true, chapter_item.SerieItem);
             }

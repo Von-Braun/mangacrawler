@@ -347,6 +347,16 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void CustomTaskScheduler_Priorities_Test()
         {
+            OrderedList<Priority, int> x = new OrderedList<Priority, int>();
+            
+            x.Add(Priority.Series, 1);
+            x.Add(Priority.Series, 2);
+            x.Add(Priority.Pages, 3);
+            x.Add(Priority.Pages, 4);
+            x.Add(Priority.Series, 5);
+            x.Add(Priority.Pages, 6);
+            x.Add(Priority.Series, 7);
+
             CustomTaskScheduler ts = new CustomTaskScheduler(20);
 
             List<int> results = new List<int>();
@@ -375,9 +385,9 @@ namespace MangaCrawlerTest
                 tasks.Add(task);
 
                 if (h)
-                    task.Start(ts.Scheduler(-1));
+                    task.Start(ts.Scheduler(Priority.Series));
                 else
-                    task.Start(ts.Scheduler(0));
+                    task.Start(ts.Scheduler(Priority.Image));
             }
 
             Task.WaitAll(tasks.ToArray());

@@ -9,7 +9,8 @@ namespace MangaCrawlerLib
     public class QueuedSemaphore
     {
         private Object m_lock = new Object();
-        private Queue<ManualResetEvent> m_queue = new Queue<ManualResetEvent>();
+        private OrderedList<Priority, ManualResetEvent> m_queue =
+            new OrderedList<Priority, ManualResetEvent>();
         private int m_working = 0;
         private readonly int m_count;
 
@@ -18,7 +19,7 @@ namespace MangaCrawlerLib
             m_count = a_count;
         }
 
-        public void WaitOne(CancellationToken a_token)
+        public void WaitOne(CancellationToken a_token, Priority a_priority)
         {
             ManualResetEvent mre = null;
 
@@ -27,7 +28,7 @@ namespace MangaCrawlerLib
                 if (m_working == m_count)
                 {
                     mre = new ManualResetEvent(false);
-                    m_queue.Enqueue(mre);
+                    m_queue.Add(a_priority, mre);
                 }
                 else
                     m_working++;
@@ -42,21 +43,9 @@ namespace MangaCrawlerLib
                         lock (m_lock)
                         {
                             if (mre.WaitOne(0))
-                            {
                                 Release();
-                            }
-                            else if (m_queue.Contains(mre))
-                            {
-                                List<ManualResetEvent> list = new List<ManualResetEvent>();
-                                while (m_queue.Peek() != mre)
-                                    list.Add(m_queue.Dequeue());
-                                m_queue.Dequeue();
-                                while (list.Count != 0)
-                                {
-                                    m_queue.Enqueue(list.Last());
-                                    list.RemoveLast();
-                                }
-                            }
+                            else if (m_queue.Values.Contains(mre))
+                                m_queue.RemoveByValue(mre);
                         }
                         a_token.ThrowIfCancellationRequested();
                     }
@@ -64,7 +53,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void WaitOne()
+        public void WaitOne(Priority a_priority)
         {
             ManualResetEvent mre = null;
 
@@ -73,7 +62,7 @@ namespace MangaCrawlerLib
                 if (m_working == m_count)
                 {
                     mre = new ManualResetEvent(false);
-                    m_queue.Enqueue(mre);
+                    m_queue.Add(a_priority, mre);
                 }
                 else
                     m_working++;
@@ -88,7 +77,9 @@ namespace MangaCrawlerLib
             lock (m_lock)
             {
                 if (m_queue.Count != 0)
-                    m_queue.Dequeue().Set();
+                {
+                    m_queue.RemoveFirst().Set();
+                }
 
                 if (m_queue.Count < m_working)
                     m_working = m_queue.Count;
