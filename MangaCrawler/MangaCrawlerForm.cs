@@ -18,6 +18,11 @@ using HtmlAgilityPack;
 
 namespace MangaCrawler
 {
+    // TODO: splitter widzialny.
+    //
+    // TODO: http://www.mangareader.net/alphabetical
+    // TODO: http://www.mangamonger.com/
+    //
     // TODO: test rozlegly zrobic
     //
     // TODO: instalator
