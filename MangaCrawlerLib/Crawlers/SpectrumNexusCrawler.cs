@@ -52,7 +52,7 @@ namespace MangaCrawlerLib
                                 chapter.GetAttributeValue("value", "").Replace(" ", "+"),
                                 chapter.NextSibling.InnerText);
 
-            a_progress_callback(100, result);
+            a_progress_callback(100, result.Reverse());
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 

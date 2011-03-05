@@ -43,7 +43,7 @@ namespace MangaCrawlerLib
                                                 GetServerURL() + chapter.GetAttributeValue("href", "").RemoveFromLeft(1), 
                                                 chapter.InnerText);
 
-            a_progress_callback(100, result);            
+            a_progress_callback(100, result.Reverse());            
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
