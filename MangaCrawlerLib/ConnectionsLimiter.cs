@@ -22,16 +22,16 @@ namespace MangaCrawlerLib
         private static Dictionary<ServerInfo, QueuedMutex> s_serverPages = 
             new Dictionary<ServerInfo, QueuedMutex>();
 
-        private static Dictionary<ServerInfo, QueuedSemaphore> s_serverConnections =
-            new Dictionary<ServerInfo, QueuedSemaphore>();
-        private static QueuedSemaphore s_connections =
-            new QueuedSemaphore(MAX_CONNECTIONS);
+        private static Dictionary<ServerInfo, QueuedSemaphore<Priority>> s_serverConnections =
+            new Dictionary<ServerInfo, QueuedSemaphore<Priority>>();
+        private static QueuedSemaphore<Priority> s_connections =
+            new QueuedSemaphore<Priority>(MAX_CONNECTIONS);
 
         static ConnectionsLimiter()
         {
             foreach (var si in ServerInfo.ServersInfos)
                 s_serverConnections.Add(si,
-                    new QueuedSemaphore(MAX_CONNECTIONS_PER_SERVER));
+                    new QueuedSemaphore<Priority>(MAX_CONNECTIONS_PER_SERVER));
             foreach (var si in ServerInfo.ServersInfos)
                 s_serverPages.Add(si, new QueuedMutex());
         }

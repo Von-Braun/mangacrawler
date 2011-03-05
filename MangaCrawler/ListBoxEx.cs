@@ -11,20 +11,14 @@ using System.Drawing;
 
 namespace MangaCrawler
 {
-    public class ListBoxEx : ListBox
+    public class ListBoxEx : ListBoxScroll
     {
         private bool m_reloading;
 
-        private const int WM_VSCROLL = 0x0115;
-        private const int SB_THUMBTRACK = 5;
-        private const int SB_ENDSCROLL = 8;
-
-        public delegate void ListBoxScrollDelegate(object a_sender, int a_topIndex, bool a_tracking);
-        public event ListBoxScrollDelegate HorizontalScroll;
-
         public ListBoxEx()
         {
-            SetStyle(ControlStyles.OptimizedDoubleBuffer |  ControlStyles.ResizeRedraw |  ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer |  ControlStyles.ResizeRedraw |  
+                ControlStyles.UserPaint, true);
             DrawMode = DrawMode.OwnerDrawFixed;  
         }
 
@@ -41,13 +35,17 @@ namespace MangaCrawler
                     if (e.ClipRectangle.IntersectsWith(rect))
                     {
                         if ((SelectionMode == SelectionMode.One && SelectedIndex == i) || 
-                            (SelectionMode == SelectionMode.MultiSimple && SelectedIndices.Contains(i)) || 
-                            (SelectionMode == SelectionMode.MultiExtended && SelectedIndices.Contains(i)))
+                            (SelectionMode == SelectionMode.MultiSimple && 
+                                SelectedIndices.Contains(i)) || 
+                            (SelectionMode == SelectionMode.MultiExtended && 
+                                SelectedIndices.Contains(i)))
                         {
-                            OnDrawItem(new DrawItemEventArgs(e.Graphics, Font, rect, i, DrawItemState.Selected, ForeColor, BackColor));
+                            OnDrawItem(new DrawItemEventArgs(e.Graphics, Font, rect, i, 
+                                DrawItemState.Selected, ForeColor, BackColor));
                         }
                         else
-                            OnDrawItem(new DrawItemEventArgs(e.Graphics, Font, rect, i, DrawItemState.Default, ForeColor, BackColor));
+                            OnDrawItem(new DrawItemEventArgs(e.Graphics, Font, rect, i, 
+                                DrawItemState.Default, ForeColor, BackColor));
 
                         region.Complement(rect);
                     }
@@ -67,18 +65,6 @@ namespace MangaCrawler
         {
             if (!m_reloading)
                 base.OnSelectedValueChanged(e);
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            base.WndProc(ref m);
-
-            if (m.Msg == WM_VSCROLL)
-            {
-                int nfy = m.WParam.ToInt32() & 0xFFFF;
-                if (HorizontalScroll != null && (nfy == SB_THUMBTRACK || nfy == SB_ENDSCROLL))
-                    HorizontalScroll(this, TopIndex, nfy == SB_THUMBTRACK);
-            }
         }
 
         public void SelectAll()

@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace MangaCrawlerLib
 {
-    public class QueuedSemaphore
+    public class QueuedSemaphore<P>
     {
         private Object m_lock = new Object();
-        private OrderedList<Priority, ManualResetEvent> m_queue =
-            new OrderedList<Priority, ManualResetEvent>();
+        private OrderedList<P, ManualResetEvent> m_queue =
+            new OrderedList<P, ManualResetEvent>();
         private int m_working = 0;
         private readonly int m_count;
 
@@ -19,7 +19,7 @@ namespace MangaCrawlerLib
             m_count = a_count;
         }
 
-        public void WaitOne(CancellationToken a_token, Priority a_priority)
+        public void WaitOne(CancellationToken a_token, P a_priority)
         {
             ManualResetEvent mre = null;
 
@@ -53,7 +53,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void WaitOne(Priority a_priority)
+        public void WaitOne(P a_priority)
         {
             ManualResetEvent mre = null;
 

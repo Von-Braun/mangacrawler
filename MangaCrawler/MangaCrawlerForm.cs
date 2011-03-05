@@ -18,11 +18,6 @@ using HtmlAgilityPack;
 
 namespace MangaCrawler
 {
-    // TODO: postarac sie powiesic nowa rownoleglosc, co z losowymi ze czegos nie jest w stanie 
-    //       pobrac.
-    // TODO: podczas sciagania chapteru, ustawiamy focus na inny wiersz, i przewijamy rolka, 
-    //       update ciagle cofa nas na zaznaczenie
-    //
     // TODO: test rozlegly zrobic
     //
     // TODO: instalator
@@ -248,12 +243,12 @@ namespace MangaCrawler
             }
         }
 
-        private void seriesListBox_HorizontalScroll(object a_sender, int a_topIndex, bool a_tracking)
+        private void seriesListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             DownloadManager.SeriesVisualState = DownloadManager.GetSeriesVisualState();
         }
 
-        private void chaptersListBox_HorizontalScroll(object a_sender, int a_topIndex, bool a_tracking)
+        private void chaptersListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             DownloadManager.ChaptersVisualState = DownloadManager.GetChaptersVisualState();
         }
@@ -385,7 +380,6 @@ namespace MangaCrawler
             catch
             {
             }
-         }
-        
+         }   
     }
 }
