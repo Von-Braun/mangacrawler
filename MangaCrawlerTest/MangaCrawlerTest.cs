@@ -292,116 +292,6 @@ namespace MangaCrawlerTest
             Assert.IsTrue(series.All(s => s.Name != "[switch]"));
         }
 
-        private int c1 = 0;
-        private int c2 = 0;
-
-        [TestMethod]
-        public void CustomTaskScheduler_Order_Test()
-        {
-            CustomTaskScheduler ts = new CustomTaskScheduler(20);
-
-            List<int>  results = new List<int>();
-
-            List<Task> tasks = new List<Task>();
-
-            for (int i = 0; i < 500; i++)
-            {
-                Task task = new Task((n) =>  
-                {
-                    Interlocked.Increment(ref c1);
-                    lock (results)
-                    {
-                        if (c2 < c1)
-                            c2 = c1;
-                        int nn = (int)n;
-                        results.Add(nn);
-                    }
-                    Thread.Sleep(Environment.TickCount % 500);
-                    Interlocked.Decrement(ref c1);
-                    Assert.IsTrue(c1 >= 0);
-                }, i);
-
-                tasks.Add(task);
-
-                task.Start(ts);
-            }
-
-            Task.WaitAll(tasks.ToArray());
-
-            TestContext.WriteLine("Max threads is {0}", c2);
-
-            int c3 = 0;
-            for (int i = 0; i < results.Count; i++)
-            {
-                TestContext.WriteLine("{0}, {1}, {2}", i, results[i], Math.Abs(i - results[i]));
-                if (Math.Abs(i - results[i]) > c3)
-                    c3 = Math.Abs(i - results[i]);
-            }
-
-            TestContext.WriteLine("Max disorder is {0}", c3);
-
-            Assert.IsTrue(c3 >= 0);
-            Assert.IsTrue(c2 == ts.MaximumConcurrencyLevel);
-        }
-
-        [TestMethod]
-        public void CustomTaskScheduler_Priorities_Test()
-        {
-            OrderedList<Priority, int> x = new OrderedList<Priority, int>();
-            
-            x.Add(Priority.Series, 1);
-            x.Add(Priority.Series, 2);
-            x.Add(Priority.Pages, 3);
-            x.Add(Priority.Pages, 4);
-            x.Add(Priority.Series, 5);
-            x.Add(Priority.Pages, 6);
-            x.Add(Priority.Series, 7);
-
-            CustomTaskScheduler ts = new CustomTaskScheduler(20);
-
-            List<int> results = new List<int>();
-
-            List<Task> tasks = new List<Task>();
-
-            for (int i = 0; i < 500; i++)
-            {
-                bool h = (i % 3) == 0;
-
-                Task task = new Task((n) =>
-                {
-                    Interlocked.Increment(ref c1);
-                    lock (results)
-                    {
-                        if (c2 < c1)
-                            c2 = c1;
-                        int nn = (int)n;
-                        results.Add(nn);
-                    }
-                    Thread.Sleep(Environment.TickCount % 500);
-                    Interlocked.Decrement(ref c1);
-                    Assert.IsTrue(c1 >= 0);
-                }, i + (h ? 1000 : 0));
-
-                tasks.Add(task);
-
-                if (h)
-                    task.Start(ts.Scheduler(Priority.Series));
-                else
-                    task.Start(ts.Scheduler(Priority.Image));
-            }
-
-            Task.WaitAll(tasks.ToArray());
-
-            TestContext.WriteLine("Max threads is {0}", c2);
-
-            for (int i = 0; i < results.Count; i++)
-            {
-                TestContext.WriteLine("{0}, {1}", i, results[i]);
-            }
-
-            Assert.IsTrue(c2 == ts.MaximumConcurrencyLevel);
-        }
-
         [TestMethod]
         public void MangaRunTest()
         {
@@ -690,9 +580,9 @@ namespace MangaCrawlerTest
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "Air Gear"), 50, true);
+                var chapters = TestSerie(series.First(s => s.Name == "Air Gear"), 51, true);
 
-                var pages = TestChapter(chapters.Last(), 17);
+                var pages = TestChapter(chapters.Last(), 0, true);
 
                 TestPage(pages.First(), "", true);
                 TestPage(pages.Last(), "", true);
