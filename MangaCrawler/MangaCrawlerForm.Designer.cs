@@ -498,7 +498,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "MangaCrawlerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Manga Crawler";
+            this.Text = "Manga Crawler 1.14";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MangaCrawlerForm_FormClosing);
             this.Load += new System.EventHandler(this.MangaShareCrawlerForm_Load);
             this.splitContainer.Panel1.ResumeLayout(false);
