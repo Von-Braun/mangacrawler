@@ -149,9 +149,9 @@
             // 
             this.seriesFilterTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.seriesFilterTextBox.Location = new System.Drawing.Point(27, 7);
+            this.seriesFilterTextBox.Location = new System.Drawing.Point(30, 7);
             this.seriesFilterTextBox.Name = "seriesFilterTextBox";
-            this.seriesFilterTextBox.Size = new System.Drawing.Size(250, 20);
+            this.seriesFilterTextBox.Size = new System.Drawing.Size(247, 20);
             this.seriesFilterTextBox.TabIndex = 35;
             this.seriesFilterTextBox.TextChanged += new System.EventHandler(this.seriesFilterTextBox_TextChanged);
             // 
@@ -285,12 +285,12 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.serversListBox);
             this.panel1.Controls.Add(this.serverURLButton);
             this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.serversListBox);
             this.panel1.Location = new System.Drawing.Point(6, 53);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(201, 425);
+            this.panel1.Size = new System.Drawing.Size(199, 425);
             this.panel1.TabIndex = 35;
             // 
             // serverURLButton
@@ -444,11 +444,11 @@
             this.seriesListBox.FormattingEnabled = true;
             this.seriesListBox.HorizontalScrollbar = true;
             this.seriesListBox.ItemHeight = 17;
-            this.seriesListBox.Location = new System.Drawing.Point(0, 19);
+            this.seriesListBox.Location = new System.Drawing.Point(2, 19);
             this.seriesListBox.Name = "seriesListBox";
-            this.seriesListBox.Size = new System.Drawing.Size(359, 361);
+            this.seriesListBox.Size = new System.Drawing.Size(358, 344);
             this.seriesListBox.TabIndex = 30;
-            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
+            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxScroll.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
             this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
             this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
             // 
@@ -461,12 +461,12 @@
             this.chaptersListBox.FormattingEnabled = true;
             this.chaptersListBox.HorizontalScrollbar = true;
             this.chaptersListBox.ItemHeight = 17;
-            this.chaptersListBox.Location = new System.Drawing.Point(0, 19);
+            this.chaptersListBox.Location = new System.Drawing.Point(2, 19);
             this.chaptersListBox.Name = "chaptersListBox";
             this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.chaptersListBox.Size = new System.Drawing.Size(341, 361);
+            this.chaptersListBox.Size = new System.Drawing.Size(339, 344);
             this.chaptersListBox.TabIndex = 34;
-            this.chaptersListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
+            this.chaptersListBox.VerticalScroll += new MangaCrawler.ListBoxScroll.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
             this.chaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chaptersListBox_DrawItem);
             this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
             this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
@@ -483,7 +483,7 @@
             this.serversListBox.ItemHeight = 17;
             this.serversListBox.Location = new System.Drawing.Point(0, 19);
             this.serversListBox.Name = "serversListBox";
-            this.serversListBox.Size = new System.Drawing.Size(201, 361);
+            this.serversListBox.Size = new System.Drawing.Size(199, 361);
             this.serversListBox.Sorted = true;
             this.serversListBox.TabIndex = 28;
             this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);

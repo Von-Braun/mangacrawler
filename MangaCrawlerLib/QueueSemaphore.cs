@@ -50,6 +50,8 @@ namespace MangaCrawlerLib
                         a_token.ThrowIfCancellationRequested();
                     }
                 }
+
+                mre.Close();
             }
         }
 
@@ -69,7 +71,10 @@ namespace MangaCrawlerLib
             }
 
             if (mre != null)
+            {
                 mre.WaitOne();
+                mre.Close();
+            }
         }
 
         public void Release()
@@ -77,9 +82,7 @@ namespace MangaCrawlerLib
             lock (m_lock)
             {
                 if (m_queue.Count != 0)
-                {
                     m_queue.RemoveFirst().Set();
-                }
 
                 if (m_queue.Count < m_working)
                     m_working = m_queue.Count;

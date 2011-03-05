@@ -48,7 +48,7 @@ namespace MangaCrawlerLib
             var result = from chapter in chapters.Skip(1)
                          select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
 
-            a_progress_callback(100, result);
+            a_progress_callback(100, result.Reverse());
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)

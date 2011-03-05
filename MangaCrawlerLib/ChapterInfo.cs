@@ -63,13 +63,10 @@ namespace MangaCrawlerLib
 
         public void DownloadPages(CancellationToken a_token)
         {
-            if (a_token == null)
-                a_token = new CancellationTokenSource().Token;
-
             m_pages = Crawler.DownloadPages(this, a_token).ToList();
         }
 
-        public void DownloadPages()
+        internal void DownloadPages()
         {
             DownloadPages(new CancellationTokenSource().Token);
         }

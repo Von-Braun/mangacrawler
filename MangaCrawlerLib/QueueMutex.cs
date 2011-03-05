@@ -55,6 +55,8 @@ namespace MangaCrawlerLib
                         a_token.ThrowIfCancellationRequested();
                     }
                 }
+
+                mre.Close();
             }
         }
 
