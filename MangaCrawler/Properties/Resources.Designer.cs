@@ -124,6 +124,24 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://mangacrawler.codeplex.com/.
+        /// </summary>
+        internal static string HomePage {
+            get {
+                return ResourceManager.GetString("HomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New version.
+        /// </summary>
+        internal static string NewVersion {
+            get {
+                return ResourceManager.GetString("NewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Series: {0}.
         /// </summary>
         internal static string SERIES {
