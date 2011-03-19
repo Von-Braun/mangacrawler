@@ -60,7 +60,10 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return (m_state == ItemState.Error) || (m_state == ItemState.Initial);
+                lock (m_lock)
+                {
+                    return (m_state == ItemState.Error) || (m_state == ItemState.Initial);
+                }
             }
         }
 
