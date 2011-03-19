@@ -138,6 +138,12 @@
   <data name="EXIT_QUESTION" xml:space="preserve">
     <value>Downloading in progress. Exit anyway?</value>
   </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>http://mangacrawler.codeplex.com/</value>
+  </data>
+  <data name="NewVersion" xml:space="preserve">
+    <value>New version</value>
+  </data>
   <data name="SERIES" xml:space="preserve">
     <value>Series: {0}</value>
   </data>

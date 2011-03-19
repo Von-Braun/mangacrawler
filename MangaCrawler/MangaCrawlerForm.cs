@@ -16,12 +16,10 @@ using System.Threading.Tasks;
 using System.Reflection;
 using HtmlAgilityPack;
 using System.Media;
+using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    // TODO: link do strony porjektu
-    // TODO: splitter widzialny.
-    //
     // TODO: http://www.mangareader.net/alphabetical
     // TODO: http://www.mangamonger.com/
     //
@@ -29,8 +27,10 @@ namespace MangaCrawler
     //
     // TODO: instalator
     //
-    // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, podczas ponownego uruchomienia 
-    //       weryfikacja tego, pamietanie urli obrazkow, dat modyfikacji zdalnych, szybka weryfikacja
+    // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, 
+    //       podczas ponownego uruchomienia 
+    //       weryfikacja tego, pamietanie urli obrazkow, dat modyfikacji zdalnych, szybka 
+    //       weryfikacja
     //
     // TODO: bookmarks,
     // TODO: wykrywanie zmian w obserwowanych seriach, praca w tle, 
@@ -39,7 +39,8 @@ namespace MangaCrawler
     //
     // TODO: wbudowany browser
     //
-    // TODO: widok wspolny dla wszystkich serwisow, scalac jakos serie, wykrywac zmiany ? gdzie najlepsza jakosc, gdzie duplikaty
+    // TODO: widok wspolny dla wszystkich serwisow, scalac jakos serie, wykrywac zmiany ? 
+    //       gdzie najlepsza jakosc, gdzie duplikaty
 
     public partial class MangaCrawlerForm : Form
     {
@@ -85,7 +86,10 @@ namespace MangaCrawler
         private void directoryTextBox_TextChanged(object sender, EventArgs e)
         {
             if (directoryPathTextBox.Text.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                directoryPathTextBox.Text = directoryPathTextBox.Text.Remove(directoryPathTextBox.Text.Length - 1);
+            {
+                directoryPathTextBox.Text = directoryPathTextBox.Text.Remove(
+                    directoryPathTextBox.Text.Length - 1);
+            }
 
             Settings.Instance.DirectoryPath = directoryPathTextBox.Text;
         }
@@ -125,7 +129,8 @@ namespace MangaCrawler
             }
             catch
             {
-                MessageBox.Show(String.Format(MangaCrawler.Properties.Resources.DIR_ERROR_1, Settings.Instance.DirectoryPath),
+                MessageBox.Show(String.Format(Resources.DIR_ERROR_1, 
+                    Settings.Instance.DirectoryPath),
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -136,7 +141,8 @@ namespace MangaCrawler
             }
             catch
             {
-                MessageBox.Show(String.Format(MangaCrawler.Properties.Resources.DIR_ERROR_2, Settings.Instance.DirectoryPath),
+                MessageBox.Show(String.Format(Resources.DIR_ERROR_2, 
+                    Settings.Instance.DirectoryPath),
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -176,10 +182,12 @@ namespace MangaCrawler
         {
             if (DownloadManager.DownloadingPages)
             {
-                if ((e.CloseReason != CloseReason.WindowsShutDown) || (e.CloseReason != CloseReason.TaskManagerClosing))
+                if ((e.CloseReason != CloseReason.WindowsShutDown) || 
+                    (e.CloseReason != CloseReason.TaskManagerClosing))
                 {
-                    if (MessageBox.Show(MangaCrawler.Properties.Resources.EXIT_QUESTION,
-                            Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    if (MessageBox.Show(Resources.EXIT_QUESTION,
+                            Application.ProductName, MessageBoxButtons.YesNo, 
+                            MessageBoxIcon.Question) == DialogResult.No)
                     {
                         e.Cancel = true;
                     }
@@ -264,22 +272,25 @@ namespace MangaCrawler
                 e.Graphics.FillRectangle(Brushes.LightBlue, e.Bounds);
 
             var size = e.Graphics.MeasureString(a_text, e.Font);
-            Rectangle bounds = new Rectangle(e.Bounds.X, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2, 
+            Rectangle bounds = new Rectangle(e.Bounds.X, e.Bounds.Y + 
+                (e.Bounds.Height - size.ToSize().Height) / 2, 
                 e.Bounds.Width, size.ToSize().Height);
 
-            e.Graphics.DrawString(a_text, e.Font, Brushes.Black, bounds, StringFormat.GenericDefault);
+            e.Graphics.DrawString(a_text, e.Font, Brushes.Black, bounds, 
+                StringFormat.GenericDefault);
 
             int left = (int)Math.Round(size.Width + e.Graphics.MeasureString(" ", e.Font).Width);
             Font font = new Font(e.Font.FontFamily, e.Font.Size * 9 / 10, FontStyle.Bold);
             size = e.Graphics.MeasureString("(ABGHRTW%)", font).ToSize();
-            bounds = new Rectangle(left, e.Bounds.Y + (e.Bounds.Height - size.ToSize().Height) / 2 - 1, 
+            bounds = new Rectangle(left, e.Bounds.Y + 
+                (e.Bounds.Height - size.ToSize().Height) / 2 - 1, 
                 bounds.Width - left, bounds.Height);
 
             switch (a_state)
             {
                 case ItemState.Error: 
 
-                    e.Graphics.DrawString(MangaCrawler.Properties.Resources.ERROR, font, 
+                    e.Graphics.DrawString(Resources.ERROR, font, 
                         Brushes.Red, bounds, StringFormat.GenericDefault); 
                     break;
 
@@ -291,13 +302,13 @@ namespace MangaCrawler
 
                 case ItemState.Waiting: 
 
-                    e.Graphics.DrawString(MangaCrawler.Properties.Resources.WAITING, font, 
+                    e.Graphics.DrawString(Resources.WAITING, font, 
                         Brushes.Blue, bounds, StringFormat.GenericDefault); 
                      break;
 
                 case ItemState.Deleting: 
 
-                    e.Graphics.DrawString(MangaCrawler.Properties.Resources.DELETING, font, 
+                    e.Graphics.DrawString(Resources.DELETING, font, 
                         Brushes.Red, bounds, StringFormat.GenericDefault); 
                     break;
 
@@ -309,7 +320,7 @@ namespace MangaCrawler
 
                 case ItemState.Zipping: 
 
-                    e.Graphics.DrawString(MangaCrawler.Properties.Resources.ZIPPING, font, 
+                    e.Graphics.DrawString(Resources.ZIPPING, font, 
                         Brushes.Blue, bounds, StringFormat.GenericDefault); 
                     break;
 
@@ -328,7 +339,7 @@ namespace MangaCrawler
 
             ServerItem server = (ServerItem)serversListBox.Items[e.Index];
             ListBox_DrawItem(e, server.ServerInfo.Name, server.State,
-                String.Format("({0}%)", server.Progress), String.Format(MangaCrawler.Properties.Resources.SERIES,
+                String.Format("({0}%)", server.Progress), String.Format(Resources.SERIES,
                 server.ServerInfo.Series.Count()));
         }
 
@@ -339,7 +350,7 @@ namespace MangaCrawler
 
             SerieItem serie = (SerieItem)seriesListBox.Items[e.Index];
             ListBox_DrawItem(e, serie.SerieInfo.Name, serie.State,
-                String.Format("({0}%)", serie.Progress), String.Format(MangaCrawler.Properties.Resources.CHAPTERS, 
+                String.Format("({0}%)", serie.Progress), String.Format(Resources.CHAPTERS, 
                 serie.SerieInfo.Chapters.Count()));
         }
 
@@ -348,7 +359,7 @@ namespace MangaCrawler
             ChapterItem chapter = (ChapterItem)chaptersListBox.Items[e.Index];
             ListBox_DrawItem(e, chapter.ChapterInfo.Name, chapter.State, 
                 String.Format("{0}/{1}", chapter.DownloadedPages,
-                chapter.ChapterInfo.Pages.Count()), MangaCrawler.Properties.Resources.DOWNLOADED);
+                chapter.ChapterInfo.Pages.Count()), Resources.DOWNLOADED);
         }
 
         private void cbzCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -358,24 +369,28 @@ namespace MangaCrawler
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://mangacrawler.codeplex.com/");
+            Process.Start(Resources.HomePage);
         }
 
         private void CheckNewVersion()
         {
             try
             {
-                var doc = new HtmlWeb().Load("http://mangacrawler.codeplex.com/");
+                var doc = new HtmlWeb().Load(Resources.HomePage);
                 var node = doc.DocumentNode.SelectSingleNode("//td[@id='ReleaseName']");
                 var name = node.InnerText;
-                var version1 = Double.Parse(name.Replace("Manga Crawler", "").Trim().Replace(".", ","));
+                var version1 = Double.Parse(
+                    name.Replace("Manga Crawler", "").Trim().Replace(".", ","));
                 
-                var assembly_version = System.Reflection.Assembly.GetAssembly(typeof(MangaCrawlerForm)).GetName().Version;
-                var version2 = Double.Parse(assembly_version.Major.ToString() + "," + assembly_version.Minor.ToString());
+                var assembly_version = System.Reflection.Assembly.GetAssembly(
+                    typeof(MangaCrawlerForm)).GetName().Version;
+                var version2 = Double.Parse(assembly_version.Major.ToString() + "," + 
+                    assembly_version.Minor.ToString());
                 
                 if (version1 > version2)
                 {
-                    Action action = () => versionPanel.Visible = true;
+                    Action action = () => versionLinkLabel.Text = Resources.NewVersion;
+                        
                     Invoke(action);
 
                     Task.Factory.StartNew(() => PulseNewVersion());
@@ -397,19 +412,13 @@ namespace MangaCrawler
                 const int steps = 256;
                 const int count = 12;
 
+                // limit to byte
                 Func<int, int> limit = 
                     (c) => (c < 0) ? byte.MinValue : (c > 255) ? byte.MaxValue : c;
 
-                Func<int, int, int, int> calc1 =
+                // ph=0 return c1 ... ph=255 return c2
+                Func<int, int, int, int> calc =
                     (c1, c2, ph) => limit(c1 + (c2 - c1) * ph / 255);
-
-                Func<int, Color> calc2 = (ph) =>
-                {
-                    var r = calc1(color1.R, color2.R, ph);
-                    var g = calc1(color1.G, color2.G, ph);
-                    var b = calc1(color1.B, color2.B, ph);
-                    return Color.FromArgb(r, g, b);
-                };
 
                 for (int i = 0; i < count; i++)
                 {
@@ -418,10 +427,22 @@ namespace MangaCrawler
                         // 0 ... steps/2 ... 0
                         var p = steps / 2 - Math.Abs(phase - steps / 2);
 
-                        // 0 ... 255 ... 0
-                        var pp = p * 255 / (steps / 2);
+                        // 0 ... 2*pi ... 0
+                        var pp = p * 2 * Math.PI / (steps / 2);
 
-                        yield return calc2(pp);
+                        // 1 ... -1 ... 1
+                        pp = Math.Cos(pp);
+
+                        // 0 ... 1 ... 0
+                        pp = (2 - (pp + 1)) / 2;
+
+                        // 0 ... 255 ... 0 
+                        p = limit((int)(Math.Round(pp * 255)));
+
+                        var r = calc(color1.R, color2.R, p);
+                        var g = calc(color1.G, color2.G, p);
+                        var b = calc(color1.B, color2.B, p);
+                        yield return Color.FromArgb(r, g, b);
                     }
                 }
             }
@@ -435,7 +456,7 @@ namespace MangaCrawler
                 {
                     Action action = () => versionLinkLabel.LinkColor = color;
                     Invoke(action);
-                    Thread.Sleep(3);
+                    Thread.Sleep(4);
                 }
             }
             catch
