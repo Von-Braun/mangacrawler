@@ -15,9 +15,11 @@ using MangaCrawlerLib;
 using System.Threading.Tasks;
 using System.Reflection;
 using HtmlAgilityPack;
+using System.Media;
 
 namespace MangaCrawler
 {
+    // TODO: link do strony porjektu
     // TODO: splitter widzialny.
     //
     // TODO: http://www.mangareader.net/alphabetical
@@ -65,12 +67,12 @@ namespace MangaCrawler
             
             directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
             seriesFilterTextBox.Text = Settings.Instance.SeriesFilter;
-            splitContainer.SplitterDistance = Settings.Instance.SplitterDistance;
+            splitter1.SplitPosition = Settings.Instance.SplitterDistance;
             cbzCheckBox.Checked = Settings.Instance.UseCBZ;
 
             DownloadManager.UpdateVisuals();
 
-            System.Threading.Tasks.Task.Factory.StartNew(() => CheckNewVersion());
+            Task.Factory.StartNew(() => CheckNewVersion());
         }
 
         private void directoryChooseButton_Click(object sender, EventArgs e)
@@ -208,30 +210,25 @@ namespace MangaCrawler
         private void serverURLButton_Click(object sender, EventArgs e)
         {
             if (DownloadManager.SelectedServer != null)
-                System.Diagnostics.Process.Start(DownloadManager.SelectedServer.ServerInfo.URL);
+                Process.Start(DownloadManager.SelectedServer.ServerInfo.URL);
             else
-                System.Media.SystemSounds.Beep.Play();
+                SystemSounds.Beep.Play();
         }
 
         private void seriesURLButton_Click(object sender, EventArgs e)
         {
             if (DownloadManager.SelectedSerie != null)
-                System.Diagnostics.Process.Start(DownloadManager.SelectedSerie.SerieInfo.URL);
+                Process.Start(DownloadManager.SelectedSerie.SerieInfo.URL);
             else
-                System.Media.SystemSounds.Beep.Play();
+                SystemSounds.Beep.Play();
         }
 
         private void chapterURLButton_Click(object sender, EventArgs e)
         {
             if (DownloadManager.SelectedChapter != null)
-                System.Diagnostics.Process.Start(DownloadManager.SelectedChapter.ChapterInfo.URL);
+                Process.Start(DownloadManager.SelectedChapter.ChapterInfo.URL);
             else
-                System.Media.SystemSounds.Beep.Play();
-        }
-
-        private void splitContainer_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-            Settings.Instance.SplitterDistance = splitContainer.SplitterDistance;
+                SystemSounds.Beep.Play();
         }
 
         private void chaptersListBox_DoubleClick(object sender, EventArgs e)
@@ -361,7 +358,7 @@ namespace MangaCrawler
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://mangacrawler.codeplex.com/");
+            Process.Start("http://mangacrawler.codeplex.com/");
         }
 
         private void CheckNewVersion()
@@ -372,19 +369,91 @@ namespace MangaCrawler
                 var node = doc.DocumentNode.SelectSingleNode("//td[@id='ReleaseName']");
                 var name = node.InnerText;
                 var version1 = Double.Parse(name.Replace("Manga Crawler", "").Trim().Replace(".", ","));
-
+                
                 var assembly_version = System.Reflection.Assembly.GetAssembly(typeof(MangaCrawlerForm)).GetName().Version;
                 var version2 = Double.Parse(assembly_version.Major.ToString() + "," + assembly_version.Minor.ToString());
-
+                
                 if (version1 > version2)
                 {
                     Action action = () => versionPanel.Visible = true;
                     Invoke(action);
+
+                    Task.Factory.StartNew(() => PulseNewVersion());
                 }
             }
             catch
             {
             }
-         }   
+        }
+
+        private IEnumerable<Color> PulseColors
+        {
+            get
+            {
+                Color color1 = versionLinkLabel.LinkColor;
+
+                // Parameters.
+                Color color2 = Color.Red;
+                const int steps = 256;
+                const int count = 12;
+
+                Func<int, int> limit = 
+                    (c) => (c < 0) ? byte.MinValue : (c > 255) ? byte.MaxValue : c;
+
+                Func<int, int, int, int> calc1 =
+                    (c1, c2, ph) => limit(c1 + (c2 - c1) * ph / 255);
+
+                Func<int, Color> calc2 = (ph) =>
+                {
+                    var r = calc1(color1.R, color2.R, ph);
+                    var g = calc1(color1.G, color2.G, ph);
+                    var b = calc1(color1.B, color2.B, ph);
+                    return Color.FromArgb(r, g, b);
+                };
+
+                for (int i = 0; i < count; i++)
+                {
+                    for (int phase = 0; phase < steps; phase++)
+                    {
+                        // 0 ... steps/2 ... 0
+                        var p = steps / 2 - Math.Abs(phase - steps / 2);
+
+                        // 0 ... 255 ... 0
+                        var pp = p * 255 / (steps / 2);
+
+                        yield return calc2(pp);
+                    }
+                }
+            }
+        }
+
+        private void PulseNewVersion()
+        {
+            try
+            {
+                foreach (var color in PulseColors)
+                {
+                    Action action = () => versionLinkLabel.LinkColor = color;
+                    Invoke(action);
+                    Thread.Sleep(3);
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            if (panel4.Width - splitter1.SplitPosition < panel3.MinimumSize.Width)
+                splitter1.SplitPosition = panel4.Width - panel3.MinimumSize.Width;
+            Settings.Instance.SplitterDistance = splitter1.SplitPosition;
+        }
+
+        private void MangaCrawlerForm_ResizeEnd(object sender, EventArgs e)
+        {
+            if (panel3.Bounds.Right > panel4.ClientRectangle.Right)
+                splitter1.SplitPosition = panel4.Width - panel3.MinimumSize.Width;
+        }
     }
 }

@@ -542,7 +542,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void SpectrumNexusTest()
         {
-            var series = TestServer(ServerInfo.SpectrumNexus, 139);
+            var series = TestServer(ServerInfo.SpectrumNexus, 119);
 
             {
                 var chapters = TestSerie(series.First(

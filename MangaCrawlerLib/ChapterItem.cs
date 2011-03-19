@@ -114,8 +114,12 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return (State == ItemState.Waiting) || (State == ItemState.Error) || (State == ItemState.Deleting) ||
-                      (State == ItemState.Downloading) || (State == ItemState.Zipping);
+                lock (m_lock)
+                {
+                    return (m_state == ItemState.Waiting) || (m_state == ItemState.Error) || 
+                        (m_state == ItemState.Deleting) || (m_state == ItemState.Downloading) || 
+                        (m_state == ItemState.Zipping);
+                }
             }
         }
 
@@ -123,8 +127,11 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return (State == ItemState.Waiting) || (State == ItemState.Downloading) ||
-                       (State == ItemState.Zipping) || (State == ItemState.Deleting);
+                lock (m_lock)
+                {
+                    return (m_state == ItemState.Waiting) || (m_state == ItemState.Downloading) ||
+                           (m_state == ItemState.Zipping) || (m_state == ItemState.Deleting);
+                }
             }
         }
 
@@ -154,7 +161,10 @@ namespace MangaCrawlerLib
 
         public override string ToString()
         {
-            return String.Format("name: {0}, state: {1}", ChapterInfo.Name, m_state);
+            lock (m_lock)
+            {
+                return String.Format("name: {0}, state: {1}", ChapterInfo.Name, m_state);
+            }
         }
 
         public string GetImageDirectory(string a_directoryBase)
