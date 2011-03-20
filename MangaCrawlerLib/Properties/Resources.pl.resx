@@ -118,23 +118,23 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DownloadingChapterInfo" xml:space="preserve">
-    <value>server: {0}
-serie: {1}
-chapter: {2}</value>
+    <value>serwer: {0}
+seria: {1}
+rozdział: {2}</value>
   </data>
   <data name="TaskProgressDeleting" xml:space="preserve">
-    <value>Deleting</value>
+    <value>Usuwam</value>
   </data>
   <data name="TaskProgressDownloaded" xml:space="preserve">
-    <value>Downloaded</value>
+    <value>Pobieram</value>
   </data>
   <data name="TaskProgressError" xml:space="preserve">
-    <value>Error</value>
+    <value>Błąd</value>
   </data>
   <data name="TaskProgressWaiting" xml:space="preserve">
-    <value>Waiting</value>
+    <value>Czekam</value>
   </data>
   <data name="TaskProgressZipping" xml:space="preserve">
-    <value>Zipping</value>
+    <value>Pakuję</value>
   </data>
 </root>

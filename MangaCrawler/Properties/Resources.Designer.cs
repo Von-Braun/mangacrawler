@@ -63,63 +63,63 @@ namespace MangaCrawler.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Chapters: {0}.
         /// </summary>
-        internal static string CHAPTERS {
+        internal static string Chapters {
             get {
-                return ResourceManager.GetString("CHAPTERS", resourceCulture);
+                return ResourceManager.GetString("Chapters", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to DELETING.
         /// </summary>
-        internal static string DELETING {
+        internal static string Deleting {
             get {
-                return ResourceManager.GetString("DELETING", resourceCulture);
+                return ResourceManager.GetString("Deleting", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Directory path is invalid: &apos;{0}&apos;.
         /// </summary>
-        internal static string DIR_ERROR_1 {
+        internal static string DirError1 {
             get {
-                return ResourceManager.GetString("DIR_ERROR_1", resourceCulture);
+                return ResourceManager.GetString("DirError1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t create directory: &apos;{0}&apos;.
         /// </summary>
-        internal static string DIR_ERROR_2 {
+        internal static string DirError2 {
             get {
-                return ResourceManager.GetString("DIR_ERROR_2", resourceCulture);
+                return ResourceManager.GetString("DirError2", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
-        internal static string DOWNLOADED {
+        internal static string Downloaded {
             get {
-                return ResourceManager.GetString("DOWNLOADED", resourceCulture);
+                return ResourceManager.GetString("Downloaded", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ERROR.
         /// </summary>
-        internal static string ERROR {
+        internal static string Error {
             get {
-                return ResourceManager.GetString("ERROR", resourceCulture);
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Downloading in progress. Exit anyway?.
         /// </summary>
-        internal static string EXIT_QUESTION {
+        internal static string ExitQuestion {
             get {
-                return ResourceManager.GetString("EXIT_QUESTION", resourceCulture);
+                return ResourceManager.GetString("ExitQuestion", resourceCulture);
             }
         }
         
@@ -144,27 +144,27 @@ namespace MangaCrawler.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Series: {0}.
         /// </summary>
-        internal static string SERIES {
+        internal static string Series {
             get {
-                return ResourceManager.GetString("SERIES", resourceCulture);
+                return ResourceManager.GetString("Series", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to WAITING.
         /// </summary>
-        internal static string WAITING {
+        internal static string Waiting {
             get {
-                return ResourceManager.GetString("WAITING", resourceCulture);
+                return ResourceManager.GetString("Waiting", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ZIPPING.
         /// </summary>
-        internal static string ZIPPING {
+        internal static string Zipping {
             get {
-                return ResourceManager.GetString("ZIPPING", resourceCulture);
+                return ResourceManager.GetString("Zipping", resourceCulture);
             }
         }
     }

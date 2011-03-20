@@ -129,7 +129,7 @@ namespace MangaCrawler
             }
             catch
             {
-                MessageBox.Show(String.Format(Resources.DIR_ERROR_1, 
+                MessageBox.Show(String.Format(Resources.DirError1, 
                     Settings.Instance.DirectoryPath),
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -141,7 +141,7 @@ namespace MangaCrawler
             }
             catch
             {
-                MessageBox.Show(String.Format(Resources.DIR_ERROR_2, 
+                MessageBox.Show(String.Format(Resources.DirError2, 
                     Settings.Instance.DirectoryPath),
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -185,7 +185,7 @@ namespace MangaCrawler
                 if ((e.CloseReason != CloseReason.WindowsShutDown) || 
                     (e.CloseReason != CloseReason.TaskManagerClosing))
                 {
-                    if (MessageBox.Show(Resources.EXIT_QUESTION,
+                    if (MessageBox.Show(Resources.ExitQuestion,
                             Application.ProductName, MessageBoxButtons.YesNo, 
                             MessageBoxIcon.Question) == DialogResult.No)
                     {
@@ -290,7 +290,7 @@ namespace MangaCrawler
             {
                 case ItemState.Error: 
 
-                    e.Graphics.DrawString(Resources.ERROR, font, 
+                    e.Graphics.DrawString(Resources.Error, font, 
                         Brushes.Red, bounds, StringFormat.GenericDefault); 
                     break;
 
@@ -302,13 +302,13 @@ namespace MangaCrawler
 
                 case ItemState.Waiting: 
 
-                    e.Graphics.DrawString(Resources.WAITING, font, 
+                    e.Graphics.DrawString(Resources.Waiting, font, 
                         Brushes.Blue, bounds, StringFormat.GenericDefault); 
                      break;
 
                 case ItemState.Deleting: 
 
-                    e.Graphics.DrawString(Resources.DELETING, font, 
+                    e.Graphics.DrawString(Resources.Deleting, font, 
                         Brushes.Red, bounds, StringFormat.GenericDefault); 
                     break;
 
@@ -320,7 +320,7 @@ namespace MangaCrawler
 
                 case ItemState.Zipping: 
 
-                    e.Graphics.DrawString(Resources.ZIPPING, font, 
+                    e.Graphics.DrawString(Resources.Zipping, font, 
                         Brushes.Blue, bounds, StringFormat.GenericDefault); 
                     break;
 
@@ -339,7 +339,7 @@ namespace MangaCrawler
 
             ServerItem server = (ServerItem)serversListBox.Items[e.Index];
             ListBox_DrawItem(e, server.ServerInfo.Name, server.State,
-                String.Format("({0}%)", server.Progress), String.Format(Resources.SERIES,
+                String.Format("({0}%)", server.Progress), String.Format(Resources.Series,
                 server.ServerInfo.Series.Count()));
         }
 
@@ -350,7 +350,7 @@ namespace MangaCrawler
 
             SerieItem serie = (SerieItem)seriesListBox.Items[e.Index];
             ListBox_DrawItem(e, serie.SerieInfo.Name, serie.State,
-                String.Format("({0}%)", serie.Progress), String.Format(Resources.CHAPTERS, 
+                String.Format("({0}%)", serie.Progress), String.Format(Resources.Chapters, 
                 serie.SerieInfo.Chapters.Count()));
         }
 
@@ -359,7 +359,7 @@ namespace MangaCrawler
             ChapterItem chapter = (ChapterItem)chaptersListBox.Items[e.Index];
             ListBox_DrawItem(e, chapter.ChapterInfo.Name, chapter.State, 
                 String.Format("{0}/{1}", chapter.DownloadedPages,
-                chapter.ChapterInfo.Pages.Count()), Resources.DOWNLOADED);
+                chapter.ChapterInfo.Pages.Count()), Resources.Downloaded);
         }
 
         private void cbzCheckBox_CheckedChanged(object sender, EventArgs e)
