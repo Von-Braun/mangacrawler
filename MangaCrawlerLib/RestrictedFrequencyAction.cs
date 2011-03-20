@@ -13,6 +13,7 @@ namespace MangaCrawlerLib
         private DateTime LastPerform;
         private volatile bool m_scheduled;
         private Object m_lock = new Object();
+        private volatile Action m_action;
 
         public RestrictedFrequencyAction(int a_update_delta_ms)
         {
@@ -26,23 +27,34 @@ namespace MangaCrawlerLib
 
             if (t < 0)
             {
-                LastPerform = DateTime.Now;
-                a_action();
+                lock (m_lock)
+                {
+                    LastPerform = DateTime.Now;
+                    a_action();
+                }
             }
             else
             {
-                if (!m_scheduled)
+                lock (m_lock)
                 {
-                    m_scheduled = true;
+                    m_action = a_action;
 
-                    new Task(() =>
+                    if (!m_scheduled)
                     {
-                        Thread.Sleep(t);
-                        LastPerform = DateTime.Now;
-                        m_scheduled = false;
-                        a_action();
+                        m_scheduled = true;
 
-                    }).Start();
+                        new Task(() =>
+                        {
+                            Thread.Sleep(t);
+                            lock (m_lock)
+                            {
+                                LastPerform = DateTime.Now;
+                                m_scheduled = false;
+                                m_action();
+                            }
+
+                        }).Start();
+                    }
                 }
             }
         }

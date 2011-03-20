@@ -9,6 +9,7 @@ using System.Threading;
 using Ionic.Zip;
 using System.Resources;
 using System.Diagnostics;
+using System.Collections.Concurrent;
 
 namespace MangaCrawlerLib
 {
@@ -27,10 +28,10 @@ namespace MangaCrawlerLib
         private static Dictionary<SerieItem, VisualState> s_chaptersListBoxState = 
             new Dictionary<SerieItem, VisualState>();
 
-        private static Dictionary<ChapterInfo, ChapterItem> s_chapters = 
-            new Dictionary<ChapterInfo, ChapterItem>();
-        private static Dictionary<SerieInfo, SerieItem> s_series = 
-            new Dictionary<SerieInfo, SerieItem>();
+        private static ConcurrentDictionary<ChapterInfo, ChapterItem> s_chapters =
+            new ConcurrentDictionary<ChapterInfo, ChapterItem>();
+        private static ConcurrentDictionary<SerieInfo, SerieItem> s_series =
+            new ConcurrentDictionary<SerieInfo, SerieItem>();
         private static List<ServerItem> s_servers = new List<ServerItem>();
         private static List<ChapterItem> s_tasks = new List<ChapterItem>();
 
@@ -47,13 +48,13 @@ namespace MangaCrawlerLib
         public static Func<VisualState > GetChaptersVisualState;
 
         private static RestrictedFrequencyAction SeriesUpdate = 
-            new RestrictedFrequencyAction(500);
-        private static RestrictedFrequencyAction ChaptersUpdate = 
-            new RestrictedFrequencyAction(500);
-        private static RestrictedFrequencyAction TasksUpdate = 
-            new RestrictedFrequencyAction(500);
-        private static RestrictedFrequencyAction ServersUpdate = 
-            new RestrictedFrequencyAction(500);
+            new RestrictedFrequencyAction(250);
+        private static RestrictedFrequencyAction ChaptersUpdate =
+            new RestrictedFrequencyAction(250);
+        private static RestrictedFrequencyAction TasksUpdate =
+            new RestrictedFrequencyAction(250);
+        private static RestrictedFrequencyAction ServersUpdate =
+            new RestrictedFrequencyAction(250);
 
         static DownloadManager()
         {

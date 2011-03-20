@@ -165,6 +165,12 @@ namespace MangaCrawlerLib
                     var page_series = page_doc.DocumentNode.SelectNodes(
                         "//table[@id='MainList']/tr/td[1]/a");
 
+                    if ((pages.Count == 1) && (page_series == null))
+                    {
+                        // No chapters in serie.
+                        return;
+                    }
+
                     int index = 0;
                     foreach (var serie in page_series)
                     {

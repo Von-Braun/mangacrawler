@@ -20,6 +20,10 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
+    // TODO: podczas masowego pobierania wielu rozdzialow z roznych serwerow
+    //       lista serwerow podczas klikania wolno sie odswieza (wiecej niz wynosi czas 
+    //       czekania na update)
+    // 
     // TODO: http://www.mangareader.net/alphabetical
     // TODO: http://www.mangamonger.com/
     //

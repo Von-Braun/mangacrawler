@@ -125,7 +125,8 @@ namespace MangaCrawlerLib
         {
             m_imageFilePath = a_dir +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
-                FileUtils.RemoveInvalidFileDirectoryCharacters(Path.GetExtension(GetImageURL(a_token)));
+                FileUtils.RemoveInvalidFileDirectoryCharacters(
+                    Path.GetExtension(GetImageURL(a_token)));
 
             FileInfo image_file = new FileInfo(m_imageFilePath);
 
