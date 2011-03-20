@@ -117,24 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DownloadingChapterInfo" xml:space="preserve">
-    <value>server: {0}
-serie: {1}
-chapter: {2}</value>
+  <data name="Chapters" xml:space="preserve">
+    <value>Rozdziały: {0}</value>
   </data>
-  <data name="TaskProgressDeleting" xml:space="preserve">
-    <value>Deleting</value>
+  <data name="Deleting" xml:space="preserve">
+    <value>USUWAM</value>
   </data>
-  <data name="TaskProgressDownloaded" xml:space="preserve">
-    <value>Downloaded</value>
+  <data name="DirError1" xml:space="preserve">
+    <value>Ścieżka do katalogu jest niepoprawna: '{0}'</value>
   </data>
-  <data name="TaskProgressError" xml:space="preserve">
-    <value>Error</value>
+  <data name="DirError2" xml:space="preserve">
+    <value>Nie mogę utworzyć katalogu: '{0}'</value>
   </data>
-  <data name="TaskProgressWaiting" xml:space="preserve">
-    <value>Waiting</value>
+  <data name="Downloaded" xml:space="preserve">
+    <value>POBRANE</value>
   </data>
-  <data name="TaskProgressZipping" xml:space="preserve">
-    <value>Zipping</value>
+  <data name="Error" xml:space="preserve">
+    <value>BŁĄD</value>
+  </data>
+  <data name="ExitQuestion" xml:space="preserve">
+    <value>Trwa pobieranie. Czy na pewno zakończyć pracę programu?</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>http://mangacrawler.codeplex.com/</value>
+  </data>
+  <data name="NewVersion" xml:space="preserve">
+    <value>Nowa wersja</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Serie: {0}</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>CZEKAM</value>
+  </data>
+  <data name="Zipping" xml:space="preserve">
+    <value>PAKUJĘ</value>
   </data>
 </root>

@@ -6,6 +6,7 @@ using System.Threading;
 using MangaCrawlerLib;
 using System.IO;
 using System.Diagnostics;
+using MangaCrawlerLib.Properties;
 
 namespace MangaCrawlerLib
 {
@@ -54,7 +55,7 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
-                    return String.Format("server: {0}\nserie: {1}\nchapter: {2}",
+                    return String.Format(Resources.DownloadingChapterInfo,
                         ChapterInfo.SerieInfo.ServerInfo.Name, ChapterInfo.SerieInfo.Name, ChapterInfo.Name);
                 }
             }
@@ -97,11 +98,11 @@ namespace MangaCrawlerLib
                 {
                     switch (m_state)
                     {
-                        case ItemState.Error: return MangaCrawlerLib.Properties.Resources.Task_Progress_Error;
-                        case ItemState.Downloaded: return MangaCrawlerLib.Properties.Resources.Task_Progress_Downloaded;
-                        case ItemState.Waiting: return MangaCrawlerLib.Properties.Resources.Task_Progress_Waiting;
-                        case ItemState.Deleting: return MangaCrawlerLib.Properties.Resources.Task_Progress_Deleting;
-                        case ItemState.Zipping: return MangaCrawlerLib.Properties.Resources.Task_Progress_Zipping;
+                        case ItemState.Error: return MangaCrawlerLib.Properties.Resources.TaskProgressError;
+                        case ItemState.Downloaded: return MangaCrawlerLib.Properties.Resources.TaskProgressDownloaded;
+                        case ItemState.Waiting: return MangaCrawlerLib.Properties.Resources.TaskProgressWaiting;
+                        case ItemState.Deleting: return MangaCrawlerLib.Properties.Resources.TaskProgressDeleting;
+                        case ItemState.Zipping: return MangaCrawlerLib.Properties.Resources.TaskProgressZipping;
                         case ItemState.Downloading: return String.Format("{0}/{1}", DownloadedPages, ChapterInfo.Pages.Count());
                         case ItemState.Initial: return "";
                         default: throw new NotImplementedException();
@@ -181,6 +182,5 @@ namespace MangaCrawlerLib
                    FileUtils.RemoveInvalidFileDirectoryCharacters(ChapterInfo.Name) +
                    Path.DirectorySeparatorChar;
         }
-
     }
 }
