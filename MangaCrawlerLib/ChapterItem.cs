@@ -146,10 +146,10 @@ namespace MangaCrawlerLib
                         m_state = ItemState.Error;
                     else
                         m_state = ItemState.Downloaded;
-
-                    if (m_cancellationTokenSource.IsCancellationRequested)
-                        Initialize();
                 }
+
+                if (m_cancellationTokenSource.IsCancellationRequested)
+                    Initialize();
             }
         }
 
@@ -158,6 +158,10 @@ namespace MangaCrawlerLib
             lock (m_lock)
             {
                 m_state = ItemState.Initial;
+
+                if (m_cancellationTokenSource != null)
+                    m_cancellationTokenSource.Cancel();
+
                 m_cancellationTokenSource = new CancellationTokenSource();
                 m_downloadedPages = 0;
             }

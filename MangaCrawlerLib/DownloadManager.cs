@@ -339,12 +339,15 @@ namespace MangaCrawlerLib
                             OnChaptersChanged(chapter_item.SerieItem);
                         });
 
-                        if (cbz)
+                        if (!chapter_item.Token.IsCancellationRequested)
                         {
-                            chapter_item.State = ItemState.Zipping;
-                            OnChaptersChanged(chapter_item.SerieItem);
+                            if (cbz)
+                            {
+                                chapter_item.State = ItemState.Zipping;
+                                OnChaptersChanged(chapter_item.SerieItem);
 
-                            CreateCBZ(chapter_item);
+                                CreateCBZ(chapter_item);
+                            }
                         }
 
                         chapter_item.Finish(a_error: false);
