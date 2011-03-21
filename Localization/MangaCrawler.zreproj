@@ -9,38 +9,37 @@
   &lt;property name="#LayoutVersion" /&gt;
   &lt;property name="SortInfo"&gt;~Xtra#Base64AAEAAAD/////AQAAAAAAAAAMAgAAAF1EZXZFeHByZXNzLlh0cmFHcmlkLnYxMC4yLCBWZXJzaW9uPTEwLjIuNC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI4OGQxNzU0ZDcwMGU0OWEFAQAAADhEZXZFeHByZXNzLlh0cmFHcmlkLkNvbHVtbnMuR3JpZENvbHVtblNvcnRJbmZvQ29sbGVjdGlvbgQAAAAKZ3JvdXBDb3VudAVjbG9uZQ9jbG9uZUdyb3VwQ291bnQTQ29sbGVjdGlvbkJhc2UrbGlzdAADAAMIsgFTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0YDFbW0RldkV4cHJlc3MuWHRyYUdyaWQuQ29sdW1ucy5HcmlkQ29sdW1uU29ydEluZm8sIERldkV4cHJlc3MuWHRyYUdyaWQudjEwLjIsIFZlcnNpb249MTAuMi40LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YV1dCBxTeXN0ZW0uQ29sbGVjdGlvbnMuQXJyYXlMaXN0AgAAAAAAAAAJAwAAAAAAAAAJBAAAAAQDAAAAsgFTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0YDFbW0RldkV4cHJlc3MuWHRyYUdyaWQuQ29sdW1ucy5HcmlkQ29sdW1uU29ydEluZm8sIERldkV4cHJlc3MuWHRyYUdyaWQudjEwLjIsIFZlcnNpb249MTAuMi40LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YV1dAwAAAAZfaXRlbXMFX3NpemUIX3ZlcnNpb24EAAAwRGV2RXhwcmVzcy5YdHJhR3JpZC5Db2x1bW5zLkdyaWRDb2x1bW5Tb3J0SW5mb1tdAgAAAAgICQUAAAAAAAAAAAAAAAQEAAAAHFN5c3RlbS5Db2xsZWN0aW9ucy5BcnJheUxpc3QDAAAABl9pdGVtcwVfc2l6ZQhfdmVyc2lvbgUAAAgICQYAAAABAAAABAAAAAcFAAAAAAEAAAAAAAAABC5EZXZFeHByZXNzLlh0cmFHcmlkLkNvbHVtbnMuR3JpZENvbHVtblNvcnRJbmZvAgAAABAGAAAABAAAAAkHAAAADQMMCAAAABlEZXZFeHByZXNzLlh0cmFHcmlkLnYxMC4yBQcAAAAuRGV2RXhwcmVzcy5YdHJhR3JpZC5Db2x1bW5zLkdyaWRDb2x1bW5Tb3J0SW5mbwIAAAAJU29ydE9yZGVyCkNvbHVtbk5hbWUAAQgIAAAAAQAAAAYJAAAAB2NvbE5hbWUL&lt;/property&gt;
 &lt;/XtraSerializer&gt;</globalSetting>
-    <globalSetting name="projectMruItems">&lt;?xml version='1.0' encoding='utf-8'?&gt;&lt;items&gt;&lt;item type="2" checksum="4714025403" /&gt;&lt;item type="2" checksum="2179411060" /&gt;&lt;item type="2" checksum="3893091885" /&gt;&lt;/items&gt;</globalSetting>
+    <globalSetting name="projectMruItems">&lt;?xml version='1.0' encoding='utf-8'?&gt;&lt;items /&gt;</globalSetting>
     <userSetting name="Tomek@Notebook.filesInitialDir">D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler</userSetting>
     <userSetting name="Tomek@Notebook.FindText">
     </userSetting>
-    <userSetting name="Tomek@Notebook.RecentFiles">D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.en.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.pl.resx###***###D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.en.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.pl.resx###***###D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.en.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.pl.resx</userSetting>
+    <userSetting name="Tomek@Notebook.RecentFiles">
+    </userSetting>
     <description>
     </description>
   </configuration>
   <fileGroups>
-    <fileGroup name="" projectFolderUniqueID="4731f78a-5276-4c0e-8a9a-db144eb2d390" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="00000000-0000-0000-0000-000000000000">
-      <file filePath="..\MangaCrawler\Properties\Resources.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
-      <file filePath="..\MangaCrawler\Properties\Resources.en.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.en.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
-      <file filePath="..\MangaCrawler\Properties\Resources.pl.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.pl.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+    <fileGroup name="" projectFolderUniqueID="4731f78a-5276-4c0e-8a9a-db144eb2d390" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="80fe1b26-085f-4ef3-bfd6-3b6576ebb5d8">
+      <file filePath="..\MangaCrawler\Properties\Resources.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.resx" uniqueID="a0c60353-256b-4ce3-aa5b-257fcd4d2304" />
+      <file filePath="..\MangaCrawler\Properties\Resources.en.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.en.resx" uniqueID="50259c32-301e-4b72-b563-93296f03818b" />
+      <file filePath="..\MangaCrawler\Properties\Resources.pl.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.pl.resx" uniqueID="a2bfe205-107c-4222-9c24-a5ec7dce41e4" />
       <remarks>
       </remarks>
     </fileGroup>
-    <fileGroup name="" projectFolderUniqueID="20af1476-ef12-4a2f-a800-6d7faa234b37" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="00000000-0000-0000-0000-000000000000">
-      <file filePath="..\MangaCrawlerLib\Properties\Resources.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
-      <file filePath="..\MangaCrawlerLib\Properties\Resources.en.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.en.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
-      <file filePath="..\MangaCrawlerLib\Properties\Resources.pl.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.pl.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
-      <remarks>
-      </remarks>
-    </fileGroup>
-    <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="00000000-0000-0000-0000-000000000000">
-      <file filePath="..\MangaCrawler\MangaCrawlerForm.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
-      <file filePath="..\MangaCrawler\MangaCrawlerForm.en.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.en.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
-      <file filePath="..\MangaCrawler\MangaCrawlerForm.pl.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.pl.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+    <fileGroup name="" projectFolderUniqueID="20af1476-ef12-4a2f-a800-6d7faa234b37" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="c90406e4-d3c1-420a-8087-1fa41fcb87a2">
+      <file filePath="..\MangaCrawlerLib\Properties\Resources.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.resx" uniqueID="e6a25213-c9e2-4357-8965-ab485fd10e73" />
+      <file filePath="..\MangaCrawlerLib\Properties\Resources.en.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.en.resx" uniqueID="9836beed-0be0-4c66-8ca9-4e95efe5fef2" />
+      <file filePath="..\MangaCrawlerLib\Properties\Resources.pl.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.pl.resx" uniqueID="87a39e66-b598-4a12-a98f-8b96fff0cff4" />
       <remarks>
       </remarks>
     </fileGroup>
   </fileGroups>
   <projectFolders>
+    <projectFolder uniqueID="a9ca0dc5-85cc-4391-9eb0-57a06e6e0c19" parentUniqueID="00000000-0000-0000-0000-000000000000" name="DotNetZip" orderPosition="0">
+      <remarks>
+      </remarks>
+      <dynSettings />
+    </projectFolder>
     <projectFolder uniqueID="0d4b0c5b-2b52-4420-b830-926b54be47e1" parentUniqueID="00000000-0000-0000-0000-000000000000" name="HashLib" orderPosition="0">
       <remarks>
       </remarks>
@@ -62,11 +61,6 @@
       <dynSettings />
     </projectFolder>
     <projectFolder uniqueID="da2bb336-5c47-46ac-8310-11f2322ecdea" parentUniqueID="00000000-0000-0000-0000-000000000000" name="MangaCrawlerTest" orderPosition="0">
-      <remarks>
-      </remarks>
-      <dynSettings />
-    </projectFolder>
-    <projectFolder uniqueID="a9ca0dc5-85cc-4391-9eb0-57a06e6e0c19" parentUniqueID="00000000-0000-0000-0000-000000000000" name="DotNetZip" orderPosition="0">
       <remarks>
       </remarks>
       <dynSettings />
