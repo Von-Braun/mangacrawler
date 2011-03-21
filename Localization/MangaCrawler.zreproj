@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project>
+  <configuration createBackupFiles="False" hideEmptyRows="False" hideTranslatedRows="False" useSpellChecker="True" neutralLanguageCode="en-US" languagesToDisplay="">
+    <globalSetting name="Filter-ResourceEditorGrid">&lt;XtraSerializer version="1.0" application="View"&gt;
+  &lt;property name="#LayoutVersion" /&gt;
+  &lt;property name="ActiveFilterString" /&gt;
+&lt;/XtraSerializer&gt;</globalSetting>
+    <globalSetting name="Sort-ResourceEditorGrid">&lt;XtraSerializer version="1.0" application="View"&gt;
+  &lt;property name="#LayoutVersion" /&gt;
+  &lt;property name="SortInfo"&gt;~Xtra#Base64AAEAAAD/////AQAAAAAAAAAMAgAAAF1EZXZFeHByZXNzLlh0cmFHcmlkLnYxMC4yLCBWZXJzaW9uPTEwLjIuNC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI4OGQxNzU0ZDcwMGU0OWEFAQAAADhEZXZFeHByZXNzLlh0cmFHcmlkLkNvbHVtbnMuR3JpZENvbHVtblNvcnRJbmZvQ29sbGVjdGlvbgQAAAAKZ3JvdXBDb3VudAVjbG9uZQ9jbG9uZUdyb3VwQ291bnQTQ29sbGVjdGlvbkJhc2UrbGlzdAADAAMIsgFTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0YDFbW0RldkV4cHJlc3MuWHRyYUdyaWQuQ29sdW1ucy5HcmlkQ29sdW1uU29ydEluZm8sIERldkV4cHJlc3MuWHRyYUdyaWQudjEwLjIsIFZlcnNpb249MTAuMi40LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YV1dCBxTeXN0ZW0uQ29sbGVjdGlvbnMuQXJyYXlMaXN0AgAAAAAAAAAJAwAAAAAAAAAJBAAAAAQDAAAAsgFTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0YDFbW0RldkV4cHJlc3MuWHRyYUdyaWQuQ29sdW1ucy5HcmlkQ29sdW1uU29ydEluZm8sIERldkV4cHJlc3MuWHRyYUdyaWQudjEwLjIsIFZlcnNpb249MTAuMi40LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YV1dAwAAAAZfaXRlbXMFX3NpemUIX3ZlcnNpb24EAAAwRGV2RXhwcmVzcy5YdHJhR3JpZC5Db2x1bW5zLkdyaWRDb2x1bW5Tb3J0SW5mb1tdAgAAAAgICQUAAAAAAAAAAAAAAAQEAAAAHFN5c3RlbS5Db2xsZWN0aW9ucy5BcnJheUxpc3QDAAAABl9pdGVtcwVfc2l6ZQhfdmVyc2lvbgUAAAgICQYAAAABAAAABAAAAAcFAAAAAAEAAAAAAAAABC5EZXZFeHByZXNzLlh0cmFHcmlkLkNvbHVtbnMuR3JpZENvbHVtblNvcnRJbmZvAgAAABAGAAAABAAAAAkHAAAADQMMCAAAABlEZXZFeHByZXNzLlh0cmFHcmlkLnYxMC4yBQcAAAAuRGV2RXhwcmVzcy5YdHJhR3JpZC5Db2x1bW5zLkdyaWRDb2x1bW5Tb3J0SW5mbwIAAAAJU29ydE9yZGVyCkNvbHVtbk5hbWUAAQgIAAAAAQAAAAYJAAAAB2NvbE5hbWUL&lt;/property&gt;
+&lt;/XtraSerializer&gt;</globalSetting>
+    <globalSetting name="projectMruItems">&lt;?xml version='1.0' encoding='utf-8'?&gt;&lt;items&gt;&lt;item type="2" checksum="4714025403" /&gt;&lt;item type="2" checksum="2179411060" /&gt;&lt;item type="2" checksum="3893091885" /&gt;&lt;/items&gt;</globalSetting>
+    <userSetting name="Tomek@Notebook.filesInitialDir">D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler</userSetting>
+    <userSetting name="Tomek@Notebook.FindText">
+    </userSetting>
+    <userSetting name="Tomek@Notebook.RecentFiles">D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.en.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.pl.resx###***###D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.en.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.pl.resx###***###D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.en.resx;D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.pl.resx</userSetting>
+    <description>
+    </description>
+  </configuration>
+  <fileGroups>
+    <fileGroup name="" projectFolderUniqueID="4731f78a-5276-4c0e-8a9a-db144eb2d390" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="00000000-0000-0000-0000-000000000000">
+      <file filePath="..\MangaCrawler\Properties\Resources.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <file filePath="..\MangaCrawler\Properties\Resources.en.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.en.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <file filePath="..\MangaCrawler\Properties\Resources.pl.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\Properties\Resources.pl.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <remarks>
+      </remarks>
+    </fileGroup>
+    <fileGroup name="" projectFolderUniqueID="20af1476-ef12-4a2f-a800-6d7faa234b37" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="00000000-0000-0000-0000-000000000000">
+      <file filePath="..\MangaCrawlerLib\Properties\Resources.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <file filePath="..\MangaCrawlerLib\Properties\Resources.en.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.en.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <file filePath="..\MangaCrawlerLib\Properties\Resources.pl.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawlerLib\Properties\Resources.pl.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <remarks>
+      </remarks>
+    </fileGroup>
+    <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="0" ignoreDuringExportAndImport="False" uniqueID="00000000-0000-0000-0000-000000000000">
+      <file filePath="..\MangaCrawler\MangaCrawlerForm.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <file filePath="..\MangaCrawler\MangaCrawlerForm.en.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.en.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <file filePath="..\MangaCrawler\MangaCrawlerForm.pl.resx" absoluteFilePath="D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\MangaCrawlerForm.pl.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <remarks>
+      </remarks>
+    </fileGroup>
+  </fileGroups>
+  <projectFolders>
+    <projectFolder uniqueID="0d4b0c5b-2b52-4420-b830-926b54be47e1" parentUniqueID="00000000-0000-0000-0000-000000000000" name="HashLib" orderPosition="0">
+      <remarks>
+      </remarks>
+      <dynSettings />
+    </projectFolder>
+    <projectFolder uniqueID="7a793028-1ad3-4240-9706-de7ec3a76929" parentUniqueID="00000000-0000-0000-0000-000000000000" name="HtmlAgilityPack" orderPosition="0">
+      <remarks>
+      </remarks>
+      <dynSettings />
+    </projectFolder>
+    <projectFolder uniqueID="4731f78a-5276-4c0e-8a9a-db144eb2d390" parentUniqueID="00000000-0000-0000-0000-000000000000" name="MangaCrawler" orderPosition="0">
+      <remarks>
+      </remarks>
+      <dynSettings />
+    </projectFolder>
+    <projectFolder uniqueID="20af1476-ef12-4a2f-a800-6d7faa234b37" parentUniqueID="00000000-0000-0000-0000-000000000000" name="MangaCrawlerLib" orderPosition="0">
+      <remarks>
+      </remarks>
+      <dynSettings />
+    </projectFolder>
+    <projectFolder uniqueID="da2bb336-5c47-46ac-8310-11f2322ecdea" parentUniqueID="00000000-0000-0000-0000-000000000000" name="MangaCrawlerTest" orderPosition="0">
+      <remarks>
+      </remarks>
+      <dynSettings />
+    </projectFolder>
+    <projectFolder uniqueID="a9ca0dc5-85cc-4391-9eb0-57a06e6e0c19" parentUniqueID="00000000-0000-0000-0000-000000000000" name="DotNetZip" orderPosition="0">
+      <remarks>
+      </remarks>
+      <dynSettings />
+    </projectFolder>
+  </projectFolders>
+</project>
