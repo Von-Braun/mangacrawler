@@ -23,19 +23,16 @@ namespace MangaCrawlerLib
 
         public void Perform(Action a_action)
         {
-            int t = (int)(m_update_delta - (DateTime.Now - LastPerform)).TotalMilliseconds;
-
-            if (t < 0)
+            lock (m_lock)
             {
-                lock (m_lock)
+                int t = (int)(m_update_delta - (DateTime.Now - LastPerform)).TotalMilliseconds;
+
+                if (t < 0)
                 {
                     LastPerform = DateTime.Now;
                     a_action();
                 }
-            }
-            else
-            {
-                lock (m_lock)
+                else
                 {
                     m_action = a_action;
 
