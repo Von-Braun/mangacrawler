@@ -11,7 +11,7 @@ using System.Collections.Concurrent;
 
 namespace MangaCrawlerLib
 {
-    public static class ConnectionsLimiter
+    internal static class ConnectionsLimiter
     {
         public const int MAX_CONNECTIONS = 100;
         public const int MAX_CONNECTIONS_PER_SERVER = 4;
@@ -30,8 +30,10 @@ namespace MangaCrawlerLib
         static ConnectionsLimiter()
         {
             foreach (var si in ServerInfo.ServersInfos)
+            {
                 s_serverConnections.Add(si,
-                    new QueuedSemaphore<Priority>(MAX_CONNECTIONS_PER_SERVER));
+                    new QueuedSemaphore<Priority>(si.Crawler.MaxConnectionsPerServer));
+            }
             foreach (var si in ServerInfo.ServersInfos)
                 s_serverPages.Add(si, new QueuedMutex());
         }

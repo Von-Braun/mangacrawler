@@ -13,6 +13,14 @@ namespace MangaCrawlerLib
 {
     internal class UnixMangaCrawler : Crawler
     {
+        internal override int MaxConnectionsPerServer
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
         internal override string Name
         {
             get 
@@ -67,7 +75,7 @@ namespace MangaCrawlerLib
                 Parallel.ForEach(chapters_or_volumes, 
                     new ParallelOptions() 
                     { 
-                        MaxDegreeOfParallelism = 1
+                        MaxDegreeOfParallelism = ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
                     },
                     (chapter_or_volume, state) =>
                 {
@@ -151,8 +159,7 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            string script = doc.DocumentNode.SelectSingleNode(
-                "/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
+            string script = doc.DocumentNode.SelectSingleNode("/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
 
             Regex regex1 = new Regex("([Ss][Rr][Cc])=\".*\"");
             Match m1 = regex1.Match(script);

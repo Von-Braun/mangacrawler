@@ -14,7 +14,7 @@ namespace MangaCrawlerLib
     /// </summary>
     [DebuggerTypeProxy(typeof(CustomTaskSchedulerDebugView))]
     [DebuggerDisplay("Id={Id}, Queues={DebugQueueCount}, ScheduledTasks = {DebugTaskCount}")]
-    public sealed class CustomTaskScheduler : TaskScheduler, IDisposable
+    internal sealed class CustomTaskScheduler : TaskScheduler, IDisposable
     {
         /// <summary>Debug view for the CustomTaskScheduler.</summary>
         private class CustomTaskSchedulerDebugView

@@ -152,6 +152,17 @@ namespace MangaCrawlerLib
                         return false;
                     }
 
+                    try
+                    {
+                        System.Drawing.Image.FromStream(ims);
+                        ims.Position = 0;
+                    }
+                    catch
+                    {
+                        // Some junks.
+                        return false;
+                    }
+
                     ims.CopyTo(file_stream);
                 }
 
