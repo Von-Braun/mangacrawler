@@ -147,9 +147,6 @@
     <EmbeddedResource Include="MangaCrawlerForm.en.resx">
       <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MangaCrawlerForm.pl.resx">
-      <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MangaCrawlerForm.resx">
       <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
     </EmbeddedResource>
