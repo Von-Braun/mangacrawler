@@ -79,10 +79,6 @@
             this.versionPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // folderBrowserDialog
-            // 
-            resources.ApplyResources(this.folderBrowserDialog, "folderBrowserDialog");
-            // 
             // tabControl1
             // 
             resources.ApplyResources(this.tabControl1, "tabControl1");
@@ -93,13 +89,13 @@
             // 
             // tabPage1
             // 
-            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Controls.Add(this.panel4);
             this.tabPage1.Controls.Add(this.cbzCheckBox);
             this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Controls.Add(this.directoryChooseButton);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.directoryPathTextBox);
+            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
@@ -113,19 +109,19 @@
             // 
             // splitter1
             // 
-            resources.ApplyResources(this.splitter1, "splitter1");
             this.splitter1.BackColor = System.Drawing.SystemColors.Menu;
+            resources.ApplyResources(this.splitter1, "splitter1");
             this.splitter1.Name = "splitter1";
             this.splitter1.TabStop = false;
             this.splitter1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitter1_SplitterMoved);
             // 
             // panel3
             // 
-            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Controls.Add(this.chapterURLButton);
             this.panel3.Controls.Add(this.downloadButton);
             this.panel3.Controls.Add(this.chaptersListBox);
             this.panel3.Controls.Add(this.label7);
+            resources.ApplyResources(this.panel3, "panel3");
             this.panel3.MinimumSize = new System.Drawing.Size(177, 0);
             this.panel3.Name = "panel3";
             // 
@@ -150,10 +146,10 @@
             // 
             // panel2
             // 
-            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.tableLayoutPanel4);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.seriesListBox);
+            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.MinimumSize = new System.Drawing.Size(199, 0);
             this.panel2.Name = "panel2";
             // 
@@ -247,14 +243,13 @@
             // 
             // tabPage2
             // 
-            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Controls.Add(this.tasksGridView);
+            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // tasksGridView
             // 
-            resources.ApplyResources(this.tasksGridView, "tasksGridView");
             this.tasksGridView.AllowUserToAddRows = false;
             this.tasksGridView.AllowUserToResizeRows = false;
             this.tasksGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
@@ -273,6 +268,7 @@
             this.Delete,
             this.Chapter,
             this.Progress});
+            resources.ApplyResources(this.tasksGridView, "tasksGridView");
             this.tasksGridView.MultiSelect = false;
             this.tasksGridView.Name = "tasksGridView";
             this.tasksGridView.ReadOnly = true;

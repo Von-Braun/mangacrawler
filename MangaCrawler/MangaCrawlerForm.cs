@@ -20,10 +20,16 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
+    // TODO: wersja to data, ustawiana automatycznie podczas budowania, generowanie jakiegos pliku 
+    //       z data.
+    // 
+    // TODO: zaznaczamy serwer, chapter, serie, przechodzimy na inny serwer, 
+    //       filtrujemy poprez xxxx, przechodzimy na poprzedni serwer, przechodzimy na 
+    //       inny, zdejmujemy filtr (lub zdejmujemy go na tym z zaznaczeniem - nie pojawia sie ono),
+    //       po zdjeciu filtru tez stare zaznaczenie nie dziala.
+    //
     // TODO: http://www.mangareader.net/alphabetical
     // TODO: http://www.mangamonger.com/
-    //
-    // TODO: test rozlegly zrobic
     //
     // TODO: instalator
     //
@@ -51,6 +57,10 @@ namespace MangaCrawler
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
+            Text = String.Format("{0} {1}.{2}", Text,
+                Assembly.GetAssembly(GetType()).GetName().Version.Major, 
+                Assembly.GetAssembly(GetType()).GetName().Version.Minor);
+
             tasksGridView.AutoGenerateColumns = false;
             tasksGridView.DataSource = new BindingList<ChapterItem>();
 

@@ -144,12 +144,16 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="MangaCrawlerForm.en.resx">
+      <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MangaCrawlerForm.pl.resx">
       <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MangaCrawlerForm.resx">
       <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.en.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
