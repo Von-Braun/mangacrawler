@@ -312,6 +312,8 @@ namespace MangaCrawlerLib
                     {
                         string dir = chapter_item.GetImageDirectory(baseDir);
 
+                        new DirectoryInfo(dir).DeleteAll();
+
                         chapter_item.Token.ThrowIfCancellationRequested();
 
                         chapter_item.State = ItemState.Downloading;
