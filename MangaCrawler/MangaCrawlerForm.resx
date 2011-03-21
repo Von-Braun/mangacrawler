@@ -225,6 +225,9 @@
   <data name="chaptersListBox.HorizontalScrollbar" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="chaptersListBox.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="chaptersListBox.ItemHeight" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
@@ -232,7 +235,7 @@
     <value>13, 19</value>
   </data>
   <data name="chaptersListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 225</value>
+    <value>267, 258</value>
   </data>
   <data name="chaptersListBox.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
@@ -538,7 +541,7 @@
     <value>2, 19</value>
   </data>
   <data name="seriesListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>332, 225</value>
+    <value>332, 259</value>
   </data>
   <data name="seriesListBox.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -655,7 +658,7 @@
     <value>0, 19</value>
   </data>
   <data name="serversListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 225</value>
+    <value>199, 259</value>
   </data>
   <data name="serversListBox.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
