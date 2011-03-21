@@ -254,7 +254,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaFoxTest()
         {
-            var series = TestServer(ServerInfo.MangaFox, 6803);
+            var series = TestServer(ServerInfo.MangaFox, 6821);
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == ".hack//G.U.+"), 26);
@@ -288,6 +288,17 @@ namespace MangaCrawlerTest
 
                 TestPage(pages.First(), "", true);
                 TestPage(pages.Last(), "", true);
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Name == 
+                    "Samayoeru Ookami ni Junai wo"), 1, true);
+
+                Assert.IsTrue(chapters.Count() == 1);
+
+                var pages = TestChapter(chapters.First(), 0); 
+
+                Assert.IsTrue(pages.Count() == 0);
             }
 
             Assert.IsTrue(series.All(s => s.Name != "[switch]"));
@@ -735,11 +746,16 @@ namespace MangaCrawlerTest
                 {
                     TestContext.WriteLine("Exception while downloading series from server {0}", 
                         server);
+                    Assert.Fail();
                     return;
                 }
 
                 if (server.Series.Count() == 0)
+                {
                     TestContext.WriteLine("Server {0} has no series", server);
+                    Assert.Fail();
+                    return;
+                }
                 
                 Parallel.ForEach(TakeRandom(server.Series, 0.1), serie =>
                 {
@@ -751,12 +767,14 @@ namespace MangaCrawlerTest
                     {
                         TestContext.WriteLine(
                             "Exception while downloading chapters from serie '{0}'", serie);
+                        Assert.Fail();
                         return;
                     }
 
                     if (serie.Chapters.Count() == 0)
                     {
                         TestContext.WriteLine("Serie '{0}' has no chapters", serie);
+                        Assert.Fail();
                         return;
                     }
 
@@ -770,12 +788,14 @@ namespace MangaCrawlerTest
                         {
                             TestContext.WriteLine(
                                 "Exception while downloading pages from chapter '{0}'", chapter);
+                            Assert.Fail();
                             return;
                         }
 
                         if (chapter.Pages.Count() == 0)
                         {
                             TestContext.WriteLine("Chapter '{0}' has no pages", chapter);
+                            Assert.Fail();
                             return;
                         }
 
@@ -791,6 +811,7 @@ namespace MangaCrawlerTest
                             {
                                 TestContext.WriteLine(
                                     "Exception while downloading image from page '{0}'", page);
+                                Assert.Fail();
                                 return;
                             }
 
@@ -798,6 +819,7 @@ namespace MangaCrawlerTest
                             {
                                 TestContext.WriteLine(
                                     "Image stream is zero size for page {0}", page);
+                                Assert.Fail();
                                 return;
                             }
 
@@ -809,6 +831,7 @@ namespace MangaCrawlerTest
                             {
                                 TestContext.WriteLine(
                                     "Exception while creating image from stream for page {0}", page);
+                                Assert.Fail();
                                 return;
                             }
                         });
