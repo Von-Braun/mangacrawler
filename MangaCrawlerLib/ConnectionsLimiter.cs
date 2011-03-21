@@ -214,8 +214,7 @@ namespace MangaCrawlerLib
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
                         a_info.GetImageURL(a_token));
 
-                    myReq.UserAgent =
-                        "Mozilla/5.0 (Windows; U; Windows NT 6.0; pl; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 ( .NET CLR 3.5.30729; .NET4.0E)";
+                    myReq.UserAgent = HTTPUtils.UserAgent;
                     myReq.Referer = a_info.URL;
 
                     using (Stream image_stream = myReq.GetResponse().GetResponseStream())

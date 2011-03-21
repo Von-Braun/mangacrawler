@@ -111,7 +111,7 @@ namespace MangaCrawlerLib
 
         public override string ToString()
         {
-            return String.Format("{0} - {1}", ServerInfo, Name);
+            return String.Format("{0} - {1}", ServerInfo.Name, Name);
         }
     }
 }

@@ -21,11 +21,13 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, 
+            IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var series = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/div[2]/table/tr/td/a");
+            var series = doc.DocumentNode.SelectNodes(
+                "/html/body/center/div/div[2]/div/div[2]/table/tr/td/a");
 
             var result = from serie in series
                          select new SerieInfo(
@@ -36,46 +38,59 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, 
+            IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var chapters_or_volumes_enum = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/div[2]/table/tr/td/a");
+            var chapters_or_volumes_enum =
+                doc.DocumentNode.SelectNodes("//table[@class='snif']/tr/td/a");
 
             if (chapters_or_volumes_enum == null)
             {
-                var pages = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/fieldset/ul/label/a");
+                var pages = doc.DocumentNode.SelectNodes(
+                    "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
 
-                a_progress_callback(100, new [] { new ChapterInfo(a_info, a_info.URL, a_info.Name) } );
+                a_progress_callback(100, 
+                    new [] { new ChapterInfo(a_info, a_info.URL, a_info.Name) } );
             }
             else
             {
-                var chapters_or_volumes = chapters_or_volumes_enum.Skip(3).Reverse().Skip(1).Reverse().ToList();
+                var chapters_or_volumes = 
+                    chapters_or_volumes_enum.Skip(3).Reverse().Skip(1).Reverse().ToList();
 
                 int progress = 0;
 
-                ConcurrentBag<Tuple<int, int, ChapterInfo>> chapters = new ConcurrentBag<Tuple<int, int, ChapterInfo>>();
+                ConcurrentBag<Tuple<int, int, ChapterInfo>> chapters = 
+                    new ConcurrentBag<Tuple<int, int, ChapterInfo>>();
 
-                Parallel.ForEach(chapters_or_volumes, (chapter_or_volume, state) =>
+                Parallel.ForEach(chapters_or_volumes, 
+                    new ParallelOptions() { MaxDegreeOfParallelism = 1},
+                    (chapter_or_volume, state) =>
                 {
                     try
                     {
-                        doc = ConnectionsLimiter.DownloadDocument(a_info, chapter_or_volume.GetAttributeValue("href", ""));
+                        doc = ConnectionsLimiter.DownloadDocument(a_info, 
+                            chapter_or_volume.GetAttributeValue("href", ""));
 
-                        var pages = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/fieldset/ul/label/a");
+                        var pages = doc.DocumentNode.SelectNodes(
+                            "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
 
                         if (pages != null)
                         {
                             chapters.Add(new Tuple<int, int, ChapterInfo>(
                                 chapters_or_volumes.IndexOf(chapter_or_volume),
                                 0,
-                                new ChapterInfo(a_info, chapter_or_volume.GetAttributeValue("href", ""), chapter_or_volume.InnerText)
+                                new ChapterInfo(a_info, chapter_or_volume.GetAttributeValue(
+                                    "href", ""), chapter_or_volume.InnerText)
                             ));
                         }
                         else
                         {
                             var chapters1 =
-                                doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/div[2]/table/tr/td/a").Skip(3).Reverse().Skip(1).Reverse().ToList();
+                                doc.DocumentNode.SelectNodes(
+                                    "/html/body/center/div/div[2]/div/div[2]/table/tr/td/a").
+                                        Skip(3).Reverse().Skip(1).Reverse().ToList();
                             if (chapters1[0].InnerText.ToLower() == "thumbs.jpg")
                                 chapters1.RemoveAt(0);
 
@@ -84,7 +99,8 @@ namespace MangaCrawlerLib
                                 chapters.Add(new Tuple<int, int, ChapterInfo>(
                                     chapters_or_volumes.IndexOf(chapter_or_volume),
                                     chapters1.IndexOf(chapter),
-                                    new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText)
+                                    new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), 
+                                        chapter.InnerText)
                                 ));
                             }
                         }
@@ -105,11 +121,13 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 
+            CancellationToken a_token)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            var pages = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/fieldset/ul/label/a");
+            var pages = doc.DocumentNode.SelectNodes(
+                "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
 
             if (pages == null)
                 yield break;
@@ -130,7 +148,8 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            string script = doc.DocumentNode.SelectSingleNode("/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
+            string script = doc.DocumentNode.SelectSingleNode(
+                "/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
 
             Regex regex1 = new Regex("([Ss][Rr][Cc])=\".*\"");
             Match m1 = regex1.Match(script);
