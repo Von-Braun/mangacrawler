@@ -121,16 +121,11 @@ namespace MangaCrawlerLib
             }
             set
             {
-                ChaptersVisualState = GetChaptersVisualState();
-
-                if (Object.ReferenceEquals(value, SelectedSerie))
-                    return;
+                SeriesVisualState = GetSeriesVisualState();
                 s_selectedSerie[SelectedServer] = value;
 
                 if (!DownloadChapters(SelectedSerie))
                     OnChaptersChanged(SelectedSerie);
-
-                SeriesVisualState = GetSeriesVisualState();
             }
         }
 
@@ -142,10 +137,6 @@ namespace MangaCrawlerLib
             }
             set
             {
-                SeriesVisualState = GetSeriesVisualState();
-
-                if (Object.ReferenceEquals(SelectedServer, value))
-                    return;
                 s_selectedServer = value;
 
                 if (!DownloadSeries(s_selectedServer))
@@ -167,12 +158,10 @@ namespace MangaCrawlerLib
             }
             set
             {
-                if (Object.ReferenceEquals(SelectedChapter, value))
-                    return;
-
-                s_selectedChapter[SelectedSerie] = value;
-
                 ChaptersVisualState = GetChaptersVisualState();
+
+                if (SelectedSerie != null)
+                    s_selectedChapter[SelectedSerie] = value;
             }
         }
 
@@ -459,12 +448,11 @@ namespace MangaCrawlerLib
                     if (!Form.IsDisposed)
                         GetServersVisualState().ReloadItems(s_servers.AsReadOnly());
                 });
+
+                OnSeriesChanged();
             };
 
             ServersUpdate.Perform(update);
-
-            OnSeriesChanged();
-
         }
 
         private static void OnSeriesChanged(ServerItem a_serverItem = null)
@@ -492,15 +480,12 @@ namespace MangaCrawlerLib
 
                     if (!Form.IsDisposed)
                         SeriesVisualState.ReloadItems(list.AsReadOnly());
-
-                    if (SelectedSerie == null)
-                        OnChaptersChanged();
                 });
+
+                OnChaptersChanged();
             };
 
             SeriesUpdate.Perform(update);
-
-            OnChaptersChanged();
         }
 
         private static void OnChaptersChanged(SerieItem a_serieItem = null)
@@ -513,24 +498,27 @@ namespace MangaCrawlerLib
 
             Action update = () =>
             {
-                List<ChapterItem> list = new List<ChapterItem>();
-
-                if (SelectedSerie != null)
-                {
-                    list = (from ch in SelectedSerie.SerieInfo.Chapters
-                            select s_chapters[ch]).ToList();
-                }
-
                 TryInvoke(() =>
                 {
+                    List<ChapterItem> list = new List<ChapterItem>();
+
+                    if (SeriesVisualState.ItemSelected)
+                    {
+                        if (SelectedSerie != null)
+                        {
+                            list = (from ch in SelectedSerie.SerieInfo.Chapters
+                                    select s_chapters[ch]).ToList();
+                        }
+                    }
+
                     if (!Form.IsDisposed)
                         ChaptersVisualState.ReloadItems(list.AsReadOnly());
                 });
+
+                OnTasksChanged();
             };
 
             ChaptersUpdate.Perform(update);
-
-            OnTasksChanged();
         }
 
         private static void OnTasksChanged()

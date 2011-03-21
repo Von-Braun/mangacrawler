@@ -13,5 +13,6 @@ namespace MangaCrawlerLib
         public abstract void Restore();
         public abstract void RaiseSelectionChanged();
         public abstract void ReloadItems<T>(IEnumerable<T> a_enum) where T : class;
+        public abstract bool ItemSelected { get; }
     }
 }

@@ -23,6 +23,14 @@ namespace MangaCrawler
             SaveState();
         }
 
+        public override bool ItemSelected 
+        { 
+            get
+            {
+                return m_selectedItem != null;
+            }
+        }
+
         public override string ToString()
         {
             return String.Format("selected_item: {0}; selected_index: {1}; top_item: {2}; top_index: {3}",
