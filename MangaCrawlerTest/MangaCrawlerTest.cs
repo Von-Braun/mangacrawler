@@ -8,6 +8,7 @@ using HtmlAgilityPack;
 using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace MangaCrawlerTest
 {
@@ -52,7 +53,7 @@ namespace MangaCrawlerTest
 
             if (a_count > 0)
             {
-                TestContext.WriteLine("Series, expected more than {0}, finded: {1}", 
+                TestContext.WriteLine("Series, expected not less than {0}, finded: {1}", 
                     a_count, series.Count());
 
                 if (series.Count() < a_count)
@@ -642,7 +643,7 @@ namespace MangaCrawlerTest
             var series = TestServer(ServerInfo.UnixManga, 1572);
 
             {
-                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 458);
+                var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 460, true);
 
                 var pages = TestChapter(chapters.Last(), 8);
 
@@ -749,12 +750,15 @@ namespace MangaCrawlerTest
                     catch
                     {
                         TestContext.WriteLine(
-                            "Exception while downloading chapters from serie {0}", serie);
+                            "Exception while downloading chapters from serie '{0}'", serie);
                         return;
                     }
 
                     if (serie.Chapters.Count() == 0)
-                        TestContext.WriteLine("Serie {0} has no chapters", serie);
+                    {
+                        TestContext.WriteLine("Serie '{0}' has no chapters", serie);
+                        return;
+                    }
 
                     Parallel.ForEach(TakeRandom(serie.Chapters, 0.1), chapter => 
                     {
@@ -765,12 +769,15 @@ namespace MangaCrawlerTest
                         catch
                         {
                             TestContext.WriteLine(
-                                "Exception while downloading pages from chapter {0}", chapter);
+                                "Exception while downloading pages from chapter '{0}'", chapter);
                             return;
                         }
 
                         if (chapter.Pages.Count() == 0)
-                            TestContext.WriteLine("Chapter {0} has no pages", chapter);
+                        {
+                            TestContext.WriteLine("Chapter '{0}' has no pages", chapter);
+                            return;
+                        }
 
                         Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), page =>
                         {
@@ -783,14 +790,14 @@ namespace MangaCrawlerTest
                             catch
                             {
                                 TestContext.WriteLine(
-                                    "Exception while downloading image from page {0}", page);
+                                    "Exception while downloading image from page '{0}'", page);
                                 return;
                             }
 
                             if (stream.Length == 0)
                             {
                                 TestContext.WriteLine(
-                                    "Image stream has zero size for page {0}", page);
+                                    "Image stream is zero size for page {0}", page);
                                 return;
                             }
 
@@ -808,6 +815,24 @@ namespace MangaCrawlerTest
                     });
                 });
             });
+        }
+
+        [TestMethod]
+        public void _UserAgent()
+        {
+            // Fire static constructor.
+            DownloadManager.UseCBZ = null;
+
+            Assert.AreEqual(new HtmlWeb().UserAgent, HTTPUtils.UserAgent);
+
+            var m = Regex.Match(HTTPUtils.UserAgent, ".*(\\d{4})(\\d{2})(\\d{2}).*");
+            int year = Int32.Parse(m.Groups[1].Value);
+            int month = Int32.Parse(m.Groups[2].Value);
+            int day = Int32.Parse(m.Groups[3].Value);
+            DateTime dt = new DateTime(year, month, day);
+            TimeSpan ts = DateTime.Now - dt;
+            Assert.IsTrue(ts.TotalDays > 0);
+            Assert.IsTrue(ts.TotalDays < 90, "Need new agent string");
         }
     }
 }

@@ -10,6 +10,7 @@ using Ionic.Zip;
 using System.Resources;
 using System.Diagnostics;
 using System.Collections.Concurrent;
+using HtmlAgilityPack;
 
 namespace MangaCrawlerLib
 {
@@ -58,6 +59,8 @@ namespace MangaCrawlerLib
 
         static DownloadManager()
         {
+            HtmlWeb.UserAgent_Actual = HTTPUtils.UserAgent;
+
             foreach (var si in ServerInfo.ServersInfos)
             {
                 s_schedulers[si] = new CustomTaskScheduler(

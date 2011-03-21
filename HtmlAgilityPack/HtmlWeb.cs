@@ -55,7 +55,12 @@ namespace HtmlAgilityPack
         private int _streamBufferSize = 1024;
         private bool _useCookies;
         private bool _usingCache;
-        private string _userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:x.x.x) Gecko/20041107 Firefox/x.x";
+        private string _userAgent = UserAgent_Actual;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string UserAgent_Actual;
 
         /// <summary>
         /// Occurs after an HTTP request has been executed.
