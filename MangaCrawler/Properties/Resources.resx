@@ -132,6 +132,9 @@
   <data name="Downloaded" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="DownloadMissingPages" xml:space="preserve">
+    <value>OK (missing pages)</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>ERROR</value>
   </data>

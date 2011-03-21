@@ -128,6 +128,9 @@ chapter: {2}</value>
   <data name="TaskProgressDownloaded" xml:space="preserve">
     <value>Downloaded</value>
   </data>
+  <data name="TaskProgressDownloadedMissingPages" xml:space="preserve">
+    <value>Downloaded (missing pages)</value>
+  </data>
   <data name="TaskProgressError" xml:space="preserve">
     <value>Error</value>
   </data>

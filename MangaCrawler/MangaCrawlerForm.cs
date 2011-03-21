@@ -300,6 +300,12 @@ namespace MangaCrawler
                         Brushes.Green, bounds, StringFormat.GenericDefault); 
                     break;
 
+                case ItemState.DownloadedMissingPages:
+
+                    e.Graphics.DrawString(a_downloaded, font,
+                        Brushes.Green, bounds, StringFormat.GenericDefault);
+                    break;
+
                 case ItemState.Waiting: 
 
                     e.Graphics.DrawString(Resources.Waiting, font, 
@@ -359,7 +365,8 @@ namespace MangaCrawler
             ChapterItem chapter = (ChapterItem)chaptersListBox.Items[e.Index];
             ListBox_DrawItem(e, chapter.ChapterInfo.Name, chapter.State, 
                 String.Format("{0}/{1}", chapter.DownloadedPages,
-                chapter.ChapterInfo.Pages.Count()), Resources.Downloaded);
+                chapter.ChapterInfo.Pages.Count()), (chapter.State == ItemState.Downloaded) ? 
+                Resources.Downloaded : Resources.DownloadMissingPages);
         }
 
         private void cbzCheckBox_CheckedChanged(object sender, EventArgs e)

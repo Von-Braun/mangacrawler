@@ -122,7 +122,7 @@ namespace MangaCrawlerLib
             return m_imageFilePath;
         }
 
-        public void DownloadAndSavePageImage(CancellationToken a_token, string a_dir)
+        public bool DownloadAndSavePageImage(CancellationToken a_token, string a_dir)
         {
             m_imageFilePath = a_dir +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
@@ -138,7 +138,22 @@ namespace MangaCrawlerLib
             try
             {
                 using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
-                    GetImageStream(a_token).CopyTo(file_stream);
+                {
+                    Stream ims = null;
+
+                    try
+                    {
+                        ims = GetImageStream(a_token);
+                    }
+                    catch (WebException)
+                    {
+                        // Some images are unavailable, if we get null pernamently tests
+                        // will detect this.
+                        return false;
+                    }
+
+                    ims.CopyTo(file_stream);
+                }
 
                 if (image_file.Exists)
                     image_file.Delete();
@@ -149,6 +164,8 @@ namespace MangaCrawlerLib
                 temp_file.Delete();
                 throw;
             }
+
+            return true;
         }
     }
 }

@@ -126,7 +126,10 @@ rozdział: {2}</value>
     <value>Usuwam</value>
   </data>
   <data name="TaskProgressDownloaded" xml:space="preserve">
-    <value>Pobieram</value>
+    <value>Pobrane</value>
+  </data>
+  <data name="TaskProgressDownloadedMissingPages" xml:space="preserve">
+    <value>Pobrane (brakuje stron)</value>
   </data>
   <data name="TaskProgressError" xml:space="preserve">
     <value>Błąd</value>

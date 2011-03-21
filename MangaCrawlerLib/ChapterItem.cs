@@ -65,8 +65,11 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                if ((m_state == ItemState.Downloaded) || (m_state == ItemState.Error))
+                if ((m_state == ItemState.Downloaded) ||
+                    (m_state == ItemState.Error))
+                {
                     Initialize();
+                }
                 else if (m_state != ItemState.Initial)
                 {
                     m_cancellationTokenSource.Cancel();
@@ -100,6 +103,7 @@ namespace MangaCrawlerLib
                     {
                         case ItemState.Error: return MangaCrawlerLib.Properties.Resources.TaskProgressError;
                         case ItemState.Downloaded: return MangaCrawlerLib.Properties.Resources.TaskProgressDownloaded;
+                        case ItemState.DownloadedMissingPages: return MangaCrawlerLib.Properties.Resources.TaskProgressDownloadedMissingPages;
                         case ItemState.Waiting: return MangaCrawlerLib.Properties.Resources.TaskProgressWaiting;
                         case ItemState.Deleting: return MangaCrawlerLib.Properties.Resources.TaskProgressDeleting;
                         case ItemState.Zipping: return MangaCrawlerLib.Properties.Resources.TaskProgressZipping;
@@ -118,7 +122,7 @@ namespace MangaCrawlerLib
                 lock (m_lock)
                 {
                     return (m_state == ItemState.Waiting) || (m_state == ItemState.Error) || 
-                        (m_state == ItemState.Deleting) || (m_state == ItemState.Downloading) || 
+                        (m_state == ItemState.Deleting) || (m_state == ItemState.Downloading) ||
                         (m_state == ItemState.Zipping);
                 }
             }
@@ -145,7 +149,12 @@ namespace MangaCrawlerLib
                     if (a_error)
                         m_state = ItemState.Error;
                     else
-                        m_state = ItemState.Downloaded;
+                    {
+                        if (DownloadedPages == ChapterInfo.Pages.Count())
+                            m_state = ItemState.Downloaded;
+                        else
+                            m_state = ItemState.DownloadedMissingPages;
+                    }
                 }
 
                 if (m_cancellationTokenSource.IsCancellationRequested)
