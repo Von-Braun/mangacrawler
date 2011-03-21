@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace MangaCrawlerLib
 {
-    public class QueuedMutex
+    internal class QueuedMutex
     {
         private Object m_lock = new Object();
         private Queue<ManualResetEvent> m_queue = new Queue<ManualResetEvent>();

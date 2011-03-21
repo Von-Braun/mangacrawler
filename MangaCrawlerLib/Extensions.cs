@@ -6,7 +6,7 @@ using System.IO;
 
 namespace MangaCrawlerLib
 {
-    public static class Extensions
+    internal static class Extensions
     {
         public static String RemoveFromRight(this string a_str, int a_chars)
         {

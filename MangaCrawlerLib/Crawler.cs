@@ -31,5 +31,13 @@ namespace MangaCrawlerLib
         {
             return a_info.URLPart;
         }
+
+        internal virtual int MaxConnectionsPerServer
+        {
+            get
+            {
+                return ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER;
+            }
+        }
     }
 }

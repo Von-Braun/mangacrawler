@@ -10,7 +10,7 @@ namespace MangaCrawlerLib
     /// </summary>
     /// <typeparam name="K"></typeparam>
     /// <typeparam name="V"></typeparam>
-    public class OrderedList<K, V>
+    internal class OrderedList<K, V>
     {
         private SortedList<K, List<V>> m_list = new SortedList<K, List<V>>();
 

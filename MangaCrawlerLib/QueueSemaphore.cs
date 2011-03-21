@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace MangaCrawlerLib
 {
-    public class QueuedSemaphore<P>
+    internal class QueuedSemaphore<P>
     {
         private Object m_lock = new Object();
         private OrderedList<P, ManualResetEvent> m_queue =

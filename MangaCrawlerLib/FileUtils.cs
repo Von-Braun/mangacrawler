@@ -6,7 +6,7 @@ using System.IO;
 
 namespace MangaCrawlerLib
 {
-    public static class FileUtils
+    internal static class FileUtils
     {
         public static string RemoveInvalidFileDirectoryCharacters(string a_path)
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MangaCrawlerLib
 {
-    public class RestrictedFrequencyAction
+    internal class RestrictedFrequencyAction
     {
         private TimeSpan m_update_delta;
         private DateTime LastPerform;
