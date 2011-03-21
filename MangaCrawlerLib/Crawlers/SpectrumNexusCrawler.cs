@@ -38,10 +38,10 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var link_strong_nodes = doc.DocumentNode.SelectNodes("//a/strong");
+            var link_strong_nodes = doc.DocumentNode.SelectNodes("//a");
             var begin_reading_strong_node = link_strong_nodes.Where(
                 n => n.InnerText.StartsWith("Begin Reading"));
-            var href = begin_reading_strong_node.First().ParentNode.GetAttributeValue("href", "");
+            var href = begin_reading_strong_node.First().GetAttributeValue("href", "");
 
             doc = ConnectionsLimiter.DownloadDocument(a_info, href);
 
