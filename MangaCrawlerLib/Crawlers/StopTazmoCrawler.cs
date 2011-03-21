@@ -63,7 +63,7 @@ namespace MangaCrawlerLib
                 HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
                 var images = Regex.Matches(doc.DocumentNode.InnerText, 
-                    "s.src = '.*(http://read\\.stoptazmo\\.com/.*//.*\\.(jpg|png))");
+                    "s.src = '.*(http://read\\.stoptazmo\\.com/.*//.*\\.(jpg|png|gif|bmp|jpeg))");
 
                 for (int i=0; i<images.Count; i++)
                 {

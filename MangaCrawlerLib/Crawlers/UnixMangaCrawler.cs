@@ -65,7 +65,10 @@ namespace MangaCrawlerLib
                     new ConcurrentBag<Tuple<int, int, ChapterInfo>>();
 
                 Parallel.ForEach(chapters_or_volumes, 
-                    new ParallelOptions() { MaxDegreeOfParallelism = 1},
+                    new ParallelOptions() 
+                    { 
+                        MaxDegreeOfParallelism = 1
+                    },
                     (chapter_or_volume, state) =>
                 {
                     try
