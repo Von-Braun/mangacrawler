@@ -32,7 +32,12 @@ namespace MangaCrawlerLib
 
             int series_progress = 0;
 
-            Parallel.For(1, number + 1, (page, state) =>
+            Parallel.For(1, number + 1,
+                new ParallelOptions()
+                {
+                    MaxDegreeOfParallelism = ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                },
+                (page, state) =>
             {
                 try
                 {

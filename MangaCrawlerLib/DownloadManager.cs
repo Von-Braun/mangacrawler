@@ -321,7 +321,13 @@ namespace MangaCrawlerLib
 
                         chapter_item.Token.ThrowIfCancellationRequested();
 
-                        Parallel.ForEach(chapter_item.ChapterInfo.Pages, (page, state) =>
+                        Parallel.ForEach(chapter_item.ChapterInfo.Pages,
+                            new ParallelOptions()
+                            {
+                                MaxDegreeOfParallelism =
+                                    ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                            },
+                            (page, state) =>
                         {
                             try
                             {

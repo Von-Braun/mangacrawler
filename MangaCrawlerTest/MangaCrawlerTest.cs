@@ -259,47 +259,60 @@ namespace MangaCrawlerTest
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == ".hack//G.U.+"), 26);
-
+            
                 var pages = TestChapter(chapters.Last(), 68);
-
+            
                 TestPage(pages.First(), 
                     "BB93A387-185223CB-8EC50E70-899AA5F4-1B70222B-A39ED542-BAA71897-C5ECB461");
                 TestPage(pages.Last(), 
                     "A08602B0-41A27AAD-D870271E-F8AD256A-68D2C903-3C775B39-DF207BB2-95D1C137");
-
+            
                 pages = TestChapter(chapters.First(), 33);
-
+            
                 TestPage(pages.First(), 
                     "454E0B8D-03CA4892-BEE861B4-ABE79154-56FB60F2-8910BE2A-BDC107C0-9388DED0");
                 TestPage(pages.Last(), 
                     "DED6595F-377DBE4F-D204100F-4A697979-A717AA9D-E24314C3-4E209759-650680B9");
             }
-
+            
             {
                 var chapters = TestSerie(series.First(s => s.Name == "(G) Edition"), 3, true);
-
+            
                 var pages = TestChapter(chapters.Last(), 17);
-
+            
                 TestPage(pages.First(), 
                     "6CC9C11F-4E614BFE-CB4AF33F-F4344834-717C52C9-C67672EB-B2CD6178-A3C24814");
                 TestPage(pages.Last(), 
                     "0CBD3787-E149EF52-00065BE3-1AD2C925-29D905EC-581835B8-DC637B3D-2ACEC1CD");
-
+            
                 pages = TestChapter(chapters.First(), 0, true);
-
+            
                 TestPage(pages.First(), "", true);
                 TestPage(pages.Last(), "", true);
             }
-
+            
             {
                 var chapters = TestSerie(series.First(s => s.Name == 
                     "Samayoeru Ookami ni Junai wo"), 1, true);
+            
+                Assert.IsTrue(chapters.Count() == 1);
+            
+                var pages = TestChapter(chapters.First(), 0); 
+            
+                Assert.IsTrue(pages.Count() == 0);
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "197X"), 1);
 
                 Assert.IsTrue(chapters.Count() == 1);
 
-                var pages = TestChapter(chapters.First(), 0); 
+                var pages = TestChapter(chapters.First(), 28);
 
-                Assert.IsTrue(pages.Count() == 0);
+                TestPage(pages.First(), 
+                    "AC14D886-7860F971-04EE1290-6F6AA520-A4E77EA8-D45F2742-13B7DB04-613DC687");
+                TestPage(pages.Last(), 
+                    "AC14D886-7860F971-04EE1290-6F6AA520-A4E77EA8-D45F2742-13B7DB04-613DC687");
             }
 
             Assert.IsTrue(series.All(s => s.Name != "[switch]"));
@@ -758,7 +771,12 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void _RandomTestAll()
         {
-            Parallel.ForEach(ServerInfo.ServersInfos, server => 
+            Parallel.ForEach(ServerInfo.ServersInfos,
+                new ParallelOptions()
+                {
+                    MaxDegreeOfParallelism = ServerInfo.ServersInfos.Count()
+                },
+                server => 
             {
                 try
                 {
@@ -766,20 +784,22 @@ namespace MangaCrawlerTest
                 }
                 catch
                 {
-                    TestContext.WriteLine("Exception while downloading series from server {0}", 
+                    TestContext.WriteLine("{0} - Exception while downloading series from server", 
                         server);
-                    Assert.Fail();
-                    return;
                 }
 
                 if (server.Series.Count() == 0)
                 {
-                    TestContext.WriteLine("Server {0} has no series", server);
-                    Assert.Fail();
-                    return;
+                    TestContext.WriteLine("{0} - Server have no series", server);
                 }
                 
-                Parallel.ForEach(TakeRandom(server.Series, 0.1), serie =>
+                Parallel.ForEach(TakeRandom(server.Series, 0.1),
+                    new ParallelOptions()
+                    {
+                        MaxDegreeOfParallelism =
+                            ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                    },
+                    serie =>
                 {
                     try
                     {
@@ -788,19 +808,21 @@ namespace MangaCrawlerTest
                     catch
                     {
                         TestContext.WriteLine(
-                            "Exception while downloading chapters from serie '{0}'", serie);
-                        Assert.Fail();
-                        return;
+                            "{0} - Exception while downloading chapters from serie", serie);
                     }
 
                     if (serie.Chapters.Count() == 0)
                     {
-                        TestContext.WriteLine("Serie '{0}' has no chapters", serie);
-                        Assert.Fail();
-                        return;
+                        TestContext.WriteLine("{0} - Serie has no chapters", serie);
                     }
 
-                    Parallel.ForEach(TakeRandom(serie.Chapters, 0.1), chapter => 
+                    Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
+                        new ParallelOptions()
+                        {
+                            MaxDegreeOfParallelism =
+                                ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                        },
+                        (chapter) => 
                     {
                         try
                         {
@@ -809,19 +831,21 @@ namespace MangaCrawlerTest
                         catch
                         {
                             TestContext.WriteLine(
-                                "Exception while downloading pages from chapter '{0}'", chapter);
-                            Assert.Fail();
-                            return;
+                                "{0} - Exception while downloading pages from chapter", chapter);
                         }
 
                         if (chapter.Pages.Count() == 0)
                         {
-                            TestContext.WriteLine("Chapter '{0}' has no pages", chapter);
-                            Assert.Fail();
-                            return;
+                            TestContext.WriteLine("{0} - Chapter have no pages", chapter);
                         }
 
-                        Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), page =>
+                        Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), 
+                            new ParallelOptions()
+                            {
+                                MaxDegreeOfParallelism =
+                                    ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                            }, 
+                            (page) =>
                         {
                             MemoryStream stream = null;
 
@@ -832,17 +856,13 @@ namespace MangaCrawlerTest
                             catch
                             {
                                 TestContext.WriteLine(
-                                    "Exception while downloading image from page '{0}'", page);
-                                Assert.Fail();
-                                return;
+                                    "{0} - Exception while downloading image from page", page);
                             }
 
                             if (stream.Length == 0)
                             {
                                 TestContext.WriteLine(
-                                    "Image stream is zero size for page {0}", page);
-                                Assert.Fail();
-                                return;
+                                    "{0} - Image stream is zero size for page", page);
                             }
 
                             try
@@ -852,9 +872,7 @@ namespace MangaCrawlerTest
                             catch
                             {
                                 TestContext.WriteLine(
-                                    "Exception while creating image from stream for page {0}", page);
-                                Assert.Fail();
-                                return;
+                                    "{0} - Exception while creating image from stream for page", page);
                             }
                         });
                     });

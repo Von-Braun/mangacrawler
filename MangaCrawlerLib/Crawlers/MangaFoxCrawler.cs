@@ -36,7 +36,12 @@ namespace MangaCrawlerLib
 
             int series_progress = 0;
 
-            Parallel.For(1, number + 1, (page, state) =>
+            Parallel.For(1, number + 1, 
+                new ParallelOptions() 
+                { 
+                    MaxDegreeOfParallelism = ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER 
+                },
+                (page, state) =>
             {
                 try
                 {
@@ -85,7 +90,7 @@ namespace MangaCrawlerLib
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var chapters = doc.DocumentNode.SelectNodes(
-                "//table[@id='listing']/tr/td[1]/a[@class='chico']");
+                "//table[@id='listing']/tr/td[1]/a[@class='chico']").AsEnumerable();
 
             if (chapters == null)
             {
@@ -113,13 +118,19 @@ namespace MangaCrawlerLib
                 }
             }
 
+            if (chapters == null)
+            {
+                chapters = doc.DocumentNode.SelectNodes(
+                    "//a[@class='blue_link']").Reverse().Skip(1).Reverse();
+            }
+
             var result = from chapter in chapters
                          select new ChapterInfo(a_info, 
                                                 chapter.GetAttributeValue("href", "").
                                                     RemoveFromLeft(1), 
                                                 chapter.InnerText);
 
-            a_progress_callback(100, result);            
+            a_progress_callback(100, result);    
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 
