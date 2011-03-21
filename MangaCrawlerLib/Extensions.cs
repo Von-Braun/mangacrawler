@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace MangaCrawlerLib
 {
@@ -30,6 +31,20 @@ namespace MangaCrawlerLib
         public static void RemoveLast<T>(this List<T> a_list)
         {
             a_list.Remove(a_list.Last());
+        }
+
+        public static void DeleteAll(this DirectoryInfo a_dir_info)
+        {
+            if (!a_dir_info.Exists)
+                return;
+
+            foreach (FileInfo file_info in a_dir_info.GetFiles())
+                file_info.Delete();
+
+            foreach (DirectoryInfo dir_info in a_dir_info.GetDirectories())
+                dir_info.DeleteAll();
+
+            a_dir_info.Delete(false);
         }
     }
 }

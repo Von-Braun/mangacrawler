@@ -18,7 +18,8 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
+        internal override void DownloadSeries(ServerInfo a_info, Action<int, 
+            IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -26,13 +27,16 @@ namespace MangaCrawlerLib
 
             var result = from serie in series
                          select new SerieInfo(a_info,
-                                              GetServerURL() + serie.GetAttributeValue("href", "").RemoveFromLeft(1),
+                                              GetServerURL() + 
+                                              serie.GetAttributeValue("href", "").
+                                                RemoveFromLeft(1),
                                               serie.InnerText);
 
             a_progress_callback(100, result);
         }
 
-        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
+        internal override void DownloadChapters(SerieInfo a_info, Action<int, 
+            IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -40,13 +44,16 @@ namespace MangaCrawlerLib
 
             var result = from chapter in chapters 
                          select new ChapterInfo(a_info, 
-                                                GetServerURL() + chapter.GetAttributeValue("href", "").RemoveFromLeft(1), 
+                                                GetServerURL() + 
+                                                chapter.GetAttributeValue("href", "").
+                                                    RemoveFromLeft(1), 
                                                 chapter.InnerText);
 
             a_progress_callback(100, result.Reverse());            
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 
+            CancellationToken a_token)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
@@ -57,7 +64,9 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                PageInfo pi = new PageInfo(a_info, GetServerURL() + page.GetAttributeValue("href", "").RemoveFromLeft(1), index);
+                PageInfo pi = new PageInfo(a_info, GetServerURL() + 
+                    page.GetAttributeValue("href", "").RemoveFromLeft(1), index,
+                    Path.GetFileNameWithoutExtension(page.GetAttributeValue("href", "")));
 
                 yield return pi;
             }
@@ -67,7 +76,8 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            var node = doc.DocumentNode.SelectSingleNode("/html/body/div[2]/table/tr/td[2]/div/img");
+            var node = doc.DocumentNode.SelectSingleNode(
+                "/html/body/div[2]/table/tr/td[2]/div/img");
 
             return node.GetAttributeValue("src", "");
         }

@@ -20,6 +20,8 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
+    // TODO: sprawdzac czy obrazkom nadawane sa dobre nazwy.
+    // 
     // TODO: http://www.mangareader.net/alphabetical
     // TODO: http://www.mangamonger.com/
     //
