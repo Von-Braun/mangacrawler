@@ -325,7 +325,8 @@ namespace MangaCrawlerLib
                         {
                             try
                             {
-                                page.DownloadAndSavePageImage(chapter_item.Token, dir);
+                                if (page.DownloadAndSavePageImage(chapter_item.Token, dir))
+                                    chapter_item.PageDownloaded();
                             }
                             catch (OperationCanceledException)
                             {
@@ -336,8 +337,6 @@ namespace MangaCrawlerLib
                                 state.Break();
                                 throw;
                             }
-
-                            chapter_item.PageDownloaded();
 
                             OnChaptersChanged(chapter_item.SerieItem);
                         });

@@ -132,6 +132,9 @@
   <data name="Downloaded" xml:space="preserve">
     <value>POBRANE</value>
   </data>
+  <data name="DownloadMissingPages" xml:space="preserve">
+    <value>Pobrane (brakuje stron)</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>BŁĄD</value>
   </data>

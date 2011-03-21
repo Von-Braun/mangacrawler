@@ -13,6 +13,7 @@ namespace MangaCrawlerLib
         Deleting, 
         Zipping,
         Downloaded,
+        DownloadedMissingPages,
         Error
     }
 }

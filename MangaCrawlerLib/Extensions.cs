@@ -30,6 +30,6 @@ namespace MangaCrawlerLib
         public static void RemoveLast<T>(this List<T> a_list)
         {
             a_list.Remove(a_list.Last());
-        }  
+        }
     }
 }

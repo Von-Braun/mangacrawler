@@ -9,6 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Net;
 
 namespace MangaCrawlerTest
 {
@@ -351,36 +352,57 @@ namespace MangaCrawlerTest
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == "666 Satan"), 77);
-
+            
                 var pages = TestChapter(chapters.Last(), 80);
-
+            
                 TestPage(pages.First(),
                     "D7654CB6-AC4813C0-5B985B91-0E15FEC9-193F9C48-D78B8A77-67A9B4A4-F1C0C337");
                 TestPage(pages.Last(),
                     "96EF8686-80AFE4C8-8A149FC6-AA587E14-32F557E5-B65E4FD1-CB49D80E-563E2C97");
-
+            
                 pages = TestChapter(chapters.First(), 51);
-
+            
                 TestPage(pages.First(),
                     "654005EA-44B03AD4-6B7D1004-5CAE6C14-13B1B8C5-BB09114D-C4240FEE-C084D426");
                 TestPage(pages.Last(),
                     "B17D5A70-A3723C4C-FE5D6B46-6E66E8C8-ABD57067-14DB3D66-4C373CA1-60EF1D32");
             }
-
+            
             {
                 var chapters = TestSerie(series.First(s => s.Name == "Bleach"), 452, true);
-
+            
                 var pages = TestChapter(chapters.Last(), 57);
-
+            
                 TestPage(pages.First(),
                     "3CA3E1B7-2DBE8106-419613CB-FF35FF1E-D7DD9B0C-A533F92E-2ECB098F-3E4B5F96");
                 TestPage(pages.Last(),
                     "61482BCB-6B9C1FDA-8CCC87BF-7B53CCDB-4F711B76-195745D2-B9DC5217-94F9CB39");
-
+            
                 pages = TestChapter(chapters.First(), 0, true);
-
+            
                 TestPage(pages.First(), "", true);
                 TestPage(pages.Last(), "", true);
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Name == "Rosario+Vampire II"), 18, false);
+
+                var pages = TestChapter(chapters.First(ch => ch.Name == "030 -"), 34);
+
+                Assert.IsTrue(pages.First().GetImageStream() != null);
+
+                try
+                {
+                    pages.ElementAt(2).GetImageStream();
+                    Assert.Fail();
+                }
+                catch (WebException)
+                {
+                }
+                catch
+                {
+                    Assert.Fail();
+                }
             }
         }
 
