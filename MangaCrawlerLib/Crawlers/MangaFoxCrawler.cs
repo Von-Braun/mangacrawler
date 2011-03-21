@@ -127,8 +127,15 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            var pages = doc.DocumentNode.SelectSingleNode("//select[@class='middle']").
-                SelectNodes("option");
+            var temp = doc.DocumentNode.SelectNodes("//select[@class='middle']");
+
+            if (temp == null)
+            {
+                if (doc.DocumentNode.SelectSingleNode("//div[@id='error']") != null)
+                    yield break;
+            }
+
+            var pages = temp.First().SelectNodes("option");
 
             int index = 0;
             foreach (var page in pages)
