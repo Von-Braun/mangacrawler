@@ -20,6 +20,8 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
+	// TODO: nie odswierza zawartosci okna pobierania !!! nie kasuje pobranych bez bledow, chyba jesli trafia sie jakies timeouty przy pobieraniu
+	// 
     // TODO: wersja to data, ustawiana automatycznie podczas budowania, generowanie jakiegos pliku 
     //       z data.
     // 
