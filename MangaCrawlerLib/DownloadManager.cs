@@ -11,6 +11,7 @@ using System.Resources;
 using System.Diagnostics;
 using System.Collections.Concurrent;
 using HtmlAgilityPack;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {
