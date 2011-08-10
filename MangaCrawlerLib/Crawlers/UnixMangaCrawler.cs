@@ -8,6 +8,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Threading;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {

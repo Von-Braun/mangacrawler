@@ -72,6 +72,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TomanuExtensions\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
+      <Project>{4653B49E-D5A5-43B7-8CED-160E7BC09917}</Project>
+      <Name>TomanuExtensionsLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HashLib\HashLib.csproj">
       <Project>{31880FB6-5B86-42B8-AB92-864045B5D7A2}</Project>
       <Name>HashLib</Name>

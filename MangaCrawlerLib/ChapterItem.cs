@@ -7,6 +7,7 @@ using MangaCrawlerLib;
 using System.IO;
 using System.Diagnostics;
 using MangaCrawlerLib.Properties;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {

@@ -5,6 +5,7 @@ using System.Text;
 using HtmlAgilityPack;
 using System.IO;
 using System.Threading;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib 
 {

@@ -10,6 +10,7 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {
