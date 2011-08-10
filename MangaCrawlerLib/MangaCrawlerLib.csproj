@@ -85,10 +85,6 @@
     <Compile Include="Crawlers\UnixMangaCrawler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\TomanuExtensions\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
-      <Project>{4653B49E-D5A5-43B7-8CED-160E7BC09917}</Project>
-      <Name>TomanuExtensionsLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotNetZip\DotNetZip.csproj">
       <Project>{49A128D3-C3F2-46B1-8F7A-EECD209EA860}</Project>
       <Name>DotNetZip</Name>
@@ -96,6 +92,10 @@
     <ProjectReference Include="..\HtmlAgilityPack\HtmlAgilityPack.csproj">
       <Project>{193BB801-054F-4729-9D5D-FCE1E32594BF}</Project>
       <Name>HtmlAgilityPack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
+      <Project>{4653B49E-D5A5-43B7-8CED-160E7BC09917}</Project>
+      <Name>TomanuExtensionsLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
