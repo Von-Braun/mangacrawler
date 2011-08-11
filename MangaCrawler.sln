@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangaCrawlerTest", "MangaCr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetZip", "DotNetZip\DotNetZip.csproj", "{49A128D3-C3F2-46B1-8F7A-EECD209EA860}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomanuExtensionsLib", "TomanuExtensionsLib\TomanuExtensionsLib.csproj", "{4653B49E-D5A5-43B7-8CED-160E7BC09917}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomanuExtensionsLib", "TomanuExtensions\TomanuExtensionsLib\TomanuExtensionsLib.csproj", "{4653B49E-D5A5-43B7-8CED-160E7BC09917}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

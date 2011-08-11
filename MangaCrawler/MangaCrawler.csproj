@@ -204,6 +204,10 @@
       <Project>{5CE21DA4-9AD1-4D26-B7AE-2CDF133E6ECC}</Project>
       <Name>MangaCrawlerLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TomanuExtensions\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
+      <Project>{4653B49E-D5A5-43B7-8CED-160E7BC09917}</Project>
+      <Name>TomanuExtensionsLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
