@@ -27,6 +27,7 @@ namespace MangaCrawlerLib
             m_name = m_name.Replace("\t", " ");
             while (m_name.IndexOf("  ") != -1)
                 m_name = m_name.Replace("  ", " ");
+            m_name = HttpUtility.HtmlDecode(m_name);
         }
 
         public SerieInfo SerieInfo

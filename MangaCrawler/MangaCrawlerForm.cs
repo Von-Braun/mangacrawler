@@ -20,18 +20,14 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    // TODO: inaczej zrobic interacke z watkiami, przelazywac funcktor do odswiezenia danego elementu, 
-    //       najpierw sprawdzic czy owogle jest on widoczny
-    // 
     // TODO: wersja to data, ustawiana automatycznie podczas budowania, generowanie jakiegos pliku 
     //       z data.
     // 
-    // TODO: zaznaczamy serwer, chapter, serie, przechodzimy na inny serwer, 
-    //       filtrujemy poprez xxxx, przechodzimy na poprzedni serwer, przechodzimy na 
-    //       inny, zdejmujemy filtr (lub zdejmujemy go na tym z zaznaczeniem - nie pojawia sie ono),
-    //       po zdjeciu filtru tez stare zaznaczenie nie dziala.
-    //
     // TODO: http://www.mangareader.net/alphabetical
+    // TODO: http://mangable.com/manga-list/
+    // TODO: http://www.readmangaonline.net/
+    // TODO: http://www.anymanga.com/directory/all/
+    // TODO: http://manga.animea.net/browse.html
     // TODO: http://www.mangamonger.com/
     //
     // TODO: instalator

@@ -32,6 +32,15 @@ namespace MangaCrawlerLib
 
             int series_progress = 0;
 
+            Action<int> update = (progress) =>
+            {
+                var result = from serie in series
+                             orderby serie.Item1, serie.Item2
+                             select new SerieInfo(a_info, serie.Item4, serie.Item3);
+
+                a_progress_callback(progress, result.ToArray());
+            };
+
             Parallel.For(1, number + 1,
                 new ParallelOptions()
                 {
@@ -61,12 +70,8 @@ namespace MangaCrawlerLib
                         series.Add(s);
                     }
 
-                    var result = (from serie in series
-                                  orderby serie.Item1, serie.Item2
-                                  select new SerieInfo(a_info, serie.Item4, serie.Item3)).ToArray();
-
                     series_progress++;
-                    a_progress_callback(series_progress * 100 / number, result);
+                    update(series_progress * 100 / number);
                 }
                 catch
                 {
@@ -74,6 +79,8 @@ namespace MangaCrawlerLib
                     throw;
                 }
             });
+
+            update(100);
         }
 
         internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
@@ -96,23 +103,13 @@ namespace MangaCrawlerLib
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
+            var pages = Int32.Parse(doc.DocumentNode.SelectSingleNode("//select[@id='fpage1']/../strong").InnerText);
 
-            var read = doc.DocumentNode.SelectSingleNode("//div[@id='filelist']/div[3]/a");
-
-            string url = "http://www.otakuworks.com/" + read.GetAttributeValue("href", "");
-
-            doc = ConnectionsLimiter.DownloadDocument(a_info, a_token, url);
-
-            int pages = Int32.Parse(
-                doc.DocumentNode.SelectSingleNode("//select[@id='fpage1']").
-                    ParentNode.ChildNodes.Reverse().ElementAt(3).InnerText);
-
-            for (int index=1; index<=pages; index++)
+            for (int i = 1; i <= pages; i++)
             {
-                PageInfo pi = new PageInfo(a_info, url + "/" + index, index);
-
+                PageInfo pi = new PageInfo(a_info, a_info.URLPart + "/" + i.ToString(), i);
                 yield return pi;
-            }  
+            }
         }
 
         internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
@@ -128,6 +125,11 @@ namespace MangaCrawlerLib
         }
 
         internal override string GetChapterURL(ChapterInfo a_info)
+        {
+            return "http://www.otakuworks.com" + a_info.URLPart;
+        }
+
+        internal override string GetPageURL(PageInfo a_info)
         {
             return "http://www.otakuworks.com" + a_info.URLPart;
         }
