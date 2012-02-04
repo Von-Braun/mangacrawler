@@ -10,14 +10,14 @@ namespace MangaCrawlerLib
 {
     internal static class HTTPUtils
     {
-        internal static string UserAgent = 
-            "Mozilla/5.0 (Windows; U; Windows NT 6.0; pl; rv:1.9.2.15) Gecko/20110303 Firefox/3.6.15 ( .NET CLR 3.5.30729; .NET4.0E)";
+        internal static string UserAgent = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:10.0) Gecko/20100101 Firefox/10.0";
 
         internal static HtmlDocument Submit(string a_url, Dictionary<string, string> a_parameters)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(a_url);
             request.Method = "POST";
-
+            request.UserAgent = UserAgent;
+                
             string parameters = "";
             foreach (KeyValuePair<string, string> _Parameter in a_parameters)
                 parameters = parameters + (parameters != "" ? "&" : "") + string.Format("{0}={1}", _Parameter.Key, _Parameter.Value);

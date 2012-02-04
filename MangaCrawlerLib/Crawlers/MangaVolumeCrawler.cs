@@ -66,6 +66,15 @@ namespace MangaCrawlerLib
 
             int series_progress = 0;
 
+            Action<int> update = (progress) =>
+            {
+                var result = from serie in series
+                             orderby serie.Item1, serie.Item2
+                             select new SerieInfo(a_info, serie.Item4, serie.Item3);
+
+                a_progress_callback(progress, result.ToArray());
+            };
+
             Parallel.For(0, pages.Count,
                 new ParallelOptions()
                 {
@@ -93,12 +102,8 @@ namespace MangaCrawlerLib
                         series.Add(s);
                     }
 
-                    var result = from serie in series
-                                 orderby serie.Item1, serie.Item2
-                                 select new SerieInfo(a_info, serie.Item4, serie.Item3);
-
                     series_progress++;
-                    a_progress_callback(series_progress * 100 / pages.Count, result);
+                    update(series_progress * 100 / pages.Count);
                 }
                 catch
                 {
@@ -106,6 +111,8 @@ namespace MangaCrawlerLib
                     throw;
                 }
             });
+
+            update(100);
         }
 
         internal override void DownloadChapters(SerieInfo a_info, Action<int, 
@@ -161,6 +168,15 @@ namespace MangaCrawlerLib
 
             int chapters_progress = 0;
 
+            Action<int> update = (progress) =>
+            {
+                var result = from serie in series
+                                orderby serie.Item1, serie.Item2
+                                select new ChapterInfo(a_info, serie.Item4, serie.Item3);
+
+                a_progress_callback(progress, result.ToArray());
+            };
+
             Parallel.For(0, pages.Count,
                 new ParallelOptions()
                 {
@@ -192,12 +208,8 @@ namespace MangaCrawlerLib
                         series.Add(s);
                     }
 
-                    var result = from serie in series
-                                 orderby serie.Item1, serie.Item2
-                                 select new ChapterInfo(a_info, serie.Item4, serie.Item3);
-
                     chapters_progress++;
-                    a_progress_callback(chapters_progress * 100 / pages.Count, result);
+                    update(chapters_progress * 100 / pages.Count);
                 }
                 catch
                 {
@@ -205,6 +217,8 @@ namespace MangaCrawlerLib
                     throw;
                 }
             });
+
+            update(100);
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 

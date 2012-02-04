@@ -1360,6 +1360,8 @@ namespace HtmlAgilityPack
             req = WebRequest.Create(uri) as HttpWebRequest;
             req.Method = method;
             req.UserAgent = UserAgent;
+            req.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
             if (proxy != null)
             {
                 if (creds != null)
@@ -1490,17 +1492,17 @@ namespace HtmlAgilityPack
             Stream s = resp.GetResponseStream();
             Encoding respenc = null;
 
-            if (!resp.ContentEncoding.ToLower().Contains("gzip") && 
-                !resp.ContentEncoding.ToLower().Contains("deflate"))
-            {
+            //if (!resp.ContentEncoding.ToLower().Contains("gzip") && 
+            //    !resp.ContentEncoding.ToLower().Contains("deflate"))
+            //{
                 respenc = !string.IsNullOrEmpty(resp.ContentEncoding) ?
                     Encoding.GetEncoding(resp.ContentEncoding) : null;
-            }
+            //}
 
-            if (resp.ContentEncoding.ToLower().Contains("gzip"))
-                s = new GZipStream(s, CompressionMode.Decompress);
-            if (resp.ContentEncoding.ToLower().Contains("deflate"))
-                s = new DeflateStream(s, CompressionMode.Decompress);
+            //if (resp.ContentEncoding.ToLower().Contains("gzip"))
+            //    s = new GZipStream(s, CompressionMode.Decompress);
+            //if (resp.ContentEncoding.ToLower().Contains("deflate"))
+            //    s = new DeflateStream(s, CompressionMode.Decompress);
             
             if (s != null)
             {

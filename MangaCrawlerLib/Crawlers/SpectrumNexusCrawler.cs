@@ -5,6 +5,7 @@ using System.Text;
 using HtmlAgilityPack;
 using System.Threading;
 using TomanuExtensions;
+using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
@@ -23,14 +24,35 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var series = doc.DocumentNode.SelectNodes("//div[@class='mangaJump']/select/option");
+            var series = doc.DocumentNode.SelectNodes("//div[@class='mangaJump']/select").Elements().ToList();
 
-            var result = from serie in series.Skip(2) 
-                         select new SerieInfo(a_info, 
-                                              GetServerURL() + 
-                                              serie.GetAttributeValue("value", "").
-                                                RemoveFromLeft(1), 
-                                              serie.NextSibling.InnerText);
+
+            for (int i = series.Count - 1; i >= 0; i--)
+            {
+                if (series[i].NodeType != HtmlNodeType.Text)
+                    continue;
+                string str = series[i].InnerText;
+                str = str.Trim();
+                str = str.Replace("\n", "");
+                if (str == "")
+                    series.RemoveAt(i);
+            }
+            
+            var splitter = series.FirstOrDefault(s => s.InnerText.Contains("---"));
+            if (splitter != null)
+            {
+                int splitter_index = series.IndexOf(splitter);
+                series.RemoveRange(0, splitter_index + 1);
+            }
+
+            List<SerieInfo> result = new List<SerieInfo>();
+
+            for (int i = 0; i < series.Count; i += 2)
+            {
+                SerieInfo si = new SerieInfo(a_info,
+                    series[i].GetAttributeValue("value", ""), series[i + 1].InnerText);
+                result.Add(si);
+            }
 
             a_progress_callback(100, result);
         }
@@ -96,7 +118,12 @@ namespace MangaCrawlerLib
 
         internal override string GetChapterURL(ChapterInfo a_info)
         {
-            return a_info.URLPart + "&page=1";
+            return "http://www.thespectrum.net" + a_info.URLPart + "&page=1";
+        }
+
+        internal override string GetSerieURL(SerieInfo a_info)
+        {
+            return "http://www.thespectrum.net" + a_info.URLPart;
         }
 
         internal override string GetServerURL()

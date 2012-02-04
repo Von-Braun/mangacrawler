@@ -36,14 +36,18 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var chapters = doc.DocumentNode.SelectNodes("//div[@class='manga_naruto_title']/a").AsEnumerable();
+            var chapters = doc.DocumentNode.SelectNodes("//div[@id='manga_nareo']/div").Skip(1);
 
-            chapters = from ch in chapters
-                       where ch.ParentNode.ParentNode.ChildNodes[5].InnerText != "Soon!"
-                       select ch;
+            var chs = (from ch in chapters
+                       where !ch.SelectSingleNode("div[3]").InnerText.ToLower().Contains("soon")
+                       select ch.SelectSingleNode("div[1]/a")).ToArray();
 
-            var result = from chapter in chapters 
-                         select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
+            List<ChapterInfo> result = new List<ChapterInfo>();
+            foreach (var ch in chs)
+            {
+                if (ch != null)
+                    result.Add(new ChapterInfo(a_info, ch.GetAttributeValue("href", ""), ch.InnerText));
+            }
 
             a_progress_callback(100, result);
         }
