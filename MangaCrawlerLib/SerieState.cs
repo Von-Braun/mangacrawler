@@ -7,18 +7,20 @@ using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
-    [DebuggerDisplay("ServerItem, {ToString()}")]
-    public class ServerItem
+    [DebuggerDisplay("SerieState, {ToString()}")]
+    public class SerieState
     {
-        public readonly ServerInfo ServerInfo;
-
         private Object m_lock = new Object();
         private int m_progress;
         private ItemState m_state;
 
-        public ServerItem(ServerInfo a_info)
+        public readonly SerieInfo SerieInfo;
+        public readonly ServerState ServerState;
+
+        public SerieState(SerieInfo a_serieInfo, ServerState a_serverItem)
         {
-            ServerInfo = a_info;
+            ServerState = a_serverItem;
+            SerieInfo = a_serieInfo;
             Initialize();
         }
 
@@ -50,7 +52,7 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                return String.Format("name: {0}, state: {1}", ServerInfo.Name, m_state);
+                return String.Format("name: {0}, state: {1}", SerieInfo.Name, m_state);
             }
         }
 

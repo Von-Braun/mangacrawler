@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Diagnostics;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {
@@ -22,7 +23,8 @@ namespace MangaCrawlerLib
             m_serversInfos = (from hf in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
                               where hf.IsClass
                               where !hf.IsAbstract
-                              where typeof(Crawler).IsAssignableFrom(hf)
+                              where hf.IsDerivedFrom(typeof(Crawler))
+                              where hf != typeof(MangaToshokanCrawler)
                               select new ServerInfo((Crawler)Activator.CreateInstance(hf))).ToArray();
         }
 
@@ -106,11 +108,11 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static ServerInfo BleachExile
+        public static ServerInfo MangaAccess
         {
             get
             {
-                return ServersInfos.First(si => si.Name == new BleachExileCrawler().Name);
+                return ServersInfos.First(si => si.Name == new MangaAccessCrawler().Name);
             }
         }
 

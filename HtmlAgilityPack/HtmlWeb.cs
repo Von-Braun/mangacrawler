@@ -13,6 +13,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
 using Microsoft.Win32;
+using System.IO.Compression;
 
 #endregion
 
@@ -1469,10 +1470,6 @@ namespace HtmlAgilityPack
 
             bool html = IsHtmlContent(resp.ContentType);
 
-            Encoding respenc = !string.IsNullOrEmpty(resp.ContentEncoding)
-                                   ? Encoding.GetEncoding(resp.ContentEncoding)
-                                   : null;
-
             if (resp.StatusCode == HttpStatusCode.NotModified)
             {
                 if (UsingCache)
@@ -1489,7 +1486,22 @@ namespace HtmlAgilityPack
                 // this should *never* happen...
                 throw new HtmlWebException("Server has send a NotModifed code, without cache enabled.");
             }
+
             Stream s = resp.GetResponseStream();
+            Encoding respenc = null;
+
+            if (!resp.ContentEncoding.ToLower().Contains("gzip") && 
+                !resp.ContentEncoding.ToLower().Contains("deflate"))
+            {
+                respenc = !string.IsNullOrEmpty(resp.ContentEncoding) ?
+                    Encoding.GetEncoding(resp.ContentEncoding) : null;
+            }
+
+            if (resp.ContentEncoding.ToLower().Contains("gzip"))
+                s = new GZipStream(s, CompressionMode.Decompress);
+            if (resp.ContentEncoding.ToLower().Contains("deflate"))
+                s = new DeflateStream(s, CompressionMode.Decompress);
+            
             if (s != null)
             {
                 if (UsingCache)
