@@ -213,9 +213,9 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
-        public void BleachExileTest()
+        public void MangaAccessTest()
         {
-            var series = TestServer(ServerInfo.BleachExile, 1147);
+            var series = TestServer(ServerInfo.MangaAccess, 1147);
 
             {
                 var chapters = TestSerie(series.First(s => s.Name == "07-Ghost"), 51);
@@ -420,7 +420,7 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
-        public void MangaToshokanTest()
+        public void _closed_MangaToshokanTest()
         {
             var series = TestServer(ServerInfo.MangaToshokan, 1150);
 

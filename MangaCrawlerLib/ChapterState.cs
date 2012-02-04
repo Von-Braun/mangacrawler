@@ -11,8 +11,8 @@ using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {
-    [DebuggerDisplay("ChapterItem, {ToString()}")]
-    public class ChapterItem
+    [DebuggerDisplay("ChapterState, {ToString()}")]
+    public class ChapterState
     {
         private Object m_lock = new Object();
         private CancellationTokenSource m_cancellationTokenSource;
@@ -20,11 +20,11 @@ namespace MangaCrawlerLib
         private ItemState m_state;
 
         public readonly ChapterInfo ChapterInfo;
-        public readonly SerieItem SerieItem;
+        public readonly SerieState SerieState;
 
-        public ChapterItem(ChapterInfo a_chapterInfo, SerieItem a_serieItem)
+        public ChapterState(ChapterInfo a_chapterInfo, SerieState a_serieState)
         {
-            SerieItem = a_serieItem;
+            SerieState = a_serieState;
             ChapterInfo = a_chapterInfo;
             Initialize();
         }

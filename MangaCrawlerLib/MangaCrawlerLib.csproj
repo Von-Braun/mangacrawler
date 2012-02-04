@@ -50,10 +50,10 @@
     <Compile Include="QueueSemaphore.cs" />
     <Compile Include="Crawlers\AnimeSourceCrawler.cs" />
     <Compile Include="ChapterInfo.cs" />
-    <Compile Include="ChapterItem.cs" />
+    <Compile Include="ChapterState.cs" />
     <Compile Include="ConnectionsLimiter.cs" />
     <Compile Include="Crawler.cs" />
-    <Compile Include="Crawlers\BleachExileCrawler.cs" />
+    <Compile Include="Crawlers\MangaAccessCrawler.cs" />
     <Compile Include="DownloadManager.cs" />
     <Compile Include="FileUtils.cs" />
     <Compile Include="HTTPUtils.cs" />
@@ -77,9 +77,9 @@
     <Compile Include="QueueMutex.cs" />
     <Compile Include="CustomTaskScheduler.cs" />
     <Compile Include="SerieInfo.cs" />
-    <Compile Include="SerieItem.cs" />
+    <Compile Include="SerieState.cs" />
     <Compile Include="ServerInfo.cs" />
-    <Compile Include="ServerItem.cs" />
+    <Compile Include="ServerState.cs" />
     <Compile Include="Crawlers\SpectrumNexusCrawler.cs" />
     <Compile Include="Crawlers\StopTazmoCrawler.cs" />
     <Compile Include="Crawlers\UnixMangaCrawler.cs" />

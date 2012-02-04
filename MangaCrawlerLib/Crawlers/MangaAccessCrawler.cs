@@ -8,13 +8,13 @@ using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {
-    internal class BleachExileCrawler : Crawler
+    internal class MangaAccessCrawler : Crawler
     {
         internal override string Name
         {
             get 
             {
-                return "BleachExile";
+                return "Manga Access";
             }
         }
 
@@ -24,7 +24,7 @@ namespace MangaCrawlerLib
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes(
-                "/html/body/table/tr[3]/td/table/tr/td/table/tr[3]/td/table/tr/td/a");
+                "/html/body/div/div[2]/table/tr/td[2]/div[3]/div/div[@class='c_h2b' or @class='c_h2']/a");
 
             var result = from serie in series
                          select new SerieInfo(a_info,
@@ -39,61 +39,53 @@ namespace MangaCrawlerLib
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var chapters = doc.DocumentNode.SelectNodes(
-                "/html/body/table/tr[3]/td/table/tr/td/table/tr[5]/td[2]/div/select[2]/option");
+                "/html/body/div/div[2]/table/tr/td[2]/div[3]/div/div[@class='episode c_h2b' or @class='episode c_h2']/div/a");
 
             var result = from chapter in chapters
-                         select new ChapterInfo(a_info, chapter.GetAttributeValue("value", ""), 
-                             chapter.NextSibling.InnerText);
+                         select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), 
+                             chapter.InnerText);
 
-            a_progress_callback(100, result.Reverse());
+            a_progress_callback(100, result);
         }
 
         internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, CancellationToken a_token)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            var pages = doc.DocumentNode.SelectNodes(
-                "/html/body/table/tr[3]/td/table/tr/td/table/tr[5]/td[2]/select/option");
+            var pages = doc.DocumentNode.SelectNodes("//select[@id='page_switch']/option");
 
             return from page in pages
-                   select new PageInfo(a_info, page.GetAttributeValue("value", ""), pages.IndexOf(page),
+                   select new PageInfo(a_info, page.GetAttributeValue("value", ""), pages.IndexOf(page) + 1,
                        page.NextSibling.InnerText);
         }
 
         internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
-
-            var image = doc.DocumentNode.SelectSingleNode(
-                "/html/body/table/tr[3]/td/table/tr/td/table/tr[3]/td/a/img");
-
-            if (image == null)
-            {
-                image = doc.DocumentNode.SelectSingleNode(
-                    "/html/body/table/tr[3]/td/table/tr/td/table/tr[3]/td/img");
-            }
+            
+            var image = doc.DocumentNode.SelectSingleNode("//div[@id='pic']/img");
 
             return image.GetAttributeValue("src", "");
         }
 
         internal override string GetPageURL(PageInfo a_info)
         {
-            return String.Format("{0}-page-{1}.html", a_info.ChapterInfo.URL.RemoveFromRight(5), a_info.URLPart);
+            return "http://manga-access.com" + a_info.URLPart;
         }
 
         internal override string GetChapterURL(ChapterInfo a_info)
         {
-            return String.Format("{0}-chapter-{1}.html", a_info.SerieInfo.URL.RemoveFromRight(5), a_info.URLPart);
+            return "http://manga-access.com" + a_info.URLPart;
         }
 
         internal override string GetSerieURL(SerieInfo a_info)
         {
-            return "http://manga.bleachexile.com" + a_info.URLPart;
+            return "http://manga-access.com" + a_info.URLPart;
         }
 
         internal override string GetServerURL()
         {
-            return "http://manga.bleachexile.com/series.html";
+            return "http://www.manga-access.com/manga/list";
         }
     }
 }
