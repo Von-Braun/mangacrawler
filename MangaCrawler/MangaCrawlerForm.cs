@@ -20,8 +20,13 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
+    // zlikwidowac haslib, 
+    // moje wlasne xmle
+
     // TODO: wersja to data, ustawiana automatycznie podczas budowania, generowanie jakiegos pliku 
     //       z data.
+    //
+    // TODO: po sciagnieciu nie kasowac taska, dac mozliwosc przejrzenia mangi
     // 
     // TODO: http://www.mangareader.net/alphabetical
     // TODO: http://mangable.com/manga-list/

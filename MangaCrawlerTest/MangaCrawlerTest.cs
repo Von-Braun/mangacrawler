@@ -166,9 +166,27 @@ namespace MangaCrawlerTest
             }
         }
 
-        private string GetHash(MemoryStream stream)
+        private static string ConvertBytesToHexString(byte[] a_in)
         {
-            return HashLib.HashFactory.Crypto.CreateSHA256().ComputeStream(stream).ToString();
+            string hex = BitConverter.ToString(a_in).ToUpper();
+            string[] ar = BitConverter.ToString(a_in).ToUpper().Split(new char[] { '-' });
+            hex = "";
+
+            for (int i = 0; i < ar.Length / 4; i++)
+            {
+                if (i != 0)
+                    hex += "-";
+                hex += ar[i * 4] + ar[i * 4 + 1] + ar[i * 4 + 2] + ar[i * 4 + 3];
+            }
+
+            return hex;
+        }
+
+        private string GetHash(MemoryStream a_stream)
+        {
+            System.Security.Cryptography.SHA256Cng sha256 = new System.Security.Cryptography.SHA256Cng();
+            byte[] hash = sha256.ComputeHash(a_stream);
+            return ConvertBytesToHexString(hash);
         }
 
         [TestMethod]
