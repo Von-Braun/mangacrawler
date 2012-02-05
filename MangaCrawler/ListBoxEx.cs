@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using MangaCrawlerLib;
 using System.Drawing;
-using TomanuExtensions.Controls;
 
 namespace MangaCrawler
 {
