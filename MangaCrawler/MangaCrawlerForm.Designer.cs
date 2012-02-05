@@ -325,7 +325,7 @@
             this.chaptersListBox.MinimumSize = new System.Drawing.Size(164, 4);
             this.chaptersListBox.Name = "chaptersListBox";
             this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.chaptersListBox.VerticalScroll += new MangaCrawler.ListBoxScroll.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
+            this.chaptersListBox.VerticalScroll += new TomanuExtensions.Controls.ListBoxScroll.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
             this.chaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chaptersListBox_DrawItem);
             this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
             this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
@@ -338,7 +338,7 @@
             this.seriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.seriesListBox.FormattingEnabled = true;
             this.seriesListBox.Name = "seriesListBox";
-            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxScroll.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
+            this.seriesListBox.VerticalScroll += new TomanuExtensions.Controls.ListBoxScroll.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
             this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
             this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
             // 
@@ -360,6 +360,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "MangaCrawlerForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MangaCrawlerForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MangaCrawlerForm_FormClosed);
             this.Load += new System.EventHandler(this.MangaShareCrawlerForm_Load);
             this.ResizeEnd += new System.EventHandler(this.MangaCrawlerForm_ResizeEnd);
             this.tabControl1.ResumeLayout(false);

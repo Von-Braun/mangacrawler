@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.Net;
+using TomanuExtensions.Utils;
 
 namespace MangaCrawlerTest
 {
@@ -157,36 +158,13 @@ namespace MangaCrawlerTest
 
             if (!a_ongoing)
             {
-                string hash = GetHash(stream);
+                string hash = Hash.CalculateSHA256(stream, true);
                 if (a_hash != hash)
                 {
                     TestContext.WriteLine("        Hash doestn't match, finded: {0}", hash);
                     m_error = true;
                 }
             }
-        }
-
-        private static string ConvertBytesToHexString(byte[] a_in)
-        {
-            string hex = BitConverter.ToString(a_in).ToUpper();
-            string[] ar = BitConverter.ToString(a_in).ToUpper().Split(new char[] { '-' });
-            hex = "";
-
-            for (int i = 0; i < ar.Length / 4; i++)
-            {
-                if (i != 0)
-                    hex += "-";
-                hex += ar[i * 4] + ar[i * 4 + 1] + ar[i * 4 + 2] + ar[i * 4 + 3];
-            }
-
-            return hex;
-        }
-
-        private string GetHash(MemoryStream a_stream)
-        {
-            System.Security.Cryptography.SHA256Cng sha256 = new System.Security.Cryptography.SHA256Cng();
-            byte[] hash = sha256.ComputeHash(a_stream);
-            return ConvertBytesToHexString(hash);
         }
 
         [TestMethod]

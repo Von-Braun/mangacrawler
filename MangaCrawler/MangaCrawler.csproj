@@ -127,11 +127,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
     <Compile Include="ListBoxEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ListBoxScroll.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ListBoxVisualState.cs" />
@@ -196,14 +192,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\yaxlib\TomanuExtensions\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
-      <Project>{4653B49E-D5A5-43B7-8CED-160E7BC09917}</Project>
-      <Name>TomanuExtensionsLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\yaxlib\YAXLib\YAXLib.csproj">
-      <Project>{F1C4D174-C948-4D18-A125-F6855EF55683}</Project>
-      <Name>YAXLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HtmlAgilityPack\HtmlAgilityPack.csproj">
       <Project>{193BB801-054F-4729-9D5D-FCE1E32594BF}</Project>
       <Name>HtmlAgilityPack</Name>
@@ -211,6 +199,14 @@
     <ProjectReference Include="..\MangaCrawlerLib\MangaCrawlerLib.csproj">
       <Project>{5CE21DA4-9AD1-4D26-B7AE-2CDF133E6ECC}</Project>
       <Name>MangaCrawlerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\yaxlib\TomanuExtensions\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
+      <Project>{4653B49E-D5A5-43B7-8CED-160E7BC09917}</Project>
+      <Name>TomanuExtensionsLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\yaxlib\YAXLib\YAXLib.csproj">
+      <Project>{F1C4D174-C948-4D18-A125-F6855EF55683}</Project>
+      <Name>YAXLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
