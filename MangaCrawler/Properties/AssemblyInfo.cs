@@ -9,7 +9,7 @@ using System.Resources;
 [assembly: AssemblyTitle("Manga Crawler")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("AnuTomSoft")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Manga Crawler")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]

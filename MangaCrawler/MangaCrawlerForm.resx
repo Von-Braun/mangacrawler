@@ -244,7 +244,7 @@
     <value>chaptersListBox</value>
   </data>
   <data name="&gt;&gt;chaptersListBox.Type" xml:space="preserve">
-    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.15.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.16.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;chaptersListBox.Parent" xml:space="preserve">
     <value>panel3</value>
@@ -550,7 +550,7 @@
     <value>seriesListBox</value>
   </data>
   <data name="&gt;&gt;seriesListBox.Type" xml:space="preserve">
-    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.15.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.16.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;seriesListBox.Parent" xml:space="preserve">
     <value>panel2</value>
@@ -667,7 +667,7 @@
     <value>serversListBox</value>
   </data>
   <data name="&gt;&gt;serversListBox.Type" xml:space="preserve">
-    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.15.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.16.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;serversListBox.Parent" xml:space="preserve">
     <value>panel1</value>
@@ -888,11 +888,14 @@
   <data name="Progress.Width" type="System.Int32, mscorlib">
     <value>200</value>
   </data>
+  <data name="tasksGridView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="tasksGridView.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>0, 0</value>
   </data>
   <data name="tasksGridView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>926, 474</value>
+    <value>844, 367</value>
   </data>
   <data name="tasksGridView.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -1019,6 +1022,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>874, 421</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>649, 424</value>

@@ -20,9 +20,6 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    // zlikwidowac haslib, 
-    // moje wlasne xmle
-
     // TODO: wersja to data, ustawiana automatycznie podczas budowania, generowanie jakiegos pliku 
     //       z data.
     //
@@ -496,6 +493,11 @@ namespace MangaCrawler
         {
             if (panel3.Bounds.Right > panel4.ClientRectangle.Right)
                 splitter1.SplitPosition = panel4.Width - panel3.MinimumSize.Width;
+        }
+
+        private void MangaCrawlerForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Settings.Instance.Save();
         }
     }
 }
