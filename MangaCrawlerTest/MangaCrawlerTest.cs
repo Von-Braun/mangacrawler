@@ -770,7 +770,9 @@ namespace MangaCrawlerTest
             Parallel.ForEach(ServerInfo.ServersInfos,
                 new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = ServerInfo.ServersInfos.Count()
+                    MaxDegreeOfParallelism = ServerInfo.ServersInfos.Count(),
+                    TaskScheduler = new CustomTaskScheduler.InnerCustomTaskScheduler(ServerInfo.ServersInfos.Count())
+
                 },
                 server => 
             {
@@ -792,8 +794,8 @@ namespace MangaCrawlerTest
                 Parallel.ForEach(TakeRandom(server.Series, 0.1),
                     new ParallelOptions()
                     {
-                        MaxDegreeOfParallelism =
-                            ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                        MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer, 
+                        TaskScheduler = server.State.Scheduler[Priority.Series]
                     },
                     serie =>
                 {
@@ -815,8 +817,8 @@ namespace MangaCrawlerTest
                     Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
                         new ParallelOptions()
                         {
-                            MaxDegreeOfParallelism =
-                                ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                            MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer,
+                            TaskScheduler = serie.ServerInfo.State.Scheduler[Priority.Chapters]
                         },
                         (chapter) => 
                     {
@@ -838,8 +840,8 @@ namespace MangaCrawlerTest
                         Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), 
                             new ParallelOptions()
                             {
-                                MaxDegreeOfParallelism =
-                                    ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                                MaxDegreeOfParallelism = chapter.SerieInfo.ServerInfo.Crawler.MaxConnectionsPerServer,
+                                TaskScheduler = chapter.SerieInfo.ServerInfo.State.Scheduler[Priority.Pages]
                             }, 
                             (page) =>
                         {

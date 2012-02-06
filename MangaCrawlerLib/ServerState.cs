@@ -4,21 +4,22 @@ using System.Linq;
 using System.Text;
 using MangaCrawlerLib;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MangaCrawlerLib
 {
     [DebuggerDisplay("ServerState, {ToString()}")]
     public class ServerState
     {
-        public readonly ServerInfo ServerInfo;
-
+        private ServerInfo m_server_info;
         private Object m_lock = new Object();
         private int m_progress;
         private ItemState m_state;
+        private CustomTaskScheduler m_scheduler;
 
-        public ServerState(ServerInfo a_info)
+        public ServerState(ServerInfo a_server_info)
         {
-            ServerInfo = a_info;
+            m_server_info = a_server_info;
             Initialize();
         }
 
@@ -50,7 +51,7 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                return String.Format("name: {0}, state: {1}", ServerInfo.Name, m_state);
+                return String.Format("name: {0}, state: {1}", m_server_info.Name, m_state);
             }
         }
 
@@ -65,6 +66,18 @@ namespace MangaCrawlerLib
             }
         }
 
+
+        internal CustomTaskScheduler Scheduler
+        {
+            get
+            {
+                if (m_scheduler == null)
+                    m_scheduler = new CustomTaskScheduler(m_server_info.Crawler.MaxConnectionsPerServer);
+                return m_scheduler;
+            }
+        }
+
+        // TODO: ServerState
         public ItemState State
         {
             get

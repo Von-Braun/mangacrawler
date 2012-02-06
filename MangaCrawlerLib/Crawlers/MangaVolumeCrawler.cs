@@ -78,7 +78,8 @@ namespace MangaCrawlerLib
             Parallel.For(0, pages.Count,
                 new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                    MaxDegreeOfParallelism = MaxConnectionsPerServer,
+                    TaskScheduler = a_info.State.Scheduler[Priority.Series], 
                 },
                 (page, state) =>
             {
@@ -180,7 +181,8 @@ namespace MangaCrawlerLib
             Parallel.For(0, pages.Count,
                 new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                    MaxDegreeOfParallelism = MaxConnectionsPerServer,
+                    TaskScheduler = a_info.ServerInfo.State.Scheduler[Priority.Chapters], 
                 },
                 (page, state) =>
             {
@@ -221,10 +223,9 @@ namespace MangaCrawlerLib
             update(100);
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 
-            CancellationToken a_token)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@id='pages']/option");
 

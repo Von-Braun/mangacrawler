@@ -38,14 +38,14 @@ namespace MangaCrawlerLib
                 s_serverPages.Add(si, new QueuedMutex());
         }
 
-        public static void BeginDownloadPages(ChapterInfo a_info, CancellationToken a_token)
+        public static void BeginDownloadPages(ChapterInfo a_chapter_info)
         {
-            s_serverPages[a_info.SerieInfo.ServerInfo].WaitOne(a_token);
+            s_serverPages[a_chapter_info.SerieInfo.ServerInfo].WaitOne(a_chapter_info.State.Token);
         }
 
-        public static void EndDownloadPages(ChapterInfo a_info)
+        public static void EndDownloadPages(ChapterInfo a_chapter_info)
         {
-            s_serverPages[a_info.SerieInfo.ServerInfo].ReleaseMutex();
+            s_serverPages[a_chapter_info.SerieInfo.ServerInfo].ReleaseMutex();
         }
 
         private static void Aquire(ServerInfo a_info, Priority a_priority)
@@ -58,6 +58,10 @@ namespace MangaCrawlerLib
             Priority a_priority)
         {
             s_connections.WaitOne(a_token, a_priority);
+
+            // Should never block. Scheduler do the job. 
+            Debug.Assert(!s_serverConnections[a_info].Saturated);
+
             s_serverConnections[a_info].WaitOne(a_token, a_priority);
         }
 
@@ -113,18 +117,17 @@ namespace MangaCrawlerLib
             });
         }
 
-        internal static HtmlDocument DownloadDocument(ChapterInfo a_info, 
-            CancellationToken a_token, string a_url = null)
+        internal static HtmlDocument DownloadDocument(ChapterInfo a_info, string a_url = null)
         {
             return DownloadWithRetry(() =>
             {
-                a_token.ThrowIfCancellationRequested();
+                a_info.State.Token.ThrowIfCancellationRequested();
 
-                Aquire(a_info.SerieInfo.ServerInfo, a_token, Priority.Pages);
+                Aquire(a_info.SerieInfo.ServerInfo, a_info.State.Token, Priority.Pages);
 
                 try
                 {
-                    a_token.ThrowIfCancellationRequested();
+                    a_info.State.Token.ThrowIfCancellationRequested();
 
                     if (a_url == null)
                         a_url = a_info.URL;

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MangaCrawlerLib
 {
+   // TODO: GUI ma timer i sie regularnie odswieza co trzeba
     internal class RestrictedFrequencyAction
     {
         private TimeSpan m_update_delta;

@@ -14,6 +14,7 @@ namespace MangaCrawlerLib
 {
     internal class UnixMangaCrawler : Crawler
     {
+        // TODO: potrzebne jeszcze
         internal override int MaxConnectionsPerServer
         {
             get
@@ -75,8 +76,9 @@ namespace MangaCrawlerLib
 
                 Parallel.ForEach(chapters_or_volumes, 
                     new ParallelOptions() 
-                    { 
-                        MaxDegreeOfParallelism = ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                    {
+                        MaxDegreeOfParallelism = MaxConnectionsPerServer,
+                        TaskScheduler = a_info.ServerInfo.State.Scheduler[Priority.Chapters], 
                     },
                     (chapter_or_volume, state) =>
                 {
@@ -133,10 +135,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 
-            CancellationToken a_token)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var pages = doc.DocumentNode.SelectNodes(
                 "/html/body/center/div/div[2]/div/fieldset/ul/label/a");

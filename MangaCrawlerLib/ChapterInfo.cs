@@ -17,6 +17,7 @@ namespace MangaCrawlerLib
         private string m_url;
         private string m_urlPart;
         private SerieInfo m_serieInfo;
+        private ChapterState m_state;
 
         internal ChapterInfo(SerieInfo a_serieInfo, string a_urlPart, string a_title)
         {
@@ -28,6 +29,17 @@ namespace MangaCrawlerLib
             while (m_title.IndexOf("  ") != -1)
                 m_title = m_title.Replace("  ", " ");
             m_title = HttpUtility.HtmlDecode(m_title);
+        }
+
+        public ChapterState State
+        {
+            get
+            {
+                if (m_state == null)
+                    m_state = new ChapterState(this);
+                return m_state;
+            }
+
         }
 
         public SerieInfo SerieInfo
@@ -62,14 +74,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void DownloadPages(CancellationToken a_token)
+        public void DownloadPages()
         {
-            m_pages = Crawler.DownloadPages(this, a_token).ToList();
-        }
-
-        internal void DownloadPages()
-        {
-            DownloadPages(new CancellationTokenSource().Token);
+            m_pages = Crawler.DownloadPages(this).ToList();
         }
 
         public IEnumerable<PageInfo> Pages

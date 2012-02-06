@@ -13,14 +13,15 @@ namespace MangaCrawlerLib
     {
         private string m_url;
         private IEnumerable<SerieInfo> m_series;
+        private ServerState m_state;
 
         internal readonly Crawler Crawler;
 
-        private static readonly ServerInfo[] m_serversInfos;
+        private static readonly ServerInfo[] s_serversInfos;
 
         static ServerInfo()
         {
-            m_serversInfos = (from hf in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
+            s_serversInfos = (from hf in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
                               where hf.IsClass
                               where !hf.IsAbstract
                               where hf.IsDerivedFrom(typeof(Crawler))
@@ -33,11 +34,21 @@ namespace MangaCrawlerLib
             Crawler = a_crawler;
         }
 
+        public ServerState State
+        {
+            get
+            {
+                if (m_state == null)
+                    m_state = new ServerState(this);
+                return m_state;
+            }
+        }
+
         public static IEnumerable<ServerInfo> ServersInfos
         {
             get
             {
-                return from si in m_serversInfos
+                return from si in s_serversInfos
                        select si;
             }
         }
