@@ -20,10 +20,14 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
+    // downloaded item - rozbudowac pamieta, dodac historie ?
+
     // TODO: wersja to data, ustawiana automatycznie podczas budowania, generowanie jakiegos pliku 
     //       z data.
     //
     // TODO: po sciagnieciu nie kasowac taska, dac mozliwosc przejrzenia mangi
+    //
+    // TODO: pamietanie taskow podczas zamkniecia
     // 
     // TODO: http://www.mangareader.net/alphabetical
     // TODO: http://mangable.com/manga-list/
@@ -63,7 +67,7 @@ namespace MangaCrawler
                 Assembly.GetAssembly(GetType()).GetName().Version.Minor);
 
             tasksGridView.AutoGenerateColumns = false;
-            tasksGridView.DataSource = new BindingList<ChapterState>();
+            tasksGridView.DataSource = new BindingList<ChapterInfo>();
 
             DownloadManager.Form = this;
 
@@ -107,17 +111,17 @@ namespace MangaCrawler
 
         private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DownloadManager.SelectedServerState = (ServerState)serversListBox.SelectedItem;
+            DownloadManager.SelectedServerInfo = (ServerInfo)serversListBox.SelectedItem;
         }
 
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DownloadManager.SelectedSerieState = (SerieState)seriesListBox.SelectedItem;
+            DownloadManager.SelectedSerieInfo = (SerieInfo)seriesListBox.SelectedItem;
         }
 
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DownloadManager.SelectedChapterState = (ChapterState)chaptersListBox.SelectedItem;
+            DownloadManager.SelectedChapterInfo = (ChapterInfo)chaptersListBox.SelectedItem;
         }
 
         private void seriesFilterTextBox_TextChanged(object sender, EventArgs e)
@@ -166,12 +170,12 @@ namespace MangaCrawler
             if (chaptersListBox.SelectedItems.Count == 0)
                 System.Media.SystemSounds.Beep.Play();
             else if (IsDirectoryPathValid())
-                DownloadManager.DownloadPages(chaptersListBox.SelectedItems.Cast<ChapterState>());
+                DownloadManager.DownloadPages(chaptersListBox.SelectedItems.Cast<ChapterInfo>());
         }
 
-        private void UpdateTasks(IEnumerable<ChapterState> a_tasks)
+        private void UpdateTasks(IEnumerable<ChapterInfo> a_tasks)
         {
-            BindingList<ChapterState> list = (BindingList<ChapterState>)tasksGridView.DataSource;
+            BindingList<ChapterInfo> list = (BindingList<ChapterInfo>)tasksGridView.DataSource;
 
             var add = (from task in a_tasks
                        where !list.Contains(task)
@@ -228,24 +232,24 @@ namespace MangaCrawler
 
         private void serverURLButton_Click(object sender, EventArgs e)
         {
-            if (DownloadManager.SelectedServerState != null)
-                Process.Start(DownloadManager.SelectedServerState.ServerInfo.URL);
+            if (DownloadManager.SelectedServerInfo != null)
+                Process.Start(DownloadManager.SelectedServerInfo.URL);
             else
                 SystemSounds.Beep.Play();
         }
 
         private void seriesURLButton_Click(object sender, EventArgs e)
         {
-            if (DownloadManager.SelectedSerieState != null)
-                Process.Start(DownloadManager.SelectedSerieState.SerieInfo.URL);
+            if (DownloadManager.SelectedSerieInfo != null)
+                Process.Start(DownloadManager.SelectedSerieInfo.URL);
             else
                 SystemSounds.Beep.Play();
         }
 
         private void chapterURLButton_Click(object sender, EventArgs e)
         {
-            if (DownloadManager.SelectedChapterState != null)
-                Process.Start(DownloadManager.SelectedChapterState.ChapterInfo.URL);
+            if (DownloadManager.SelectedChapterInfo != null)
+                Process.Start(DownloadManager.SelectedChapterInfo.URL);
             else
                 SystemSounds.Beep.Play();
         }
@@ -354,10 +358,10 @@ namespace MangaCrawler
             if (e.Index == -1)
                 return;
 
-            ServerState serverState = (ServerState)serversListBox.Items[e.Index];
-            ListBox_DrawItem(e, serverState.ServerInfo.Name, serverState.State,
-                String.Format("({0}%)", serverState.Progress), String.Format(Resources.Series,
-                serverState.ServerInfo.Series.Count()));
+            ServerInfo server_info = (ServerInfo)serversListBox.Items[e.Index];
+            ListBox_DrawItem(e, server_info.Name, server_info.State.State,
+                String.Format("({0}%)", server_info.State.Progress), String.Format(Resources.Series,
+                server_info.Series.Count()));
         }
 
         private void seriesListBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -365,18 +369,18 @@ namespace MangaCrawler
             if (e.Index == -1)
                 return;
 
-            SerieState serie_state = (SerieState)seriesListBox.Items[e.Index];
-            ListBox_DrawItem(e, serie_state.SerieInfo.Title, serie_state.State,
-                String.Format("({0}%)", serie_state.Progress), String.Format(Resources.Chapters, 
-                serie_state.SerieInfo.Chapters.Count()));
+            SerieInfo serie_info = (SerieInfo)seriesListBox.Items[e.Index];
+            ListBox_DrawItem(e, serie_info.Title, serie_info.State.State,
+                String.Format("({0}%)", serie_info.State.Progress), String.Format(Resources.Chapters, 
+                serie_info.Chapters.Count()));
         }
 
         private void chaptersListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            ChapterState chapter_state = (ChapterState)chaptersListBox.Items[e.Index];
-            ListBox_DrawItem(e, chapter_state.ChapterInfo.Title, chapter_state.State, 
-                String.Format("{0}/{1}", chapter_state.DownloadedPages,
-                chapter_state.ChapterInfo.Pages.Count()), (chapter_state.State == ItemState.Downloaded) ? 
+            ChapterInfo chapter_info = (ChapterInfo)chaptersListBox.Items[e.Index];
+            ListBox_DrawItem(e, chapter_info.Title, chapter_info.State.State, 
+                String.Format("{0}/{1}", chapter_info.State.DownloadedPages,
+                chapter_info.Pages.Count()), (chapter_info.State.State == ItemState.Downloaded) ? 
                 Resources.Downloaded : Resources.DownloadMissingPages);
         }
 

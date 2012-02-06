@@ -49,7 +49,8 @@ namespace MangaCrawlerLib
             Parallel.For(0, pages.Count,
                 new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                    MaxDegreeOfParallelism = MaxConnectionsPerServer,
+                    TaskScheduler = a_info.State.Scheduler[Priority.Series], 
                 },
                 (page, state) =>
                 {
@@ -124,7 +125,8 @@ namespace MangaCrawlerLib
             Parallel.For(0, pages.Count,
                 new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                    MaxDegreeOfParallelism = MaxConnectionsPerServer,
+                    TaskScheduler = a_info.ServerInfo.State.Scheduler[Priority.Chapters], 
                 },
                 (page, state) =>
                 {
@@ -178,10 +180,9 @@ namespace MangaCrawlerLib
             update(100);          
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 
-            CancellationToken a_token)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             List<string> pages = new List<string>();
             pages.Add(a_info.URL);
@@ -200,14 +201,15 @@ namespace MangaCrawlerLib
             Parallel.For(0, pages.Count,
                 new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER
+                    MaxDegreeOfParallelism = MaxConnectionsPerServer,
+                    TaskScheduler = a_info.SerieInfo.ServerInfo.State.Scheduler[Priority.Pages], 
                 },
                 (page, state) =>
                 {
                     try
                     {
                         HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(
-                            a_info, a_token, pages[page]);
+                            a_info, pages[page]);
 
                         var page_pages1 = page_doc.DocumentNode.SelectNodes(
                             "/html/body/table/td");
@@ -241,7 +243,7 @@ namespace MangaCrawlerLib
                             index += 1;
                         }
 
-                        a_token.ThrowIfCancellationRequested();
+                        a_info.State.Token.ThrowIfCancellationRequested();
 
                         pages_progress++;
                     }

@@ -78,10 +78,9 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result.Reverse());
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info, 
-            CancellationToken a_token)
+        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='page']/option");
 

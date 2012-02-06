@@ -13,14 +13,11 @@ namespace MangaCrawlerLib
         private Object m_lock = new Object();
         private int m_progress;
         private ItemState m_state;
+        private SerieInfo m_serie_info;
 
-        public readonly SerieInfo SerieInfo;
-        public readonly ServerState ServerState;
-
-        public SerieState(SerieInfo a_serieInfo, ServerState a_serverItem)
+        public SerieState(SerieInfo a_serie_info)
         {
-            ServerState = a_serverItem;
-            SerieInfo = a_serieInfo;
+            m_serie_info = a_serie_info;
             Initialize();
         }
 
@@ -52,7 +49,7 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                return String.Format("name: {0}, state: {1}", SerieInfo.Title, m_state);
+                return String.Format("name: {0}, state: {1}", m_serie_info.Title, m_state);
             }
         }
 

@@ -15,6 +15,7 @@ namespace MangaCrawlerLib
         private string m_urlPart;
         private IEnumerable<ChapterInfo> m_chapters;
         private ServerInfo m_serverInfo;
+        private SerieState m_state;
 
         internal SerieInfo(ServerInfo a_serverInfo, string a_urlPart, string a_title)
         {
@@ -26,6 +27,16 @@ namespace MangaCrawlerLib
             while (m_title.IndexOf("  ") != -1)
                 m_title = m_title.Replace("  ", " ");
             m_title = HttpUtility.HtmlDecode(m_title);
+        }
+
+        public SerieState State
+        {
+            get
+            {
+                if (m_state == null)
+                    m_state = new SerieState(this);
+                return m_state;
+            }
         }
 
         internal Crawler Crawler

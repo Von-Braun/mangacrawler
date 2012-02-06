@@ -12,11 +12,19 @@ namespace MangaCrawlerLib
         private OrderedList<P, ManualResetEvent> m_queue =
             new OrderedList<P, ManualResetEvent>();
         private int m_working = 0;
-        private readonly int m_count;
+        private int m_count;
 
         public QueuedSemaphore(int a_count)
         {
             m_count = a_count;
+        }
+
+        public bool Saturated
+        {
+            get
+            {
+                return m_working == m_count;
+            }
         }
 
         public void WaitOne(CancellationToken a_token, P a_priority)
