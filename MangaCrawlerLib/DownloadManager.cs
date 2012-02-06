@@ -32,24 +32,11 @@ namespace MangaCrawlerLib
 
         public static Form Form;
 
-        public static event Action<IEnumerable<ChapterInfo>> TasksChanged;
-
-        public static Func<string> GetSeriesFilter;
         public static Func<string> GetDirectoryPath;
         public static Func<bool> UseCBZ;
 
-        public static Func<VisualState> GetServersVisualState;
         public static Func<VisualState> GetSeriesVisualState;
         public static Func<VisualState > GetChaptersVisualState;
-
-        private static RestrictedFrequencyAction SeriesUpdate = 
-            new RestrictedFrequencyAction(250);
-        private static RestrictedFrequencyAction ChaptersUpdate =
-            new RestrictedFrequencyAction(250);
-        private static RestrictedFrequencyAction TasksUpdate =
-            new RestrictedFrequencyAction(250);
-        private static RestrictedFrequencyAction ServersUpdate =
-            new RestrictedFrequencyAction(250);
 
         static DownloadManager()
         {
@@ -62,17 +49,17 @@ namespace MangaCrawlerLib
         {
             get
             {
-                if (SelectedServerInfo == null)
+                if (SelectedServer == null)
                     return GetSeriesVisualState();
-                if (!s_series_visual_states.ContainsKey(SelectedServerInfo))
+                if (!s_series_visual_states.ContainsKey(SelectedServer))
                     return GetSeriesVisualState();
 
-                return s_series_visual_states[SelectedServerInfo];
+                return s_series_visual_states[SelectedServer];
             }
             set
             {
-                if (SelectedServerInfo != null)
-                    s_series_visual_states[SelectedServerInfo] = value;
+                if (SelectedServer != null)
+                    s_series_visual_states[SelectedServer] = value;
             }
         }
 
@@ -80,43 +67,42 @@ namespace MangaCrawlerLib
         {
             get
             {
-                if (SelectedSerieInfo == null)
+                if (SelectedSerie == null)
                     return GetChaptersVisualState();
-                if (!s_chapters_visual_states.ContainsKey(SelectedSerieInfo))
+                if (!s_chapters_visual_states.ContainsKey(SelectedSerie))
                     return GetChaptersVisualState();
 
-                return s_chapters_visual_states[SelectedSerieInfo];
+                return s_chapters_visual_states[SelectedSerie];
             }
             set
             {
-                if (SelectedSerieInfo != null)
-                    s_chapters_visual_states[SelectedSerieInfo] = value;
+                if (SelectedSerie != null)
+                    s_chapters_visual_states[SelectedSerie] = value;
             }
         }
 
-        public static SerieInfo SelectedSerieInfo
+        public static SerieInfo SelectedSerie
         {
             get
             {
-                if (SelectedServerInfo == null)
+                if (SelectedServer == null)
                     return null;
 
-                if (!s_selected_series.ContainsKey(SelectedServerInfo))
+                if (!s_selected_series.ContainsKey(SelectedServer))
                     return null;
 
-                return s_selected_series[SelectedServerInfo];
+                return s_selected_series[SelectedServer];
             }
             set
             {
                 SeriesVisualState = GetSeriesVisualState();
-                s_selected_series[SelectedServerInfo] = value;
+                s_selected_series[SelectedServer] = value;
 
-                if (!DownloadChapters(SelectedSerieInfo))
-                    OnChaptersChanged(SelectedSerieInfo);
+                DownloadChapters(SelectedSerie);
             }
         }
 
-        public static ServerInfo SelectedServerInfo
+        public static ServerInfo SelectedServer
         {
             get
             {
@@ -125,116 +111,59 @@ namespace MangaCrawlerLib
             set
             {
                 s_selected_server_info = value;
-
-                if (!DownloadSeries(s_selected_server_info))
-                    OnSeriesChanged(s_selected_server_info);
+                DownloadSeries(s_selected_server_info);
             }
         }
 
-        public static ChapterInfo SelectedChapterInfo
+        public static ChapterInfo SelectedChapter
         {
             get
             {
-                if (SelectedSerieInfo == null)
+                if (SelectedSerie == null)
                     return null;
 
-                if (!s_selected_chapters.ContainsKey(SelectedSerieInfo))
+                if (!s_selected_chapters.ContainsKey(SelectedSerie))
                     return null;
 
-                return s_selected_chapters[SelectedSerieInfo];
+                return s_selected_chapters[SelectedSerie];
             }
             set
             {
                 ChaptersVisualState = GetChaptersVisualState();
 
-                if (SelectedSerieInfo != null)
-                    s_selected_chapters[SelectedSerieInfo] = value;
+                if (SelectedSerie != null)
+                    s_selected_chapters[SelectedSerie] = value;
             }
         }
 
-        private static bool DownloadSeries(ServerInfo a_server_info)
+        private static void DownloadSeries(ServerInfo a_server_info)
         {
             if (a_server_info == null)
-                return false;
+                return;
             if (!a_server_info.DownloadRequired)
-                return false;
-
-            a_server_info.InitializeDownload();
-            a_server_info.State = ItemState.Downloading;
+                return;
 
             Task task = new Task(() =>
             {
-                try
-                {
-                    a_server_info.DownloadSeries((progress) =>
-                    {
-                        a_server_info.DownloadProgress = progress;
-
-                        if (progress != 100)
-                            OnServersChanged();
-                    });
-
-                    a_server_info.State = ItemState.Downloaded;
-                }
-                catch (ObjectDisposedException)
-                {
-                }
-                catch (Exception)
-                {
-                    a_server_info.State = ItemState.Error;
-                }
-
-                OnServersChanged();
+                a_server_info.DownloadSeries();
             });
 
             task.Start(a_server_info.Scheduler[Priority.Series]);
-
-            OnServersChanged();
-
-            return true;
         }
 
-        private static bool DownloadChapters(SerieInfo a_serie_info)
+        private static void DownloadChapters(SerieInfo a_serie_info)
         {
             if (a_serie_info == null)
-                return false;
+                return;
             if (!a_serie_info.DownloadRequired)
-                return false;
-
-            a_serie_info.InitializeDownload();
-            a_serie_info.State = ItemState.Downloading;
+                return;
 
             Task task = new Task(() =>
             {
-                try
-                {
-                    a_serie_info.DownloadChapters((progress) =>
-                    {
-                        a_serie_info.DownloadProgress = progress;
-
-                        if (progress != 100)
-                            OnSeriesChanged(a_serie_info.ServerInfo);
-                    });
-
-                    a_serie_info.State = ItemState.Downloaded;
-                }
-                catch (ObjectDisposedException)
-                {
-                }
-                catch (Exception)
-                {
-                    a_serie_info.State = ItemState.Error;
-                }
-
-                OnSeriesChanged(a_serie_info.ServerInfo);
-
+                a_serie_info.DownloadChapters();
             });
 
             task.Start(a_serie_info.ServerInfo.Scheduler[Priority.Chapters]);
-
-            OnSeriesChanged(a_serie_info.ServerInfo);
-
-            return true;
         }
 
         public static void DownloadPages(IEnumerable<ChapterInfo> a_chapter_infos)
@@ -266,7 +195,6 @@ namespace MangaCrawlerLib
                     catch (OperationCanceledException)
                     {
                         chapter_info.FinishDownload(true);
-                        OnChaptersChanged(chapter_info.SerieInfo);
                         return;
                     }
 
@@ -279,7 +207,6 @@ namespace MangaCrawlerLib
                         chapter_info.Token.ThrowIfCancellationRequested();
 
                         chapter_info.State = ItemState.Downloading;
-                        OnChaptersChanged(chapter_info.SerieInfo);
 
                         chapter_info.DownloadPages();
 
@@ -306,20 +233,13 @@ namespace MangaCrawlerLib
                                 state.Break();
                                 throw;
                             }
-
-                            OnChaptersChanged(chapter_info.SerieInfo);
                         });
 
-                        if (!chapter_info.Token.IsCancellationRequested)
-                        {
-                            if (cbz)
-                            {
-                                chapter_info.State = ItemState.Zipping;
-                                OnChaptersChanged(chapter_info.SerieInfo);
-
-                                CreateCBZ(chapter_info);
-                            }
-                        }
+                        chapter_info.Token.ThrowIfCancellationRequested();
+                        
+                        if (cbz)
+                            CreateCBZ(chapter_info);
+                        
 
                         chapter_info.FinishDownload(a_error: false);
                     }
@@ -331,19 +251,16 @@ namespace MangaCrawlerLib
                     {
                         ConnectionsLimiter.EndDownloadPages(chapter_info);
                     }
-
-                    OnChaptersChanged(chapter_info.SerieInfo);
-
                 });
 
                 task.Start(chapter_info.SerieInfo.ServerInfo.Scheduler[Priority.Pages]);
-
-                OnChaptersChanged(chapter_info.SerieInfo);
             }
         }
 
         private static void CreateCBZ(ChapterInfo a_chapter_info)
         {
+            a_chapter_info.State = ItemState.Zipping;
+
             var dir = new DirectoryInfo(a_chapter_info.Pages.First().GetImageFilePath()).Parent;
 
             var zip_file = dir.FullName + ".cbz";
@@ -405,115 +322,27 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static void UpdateVisuals()
+        public static IEnumerable<ServerInfo> Servers
         {
-            OnServersChanged();
-        }
-
-        private static void OnServersChanged()
-        {
-            Action update = () =>
+            get
             {
-                TryInvoke(() =>
-                {
-                    if (!Form.IsDisposed)
-                        GetServersVisualState().ReloadItems(s_servers);
-                });
-
-                OnSeriesChanged();
-            };
-
-            ServersUpdate.Perform(update);
-        }
-
-        private static void OnSeriesChanged(ServerInfo a_server_info = null)
-        {
-            if (a_server_info != null)
-            {
-                if (SelectedServerInfo != a_server_info)
-                    return;
+                return s_servers;
             }
-
-            Action update = () =>
-            {
-                TryInvoke(() =>
-                {
-                    SerieInfo[] ar = new SerieInfo[0];
-
-                    if (s_selected_server_info != null)
-                    {
-                        string filter = GetSeriesFilter().ToLower();
-                        ar = (from serie in s_selected_server_info.Series
-                              where serie.Title.ToLower().IndexOf(filter) != -1
-                              select serie).ToArray();
-                    }
-
-                    if (!Form.IsDisposed)
-                        SeriesVisualState.ReloadItems(ar);
-                });
-
-                OnChaptersChanged();
-            };
-
-            SeriesUpdate.Perform(update);
         }
 
-        private static void OnChaptersChanged(SerieInfo a_serie_info = null)
+        public static IEnumerable<ChapterInfo> Tasks
         {
-            Action update = () =>
+            get
             {
-                TryInvoke(() =>
+                lock (s_tasks)
                 {
-                    ChapterInfo[] ar = new ChapterInfo[0];
+                    s_tasks.RemoveRange(from ch in s_tasks
+                                        where !ch.IsTask
+                                        select ch);
+                }
 
-                    // TODO: nie da sie jakos prosciej, reloaditems jesli sa, clear jesli nie ma
-                    if (SeriesVisualState.ItemSelected)
-                    {
-                        if (SelectedSerieInfo != null)
-                        {
-                            ar = (from ch in SelectedSerieInfo.Chapters
-                                  select ch).ToArray();
-                        }
-                    }
-
-                    if (!Form.IsDisposed)
-                        ChaptersVisualState.ReloadItems(ar);
-                });
-            };
-
-            if ((a_serie_info == null) || (SelectedSerieInfo == a_serie_info))
-                ChaptersUpdate.Perform(update);
-
-            OnTasksChanged();
-
-        }
-
-        private static void OnTasksChanged()
-        {
-            if (TasksChanged == null)
-                return;
-
-            Action update = () =>
-            {
-                TryInvoke(() =>
-                {
-                    if (!Form.IsDisposed)
-                    {
-                        lock (s_tasks)
-                        {
-                            s_tasks.RemoveRange(from ch in s_tasks
-                                                where !ch.IsTask
-                                                select ch);
-                        }
-
-                        TasksChanged(from ch in s_tasks
-                                     where ch.IsTask
-                                     select ch);
-                    }
-                });
-            };
-
-            TasksUpdate.Perform(update);
+                return s_tasks;
+            }
         }
 
         public static bool DownloadingPages
@@ -525,12 +354,6 @@ namespace MangaCrawlerLib
                     return s_tasks.Any(ch => ch.State == ItemState.Downloading);
                 }
             }
-        }
-
-        public static void DeleteTask(ChapterInfo a_chapter_info)
-        {
-            a_chapter_info.DeleteTask();
-            OnTasksChanged();
         }
     }
 }

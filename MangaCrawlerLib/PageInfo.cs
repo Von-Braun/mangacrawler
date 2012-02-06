@@ -10,7 +10,6 @@ using System.Threading;
 
 namespace MangaCrawlerLib
 {
-    [DebuggerDisplay("PageInfo, {ToString()}")]
     public class PageInfo
     {
         private string m_imageURL;
@@ -56,24 +55,16 @@ namespace MangaCrawlerLib
             get
             {
                 if (m_url == null)
-                    m_url = HttpUtility.HtmlDecode(Crawler.GetPageURL(this));
+                    m_url = HttpUtility.HtmlDecode(ChapterInfo.SerieInfo.ServerInfo.Crawler.GetPageURL(this));
 
                 return m_url;
-            }
-        }
-
-        internal Crawler Crawler
-        {
-            get
-            {
-                return ChapterInfo.Crawler;
             }
         }
 
         internal string GetImageURL(CancellationToken a_token)
         {
             if (m_imageURL == null)
-                m_imageURL = HttpUtility.HtmlDecode(Crawler.GetImageURL(this, a_token));
+                m_imageURL = HttpUtility.HtmlDecode(ChapterInfo.SerieInfo.ServerInfo.Crawler.GetImageURL(this, a_token));
 
             return m_imageURL;
         }

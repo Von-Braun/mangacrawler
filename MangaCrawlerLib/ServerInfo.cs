@@ -5,20 +5,19 @@ using System.Text;
 using System.Web;
 using System.Diagnostics;
 using TomanuExtensions;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
-    [DebuggerDisplay("ServerInfo, {ToString()}")]
     public class ServerInfo
     {
         private string m_url;
         private IEnumerable<SerieInfo> m_series;
-
         private Object m_lock = new Object();
-        private int m_progress;
-        private ItemState m_state;
-        private CustomTaskScheduler m_scheduler;
 
+        public int DownloadProgress { get; private set; }
+        public ItemState State { get; private set; }
+        internal CustomTaskScheduler Scheduler { get; private set; }
         internal Crawler Crawler { get; private set; }
 
         private static readonly ServerInfo[] s_serversInfos;
@@ -36,7 +35,7 @@ namespace MangaCrawlerLib
         internal ServerInfo(Crawler a_crawler)
         {
             Crawler = a_crawler;
-            InitializeDownload();
+            Scheduler = new CustomTaskScheduler(Crawler.MaxConnectionsPerServer);
         }
 
         public static IEnumerable<ServerInfo> ServersInfos
@@ -72,30 +71,40 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void DownloadSeries(Action<int> a_progress_callback = null)
+        public void DownloadSeries()
         {
-            if (a_progress_callback != null)
-                a_progress_callback(0);
-
-            Crawler.DownloadSeries(this, (progress, result) =>
+            try
             {
-                var series = result.ToList();
+                DownloadProgress = 0;
+                State = ItemState.Downloading;
 
-                if (m_series != null)
+                Crawler.DownloadSeries(this, (progress, result) =>
                 {
-                    foreach (var serie in m_series)
+                    var series = result.ToList();
+
+                    if (m_series != null)
                     {
-                        var el = series.Find(s => (s.Title == serie.Title) && (s.URL == serie.URL));
-                        if (el != null)
-                            series[series.IndexOf(el)] = serie;
+                        foreach (var serie in m_series)
+                        {
+                            var el = series.Find(s => (s.Title == serie.Title) && (s.URL == serie.URL));
+                            if (el != null)
+                                series[series.IndexOf(el)] = serie;
+                        }
                     }
-                }
 
-                m_series = series;
+                    m_series = series;
+                    DownloadProgress = progress;
+                });
 
-                if (a_progress_callback != null)
-                    a_progress_callback(progress);
-            });
+                State = ItemState.Downloaded;
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+            catch (Exception)
+            {
+                State = ItemState.Error;
+            }
         }
 
         public string Name
@@ -207,63 +216,13 @@ namespace MangaCrawlerLib
             return Name;
         }
 
-        public int DownloadProgress
-        {
-            get
-            {
-                return m_progress;
-            }
-            set
-            {
-                lock (m_lock)
-                {
-                    m_progress = value;
-                }
-            }
-        }
-
-        public void InitializeDownload()
-        {
-            lock (m_lock)
-            {
-                m_progress = 0;
-                m_state = ItemState.Initial;
-            }
-        }
-
         public bool DownloadRequired
         {
             get
             {
                 lock (m_lock)
                 {
-                    return (m_state == ItemState.Error) || (m_state == ItemState.Initial);
-                }
-            }
-        }
-
-
-        internal CustomTaskScheduler Scheduler
-        {
-            get
-            {
-                if (m_scheduler == null)
-                    m_scheduler = new CustomTaskScheduler(Crawler.MaxConnectionsPerServer);
-                return m_scheduler;
-            }
-        }
-
-        public ItemState State
-        {
-            get
-            {
-                return m_state;
-            }
-            set
-            {
-                lock (m_lock)
-                {
-                    m_state = value;
+                    return (State == ItemState.Error) || (State == ItemState.Initial);
                 }
             }
         }
