@@ -263,7 +263,7 @@ namespace MangaCrawler
         {
             if ((e.ColumnIndex == 0) && (e.RowIndex >= 0))
             {
-                BindingList<ChapterState> list = (BindingList<ChapterState>)tasksGridView.DataSource;
+                BindingList<ChapterInfo> list = (BindingList<ChapterInfo>)tasksGridView.DataSource;
                 DownloadManager.DeleteTask(list[e.RowIndex]);
             }
         }
@@ -359,8 +359,8 @@ namespace MangaCrawler
                 return;
 
             ServerInfo server_info = (ServerInfo)serversListBox.Items[e.Index];
-            ListBox_DrawItem(e, server_info.Name, server_info.State.State,
-                String.Format("({0}%)", server_info.State.Progress), String.Format(Resources.Series,
+            ListBox_DrawItem(e, server_info.Name, server_info.State,
+                String.Format("({0}%)", server_info.DownloadProgress), String.Format(Resources.Series,
                 server_info.Series.Count()));
         }
 
@@ -370,17 +370,17 @@ namespace MangaCrawler
                 return;
 
             SerieInfo serie_info = (SerieInfo)seriesListBox.Items[e.Index];
-            ListBox_DrawItem(e, serie_info.Title, serie_info.State.State,
-                String.Format("({0}%)", serie_info.State.Progress), String.Format(Resources.Chapters, 
+            ListBox_DrawItem(e, serie_info.Title, serie_info.State,
+                String.Format("({0}%)", serie_info.DownloadProgress), String.Format(Resources.Chapters, 
                 serie_info.Chapters.Count()));
         }
 
         private void chaptersListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             ChapterInfo chapter_info = (ChapterInfo)chaptersListBox.Items[e.Index];
-            ListBox_DrawItem(e, chapter_info.Title, chapter_info.State.State, 
-                String.Format("{0}/{1}", chapter_info.State.DownloadedPages,
-                chapter_info.Pages.Count()), (chapter_info.State.State == ItemState.Downloaded) ? 
+            ListBox_DrawItem(e, chapter_info.Title, chapter_info.State, 
+                String.Format("{0}/{1}", chapter_info.DownloadedPages,
+                chapter_info.Pages.Count()), (chapter_info.State == ItemState.Downloaded) ? 
                 Resources.Downloaded : Resources.DownloadMissingPages);
         }
 

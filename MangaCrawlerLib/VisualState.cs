@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
-    public abstract class VisualState // TODO T tutaj pzeniesc, wypsecjalizowac klasy
+    public abstract class VisualState
     {
         protected abstract void Clear();
         public abstract void Restore();

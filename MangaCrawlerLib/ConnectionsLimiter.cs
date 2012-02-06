@@ -40,7 +40,7 @@ namespace MangaCrawlerLib
 
         public static void BeginDownloadPages(ChapterInfo a_chapter_info)
         {
-            s_serverPages[a_chapter_info.SerieInfo.ServerInfo].WaitOne(a_chapter_info.State.Token);
+            s_serverPages[a_chapter_info.SerieInfo.ServerInfo].WaitOne(a_chapter_info.Token);
         }
 
         public static void EndDownloadPages(ChapterInfo a_chapter_info)
@@ -121,13 +121,13 @@ namespace MangaCrawlerLib
         {
             return DownloadWithRetry(() =>
             {
-                a_info.State.Token.ThrowIfCancellationRequested();
+                a_info.Token.ThrowIfCancellationRequested();
 
-                Aquire(a_info.SerieInfo.ServerInfo, a_info.State.Token, Priority.Pages);
+                Aquire(a_info.SerieInfo.ServerInfo, a_info.Token, Priority.Pages);
 
                 try
                 {
-                    a_info.State.Token.ThrowIfCancellationRequested();
+                    a_info.Token.ThrowIfCancellationRequested();
 
                     if (a_url == null)
                         a_url = a_info.URL;
