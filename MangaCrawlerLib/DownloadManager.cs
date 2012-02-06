@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Collections.Concurrent;
 using HtmlAgilityPack;
 using TomanuExtensions;
+using System.Collections.ObjectModel;
 
 namespace MangaCrawlerLib
 {
@@ -35,11 +36,10 @@ namespace MangaCrawlerLib
         private static ConcurrentDictionary<SerieInfo, SerieState> s_seriesMap =
             new ConcurrentDictionary<SerieInfo, SerieState>();
         private static List<ServerState> s_servers = new List<ServerState>();
-        private static List<ChapterState> s_tasks = new List<ChapterState>();
 
         public static Form Form;
 
-        public static event Action<IEnumerable<ChapterState>> TasksChanged;
+        public static event Action<ReadOnlyCollection<ChapterState>> TasksChanged;
 
         public static Func<string> GetSeriesFilter;
         public static Func<string> GetDirectoryPath;
@@ -472,7 +472,7 @@ namespace MangaCrawlerLib
                     {
                         string filter = GetSeriesFilter().ToLower();
                         list = (from serie in s_selectedServerState.ServerInfo.Series
-                                where serie.Name.ToLower().IndexOf(filter) != -1
+                                where serie.Title.ToLower().IndexOf(filter) != -1
                                 where s_seriesMap.ContainsKey(serie) // moze zostac wywolane poprzez s_seriesUpdateLimiter, moga istniec serie w Series nie dodane do s_series.
                                 select s_seriesMap[serie]).ToList();
                     }
@@ -525,25 +525,13 @@ namespace MangaCrawlerLib
             {
                 TryInvoke(() =>
                 {
-                    var all_tasks = (from ch in s_chaptersMap.Values
-                                        where ch.IsTask
-                                        select ch).ToList();
-
-                    var add = (from task in all_tasks
-                               where !s_tasks.Contains(task)
-                               select task).ToList();
-
-                    var remove = (from task in s_tasks
-                                  where !all_tasks.Contains(task)
-                                  select task).ToList();
-
-                    foreach (var el in add)
-                        s_tasks.Add(el);
-                    foreach (var el in remove)
-                        s_tasks.Remove(el);
-
                     if (!Form.IsDisposed)
-                        TasksChanged(s_tasks.AsReadOnly());
+                    {
+                        var tasks = from ch in s_chaptersMap.Values
+                                    where ch.IsTask
+                                    select ch;
+                        TasksChanged(tasks.ToList().AsReadOnly());
+                    }
                 });
             };
 

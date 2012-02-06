@@ -61,7 +61,7 @@ namespace MangaCrawlerLib
                     "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
 
                 a_progress_callback(100, 
-                    new [] { new ChapterInfo(a_info, a_info.URL, a_info.Name) } );
+                    new [] { new ChapterInfo(a_info, a_info.URL, a_info.Title) } );
             }
             else
             {

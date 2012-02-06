@@ -57,7 +57,7 @@ namespace MangaCrawlerLib
                 lock (m_lock)
                 {
                     return String.Format(Resources.DownloadingChapterInfo,
-                        ChapterInfo.SerieInfo.ServerInfo.Name, ChapterInfo.SerieInfo.Name, ChapterInfo.Name);
+                        ChapterInfo.SerieInfo.ServerInfo.Name, ChapterInfo.SerieInfo.Title, ChapterInfo.Title);
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                return String.Format("name: {0}, state: {1}", ChapterInfo.Name, m_state);
+                return String.Format("name: {0}, state: {1}", ChapterInfo.Title, m_state);
             }
         }
 
@@ -194,9 +194,9 @@ namespace MangaCrawlerLib
                    Path.DirectorySeparatorChar +
                    FileUtils.RemoveInvalidFileDirectoryCharacters(ChapterInfo.SerieInfo.ServerInfo.Name) +
                    Path.DirectorySeparatorChar +
-                   FileUtils.RemoveInvalidFileDirectoryCharacters(ChapterInfo.SerieInfo.Name) +
+                   FileUtils.RemoveInvalidFileDirectoryCharacters(ChapterInfo.SerieInfo.Title) +
                    Path.DirectorySeparatorChar +
-                   FileUtils.RemoveInvalidFileDirectoryCharacters(ChapterInfo.Name) +
+                   FileUtils.RemoveInvalidFileDirectoryCharacters(ChapterInfo.Title) +
                    Path.DirectorySeparatorChar;
         }
     }

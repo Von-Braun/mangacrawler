@@ -10,22 +10,22 @@ namespace MangaCrawlerLib
     [DebuggerDisplay("SerieInfo, {ToString()}")]
     public class SerieInfo
     {
-        private string m_name;
+        private string m_title;
         private string m_url;
         private string m_urlPart;
         private IEnumerable<ChapterInfo> m_chapters;
         private ServerInfo m_serverInfo;
 
-        internal SerieInfo(ServerInfo a_serverInfo, string a_urlPart, string a_name)
+        internal SerieInfo(ServerInfo a_serverInfo, string a_urlPart, string a_title)
         {
             m_urlPart = a_urlPart;
             m_serverInfo = a_serverInfo;
 
-            m_name = a_name.Trim();
-            m_name = m_name.Replace("\t", " ");
-            while (m_name.IndexOf("  ") != -1)
-                m_name = m_name.Replace("  ", " ");
-            m_name = HttpUtility.HtmlDecode(m_name);
+            m_title = a_title.Trim();
+            m_title = m_title.Replace("\t", " ");
+            while (m_title.IndexOf("  ") != -1)
+                m_title = m_title.Replace("  ", " ");
+            m_title = HttpUtility.HtmlDecode(m_title);
         }
 
         internal Crawler Crawler
@@ -76,11 +76,11 @@ namespace MangaCrawlerLib
             }
         }
 
-        public string Name
+        public string Title
         {
             get
             {
-                return m_name;
+                return m_title;
             }
         }
 
@@ -97,7 +97,7 @@ namespace MangaCrawlerLib
                 {
                     foreach (var chapter in m_chapters)
                     {
-                        var el = chapters.Find(s => (s.Name == chapter.Name) && (s.URL == chapter.URL));
+                        var el = chapters.Find(s => (s.Title == chapter.Title) && (s.URL == chapter.URL));
                         if (el != null)
                             chapters[chapters.IndexOf(el)] = chapter;
                     }
@@ -112,7 +112,7 @@ namespace MangaCrawlerLib
 
         public override string ToString()
         {
-            return String.Format("{0} - {1}", ServerInfo.Name, Name);
+            return String.Format("{0} - {1}", ServerInfo.Name, Title);
         }
     }
 }
