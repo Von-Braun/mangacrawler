@@ -12,22 +12,22 @@ namespace MangaCrawlerLib
     [DebuggerDisplay("ChapterInfo, {ToString()}")]
     public class ChapterInfo
     {
-        private string m_name;
+        private string m_title;
         private List<PageInfo> m_pages;
         private string m_url;
         private string m_urlPart;
         private SerieInfo m_serieInfo;
 
-        internal ChapterInfo(SerieInfo a_serieInfo, string a_urlPart, string a_name)
+        internal ChapterInfo(SerieInfo a_serieInfo, string a_urlPart, string a_title)
         {
             m_serieInfo = a_serieInfo;
             m_urlPart = a_urlPart;
 
-            m_name = a_name.Trim();
-            m_name = m_name.Replace("\t", " ");
-            while (m_name.IndexOf("  ") != -1)
-                m_name = m_name.Replace("  ", " ");
-            m_name = HttpUtility.HtmlDecode(m_name);
+            m_title = a_title.Trim();
+            m_title = m_title.Replace("\t", " ");
+            while (m_title.IndexOf("  ") != -1)
+                m_title = m_title.Replace("  ", " ");
+            m_title = HttpUtility.HtmlDecode(m_title);
         }
 
         public SerieInfo SerieInfo
@@ -54,11 +54,11 @@ namespace MangaCrawlerLib
             }
         }
 
-        public string Name
+        public string Title
         {
             get
             {
-                return m_name;
+                return m_title;
             }
         }
 
@@ -98,7 +98,7 @@ namespace MangaCrawlerLib
 
         public override string ToString()
         {
-            return String.Format("{0} - {1}", SerieInfo, Name);
+            return String.Format("{0} - {1}", SerieInfo, Title);
         }
     }
 }

@@ -366,7 +366,7 @@ namespace MangaCrawler
                 return;
 
             SerieState serie_state = (SerieState)seriesListBox.Items[e.Index];
-            ListBox_DrawItem(e, serie_state.SerieInfo.Name, serie_state.State,
+            ListBox_DrawItem(e, serie_state.SerieInfo.Title, serie_state.State,
                 String.Format("({0}%)", serie_state.Progress), String.Format(Resources.Chapters, 
                 serie_state.SerieInfo.Chapters.Count()));
         }
@@ -374,7 +374,7 @@ namespace MangaCrawler
         private void chaptersListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             ChapterState chapter_state = (ChapterState)chaptersListBox.Items[e.Index];
-            ListBox_DrawItem(e, chapter_state.ChapterInfo.Name, chapter_state.State, 
+            ListBox_DrawItem(e, chapter_state.ChapterInfo.Title, chapter_state.State, 
                 String.Format("{0}/{1}", chapter_state.DownloadedPages,
                 chapter_state.ChapterInfo.Pages.Count()), (chapter_state.State == ItemState.Downloaded) ? 
                 Resources.Downloaded : Resources.DownloadMissingPages);

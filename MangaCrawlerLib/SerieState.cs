@@ -52,7 +52,7 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                return String.Format("name: {0}, state: {1}", SerieInfo.Name, m_state);
+                return String.Format("name: {0}, state: {1}", SerieInfo.Title, m_state);
             }
         }
 

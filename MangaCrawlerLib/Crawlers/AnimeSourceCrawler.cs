@@ -28,7 +28,8 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var series = doc.DocumentNode.SelectNodes("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/table/tr/td[2]");
+            var series = doc.DocumentNode.SelectNodes(
+                "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/table/tr/td[2]");
 
             var result = from serie in series
                          where (serie.ChildNodes[7].InnerText.Trim() != "2")
@@ -44,7 +45,8 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var chapters = doc.DocumentNode.SelectNodes("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/blockquote/a");
+            var chapters = doc.DocumentNode.SelectNodes(
+                "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/blockquote/a");
 
             var result = from chapter in chapters.Skip(1)
                          select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
@@ -100,10 +102,12 @@ namespace MangaCrawlerLib
 
             if (node == null)
             {
-                node = doc.DocumentNode.SelectSingleNode("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/font[2]/p[2]/img");
+                node = doc.DocumentNode.SelectSingleNode(
+                    "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/font[2]/p[2]/img");
 
                 if (node == null)
-                    node = doc.DocumentNode.SelectSingleNode("/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/font[2]/p/img");
+                    node = doc.DocumentNode.SelectSingleNode(
+                        "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/font[2]/p/img");
 
                 return node.GetAttributeValue("src", "");
             }
