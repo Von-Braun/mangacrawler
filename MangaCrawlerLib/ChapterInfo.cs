@@ -10,7 +10,6 @@ using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {
-    [DebuggerDisplay("ChapterInfo, {ToString()}")]
     public class ChapterInfo
     {
         private string m_title;
@@ -53,14 +52,6 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal Crawler Crawler
-        {
-            get
-            {
-                return SerieInfo.Crawler;
-            }
-        }
-
         public string Title
         {
             get
@@ -71,7 +62,7 @@ namespace MangaCrawlerLib
 
         public void DownloadPages()
         {
-            m_pages = Crawler.DownloadPages(this).ToList();
+            m_pages = SerieInfo.ServerInfo.Crawler.DownloadPages(this).ToList();
         }
 
         public IEnumerable<PageInfo> Pages
@@ -92,7 +83,7 @@ namespace MangaCrawlerLib
             get
             {
                 if (m_url == null)
-                    m_url = HttpUtility.HtmlDecode(Crawler.GetChapterURL(this));
+                    m_url = HttpUtility.HtmlDecode(SerieInfo.ServerInfo.Crawler.GetChapterURL(this));
 
                 return m_url;
             }

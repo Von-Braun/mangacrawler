@@ -71,14 +71,10 @@ namespace MangaCrawler
 
             DownloadManager.Form = this;
 
-            DownloadManager.TasksChanged += (tasks) => UpdateTasks(tasks);
-
-            DownloadManager.GetSeriesFilter = () => seriesFilterTextBox.Text;
             DownloadManager.GetDirectoryPath = () => Settings.Instance.DirectoryPath;
             DownloadManager.UseCBZ = () => Settings.Instance.UseCBZ;
 
-            DownloadManager.GetServersVisualState += () => new ListBoxVisualState(serversListBox);
-            DownloadManager.GetSeriesVisualState += () => new ListBoxVisualState(seriesListBox); ;
+            DownloadManager.GetSeriesVisualState += () => new ListBoxVisualState(seriesListBox);
             DownloadManager.GetChaptersVisualState += () => new ListBoxVisualState(chaptersListBox);
             
             directoryPathTextBox.Text = Settings.Instance.DirectoryPath;
@@ -86,7 +82,7 @@ namespace MangaCrawler
             splitter1.SplitPosition = Settings.Instance.SplitterDistance;
             cbzCheckBox.Checked = Settings.Instance.UseCBZ;
 
-            DownloadManager.UpdateVisuals();
+            UpdateSeriesTab();
 
             Task.Factory.StartNew(() => CheckNewVersion());
         }
@@ -111,23 +107,39 @@ namespace MangaCrawler
 
         private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DownloadManager.SelectedServerInfo = (ServerInfo)serversListBox.SelectedItem;
+            DownloadManager.SelectedServer = (ServerInfo)serversListBox.SelectedItem;
+        }
+
+        private ServerInfo SelectedServer
+        {
+            get
+            {
+                return (ServerInfo)serversListBox.SelectedItem;
+            }
+        }
+
+        private SerieInfo SelectedSerie
+        {
+            get
+            {
+                return (SerieInfo)seriesListBox.SelectedItem;
+            }
         }
 
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DownloadManager.SelectedSerieInfo = (SerieInfo)seriesListBox.SelectedItem;
+            DownloadManager.SelectedSerie = (SerieInfo)seriesListBox.SelectedItem;
         }
 
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DownloadManager.SelectedChapterInfo = (ChapterInfo)chaptersListBox.SelectedItem;
+            DownloadManager.SelectedChapter = (ChapterInfo)chaptersListBox.SelectedItem;
         }
 
         private void seriesFilterTextBox_TextChanged(object sender, EventArgs e)
         {
             Settings.Instance.SeriesFilter = seriesFilterTextBox.Text;
-            DownloadManager.UpdateVisuals();
+            UpdateSeriesTab();
         }
 
         private void downloadButton_Click(object sender, EventArgs e)
@@ -173,16 +185,37 @@ namespace MangaCrawler
                 DownloadManager.DownloadPages(chaptersListBox.SelectedItems.Cast<ChapterInfo>());
         }
 
-        private void UpdateTasks(IEnumerable<ChapterInfo> a_tasks)
+        private bool ShowingDownloadingTab
         {
+            get
+            {
+                return tabControl.SelectedIndex == 1;
+            }
+        }
+
+        private bool ShowingSeriesTab
+        {
+            get
+            {
+                return tabControl.SelectedIndex == 0;
+            }
+        }
+
+        private void UpdateTasksTab()
+        {
+            if (!ShowingDownloadingTab)
+                return;
+
             BindingList<ChapterInfo> list = (BindingList<ChapterInfo>)tasksGridView.DataSource;
 
-            var add = (from task in a_tasks
+            var tasks = DownloadManager.Tasks.ToArray();
+
+            var add = (from task in tasks
                        where !list.Contains(task)
                        select task).ToList();
 
             var remove = (from task in list
-                          where !a_tasks.Contains(task)
+                          where !tasks.Contains(task)
                           select task).ToList();
 
             foreach (var el in add)
@@ -232,24 +265,24 @@ namespace MangaCrawler
 
         private void serverURLButton_Click(object sender, EventArgs e)
         {
-            if (DownloadManager.SelectedServerInfo != null)
-                Process.Start(DownloadManager.SelectedServerInfo.URL);
+            if (DownloadManager.SelectedServer != null)
+                Process.Start(DownloadManager.SelectedServer.URL);
             else
                 SystemSounds.Beep.Play();
         }
 
         private void seriesURLButton_Click(object sender, EventArgs e)
         {
-            if (DownloadManager.SelectedSerieInfo != null)
-                Process.Start(DownloadManager.SelectedSerieInfo.URL);
+            if (DownloadManager.SelectedSerie != null)
+                Process.Start(DownloadManager.SelectedSerie.URL);
             else
                 SystemSounds.Beep.Play();
         }
 
         private void chapterURLButton_Click(object sender, EventArgs e)
         {
-            if (DownloadManager.SelectedChapterInfo != null)
-                Process.Start(DownloadManager.SelectedChapterInfo.URL);
+            if (DownloadManager.SelectedChapter != null)
+                Process.Start(DownloadManager.SelectedChapter.URL);
             else
                 SystemSounds.Beep.Play();
         }
@@ -264,7 +297,8 @@ namespace MangaCrawler
             if ((e.ColumnIndex == 0) && (e.RowIndex >= 0))
             {
                 BindingList<ChapterInfo> list = (BindingList<ChapterInfo>)tasksGridView.DataSource;
-                DownloadManager.DeleteTask(list[e.RowIndex]);
+                list[e.RowIndex].DeleteTask();
+                UpdateTasksTab();
             }
         }
 
@@ -502,6 +536,70 @@ namespace MangaCrawler
         private void MangaCrawlerForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Settings.Instance.Save();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            UpdateTasksTab();
+            UpdateSeriesTab();
+        }
+
+        private void UpdateSeriesTab()
+        {
+            if (!ShowingSeriesTab)
+                return;
+
+            UpdateServers();
+            UpdateSeries();
+            UpdateChapters();
+            
+        }
+
+        private void UpdateChapters()
+        {
+            if (!ShowingSeriesTab)
+                return;
+
+            ChapterInfo[] ar = new ChapterInfo[0];
+
+            if (SelectedSerie != null)
+            {
+                ar = (from ch in SelectedSerie.Chapters
+                      select ch).ToArray();
+            }
+
+            new ListBoxVisualState(chaptersListBox).ReloadItems(ar);
+        }
+
+        private void UpdateServers()
+        {
+            if (!ShowingSeriesTab)
+                return;
+
+            new ListBoxVisualState(serversListBox).ReloadItems(DownloadManager.Servers);
+        }
+
+        private void UpdateSeries()
+        {
+            if (!ShowingSeriesTab)
+                return;
+
+            SerieInfo[] ar = new SerieInfo[0];
+
+            if (SelectedServer != null)
+            {
+                string filter = seriesFilterTextBox.Text.ToLower();
+                ar = (from serie in SelectedServer.Series
+                      where serie.Title.ToLower().IndexOf(filter) != -1
+                      select serie).ToArray();
+            }
+
+            new ListBoxVisualState(seriesListBox).ReloadItems(ar);
+        }
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateTasksTab();
         }
     }
 }

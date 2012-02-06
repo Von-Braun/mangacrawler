@@ -7,39 +7,29 @@ using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
-    [DebuggerDisplay("SerieInfo, {ToString()}")]
     public class SerieInfo
     {
-        private string m_title;
         private string m_url;
         private string m_urlPart;
         private IEnumerable<ChapterInfo> m_chapters;
-        private ServerInfo m_serverInfo;
-
         private Object m_lock = new Object();
-        private int m_progress;
-        private ItemState m_state;
+
+        public ServerInfo ServerInfo { get; private set; }
+        internal string URLPart { get; private set; }
+        public int DownloadProgress { get; private set; }
+        public string Title { get; private set; }
+        public ItemState State { get; private set; }
 
         internal SerieInfo(ServerInfo a_serverInfo, string a_urlPart, string a_title)
         {
             m_urlPart = a_urlPart;
-            m_serverInfo = a_serverInfo;
+            ServerInfo = a_serverInfo;
 
-            m_title = a_title.Trim();
-            m_title = m_title.Replace("\t", " ");
-            while (m_title.IndexOf("  ") != -1)
-                m_title = m_title.Replace("  ", " ");
-            m_title = HttpUtility.HtmlDecode(m_title);
-
-            InitializeDownload();
-        }
-
-        internal Crawler Crawler
-        {
-            get
-            {
-                return m_serverInfo.Crawler;
-            }
+            Title = a_title.Trim();
+            Title = Title.Replace("\t", " ");
+            while (Title.IndexOf("  ") != -1)
+                Title = Title.Replace("  ", " ");
+            Title = HttpUtility.HtmlDecode(Title);
         }
 
         public IEnumerable<ChapterInfo> Chapters
@@ -55,94 +45,58 @@ namespace MangaCrawlerLib
             }
         }
 
-        public ServerInfo ServerInfo
-        {
-            get
-            {
-                return m_serverInfo;
-            }
-        }
-
         public string URL
         {
             get
             {
                 if (m_url == null)
-                    m_url = HttpUtility.HtmlDecode(Crawler.GetSerieURL(this));
+                    m_url = HttpUtility.HtmlDecode(ServerInfo.Crawler.GetSerieURL(this));
 
                 return m_url;
             }
         }
 
-        internal string URLPart
+        public void DownloadChapters()
         {
-            get
+            try
             {
-                return m_urlPart;
-            }
-        }
+                State = ItemState.Downloading;
+                DownloadProgress = 0;
 
-        public string Title
-        {
-            get
-            {
-                return m_title;
-            }
-        }
-
-        public void DownloadChapters(Action<int> a_progress_callback = null)
-        {
-            if (a_progress_callback != null)
-                a_progress_callback(0);
-
-            Crawler.DownloadChapters(this, (progress, result) =>
-            {
-                var chapters = result.ToList();
-
-                if (m_chapters != null)
+                ServerInfo.Crawler.DownloadChapters(this, (progress, result) =>
                 {
-                    foreach (var chapter in m_chapters)
+                    var chapters = result.ToList();
+
+                    if (m_chapters != null)
                     {
-                        var el = chapters.Find(s => (s.Title == chapter.Title) && (s.URL == chapter.URL));
-                        if (el != null)
-                            chapters[chapters.IndexOf(el)] = chapter;
+                        foreach (var chapter in m_chapters)
+                        {
+                            var el = chapters.Find(s => (s.Title == chapter.Title) && (s.URL == chapter.URL));
+                            if (el != null)
+                                chapters[chapters.IndexOf(el)] = chapter;
+                        }
                     }
-                }
 
-                m_chapters = chapters;
+                    m_chapters = chapters;
 
-                if (a_progress_callback != null)
-                    a_progress_callback(progress);
-            });
+                    DownloadProgress = progress;
+                });
+
+                State = ItemState.Downloaded;
+
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+            catch (Exception)
+            {
+                State = ItemState.Error;
+            }
         }
 
         public override string ToString()
         {
             return String.Format("{0} - {1}", ServerInfo.Name, Title);
-        }
-
-        public int DownloadProgress
-        {
-            get
-            {
-                return m_progress;
-            }
-            set
-            {
-                lock (m_lock)
-                {
-                    m_progress = value;
-                }
-            }
-        }
-
-        public void InitializeDownload()
-        {
-            lock (m_lock)
-            {
-                m_progress = 0;
-                m_state = ItemState.Initial;
-            }
         }
 
         public bool DownloadRequired
@@ -151,22 +105,7 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
-                    return (m_state == ItemState.Error) || (m_state == ItemState.Initial);
-                }
-            }
-        }
-
-        public ItemState State
-        {
-            get
-            {
-                return m_state;
-            }
-            set
-            {
-                lock (m_lock)
-                {
-                    m_state = value;
+                    return (State == ItemState.Error) || (State == ItemState.Initial);
                 }
             }
         }

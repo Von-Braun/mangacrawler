@@ -7,7 +7,7 @@ namespace MangaCrawlerLib
 {
     public enum ItemState
     {
-        Initial,
+        Initial = 0,
         Waiting,
         Downloading,
         Deleting, 
