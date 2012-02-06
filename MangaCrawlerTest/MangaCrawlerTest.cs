@@ -795,7 +795,7 @@ namespace MangaCrawlerTest
                     new ParallelOptions()
                     {
                         MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer, 
-                        TaskScheduler = server.State.Scheduler[Priority.Series]
+                        TaskScheduler = server.Scheduler[Priority.Series]
                     },
                     serie =>
                 {
@@ -818,7 +818,7 @@ namespace MangaCrawlerTest
                         new ParallelOptions()
                         {
                             MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer,
-                            TaskScheduler = serie.ServerInfo.State.Scheduler[Priority.Chapters]
+                            TaskScheduler = serie.ServerInfo.Scheduler[Priority.Chapters]
                         },
                         (chapter) => 
                     {
@@ -841,7 +841,7 @@ namespace MangaCrawlerTest
                             new ParallelOptions()
                             {
                                 MaxDegreeOfParallelism = chapter.SerieInfo.ServerInfo.Crawler.MaxConnectionsPerServer,
-                                TaskScheduler = chapter.SerieInfo.ServerInfo.State.Scheduler[Priority.Pages]
+                                TaskScheduler = chapter.SerieInfo.ServerInfo.Scheduler[Priority.Pages]
                             }, 
                             (page) =>
                         {

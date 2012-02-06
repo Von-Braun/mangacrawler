@@ -45,7 +45,7 @@ namespace MangaCrawlerLib
                 new ParallelOptions()
                 {
                     MaxDegreeOfParallelism = MaxConnectionsPerServer,
-                    TaskScheduler = a_info.State.Scheduler[Priority.Series], 
+                    TaskScheduler = a_info.Scheduler[Priority.Series], 
                 },
                 (page, state) =>
             {

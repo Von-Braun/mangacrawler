@@ -60,7 +60,7 @@ namespace MangaCrawlerLib
 
             doc = ConnectionsLimiter.DownloadDocument(a_info, url.GetAttributeValue("href", ""));
 
-            a_info.State.Token.ThrowIfCancellationRequested();
+            a_info.Token.ThrowIfCancellationRequested();
 
             var pages = doc.DocumentNode.SelectNodes("//div[@class='inner_heading_right']/h3/select[2]/option");
 

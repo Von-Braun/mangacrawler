@@ -15,7 +15,10 @@ namespace MangaCrawlerLib
         private string m_urlPart;
         private IEnumerable<ChapterInfo> m_chapters;
         private ServerInfo m_serverInfo;
-        private SerieState m_state;
+
+        private Object m_lock = new Object();
+        private int m_progress;
+        private ItemState m_state;
 
         internal SerieInfo(ServerInfo a_serverInfo, string a_urlPart, string a_title)
         {
@@ -27,16 +30,8 @@ namespace MangaCrawlerLib
             while (m_title.IndexOf("  ") != -1)
                 m_title = m_title.Replace("  ", " ");
             m_title = HttpUtility.HtmlDecode(m_title);
-        }
 
-        public SerieState State
-        {
-            get
-            {
-                if (m_state == null)
-                    m_state = new SerieState(this);
-                return m_state;
-            }
+            InitializeDownload();
         }
 
         internal Crawler Crawler
@@ -124,6 +119,56 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return String.Format("{0} - {1}", ServerInfo.Name, Title);
+        }
+
+        public int DownloadProgress
+        {
+            get
+            {
+                return m_progress;
+            }
+            set
+            {
+                lock (m_lock)
+                {
+                    m_progress = value;
+                }
+            }
+        }
+
+        public void InitializeDownload()
+        {
+            lock (m_lock)
+            {
+                m_progress = 0;
+                m_state = ItemState.Initial;
+            }
+        }
+
+        public bool DownloadRequired
+        {
+            get
+            {
+                lock (m_lock)
+                {
+                    return (m_state == ItemState.Error) || (m_state == ItemState.Initial);
+                }
+            }
+        }
+
+        public ItemState State
+        {
+            get
+            {
+                return m_state;
+            }
+            set
+            {
+                lock (m_lock)
+                {
+                    m_state = value;
+                }
+            }
         }
     }
 }
