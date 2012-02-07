@@ -12,6 +12,8 @@ namespace MangaCrawler
         [STAThread]
         static void Main()
         {
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MangaCrawlerForm());

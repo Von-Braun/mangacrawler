@@ -55,8 +55,6 @@
     <Compile Include="Crawler.cs" />
     <Compile Include="Crawlers\MangaAccessCrawler.cs" />
     <Compile Include="DownloadManager.cs" />
-    <Compile Include="FileUtils.cs" />
-    <Compile Include="HTTPUtils.cs" />
     <Compile Include="Crawlers\MangaFoxCrawler.cs" />
     <Compile Include="Crawlers\MangaRunCrawler.cs" />
     <Compile Include="Crawlers\MangaShareCrawler.cs" />

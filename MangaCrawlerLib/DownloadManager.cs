@@ -18,6 +18,8 @@ namespace MangaCrawlerLib
 {
     public static class DownloadManager
     {
+        internal static string UserAgent = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:10.0) Gecko/20100101 Firefox/10.0";
+
         private static ServerInfo[] s_servers;
         private static ServerInfo s_selected_server_info;
         private static Dictionary<ServerInfo, SerieInfo> s_selected_series =
@@ -40,7 +42,7 @@ namespace MangaCrawlerLib
 
         static DownloadManager()
         {
-            HtmlWeb.UserAgent_Actual = HTTPUtils.UserAgent;
+            HtmlWeb.UserAgent_Actual = UserAgent;
 
             s_servers = ServerInfo.ServersInfos.ToArray();
         }
@@ -175,15 +177,23 @@ namespace MangaCrawlerLib
             foreach (var chapter_info in a_chapter_infos)
             {
                 if (chapter_info.Working)
+                {
+                    System.Diagnostics.Debug.WriteLine("DownloadManager.DownloadPages - already in work, title: {0} state: {1}",
+                        chapter_info.Title, chapter_info.State);
                     continue;
+                }
+
+                System.Diagnostics.Debug.WriteLine(
+                    "DownloadManager.DownloadPages - title: {0} state: {1}",
+                        chapter_info.Title, chapter_info.State);
 
                 chapter_info.InitializeDownload();
                 chapter_info.State = ItemState.Waiting;
 
-                Debug.Assert(!s_tasks.Contains(chapter_info));
                 lock (s_tasks)
                 {
-                s_tasks.Add(chapter_info);
+                    Debug.Assert(!s_tasks.Contains(chapter_info));
+                    s_tasks.Add(chapter_info);
                 }
 
                 Task task = new Task(() =>
@@ -194,6 +204,10 @@ namespace MangaCrawlerLib
                     }
                     catch (OperationCanceledException)
                     {
+                        System.Diagnostics.Debug.WriteLine(
+                            "DownloadManager.DownloadPages - #1 operation cancelled, title: {0} state: {1}",
+                            chapter_info.Title, chapter_info.State);
+
                         chapter_info.FinishDownload(true);
                         return;
                     }
@@ -204,11 +218,23 @@ namespace MangaCrawlerLib
 
                         new DirectoryInfo(dir).DeleteAll();
 
+                        if (chapter_info.Token.IsCancellationRequested)
+                        {
+                            System.Diagnostics.Debug.WriteLine(
+                                "DownloadManager.DownloadPages - #1 cancellation requested, title: {0} state: {1}",
+                                chapter_info.Title, chapter_info.State);
+                        }
+
                         chapter_info.Token.ThrowIfCancellationRequested();
 
-                        chapter_info.State = ItemState.Downloading;
-
                         chapter_info.DownloadPages();
+
+                        if (chapter_info.Token.IsCancellationRequested)
+                        {
+                            System.Diagnostics.Debug.WriteLine(
+                                "DownloadManager.DownloadPages - #2 cancellation requested, title: {0} state: {1}",
+                                chapter_info.Title, chapter_info.State);
+                        }
 
                         chapter_info.Token.ThrowIfCancellationRequested();
 
@@ -222,18 +248,33 @@ namespace MangaCrawlerLib
                         {
                             try
                             {
-                                page.DownloadAndSavePageImage(chapter_info.Token, dir);
+                                page.DownloadAndSavePageImage(dir);
                             }
-                            catch (OperationCanceledException)
+                            catch (OperationCanceledException ex1)
                             {
+                                System.Diagnostics.Debug.WriteLine(
+                                    "DownloadManager.DownloadPages - OperationCanceledException, title: {0} state: {1}, {2}",
+                                    chapter_info.Title, chapter_info.State, ex1);
+
                                 state.Break();
                             }
-                            catch
+                            catch (Exception ex2)
                             {
+                                System.Diagnostics.Debug.WriteLine(
+                                    "DownloadManager.DownloadPages - #1 Exception, title: {0} state: {1}, {2}",
+                                    chapter_info.Title, chapter_info.State, ex2);
+
                                 state.Break();
                                 throw;
                             }
                         });
+
+                        if (chapter_info.Token.IsCancellationRequested)
+                        {
+                            System.Diagnostics.Debug.WriteLine(
+                                "DownloadManager.DownloadPages - #3 cancellation requested, title: {0} state: {1}",
+                                chapter_info.Title, chapter_info.State);
+                        }
 
                         chapter_info.Token.ThrowIfCancellationRequested();
                         
@@ -243,8 +284,12 @@ namespace MangaCrawlerLib
 
                         chapter_info.FinishDownload(a_error: false);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        System.Diagnostics.Debug.WriteLine(
+                                    "DownloadManager.DownloadPages - #2 Exception, title: {0} state: {1}, {2}",
+                                    chapter_info.Title, chapter_info.State, ex);
+
                         chapter_info.FinishDownload(a_error: true);
                     }
                     finally
@@ -259,6 +304,10 @@ namespace MangaCrawlerLib
 
         private static void CreateCBZ(ChapterInfo a_chapter_info)
         {
+            System.Diagnostics.Debug.WriteLine(
+                "DownloadManager.CreateCBZ - title: {0} state: {1}",
+                a_chapter_info.Title, a_chapter_info.State);
+
             a_chapter_info.State = ItemState.Zipping;
 
             var dir = new DirectoryInfo(a_chapter_info.Pages.First().GetImageFilePath()).Parent;
@@ -299,29 +348,6 @@ namespace MangaCrawlerLib
 
         }
 
-        private static void TryInvoke(Action a_action)
-        {
-            try
-            {
-                Form.BeginInvoke(a_action);
-            }
-            catch (ObjectDisposedException)
-            {
-            }
-        }
-
-        private static T TryInvoke<T>(Func<T> a_action)
-        {
-            try
-            {
-                return (T)Form.Invoke(a_action);
-            }
-            catch (ObjectDisposedException)
-            {
-                return default(T);
-            }
-        }
-
         public static IEnumerable<ServerInfo> Servers
         {
             get
@@ -330,29 +356,22 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static IEnumerable<ChapterInfo> Tasks
+        public static IEnumerable<ChapterInfo> GetTasks()
         {
-            get
+            lock (s_tasks)
             {
-                lock (s_tasks)
+                var toremove = (from ch in s_tasks
+                                where !ch.IsTask
+                                select ch).ToArray();
+
+                foreach (var task in toremove)
                 {
-                    s_tasks.RemoveRange(from ch in s_tasks
-                                        where !ch.IsTask
-                                        select ch);
+                    System.Diagnostics.Debug.WriteLine("DownloadManager.GetTasks - removing {0} task, state: {1}", 
+                        task.Title, task.State);
+                    s_tasks.Remove(task);
                 }
 
-                return s_tasks;
-            }
-        }
-
-        public static bool DownloadingPages
-        {
-            get
-            {
-                lock (s_tasks)
-                {
-                    return s_tasks.Any(ch => ch.State == ItemState.Downloading);
-                }
+                return s_tasks.ToArray();
             }
         }
     }

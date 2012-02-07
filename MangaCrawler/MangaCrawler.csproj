@@ -146,6 +146,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="MangaCrawlerForm.en.resx">
+      <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MangaCrawlerForm.pl.resx">
       <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
     </EmbeddedResource>

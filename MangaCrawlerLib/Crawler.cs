@@ -13,7 +13,7 @@ namespace MangaCrawlerLib
         internal abstract void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback);
         internal abstract void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback);
         internal abstract IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info);
-        internal abstract string GetImageURL(PageInfo a_info, CancellationToken a_token);
+        internal abstract string GetImageURL(PageInfo a_info);
 
         internal abstract string GetServerURL();
 

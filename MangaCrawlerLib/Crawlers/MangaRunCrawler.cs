@@ -260,9 +260,9 @@ namespace MangaCrawlerLib
                    select new PageInfo(a_info, serie.Item4, result.IndexOf(serie) + 1, serie.Item3);
         }
 
-        internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
+        internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             var node = doc.DocumentNode.SelectSingleNode(
                 "/html/body/div[4]/img");

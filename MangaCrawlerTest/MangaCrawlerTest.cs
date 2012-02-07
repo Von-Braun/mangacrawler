@@ -877,23 +877,5 @@ namespace MangaCrawlerTest
                 });
             });
         }
-
-        [TestMethod]
-        public void _UserAgent()
-        {
-            // Fire static constructor.
-            DownloadManager.UseCBZ = null;
-
-            Assert.AreEqual(new HtmlWeb().UserAgent, HTTPUtils.UserAgent);
-
-            var m = Regex.Match(HTTPUtils.UserAgent, ".*(\\d{4})(\\d{2})(\\d{2}).*");
-            int year = Int32.Parse(m.Groups[1].Value);
-            int month = Int32.Parse(m.Groups[2].Value);
-            int day = Int32.Parse(m.Groups[3].Value);
-            DateTime dt = new DateTime(year, month, day);
-            TimeSpan ts = DateTime.Now - dt;
-            Assert.IsTrue(ts.TotalDays > 0);
-            Assert.IsTrue(ts.TotalDays < 90, "Need new agent string");
-        }
     }
 }

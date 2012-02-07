@@ -40,34 +40,90 @@ namespace MangaCrawlerLib
 
         public static void BeginDownloadPages(ChapterInfo a_chapter_info)
         {
+            System.Diagnostics.Debug.WriteLine("ConnectionsLimiter.BeginDownloadPages - locking one per server, title: {0} state: {1}",
+                a_chapter_info.Title, a_chapter_info.State);
+
             s_serverPages[a_chapter_info.SerieInfo.ServerInfo].WaitOne(a_chapter_info.Token);
+
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.BeginDownloadPages - locked one per server, title: {0} state: {1}",
+                a_chapter_info.Title, a_chapter_info.State);
         }
 
         public static void EndDownloadPages(ChapterInfo a_chapter_info)
         {
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.EndDownloadPages - releasing one per server, title: {0} state: {1}",
+                a_chapter_info.Title, a_chapter_info.State);
+
             s_serverPages[a_chapter_info.SerieInfo.ServerInfo].ReleaseMutex();
         }
 
         private static void Aquire(ServerInfo a_info, Priority a_priority)
         {
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.Aquire1 - aquiring global connection limit, server name: {0}",
+                a_info.Name);
+
             s_connections.WaitOne(a_priority);
+
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.Aquire1 - aquired global connection limit, server name: {0}",
+                a_info.Name);
+
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.Aquire1 - aquiring server connection limit, server name: {0}",
+                a_info.Name);
+
+            // Should never block. Scheduler do the job. 
+            Debug.Assert(!s_serverConnections[a_info].Saturated);
+
             s_serverConnections[a_info].WaitOne(a_priority);
+
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.Aquire1 - aquired server connection limit, server name: {0}",
+                a_info.Name);
         }
 
         private static void Aquire(ServerInfo a_info, CancellationToken a_token, 
             Priority a_priority)
         {
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.Aquire2 - aquiring global connection limit, server name: {0}",
+                a_info.Name);
+
             s_connections.WaitOne(a_token, a_priority);
+
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.Aquire2 - aquired global connection limit, server name: {0}",
+                a_info.Name);
+
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.Aquire2 - aquiring server connection limit, server name: {0}",
+                a_info.Name);
 
             // Should never block. Scheduler do the job. 
             Debug.Assert(!s_serverConnections[a_info].Saturated);
 
             s_serverConnections[a_info].WaitOne(a_token, a_priority);
+
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.Aquire2 - aquired server connection limit, server name: {0}",
+                a_info.Name);
         }
 
         private static void Release(ServerInfo a_info)
         {
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.Release - releasing global connection limit, server name: {0}",
+                a_info.Name);
+
             s_serverConnections[a_info].Release();
+
+            System.Diagnostics.Debug.WriteLine(
+                "ConnectionsLimiter.Release - releasing server connection limit, server name: {0}",
+                a_info.Name);
+
             s_connections.Release();
         }
 
@@ -86,7 +142,13 @@ namespace MangaCrawlerLib
                     var page = web.Load(a_url);
 
                     if (web.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            "ConnectionsLimiter.DownloadDocument - series - page is null, url: {0}", 
+                            a_url);
+
                         return null;
+                    }
 
                     return page;
                 }
@@ -108,7 +170,19 @@ namespace MangaCrawlerLib
                     if (a_url == null)
                         a_url = a_info.URL;
 
-                    return new HtmlWeb().Load(a_url);
+                    var web = new HtmlWeb();
+                    var page = web.Load(a_url);
+
+                    if (web.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            "ConnectionsLimiter.DownloadDocument - chapters - page is null, url: {0}",
+                            a_url);
+
+                        return null;
+                    }
+
+                    return page;
                 }
                 finally
                 {
@@ -121,18 +195,44 @@ namespace MangaCrawlerLib
         {
             return DownloadWithRetry(() =>
             {
+                if (a_info.Token.IsCancellationRequested)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        "ConnectionsLimiter.DownloadDocument - pages - #1 token cancelled, a_url: {0}",
+                        a_url);
+                }
+
                 a_info.Token.ThrowIfCancellationRequested();
 
                 Aquire(a_info.SerieInfo.ServerInfo, a_info.Token, Priority.Pages);
 
                 try
                 {
+                    if (a_info.Token.IsCancellationRequested)
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            "ConnectionsLimiter.DownloadDocument - pages - #2 token cancelled, a_url: {0}",
+                            a_url);
+                    }
+
                     a_info.Token.ThrowIfCancellationRequested();
 
                     if (a_url == null)
                         a_url = a_info.URL;
 
-                    return new HtmlWeb().Load(a_url);
+                    var web = new HtmlWeb();
+                    var page = web.Load(a_url);
+
+                    if (web.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            "ConnectionsLimiter.DownloadDocument - pages - page is null, url: {0}",
+                            a_url);
+
+                        return null;
+                    }
+
+                    return page;
                 }
                 finally
                 {
@@ -141,23 +241,48 @@ namespace MangaCrawlerLib
             });
         }
 
-        internal static HtmlDocument DownloadDocument(PageInfo a_info, 
-            CancellationToken a_token, string a_url = null)
+        internal static HtmlDocument DownloadDocument(PageInfo a_info, string a_url = null)
         {
             return DownloadWithRetry(() =>
             {
-                a_token.ThrowIfCancellationRequested();
+                if (a_info.ChapterInfo.Token.IsCancellationRequested)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        "ConnectionsLimiter.DownloadDocument - page - #1 token cancelled, a_url: {0}",
+                        a_url);
+                }
 
-                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token, Priority.Pages);
+                a_info.ChapterInfo.Token.ThrowIfCancellationRequested();
+
+                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_info.ChapterInfo.Token, Priority.Pages);
 
                 try
                 {
-                    a_token.ThrowIfCancellationRequested();
+                    if (a_info.ChapterInfo.Token.IsCancellationRequested)
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            "ConnectionsLimiter.DownloadDocument - page - #2 token cancelled, a_url: {0}",
+                            a_url);
+                    }
+
+                    a_info.ChapterInfo.Token.ThrowIfCancellationRequested();
 
                     if (a_url == null)
                         a_url = a_info.URL;
 
-                    return new HtmlWeb().Load(a_url);
+                    var web = new HtmlWeb();
+                    var page = web.Load(a_url);
+
+                    if (web.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            "ConnectionsLimiter.DownloadDocument - page - page is null, url: {0}",
+                            a_url);
+
+                        return null;
+                    }
+
+                    return page;
                 }
                 finally
                 {
@@ -178,6 +303,10 @@ namespace MangaCrawlerLib
                 }
                 catch (WebException ex)
                 {
+                    System.Diagnostics.Debug.WriteLine(
+                            "ConnectionsLimiter.DownloadWithRetry - exception, {0}",
+                            ex);
+
                     ex1 = ex;
                     continue;
                 }
@@ -186,40 +315,18 @@ namespace MangaCrawlerLib
             throw ex1;
         }
 
-        internal static HtmlDocument Submit(PageInfo a_info, CancellationToken a_token, 
-            string a_url, Dictionary<string, string> a_parameters)
-        {
-            return DownloadWithRetry(() =>
-            {
-                a_token.ThrowIfCancellationRequested();
-
-                Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token, Priority.Pages);
-
-                try
-                {
-                    a_token.ThrowIfCancellationRequested();
-
-                    return HTTPUtils.Submit(a_url, a_parameters);
-                }
-                finally
-                {
-                    Release(a_info.ChapterInfo.SerieInfo.ServerInfo);
-                }
-            });
-        }
-
-        public static MemoryStream GetImageStream(PageInfo a_info, CancellationToken a_token)
+        public static MemoryStream GetImageStream(PageInfo a_info)
         {
             return DownloadWithRetry(() =>
             {
                 try
                 {
-                    Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_token, Priority.Image);
-
+                    Aquire(a_info.ChapterInfo.SerieInfo.ServerInfo, a_info.ChapterInfo.Token, Priority.Image);
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
-                        a_info.GetImageURL(a_token));
+                        a_info.GetImageURL());
 
-                    myReq.UserAgent = HTTPUtils.UserAgent;
+                    myReq.UserAgent = DownloadManager.UserAgent;
+                    myReq.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
                     myReq.Referer = a_info.URL;
 
                     using (Stream image_stream = myReq.GetResponse().GetResponseStream())

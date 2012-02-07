@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Diagnostics;
 using System.Threading;
+using TomanuExtensions.Utils;
 
 namespace MangaCrawlerLib
 {
@@ -61,10 +62,10 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal string GetImageURL(CancellationToken a_token)
+        internal string GetImageURL()
         {
             if (m_imageURL == null)
-                m_imageURL = HttpUtility.HtmlDecode(ChapterInfo.SerieInfo.ServerInfo.Crawler.GetImageURL(this, a_token));
+                m_imageURL = HttpUtility.HtmlDecode(ChapterInfo.SerieInfo.ServerInfo.Crawler.GetImageURL(this));
 
             return m_imageURL;
         }
@@ -75,14 +76,9 @@ namespace MangaCrawlerLib
                     ChapterInfo, Index, ChapterInfo.Pages.Count());
         }
 
-        internal MemoryStream GetImageStream(CancellationToken a_token)
-        {
-            return ConnectionsLimiter.GetImageStream(this, a_token);
-        }
-
         internal MemoryStream GetImageStream()
         {
-            return GetImageStream(new CancellationTokenSource().Token);
+            return ConnectionsLimiter.GetImageStream(this);
         }
 
         public string GetImageFilePath()
@@ -90,12 +86,12 @@ namespace MangaCrawlerLib
             return m_imageFilePath;
         }
 
-        public void DownloadAndSavePageImage(CancellationToken a_token, string a_dir)
+        public void DownloadAndSavePageImage(string a_dir)
         {
             m_imageFilePath = a_dir +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(
-                    Path.GetExtension(GetImageURL(a_token)).ToLower());
+                    Path.GetExtension(GetImageURL()).ToLower());
 
             FileInfo image_file = new FileInfo(m_imageFilePath);
 
@@ -111,7 +107,7 @@ namespace MangaCrawlerLib
 
                     try
                     {
-                        ims = GetImageStream(a_token);
+                        ims = GetImageStream();
                     }
                     catch (WebException)
                     {

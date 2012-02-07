@@ -64,9 +64,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override string GetImageURL(PageInfo a_info, CancellationToken a_token)
+        internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             HtmlNode node = doc.DocumentNode.SelectSingleNode("//div[@id='page']/a/img");
 

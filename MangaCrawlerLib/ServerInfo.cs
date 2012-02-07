@@ -71,7 +71,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void DownloadSeries()
+        internal void DownloadSeries()
         {
             try
             {
@@ -216,7 +216,7 @@ namespace MangaCrawlerLib
             return Name;
         }
 
-        public bool DownloadRequired
+        internal bool DownloadRequired
         {
             get
             {
