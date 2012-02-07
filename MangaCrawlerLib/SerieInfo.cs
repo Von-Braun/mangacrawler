@@ -10,7 +10,6 @@ namespace MangaCrawlerLib
     public class SerieInfo
     {
         private string m_url;
-        private string m_urlPart;
         private IEnumerable<ChapterInfo> m_chapters;
         private Object m_lock = new Object();
 
@@ -22,7 +21,7 @@ namespace MangaCrawlerLib
 
         internal SerieInfo(ServerInfo a_serverInfo, string a_urlPart, string a_title)
         {
-            m_urlPart = a_urlPart;
+            URLPart = a_urlPart;
             ServerInfo = a_serverInfo;
 
             Title = a_title.Trim();
@@ -56,7 +55,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void DownloadChapters()
+        internal void DownloadChapters()
         {
             try
             {
@@ -99,7 +98,7 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", ServerInfo.Name, Title);
         }
 
-        public bool DownloadRequired
+        internal bool DownloadRequired
         {
             get
             {

@@ -7,75 +7,56 @@ using System.Web;
 using System.Threading;
 using System.Diagnostics;
 using TomanuExtensions;
+using TomanuExtensions.Utils;
 
 namespace MangaCrawlerLib
 {
     public class ChapterInfo
     {
-        private string m_title;
-        private List<PageInfo> m_pages;
         private string m_url;
-        private string m_urlPart;
-        private SerieInfo m_serieInfo;
-
         private Object m_lock = new Object();
         private CancellationTokenSource m_cancellation_token_source;
         private ItemState m_state;
 
+        public List<PageInfo> Pages { get; private set; }
+        internal string URLPart { get; private set; }
+        public SerieInfo SerieInfo { get; private set; }
+        public string Title { get; private set; }
+        
         internal ChapterInfo(SerieInfo a_serieInfo, string a_urlPart, string a_title)
         {
-            m_serieInfo = a_serieInfo;
-            m_urlPart = a_urlPart;
+            SerieInfo = a_serieInfo;
+            URLPart = a_urlPart;
 
-            m_title = a_title.Trim();
-            m_title = m_title.Replace("\t", " ");
-            while (m_title.IndexOf("  ") != -1)
-                m_title = m_title.Replace("  ", " ");
-            m_title = HttpUtility.HtmlDecode(m_title);
+            Title = a_title.Trim();
+            Title = Title.Replace("\t", " ");
+            while (Title.IndexOf("  ") != -1)
+                Title = Title.Replace("  ", " ");
+            Title = HttpUtility.HtmlDecode(Title);
 
-            InitializeDownload();
+            Pages = new List<PageInfo>();
         }
 
-        public SerieInfo SerieInfo
+        public ItemState State
         {
             get
             {
-                return m_serieInfo;
+                return m_state;
             }
-        }
-
-        internal string URLPart
-        {
-            get
+            set
             {
-                return m_urlPart;
+                System.Diagnostics.Debug.WriteLine(
+                    "ChapterInfo.State - {0} -> {1}", 
+                    State, value);
+
+                m_state = value;
             }
         }
 
-        public string Title
+        internal void DownloadPages()
         {
-            get
-            {
-                return m_title;
-            }
-        }
-
-        public void DownloadPages()
-        {
-            m_pages = SerieInfo.ServerInfo.Crawler.DownloadPages(this).ToList();
-        }
-
-        public IEnumerable<PageInfo> Pages
-        {
-            [DebuggerStepThrough]
-            get
-            {
-                if (m_pages == null)
-                    return new PageInfo[0];
-
-                return from page in m_pages
-                       select page;
-            }
+            State = ItemState.Downloading;
+            Pages.AddRange(SerieInfo.ServerInfo.Crawler.DownloadPages(this));
         }
 
         public string URL
@@ -102,7 +83,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public CancellationToken Token
+        internal CancellationToken Token
         {
             get
             {
@@ -112,32 +93,24 @@ namespace MangaCrawlerLib
 
         public void DeleteTask()
         {
+            System.Diagnostics.Debug.WriteLine(
+                "ChapterInfo.DeleteTask - chapter: {0}, state: {1}", 
+                Title, State);
+
             lock (m_lock)
             {
-                if ((m_state == ItemState.Downloaded) ||
-                    (m_state == ItemState.Error))
+                if ((State == ItemState.Downloaded) ||
+                    (State == ItemState.Error))
                 {
                     InitializeDownload();
                 }
-                else if (m_state != ItemState.Initial)
+                else if (State != ItemState.Initial)
                 {
+                    System.Diagnostics.Debug.WriteLine(
+                        "ChapterInfo.DeleteTask - cancelling tasks");
                     m_cancellation_token_source.Cancel();
-                    m_state = ItemState.Deleting;
-                }
-            }
-        }
-
-        public ItemState State
-        {
-            get
-            {
-                return m_state;
-            }
-            set
-            {
-                lock (m_lock)
-                {
-                    m_state = value;
+                    
+                    State = ItemState.Deleting;
                 }
             }
         }
@@ -148,16 +121,24 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
-                    switch (m_state)
+                    switch (State)
                     {
-                        case ItemState.Error: return MangaCrawlerLib.Properties.Resources.TaskProgressError;
-                        case ItemState.Downloaded: return MangaCrawlerLib.Properties.Resources.TaskProgressDownloaded;
-                        case ItemState.DownloadedMissingPages: return MangaCrawlerLib.Properties.Resources.TaskProgressDownloadedMissingPages;
-                        case ItemState.Waiting: return MangaCrawlerLib.Properties.Resources.TaskProgressWaiting;
-                        case ItemState.Deleting: return MangaCrawlerLib.Properties.Resources.TaskProgressDeleting;
-                        case ItemState.Zipping: return MangaCrawlerLib.Properties.Resources.TaskProgressZipping;
-                        case ItemState.Downloading: return String.Format("{0}/{1}", DownloadedPages, Pages.Count());
-                        case ItemState.Initial: return "";
+                        case ItemState.Error: 
+                            return MangaCrawlerLib.Properties.Resources.TaskProgressError;
+                        case ItemState.Downloaded: 
+                            return MangaCrawlerLib.Properties.Resources.TaskProgressDownloaded;
+                        case ItemState.DownloadedMissingPages: 
+                            return MangaCrawlerLib.Properties.Resources.TaskProgressDownloadedMissingPages;
+                        case ItemState.Waiting: 
+                            return MangaCrawlerLib.Properties.Resources.TaskProgressWaiting;
+                        case ItemState.Deleting: 
+                            return MangaCrawlerLib.Properties.Resources.TaskProgressDeleting;
+                        case ItemState.Zipping: 
+                            return MangaCrawlerLib.Properties.Resources.TaskProgressZipping;
+                        case ItemState.Downloading: 
+                            return String.Format("{0}/{1}", DownloadedPages, Pages.Count());
+                        case ItemState.Initial: 
+                            return "";
                         default: throw new NotImplementedException();
                     }
                 }
@@ -170,9 +151,9 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
-                    return (m_state == ItemState.Waiting) || (m_state == ItemState.Error) ||
-                        (m_state == ItemState.Deleting) || (m_state == ItemState.Downloading) ||
-                        (m_state == ItemState.Zipping);
+                    return (State == ItemState.Waiting) || (State == ItemState.Error) ||
+                        (State == ItemState.Deleting) || (State == ItemState.Downloading) ||
+                        (State == ItemState.Zipping);
                 }
             }
         }
@@ -183,26 +164,30 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
-                    return (m_state == ItemState.Waiting) || (m_state == ItemState.Downloading) ||
-                           (m_state == ItemState.Zipping) || (m_state == ItemState.Deleting);
+                    return (State == ItemState.Waiting) || (State == ItemState.Downloading) ||
+                           (State == ItemState.Zipping) || (State == ItemState.Deleting);
                 }
             }
         }
 
-        public void FinishDownload(bool a_error)
+        internal void FinishDownload(bool a_error)
         {
+            System.Diagnostics.Debug.WriteLine(
+                "ChapterInfo.FinishDownload - chapter: {0}, state: {1}, error: {2}", 
+                Title, State, a_error);
+
             lock (m_lock)
             {
-                if ((m_state == ItemState.Waiting) || (m_state == ItemState.Downloading))
+                if ((State == ItemState.Waiting) || (State == ItemState.Downloading))
                 {
                     if (a_error)
-                        m_state = ItemState.Error;
+                        State = ItemState.Error;
                     else
                     {
                         if (DownloadedPages == Pages.Count())
-                            m_state = ItemState.Downloaded;
+                            State = ItemState.Downloaded;
                         else
-                            m_state = ItemState.DownloadedMissingPages;
+                            State = ItemState.DownloadedMissingPages;
                     }
                 }
 
@@ -211,17 +196,38 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void InitializeDownload()
+        internal void InitializeDownload()
         {
+            System.Diagnostics.Debug.WriteLine(
+                "ChapterInfo.InitializeDownload - chapter: {0}, state: {1}", 
+                Title, State);
+
             lock (m_lock)
             {
-                m_state = ItemState.Initial;
+                State = ItemState.Initial;
 
                 if (m_cancellation_token_source != null)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        "ChapterInfo.InitializeDownload - cancelling tokens");
                     m_cancellation_token_source.Cancel();
+                }
 
+                System.Diagnostics.Debug.WriteLine(
+                    "ChapterInfo.InitializeDownload - new token source");
                 m_cancellation_token_source = new CancellationTokenSource();
-                m_pages.Clear();
+                System.Diagnostics.Debug.WriteLine(
+                    "ChapterInfo.InitializeDownload - clearing pages");
+                Pages.Clear();
+            }
+        }
+
+        public string TaskTitle
+        {
+            get
+            {
+                return String.Format(MangaCrawlerLib.Properties.Resources.DownloadingChapterInfo,
+                    SerieInfo.ServerInfo.Name, SerieInfo.Title, Title);
             }
         }
 

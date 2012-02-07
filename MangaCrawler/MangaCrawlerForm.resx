@@ -870,8 +870,11 @@
   <data name="Delete.HeaderText" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Delete.MinimumWidth" type="System.Int32, mscorlib">
+    <value>60</value>
+  </data>
   <data name="Delete.Width" type="System.Int32, mscorlib">
-    <value>44</value>
+    <value>60</value>
   </data>
   <metadata name="Chapter.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -886,7 +889,7 @@
     <value>Progress</value>
   </data>
   <data name="Progress.Width" type="System.Int32, mscorlib">
-    <value>200</value>
+    <value>150</value>
   </data>
   <data name="tasksGridView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1044,6 +1047,12 @@
   <data name="&gt;&gt;folderBrowserDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;timer.Name" xml:space="preserve">
+    <value>timer</value>
+  </data>
+  <data name="&gt;&gt;timer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;Delete.Name" xml:space="preserve">
     <value>Delete</value>
   </data>
@@ -1061,12 +1070,6 @@
   </data>
   <data name="&gt;&gt;Progress.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;timer.Name" xml:space="preserve">
-    <value>timer</value>
-  </data>
-  <data name="&gt;&gt;timer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MangaCrawlerForm</value>

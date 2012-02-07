@@ -34,6 +34,9 @@ namespace MangaCrawlerLib
                 {
                     if (a_token.IsCancellationRequested)
                     {
+                        System.Diagnostics.Debug.WriteLine(
+                            "QueuedMutex.WaitOne - cancellation requested");
+
                         lock (m_lock)
                         {
                             if (mre.WaitOne(0))

@@ -65,7 +65,6 @@ namespace MangaCrawler
             Text = String.Format("{0} {1}.{2}", Text,
                 Assembly.GetAssembly(GetType()).GetName().Version.Major, 
                 Assembly.GetAssembly(GetType()).GetName().Version.Minor);
-
             tasksGridView.AutoGenerateColumns = false;
             tasksGridView.DataSource = new BindingList<ChapterInfo>();
 
@@ -85,6 +84,15 @@ namespace MangaCrawler
             UpdateSeriesTab();
 
             Task.Factory.StartNew(() => CheckNewVersion());
+
+            typeof(DataGridView).InvokeMember(
+   "DoubleBuffered",
+   BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,
+   null,
+   tasksGridView,
+   new object[] { true });
+
+
         }
 
         private void directoryChooseButton_Click(object sender, EventArgs e)
@@ -108,6 +116,7 @@ namespace MangaCrawler
         private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             DownloadManager.SelectedServer = (ServerInfo)serversListBox.SelectedItem;
+            UpdateChapters();
         }
 
         private ServerInfo SelectedServer
@@ -129,6 +138,7 @@ namespace MangaCrawler
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             DownloadManager.SelectedSerie = (SerieInfo)seriesListBox.SelectedItem;
+            UpdateChapters();
         }
 
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -208,7 +218,7 @@ namespace MangaCrawler
 
             BindingList<ChapterInfo> list = (BindingList<ChapterInfo>)tasksGridView.DataSource;
 
-            var tasks = DownloadManager.Tasks.ToArray();
+            var tasks = DownloadManager.GetTasks();
 
             var add = (from task in tasks
                        where !list.Contains(task)
@@ -226,9 +236,17 @@ namespace MangaCrawler
             tasksGridView.Invalidate();
         }
 
+        private bool DownloadingPages
+        {
+            get
+            {
+                return DownloadManager.GetTasks().Any(ch => ch.State == ItemState.Downloading);
+            }
+        }
+
         private void MangaCrawlerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (DownloadManager.DownloadingPages)
+            if (DownloadingPages)
             {
                 if ((e.CloseReason != CloseReason.WindowsShutDown) || 
                     (e.CloseReason != CloseReason.TaskManagerClosing))

@@ -6,7 +6,7 @@ using System.Text;
 namespace MangaCrawlerLib
 {
     [Flags]
-    public enum Priority
+    internal enum Priority
     {
         Series = -2,
         Chapters = -1,
