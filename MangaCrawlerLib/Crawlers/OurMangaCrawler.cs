@@ -52,7 +52,7 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
+        internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -77,8 +77,8 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, 
-                a_info.ChapterInfo.URLPart + "/" + a_info.URLPart);
+            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info,
+                a_info.TaskInfo.URLPart + "/" + a_info.URLPart);
 
             var node = doc.DocumentNode.SelectSingleNode("//div[@class='inner_full_view']/h3/a/img");
 

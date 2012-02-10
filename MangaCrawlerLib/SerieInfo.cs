@@ -13,16 +13,16 @@ namespace MangaCrawlerLib
         private IEnumerable<ChapterInfo> m_chapters;
         private Object m_lock = new Object();
 
-        public ServerInfo ServerInfo { get; private set; }
+        public ServerInfo Server { get; private set; }
         internal string URLPart { get; private set; }
         public int DownloadProgress { get; private set; }
         public string Title { get; private set; }
-        public ItemState State { get; private set; }
+        public SerieState State;
 
-        internal SerieInfo(ServerInfo a_serverInfo, string a_urlPart, string a_title)
+        internal SerieInfo(ServerInfo a_server, string a_url_part, string a_title)
         {
-            URLPart = a_urlPart;
-            ServerInfo = a_serverInfo;
+            URLPart = a_url_part;
+            Server = a_server;
 
             Title = a_title.Trim();
             Title = Title.Replace("\t", " ");
@@ -49,7 +49,7 @@ namespace MangaCrawlerLib
             get
             {
                 if (m_url == null)
-                    m_url = HttpUtility.HtmlDecode(ServerInfo.Crawler.GetSerieURL(this));
+                    m_url = HttpUtility.HtmlDecode(Server.Crawler.GetSerieURL(this));
 
                 return m_url;
             }
@@ -59,10 +59,9 @@ namespace MangaCrawlerLib
         {
             try
             {
-                State = ItemState.Downloading;
                 DownloadProgress = 0;
 
-                ServerInfo.Crawler.DownloadChapters(this, (progress, result) =>
+                Server.Crawler.DownloadChapters(this, (progress, result) =>
                 {
                     var chapters = result.ToList();
 
@@ -81,7 +80,7 @@ namespace MangaCrawlerLib
                     DownloadProgress = progress;
                 });
 
-                State = ItemState.Downloaded;
+                State = SerieState.Downloaded;
 
             }
             catch (ObjectDisposedException)
@@ -89,13 +88,13 @@ namespace MangaCrawlerLib
             }
             catch (Exception)
             {
-                State = ItemState.Error;
+                State = SerieState.Error;
             }
         }
 
         public override string ToString()
         {
-            return String.Format("{0} - {1}", ServerInfo.Name, Title);
+            return String.Format("{0} - {1}", Server.Name, Title);
         }
 
         internal bool DownloadRequired
@@ -104,7 +103,7 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
-                    return (State == ItemState.Error) || (State == ItemState.Initial);
+                    return (State == SerieState.Error) || (State == SerieState.Initial);
                 }
             }
         }

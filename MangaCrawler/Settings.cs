@@ -14,7 +14,7 @@ namespace MangaCrawler
         private static string SETTINGS_XML = "settings.xml";
         private static string SETTINGS_DIR = "MangaCrawler";
 
-        private string m_directory_path =
+        private string m_images_base_dir =
             Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
         private static Settings s_instance;
@@ -56,18 +56,18 @@ namespace MangaCrawler
         }
 
         [YAXNode]
-        public string DirectoryPath
+        public string ImagesBaseDir
         {
             get
             {
-                return m_directory_path;
+                return m_images_base_dir;
             }
             set
             {
                 if (String.IsNullOrWhiteSpace(value))
                     value = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
-                m_directory_path = value;
+                m_images_base_dir = value;
             }
         }
 

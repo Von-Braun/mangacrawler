@@ -78,7 +78,7 @@ namespace MangaCrawlerLib
                     new ParallelOptions() 
                     {
                         MaxDegreeOfParallelism = MaxConnectionsPerServer,
-                        TaskScheduler = a_info.ServerInfo.Scheduler[Priority.Chapters], 
+                        TaskScheduler = a_info.Server.Scheduler[Priority.Chapters], 
                     },
                     (chapter_or_volume, state) =>
                 {
@@ -135,7 +135,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
+        internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 

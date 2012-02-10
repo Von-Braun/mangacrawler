@@ -18,15 +18,15 @@ namespace MangaCrawlerLib
         private string m_url;
         private string m_imageFilePath;
 
-        internal ChapterInfo ChapterInfo { get; private set; }
+        internal TaskInfo TaskInfo { get; private set; }
         internal int Index { get; private set; }
         internal string URLPart { get; private set; }
         internal bool Downloaded { get; private set; }
 
-        internal PageInfo(ChapterInfo a_chapterInfo, string a_urlPart, int a_index, string a_name = null)
+        internal PageInfo(TaskInfo a_task_info, string a_url_part, int a_index, string a_name = null)
         {
-            ChapterInfo = a_chapterInfo;
-            URLPart = a_urlPart;
+            TaskInfo = a_task_info;
+            URLPart = a_url_part;
             Index = a_index;
 
             if (a_name != null)
@@ -56,7 +56,7 @@ namespace MangaCrawlerLib
             get
             {
                 if (m_url == null)
-                    m_url = HttpUtility.HtmlDecode(ChapterInfo.SerieInfo.ServerInfo.Crawler.GetPageURL(this));
+                    m_url = HttpUtility.HtmlDecode(TaskInfo.Server.Crawler.GetPageURL(this));
 
                 return m_url;
             }
@@ -65,7 +65,7 @@ namespace MangaCrawlerLib
         internal string GetImageURL()
         {
             if (m_imageURL == null)
-                m_imageURL = HttpUtility.HtmlDecode(ChapterInfo.SerieInfo.ServerInfo.Crawler.GetImageURL(this));
+                m_imageURL = HttpUtility.HtmlDecode(TaskInfo.Server.Crawler.GetImageURL(this));
 
             return m_imageURL;
         }
@@ -73,7 +73,7 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return String.Format("{0} - {1}/{2}",
-                    ChapterInfo, Index, ChapterInfo.Pages.Count());
+                    TaskInfo, Index, TaskInfo.Pages.Count());
         }
 
         internal MemoryStream GetImageStream()
@@ -86,16 +86,14 @@ namespace MangaCrawlerLib
             return m_imageFilePath;
         }
 
-        public void DownloadAndSavePageImage(string a_dir)
+        public void DownloadAndSavePageImage()
         {
-            m_imageFilePath = a_dir +
+            m_imageFilePath = TaskInfo.ImagesBaseDir +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(
                     Path.GetExtension(GetImageURL()).ToLower());
 
-            FileInfo image_file = new FileInfo(m_imageFilePath);
-
-            new DirectoryInfo(a_dir).Create();
+            new DirectoryInfo(TaskInfo.ImagesBaseDir).Create();
 
             FileInfo temp_file = new FileInfo(Path.GetTempFileName());
 
@@ -129,6 +127,8 @@ namespace MangaCrawlerLib
 
                     ims.CopyTo(file_stream);
                 }
+
+                FileInfo image_file = new FileInfo(m_imageFilePath);
 
                 if (image_file.Exists)
                     image_file.Delete();

@@ -167,6 +167,9 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.pl.resx" />
     <None Include="app.config" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\DataSources\MangaCrawlerForm.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -208,6 +211,10 @@
     <ProjectReference Include="..\MangaCrawlerLib\MangaCrawlerLib.csproj">
       <Project>{5CE21DA4-9AD1-4D26-B7AE-2CDF133E6ECC}</Project>
       <Name>MangaCrawlerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NLog\NLog.csproj">
+      <Project>{A0BFF0DB-ED9A-4639-AE86-8E709A1EFC66}</Project>
+      <Name>NLog</Name>
     </ProjectReference>
     <ProjectReference Include="..\yaxlib\TomanuExtensions\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
       <Project>{4653B49E-D5A5-43B7-8CED-160E7BC09917}</Project>

@@ -78,7 +78,7 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result.Reverse());
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
+        internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 

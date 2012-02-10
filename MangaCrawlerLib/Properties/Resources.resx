@@ -122,14 +122,14 @@
 serie: {1}
 chapter: {2}</value>
   </data>
+  <data name="TaskProgressAborted" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
   <data name="TaskProgressDeleting" xml:space="preserve">
     <value>Deleting</value>
   </data>
   <data name="TaskProgressDownloaded" xml:space="preserve">
     <value>Downloaded</value>
-  </data>
-  <data name="TaskProgressDownloadedMissingPages" xml:space="preserve">
-    <value>Downloaded (missing pages)</value>
   </data>
   <data name="TaskProgressError" xml:space="preserve">
     <value>Error</value>

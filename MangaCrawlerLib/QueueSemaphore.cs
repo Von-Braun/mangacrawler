@@ -44,15 +44,14 @@ namespace MangaCrawlerLib
 
             if (mre != null)
             {
-                System.Diagnostics.Debug.WriteLine(
-                    "QueuedSemaphore.WaitOne1 - waiting, {0} / {1}, queue: {2}", m_working, m_count, m_queue.Count);
+                Loggers.ConnectionsLimits.Info("waiting, {0} / {1}, queue: {2}", 
+                    m_working, m_count, m_queue.Count);
 
                 while (!mre.WaitOne(100))
                 {
                     if (a_token.IsCancellationRequested)
                     {
-                        System.Diagnostics.Debug.WriteLine(
-                            "QueuedSemaphore.WaitOne - cancellation requested");
+                        Loggers.ConnectionsLimits.Info("Cancellation requested");
 
                         lock (m_lock)
                         {
@@ -68,8 +67,8 @@ namespace MangaCrawlerLib
                 mre.Close();
             }
 
-            System.Diagnostics.Debug.WriteLine(
-                "QueuedSemaphore.WaitOne1 - aquired, {0} / {1}, queue: {2}", m_working, m_count, m_queue.Count);
+            Loggers.ConnectionsLimits.Info("aquired, {0} / {1}, queue: {2}",
+                m_working, m_count, m_queue.Count);
         }
 
         public void WaitOne(P a_priority)
@@ -89,15 +88,15 @@ namespace MangaCrawlerLib
 
             if (mre != null)
             {
-                System.Diagnostics.Debug.WriteLine(
-                    "QueuedSemaphore.WaitOne2 - waiting, {0} / {1}, queue: {2}", m_working, m_count, m_queue.Count);
+                System.Diagnostics.Debug.WriteLine("waiting, {0} / {1}, queue: {2}", 
+                    m_working, m_count, m_queue.Count);
 
                 mre.WaitOne();
                 mre.Close();
             }
 
-            System.Diagnostics.Debug.WriteLine(
-                "QueuedSemaphore.WaitOne2 - aquired, {0} / {1}, queue: {2}", m_working, m_count, m_queue.Count);
+            System.Diagnostics.Debug.WriteLine("Aquired, {0} / {1}, queue: {2}", 
+                m_working, m_count, m_queue.Count);
         }
 
         public void Release()

@@ -116,8 +116,11 @@ namespace MangaCrawlerTest
 
             ConnectionsLimiter.DownloadWithRetry(() => new HtmlWeb().Load(a_info.URL));
 
-            a_info.DownloadPages();
-            var pages = a_info.Pages;
+            TaskInfo task_info = new TaskInfo(a_info, "", false);
+
+
+            task_info.DownloadPages();
+            var pages = task_info.Pages;
 
             if (!a_ongoing)
             {
@@ -132,8 +135,8 @@ namespace MangaCrawlerTest
                 TestContext.WriteLine("    Ongoing");
             }
 
-            Assert.IsTrue(a_info.Pages.All(s => s.Name.Trim() == s.Name));
-            Assert.IsTrue(a_info.Pages.All(s => !String.IsNullOrWhiteSpace(s.Name)));
+            Assert.IsTrue(task_info.Pages.All(s => s.Name.Trim() == s.Name));
+            Assert.IsTrue(task_info.Pages.All(s => !String.IsNullOrWhiteSpace(s.Name)));
 
             return pages;
         }
@@ -818,13 +821,14 @@ namespace MangaCrawlerTest
                         new ParallelOptions()
                         {
                             MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer,
-                            TaskScheduler = serie.ServerInfo.Scheduler[Priority.Chapters]
+                            TaskScheduler = serie.Server.Scheduler[Priority.Chapters]
                         },
                         (chapter) => 
                     {
+                        TaskInfo task_info = new TaskInfo(chapter, "", false);
                         try
                         {
-                            chapter.DownloadPages();
+                            task_info.DownloadPages();
                         }
                         catch
                         {
@@ -832,16 +836,16 @@ namespace MangaCrawlerTest
                                 "{0} - Exception while downloading pages from chapter", chapter);
                         }
 
-                        if (chapter.Pages.Count() == 0)
+                        if (task_info.Pages.Count() == 0)
                         {
                             TestContext.WriteLine("{0} - Chapter have no pages", chapter);
                         }
 
-                        Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), 
+                        Parallel.ForEach(TakeRandom(task_info.Pages, 0.1), 
                             new ParallelOptions()
                             {
-                                MaxDegreeOfParallelism = chapter.SerieInfo.ServerInfo.Crawler.MaxConnectionsPerServer,
-                                TaskScheduler = chapter.SerieInfo.ServerInfo.Scheduler[Priority.Pages]
+                                MaxDegreeOfParallelism = chapter.Serie.Server.Crawler.MaxConnectionsPerServer,
+                                TaskScheduler = chapter.Serie.Server.Scheduler[Priority.Pages]
                             }, 
                             (page) =>
                         {
