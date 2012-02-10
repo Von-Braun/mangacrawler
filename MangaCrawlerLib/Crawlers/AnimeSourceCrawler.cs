@@ -54,7 +54,7 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result.Reverse());
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(ChapterInfo a_info)
+        internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
@@ -93,7 +93,7 @@ namespace MangaCrawlerLib
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
             string xpath;
-            if (a_info.ChapterInfo.Pages.Count() == a_info.Index)
+            if (a_info.TaskInfo.Pages.Count() == a_info.Index)
                 xpath = "/html/body/center/table/tr/td/table[5]/tr/td/div/img";
             else
                 xpath = "/html/body/center/table/tr/td/table[5]/tr/td/div/a/img";

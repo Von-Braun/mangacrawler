@@ -132,9 +132,6 @@
   <data name="Downloaded" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="DownloadMissingPages" xml:space="preserve">
-    <value>Pobrane (brakuje stron)</value>
-  </data>
   <data name="Error" xml:space="preserve">
     <value>BŁĄD</value>
   </data>
@@ -155,5 +152,11 @@
   </data>
   <data name="Zipping" xml:space="preserve">
     <value>PAKUJĘ</value>
+  </data>
+  <data name="Aborted" xml:space="preserve">
+    <value>Anuluje</value>
+  </data>
+  <data name="WasDownloaded" xml:space="preserve">
+    <value>Już pobrane </value>
   </data>
 </root>

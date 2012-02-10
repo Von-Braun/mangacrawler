@@ -16,7 +16,7 @@ namespace MangaCrawlerLib
         private Object m_lock = new Object();
 
         public int DownloadProgress { get; private set; }
-        public ItemState State { get; private set; }
+        public ServerState State;
         internal CustomTaskScheduler Scheduler { get; private set; }
         internal Crawler Crawler { get; private set; }
 
@@ -76,7 +76,6 @@ namespace MangaCrawlerLib
             try
             {
                 DownloadProgress = 0;
-                State = ItemState.Downloading;
 
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
@@ -96,14 +95,14 @@ namespace MangaCrawlerLib
                     DownloadProgress = progress;
                 });
 
-                State = ItemState.Downloaded;
+                State = ServerState.Downloaded;
             }
             catch (ObjectDisposedException)
             {
             }
             catch (Exception)
             {
-                State = ItemState.Error;
+                State = ServerState.Error;
             }
         }
 
@@ -222,7 +221,7 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
-                    return (State == ItemState.Error) || (State == ItemState.Initial);
+                    return (State == ServerState.Error) || (State == ServerState.Initial);
                 }
             }
         }
