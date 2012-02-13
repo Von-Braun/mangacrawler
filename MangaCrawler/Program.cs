@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using System.Threading;
-using System.Globalization;
 
 namespace MangaCrawler
 {
@@ -12,7 +9,7 @@ namespace MangaCrawler
         [STAThread]
         static void Main()
         {
-            //System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

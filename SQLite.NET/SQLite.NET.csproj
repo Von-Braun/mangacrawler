@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *
+ * System.Data.SQLite.2010.csproj -
+ *
+ * Written by Joe Mistachkin.
+ * Released to the public domain, use at your own risk!
+ *
+-->
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.30319</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AC139952-261A-4463-B6FA-AEBC25283A66}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Data.SQLite</RootNamespace>
+    <AssemblyName>System.Data.SQLite</AssemblyName>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <ConfigurationYear>2010</ConfigurationYear>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <!--
+  ******************************************************************************
+  **                          Load Per-User Settings                          **
+  ******************************************************************************
+  -->
+  <!--
+  ******************************************************************************
+  **                       [Fairly] Generic Properties                        **
+  ******************************************************************************
+  -->
+  <PropertyGroup>
+    <!--
+        NOTE: *UNCONDITIONAL* We never want to use the hosting process for
+              debugging.  It causes problems.
+    ->
+    <UseVSHostingProcess>false</UseVSHostingProcess> -->
+    <!--
+        NOTE: *UNCONDITIONAL* We never want to use the fast up-to-date check
+              that Visual Studio provides.
+    ->
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck> -->
+    <!--
+        HACK: *UNCONDITIONAL* The Visual Studio IDE ignores the
+              BaseIntermediateOutputPath property and creates empty "bin" and
+              "obj" directories for every project whenever the project is opened
+              or built.  Also, the Visual Studio IDE will occasionally fail to
+              rebuild the project due to this confusion.  The situation appears
+              to improve somewhat when this is set to false.  Please note that
+              even if this is set to false, things still do not work 100%
+              correctly; however, at least there appears to be less build
+              failures.
+
+              Please see Microsoft Connect FeedbackID 105854 for their official
+              list of excuses, on this now more than 3 year old bug.
+    ->
+    <UseHostCompilerIfAvailable>false</UseHostCompilerIfAvailable> -->
+  </PropertyGroup>
+  <!--
+  ******************************************************************************
+  **                            Common Properties                             **
+  ******************************************************************************
+  -->
+  <PropertyGroup>
+    <!--
+        NOTE: Only use functionality available in the .NET Framework 2.0?  By
+              default, this is disabled.  This must be enabled to successfully
+              build the project using Visual Studio 2008 and/or the .NET
+              Framework 2.0 (if necessary, it will typically be enabled from
+              within the project file itself).
+    -->
+    <NetFx20 Condition="'$(NetFx20)' == ''">false</NetFx20>
+    <!--
+        NOTE: The suffix for the name of the build configuration directory .  By
+              default, this is an empty string.
+    -->
+    <ConfigurationSuffix Condition="'$(ConfigurationSuffix)' == ''">
+    </ConfigurationSuffix>
+    <!--
+        NOTE: For interaction with the native SQLite implementation, use the
+              custom built interop DLL (i.e. "SQLite.Interop.dll")?  By default,
+              this is enabled.  This property is mutually exclusive with the
+              "UseSqliteStandard" one, below.  This should always be disabled in
+              the project file that builds the NetModule target.
+    -->
+    <UseInteropDll Condition="'$(UseInteropDll)' == ''">true</UseInteropDll>
+    <!--
+        NOTE: For interaction with the native SQLite implementation, use the
+              standard DLL (i.e. "sqlite3.dll")?  By default, this is disabled.
+              This property is mutually exclusive with the "UseInteropDll" one,
+              above.  This should always be disabled in the project file that
+              builds the NetModule target.
+    -->
+    <UseSqliteStandard Condition="'$(UseSqliteStandard)' == ''">false</UseSqliteStandard>
+    <!--
+        NOTE: Is the project being built to support the .NET Compact Framework?
+    -->
+    <IsCompactFramework Condition="'$(IsCompactFramework)' == ''">false</IsCompactFramework>
+    <!--
+        NOTE: Emit an AssemblyFlags attribute that includes the Retargetable
+              flag from the AssemblyNameFlags enumeration?
+    -->
+    <IsRetargetable Condition="'$(IsRetargetable)' == ''">false</IsRetargetable>
+    <!--
+        NOTE: Throw an exception if an object has already been disposed?  By
+              default, this is enabled.  If this is disabled, an exception will
+              not be thrown when a SQLite object which has already been disposed
+              is accessed.
+    -->
+    <ThrowOnDisposed Condition="'$(ThrowOnDisposed)' == ''">true</ThrowOnDisposed>
+  </PropertyGroup>
+  <!--
+  ******************************************************************************
+  **                            Warning Properties                            **
+  ******************************************************************************
+  -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <!--
+        NOTE: Debug build.  Set the warning level to maximum.  Also, disable
+              warnings that tend to cause too much noise.
+    -->
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>618,1591;3001</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <!--
+        NOTE: Release build.  Set the warning level to maximum.  Also, disable
+              warnings that tend to cause too much noise.
+    -->
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>618,1591;3001</NoWarn>
+  </PropertyGroup>
+  <!--
+  ******************************************************************************
+  **                         Relative Path Properties                         **
+  ******************************************************************************
+  -->
+  <PropertyGroup Condition="'$(SQLiteNetDir)' != ''">
+    <!--
+        NOTE: Keep all the intermediate files in one place.  The Visual Studio
+              IDE seems to have a nasty habit of ignoring this setting.  The
+              Visual Studio IDE then fails to build the project(s) properly when
+              the output does not end up where it expects the output to be.  The
+              value of this property must have a trailing backslash.
+    -->
+    <BaseIntermediateOutputPath Condition="'$(ConfigurationSuffix)' == ''">$(SQLiteNetDir)\obj\$(ConfigurationYear)\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath Condition="'$(ConfigurationSuffix)' != ''">$(SQLiteNetDir)\obj\$(ConfigurationYear)\$(ConfigurationSuffix)\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <!--
+  ******************************************************************************
+  **                Per-Configuration Relative Path Properties                **
+  ******************************************************************************
+  -->
+  <PropertyGroup Condition="'$(SQLiteNetDir)' != '' And '$(Configuration)' != ''">
+    <!--
+        NOTE: The final output files need to end up in one place.  The value of
+              this property must have a trailing backslash.
+    -->
+    <BinaryOutputPath Condition="'$(BinaryOutputPath)' == ''">$(SQLiteNetDir)\bin\$(ConfigurationYear)\$(Configuration)$(ConfigurationSuffix)\bin\</BinaryOutputPath>
+  </PropertyGroup>
+  <!--
+  ******************************************************************************
+  **                      Strong Name Signing Properties                      **
+  ******************************************************************************
+  -->
+  <PropertyGroup Condition="'$(SQLiteNetDir)' != '' And&#xD;&#xA;                            !HasTrailingSlash('$(SQLiteNetDir)') And&#xD;&#xA;                            (('$(IsCompactFramework)' == 'false' And Exists('$(SQLiteNetDir)\System.Data.SQLite\System.Data.SQLite.snk')) Or&#xD;&#xA;                             ('$(IsCompactFramework)' != 'false' And Exists('$(SQLiteNetDir)\System.Data.SQLite\System.Data.SQLite.CF.snk')))">
+    <!--
+        NOTE: Sign the assembly?  By default, this is enabled.
+    -->
+    <SignAssembly Condition="'$(SignAssembly)' == ''">true</SignAssembly>
+    <!--
+        NOTE: Use delay signing?  By default, this is disabled because the
+              default strong name key pair is included with the source code.
+    -->
+    <DelaySign Condition="'$(DelaySign)' == ''">false</DelaySign>
+    <!--
+        NOTE: The full path and file name for the strong name key pair to use.
+    -->
+    <AssemblyOriginatorKeyFile Condition="'$(AssemblyOriginatorKeyFile)' == '' And '$(IsCompactFramework)' == 'false'">$(SQLiteNetDir)\System.Data.SQLite\System.Data.SQLite.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile Condition="'$(AssemblyOriginatorKeyFile)' == '' And '$(IsCompactFramework)' != 'false'">$(SQLiteNetDir)\System.Data.SQLite\System.Data.SQLite.CF.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(BinaryOutputPath)' != ''">
+    <OutputPath>$(BinaryOutputPath)</OutputPath>
+    <DocumentationFile>$(BinaryOutputPath)System.Data.SQLite.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile />
+  </PropertyGroup>
+  <!--
+  ******************************************************************************
+  **                     Core References (Full Framework)                     **
+  ******************************************************************************
+  -->
+  <ItemGroup Condition="'$(IsCompactFramework)' == 'false'">
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <!--
+  ******************************************************************************
+  **                    Core References (Compact Framework)                   **
+  ******************************************************************************
+  -->
+  <ItemGroup Condition="'$(IsCompactFramework)' != 'false'">
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <!--
+  ******************************************************************************
+  **                     Core References (Full Framework)                     **
+  ******************************************************************************
+  -->
+  <ItemGroup Condition="'$(IsCompactFramework)' == 'false'">
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <!--
+  ******************************************************************************
+  **                    Core References (Compact Framework)                   **
+  ******************************************************************************
+  -->
+  <ItemGroup Condition="'$(IsCompactFramework)' != 'false'">
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <!--
+      NOTE: Only use functionality available in the .NET Framework 2.0?  By
+            default, this is disabled.  This must be enabled to successfully
+            build the project using Visual Studio 2008 and/or the .NET
+            Framework 2.0 (if necessary, it will typically be enabled from
+            within the project file itself).
+  -->
+  <PropertyGroup Condition="'$(NetFx20)' != 'false' Or&#xD;&#xA;                            '$(TargetFrameworkVersion)' == 'v2.0' Or&#xD;&#xA;                            '$(TargetFrameworkVersion)' == 'v3.5'">
+    <DefineConstants>$(DefineConstants);NET_20</DefineConstants>
+  </PropertyGroup>
+  <!--
+      NOTE: For interaction with the native SQLite implementation, use the
+            custom build interop DLL (i.e. "SQLite.Interop.DLL")?
+  -->
+  <PropertyGroup Condition="'$(UseInteropDll)' != 'false'">
+    <DefineConstants>$(DefineConstants);USE_INTEROP_DLL</DefineConstants>
+  </PropertyGroup>
+  <!--
+      NOTE: For interaction with the native SQLite implementation, use the
+            standard DLL (i.e. "sqlite3.dll")?
+  -->
+  <PropertyGroup Condition="'$(UseSqliteStandard)' != 'false'">
+    <DefineConstants>$(DefineConstants);SQLITE_STANDARD</DefineConstants>
+  </PropertyGroup>
+  <!--
+      NOTE: Is the project being built to support the .NET Compact Framework?
+  -->
+  <PropertyGroup Condition="'$(IsCompactFramework)' != 'false'">
+    <DefineConstants>$(DefineConstants);PLATFORM_COMPACTFRAMEWORK</DefineConstants>
+  </PropertyGroup>
+  <!--
+      NOTE: Emit an AssemblyFlags attribute that includes the Retargetable
+            flag from the AssemblyNameFlags enumeration?
+  -->
+  <PropertyGroup Condition="'$(IsRetargetable)' != 'false'">
+    <DefineConstants>$(DefineConstants);RETARGETABLE</DefineConstants>
+  </PropertyGroup>
+  <!--
+      NOTE: Throw an exception when somebody tries to access a disposed object?
+  -->
+  <PropertyGroup Condition="'$(ThrowOnDisposed)' != 'false'">
+    <DefineConstants>$(DefineConstants);THROW_ON_DISPOSED</DefineConstants>
+  </PropertyGroup>
+  <!--
+  ******************************************************************************
+  **                            Core Files (Common)                           **
+  ******************************************************************************
+  -->
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="SQLite3.cs" />
+    <Compile Include="SQLite3_UTF16.cs" />
+    <Compile Include="SQLiteBase.cs" />
+    <Compile Include="SQLiteCommand.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SQLiteCommandBuilder.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SQLiteConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SQLiteConnectionPool.cs" />
+    <Compile Include="SQLiteConnectionStringBuilder.cs" />
+    <Compile Include="SQLiteConvert.cs" />
+    <Compile Include="SQLiteDataAdapter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SQLiteDataReader.cs" />
+    <Compile Include="SQLiteException.cs" />
+    <Compile Include="SQLiteFactory.cs" />
+    <Compile Include="SQLiteFunction.cs" />
+    <Compile Include="SQLiteFunctionAttribute.cs" />
+    <Compile Include="SQLiteKeyReader.cs" />
+    <Compile Include="SQLiteLog.cs" />
+    <Compile Include="SQLiteMetaDataCollectionNames.cs" />
+    <Compile Include="SQLiteParameter.cs" />
+    <Compile Include="SQLiteParameterCollection.cs" />
+    <Compile Include="SQLiteStatement.cs" />
+    <Compile Include="SQLiteTransaction.cs" />
+    <Compile Include="SR.Designer.cs">
+      <DependentUpon>SR.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="UnsafeNativeMethods.cs" />
+    <EmbeddedResource Include="SR.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <!--
+  ******************************************************************************
+  **                        Core Files (Full Framework)                       **
+  ******************************************************************************
+  -->
+  <ItemGroup Condition="'$(IsCompactFramework)' == 'false'">
+    <Compile Include="SQLiteEnlistment.cs" />
+    <Compile Include="LINQ\SQLiteConnection_Linq.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="LINQ\SQLiteFactory_Linq.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
