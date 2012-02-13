@@ -21,6 +21,7 @@ using NLog;
 
 namespace MangaCrawler
 {
+    // TODO: dodac nowa karte na ktorej bedzie mozna wykreslic ilosc polaczen ogolnie i na serwer
     // TODO: czy byl jakis pik po wydaniu nowej wersji jesli nie to zmienic wersjonowanie na korzystanie z daty
     // TODO: wersja to data, ustawiana automatycznie podczas budowania, generowanie jakiegos pliku 
     //       z data.

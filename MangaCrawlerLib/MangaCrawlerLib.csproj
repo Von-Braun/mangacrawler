@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IClassMapping.cs" />
+    <Compile Include="NHibernateSetup.cs" />
     <Compile Include="TaskInfo.cs" />
     <Compile Include="DownloadedChapters.cs" />
     <Compile Include="DownloadingTasks.cs" />
@@ -90,6 +92,10 @@
     <ProjectReference Include="..\HtmlAgilityPack\HtmlAgilityPack.csproj">
       <Project>{193BB801-054F-4729-9D5D-FCE1E32594BF}</Project>
       <Name>HtmlAgilityPack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NHibernate\NHibernate.csproj">
+      <Project>{5909BFE7-93CF-4E5F-BE22-6293368AF01D}</Project>
+      <Name>NHibernate</Name>
     </ProjectReference>
     <ProjectReference Include="..\NLog\NLog.csproj">
       <Project>{A0BFF0DB-ED9A-4639-AE86-8E709A1EFC66}</Project>
