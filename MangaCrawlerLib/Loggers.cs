@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NLog;
+using log4net;
 
 namespace MangaCrawlerLib
 {
+    // Sync with MangaCrawler/app.config
     public static class Loggers
     {
-        public static Logger ConnectionsLimits = LogManager.GetLogger("ConnectionsLimits");
-        public static Logger Cancellation = LogManager.GetLogger("Cancellation");
-        public static Logger Settings = LogManager.GetLogger("Settings");
-        public static Logger MangaCrawler = LogManager.GetLogger("MangaCrawler");
-        public static Logger DownloadingTasks = LogManager.GetLogger("DownloadingChapters");
-        public static Logger GUI = LogManager.GetLogger("GUI");
+        public static ILog ConLimits = LogManager.GetLogger("ConLimits");
+        public static ILog Cancellation = LogManager.GetLogger("Cancellation");
+        public static ILog Settings = LogManager.GetLogger("Settings");
+        public static ILog NHibernate = LogManager.GetLogger("NHibernate");
+        public static ILog MangaCrawler = LogManager.GetLogger("MangaCrawler");
+        public static ILog GUI = LogManager.GetLogger("GUI");
     }
 }

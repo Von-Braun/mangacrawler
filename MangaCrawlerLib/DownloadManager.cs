@@ -198,7 +198,7 @@ namespace MangaCrawlerLib
 
                     if (task_info != null)
                     {
-                        Loggers.MangaCrawler.Info(
+                        Loggers.MangaCrawler.InfoFormat(
                             "Already in work, task: {0} state: {1}",
                             task_info, task_info.State);
                         continue;
@@ -207,7 +207,7 @@ namespace MangaCrawlerLib
                     task_info = new TaskInfo(chapter_info, GetImagesBaseDir(), UseCBZ());
                     chapter_info.Task = task_info;
 
-                    Loggers.MangaCrawler.Info(
+                    Loggers.MangaCrawler.InfoFormat(
                         "Task: {0} state: {1}",
                         task_info, task_info.State);
 

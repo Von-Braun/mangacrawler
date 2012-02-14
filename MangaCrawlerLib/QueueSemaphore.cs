@@ -44,14 +44,14 @@ namespace MangaCrawlerLib
 
             if (mre != null)
             {
-                Loggers.ConnectionsLimits.Info("waiting, {0} / {1}, queue: {2}", 
+                Loggers.ConLimits.InfoFormat("waiting, {0} / {1}, queue: {2}", 
                     m_working, m_count, m_queue.Count);
 
                 while (!mre.WaitOne(100))
                 {
                     if (a_token.IsCancellationRequested)
                     {
-                        Loggers.ConnectionsLimits.Info("Cancellation requested");
+                        Loggers.ConLimits.InfoFormat("Cancellation requested");
 
                         lock (m_lock)
                         {
@@ -67,7 +67,7 @@ namespace MangaCrawlerLib
                 mre.Close();
             }
 
-            Loggers.ConnectionsLimits.Info("aquired, {0} / {1}, queue: {2}",
+            Loggers.ConLimits.InfoFormat("aquired, {0} / {1}, queue: {2}",
                 m_working, m_count, m_queue.Count);
         }
 

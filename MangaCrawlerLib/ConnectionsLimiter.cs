@@ -40,18 +40,18 @@ namespace MangaCrawlerLib
 
         public static void BeginDownloadPages(TaskInfo a_task_info)
         {
-            Loggers.ConnectionsLimits.Info("Locking one per server, task: {0} state: {1}",
+            Loggers.ConLimits.InfoFormat("Locking one per server, task: {0} state: {1}",
                 a_task_info, a_task_info.State);
 
             s_serverPages[a_task_info.Server].WaitOne(a_task_info.Token);
 
-            Loggers.ConnectionsLimits.Info("Locked one per server, task: {0} state: {1}",
+            Loggers.ConLimits.InfoFormat("Locked one per server, task: {0} state: {1}",
                a_task_info, a_task_info.State);
         }
 
         public static void EndDownloadPages(TaskInfo a_task_info)
         {
-            Loggers.ConnectionsLimits.Info("Releasing one per server, task: {0} state: {1}",
+            Loggers.ConLimits.InfoFormat("Releasing one per server, task: {0} state: {1}",
                 a_task_info, a_task_info.State);
 
             s_serverPages[a_task_info.Server].ReleaseMutex();
@@ -59,15 +59,15 @@ namespace MangaCrawlerLib
 
         private static void Aquire(ServerInfo a_info, Priority a_priority)
         {
-            Loggers.ConnectionsLimits.Info("Aquiring global connection limit, server name: {0}",
+            Loggers.ConLimits.InfoFormat("Aquiring global connection limit, server name: {0}",
                 a_info.Name);
 
             s_connections.WaitOne(a_priority);
 
-            Loggers.ConnectionsLimits.Info("Aquired global connection limit, server name: {0}",
+            Loggers.ConLimits.InfoFormat("Aquired global connection limit, server name: {0}",
                 a_info.Name);
 
-            Loggers.ConnectionsLimits.Info("Aquiring server connection limit, server name: {0}",
+            Loggers.ConLimits.InfoFormat("Aquiring server connection limit, server name: {0}",
                 a_info.Name);
 
             // Should never block. Scheduler do the job. 
@@ -75,7 +75,7 @@ namespace MangaCrawlerLib
 
             s_serverConnections[a_info].WaitOne(a_priority);
 
-            Loggers.ConnectionsLimits.Info(
+            Loggers.ConLimits.InfoFormat(
                 "Aquired server connection limit, server name: {0}",
                 a_info.Name);
         }
@@ -83,17 +83,17 @@ namespace MangaCrawlerLib
         private static void Aquire(ServerInfo a_info, CancellationToken a_token, 
             Priority a_priority)
         {
-            Loggers.ConnectionsLimits.Info(
+            Loggers.ConLimits.InfoFormat(
                 "Aquiring global connection limit, server name: {0}",
                 a_info.Name);
 
             s_connections.WaitOne(a_token, a_priority);
 
-            Loggers.ConnectionsLimits.Info(
+            Loggers.ConLimits.InfoFormat(
                 "Aquired global connection limit, server name: {0}",
                 a_info.Name);
 
-            Loggers.ConnectionsLimits.Info(
+            Loggers.ConLimits.InfoFormat(
                 "Aquiring server connection limit, server name: {0}",
                 a_info.Name);
 
@@ -102,20 +102,20 @@ namespace MangaCrawlerLib
 
             s_serverConnections[a_info].WaitOne(a_token, a_priority);
 
-            Loggers.ConnectionsLimits.Info(
+            Loggers.ConLimits.InfoFormat(
                 "Aquired server connection limit, server name: {0}",
                 a_info.Name);
         }
 
         private static void Release(ServerInfo a_info)
         {
-            Loggers.ConnectionsLimits.Info(
+            Loggers.ConLimits.InfoFormat(
                 "Releasing global connection limit, server name: {0}",
                 a_info.Name);
 
             s_serverConnections[a_info].Release();
 
-            Loggers.ConnectionsLimits.Info(
+            Loggers.ConLimits.InfoFormat(
                 "Releasing server connection limit, server name: {0}",
                 a_info.Name);
 
@@ -138,7 +138,7 @@ namespace MangaCrawlerLib
 
                     if (web.StatusCode == HttpStatusCode.NotFound)
                     {
-                        Loggers.MangaCrawler.Info(
+                        Loggers.MangaCrawler.InfoFormat(
                             "ConnectionsLimiter.DownloadDocument - series - page is null, url: {0}", 
                             a_url);
 
@@ -170,7 +170,7 @@ namespace MangaCrawlerLib
 
                     if (web.StatusCode == HttpStatusCode.NotFound)
                     {
-                        Loggers.MangaCrawler.Info(
+                        Loggers.MangaCrawler.InfoFormat(
                             "ConnectionsLimiter.DownloadDocument - chapters - page is null, url: {0}",
                             a_url);
 
@@ -192,7 +192,7 @@ namespace MangaCrawlerLib
             {
                 if (a_task_info.Token.IsCancellationRequested)
                 {
-                    Loggers.Cancellation.Info(
+                    Loggers.Cancellation.InfoFormat(
                         "Pages - #1 token cancelled, a_url: {0}",
                         a_url);
                 }
@@ -205,7 +205,7 @@ namespace MangaCrawlerLib
                 {
                     if (a_task_info.Token.IsCancellationRequested)
                     {
-                        Loggers.Cancellation.Info(
+                        Loggers.Cancellation.InfoFormat(
                             "Pages - #2 token cancelled, a_url: {0}",
                             a_url);
                     }
@@ -220,7 +220,7 @@ namespace MangaCrawlerLib
 
                     if (web.StatusCode == HttpStatusCode.NotFound)
                     {
-                        Loggers.MangaCrawler.Info(
+                        Loggers.MangaCrawler.InfoFormat(
                             "Pages - page is null, url: {0}",
                             a_url);
 
@@ -242,7 +242,7 @@ namespace MangaCrawlerLib
             {
                 if (a_page_info.TaskInfo.Token.IsCancellationRequested)
                 {
-                    Loggers.Cancellation.Info(
+                    Loggers.Cancellation.InfoFormat(
                         "Page - #1 token cancelled, a_url: {0}",
                         a_url);
                 }
@@ -255,7 +255,7 @@ namespace MangaCrawlerLib
                 {
                     if (a_page_info.TaskInfo.Token.IsCancellationRequested)
                     {
-                        Loggers.Cancellation.Info(
+                        Loggers.Cancellation.InfoFormat(
                             "Page - #2 token cancelled, a_url: {0}",
                             a_url);
                     }
@@ -270,7 +270,7 @@ namespace MangaCrawlerLib
 
                     if (web.StatusCode == HttpStatusCode.NotFound)
                     {
-                        Loggers.MangaCrawler.Info(
+                        Loggers.MangaCrawler.InfoFormat(
                             "Page - page is null, url: {0}",
                             a_url);
 

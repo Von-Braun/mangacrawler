@@ -17,7 +17,7 @@ using System.Reflection;
 using HtmlAgilityPack;
 using System.Media;
 using MangaCrawler.Properties;
-using NLog;
+using log4net;
 
 namespace MangaCrawler
 {
@@ -83,7 +83,7 @@ namespace MangaCrawler
             Task.Factory.StartNew(() => CheckNewVersion(),TaskCreationOptions.LongRunning);
 #if !DEBUG
             tabControl.TabPages.Remove(logTabPage);
-            LogManager.DisableLogging();
+            LogManager.Shutdown();
 #endif
             //Flicker-free.
             typeof(DataGridView).InvokeMember(
@@ -706,7 +706,8 @@ namespace MangaCrawler
 
         private void clearLogButton_Click(object sender, EventArgs e)
         {
-            (LogManager.Configuration.FindTargetByName("richTextBox") as NLog.Targets.RichTextBoxTarget).Clear();
+            //TODO: richedit appender
+            //(LogManager.Configuration.FindTargetByName("richTextBox") as NLog.Targets.RichTextBoxTarget).Clear();
         }
 
         private void saveTimer_Tick(object sender, EventArgs e)

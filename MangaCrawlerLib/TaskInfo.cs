@@ -82,7 +82,7 @@ namespace MangaCrawlerLib
             }
             set
             {
-                Loggers.MangaCrawler.Info("{0} -> {1}", State, value);
+                Loggers.MangaCrawler.InfoFormat("{0} -> {1}", State, value);
 
                 m_state = value;
             }
@@ -96,7 +96,7 @@ namespace MangaCrawlerLib
             }
             catch (OperationCanceledException)
             {
-                Loggers.Cancellation.Info(
+                Loggers.Cancellation.InfoFormat(
                     "#1 operation cancelled, task: {0} state: {1}",
                     this, State);
 
@@ -110,7 +110,7 @@ namespace MangaCrawlerLib
 
                 if (Token.IsCancellationRequested)
                 {
-                    Loggers.Cancellation.Info(
+                    Loggers.Cancellation.InfoFormat(
                         "#1 cancellation requested, task: {0} state: {1}",
                         this, State);
                 }
@@ -122,7 +122,7 @@ namespace MangaCrawlerLib
 
                 if (Token.IsCancellationRequested)
                 {
-                    Loggers.Cancellation.Info(
+                    Loggers.Cancellation.InfoFormat(
                         "#2 cancellation requested, task: {0} state: {1}",
                         this, State);
                 }
@@ -144,7 +144,7 @@ namespace MangaCrawlerLib
                         }
                         catch (OperationCanceledException ex1)
                         {
-                            Loggers.Cancellation.Info(
+                            Loggers.Cancellation.InfoFormat(
                                 "OperationCanceledException, task: {0} state: {1}, {2}",
                                 this, State, ex1);
 
@@ -152,7 +152,7 @@ namespace MangaCrawlerLib
                         }
                         catch (Exception ex2)
                         {
-                            Loggers.MangaCrawler.Info(
+                            Loggers.MangaCrawler.InfoFormat(
                                 "1 Exception, task: {0} state: {1}, {2}",
                                 this, State, ex2);
 
@@ -163,7 +163,7 @@ namespace MangaCrawlerLib
 
                 if (Token.IsCancellationRequested)
                 {
-                    Loggers.Cancellation.Info(
+                    Loggers.Cancellation.InfoFormat(
                         "#3 cancellation requested, task: {0} state: {1}",
                         this, State);
                 }
@@ -177,7 +177,7 @@ namespace MangaCrawlerLib
             }
             catch (Exception ex)
             {
-                Loggers.MangaCrawler.Info(
+                Loggers.MangaCrawler.InfoFormat(
                     "#2 Exception, task: {0} state: {1}, {2}",
                     this, State, ex);
 
@@ -191,7 +191,7 @@ namespace MangaCrawlerLib
 
         private void CreateCBZ()
         {
-            Loggers.MangaCrawler.Info(
+            Loggers.MangaCrawler.InfoFormat(
                 "Task: {0} state: {1}",
                 this, State);
 
@@ -258,7 +258,7 @@ namespace MangaCrawlerLib
 
         public void DeleteTask()
         {
-            Loggers.MangaCrawler.Info("Task: {0}, state: {1}", this, State);
+            Loggers.MangaCrawler.InfoFormat("Task: {0}, state: {1}", this, State);
 
             lock (m_lock)
             {
@@ -304,7 +304,7 @@ namespace MangaCrawlerLib
 
         internal void FinishDownload(bool a_error)
         {
-            Loggers.MangaCrawler.Info("Task: {0}, state: {1}, error: {2}", 
+            Loggers.MangaCrawler.InfoFormat("Task: {0}, state: {1}, error: {2}", 
                 this, State, a_error);
 
             lock (m_lock)

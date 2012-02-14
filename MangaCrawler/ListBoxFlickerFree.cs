@@ -14,9 +14,9 @@ namespace MangaCrawler
     {
         public ListBoxFlickerFree()
         {
-            SetStyle(ControlStyles.OptimizedDoubleBuffer |  ControlStyles.ResizeRedraw |  
-                ControlStyles.UserPaint, true);
-            DrawMode = DrawMode.OwnerDrawFixed;  
+            //SetStyle(ControlStyles.OptimizedDoubleBuffer |  ControlStyles.ResizeRedraw |  
+            //    ControlStyles.UserPaint, true);
+            //DrawMode = DrawMode.OwnerDrawFixed;  
         }
 
         protected override void OnPaint(PaintEventArgs e)
