@@ -150,7 +150,7 @@ namespace NHibernate.Linq.Functions
 
 		public override HqlTreeNode BuildHql(MethodInfo method, Expression targetObject, ReadOnlyCollection<Expression> arguments, HqlTreeBuilder treeBuilder, IHqlExpressionVisitor visitor)
 		{
-			// TODO - alias generator
+			// xTODO - alias generator
 			HqlAlias alias = treeBuilder.Alias("x");
 
 			ParameterExpression param = Expression.Parameter(targetObject.Type, "x");

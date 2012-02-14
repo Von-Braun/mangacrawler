@@ -164,7 +164,7 @@ namespace NHibernate.Engine.Loading
 			}
 			else
 			{
-				// todo : should really move this log statement to CollectionType, where this is used from...
+				// xTODO : should really move this log statement to CollectionType, where this is used from...
 				if (log.IsDebugEnabled)
 				{
 					log.Debug("creating collection wrapper:" + MessageHelper.InfoString(persister, ownerKey, Session.Factory));

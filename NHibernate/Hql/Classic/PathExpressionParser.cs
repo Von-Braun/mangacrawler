@@ -17,7 +17,7 @@ namespace NHibernate.Hql.Classic
 	/// </summary>
 	public class PathExpressionParser : IParser
 	{
-		//TODO: this class does too many things! we need a different 
+		//xTODO: this class does too many things! we need a different 
 		//kind of path expression parser for each of the different 
 		//ways in which path expressions can occur 
 
@@ -544,7 +544,7 @@ namespace NHibernate.Hql.Classic
 		/// <summary></summary>
 		public bool IsCollectionValued
 		{
-			// TODO: Is there a better way
+			// xTODO: Is there a better way
 			get { return collectionName != null && !PropertyType.IsCollectionType; }
 		}
 

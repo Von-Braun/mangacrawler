@@ -62,7 +62,7 @@ namespace NHibernate.Criterion
 				return new SqlString("1=0");
 			}
 
-			//TODO: add default capacity
+			//xTODO: add default capacity
 			SqlStringBuilder result = new SqlStringBuilder();
 			SqlString[] columnNames =
 				CriterionUtil.GetColumnNames(_propertyName, _projection, criteriaQuery, criteria, enabledFilters);

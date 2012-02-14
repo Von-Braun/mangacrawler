@@ -516,7 +516,7 @@ namespace NHibernate.Event.Default
 			//lock(result, lockMode);
 
 			//PostLoad is needed for EJB3
-			//TODO: reuse the PostLoadEvent...
+			//xTODO: reuse the PostLoadEvent...
 			PostLoadEvent postLoadEvent = new PostLoadEvent(session);
 			postLoadEvent.Entity = result;
 			postLoadEvent.Id = id;

@@ -33,7 +33,7 @@ namespace NHibernate.Tuple
 	/// <seealso cref="Component.IComponentTuplizer"/>
 	public interface ITuplizer
 	{
-		// TODO : be really nice to not have this here since it is essentially pojo specific...
+		// xTODO : be really nice to not have this here since it is essentially pojo specific...
 
 		/// <summary> 
 		/// Return the pojo class managed by this tuplizer.

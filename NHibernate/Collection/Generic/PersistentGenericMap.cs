@@ -19,7 +19,7 @@ namespace NHibernate.Collection.Generic
 	[DebuggerTypeProxy(typeof(DictionaryProxy<,>))]
 	public class PersistentGenericMap<TKey, TValue> : PersistentMap, IDictionary<TKey, TValue>
 	{
-		// TODO NH: find a way to writeonce (no duplicated code from PersistentMap)
+		// xTODO NH: find a way to writeonce (no duplicated code from PersistentMap)
 		protected IDictionary<TKey, TValue> gmap;
 		public PersistentGenericMap() { }
 		public PersistentGenericMap(ISessionImplementor session) : base(session) { }

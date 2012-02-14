@@ -88,14 +88,14 @@ namespace MangaCrawlerLib
 
             if (mre != null)
             {
-                System.Diagnostics.Debug.WriteLine("waiting, {0} / {1}, queue: {2}", 
+                Loggers.ConLimits.InfoFormat("waiting, {0} / {1}, queue: {2}", 
                     m_working, m_count, m_queue.Count);
 
                 mre.WaitOne();
                 mre.Close();
             }
 
-            System.Diagnostics.Debug.WriteLine("Aquired, {0} / {1}, queue: {2}", 
+            Loggers.ConLimits.InfoFormat("Aquired, {0} / {1}, queue: {2}", 
                 m_working, m_count, m_queue.Count);
         }
 

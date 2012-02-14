@@ -772,7 +772,7 @@ namespace NHibernate.Mapping
 				else
 				{
 					fk.Name = "FK" + UniqueColumnString(kCols, referencedEntityName);
-					//TODO: add referencedClass to disambiguate to FKs on the same columns, pointing to different tables
+					//xTODO: add referencedClass to disambiguate to FKs on the same columns, pointing to different tables
 				}
 				fk.Table = this;
 				foreignKeys.Add(key, fk);
@@ -989,7 +989,7 @@ namespace NHibernate.Mapping
 
 				else
 				{
-					//TODO: Add new method to ColumnMetadata :getTypeCode
+					//xTODO: Add new method to ColumnMetadata :getTypeCode
 					bool typesMatch = column.GetSqlType(dialect, mapping).ToLower().StartsWith(columnInfo.TypeName.ToLower());
 						//|| columnInfo.get() == column.GetSqlTypeCode(mapping);
 					if (!typesMatch)

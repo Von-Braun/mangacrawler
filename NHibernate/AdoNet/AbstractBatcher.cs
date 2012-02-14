@@ -373,7 +373,7 @@ namespace NHibernate.AdoNet
 			 * To do it we need to use the Batcher.ExecuteReader and then we need something
 			 * to close the opened reader.
 			 */
-			// TODO NH: Study a way to use directly IDbCommand.ExecuteReader() outsite the batcher
+			// xTODO NH: Study a way to use directly IDbCommand.ExecuteReader() outsite the batcher
 			// An example of it's use is the management of generated ID.
 			if (reader == null) 
 				return;

@@ -103,14 +103,14 @@ namespace NHibernate.Linq.Visitors
 			// 3. Rewrite the selector to reference the "join" rather than the "from" clause
 			SwapClause(nonAggregatingJoin, nonAggregatingJoin.JoinClause);
 
-			// TODO - don't like use of _locator here; would rather we got this passed in.  Ditto on next line (esp. the cast)
+			// xTODO - don't like use of _locator here; would rather we got this passed in.  Ditto on next line (esp. the cast)
 			_model.BodyClauses.Remove(_locator.Clauses[0]);
 
 			var querySourceSwapper = new SwapQuerySourceVisitor((IQuerySource) _locator.Clauses[0], nonAggregatingJoin.JoinClause);
 			_model.SelectClause.TransformExpressions(querySourceSwapper.Swap);
 		}
 
-		// TODO - store the indexes of the join clauses when we find them, then can remove this loop
+		// xTODO - store the indexes of the join clauses when we find them, then can remove this loop
 		private void SwapClause(IBodyClause oldClause, IBodyClause newClause)
 		{
 			for (int i = 0; i < _model.BodyClauses.Count; i++)
@@ -148,7 +148,7 @@ namespace NHibernate.Linq.Visitors
 			return _locator.Clauses.Count == 0;
 		}
 
-		// TODO - rename this and share with the AggregatingGroupJoinRewriter
+		// xTODO - rename this and share with the AggregatingGroupJoinRewriter
 		private IsAggregatingResults GetGroupJoinInformation(IEnumerable<GroupJoinClause> clause)
 		{
 			return GroupJoinAggregateDetectionVisitor.Visit(clause, _model.SelectClause.Selector);

@@ -27,7 +27,7 @@ namespace NHibernate.Linq.Visitors
 				return new QuerySourceReferenceExpression(_newClause);
 			}
 
-			// TODO - really don't like this drill down approach.  Feels fragile
+			// xTODO - really don't like this drill down approach.  Feels fragile
 			var mainFromClause = expression.ReferencedQuerySource as MainFromClause;
 
 			if (mainFromClause != null)

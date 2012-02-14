@@ -163,7 +163,7 @@ namespace NHibernate.Mapping
 			}
 
 			//init the table here instead of earlier, so that we can get a quoted table name
-			//TODO: would it be better to simply pass the qualified table name, instead of
+			//xTODO: would it be better to simply pass the qualified table name, instead of
 			//      splitting it up into schema/catalog/table names
 			string tableName = Table.GetQuotedName(dialect);
 

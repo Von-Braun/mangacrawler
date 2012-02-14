@@ -412,7 +412,7 @@ namespace NHibernate.Criterion
 		/// </remarks>
 		protected void AddPropertyTypedValue(object value, IType type, IList list)
 		{
-			// TODO: I don't like this at all - why don't we have it return a TypedValue[]
+			// xTODO: I don't like this at all - why don't we have it return a TypedValue[]
 			// or an ICollection that can be added to the list instead of modifying the
 			// parameter passed in.
 			if (value != null)
@@ -431,7 +431,7 @@ namespace NHibernate.Criterion
 					value = stringValue;
 				}
 				list.Add(new TypedValue(type, value, EntityMode.Poco));
-					// TODO NH Different behavior: In H3.2 EntityMode is nullable
+					// xTODO NH Different behavior: In H3.2 EntityMode is nullable
 			}
 		}
 

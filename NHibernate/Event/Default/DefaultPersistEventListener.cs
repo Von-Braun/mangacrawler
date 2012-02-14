@@ -81,7 +81,7 @@ namespace NHibernate.Event.Default
 			log.Debug("ignoring persistent instance");
 			IEventSource source = @event.Session;
 
-			//TODO: check that entry.getIdentifier().equals(requestedId)
+			//xTODO: check that entry.getIdentifier().equals(requestedId)
 			object entity = source.PersistenceContext.Unproxy(@event.Entity);
 			/* NH-2565: the UnProxy may return a "field interceptor proxy". When EntityName is null the session.GetEntityPersister will try to guess it.
 			 * Instead change a session's method I'll try to guess the EntityName here.
@@ -99,7 +99,7 @@ namespace NHibernate.Event.Default
 			createCache[entity] = entity;
 			if (tempObject == null)
 			{
-				//TODO: merge into one method!
+				//xTODO: merge into one method!
 				CascadeBeforeSave(source, persister, entity, createCache);
 				CascadeAfterSave(source, persister, entity, createCache);
 			}

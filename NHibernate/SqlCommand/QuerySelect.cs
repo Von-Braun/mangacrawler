@@ -286,7 +286,7 @@ namespace NHibernate.SqlCommand
 				bool spaceable = !dontSpace.Contains(token);
 				bool quoted;
 
-				//TODO: seems HACKish to cast between String and SqlString
+				//xTODO: seems HACKish to cast between String and SqlString
 				if (tokenString != null)
 				{
 					quoted = tokenString.StartsWith("'");

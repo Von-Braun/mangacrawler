@@ -48,7 +48,7 @@ namespace NHibernate.Engine
 		/// </summary>
 		public static void InitializeEntity(object entity, bool readOnly, ISessionImplementor session, PreLoadEvent preLoadEvent, PostLoadEvent postLoadEvent)
 		{
-			//TODO: Should this be an InitializeEntityEventListener??? (watch out for performance!)
+			//xTODO: Should this be an InitializeEntityEventListener??? (watch out for performance!)
 
 			bool statsEnabled = session.Factory.Statistics.IsStatisticsEnabled;
 			var stopWath = new Stopwatch();

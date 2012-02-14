@@ -46,7 +46,7 @@ namespace NHibernate.Action
 		/// </summary>
 		public BulkOperationCleanupAction(ISessionImplementor session, Iesi.Collections.Generic.ISet<string> querySpaces)
 		{
-			//from H3.2 TODO: cache the autodetected information and pass it in instead.
+			//from H3.2 xTODO: cache the autodetected information and pass it in instead.
 			this.session = session;
 
 			Iesi.Collections.Generic.ISet<string> tmpSpaces = new HashedSet<string>(querySpaces);

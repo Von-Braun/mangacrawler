@@ -47,7 +47,7 @@ selectStatement
 
 // Note: eats the FROM token node, as it is not valid in an update statement.
 // It's outlived its usefulness after analysis phase :)
-// TODO : needed to use conditionList directly here and deleteStatement, as whereExprs no longer works for this stuff
+// xTODO : needed to use conditionList directly here and deleteStatement, as whereExprs no longer works for this stuff
 updateStatement
 	: ^(UPDATE { Out("update "); }
 		^( FROM fromTable )
@@ -87,12 +87,12 @@ whereClauseExpr
 	;
 
 orderExprs
-	// TODO: remove goofy space before the comma when we don't have to regression test anymore.
+	// xTODO: remove goofy space before the comma when we don't have to regression test anymore.
 	: ( expr ) (dir=orderDirection { Out(" "); Out($dir.start); })? ( {Out(", "); } orderExprs)?
 	;
 
 groupExprs
-	// TODO: remove goofy space before the comma when we don't have to regression test anymore.
+	// xTODO: remove goofy space before the comma when we don't have to regression test anymore.
 	: expr ( {Out(" , "); } groupExprs)?
 	;
 

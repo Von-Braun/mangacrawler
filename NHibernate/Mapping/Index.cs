@@ -20,7 +20,7 @@ namespace NHibernate.Mapping
 		public static string BuildSqlCreateIndexString(Dialect.Dialect dialect, string name, Table table,
 			IEnumerable<Column> columns, bool unique, string defaultCatalog, string defaultSchema)
 		{
-			//TODO handle supportsNotNullUnique=false, but such a case does not exist in the wild so far
+			//xTODO handle supportsNotNullUnique=false, but such a case does not exist in the wild so far
 			StringBuilder buf = new StringBuilder("create")
 				.Append(unique ? " unique" : "")
 				.Append(" index ")

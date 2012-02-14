@@ -595,7 +595,7 @@ namespace NHibernate.Type
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		public static NullableType GetBinaryType(int length)
 		{
-			//HACK: don't understand why SerializableType calls this with length=0
+			//xHACK: don't understand why SerializableType calls this with length=0
 			if (length == 0)
 			{
 				return NHibernateUtil.Binary;

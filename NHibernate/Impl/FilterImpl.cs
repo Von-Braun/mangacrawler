@@ -55,7 +55,7 @@ namespace NHibernate.Impl
 		public IFilter SetParameter(string name, object value)
 		{
 			// Make sure this is a defined parameter and check the incoming value type
-			// TODO: what should be the actual exception type here?
+			// xTODO: what should be the actual exception type here?
 			IType type = definition.GetParameterType(name);
 			if (type == null)
 			{

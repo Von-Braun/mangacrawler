@@ -45,7 +45,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Exec
 			deletes = new SqlString[tableNames.Length];
 			for (int i = tableNames.Length - 1; i >= 0; i--)
 			{
-				// TODO : an optimization here would be to consider cascade deletes and not gen those delete statements;
+				// xTODO : an optimization here would be to consider cascade deletes and not gen those delete statements;
 				//      the difficulty is the ordering of the tables here vs the cascade attributes on the persisters ->
 				//          the table info gotten here should really be self-contained (i.e., a class representation
 				//          defining all the needed attributes), then we could then get an array of those

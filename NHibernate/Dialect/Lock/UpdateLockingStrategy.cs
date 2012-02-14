@@ -70,7 +70,7 @@ namespace NHibernate.Dialect.Lock
 			{
 				throw new HibernateException("write locks via update not supported for non-versioned entities [" + lockable.EntityName + "]");
 			}
-			// todo : should we additionally check the current isolation mode explicitly?
+			// xTODO : should we additionally check the current isolation mode explicitly?
 			ISessionFactoryImplementor factory = session.Factory;
 			try
 			{

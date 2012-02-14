@@ -6,7 +6,7 @@ using NHibernate.Engine;
 
 namespace NHibernate.Context
 {
-	//TODO: refactoring on this class. Maybe using MapBasedSessionContext.
+	//xTODO: refactoring on this class. Maybe using MapBasedSessionContext.
 	/// <summary>
 	/// A <see cref="ICurrentSessionContext"/> impl which scopes the notion of current
 	/// session by the current thread of execution. Threads do not give us a 

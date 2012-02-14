@@ -7,7 +7,7 @@ namespace NHibernate.Persister.Entity
 	/// </summary>
 	public interface IPropertyMapping
 	{
-		// TODO: It would be really, really nice to use this to also model components!
+		// xTODO: It would be really, really nice to use this to also model components!
 
 		/// <summary>
 		/// Get the type of the thing containing the properties

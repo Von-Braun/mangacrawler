@@ -208,7 +208,7 @@ namespace NHibernate.Engine
 			{
 				if (key.EntityName.Equals(persister.EntityName))
 				{
-					//TODO: this needn't exclude subclasses...
+					//xTODO: this needn't exclude subclasses...
 					if (checkForEnd && i == end)
 					{
 						//the first id found after the given id

@@ -328,7 +328,7 @@ namespace NHibernate.Loader
 			{
 				keys[i] =
 					GetKeyFromResultSet(i, persisters[i], i == entitySpan - 1 ? queryParameters.OptionalId : null, resultSet, session);
-				//TODO: the i==entitySpan-1 bit depends upon subclass implementation (very bad)
+				//xTODO: the i==entitySpan-1 bit depends upon subclass implementation (very bad)
 			}
 
 			RegisterNonExists(keys, session);
@@ -365,7 +365,7 @@ namespace NHibernate.Loader
 		/// </summary>
 		private void ReadCollectionElements(object[] row, IDataReader resultSet, ISessionImplementor session)
 		{
-			//TODO: make this handle multiple collection roles!
+			//xTODO: make this handle multiple collection roles!
 
 			ICollectionPersister[] collectionPersisters = CollectionPersisters;
 
@@ -393,7 +393,7 @@ namespace NHibernate.Loader
 					else
 					{
 						key = collectionPersister.CollectionType.GetKeyOfOwner(owner, session);
-						//TODO: old version did not require hashmap lookup:
+						//xTODO: old version did not require hashmap lookup:
 						//keys[collectionOwner].getIdentifier()
 					}
 
@@ -565,7 +565,7 @@ namespace NHibernate.Loader
 						//for arrays, we should end the collection load before resolving
 						//the entities, since the actual array instances are not instantiated
 						//during loading
-						//TODO: or we could do this polymorphically, and have two
+						//xTODO: or we could do this polymorphically, and have two
 						//      different operations implemented differently for arrays
 						EndCollectionLoad(resultSetId, session, collectionPersisters[i]);
 					}
@@ -609,7 +609,7 @@ namespace NHibernate.Loader
 					{
 						//for sets, we should end the collection load after resolving
 						//the entities, since we might call hashCode() on the elements
-						//TODO: or we could do this polymorphically, and have two
+						//xTODO: or we could do this polymorphically, and have two
 						//      different operations implemented differently for arrays
 						EndCollectionLoad(resultSetId, session, collectionPersisters[i]);
 					}
@@ -699,7 +699,7 @@ namespace NHibernate.Loader
 					owner = persistenceContext.GetCollectionOwner(collectionRowKey, persister);
 					if (owner == null)
 					{
-						//TODO: This is assertion is disabled because there is a bug that means the
+						//xTODO: This is assertion is disabled because there is a bug that means the
 						//      original owner of a transient, uninitialized collection is not known 
 						//      if the collection is re-referenced by a different object associated 
 						//      with the current Session
@@ -856,7 +856,7 @@ namespace NHibernate.Loader
 				if (keys[i] == null)
 				{
 					// do nothing
-					/* TODO NH-1001 : if (persisters[i]...EntityType) is an OneToMany or a ManyToOne and
+					/* xTODO NH-1001 : if (persisters[i]...EntityType) is an OneToMany or a ManyToOne and
 					 * the keys.length > 1 and the relation IsIgnoreNotFound probably we are in presence of
 					 * an load with "outer join" the relation can be considerer loaded even if the key is null (mean not found)
 					*/
@@ -1127,7 +1127,7 @@ namespace NHibernate.Loader
 		/// database to Load an Entity.
 		/// </remarks>
 		/// <param name="queryParameters">The <see cref="QueryParameters"/> to use for the IDbCommand.</param>
-		/// <param name="scroll">TODO: find out where this is used...</param>
+		/// <param name="scroll">xTODO: find out where this is used...</param>
 		/// <param name="session">The SessionImpl this Command is being prepared in.</param>
 		/// <returns>A CommandWrapper wrapping an IDbCommand that is ready to be executed.</returns>
 		protected internal virtual IDbCommand PrepareQueryCommand(QueryParameters queryParameters, bool scroll, ISessionImplementor session)
@@ -1189,10 +1189,10 @@ namespace NHibernate.Loader
 		/// </summary>
 		/// <param name="st">The IDbCommand to limit.</param>
 		/// <param name="selection">The RowSelection that contains the MaxResults info.</param>
-		/// <remarks>TODO: This does not apply to ADO.NET at all</remarks>
+		/// <remarks>xTODO: This does not apply to ADO.NET at all</remarks>
 		protected void SetMaxRows(IDbCommand st, RowSelection selection)
 		{
-			//TODO: H2.0.3 - do we need this method??
+			//xTODO: H2.0.3 - do we need this method??
 			//if (HasMaxRows(selection))
 			//{
 			//  // there is nothing in ADO.NET to do anything  similar
@@ -1217,7 +1217,7 @@ namespace NHibernate.Loader
 			try
 			{
 				log.Info(st.CommandText);
-				// TODO NH: Callable
+				// xTODO NH: Callable
 				rs = session.Batcher.ExecuteReader(st);
 
 				//NH: this is checked outside the WrapResultSet because we

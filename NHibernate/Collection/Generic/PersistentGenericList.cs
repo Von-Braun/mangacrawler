@@ -17,7 +17,7 @@ namespace NHibernate.Collection.Generic
 	[DebuggerTypeProxy(typeof (CollectionProxy<>))]
 	public class PersistentGenericList<T> : PersistentList, IList<T>
 	{
-		// TODO NH: find a way to writeonce (no duplicated code from PersistentList)
+		// xTODO NH: find a way to writeonce (no duplicated code from PersistentList)
 
 		/* NH considerations:
 		 * For various reason we know that the underlining type will be a List<T> or a 

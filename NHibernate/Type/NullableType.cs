@@ -165,7 +165,7 @@ namespace NHibernate.Type
 				}
 
 				//Do we check IsNullable?
-				// TODO: find out why a certain Parameter would not take a null value...
+				// xTODO: find out why a certain Parameter would not take a null value...
 				// From reading the .NET SDK the default is to NOT accept a null value. 
 				// I definitely need to look into this more...
 				((IDataParameter) cmd.Parameters[index]).Value = DBNull.Value;
@@ -208,7 +208,7 @@ namespace NHibernate.Type
 		/// I don't know why this method is in here - it doesn't look like anybody that inherits
 		/// from NullableType overrides this...
 		/// 
-		/// TODO: determine if this is needed
+		/// xTODO: determine if this is needed
 		/// </remarks>
 		public virtual object NullSafeGet(IDataReader rs, string[] names)
 		{
@@ -241,7 +241,7 @@ namespace NHibernate.Type
 				{
 					Log.Debug("returning null as column: " + name);
 				}
-				// TODO: add a method to NullableType.GetNullValue - if we want to
+				// xTODO: add a method to NullableType.GetNullValue - if we want to
 				// use "MAGIC" numbers to indicate null values...
 				return null;
 			}

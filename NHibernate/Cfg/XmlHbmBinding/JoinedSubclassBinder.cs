@@ -68,7 +68,7 @@ namespace NHibernate.Cfg.XmlHbmBinding
 
 		private void BindKey(JoinedSubclass subclass, HbmKey keyMapping, Table mytable)
 		{
-			// TODO : property-ref ?? 
+			// xTODO : property-ref ?? 
 			SimpleValue key = new DependantValue(mytable, subclass.Identifier);
 			subclass.Key = key;
 			key.IsCascadeDeleteEnabled = keyMapping.ondelete == HbmOndelete.Cascade;

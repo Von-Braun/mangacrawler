@@ -60,7 +60,7 @@ namespace NHibernate.Event.Default
 				{
 					if (persister.IsVersioned && requestedLockMode == LockMode.Force)
 					{
-						// todo : should we check the current isolation mode explicitly?
+						// xTODO : should we check the current isolation mode explicitly?
 						object nextVersion = persister.ForceVersionIncrement(entry.Id, entry.Version, source);
 						entry.ForceLocked(entity, nextVersion);
 					}

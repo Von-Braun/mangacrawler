@@ -622,7 +622,7 @@ namespace NHibernate.Event
 
 		public EventListeners ShallowCopy()
 		{
-			// todo-events Not ported
+			// xTODO-events Not ported
 			return this;
 		}
 

@@ -144,7 +144,7 @@ namespace NHibernate.Cache
 				{
 					if (isNaturalKeyLookup)
 					{
-						//TODO: not really completely correct, since
+						//xTODO: not really completely correct, since
 						//      the UnresolvableObjectException could occur while resolving
 						//      associations, leaving the PC in an inconsistent state
 						log.Debug("could not reassemble cached result set");

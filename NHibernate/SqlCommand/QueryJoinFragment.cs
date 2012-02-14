@@ -84,7 +84,7 @@ namespace NHibernate.SqlCommand
 
 		public override bool AddCondition(string condition)
 		{
-			//TODO: this seems hackish
+			//xTODO: this seems hackish
 			var trimCondition = condition.Trim();
 			if (
 				afterFrom.ToSqlString().ToString().IndexOf(trimCondition) < 0 &&
@@ -104,7 +104,7 @@ namespace NHibernate.SqlCommand
 
 		public override bool AddCondition(SqlString condition)
 		{
-			//TODO: this seems hackish
+			//xTODO: this seems hackish
 			var trimCondition = condition.Trim().ToString();
 			if (
 				afterFrom.ToString().IndexOf(trimCondition) < 0 &&

@@ -13,7 +13,7 @@ namespace NHibernate.Cfg.MappingSchema
 			if (resourceName == null)
 				throw new ArgumentNullException("resourceName");
 
-			// TODO: ignore case?
+			// xTODO: ignore case?
 			return resourceName.EndsWith(".hbm.xml");
 		}
 	}

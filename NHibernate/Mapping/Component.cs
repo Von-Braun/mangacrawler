@@ -142,14 +142,14 @@ namespace NHibernate.Mapping
 					}
 					catch (Exception cnfe)
 					{
-						if (!IsDynamic) // TODO remove this if leave the Exception
+						if (!IsDynamic) // xTODO remove this if leave the Exception
 							throw new MappingException("component class not found: " + componentClassName, cnfe);
 						return null;
 					}
 				}
 				return componentClass;
 			}
-			set // TODO NH: Remove the setter
+			set // xTODO NH: Remove the setter
 			{
 				componentClass = value;
 				if (componentClass != null)
@@ -263,7 +263,7 @@ namespace NHibernate.Mapping
 
 		public virtual string GetTuplizerImplClassName(EntityMode mode)
 		{
-			// todo : remove this once ComponentMetamodel is complete and merged
+			// xTODO : remove this once ComponentMetamodel is complete and merged
 			if (tuplizerImpls == null)
 			{
 				return null;
@@ -302,7 +302,7 @@ namespace NHibernate.Mapping
 
 		private IType BuildType()
 		{
-			// TODO : temporary initial step towards HHH-1907
+			// xTODO : temporary initial step towards HHH-1907
 			ComponentMetamodel metamodel = new ComponentMetamodel(this);
 			if (IsEmbedded)
 			{

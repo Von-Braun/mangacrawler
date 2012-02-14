@@ -1077,7 +1077,7 @@ namespace NHibernate.Mapping
 					Column col = (Column)columnOrFormula;
 					if (!distinctColumns.Add(col.Name))
 					{
-						// TODO: Check for column duplication
+						// xTODO: Check for column duplication
 						//throw new MappingException("Repeated column in mapping for entity: " + EntityName + " column: " + col.Name + 
 						//  "(should be mapped with insert=\"false\" update=\"false\")");
 					}

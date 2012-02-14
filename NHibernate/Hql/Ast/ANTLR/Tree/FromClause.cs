@@ -242,7 +242,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 		{
 			get 
 			{
-				// TODO : this is broke for subqueries in statements other than selects...
+				// xTODO : this is broke for subqueries in statements other than selects...
 				return _parentFromClause != null;
 			}
 		}

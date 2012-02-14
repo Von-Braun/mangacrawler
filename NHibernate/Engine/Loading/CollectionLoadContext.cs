@@ -102,7 +102,7 @@ namespace NHibernate.Engine.Loading
 					if (newlySavedEntity)
 					{
 						// important, to account for newly saved entities in query
-						// todo : some kind of check for new status...
+						// xTODO : some kind of check for new status...
 						log.Debug("owning entity already loaded; ignoring");
 						return null;
 					}
@@ -182,7 +182,7 @@ namespace NHibernate.Engine.Loading
 						log.Debug("removing collection load entry [" + lce + "]");
 					}
 
-					// todo : i'd much rather have this done from #endLoadingCollection(CollectionPersister,LoadingCollectionEntry)...
+					// xTODO : i'd much rather have this done from #endLoadingCollection(CollectionPersister,LoadingCollectionEntry)...
 					loadContexts.UnregisterLoadingCollectionXRef(collectionKey);
 					toRemove.Add(collectionKey);
 				}
@@ -192,7 +192,7 @@ namespace NHibernate.Engine.Loading
 			EndLoadingCollections(persister, matches);
 			if ((localLoadingCollectionKeys.Count == 0))
 			{
-				// todo : hack!!!
+				// xTODO : hack!!!
 				// NOTE : here we cleanup the load context when we have no more local
 				// LCE entries.  This "works" for the time being because really
 				// only the collection load contexts are implemented.  Long term,
@@ -300,7 +300,7 @@ namespace NHibernate.Engine.Loading
 			{
 				// some filters affecting the collection are enabled on the session, so do not do the put into the cache.
 				log.Debug("Refusing to add to cache due to enabled filters");
-				// todo : add the notion of enabled filters to the CacheKey to differentiate filtered collections from non-filtered;
+				// xTODO : add the notion of enabled filters to the CacheKey to differentiate filtered collections from non-filtered;
 				//      but CacheKey is currently used for both collections and entities; would ideally need to define two separate ones;
 				//      currently this works in conjunction with the check on
 				//      DefaultInitializeCollectionEventHandler.initializeCollectionFromCache() (which makes sure to not read from

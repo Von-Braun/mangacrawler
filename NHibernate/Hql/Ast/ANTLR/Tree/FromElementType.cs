@@ -124,7 +124,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 				}
 				else 
 				{
-					return null;	// TODO: Should this really return null?  If not, figure out something better to do here.
+					return null;	// xTODO: Should this really return null?  If not, figure out something better to do here.
 				}
 				
 			}
@@ -144,7 +144,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 			// Render the identifier select fragment using the table alias.
 			if (_fromElement.FromClause.IsSubQuery)
 			{
-				// TODO: Replace this with a more elegant solution.
+				// xTODO: Replace this with a more elegant solution.
 				string[] idColumnNames = (_persister != null) ?
 						((IQueryable)_persister).IdentifierColumnNames : new String[0];
 

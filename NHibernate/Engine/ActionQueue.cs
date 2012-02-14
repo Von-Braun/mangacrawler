@@ -330,7 +330,7 @@ namespace NHibernate.Engine
 
 			while (!(insertions.Count == 0))
 			{
-				// todo-events : test behaviour
+				// xTODO-events : test behaviour
 				// in Java they use an implicit cast to EntityInsertAction 
 				// but it may be not work because the insertions list may contain EntityIdentityInsertAction
 				// (I don't like that "goto"too)
@@ -437,7 +437,7 @@ loopInsertion: ;
 
 		public override string ToString()
 		{
-			// todo-events : use the helper for the collections
+			// xTODO-events : use the helper for the collections
 			return new StringBuilder()
 				.Append("ActionQueue[insertions=")
 				.Append(insertions)

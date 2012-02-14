@@ -156,7 +156,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 				return;
 			}
 
-			// TODO : we really need to be able to deal with component paths here also;
+			// xTODO : we really need to be able to deal with component paths here also;
 			// this is difficult because the hql-sql grammar expects all those node types
 			// to be FromReferenceNodes.  One potential fix here would be to convert the
 			// IntoClause to just use a FromClause/FromElement combo (as a child of the
@@ -259,7 +259,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 
 		private static bool AreSqlTypesCompatible(SqlType target, SqlType source)
 		{
-			// TODO NH: May be are not equals but are compatible
+			// xTODO NH: May be are not equals but are compatible
 			return target.Equals(source);
 		}
 	}

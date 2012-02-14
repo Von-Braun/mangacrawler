@@ -110,7 +110,7 @@ namespace NHibernate.Dialect.Function
 				{
 					int adjustedIndex = tc.ArgumentIndex - 1; // Arg indices are one-based
 					object arg = adjustedIndex < args.Count ? args[adjustedIndex] : null;
-					// TODO: if (arg == null) QueryException is better ?
+					// xTODO: if (arg == null) QueryException is better ?
 					if (arg != null)
 					{
 						if (arg is Parameter || arg is SqlString)

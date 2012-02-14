@@ -559,7 +559,7 @@ namespace NHibernate.Engine
 		/// <returns> Whether the passed value represented an actual proxy which got initialized. </returns>
 		public bool ReassociateIfUninitializedProxy(object value)
 		{
-			// TODO H3.2 Not ported
+			// xTODO H3.2 Not ported
 			//ElementWrapper wrapper = value as ElementWrapper;
 			//if (wrapper != null)
 			//{
@@ -584,7 +584,7 @@ namespace NHibernate.Engine
 		/// </summary>
 		public void ReassociateProxy(object value, object id)
 		{
-			// TODO H3.2 Not ported
+			// xTODO H3.2 Not ported
 			//ElementWrapper wrapper = value as ElementWrapper;
 			//if (wrapper != null)
 			//{
@@ -631,7 +631,7 @@ namespace NHibernate.Engine
 		/// </summary>
 		public object Unproxy(object maybeProxy)
 		{
-			// TODO H3.2 Not ported
+			// xTODO H3.2 Not ported
 			//ElementWrapper wrapper = maybeProxy as ElementWrapper;
 			//if (wrapper != null)
 			//{
@@ -661,7 +661,7 @@ namespace NHibernate.Engine
 		/// <returns> The unproxied instance. </returns>
 		public object UnproxyAndReassociate(object maybeProxy)
 		{
-			// TODO H3.2 Not ported
+			// xTODO H3.2 Not ported
 			//ElementWrapper wrapper = maybeProxy as ElementWrapper;
 			//if (wrapper != null)
 			//{
@@ -800,7 +800,7 @@ namespace NHibernate.Engine
 				return null; // early exit...
 			}
 			object loadedOwner = null;
-			// TODO: an alternative is to check if the owner has changed; if it hasn't then
+			// xTODO: an alternative is to check if the owner has changed; if it hasn't then
 			// return collection.getOwner()
 			object entityId = GetLoadedCollectionOwnerIdOrNull(ce);
 			if (entityId != null)
@@ -827,7 +827,7 @@ namespace NHibernate.Engine
 			{
 				return null;
 			}
-			// TODO: an alternative is to check if the owner has changed; if it hasn't then
+			// xTODO: an alternative is to check if the owner has changed; if it hasn't then
 			// get the ID from collection.getOwner()
 			return ce.LoadedPersister.CollectionType.GetIdOfOwnerOrNull(ce.LoadedKey, session);
 		}
@@ -985,7 +985,7 @@ namespace NHibernate.Engine
 		/// </summary>
 		public void AddCollectionHolder(IPersistentCollection holder)
 		{
-			//TODO:refactor + make this method private
+			//xTODO:refactor + make this method private
 			arrayHolders[holder.GetValue()] = holder;
 		}
 
@@ -1380,7 +1380,7 @@ namespace NHibernate.Engine
 
 		public override string ToString()
 		{
-			// TODO persistent context (verify behavior)
+			// xTODO persistent context (verify behavior)
 			return new StringBuilder()
 				.Append("PersistenceContext[entityKeys=")
 				.Append(new HashedSet(entitiesByKey.Keys))
@@ -1405,7 +1405,7 @@ namespace NHibernate.Engine
 			// because serialization is used for different things.
 			parentsByChild = IdentityMap.Instantiate(InitCollectionSize);
 
-			// TODO NH: "reconnect" EntityKey with session.factory and create a test for serialization of StatefulPersistenceContext
+			// xTODO NH: "reconnect" EntityKey with session.factory and create a test for serialization of StatefulPersistenceContext
 			foreach (DictionaryEntry collectionEntry in collectionEntries)
 			{
 				try

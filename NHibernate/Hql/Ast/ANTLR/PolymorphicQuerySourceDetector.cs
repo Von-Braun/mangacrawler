@@ -54,7 +54,7 @@ namespace NHibernate.Hql.Ast.ANTLR
                     return BuildPath(querySource);
             }
 
-            // TODO
+            // xTODO
             throw new NotSupportedException();
         }
 

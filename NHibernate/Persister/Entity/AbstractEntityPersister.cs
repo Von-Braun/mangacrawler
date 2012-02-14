@@ -57,7 +57,7 @@ namespace NHibernate.Persister.Entity
 				this.inclusions = inclusions;
 			}
 
-			// TODO : currently we really do not handle ValueInclusion.PARTIAL...
+			// xTODO : currently we really do not handle ValueInclusion.PARTIAL...
 			// ValueInclusion.PARTIAL would indicate parts of a component need to
 			// be included in the select; currently we then just render the entire
 			// component into the select clause in that case.
@@ -270,7 +270,7 @@ namespace NHibernate.Persister.Entity
 
 			if (persistentClass.HasPocoRepresentation)
 			{
-				//TODO: this is currently specific to pojos, but need to be available for all entity-modes
+				//xTODO: this is currently specific to pojos, but need to be available for all entity-modes
 				foreach (Subclass subclass in persistentClass.SubclassIterator)
 				{
 					entityNameBySubclass[subclass.MappedClass] = subclass.EntityName;
@@ -292,7 +292,7 @@ namespace NHibernate.Persister.Entity
 
 			loaderName = persistentClass.LoaderName;
 
-			// TODO NH: Not safe cast to Column
+			// xTODO NH: Not safe cast to Column
 			int i = 0;
 			foreach (Column col in persistentClass.Identifier.ColumnIterator)
 			{
@@ -438,7 +438,7 @@ namespace NHibernate.Persister.Entity
 				classes.Add(prop.PersistentClass.EntityName);
 				bool isDefinedBySubclass = !thisClassProperties.Contains(prop);
 				definedBySubclass.Add(isDefinedBySubclass);
-				propNullables.Add(prop.IsOptional || isDefinedBySubclass); //TODO: is this completely correct?
+				propNullables.Add(prop.IsOptional || isDefinedBySubclass); //xTODO: is this completely correct?
 				types.Add(prop.Type);
 
 				string[] cols = new string[prop.ColumnSpan];
@@ -1548,7 +1548,7 @@ namespace NHibernate.Persister.Entity
 
 		protected virtual SqlString GenerateSnapshotSelectString()
 		{
-			//TODO: should we use SELECT .. FOR UPDATE?
+			//xTODO: should we use SELECT .. FOR UPDATE?
 
 			SqlSelectBuilder select = new SqlSelectBuilder(Factory);
 
@@ -1609,7 +1609,7 @@ namespace NHibernate.Persister.Entity
 			}
 
 			IExpectation expectation = Expectations.AppropriateExpectation(updateResultCheckStyles[0]);
-			// todo : cache this sql...
+			// xTODO : cache this sql...
 			SqlCommandInfo versionIncrementCommand = GenerateVersionIncrementUpdateString();
 			try
 			{
@@ -1797,7 +1797,7 @@ namespace NHibernate.Persister.Entity
 					return getSubclassColumnTableNumberClosure()[idx];
 				}
 			}*/
-			int index = Array.IndexOf(SubclassPropertyNameClosure, rootPropertyName); //TODO: optimize this better!
+			int index = Array.IndexOf(SubclassPropertyNameClosure, rootPropertyName); //xTODO: optimize this better!
 			return index == -1 ? 0 : GetSubclassPropertyTableNumber(index);
 		}
 
@@ -1951,7 +1951,7 @@ namespace NHibernate.Persister.Entity
 
 		public string[] GetSubclassPropertyColumnNames(string propertyName)
 		{
-			//TODO: should we allow suffixes on these ?
+			//xTODO: should we allow suffixes on these ?
 			string[] result;
 			subclassPropertyColumnNames.TryGetValue(propertyName, out result);
 			return result;
@@ -2153,7 +2153,7 @@ namespace NHibernate.Persister.Entity
 
 		protected IUniqueEntityLoader CreateEntityLoader(LockMode lockMode, IDictionary<string, IFilter> enabledFilters)
 		{
-			//TODO: disable batch loading if lockMode > READ?
+			//xTODO: disable batch loading if lockMode > READ?
 			return BatchingEntityLoader.CreateBatchingEntityLoader(this, batchSize, lockMode, Factory, enabledFilters);
 		}
 
@@ -2202,7 +2202,7 @@ namespace NHibernate.Persister.Entity
 
 			// select the correct row by either pk or rowid
 			if (useRowId)
-				updateBuilder.SetIdentityColumn(new string[] { rowIdName }, NHibernateUtil.Int32); //TODO: eventually, rowIdName[j]
+				updateBuilder.SetIdentityColumn(new string[] { rowIdName }, NHibernateUtil.Int32); //xTODO: eventually, rowIdName[j]
 			else
 				updateBuilder.SetIdentityColumn(GetKeyColumns(j), IdentifierType);
 
@@ -2290,7 +2290,7 @@ namespace NHibernate.Persister.Entity
 		/// <summary> Generate the SQL that inserts a row</summary>
 		protected virtual SqlCommandInfo GenerateInsertString(bool identityInsert, bool[] includeProperty, int j)
 		{
-			// todo : remove the identityInsert param and variations;
+			// xTODO : remove the identityInsert param and variations;
 			//   identity-insert strings are now generated from generateIdentityInsertString()
 
 			SqlInsertBuilder builder = new SqlInsertBuilder(Factory).SetTableName(GetTableName(j));
@@ -2405,13 +2405,13 @@ namespace NHibernate.Persister.Entity
 				if (includeProperty[i] && IsPropertyOfTable(i, table))
 				{
 					PropertyTypes[i].NullSafeSet(statement, fields[i], index, includeColumns[i], session);
-					index += ArrayHelper.CountTrue(includeColumns[i]); //TODO:  this is kinda slow...
+					index += ArrayHelper.CountTrue(includeColumns[i]); //xTODO:  this is kinda slow...
 				}
 			}
 
 			if (rowId != null)
 			{
-				// TODO H3.2 : support to set the rowId
+				// xTODO H3.2 : support to set the rowId
 				// TransactionManager.manager.SetObject(ps, index, rowId);
 				// index += 1;
 				throw new NotImplementedException("support to set the rowId");
@@ -2451,13 +2451,13 @@ namespace NHibernate.Persister.Entity
 					SqlString sql = rootPersister.GetSequentialSelect(EntityName);
 					if (sql != null)
 					{
-						//TODO: I am not so sure about the exception handling in this bit!
+						//xTODO: I am not so sure about the exception handling in this bit!
 						sequentialSelect = session.Batcher.PrepareCommand(CommandType.Text, sql, IdentifierType.SqlTypes(factory));
 						rootPersister.IdentifierType.NullSafeSet(sequentialSelect, id, 0, session);
 						sequentialResultSet = session.Batcher.ExecuteReader(sequentialSelect);
 						if (!sequentialResultSet.Read())
 						{
-							// TODO: Deal with the "optional" attribute in the <join> mapping;
+							// xTODO: Deal with the "optional" attribute in the <join> mapping;
 							// this code assumes that optional defaults to "true" because it
 							// doesn't actually seem to work in the fetch="join" code
 							//
@@ -2699,7 +2699,7 @@ namespace NHibernate.Persister.Entity
 				{
 					// assume that the row was not there since it previously had only null
 					// values, so do an INSERT instead
-					//TODO: does not respect dynamic-insert
+					//xTODO: does not respect dynamic-insert
 					Insert(id, fields, PropertyInsertability, j, SqlInsertStrings[j], obj, session);
 				}
 			}
@@ -3306,7 +3306,7 @@ namespace NHibernate.Persister.Entity
 
 		protected SqlString CreateWhereByKey(int tableNumber, string alias)
 		{
-			//TODO: move to .sql package, and refactor with similar things!
+			//xTODO: move to .sql package, and refactor with similar things!
 			//return new SqlString(StringHelper.Join("= ? and ",
 			//        StringHelper.Qualify(alias, GetSubclassTableKeyColumns(tableNumber))) + "= ?");
 			string[] subclauses = StringHelper.Qualify(alias, GetSubclassTableKeyColumns(tableNumber));
@@ -3445,7 +3445,7 @@ namespace NHibernate.Persister.Entity
 			IUniqueEntityLoader readLoader = CreateEntityLoader(LockMode.Read);
 			loaders[LockMode.Read.ToString()] = readLoader;
 
-			//TODO: inexact, what we really need to know is: are any outer joins used?
+			//xTODO: inexact, what we really need to know is: are any outer joins used?
 			bool disableForUpdate = SubclassTableSpan > 1 && HasSubclasses && !Factory.Dialect.SupportsOuterJoinForUpdate;
 
 			loaders[LockMode.Upgrade.ToString()] = disableForUpdate ? readLoader : CreateEntityLoader(LockMode.Upgrade);
@@ -3929,7 +3929,7 @@ namespace NHibernate.Persister.Entity
 			{
 				return this;
 			}
-			// TODO : really need a way to do something like :
+			// xTODO : really need a way to do something like :
 			//      getTuplizer(entityMode).determineConcreteSubclassEntityName(instance)
 			var clazz = instance.GetType();
 			if (clazz == GetMappedClass(entityMode))
@@ -4048,7 +4048,7 @@ namespace NHibernate.Persister.Entity
 			}
 
 			///////////////////////////////////////////////////////////////////////
-			// TODO : look at perhaps caching this...
+			// xTODO : look at perhaps caching this...
 			SqlSelectBuilder select = new SqlSelectBuilder(Factory);
 			if (Factory.Settings.IsCommentsEnabled)
 			{

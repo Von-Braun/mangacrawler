@@ -49,7 +49,7 @@ namespace NHibernate.Linq.Visitors
 
 		private HqlEquality GenerateEqualityNode(Expression leftExpr, Expression rightExpr)
 		{
-            // TODO - why two visitors? Can't we just reuse?
+            // xTODO - why two visitors? Can't we just reuse?
 			var left = new HqlGeneratorExpressionTreeVisitor(_parameters);
 			var right = new HqlGeneratorExpressionTreeVisitor(_parameters);
 

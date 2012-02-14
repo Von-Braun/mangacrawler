@@ -48,7 +48,7 @@ namespace NHibernate.Criterion
 
 		public override SqlString ToSqlString(ICriteria criteria, ICriteriaQuery criteriaQuery, IDictionary<string, IFilter> enabledFilters)
 		{
-			//TODO: add a default capacity
+			//xTODO: add a default capacity
 			SqlStringBuilder sqlBuilder = new SqlStringBuilder();
 
 			var parametersTypes = GetTypedValues(criteria, criteriaQuery).ToArray();

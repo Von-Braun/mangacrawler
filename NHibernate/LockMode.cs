@@ -99,7 +99,7 @@ namespace NHibernate
 		/// </remarks>
 		public static LockMode Write = new LockMode(10, "Write");
 
-		// TODO H3.2: Implement Force where required
+		// xTODO H3.2: Implement Force where required
 		/// <summary> 
 		/// Similar to <see cref="Upgrade"/> except that, for versioned entities,
 		/// it results in a forced version increment.

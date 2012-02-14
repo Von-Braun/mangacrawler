@@ -101,7 +101,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 				collectionTableAlias = elem.CollectionTableAlias;
 			}
 
-			// TODO: get SQL rendering out of here, create an AST for the join expressions.
+			// xTODO: get SQL rendering out of here, create an AST for the join expressions.
 			// Use the SQL generator grammar to generate the SQL text for the index expression.
 			JoinSequence joinSequence = fromElement.JoinSequence;
 			string[] indexCols = queryableCollection.IndexColumnNames;
@@ -114,7 +114,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 
 			try 
 			{
-				gen.simpleExpr(); //TODO: used to be exprNoParens! was this needed?
+				gen.simpleExpr(); //xTODO: used to be exprNoParens! was this needed?
 			}
 			catch ( RecognitionException e ) 
 			{

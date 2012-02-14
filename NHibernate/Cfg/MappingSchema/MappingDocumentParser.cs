@@ -20,7 +20,7 @@ namespace NHibernate.Cfg.MappingSchema
 
 			return (HbmMapping) serializer.Deserialize(stream);
 
-			// TODO: What if Deserialize() throws an exception? Can we provide the user with any more useful
+			// xTODO: What if Deserialize() throws an exception? Can we provide the user with any more useful
 			// information? Can we validate the stream against the XSD, and show any validation errors?
 		}
 	}

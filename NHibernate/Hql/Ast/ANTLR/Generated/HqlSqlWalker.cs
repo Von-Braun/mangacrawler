@@ -6364,7 +6364,7 @@ public partial class HqlSqlWalker : TreeParser
 
         IASTNode IN_LIST136_tree=null;
 
-        	int UP = 99999;		// TODO - added this to get compile working.  It's bogus & should be removed
+        	int UP = 99999;		// xTODO - added this to get compile working.  It's bogus & should be removed
         	
         try 
     	{

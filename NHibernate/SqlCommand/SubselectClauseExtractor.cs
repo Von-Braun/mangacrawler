@@ -12,7 +12,7 @@ namespace NHibernate.SqlCommand
 	public class SubselectClauseExtractor
 	{
 		/* 
-		 * NH TODO: this implementation will break, for MsSQL2005Dialect, a when the query is an HQL with skip/take because the last "ORDER BY" is there for pagination.
+		 * NH xTODO: this implementation will break, for MsSQL2005Dialect, a when the query is an HQL with skip/take because the last "ORDER BY" is there for pagination.
 		 * Because HQL skip/take are new features, we hope nobody will use it in conjuction with subselect fetching at least until MS-SQL will release a more modern
 		 * syntax for pagination.
 		*/

@@ -41,11 +41,11 @@ namespace NHibernate.Event.Default
 			
 			OnMerge(@event, copyCache);
 			
-			// TODO: iteratively get transient entities and retry merge until one of the following conditions:
+			// xTODO: iteratively get transient entities and retry merge until one of the following conditions:
 			//   1) transientCopyCache.size() == 0
 			//   2) transientCopyCache.size() is not decreasing and copyCache.size() is not increasing
 			
-			// TODO: find out if retrying can add entities to copyCache (don't think it can...)
+			// xTODO: find out if retrying can add entities to copyCache (don't think it can...)
 			// For now, just retry once; throw TransientObjectException if there are still any transient entities
 			
 			IDictionary transientCopyCache = this.GetTransientCopyCache(@event, copyCache);
@@ -180,7 +180,7 @@ namespace NHibernate.Event.Default
 		{
 			log.Debug("ignoring persistent instance");
 
-			//TODO: check that entry.getIdentifier().equals(requestedId)
+			//xTODO: check that entry.getIdentifier().equals(requestedId)
 			
 			object entity = @event.Entity;
 			IEventSource source = @event.Session;
@@ -328,7 +328,7 @@ namespace NHibernate.Event.Default
 
 			if (result == null)
 			{
-				//TODO: we should throw an exception if we really *know* for sure
+				//xTODO: we should throw an exception if we really *know* for sure
 				//      that this is a detached instance, rather than just assuming
 				//throw new StaleObjectStateException(entityName, id);
 
@@ -424,7 +424,7 @@ namespace NHibernate.Event.Default
 				!persister.VersionType.IsSame(persister.GetVersion(target, source.EntityMode),
 				                              persister.GetVersion(entity, source.EntityMode), source.EntityMode);
 
-			// TODO : perhaps we should additionally require that the incoming entity
+			// xTODO : perhaps we should additionally require that the incoming entity
 			// version be equivalent to the defined unsaved-value?
 			return changed && ExistsInDatabase(target, source, persister);
 		}
@@ -538,7 +538,7 @@ namespace NHibernate.Event.Default
 				if (copyEntry == null)
 				{
 					// entity name will not be available for non-POJO entities
-					// TODO: cache the entity name somewhere so that it is available to this exception
+					// xTODO: cache the entity name somewhere so that it is available to this exception
 					log.InfoFormat(
 						"transient instance could not be processed by merge: {0} [{1}]",
 						@event.Session.GuessEntityName(entityCopy),
@@ -576,7 +576,7 @@ namespace NHibernate.Event.Default
 		/// <param name="copyCache"></param>
 		protected void RetryMergeTransientEntities(MergeEvent @event, IDictionary transientCopyCache, EventCache copyCache)
 		{
-			// TODO: The order in which entities are saved may matter (e.g., a particular
+			// xTODO: The order in which entities are saved may matter (e.g., a particular
 			// transient entity may need to be saved before other transient entities can
 			// be saved).
 			// Keep retrying the batch of transient entities until either:

@@ -112,7 +112,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 			{
 				string discrimColumnName = persister.DiscriminatorColumnName;
 				// Needed the "clazz_" check to work around union-subclasses
-				// TODO : is there a way to tell whether a persister is truly discrim-column based inheritence?
+				// xTODO : is there a way to tell whether a persister is truly discrim-column based inheritence?
 				if (discrimColumnName != null && "clazz_" != discrimColumnName)
 				{
 					return true;
@@ -169,7 +169,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 		/// <returns>the collection element columns</returns>
 		public string[] GetCollectionElementColumns(string role, string roleAlias)
 		{
-			// TODO - add CollectionPropertyNames.COLLECTION_ELEMENTS (involves core NH change)
+			// xTODO - add CollectionPropertyNames.COLLECTION_ELEMENTS (involves core NH change)
 			return GetCollectionPropertyMapping(role).ToColumns(roleAlias, "elements");
 		}
 
@@ -276,7 +276,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 		{
 			JoinSequence joinSequence = CreateJoinSequence();
 			joinSequence.SetRoot(collPersister, collectionName);
-			joinSequence.SetUseThetaStyle(true);		// TODO: figure out how this should be set.
+			joinSequence.SetUseThetaStyle(true);		// xTODO: figure out how this should be set.
 
 			///////////////////////////////////////////////////////////////////////////////
 			// This was the reason for failures regarding INDEX_OP and subclass joins on
@@ -320,7 +320,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 		{
 			get
 			{
-				// TODO - is this required at all?
+				// xTODO - is this required at all?
 				//return _sfi.Settings.isStrictJPAQLCompliance();
 				return false;
 			}

@@ -314,8 +314,8 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 				// query with a subquery implied via a collection property
 				// function. Here, we need to use the table name itself as the
 				// qualification alias.
-				// TODO : verify this works for all databases...
-				// TODO : is this also the case in non-"indexed" scenarios?
+				// xTODO : verify this works for all databases...
+				// xTODO : is this also the case in non-"indexed" scenarios?
 				string alias = GetLhs().FromElement.Queryable.TableName;
 				_columns = FromElement.ToColumns(alias, _propertyPath, false, true);
 			}

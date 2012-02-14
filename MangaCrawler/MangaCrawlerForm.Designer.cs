@@ -69,7 +69,7 @@
             this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.logTabPage = new System.Windows.Forms.TabPage();
             this.clearLogButton = new System.Windows.Forms.Button();
-            this.LogRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.logRichTextBox = new System.Windows.Forms.RichTextBox();
             this.versionPanel = new System.Windows.Forms.Panel();
             this.versionLinkLabel = new System.Windows.Forms.LinkLabel();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
@@ -367,7 +367,7 @@
             // logTabPage
             // 
             this.logTabPage.Controls.Add(this.clearLogButton);
-            this.logTabPage.Controls.Add(this.LogRichTextBox);
+            this.logTabPage.Controls.Add(this.logRichTextBox);
             resources.ApplyResources(this.logTabPage, "logTabPage");
             this.logTabPage.Name = "logTabPage";
             this.logTabPage.UseVisualStyleBackColor = true;
@@ -381,8 +381,8 @@
             // 
             // LogRichTextBox
             // 
-            resources.ApplyResources(this.LogRichTextBox, "LogRichTextBox");
-            this.LogRichTextBox.Name = "LogRichTextBox";
+            resources.ApplyResources(this.logRichTextBox, "LogRichTextBox");
+            this.logRichTextBox.Name = "LogRichTextBox";
             // 
             // versionPanel
             // 
@@ -483,7 +483,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Progress;
         private System.Windows.Forms.TabPage logTabPage;
         private System.Windows.Forms.Button clearLogButton;
-        private System.Windows.Forms.RichTextBox LogRichTextBox;
+        private System.Windows.Forms.RichTextBox logRichTextBox;
         private System.Windows.Forms.Timer saveTimer;
     }
 }

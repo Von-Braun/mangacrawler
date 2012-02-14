@@ -61,7 +61,7 @@ namespace NHibernate.Hql.Util
 		private static string GetEntityName(string assemblyQualifiedName)
 		{
 			/* *********************************************************************************************************
-			 * TODO NH Different impl.: we need to resolve the matter between FullName-AssemblyQualifiedName-EntityName-Name
+			 * xTODO NH Different impl.: we need to resolve the matter between FullName-AssemblyQualifiedName-EntityName-Name
 			 * GetImportedClassName in h3.2.5 return the entityName that, in many cases but not all, should be the
 			 * MappesClass.FullName. The value returned by GetImportedClassName, in this case, is used to find the persister.
 			 * A possible solution would be to use the same behavior of H3.2.5 but we start to have some problems (performance)

@@ -57,7 +57,7 @@ namespace NHibernate.Event.Default
 				else
 				{
 					// brand new collection
-					//TODO: or an array!! we can't lock objects with arrays now??
+					//xTODO: or an array!! we can't lock objects with arrays now??
 					throw new HibernateException("reassociated object has dirty collection reference (or an array)");
 				}
 			}

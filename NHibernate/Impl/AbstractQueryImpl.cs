@@ -776,7 +776,7 @@ namespace NHibernate.Impl
 			get { return session.Factory.GetReturnAliases(queryString); }
 		}
 		
-		// TODO: maybe call it RowSelection ?
+		// xTODO: maybe call it RowSelection ?
 		public RowSelection Selection
 		{
 			get { return selection; }

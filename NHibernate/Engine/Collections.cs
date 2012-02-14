@@ -41,7 +41,7 @@ namespace NHibernate.Engine
 			if (hasOrphanDelete)
 			{
 				object ownerId = loadedPersister.OwnerEntityPersister.GetIdentifier(coll.Owner, session.EntityMode);
-				// TODO NH Different behavior
+				// xTODO NH Different behavior
 				//if (ownerId == null)
 				//{
 				//  // the owning entity may have been deleted and its identifier unset due to
@@ -122,7 +122,7 @@ namespace NHibernate.Engine
 			ISessionFactoryImplementor factory = session.Factory;
 			ICollectionPersister persister = factory.GetCollectionPersister(type.Role);
 			ce.CurrentPersister = persister;
-			ce.CurrentKey = type.GetKeyOfOwner(entity, session); //TODO: better to pass the id in as an argument?
+			ce.CurrentKey = type.GetKeyOfOwner(entity, session); //xTODO: better to pass the id in as an argument?
 
 			if (log.IsDebugEnabled)
 			{

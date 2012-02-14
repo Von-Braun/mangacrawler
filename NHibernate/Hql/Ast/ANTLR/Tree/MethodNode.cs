@@ -208,7 +208,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 
                 DataType = SessionFactoryHelper.FindFunctionReturnType(_methodName, child);
 			}
-			//TODO:
+			//xTODO:
 			/*else {
 				methodName = (String) getWalker().getTokenReplacements().get( methodName );
 			}*/

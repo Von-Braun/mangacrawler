@@ -44,7 +44,7 @@ namespace NHibernate.Hql
 			//with all persistent implementors of the class/interface, returning multiple
 			//query strings (make sure we don't pick up a class in the select clause!)
 
-			//TODO: this is one of the ugliest and most fragile pieces of code in Hibernate....
+			//xTODO: this is one of the ugliest and most fragile pieces of code in Hibernate....
 
 			SessionFactoryHelper helper = new SessionFactoryHelper(factory);
 
@@ -91,7 +91,7 @@ namespace NHibernate.Hql
 						}
 					}
 
-					// TODO H3.2 Different behavior
+					// xTODO H3.2 Different behavior
 					// NHb: This block is not an exactly port from H3.2 but a port from previous implementation of QueryTranslator
 					if (((last != null && beforeClassTokens.Contains(last)) &&
 					     (next == null || !notAfterClassTokens.Contains(next))) ||

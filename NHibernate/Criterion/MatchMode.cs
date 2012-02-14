@@ -59,7 +59,7 @@ namespace NHibernate.Criterion
 		/// </returns>
 		public abstract string ToMatchString(string pattern);
 
-		// TODO: need to fix up so serialization/deserialization 
+		// xTODO: need to fix up so serialization/deserialization 
 		// preserves the singleton
 		//		private Object ReadResolve()
 		//		{

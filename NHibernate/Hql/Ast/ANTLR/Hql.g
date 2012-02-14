@@ -556,7 +556,7 @@ primaryExpression
 	:   identPrimary ( options {greedy=true;} : DOT^ 'class' )?
 	|   constant
 	|   COLON^ identifier
-	// TODO: Add parens to the tree so the user can control the operator evaluation order.
+	// xTODO: Add parens to the tree so the user can control the operator evaluation order.
 	|   OPEN! (expressionOrVector | subQuery) CLOSE!
 	|   PARAM^ (NUM_INT)?
 	;
@@ -664,7 +664,7 @@ constant
 
 path
 @init {
-// TODO - need to clean up DotIdent - suspect that DotIdent2 supersedes the other one, but need to do the analysis
+// xTODO - need to clean up DotIdent - suspect that DotIdent2 supersedes the other one, but need to do the analysis
 //HandleDotIdent2();
 }
 	: identifier ( DOT^ { WeakKeywords(); } identifier )*
@@ -781,7 +781,7 @@ NUM_INT
 					// know when to stop: ambig.  ANTLR resolves
 					// it correctly by matching immediately.  It
 					// is therefore ok to hush warning.
-					// TODO options { warnWhenFollowAmbig=false; }
+					// xTODO options { warnWhenFollowAmbig=false; }
 				:	HEX_DIGIT
 				)+
 			|	('0'..'7')+									// octal

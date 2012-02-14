@@ -96,7 +96,7 @@ namespace NHibernate.Cfg.XmlHbmBinding
 			String alias = returnSchema.alias;
 
 			if (StringHelper.IsEmpty(alias))
-				alias = "alias_" + count; // hack/workaround as sqlquery impl depend on having a key.
+				alias = "alias_" + count; // xhack/workaround as sqlquery impl depend on having a key.
 
 			if (string.IsNullOrEmpty(returnSchema.@class) && string.IsNullOrEmpty(returnSchema.entityname))
 				throw new MappingException("<return alias='" + alias + "'> must specify either a class or entity-name");
@@ -129,7 +129,7 @@ namespace NHibernate.Cfg.XmlHbmBinding
 			IDictionary<string, string[]> propertyResults = BindPropertyResults(returnJoinSchema.alias, null, returnJoinSchema.returnproperty, null);
 
 			return new NativeSQLQueryJoinReturn(returnJoinSchema.alias, roleOwnerAlias, roleProperty,
-				propertyResults, // TODO: bindpropertyresults(alias, returnElem)
+				propertyResults, // xTODO: bindpropertyresults(alias, returnElem)
 				GetLockMode(returnJoinSchema.lockmode));
 		}
 
@@ -252,7 +252,7 @@ namespace NHibernate.Cfg.XmlHbmBinding
 					throw new MappingException(
 						"class is not a valid property name to use in a <return-property>, use <return-discriminator> instead"
 						);
-				//TODO: validate existing of property with the chosen name. (secondpass )
+				//xTODO: validate existing of property with the chosen name. (secondpass )
 				List<string> allResultColumns = GetResultColumns(returnPropertySchema);
 
 				if (allResultColumns.Count == 0)
@@ -293,7 +293,7 @@ namespace NHibernate.Cfg.XmlHbmBinding
 				if (!propertyresults.TryGetValue(key,out intermediateResults))
 					propertyresults[key] = allResultColumns.ToArray();
 				else
-					ArrayHelper.AddAll(intermediateResults, allResultColumns); // TODO: intermediateResults not used after this
+					ArrayHelper.AddAll(intermediateResults, allResultColumns); // xTODO: intermediateResults not used after this
 			}
 
 			Dictionary<string, string[]> newPropertyResults = new Dictionary<string, string[]>();

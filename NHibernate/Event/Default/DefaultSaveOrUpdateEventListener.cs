@@ -173,7 +173,7 @@ namespace NHibernate.Event.Default
 
 			if (@event.Session.PersistenceContext.IsEntryFor(@event.Entity))
 			{
-				//TODO: assertion only, could be optimized away
+				//xTODO: assertion only, could be optimized away
 				throw new AssertionFailure("entity was persistent");
 			}
 
@@ -235,7 +235,7 @@ namespace NHibernate.Event.Default
 			// this is a transient object with existing persistent state not loaded by the session
 			new OnUpdateVisitor(source, @event.RequestedId, entity).Process(entity, persister);
 
-			//TODO: put this stuff back in to read snapshot from
+			//xTODO: put this stuff back in to read snapshot from
 			//      the second-level cache (needs some extra work)
 			/*Object[] cachedState = null;
 			
@@ -244,7 +244,7 @@ namespace NHibernate.Event.Default
 			.get( event.getRequestedId(), source.getTimestamp() );
 			cachedState = entry==null ? 
 			null : 
-			entry.getState(); //TODO: half-assemble this stuff
+			entry.getState(); //xTODO: half-assemble this stuff
 			}*/
 
 			source.PersistenceContext.AddEntity(

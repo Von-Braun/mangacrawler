@@ -2357,7 +2357,7 @@ namespace NHibernate.Dialect
 
 				SqlType sqlType = sqlTypes[0];
 
-				// TODO: (H3.2 for nullable types) First allow the actual type to control the return value. (the actual underlying sqltype could actually be different)
+				// xTODO: (H3.2 for nullable types) First allow the actual type to control the return value. (the actual underlying sqltype could actually be different)
 
 				// finally use the sqltype if == on Hibernate types did not find a match.
 				switch (sqlType.DbType)

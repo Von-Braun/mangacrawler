@@ -16,7 +16,7 @@ namespace NHibernate.Transform
 				string alias = aliases[i];
 				if (alias != null)
 				{
-					// TODO: Incredibly dodgy!! what if the user defines an alias ending in "_"
+					// xTODO: Incredibly dodgy!! what if the user defines an alias ending in "_"
 					result[alias] = tuple[i];
 				}
 			}

@@ -556,7 +556,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 
 			if (origin.FromClause == FromClause)
 			{
-				// TODO: Figure out a better way to get the FROM elements in a proper tree structure.
+				// xTODO: Figure out a better way to get the FROM elements in a proper tree structure.
 				// If this is not the destination of a many-to-many, add it as a child of the origin.
 				if (manyToMany)
 				{

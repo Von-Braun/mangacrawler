@@ -1344,7 +1344,7 @@ namespace NHibernate.Mapping.ByCode
 
 			private void MapProperties(System.Type type, PropertyPath memberPath, IComponentElementMapper propertiesContainer, IEnumerable<MemberInfo> persistentProperties)
 			{
-				// TODO check PropertyPath behaviour when the component is in a collection
+				// xTODO check PropertyPath behaviour when the component is in a collection
 				foreach (MemberInfo property in persistentProperties)
 				{
 					MemberInfo member = property;

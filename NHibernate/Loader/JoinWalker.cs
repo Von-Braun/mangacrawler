@@ -249,7 +249,7 @@ namespace NHibernate.Loader
 		protected void WalkCollectionTree(IQueryableCollection persister, string alias)
 		{
 			WalkCollectionTree(persister, alias, string.Empty, 0);
-			//TODO: when this is the entry point, we should use an INNER_JOIN for fetching the many-to-many elements!
+			//xTODO: when this is the entry point, we should use an INNER_JOIN for fetching the many-to-many elements!
 		}
 
 		/// <summary>
@@ -443,7 +443,7 @@ namespace NHibernate.Loader
 		/// </summary>
 		protected JoinType GetJoinType(bool nullable, int currentDepth)
 		{
-			//TODO: this is too conservative; if all preceding joins were 
+			//xTODO: this is too conservative; if all preceding joins were 
 			//      also inner joins, we could use an inner join here
 			return !nullable && currentDepth == 0 ? JoinType.InnerJoin : JoinType.LeftOuterJoin;
 		}
@@ -477,7 +477,7 @@ namespace NHibernate.Loader
 					case FetchMode.Default:
 						if (type.IsEntityType)
 						{
-							//TODO: look at the owning property and check that it 
+							//xTODO: look at the owning property and check that it 
 							//      isn't lazy (by instrumentation)
 							EntityType entityType = (EntityType)type;
 							IEntityPersister persister = factory.GetEntityPersister(entityType.GetAssociatedEntityName());
@@ -787,14 +787,14 @@ namespace NHibernate.Loader
 				else
 				{
 					// if a composite key, use "( (foo = ? and bar = ?) or (foo = ? and bar = ?) )" for batching
-					whereString.Add(StringHelper.OpenParen); // TODO: unnecessary for databases with ANSI-style joins
+					whereString.Add(StringHelper.OpenParen); // xTODO: unnecessary for databases with ANSI-style joins
 					DisjunctionFragment df = new DisjunctionFragment();
 					for (int i = 0; i < batchSize; i++)
 					{
 						df.AddCondition(byId);
 					}
 					whereString.Add(df.ToFragmentString());
-					whereString.Add(StringHelper.ClosedParen); // TODO: unnecessary for databases with ANSI-style joins
+					whereString.Add(StringHelper.ClosedParen); // xTODO: unnecessary for databases with ANSI-style joins
 				}
 
 				return whereString;

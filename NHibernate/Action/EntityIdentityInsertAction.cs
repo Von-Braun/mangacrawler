@@ -82,7 +82,7 @@ namespace NHibernate.Action
 				persister.SetIdentifier(instance, generatedId, Session.EntityMode);
 			}
 
-			//TODO from H3.2 : this bit actually has to be called after all cascades!
+			//xTODO from H3.2 : this bit actually has to be called after all cascades!
 			//      but since identity insert is called *synchronously*,
 			//      instead of asynchronously as other actions, it isn't
 			/*if ( persister.hasCache() && !persister.isCacheInvalidationRequired() ) {
@@ -145,8 +145,8 @@ namespace NHibernate.Action
 
 		protected override void AfterTransactionCompletionProcessImpl(bool success)
 		{
-			//TODO Make 100% certain that this is called before any subsequent ScheduledUpdate.afterTransactionCompletion()!!
-			//TODO from H3.2: reenable if we also fix the above todo
+			//xTODO Make 100% certain that this is called before any subsequent ScheduledUpdate.afterTransactionCompletion()!!
+			//xTODO from H3.2: reenable if we also fix the above todo
 			/*EntityPersister persister = getEntityPersister();
 			if ( success && persister.hasCache() && !persister.isCacheInvalidationRequired() ) {
 			persister.getCache().afterInsert( getGeneratedId(), cacheEntry );

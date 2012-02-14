@@ -19,7 +19,7 @@ namespace NHibernate.Mapping.ByCode
 		void Sort();
 		void Sort<TComparer>();
 		void Cascade(Cascade cascadeStyle);
-		//void Type(string namedCollectionType); // TODO: figure out a way to avoid string for embedded namedCollectionType
+		//void Type(string namedCollectionType); // xTODO: figure out a way to avoid string for embedded namedCollectionType
 		void Type<TCollection>() where TCollection : IUserCollectionType;
 		void Type(System.Type collectionType);
 		void Table(string tableName);

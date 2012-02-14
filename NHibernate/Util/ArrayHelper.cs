@@ -201,7 +201,7 @@ namespace NHibernate.Util
 			foreach (object obj in from)
 			{
 				// There is bug in .NET, before version 4, where adding null to a List<Nullable<T>> through the non-generic IList interface throws an exception.
-				// TODO: Everything but the to.Add(obj) should should be conditionally compiled only for versions of .NET earlier than 4.
+				// xTODO: Everything but the to.Add(obj) should should be conditionally compiled only for versions of .NET earlier than 4.
 				if (obj == null)
 				{
 					if (addNull == null)

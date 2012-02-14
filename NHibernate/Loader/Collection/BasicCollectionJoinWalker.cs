@@ -54,7 +54,7 @@ namespace NHibernate.Loader.Collection
 				// ManyToOne corresponding to this persister to fully
 				// define the many-to-many; we need that OJA so that we can
 				// use its alias here
-				// TODO : is there a better way here?
+				// xTODO : is there a better way here?
 				IAssociationType associationType = (IAssociationType)collectionPersister.ElementType;
 				foreach (OuterJoinableAssociation oja in associations)
 				{

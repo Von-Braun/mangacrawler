@@ -51,7 +51,7 @@ namespace NHibernate.Loader
 			{
 				suffixedVersionColumn = null;
 			}
-			rowIdAlias = Loadable.RowIdAlias + suffix; // TODO: not visible to the user!
+			rowIdAlias = Loadable.RowIdAlias + suffix; // xTODO: not visible to the user!
 		}
 
 		protected virtual string GetDiscriminatorAlias(ILoadable persister, string suffix)

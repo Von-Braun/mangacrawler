@@ -33,8 +33,8 @@ namespace MangaCrawlerLib
         private static List<TaskInfo> s_tasks = new List<TaskInfo>();
 
         private static string s_settings_dir;
-        internal static DownloadedChapters Downloaded;
-        internal static DownloadingTasks Downloading;
+        //internal static DownloadedChapters Downloaded;
+        //internal static DownloadingTasks Downloading;
 
         public static Func<string> GetImagesBaseDir;
         public static Func<bool> UseCBZ;
@@ -254,14 +254,14 @@ namespace MangaCrawlerLib
         public static void Load(string a_settings_dir)
         {
             s_settings_dir = a_settings_dir;
-            Downloaded = new DownloadedChapters(a_settings_dir);
-            Downloading = DownloadingTasks.Load(a_settings_dir);
-            Downloading.Restore();
+            //Downloaded = new DownloadedChapters(a_settings_dir);
+            //Downloading = DownloadingTasks.Load(a_settings_dir);
+            //Downloading.Restore();
         }
 
         public static void Save()
         {
-            Downloading.Save();
+            //Downloading.Save();
         }
     }
 }

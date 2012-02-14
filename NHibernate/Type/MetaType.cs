@@ -69,7 +69,7 @@ namespace NHibernate.Type
 
 		public override string Name
 		{
-			get { return baseType.Name; } //TODO!
+			get { return baseType.Name; } //xTODO!
 		}
 
 		public override object DeepCopy(object value, EntityMode entityMode, ISessionFactoryImplementor factory)

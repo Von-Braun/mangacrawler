@@ -115,7 +115,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 				// currently allowed...
 			}
 
-			// TODO : why aren't these the same?
+			// xTODO : why aren't these the same?
 			if (lhs.GetImpliedJoin() != null || lhs.FromElement.IsImplied)
 			{
 				throw new QueryException("Implied join paths are not assignable in update statements");

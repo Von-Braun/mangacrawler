@@ -198,7 +198,7 @@ namespace NHibernate.Cfg.XmlHbmBinding
 				string schema = string.IsNullOrEmpty(collectionMapping.Schema) ? mappings.SchemaName : collectionMapping.Schema;
 				string catalog = string.IsNullOrEmpty(collectionMapping.Catalog) ? mappings.CatalogName : collectionMapping.Catalog;
 
-				// TODO NH : add schema-action to the xsd
+				// xTODO NH : add schema-action to the xsd
 				model.CollectionTable = mappings.AddTable(schema, catalog, tableName, collectionMapping.Subselect, false, "all");
 
 				log.InfoFormat("Mapping collection: {0} -> {1}", model.Role, model.CollectionTable.Name);

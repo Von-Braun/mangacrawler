@@ -17,8 +17,8 @@ namespace NHibernate.Hql.Classic
 		/// <summary></summary>
 		public SelectParser()
 		{
-			//TODO: would be nice to use false, but issues with MS SQL
-			//TODO: H2.0.3 why not getting info from Dialect?
+			//xTODO: would be nice to use false, but issues with MS SQL
+			//xTODO: H2.0.3 why not getting info from Dialect?
 			pathExpressionParser.UseThetaStyleJoin = true;
 		}
 
@@ -223,7 +223,7 @@ namespace NHibernate.Hql.Classic
 				catch (QueryException)
 				{
 					// Accept costants in SELECT: NH-280
-					// TODO: Parse a costant expression like 5+3+8 (now is not supported in SELECT)
+					// xTODO: Parse a costant expression like 5+3+8 (now is not supported in SELECT)
 					if (IsStringCostant(token))
 					{
 						q.AppendScalarSelectToken(token);

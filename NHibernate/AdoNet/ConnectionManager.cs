@@ -244,7 +244,7 @@ namespace NHibernate.AdoNet
 				{
 					log.Debug("skipping aggressive-release due to open resources on batcher");
 				}
-				// TODO H3:
+				// xTODO H3:
 				//else if (borrowedConnection != null)
 				//{
 				//    log.Debug("skipping aggressive-release due to borrowed connection");

@@ -145,7 +145,7 @@ namespace NHibernate.Type
 
 		public override object Assemble(object oid, ISessionImplementor session, object owner)
 		{
-			//TODO: currently broken for unique-key references (does not detect
+			//xTODO: currently broken for unique-key references (does not detect
 			//      change to unique key property of the associated object)
 
 			object id = AssembleId(oid, session);

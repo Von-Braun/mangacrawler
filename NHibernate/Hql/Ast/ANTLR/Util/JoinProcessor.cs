@@ -200,7 +200,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Util
 
 				if ( _fromElement.IsDereferencedBySubclassProperty) 
 				{
-					// TODO : or should we return 'containsTableAlias'??
+					// xTODO : or should we return 'containsTableAlias'??
 					log.Info( "forcing inclusion of extra joins [alias=" + alias + ", containsTableAlias=" + containsTableAlias + "]" );
 					return true;
 				}

@@ -326,7 +326,7 @@ logicalPath
 	: p=addrExpr [ true ] {Resolve($p.tree);}  -> ^(EQ $p TRUE)
 	;
 
-// TODO: Add any other comparison operators here.
+// xTODO: Add any other comparison operators here.
 comparisonExpr
 	@after {
 	    PrepareLogicOperator( $comparisonExpr.tree );
@@ -352,7 +352,7 @@ comparisonExpr
 	)
 	;
 
-inRhs @init {	int UP = 99999;		// TODO - added this to get compile working.  It's bogus & should be removed
+inRhs @init {	int UP = 99999;		// xTODO - added this to get compile working.  It's bogus & should be removed
 	}
 	: ^(IN_LIST ( collectionFunctionOrSubselect | expr* ) )
 	;
@@ -405,7 +405,7 @@ caseExpr
 	| ^(CASE2 { _inCase = true; } expr (^(WHEN expr expr))+ (^(ELSE expr))?) { _inCase = false; }
 	;
 
-//TODO: I don't think we need this anymore .. how is it different to 
+//xTODO: I don't think we need this anymore .. how is it different to 
 //      maxelements, etc, which are handled by functionCall
 collectionFunction
 	: ^(e=ELEMENTS {_inFunctionCall=true;} p1=propertyRef { Resolve($p1.tree); } ) 
@@ -536,7 +536,7 @@ aliasRef!
 		LookupAlias($aliasRef.tree);
 	}
 	: i=identifier 
-	// TODO -> ^(ALIAS_REF[$i.start, $i.text])
+	// xTODO -> ^(ALIAS_REF[$i.start, $i.text])
 	;
 
 parameter!
