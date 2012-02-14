@@ -18,6 +18,7 @@ using HtmlAgilityPack;
 using System.Media;
 using MangaCrawler.Properties;
 using log4net;
+using MangaCrawlerControls;
 
 namespace MangaCrawler
 {

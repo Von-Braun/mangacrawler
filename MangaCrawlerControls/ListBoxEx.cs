@@ -6,17 +6,17 @@ using System.Windows.Forms;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
-using MangaCrawlerLib;
 using System.Drawing;
+using MangaCrawlerLib;
 
-namespace MangaCrawler
+namespace MangaCrawlerControls
 {
     public class ListBoxEx : ListBoxFlickerFree
     {
         private bool m_reloading;
 
         public ListBoxEx()
-        { 
+        {
         }
 
         protected override void OnSelectedIndexChanged(EventArgs e)
