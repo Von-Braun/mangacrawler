@@ -227,7 +227,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 
 		public FromElement CreateElementJoin(IQueryableCollection queryableCollection)
 		{
-			_implied = true; //TODO: always true for now, but not if we later decide to support elements() in the from clause
+			_implied = true; //xTODO: always true for now, but not if we later decide to support elements() in the from clause
 			_inElementsFunction = true;
 
 			IType elementType = queryableCollection.ElementType;

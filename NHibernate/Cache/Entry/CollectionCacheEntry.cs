@@ -22,7 +22,7 @@ namespace NHibernate.Cache.Entry
 
 		public virtual object[] State
 		{
-			get { return (object[])state; }//TODO: assumes all collections disassemble to an array!
+			get { return (object[])state; }//xTODO: assumes all collections disassemble to an array!
 		}
 
 		public virtual void Assemble(IPersistentCollection collection, ICollectionPersister persister, object owner)

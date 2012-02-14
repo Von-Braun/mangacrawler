@@ -111,7 +111,7 @@ namespace NHibernate.Type
 			int length = array.Length;
 			for (int i = 0; i < length; i++)
 			{
-				//TODO: proxies!
+				//xTODO: proxies!
 				if (array.GetValue(i) == element)
 					return i;
 			}

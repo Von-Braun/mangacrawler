@@ -47,7 +47,7 @@ namespace NHibernate.Cfg.XmlHbmBinding
 							fetchSize, flushMode, cacheMode, readOnly, comment, parameterTypes, callable);
 					}
 					else
-						// TODO: check there is no actual definition elemnents when a ref is defined
+						// xTODO: check there is no actual definition elemnents when a ref is defined
 						namedQuery = new NamedSQLQueryDefinition(queryText,
 							resultSetRef, synchronizedTables, cacheable, region, timeout, fetchSize,
 							flushMode, cacheMode, readOnly, comment, parameterTypes, callable);

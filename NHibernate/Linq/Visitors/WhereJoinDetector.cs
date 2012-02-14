@@ -56,7 +56,7 @@ namespace NHibernate.Linq.Visitors
     /// </summary>
     internal class WhereJoinDetector : AbstractJoinDetector
     {
-        // TODO: There are a number of types of expressions that we didn't handle here due to time constraints.  For example, the ?: operator could be checked easily.
+        // xTODO: There are a number of types of expressions that we didn't handle here due to time constraints.  For example, the ?: operator could be checked easily.
 
         private Stack<bool> _handled = new Stack<bool>();
         
@@ -285,7 +285,7 @@ namespace NHibernate.Linq.Visitors
             //   a.B.C
             //   (a.B ?? a.C).D
             // I'm not sure what processing re-linq does to strange member expressions.
-            // TODO: I suspect this code doesn't add the right joins for the last case.
+            // xTODO: I suspect this code doesn't add the right joins for the last case.
 
             _memberExpressionDepth++;
             var result = base.VisitMemberExpression(expression);
@@ -296,7 +296,7 @@ namespace NHibernate.Linq.Visitors
             {
                 // Don't add joins for things like a.B == a.C where B and C are entities.
                 // We only need to join B when there's something like a.B.D.
-                // TODO: Add an exception for the Id property.
+                // xTODO: Add an exception for the Id property.
                 if (_memberExpressionDepth > 0)
                     AddJoin(expression);
                 

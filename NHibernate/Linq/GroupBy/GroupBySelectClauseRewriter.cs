@@ -55,7 +55,7 @@ namespace NHibernate.Linq.GroupBy
 					else if (elementSelector is NewExpression)
 					{
 						// If ElementSelector is NewExpression, then search for member of name "get_" + originalMemberExpression.Member.Name
-						// TODO - this wouldn't handle nested initialisers.  Should do a tree walk to find the correct member
+						// xTODO - this wouldn't handle nested initialisers.  Should do a tree walk to find the correct member
 						var nex = elementSelector as NewExpression;
 
 						int i = 0;
@@ -82,7 +82,7 @@ namespace NHibernate.Linq.GroupBy
 			}
 		}
 
-		// TODO - dislike this code intensly.  Should probably be a tree-walk in its own right
+		// xTODO - dislike this code intensly.  Should probably be a tree-walk in its own right
 		private bool IsMemberOfModel(MemberExpression expression)
 		{
 			var querySourceRef = expression.Expression as QuerySourceReferenceExpression;
@@ -122,7 +122,7 @@ namespace NHibernate.Linq.GroupBy
 
 		protected override Expression VisitSubQueryExpression(SubQueryExpression expression)
 		{
-			// TODO - is this safe?  All we are extracting is the select clause from the sub-query.  Assumes that everything
+			// xTODO - is this safe?  All we are extracting is the select clause from the sub-query.  Assumes that everything
 			// else in the subquery has been removed.  If there were two subqueries, one aggregating & one not, this may not be a 
 			// valid assumption.  Should probably be passed a list of aggregating subqueries that we are flattening so that we can check...
 			return GroupBySelectClauseRewriter.ReWrite(expression.QueryModel.SelectClause.Selector, _groupBy, _model);

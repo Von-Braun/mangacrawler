@@ -1088,7 +1088,7 @@ namespace NHibernate.Impl
 				try
 				{
 					log.Debug("Checking named query: " + queryName);
-					//TODO: BUG! this currently fails for named queries for non-POJO entities
+					//xTODO: BUG! this currently fails for named queries for non-POJO entities
 					queryPlanCache.GetHQLQueryPlan(qd.QueryString, false, new CollectionHelper.EmptyMapClass<string, IFilter>());
 				}
 				catch (QueryException e)
@@ -1110,7 +1110,7 @@ namespace NHibernate.Impl
 				try
 				{
 					log.Debug("Checking named SQL query: " + queryName);
-					// TODO : would be really nice to cache the spec on the query-def so as to not have to re-calc the hash;
+					// xTODO : would be really nice to cache the spec on the query-def so as to not have to re-calc the hash;
 					// currently not doable though because of the resultset-ref stuff...
 					NativeSQLQuerySpecification spec;
 					if (qd.ResultSetRef != null)

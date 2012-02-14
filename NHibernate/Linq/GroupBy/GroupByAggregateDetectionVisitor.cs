@@ -6,7 +6,7 @@ using Remotion.Linq.Clauses.Expressions;
 
 namespace NHibernate.Linq.GroupBy
 {
-	// TODO: This needs strengthening.  Possibly a lot in common with the GroupJoinAggregateDetectionVisitor class, which does many more checks
+	// xTODO: This needs strengthening.  Possibly a lot in common with the GroupJoinAggregateDetectionVisitor class, which does many more checks
 	/// <summary>
 	/// Detects if an expression tree contains aggregate functions
 	/// </summary>
@@ -23,7 +23,7 @@ namespace NHibernate.Linq.GroupBy
 			return ContainsAggregateMethods;
 		}
 
-		// TODO - this should not exist, since it should be handled either by re-linq or by the MergeAggregatingResultsRewriter
+		// xTODO - this should not exist, since it should be handled either by re-linq or by the MergeAggregatingResultsRewriter
 		protected override Expression VisitMethodCallExpression(MethodCallExpression m)
 		{
 			if (m.Method.DeclaringType == typeof (Queryable) ||

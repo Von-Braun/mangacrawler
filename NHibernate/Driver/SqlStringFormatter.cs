@@ -57,7 +57,7 @@ namespace NHibernate.Driver
 			// NH: even if using SqlType[] the final commad may have X parameters, with this line we will use Y parameters in the IDbCommand
 			// for example the ParameterCollection may contains two parameters called @p0 and @p1 but the command contains just @p0.
 			// In this way the same parameter can be used in different places in the query without create a problem to the dear SQL-server (see NH1981)
-			// TODO: find a way to have exactly the same amount of parameters between the final IDbCommand and its IDataParameterCollection
+			// xTODO: find a way to have exactly the same amount of parameters between the final IDbCommand and its IDataParameterCollection
 			// A candidateplace is making DriverBase.SetCommandParameters a little bit more intelligent... perhaps SqlString aware (see also DriverBase.SetCommandText, DriverBase.GenerateCommand)
 			string name = formatter.GetParameterName(parameter.ParameterPosition ?? parameterIndex);
 

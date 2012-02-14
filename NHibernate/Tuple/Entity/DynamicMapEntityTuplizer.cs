@@ -66,7 +66,7 @@ namespace NHibernate.Tuple.Entity
 			IProxyFactory pf = new MapProxyFactory();
 			try
 			{
-				//TODO: design new lifecycle for ProxyFactory
+				//xTODO: design new lifecycle for ProxyFactory
 				pf.PostInstantiate(EntityName, null, null, null, null, null);
 			}
 			catch (HibernateException he)

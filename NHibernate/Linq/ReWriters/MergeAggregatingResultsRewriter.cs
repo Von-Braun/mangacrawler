@@ -103,7 +103,7 @@ namespace NHibernate.Linq.ReWriters
 			if (m.Method.DeclaringType == typeof(Queryable) ||
 			    m.Method.DeclaringType == typeof(Enumerable))
 			{
-				// TODO - dynamic name generation needed here
+				// xTODO - dynamic name generation needed here
 				switch (m.Method.Name)
 				{
 					case "Count":
@@ -146,7 +146,7 @@ namespace NHibernate.Linq.ReWriters
 			var queryModel = new QueryModel(fromClause,
 			                                new SelectClause(aggregateFactory(selectClause)));
 
-            // TODO - this sucks, but we use it to get the Type of the SubQueryExpression correct
+            // xTODO - this sucks, but we use it to get the Type of the SubQueryExpression correct
             queryModel.ResultOperators.Add(resultOperatorFactory());
 
 			var subQuery = new SubQueryExpression(queryModel);

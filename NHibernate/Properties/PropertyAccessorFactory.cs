@@ -208,7 +208,7 @@ namespace NHibernate.Properties
 			return ResolveCustomAccessor(type);
 		}
 
-		//TODO: ideally we need the construction of PropertyAccessor to take the following:
+		//xTODO: ideally we need the construction of PropertyAccessor to take the following:
 		//      1) EntityMode
 		//      2) EntityMode-specific data (i.e., the classname for pojo entities)
 		//      3) Property-specific data based on the EntityMode (i.e., property-name or dom4j-node-name)
@@ -227,7 +227,7 @@ namespace NHibernate.Properties
 		/// <returns> An appropriate accessor. </returns>
 		public static IPropertyAccessor GetPropertyAccessor(Mapping.Property property, EntityMode? mode)
 		{
-			//TODO: this is temporary in that the end result will probably not take a Property reference per-se.
+			//xTODO: this is temporary in that the end result will probably not take a Property reference per-se.
 			EntityMode modeToUse = mode.HasValue ? mode.Value : EntityMode.Poco;
 			switch(modeToUse)
 			{
@@ -244,7 +244,7 @@ namespace NHibernate.Properties
 
 		private static IPropertyAccessor GetXmlPropertyAccessor(string nodeName, IType type, ISessionFactoryImplementor factory)
 		{
-			//TODO: need some caching scheme? really comes down to decision 
+			//xTODO: need some caching scheme? really comes down to decision 
 			//      regarding amount of state (if any) kept on PropertyAccessors
 			return new XmlAccessor(nodeName, type, factory);
 		}

@@ -181,7 +181,7 @@ namespace NHibernate.SqlCommand
 		/// <summary></summary>
 		public SqlString ToSqlString()
 		{
-			//TODO: add default capacity
+			//xTODO: add default capacity
 			SqlStringBuilder sqlBuilder = new SqlStringBuilder();
 
 			if (comment != null)

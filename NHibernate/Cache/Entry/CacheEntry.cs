@@ -54,7 +54,7 @@ namespace NHibernate.Cache.Entry
 		{
 			get
 			{
-				// todo: this was added to support initializing an entity's EntityEntry snapshot during reattach;
+				// xTODO: this was added to support initializing an entity's EntityEntry snapshot during reattach;
 				// this should be refactored to instead expose a method to assemble a EntityEntry based on this
 				// state for return.
 				return disassembledState;
@@ -78,7 +78,7 @@ namespace NHibernate.Cache.Entry
 			//assembled state gets put in a new array (we read from cache by value!)
 			object[] assembledProps = TypeHelper.Assemble(values, persister.PropertyTypes, session, result);
 	
-			//from h3.2 TODO: reuse the PreLoadEvent
+			//from h3.2 xTODO: reuse the PreLoadEvent
 			PreLoadEvent preLoadEvent = new PreLoadEvent((IEventSource) session);
 			preLoadEvent.Entity = result;
 			preLoadEvent.State=assembledProps;

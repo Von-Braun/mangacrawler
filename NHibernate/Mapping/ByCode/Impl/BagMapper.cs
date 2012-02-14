@@ -101,7 +101,7 @@ namespace NHibernate.Mapping.ByCode.Impl
 
 		public void OrderBy(MemberInfo property)
 		{
-			// TODO: read the mapping of the element to know the column of the property (second-pass)
+			// xTODO: read the mapping of the element to know the column of the property (second-pass)
 			mapping.orderby = property.Name;
 		}
 

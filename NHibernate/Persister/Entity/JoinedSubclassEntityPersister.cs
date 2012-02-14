@@ -51,7 +51,7 @@ namespace NHibernate.Persister.Entity
 		// the array is indexed as subclassTableKeyColumnClosure[tableIndex][columnIndex] = "columnName"
 		private readonly string[][] subclassTableKeyColumnClosure;
 
-		// TODO: figure out what this is being used for - when initializing the base class the values
+		// xTODO: figure out what this is being used for - when initializing the base class the values
 		// are isClassOrSuperclassTable[0] = true, isClassOrSuperclassTable[1] = false
 		// when initialized the subclass the values are [0]=true, [1]=true.  I believe this is telling
 		// us that the table is used to populate this class or the superclass.
@@ -528,7 +528,7 @@ namespace NHibernate.Persister.Entity
 				// is not accounting for the suffix: 
 				// return new String[] { getDiscriminatorColumnName() }; 
 
-				//TODO: this will need to be changed to return a SqlString but for now the SqlString
+				//xTODO: this will need to be changed to return a SqlString but for now the SqlString
 				// is being converted to a string for existing interfaces to work.
 				return new string[] { DiscriminatorFragment(alias).ToSqlStringFragment() };
 			}

@@ -56,7 +56,7 @@ namespace NHibernate.Type
 			return new PersistentGenericList<T>(session, (IList<T>) collection);
 		}
 
-		//TODO: Add() & Clear() methods - need to see if these should be refactored back into
+		//xTODO: Add() & Clear() methods - need to see if these should be refactored back into
 		// their own version of Copy or a DoCopy.  The Copy() method used to be spread out amongst
 		// the various collections, but since they all had common code Add() and Clear() were made
 		// virtual since that was where most of the logic was.  A different/better way might be to

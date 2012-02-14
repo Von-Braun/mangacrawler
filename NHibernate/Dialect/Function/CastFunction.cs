@@ -20,7 +20,7 @@ namespace NHibernate.Dialect.Function
 		public IType ReturnType(IType columnType, IMapping mapping)
 		{
 			//note there is a weird implementation in the client side
-			//TODO: cast that use only costant are not supported in SELECT. Ex: cast(5 as string)
+			//xTODO: cast that use only costant are not supported in SELECT. Ex: cast(5 as string)
 			return columnType;
 		}
 
@@ -54,7 +54,7 @@ namespace NHibernate.Dialect.Function
 				sqlType = factory.Dialect.GetCastTypeName(sqlTypeCodes[0]);
 				if (sqlType == null)
 				{
-					//TODO: never reached, since GetTypeName() actually throws an exception!
+					//xTODO: never reached, since GetTypeName() actually throws an exception!
 					sqlType = typeName;
 				}
 				//else 

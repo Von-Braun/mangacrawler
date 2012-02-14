@@ -9,7 +9,7 @@ namespace NHibernate.Cfg.ConfigurationSchema
 	/// <remarks>Not implemented in Cache.</remarks>
 	public enum ClassCacheInclude
 	{
-		// TODO: Implement ClassCacheInclude (remove de remarks from this enum and the property)
+		// xTODO: Implement ClassCacheInclude (remove de remarks from this enum and the property)
 		/// <summary>Xml value: all</summary>
 		All,
 		/// <summary>Xml value: non-lazy</summary>

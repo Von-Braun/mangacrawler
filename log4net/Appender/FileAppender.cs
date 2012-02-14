@@ -719,7 +719,7 @@ namespace log4net.Appender
             public override Stream AcquireLock()
             {
                 if (m_mutex != null) {
-                    // TODO: add timeout?
+                    // xTODO: add timeout?
                     m_mutex.WaitOne();
 
                     // should always be true (and fast) for FileStream

@@ -11,7 +11,7 @@ namespace NHibernate.Criterion
 	/// An <see cref="ICriterion"/> that represents an "like" constraint
 	/// that is <b>not</b> case sensitive.
 	/// </summary>
-	//TODO:H2.0.3 renamed this to ILikeExpression
+	//xTODO:H2.0.3 renamed this to ILikeExpression
 	[Serializable]
 	public class InsensitiveLikeExpression : AbstractCriterion
 	{
@@ -61,7 +61,7 @@ namespace NHibernate.Criterion
 
 		public override SqlString ToSqlString(ICriteria criteria, ICriteriaQuery criteriaQuery, IDictionary<string, IFilter> enabledFilters)
 		{
-			//TODO: add default capacity
+			//xTODO: add default capacity
 			SqlStringBuilder sqlBuilder = new SqlStringBuilder();
 			SqlString[] columnNames =
 				CriterionUtil.GetColumnNames(propertyName, projection, criteriaQuery, criteria, enabledFilters);

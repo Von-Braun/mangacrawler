@@ -102,7 +102,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 
 		private IType ResolveDataType()
 		{
-			// TODO : we may also want to check that the types here map to exactly one column/JDBC-type
+			// xTODO : we may also want to check that the types here map to exactly one column/JDBC-type
 			//      can't think of a situation where arithmetic expression between multi-column mappings
 			//      makes any sense.
 			IASTNode lhs = LeftHandOperand;

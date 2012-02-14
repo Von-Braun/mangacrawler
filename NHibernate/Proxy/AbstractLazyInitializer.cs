@@ -62,7 +62,7 @@ namespace NHibernate.Proxy
 				}
 				else if (IsConnectedToSession)
 				{
-					//TODO: perhaps this should be some other RuntimeException...
+					//xTODO: perhaps this should be some other RuntimeException...
 					throw new HibernateException("illegally attempted to associate a proxy with two open Sessions");
 				}
 				else
@@ -161,7 +161,7 @@ namespace NHibernate.Proxy
 				{
 					if (value != null && IsConnectedToSession)
 					{
-						//TODO: perhaps this should be some other RuntimeException...
+						//xTODO: perhaps this should be some other RuntimeException...
 						throw new LazyInitializationException(_entityName, _id, "Illegally attempted to associate a proxy with two open Sessions");
 					}
 					else

@@ -187,7 +187,7 @@ namespace NHibernate.Engine
 			}
 			public override bool DeleteOrphans
 			{
-				//TODO: should orphans really be deleted during lock???
+				//xTODO: should orphans really be deleted during lock???
 				get { return false; }
 			}
 		}
@@ -277,7 +277,7 @@ namespace NHibernate.Engine
 			public override IEnumerable GetCascadableChildrenIterator(IEventSource session, CollectionType collectionType, object collection)
 			{
 				// merges don't cascade to uninitialized collections
-				//TODO: perhaps this does need to cascade after all....
+				//xTODO: perhaps this does need to cascade after all....
 				return GetLoadedElementsIterator(session, collectionType, collection);
 			}
 			public override bool DeleteOrphans

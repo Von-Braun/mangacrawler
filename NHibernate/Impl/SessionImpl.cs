@@ -712,7 +712,7 @@ namespace NHibernate.Impl
 			}
 		}
 
-		// TODO: Scroll(string query, QueryParameters queryParameters)
+		// xTODO: Scroll(string query, QueryParameters queryParameters)
 
 		public int Delete(string query)
 		{
@@ -1110,7 +1110,7 @@ namespace NHibernate.Impl
 			using (new SessionIdLoggingContext(SessionId))
 			{
 				CheckAndUpdateSessionStatus();
-				// todo : should this get moved to PersistentContext?
+				// xTODO : should this get moved to PersistentContext?
 				// logically, is PersistentContext the "thing" to which an interceptor gets attached?
 				object result = persistenceContext.GetEntity(key);
 
@@ -1384,7 +1384,7 @@ namespace NHibernate.Impl
 		{
 			using (new SessionIdLoggingContext(SessionId))
 			{
-				// todo : remove
+				// xTODO : remove
 				LoadType type = isNullable
 									? LoadEventListener.InternalLoadNullable
 									: (eager ? LoadEventListener.InternalLoadEager : LoadEventListener.InternalLoadLazy);
@@ -1422,7 +1422,7 @@ namespace NHibernate.Impl
 			{
 				if (rootSession != null)
 				{
-					// Todo : should seriously consider not allowing a txn to begin from a child session
+					// xTODO : should seriously consider not allowing a txn to begin from a child session
 					//      can always route the request to the root session...
 					log.Warn("Transaction started on non-root session");
 				}
@@ -1438,7 +1438,7 @@ namespace NHibernate.Impl
 			{
 				if (rootSession != null)
 				{
-					// Todo : should seriously consider not allowing a txn to begin from a child session
+					// xTODO : should seriously consider not allowing a txn to begin from a child session
 					//      can always route the request to the root session...
 					log.Warn("Transaction started on non-root session");
 				}

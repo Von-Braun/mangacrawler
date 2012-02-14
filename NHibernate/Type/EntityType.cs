@@ -273,7 +273,7 @@ namespace NHibernate.Type
 				if (session.GetContextEntityIdentifier(original) == null && ForeignKeys.IsTransient(associatedEntityName, original, false, session))
 				{
 					object copy = session.Factory.GetEntityPersister(associatedEntityName).Instantiate(null, session.EntityMode);
-					//TODO: should this be Session.instantiate(Persister, ...)?
+					//xTODO: should this be Session.instantiate(Persister, ...)?
 					copyCache.Add(original, copy);
 					return copy;
 				}
@@ -521,7 +521,7 @@ namespace NHibernate.Type
 		{
 			if (IsReferenceToPrimaryKey)
 			{
-				//TODO: this is a bit arbitrary, expose a switch to the user?
+				//xTODO: this is a bit arbitrary, expose a switch to the user?
 				return string.Empty;
 			}
 			else
@@ -549,7 +549,7 @@ namespace NHibernate.Type
 			ISessionFactoryImplementor factory = session.Factory;
 			IUniqueKeyLoadable persister = (IUniqueKeyLoadable)factory.GetEntityPersister(entityName);
 
-			//TODO: implement caching?! proxies?!
+			//xTODO: implement caching?! proxies?!
 
 			EntityUniqueKey euk =
 				new EntityUniqueKey(entityName, uniqueKeyPropertyName, key, GetIdentifierOrUniqueKeyType(factory),

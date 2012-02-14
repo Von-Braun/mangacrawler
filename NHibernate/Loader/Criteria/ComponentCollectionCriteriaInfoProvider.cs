@@ -48,7 +48,7 @@ namespace NHibernate.Loader.Criteria
 
 		public IType GetType(String relativePath)
 		{
-			// TODO: can a component have a nested component? then we may need to do something more here...
+			// xTODO: can a component have a nested component? then we may need to do something more here...
 			if (relativePath.IndexOf('.') >= 0)
 			{
 				throw new ArgumentException("dotted paths not handled (yet?!) for collection-of-component");

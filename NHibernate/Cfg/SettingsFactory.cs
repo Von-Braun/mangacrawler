@@ -227,7 +227,7 @@ namespace NHibernate.Cfg
 
 			//ADO.NET and connection settings:
 
-			// TODO: Environment.BatchVersionedData
+			// xTODO: Environment.BatchVersionedData
 			settings.AdoBatchSize = PropertiesHelper.GetInt32(Environment.BatchSize, properties, 0);
 			bool orderInserts = PropertiesHelper.GetBoolean(Environment.OrderInserts, properties, (settings.AdoBatchSize > 0));
 			log.Info("Order SQL inserts for batching: " + EnabledDisabled(orderInserts));

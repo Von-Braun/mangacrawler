@@ -73,7 +73,7 @@ namespace NHibernate.Linq.Visitors
 
         static QueryModelVisitor()
         {
-            // TODO - reflection to build map
+            // xTODO - reflection to build map
             ResultOperatorMap = new ResultOperatorMap();
 
             ResultOperatorMap.Add<AggregateResultOperator, ProcessAggregate>();
@@ -236,7 +236,7 @@ namespace NHibernate.Linq.Visitors
 			}
 			else
 			{
-				// TODO - exact same code as in MainFromClause; refactor this out
+				// xTODO - exact same code as in MainFromClause; refactor this out
                 _hqlTree.AddFromClause(_hqlTree.TreeBuilder.Range(
                                      HqlGeneratorExpressionTreeVisitor.Visit(fromClause.FromExpression, VisitorParameters),
                                      _hqlTree.TreeBuilder.Alias(fromClause.ItemName)));

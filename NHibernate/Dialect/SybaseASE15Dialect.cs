@@ -102,7 +102,7 @@ namespace NHibernate.Dialect
 			RegisterFunction("square", new StandardSQLFunction("square"));
 			RegisterFunction("str", new StandardSQLFunction("str", NHibernateUtil.String));
 			RegisterFunction("tan", new StandardSQLFunction("tan", NHibernateUtil.Double));
-			// TODO RegisterFunction("trim", new SQLFunctionTemplate(NHibernateUtil.String, "ltrim(rtrim(?1))"));
+			// xTODO RegisterFunction("trim", new SQLFunctionTemplate(NHibernateUtil.String, "ltrim(rtrim(?1))"));
 			RegisterFunction("upper", new StandardSQLFunction("upper"));
 			RegisterFunction("user", new NoArgSQLFunction("user", NHibernateUtil.String));
 			RegisterFunction("year", new StandardSQLFunction("year", NHibernateUtil.Int32));
@@ -272,7 +272,7 @@ namespace NHibernate.Dialect
 		
 		public override SqlString ApplyLocksToSql(SqlString sql, IDictionary<string, LockMode> aliasedLockModes, IDictionary<string, string[]> keyColumnNames)
 		{
-			// TODO:  merge additional lockoptions support in Dialect.applyLocksToSql
+			// xTODO:  merge additional lockoptions support in Dialect.applyLocksToSql
 
 			var buffer = new StringBuilder(sql.ToString());
 			int correction = 0;

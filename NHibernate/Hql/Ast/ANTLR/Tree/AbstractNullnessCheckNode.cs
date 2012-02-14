@@ -8,7 +8,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 {
 	/// <summary>
 	/// Base class for nodes dealing 'is null' and 'is not null' operators.
-	/// todo : a good deal of this is copied from BinaryLogicOperatorNode; look at consolidating these code fragments
+	/// xTODO : a good deal of this is copied from BinaryLogicOperatorNode; look at consolidating these code fragments
 	/// 
 	/// Author: Steve Ebersole
 	/// Ported by: Steve Strong
@@ -22,7 +22,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 
 		public override void Initialize() 
 		{
-			// TODO : this really needs to be delayed unitl after we definitively know the operand node type;
+			// xTODO : this really needs to be delayed unitl after we definitively know the operand node type;
 			// where this is currently a problem is parameters for which where we cannot unequivocally
 			// resolve an expected type
 			IType operandType = ExtractDataType( Operand );

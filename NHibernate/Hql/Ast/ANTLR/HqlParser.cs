@@ -195,7 +195,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 
 		public IASTNode NegateNode(IASTNode node)
 		{
-			// TODO - copy code from HqlParser.java
+			// xTODO - copy code from HqlParser.java
 			switch (node.Type)
 			{
 				case OR:

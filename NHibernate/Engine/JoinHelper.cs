@@ -177,7 +177,7 @@ namespace NHibernate.Engine
 						//in this case, the table name is not known - this temporary solution 
 						//assumes that the property-ref refers to a property of the subclass
 						//table that the association belongs to (a reasonable guess)
-						//TODO: fix this, add: IOuterJoinLoadable.getSubclassPropertyTableName(string propertyName)
+						//xTODO: fix this, add: IOuterJoinLoadable.getSubclassPropertyTableName(string propertyName)
 						propertyRefTable = Persister.GetSubclassPropertyTableName(propertyIdx);
 					}
 					return propertyRefTable;

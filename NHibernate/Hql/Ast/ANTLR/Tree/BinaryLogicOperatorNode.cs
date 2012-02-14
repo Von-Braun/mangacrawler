@@ -80,7 +80,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 
 		protected void MutateRowValueConstructorSyntaxesIfNecessary(IType lhsType, IType rhsType)
 		{
-			// TODO : this really needs to be delayed unitl after we definitively know all node types
+			// xTODO : this really needs to be delayed unitl after we definitively know all node types
 			// where this is currently a problem is parameters for which where we cannot unequivocally
 			// resolve an expected type
 			ISessionFactoryImplementor sessionFactory = SessionFactoryHelper.Factory;

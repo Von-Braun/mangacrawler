@@ -126,7 +126,7 @@ namespace NHibernate.Engine
 				// case we definitely need to nullify
 				if (obj == self)
 				{
-					// TODO H3.2: Different behaviour
+					// xTODO H3.2: Different behaviour
 					//return isEarlyInsert || (isDelete && session.Factory.Dialect.HasSelfReferentialForeignKeyBug);
 					return isEarlyInsert || isDelete;
 				}
@@ -250,7 +250,7 @@ namespace NHibernate.Engine
 					if (IsTransient(entityName, entity, false, session))
 					{
 						/***********************************************/
-						// TODO NH verify the behavior of NH607 test
+						// xTODO NH verify the behavior of NH607 test
 						// these lines are only to pass test NH607 during PersistenceContext porting
 						// i'm not secure that NH607 is a test for a right behavior
 						EntityEntry entry = session.PersistenceContext.GetEntry(entity);

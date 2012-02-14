@@ -328,7 +328,7 @@ namespace NHibernate.Persister.Collection
 			 Note: the fix for NH-1747 may cause some problem when the same ColumnName is used to represent two different properties in the same hierarchy
 			 In all our test it happened only for NHibernate.Test.Legacy.MultiTableTest.MultiTableCollections
 			 The mapping Multi.hbm.xml had a column named "parent" to represent the Key of a set for the relation Lower->Top and SubMulti->SubMulti everything in the same hierarchy
-			 NH TODO: Have to add an early check of same ColumnName used to represent two relations.
+			 NH xTODO: Have to add an early check of same ColumnName used to represent two relations.
 			*/
 			var ojl = (IOuterJoinLoadable)ElementPersister;
 			var selectFragment = new SelectFragment(Dialect).SetSuffix(columnSuffix);

@@ -25,7 +25,7 @@ namespace NHibernate.Collection.Generic
 	[DebuggerTypeProxy(typeof (CollectionProxy<>))]
 	public class PersistentGenericSet<T> : PersistentSet, Iesi.Collections.Generic.ISet<T>
 	{
-		// TODO NH: find a way to writeonce (no duplicated code from PersistentSet)
+		// xTODO NH: find a way to writeonce (no duplicated code from PersistentSet)
 
 		/* NH considerations:
 		 * The implementation of Set<T> in Iesi collections don't have any particular behavior

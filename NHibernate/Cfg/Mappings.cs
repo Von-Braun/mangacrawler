@@ -357,7 +357,7 @@ namespace NHibernate.Cfg
 			tableNameBinding[key] = tableDescription;
 			if (oldDescriptor != null && !oldDescriptor.logicalName.Equals(logicalName))
 			{
-				//TODO possibly relax that
+				//xTODO possibly relax that
 				throw new MappingException("Same physical table name reference several logical table names: " + physicalName
 																	 + " => " + "'" + oldDescriptor.logicalName + "' and '" + logicalName + "'");
 			}
@@ -538,7 +538,7 @@ namespace NHibernate.Cfg
 							? oldFinalName.Equals(finalColumn.GetQuotedName())
 							: oldFinalName.Equals(finalColumn.GetQuotedName(), StringComparison.InvariantCultureIgnoreCase)))
 			{
-				//TODO possibly relax that
+				//xTODO possibly relax that
 				throw new MappingException("Same logical column name referenced by different physical ones: " + table.Name + "."
 																	 + logicalName + " => '" + oldFinalName + "' and '" + finalColumn.GetQuotedName() + "'");
 			}
@@ -548,7 +548,7 @@ namespace NHibernate.Cfg
 			binding.physicalToLogical[finalColumn.GetQuotedName()] = logicalName;
 			if (oldLogicalName != null && !oldLogicalName.Equals(logicalName))
 			{
-				//TODO possibly relax that
+				//xTODO possibly relax that
 				throw new MappingException("Same physical column represented by different logical column names: " + table.Name + "."
 																	 + finalColumn.GetQuotedName() + " => '" + oldLogicalName + "' and '" + logicalName + "'");
 			}

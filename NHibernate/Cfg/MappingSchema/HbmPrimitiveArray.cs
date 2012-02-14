@@ -109,7 +109,7 @@ namespace NHibernate.Cfg.MappingSchema
 
 		public int? BatchSize
 		{
-			get { return null; } // TODO NH: change schema following the same schema of others collections
+			get { return null; } // xTODO NH: change schema following the same schema of others collections
 		}
 
 		public string PersisterQualifiedName

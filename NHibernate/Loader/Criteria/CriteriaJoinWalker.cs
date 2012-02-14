@@ -16,7 +16,7 @@ namespace NHibernate.Loader.Criteria
 	/// <seealso cref="CriteriaLoader"/>
 	public class CriteriaJoinWalker : AbstractEntityJoinWalker
 	{
-		//TODO: add a CriteriaImplementor interface
+		//xTODO: add a CriteriaImplementor interface
 		//      this class depends directly upon CriteriaImpl in the impl package...
 
 		private readonly CriteriaQueryTranslator translator;

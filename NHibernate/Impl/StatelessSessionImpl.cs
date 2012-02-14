@@ -79,7 +79,7 @@ namespace NHibernate.Impl
 				{
 					return persister.CreateProxy(id, this);
 				}
-				//TODO: if not loaded, throw an exception
+				//xTODO: if not loaded, throw an exception
 				return Get(entityName, id);
 			}
 		}
@@ -112,7 +112,7 @@ namespace NHibernate.Impl
 		{
 			using (new SessionIdLoggingContext(SessionId))
 			{
-				// TODO pull up
+				// xTODO pull up
 				IList results = new ArrayList();
 				List(query, parameters, results);
 				return results;
@@ -184,7 +184,7 @@ namespace NHibernate.Impl
 		{
 			using (new SessionIdLoggingContext(SessionId))
 			{
-				// TODO pull up
+				// xTODO pull up
 				List<T> results = new List<T>();
 				List(query, queryParameters, results);
 				return results;
@@ -195,7 +195,7 @@ namespace NHibernate.Impl
 		{
 			using (new SessionIdLoggingContext(SessionId))
 			{
-				// TODO pull up
+				// xTODO pull up
 				List<T> results = new List<T>();
 				List(criteria, results);
 				return results;
@@ -247,7 +247,7 @@ namespace NHibernate.Impl
 		{
 			using (new SessionIdLoggingContext(SessionId))
 			{
-				// TODO pull up
+				// xTODO pull up
 				IEntityPersister persister = Factory.GetEntityPersister(entityName);
 				if (!(persister is IOuterJoinLoadable))
 				{
@@ -261,7 +261,7 @@ namespace NHibernate.Impl
 		{
 			using (new SessionIdLoggingContext(SessionId))
 			{
-				// TODO pull up
+				// xTODO pull up
 				ArrayList results = new ArrayList();
 				List(criteria, results);
 				return results;
@@ -333,7 +333,7 @@ namespace NHibernate.Impl
 		{
 			using (new SessionIdLoggingContext(SessionId))
 			{
-				// TODO pull up
+				// xTODO pull up
 				ArrayList results = new ArrayList();
 				List(spec, queryParameters, results);
 				return results;
@@ -344,7 +344,7 @@ namespace NHibernate.Impl
 		{
 			using (new SessionIdLoggingContext(SessionId))
 			{
-				// TODO pull up
+				// xTODO pull up
 				SQLCustomQuery query = new SQLCustomQuery(
 					spec.SqlQueryReturns,
 					spec.QueryString,
@@ -358,7 +358,7 @@ namespace NHibernate.Impl
 		{
 			using (new SessionIdLoggingContext(SessionId))
 			{
-				// TODO pull up
+				// xTODO pull up
 				List<T> results = new List<T>();
 				List(spec, queryParameters, results);
 				return results;
@@ -391,7 +391,7 @@ namespace NHibernate.Impl
 		{
 			using (new SessionIdLoggingContext(SessionId))
 			{
-				// TODO pull up
+				// xTODO pull up
 				List<T> results = new List<T>();
 				ListCustomQuery(customQuery, queryParameters, results);
 				return results;

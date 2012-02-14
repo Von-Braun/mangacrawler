@@ -183,7 +183,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 			var right = (FromElement) next;
 
 			///////////////////////////////////////////////////////////////////////
-			// HACK ALERT !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			// xHACK ALERT !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			// Attempt to work around "ghost" ImpliedFromElements that occasionally
 			// show up between the actual things being joined.  This consistently
 			// occurs from index nodes (at least against many-to-many).  Not sure
@@ -296,7 +296,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 			else
 			{
 				// this function has a template -> restore output, apply the template and write the result out
-				var functionArguments = (FunctionArguments) writer; // TODO: Downcast to avoid using an interface?  Yuck.
+				var functionArguments = (FunctionArguments) writer; // xTODO: Downcast to avoid using an interface?  Yuck.
 				writer = outputStack[0];
 				outputStack.RemoveAt(0);
 				Out(template.Render(functionArguments.Args, sessionFactory));
@@ -540,7 +540,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 			void Clause(SqlString clause);
 			void PushParameter(Parameter parameter);
 			/**
-			 * todo remove this hack
+			 * xtodo remove this hack
 			 * The parameter is either ", " or " , ". This is needed to pass sql generating tests as the old
 			 * sql generator uses " , " in the WHERE and ", " in SELECT.
 			 *

@@ -50,7 +50,7 @@ namespace NHibernate.Persister.Entity
 
 		public virtual string[] ToColumns(string alias, string propertyName)
 		{
-			//TODO: *two* hashmap lookups here is one too many...
+			//xTODO: *two* hashmap lookups here is one too many...
 			string[] columns = GetColumns(propertyName);
 
 			string[] templates;
@@ -131,7 +131,7 @@ namespace NHibernate.Persister.Entity
 					string foreignKeyProperty = actType.LHSPropertyName;
 					if (foreignKeyProperty != null)
 					{
-						//TODO: this requires that the collection is defined after the
+						//xTODO: this requires that the collection is defined after the
 						//      referenced property in the mapping file (ok?)
 						if (!columnsByPropertyPath.TryGetValue(foreignKeyProperty, out columns))
 							return; //get em on the second pass!

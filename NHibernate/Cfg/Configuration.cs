@@ -292,7 +292,7 @@ namespace NHibernate.Cfg
 		/// </summary>
 		public PersistentClass GetClassMapping(System.Type persistentClass)
 		{
-			// TODO NH: Remove this method
+			// xTODO NH: Remove this method
 			return GetClassMapping(persistentClass.FullName);
 		}
 
@@ -1110,7 +1110,7 @@ namespace NHibernate.Cfg
 				((SimpleValue)prop.Value).IsAlternateUniqueKey = true;
 			}
 
-			//TODO: Somehow add the newly created foreign keys to the internal collection
+			//xTODO: Somehow add the newly created foreign keys to the internal collection
 
 			log.Info("processing foreign key constraints");
 
@@ -1409,7 +1409,7 @@ namespace NHibernate.Cfg
 			Environment.VerifyProperties(properties);
 		}
 
-		// TODO - getConfigurationInputStream(String resource)
+		// xTODO - getConfigurationInputStream(String resource)
 
 		/// <summary>
 		/// Configure NHibernate using the <c>&lt;hibernate-configuration&gt;</c> section

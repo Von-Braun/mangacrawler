@@ -188,7 +188,7 @@ namespace NHibernate.Type
 		{
 			// collections don't dirty an unversioned parent entity
 
-			// TODO: I don't like this implementation; it would be better if this was handled by SearchForDirtyCollections();
+			// xTODO: I don't like this implementation; it would be better if this was handled by SearchForDirtyCollections();
 			return IsOwnerVersioned(session) && base.IsDirty(old, current, session);
 		}
 
@@ -352,7 +352,7 @@ namespace NHibernate.Type
 			if (original == target)
 			{
 				//get the elements back into the target
-				//TODO: this is a little inefficient, don't need to do a whole
+				//xTODO: this is a little inefficient, don't need to do a whole
 				//	  deep replaceElements() call
 				ReplaceElements(result, target, owner, copyCache, session);
 				result = target;
@@ -364,7 +364,7 @@ namespace NHibernate.Type
 		public virtual object ReplaceElements(object original, object target, object owner, IDictionary copyCache,
 		                                      ISessionImplementor session)
 		{
-			// TODO: does not work for EntityMode.DOM4J yet!
+			// xTODO: does not work for EntityMode.DOM4J yet!
 			object result = target;
 			Clear(result);
 
@@ -475,7 +475,7 @@ namespace NHibernate.Type
 			}
 			else
 			{
-				// TODO: at the point where we are resolving collection references, we don't
+				// xTODO: at the point where we are resolving collection references, we don't
 				// know if the uk value has been resolved (depends if it was earlier or
 				// later in the mapping document) - now, we could try and use e.getStatus()
 				// to decide to semiResolve(), trouble is that initializeEntity() reuses
@@ -522,7 +522,7 @@ namespace NHibernate.Type
 			{
 				IType keyType = GetPersister(session).KeyType;
 				IEntityPersister ownerPersister = GetPersister(session).OwnerEntityPersister;
-				// TODO: Fix this so it will work for non-POJO entity mode
+				// xTODO: Fix this so it will work for non-POJO entity mode
 				System.Type ownerMappedClass = ownerPersister.GetMappedClass(session.EntityMode);
 				if (ownerMappedClass.IsAssignableFrom(keyType.ReturnedClass) && keyType.ReturnedClass.IsInstanceOfType(key))
 				{
@@ -531,7 +531,7 @@ namespace NHibernate.Type
 				}
 				else
 				{
-					// TODO: check if key contains the owner ID
+					// xTODO: check if key contains the owner ID
 				}
 			}
 			return ownerId;

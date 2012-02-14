@@ -32,8 +32,9 @@ namespace MangaCrawlerLib
                 Title = Title.Replace("  ", " ");
             Title = HttpUtility.HtmlDecode(Title);
 
-            m_state = DownloadManager.Downloaded.WasDownloaded(this) ?
-                ChapterState.WasDownloaded : ChapterState.Initial;
+            //m_state = DownloadManager.Downloaded.WasDownloaded(this) ?
+            //    ChapterState.WasDownloaded : ChapterState.Initial;
+            m_state = ChapterState.Initial;
         }
 
         public TaskInfo FindTask()

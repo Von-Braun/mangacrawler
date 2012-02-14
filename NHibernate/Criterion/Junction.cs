@@ -85,7 +85,7 @@ namespace NHibernate.Criterion
 				return EmptyExpression;
 			}
 
-			//TODO: add default capacity
+			//xTODO: add default capacity
 			SqlStringBuilder sqlBuilder = new SqlStringBuilder();
 
 			sqlBuilder.Add("(");

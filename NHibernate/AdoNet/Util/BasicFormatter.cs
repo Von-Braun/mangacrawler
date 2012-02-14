@@ -91,7 +91,7 @@ namespace NHibernate.AdoNet.Util
 
 			public FormatProcess(string sql)
 			{
-				// TODO : some delimiter may depend from a specific Dialect/Drive (as ';' to separate multi query)
+				// xTODO : some delimiter may depend from a specific Dialect/Drive (as ';' to separate multi query)
 				tokens = new StringTokenizer(sql, "()+*/-=<>'`\"[],;" + StringHelper.WhiteSpace, true).GetEnumerator();
 			}
 

@@ -36,7 +36,7 @@ namespace NHibernate.Dialect.Function
 
 		public SqlString Render(IList args, ISessionFactoryImplementor factory)
 		{
-			// TODO: QueryException if args.Count<2 (not present in H3.2) 
+			// xTODO: QueryException if args.Count<2 (not present in H3.2) 
 			bool threeArgs = args.Count > 2;
 			object pattern = args[0];
 			object orgString = args[1];

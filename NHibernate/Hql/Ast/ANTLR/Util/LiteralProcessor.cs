@@ -115,8 +115,8 @@ namespace NHibernate.Hql.Ast.ANTLR.Util
 
 		public void ProcessBoolean(IASTNode constant) 
 		{
-			// TODO: something much better - look at the type of the other expression!
-			// TODO: Have comparisonExpression and/or arithmeticExpression rules complete the resolution of boolean nodes.
+			// xTODO: something much better - look at the type of the other expression!
+			// xTODO: Have comparisonExpression and/or arithmeticExpression rules complete the resolution of boolean nodes.
 			string replacement;
 			_walker.TokenReplacements.TryGetValue(constant.Text, out replacement);
 			if ( replacement != null ) 

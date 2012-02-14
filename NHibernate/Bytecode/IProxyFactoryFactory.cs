@@ -31,7 +31,7 @@ namespace NHibernate.Bytecode
 		/// <param name="superClass">The abstract super class (or null if none).</param>
 		/// <param name="interfaces">Interfaces to be proxied (or null if none).</param>
 		/// <returns> The proxy class</returns>
-		// TODO: H3.2
+		// xTODO: H3.2
 		//BasicProxyFactory BuildBasicProxyFactory(System.Type superClass, System.Type[] interfaces);
 		 */
 

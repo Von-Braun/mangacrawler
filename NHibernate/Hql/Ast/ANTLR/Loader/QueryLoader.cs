@@ -250,7 +250,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Loader
 				_sqlAliases[i] = element.TableAlias;
 				_entityAliases[i] = element.ClassAlias;
 				_sqlAliasByEntityAlias.Add(_entityAliases[i], _sqlAliases[i]);
-				// TODO should we just collect these like with the collections above?
+				// xTODO should we just collect these like with the collections above?
 				_sqlAliasSuffixes[i] = (size == 1) ? "" : i + "_";
 				//			sqlAliasSuffixes[i] = element.getColumnAliasSuffix();
 				_includeInSelect[i] = !element.IsFetch;

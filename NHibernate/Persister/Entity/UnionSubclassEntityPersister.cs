@@ -104,7 +104,7 @@ namespace NHibernate.Persister.Entity
 			#endregion
 
 			#region SPACES
-			//TODO: i'm not sure, but perhaps we should exclude abstract denormalized tables?
+			//xTODO: i'm not sure, but perhaps we should exclude abstract denormalized tables?
 
 			int spacesSize = 1 + persistentClass.SynchronizedTables.Count;
 			spaces = new string[spacesSize];
@@ -265,7 +265,7 @@ namespace NHibernate.Persister.Entity
 				.AddColumns(IdentifierColumnNames)
 				.AddColumns(SubclassColumnClosure, SubclassColumnAliasClosure, SubclassColumnLaziness)
 				.AddColumns(SubclassFormulaClosure, SubclassFormulaAliasClosure, SubclassFormulaLaziness);
-			//TODO: include the rowids!!!!
+			//xTODO: include the rowids!!!!
 			if (HasSubclasses)
 			{
 				if (IsDiscriminatorFormula)
@@ -430,7 +430,7 @@ namespace NHibernate.Persister.Entity
 
 		public override string GetPropertyTableName(string propertyName)
 		{
-			//TODO: check this....
+			//xTODO: check this....
 			return TableName;
 		}
 	}

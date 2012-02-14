@@ -584,7 +584,7 @@ namespace NHibernate.Persister.Collection
 			if (queryLoaderName != null)
 			{
 				//if there is a user-specified loader, return that
-				//TODO: filters!?
+				//xTODO: filters!?
 				return initializer;
 			}
 
@@ -876,7 +876,7 @@ namespace NHibernate.Persister.Collection
 				return null;
 			}
 
-			// TODO NH: may be we need something else when Index is mixed with Formula
+			// xTODO NH: may be we need something else when Index is mixed with Formula
 			var sqlString=
 				new SqlSimpleSelectBuilder(dialect, factory)
 					.SetTableName(TableName)

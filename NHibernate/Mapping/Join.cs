@@ -67,7 +67,7 @@ namespace NHibernate.Mapping
 
 		public void CreateForeignKey()
 		{
-			// TODO: The "if (!IsInverse)" condition is not in H3.2.
+			// xTODO: The "if (!IsInverse)" condition is not in H3.2.
 			// Not sure if this H3.2 does it in a different way.  The reason
 			// this condition is put in is because when a <join> is mapped with
 			// inverse="true", the joined rows should not be deleted (see 

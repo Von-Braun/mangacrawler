@@ -57,7 +57,7 @@ namespace NHibernate.Linq
 		}
 	}
 
-    // TODO rename / remove - reflection helper above is better
+    // xTODO rename / remove - reflection helper above is better
     public static class EnumerableHelper
     {
         public static MethodInfo GetMethod(string name, System.Type[] parameterTypes)

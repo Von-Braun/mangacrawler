@@ -166,7 +166,7 @@ namespace NHibernate.Engine
 		/// <summary>
 		/// Gets the ICurrentSessionContext instance attached to this session factory.
 		/// </summary>
-		ICurrentSessionContext CurrentSessionContext { get; } // TODO NH : Remove
+		ICurrentSessionContext CurrentSessionContext { get; } // xTODO NH : Remove
 
 		/// <summary>
 		/// Get the persister for the named entity

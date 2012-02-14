@@ -70,7 +70,7 @@ namespace NHibernate.Criterion
 		/// <remarks>The SqlString will be enclosed by <c>(</c> and <c>)</c>.</remarks>
 		public override SqlString ToSqlString(ICriteria criteria, ICriteriaQuery criteriaQuery, IDictionary<string, IFilter> enabledFilters)
 		{
-			//TODO: add default capacity
+			//xTODO: add default capacity
 			SqlStringBuilder sqlBuilder = new SqlStringBuilder();
 
 			SqlString lhSqlString = _lhs.ToSqlString(criteria, criteriaQuery, enabledFilters);

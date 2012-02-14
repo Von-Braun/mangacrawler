@@ -61,7 +61,7 @@ namespace NHibernate.Dialect
 				RegisterColumnType(DbType.String, 255, "VARCHAR($l)");
 				RegisterColumnType(DbType.String, 65535, "TEXT");
 				RegisterColumnType(DbType.String, 16777215, "MEDIUMTEXT");
-				//todo: future: add compatibility with decimal???
+				//xTODO: future: add compatibility with decimal???
 				//An unpacked fixed-point number. Behaves like a CHAR column; 
 				//“unpacked” means the number is stored as a string, using one character for each digit of the value.
 				//M is the total number of digits and D is the number of digits after the decimal point

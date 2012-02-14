@@ -53,7 +53,7 @@ namespace NHibernate.Loader.Custom.Sql
 			get { return parametersSpecifications; }
 		}
 
-		// TODO: should "record" how many properties we have reffered to - and if we 
+		// xTODO: should "record" how many properties we have reffered to - and if we 
 		//       don't get'em'all we throw an exception! Way better than trial and error ;)
 		private string SubstituteBrackets()
 		{
@@ -182,7 +182,7 @@ namespace NHibernate.Loader.Custom.Sql
 			}
 			if (columnAliases.Length != 1)
 			{
-				// TODO: better error message since we actually support composites if names are explicitly listed.
+				// xTODO: better error message since we actually support composites if names are explicitly listed.
 				throw new QueryException(
 					"SQL queries only support properties mapped to a single column - property [" + propertyName + "] is mapped to "
 					+ columnAliases.Length + " columns.", originalQueryString);
@@ -223,7 +223,7 @@ namespace NHibernate.Loader.Custom.Sql
 				}
 				if (columnAliases.Length != 1)
 				{
-					// TODO: better error message since we actually support composites if names are explicitly listed.
+					// xTODO: better error message since we actually support composites if names are explicitly listed.
 					throw new QueryException(
 						"SQL queries only support properties mapped to a single column - property [" + propertyName + "] is mapped to "
 						+ columnAliases.Length + " columns.", originalQueryString);

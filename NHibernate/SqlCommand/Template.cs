@@ -76,7 +76,7 @@ namespace NHibernate.SqlCommand
 		public static string RenderWhereStringTemplate(string sqlWhereString, string placeholder, Dialect.Dialect dialect,
 		                                               SQLFunctionRegistry functionRegistry)
 		{
-			//TODO: make this a bit nicer
+			//xTODO: make this a bit nicer
 			string symbols = new StringBuilder()
 				.Append("=><!+-*/()',|&`")
 				.Append(ParserHelper.Whitespace)
@@ -210,7 +210,7 @@ namespace NHibernate.SqlCommand
 		public static string RenderOrderByStringTemplate(string sqlOrderByString, Dialect.Dialect dialect,
 		                                                 SQLFunctionRegistry functionRegistry)
 		{
-			//TODO: make this a bit nicer
+			//xTODO: make this a bit nicer
 			string symbols = new StringBuilder()
 				.Append("=><!+-*/()',|&`")
 				.Append(ParserHelper.Whitespace)

@@ -102,7 +102,7 @@ namespace NHibernate.Tuple.Component
 
 		protected internal override IInstantiator BuildInstantiator(Mapping.Component component)
 		{
-			// TODO H3.2 not ported
+			// xTODO H3.2 not ported
 			//if (component.IsEmbedded && ReflectHelper.IsAbstractClass(component.ComponentClass))
 			//{
 			//  return new ProxiedInstantiator(component);

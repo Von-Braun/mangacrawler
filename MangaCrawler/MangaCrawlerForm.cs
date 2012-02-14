@@ -19,18 +19,27 @@ using System.Media;
 using MangaCrawler.Properties;
 using log4net;
 using MangaCrawlerControls;
+using log4net.Core;
+using log4net.Config;
+using log4net.Layout;
 
 namespace MangaCrawler
 {
+    // TODO: richedit appender
+    //
+    // TODO: testowe serwery, testowe srodowisko testowe
+    //
     // TODO: dodac nowa karte na ktorej bedzie mozna wykreslic ilosc polaczen ogolnie i na serwer
-    // TODO: czy byl jakis pik po wydaniu nowej wersji jesli nie to zmienic wersjonowanie na korzystanie z daty
+    //
     // TODO: wersja to data, ustawiana automatycznie podczas budowania, generowanie jakiegos pliku 
     //       z data.
     //
     // TODO: po sciagnieciu nie kasowac taska, dac mozliwosc przejrzenia mangi
-    // lib zawsze pamieta taski, to gui je odrzuca
+    //       lib zawsze pamieta taski, to gui je odrzuca
     //
     // TODO: pamietanie taskow podczas zamkniecia
+    //
+    // TODO: pamietanie pobranych
     // 
     // TODO: http://www.mangareader.net/alphabetical
     // TODO: http://mangable.com/manga-list/
@@ -39,7 +48,7 @@ namespace MangaCrawler
     // TODO: http://manga.animea.net/browse.html
     // TODO: http://www.mangamonger.com/
     //
-    // TODO: instalator
+    // TODO: instalator, x86 i x64
     //
     // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, 
     //       podczas ponownego uruchomienia 
@@ -65,6 +74,10 @@ namespace MangaCrawler
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
+            log4net.Config.XmlConfigurator.Configure();
+
+            SetupLog4NET();
+
             Text = String.Format("{0} {1}.{2}", Text,
                 Assembly.GetAssembly(GetType()).GetName().Version.Major, 
                 Assembly.GetAssembly(GetType()).GetName().Version.Minor);
@@ -96,6 +109,39 @@ namespace MangaCrawler
             tasksGridView.DataSource = new BindingList<TaskInfo>();
 
             UpdateSeriesTab();
+        }
+
+        private void SetupLog4NET()
+        {
+            XmlConfigurator.Configure();
+            
+            RichTextBoxAppender rba = new RichTextBoxAppender(logRichTextBox);
+            rba.Threshold = Level.All;
+            rba.Layout = new PatternLayout(
+                "%date{yyyy-MM-dd HH:mm:ss,fff} %-7level %-14logger %thread %class.%method - %message %newline");
+
+            LevelTextStyle ilts = new LevelTextStyle();
+            ilts.Level = Level.Info;
+            ilts.TextColor = Color.Black;
+            rba.AddMapping(ilts);
+
+            LevelTextStyle dlts = new LevelTextStyle();
+            dlts.Level = Level.Debug;
+            dlts.TextColor = Color.LightBlue;
+            rba.AddMapping(dlts);
+
+            LevelTextStyle wlts = new LevelTextStyle();
+            wlts.Level = Level.Warn;
+            wlts.TextColor = Color.Yellow;
+            rba.AddMapping(wlts);
+
+            LevelTextStyle elts = new LevelTextStyle();
+            elts.Level = Level.Error;
+            elts.TextColor = Color.Red;
+            rba.AddMapping(elts);
+
+            BasicConfigurator.Configure(rba);
+            rba.ActivateOptions();
         }
 
         private void directoryChooseButton_Click(object sender, EventArgs e)
@@ -707,8 +753,7 @@ namespace MangaCrawler
 
         private void clearLogButton_Click(object sender, EventArgs e)
         {
-            //TODO: richedit appender
-            //(LogManager.Configuration.FindTargetByName("richTextBox") as NLog.Targets.RichTextBoxTarget).Clear();
+            logRichTextBox.Clear();
         }
 
         private void saveTimer_Tick(object sender, EventArgs e)

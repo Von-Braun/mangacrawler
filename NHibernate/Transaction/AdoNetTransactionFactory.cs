@@ -47,7 +47,7 @@ namespace NHibernate.Transaction
 				if (transacted)
 				{
 					trans = connection.BeginTransaction();
-					// TODO NH: a way to read the autocommit state is needed
+					// xTODO NH: a way to read the autocommit state is needed
 					//if (TransactionManager.GetAutoCommit(connection))
 					//{
 					//  wasAutoCommit = true;
@@ -100,7 +100,7 @@ namespace NHibernate.Transaction
 				//{
 				//  try
 				//  {
-				//    // TODO NH: reset autocommit
+				//    // xTODO NH: reset autocommit
 				//    // TransactionManager.SetAutoCommit(connection, true);
 				//  }
 				//  catch (Exception)

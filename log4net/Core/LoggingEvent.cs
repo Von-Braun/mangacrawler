@@ -1324,7 +1324,7 @@ namespace log4net.Core
 				m_compositeProperties.Add(threadProperties);
 			}
 
-			// TODO: Add Repository Properties
+			// xTODO: Add Repository Properties
 
 			m_compositeProperties.Add(GlobalContext.Properties.GetReadOnlyProperties());
 		}

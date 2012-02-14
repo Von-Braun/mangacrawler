@@ -87,7 +87,7 @@ namespace NHibernate.Cfg.MappingSchema
 			if (file == null)
 				throw new ArgumentNullException("file");
 
-			// TODO: Exception handling...
+			// xTODO: Exception handling...
 			// OpenRead() throws: DirectoryNotFoundException, IOException, UnauthorizedAccessException
 
 			using (FileStream stream = file.OpenRead())
@@ -96,7 +96,7 @@ namespace NHibernate.Cfg.MappingSchema
 
 		public void Add(string fileName)
 		{
-			// TODO: Exception handling...
+			// xTODO: Exception handling...
 			FileInfo file = new FileInfo(fileName);
 			Add(file);
 		}

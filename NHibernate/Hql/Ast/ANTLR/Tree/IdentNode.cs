@@ -87,7 +87,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 				throw new SemanticException("Collection expected; [" + propertyName + "] does not refer to a collection property");
 			}
 
-			// TODO : most of below was taken verbatim from DotNode; should either delegate this logic or super-type it
+			// xTODO : most of below was taken verbatim from DotNode; should either delegate this logic or super-type it
 			CollectionType type = (CollectionType) DataType;
 			string role = type.Role;
 			IQueryableCollection queryableCollection = SessionFactoryHelper.RequireQueryableCollection(role);
@@ -160,7 +160,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 				//      needed to add this here because the allowance of
 				//      naked-prop-refs in the grammar collides with the
 				//      definition of literals/constants ("nondeterminism").
-				//      TODO: cleanup the grammar so that "processConstants" is always just handled from here
+				//      xTODO: cleanup the grammar so that "processConstants" is always just handled from here
 				if (!IsResolved)
 				{
 					try
@@ -317,7 +317,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 			IList<IASTNode> fromElements = Walker.CurrentFromClause.GetFromElements();
 			if (fromElements == null || fromElements.Count != 1)
 			{
-				// TODO : should this be an error?
+				// xTODO : should this be an error?
 				return null;
 			}
 

@@ -84,7 +84,7 @@ namespace NHibernate.Event.Default
 					log.Debug("no need to replicate");
 				}
 
-				//TODO: would it be better to do a refresh from db?
+				//xTODO: would it be better to do a refresh from db?
 			}
 			else
 			{
@@ -155,7 +155,7 @@ namespace NHibernate.Event.Default
 
 		protected override bool VisitCollectionsBeforeSave(object entity, object id, object[] values, Type.IType[] types, IEventSource source)
 		{
-			//TODO: we use two visitors here, inefficient!
+			//xTODO: we use two visitors here, inefficient!
 			OnReplicateVisitor visitor = new OnReplicateVisitor(source, id, entity, false);
 			visitor.ProcessEntityPropertyValues(values, types);
 			return base.VisitCollectionsBeforeSave(entity, id, values, types, source);

@@ -184,7 +184,7 @@ namespace NHibernate.Collection
 			// NH Different behavior : for NH-1810 and the way is working the possible underlining collection
 			// the Snapshot is represented using a List<T> 
 			// (perhaps it has less performance then IDictionary but it is working)
-			// TODO : should use ever underlining collection type or something to have same performace and same order
+			// xTODO : should use ever underlining collection type or something to have same performace and same order
 			var clonedSet = new SetSnapShot<object>(set.Count);
 			foreach (object current in set)
 			{

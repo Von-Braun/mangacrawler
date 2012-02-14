@@ -35,7 +35,7 @@ namespace NHibernate.Event.Default
 			}
 
 			object entity = source.PersistenceContext.UnproxyAndReassociate(@event.Entity);
-			//TODO: if object was an uninitialized proxy, this is inefficient,resulting in two SQL selects
+			//xTODO: if object was an uninitialized proxy, this is inefficient,resulting in two SQL selects
 
 			EntityEntry entry = source.PersistenceContext.GetEntry(entity);
 			if (entry == null)

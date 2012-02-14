@@ -65,7 +65,7 @@ namespace NHibernate.Event.Default
 			ICollectionPersister persister = session.Factory.GetCollectionPersister(collectionType.Role);
 			
 			IPersistenceContext persistenceContext = session.PersistenceContext;
-			//TODO: move into collection type, so we can use polymorphism!
+			//xTODO: move into collection type, so we can use polymorphism!
 
 			if (collectionType.HasHolder(session.EntityMode))
 			{

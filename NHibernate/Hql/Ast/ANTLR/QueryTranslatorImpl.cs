@@ -400,7 +400,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 				{
 					// even here, if only properties mapped to the "base table" are referenced
 					// in the set and where clauses, this could be handled by the BasicDelegate.
-					// TODO : decide if it is better performance-wise to perform that check, or to simply use the MultiTableUpdateDelegate
+					// xTODO : decide if it is better performance-wise to perform that check, or to simply use the MultiTableUpdateDelegate
 					return new MultiTableUpdateExecutor(statement);
 				}
 				else

@@ -850,7 +850,7 @@ namespace NHibernate.Hql.Classic
 				sql.AddSelectFragmentString(scalarSelect);
 			}
 
-			// TODO: for some dialects it would be appropriate to add the renderOrderByPropertiesSelect() to other select strings
+			// xTODO: for some dialects it would be appropriate to add the renderOrderByPropertiesSelect() to other select strings
 			MergeJoins(sql.JoinFragment);
 
 			// HQL functions in whereTokens, groupByTokens, havingTokens and orderByTokens aren't rendered
@@ -1389,13 +1389,13 @@ namespace NHibernate.Hql.Classic
 
 		public string[] ConcreteQueries(string query, ISessionFactoryImplementor factory)
 		{
-			// TODO H3.2 check if the QuerySplitter can do the work (this method is not present in H3.2)
+			// xTODO H3.2 check if the QuerySplitter can do the work (this method is not present in H3.2)
 
 			//scan the query string for class names appearing in the from clause and replace 
 			//with all persistent implementors of the class/interface, returning multiple 
 			//query strings (make sure we don't pick up a class in the select clause!) 
 
-			//TODO: this is one of the ugliest and most fragile pieces of code in Hibernate...
+			//xTODO: this is one of the ugliest and most fragile pieces of code in Hibernate...
 			string[] tokens = StringHelper.Split(ParserHelper.Whitespace + "(),", query, true);
 			if (tokens.Length == 0)
 			{

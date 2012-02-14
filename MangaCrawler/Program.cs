@@ -9,8 +9,6 @@ namespace MangaCrawler
         [STAThread]
         static void Main()
         {
-            log4net.Config.XmlConfigurator.Configure();
-
             //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
 
             Application.EnableVisualStyles();

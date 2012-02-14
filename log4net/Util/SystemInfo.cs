@@ -514,7 +514,7 @@ namespace log4net.Util
 			}
 			return name.Trim();
 
-			// TODO: Do we need to unescape the assembly name string? 
+			// xTODO: Do we need to unescape the assembly name string? 
 			// Doc says '\' is an escape char but has this already been 
 			// done by the string loader?
 		}

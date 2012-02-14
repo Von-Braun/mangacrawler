@@ -288,7 +288,7 @@ namespace NHibernate.Collection
 			}
 			else
 			{
-				// TODO : safe to interpret "map.remove(key) == null" as non-dirty?
+				// xTODO : safe to interpret "map.remove(key) == null" as non-dirty?
 				Initialize(true);
 				// NH: Different implementation: we use the count to know if the value was removed (better performance)
 				int contained = map.Count;

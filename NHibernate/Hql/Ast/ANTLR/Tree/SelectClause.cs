@@ -416,7 +416,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 			{
 				if (!_scalarSelect && !Walker.IsShallowQuery)
 				{
-					//TODO: is this a bit ugly?
+					//xTODO: is this a bit ugly?
 					expr.Text = text;
 				}
 				else
@@ -498,7 +498,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 			// return types array.  The second dimension is the list of column names for each
 			// type.
 
-			// todo: we should really just collect these from the various SelectExpressions, rather than regenerating here
+			// xTODO: we should really just collect these from the various SelectExpressions, rather than regenerating here
 			_columnNames = SessionFactoryHelper.GenerateColumnNames(_queryReturnTypes);
 		}
 

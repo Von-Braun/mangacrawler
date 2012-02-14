@@ -74,7 +74,7 @@ namespace NHibernate.Loader.Criteria
 			CreateCriteriaSQLAliasMap();
 		}
 
-		[CLSCompliant(false)] // TODO: Why does this cause a problem in 1.1
+		[CLSCompliant(false)] // xTODO: Why does this cause a problem in 1.1
 		public string RootSQLAlias
 		{
 			get { return rootSQLAlias; }

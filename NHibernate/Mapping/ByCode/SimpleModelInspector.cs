@@ -368,7 +368,7 @@ namespace NHibernate.Mapping.ByCode
 				return false;
 			}
 			var modelInspector = (IModelInspector) this;
-			return !subject.IsEnum && (subject.Namespace == null || !subject.Namespace.StartsWith("System")) /* hack */
+			return !subject.IsEnum && (subject.Namespace == null || !subject.Namespace.StartsWith("System")) /* xhack */
 							&& !modelInspector.IsEntity(subject)
 							&& !subject.GetProperties(flattenHierarchyMembers).Cast<MemberInfo>().Concat(
 			       		subject.GetFields(flattenHierarchyMembers)).Any(m => modelInspector.IsPersistentId(m));

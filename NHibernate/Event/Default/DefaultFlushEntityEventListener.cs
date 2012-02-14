@@ -37,7 +37,7 @@ namespace NHibernate.Event.Default
 
 			@event.PropertyValues = values;
 
-			//TODO: avoid this for non-new instances where mightBeDirty==false
+			//xTODO: avoid this for non-new instances where mightBeDirty==false
 			bool substitute = WrapCollections(session, persister, types, values);
 
 			if (IsUpdateNecessary(@event, mightBeDirty))
@@ -191,7 +191,7 @@ namespace NHibernate.Event.Default
 				}
 				else
 				{
-					// TODO H3.2 Different behaviour
+					// xTODO H3.2 Different behaviour
 					//FieldInterceptionHelper.clearDirty(@event.Entity);
 					return false;
 				}
@@ -396,7 +396,7 @@ namespace NHibernate.Event.Default
 				int[] dirtyProperties = @event.DirtyProperties;
 				if (dirtyProperties != null && dirtyProperties.Length != 0)
 				{
-					return true; //TODO: suck into event class
+					return true; //xTODO: suck into event class
 				}
 				else
 				{
@@ -521,7 +521,7 @@ namespace NHibernate.Event.Default
 			}
 			else
 			{
-				//TODO: optimize away this lookup for entities w/o unsaved-value="undefined"
+				//xTODO: optimize away this lookup for entities w/o unsaved-value="undefined"
 				EntityKey entityKey = new EntityKey(id, persister, session.EntityMode);
 				return session.PersistenceContext.GetCachedDatabaseSnapshot(entityKey);
 			}

@@ -361,7 +361,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 
 		private static bool IsDatabaseGeneratedTimestamp(IType type)
 		{
-			// TODO NH: we should check the "generated" property
+			// xTODO NH: we should check the "generated" property
 			// currently only the Hibernate-supplied DbTimestampType is supported here
 			return typeof(TimestampType).IsAssignableFrom(type.GetType());
 		}
@@ -461,7 +461,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 					// No explicit select expression; render the id and properties
 					// projection lists for every persister in the from clause into
 					// a single 'token node'.
-					//TODO: the only reason we need this stuff now is collection filters,
+					//xTODO: the only reason we need this stuff now is collection filters,
 					//      we should get rid of derived select clause completely!
 					CreateSelectClauseFromFromClause( qn );
 				}
@@ -514,7 +514,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 
 		private void CreateSelectClauseFromFromClause(IASTNode qn)
 		{
-			// TODO - check this.  Not *exactly* the same logic as the Java original
+			// xTODO - check this.  Not *exactly* the same logic as the Java original
 			qn.InsertChild(0, (IASTNode)adaptor.Create(SELECT_CLAUSE, "{derived select clause}"));
 
 			_selectClause = ( SelectClause ) qn.GetChild(0);
@@ -595,7 +595,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 					// Notify the FROM element that it is being referenced by the select.
 					FromReferenceNode aliasRefNode = (FromReferenceNode)node;
 
-					aliasRefNode.Resolve(false, false); //TODO: is it kosher to do it here?
+					aliasRefNode.Resolve(false, false); //xTODO: is it kosher to do it here?
 					FromElement fromElement = aliasRefNode.FromElement;
 					if (fromElement != null)
 					{
@@ -862,7 +862,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 		{
 			IASTNode dot = (IASTNode) adaptor.Create(DOT, "{non-qualified-property-ref}");
 
-			// TODO : better way?!?
+			// xTODO : better way?!?
 			((DotNode)dot).PropertyPath = ((FromReferenceNode)property).Path;
 
 			IdentNode syntheticAlias = (IdentNode)adaptor.Create(IDENT, "{synthetic-alias}");
@@ -907,7 +907,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 		{
 			if (_namedParameters.Count > 0)
 			{
-				// NH TODO: remove this limitation
+				// NH xTODO: remove this limitation
 				throw new SemanticException("cannot define positional parameter after any named parameters have been defined");
 			}
 			ParameterNode parameter = (ParameterNode)adaptor.Create(PARAM, "?");
@@ -1113,7 +1113,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 
 		public void Visit(IASTNode node) 
 		{
-			// todo : currently expects that the individual with expressions apply to the same sql table join.
+			// xTODO : currently expects that the individual with expressions apply to the same sql table join.
 			//      This may not be the case for joined-subclass where the property values
 			//      might be coming from different tables in the joined hierarchy.  At some
 			//      point we should expand this to support that capability.  However, that has
@@ -1139,7 +1139,7 @@ namespace NHibernate.Hql.Ast.ANTLR
 					_referencedFromElement = fromElement;
 					_joinAlias = ExtractAppliedAlias( dotNode );
 
-					// todo : temporary
+					// xTODO : temporary
 					//      needed because currently persister is the one that
 					//      creates and renders the join fragments for inheritence
 					//      hierarchies...

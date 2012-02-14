@@ -141,7 +141,7 @@ namespace NHibernate.Type
 		/// </summary>
 		public override bool IsAlwaysDirtyChecked
 		{
-			get { return false; } //TODO: this is kinda inconsistent with CollectionType
+			get { return false; } //xTODO: this is kinda inconsistent with CollectionType
 		}
 
 		public override string PropertyName

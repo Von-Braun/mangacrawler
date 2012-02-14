@@ -26,7 +26,7 @@ namespace NHibernate.Tuple.Entity
 		/// <returns> True if the IValidatable interface is implemented; false otherwise. </returns>
 		bool IsValidatableImplementor { get; }
 
-		// TODO: getConcreteProxyClass() is solely used (externally) to perform narrowProxy()
+		// xTODO: getConcreteProxyClass() is solely used (externally) to perform narrowProxy()
 		// would be great to fully encapsulate that narrowProxy() functionality within the
 		// Tuplizer, itself, with a Tuplizer.narrowProxy(..., PersistentContext) method
 		/// <summary> Returns the java class to which generated proxies will be typed. </summary>

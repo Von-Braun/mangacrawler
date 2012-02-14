@@ -115,7 +115,7 @@ namespace NHibernate.Hql.Ast
 	{
 		public static HqlExpression AsExpression(this HqlTreeNode node)
 		{
-			// TODO - nice error handling if cast fails
+			// xTODO - nice error handling if cast fails
 			return (HqlExpression)node;
 		}
 
@@ -126,7 +126,7 @@ namespace NHibernate.Hql.Ast
 				return new HqlBooleanDot(node.Factory, (HqlDot) node);
 			}
 
-			// TODO - nice error handling if cast fails
+			// xTODO - nice error handling if cast fails
 			return (HqlBooleanExpression)node;
 		}
 		
@@ -236,7 +236,7 @@ namespace NHibernate.Hql.Ast
 			return type.GetGenericArguments()[0];
 		}
 
-		// TODO - code duplicated in LinqExtensionMethods
+		// xTODO - code duplicated in LinqExtensionMethods
 		private static bool IsNullableType(System.Type type)
 		{
 			return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));

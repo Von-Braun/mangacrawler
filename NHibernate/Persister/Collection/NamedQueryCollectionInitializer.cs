@@ -25,7 +25,7 @@ namespace NHibernate.Persister.Collection
 				log.Debug(string.Format("initializing collection: {0} using named query: {1}", persister.Role, queryName));
 			}
 
-			//TODO: is there a more elegant way than downcasting?
+			//xTODO: is there a more elegant way than downcasting?
 			AbstractQueryImpl query = (AbstractQueryImpl) session.GetNamedSQLQuery(queryName);
 			if (query.NamedParameters.Length > 0)
 			{

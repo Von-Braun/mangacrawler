@@ -11013,7 +11013,7 @@ public partial class HqlParser : Parser
         IASTNode DOT303_tree=null;
 
 
-        // TODO - need to clean up DotIdent - suspect that DotIdent2 supersedes the other one, but need to do the analysis
+        // xTODO - need to clean up DotIdent - suspect that DotIdent2 supersedes the other one, but need to do the analysis
         //HandleDotIdent2();
 
         try 

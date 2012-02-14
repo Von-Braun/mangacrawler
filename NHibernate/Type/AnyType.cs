@@ -167,8 +167,8 @@ namespace NHibernate.Type
 
 		public override object FromXMLNode(XmlNode xml, IMapping factory)
 		{
-			// TODO NH: We can implement this method if the XML is the result of a serialization in XML
-			throw new NotSupportedException(); //TODO: is this right??
+			// xTODO NH: We can implement this method if the XML is the result of a serialization in XML
+			throw new NotSupportedException(); //xTODO: is this right??
 		}
 
 		[Serializable]
@@ -289,7 +289,7 @@ namespace NHibernate.Type
 		{
 			get
 			{
-				//return AssociationType.FOREIGN_KEY_TO_PARENT; //TODO: this is better but causes a transient object exception... 
+				//return AssociationType.FOREIGN_KEY_TO_PARENT; //xTODO: this is better but causes a transient object exception... 
 				return ForeignKeyDirection.ForeignKeyFromParent;
 			}
 		}
@@ -344,7 +344,7 @@ namespace NHibernate.Type
 
 		public override bool IsDirty(object old, object current, bool[] checkable, ISessionImplementor session)
 		{
-			//TODO!!!
+			//xTODO!!!
 			return IsDirty(old, current, session);
 		}
 
@@ -373,7 +373,7 @@ namespace NHibernate.Type
 
 		public override int Compare(object x, object y, EntityMode? entityMode)
 		{
-			return 0; //TODO: entities CAN be compared, by PK and entity name, fix this!
+			return 0; //xTODO: entities CAN be compared, by PK and entity name, fix this!
 		}
 
 		public virtual bool IsMethodOf(MethodBase method)

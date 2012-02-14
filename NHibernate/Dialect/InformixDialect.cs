@@ -372,7 +372,7 @@ namespace NHibernate.Dialect
              * "SELECT [SKIP x] FIRST y  rest-of-sql-statement"
              */
 
-            // TODO - Check support for cases where only the offset is specified, but the limit is not.  Might need to use int.MaxValue.
+            // xTODO - Check support for cases where only the offset is specified, but the limit is not.  Might need to use int.MaxValue.
 
 			int insertIndex = GetAfterSelectInsertPoint(queryString);
 

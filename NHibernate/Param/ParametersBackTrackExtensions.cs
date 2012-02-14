@@ -42,7 +42,7 @@ namespace NHibernate.Param
 
 		public static void ResetEffectiveExpectedType(this IEnumerable<IParameterSpecification> parameterSpecs, QueryParameters queryParameters)
 		{
-			// TODO: remove this method when we can infer the type during the parse
+			// xTODO: remove this method when we can infer the type during the parse
 			foreach (var parameterSpecification in parameterSpecs.OfType<IExplicitParameterSpecification>())
 			{
 				parameterSpecification.SetEffectiveType(queryParameters);

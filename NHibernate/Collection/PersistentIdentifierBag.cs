@@ -306,7 +306,7 @@ namespace NHibernate.Collection
 				foreach (object entry in values)
 				{
 					int loc = i++;
-					if (!identifiers.ContainsKey(loc)) // TODO: native ids
+					if (!identifiers.ContainsKey(loc)) // xTODO: native ids
 					{
 						object id = persister.IdentifierGenerator.Generate(Session, entry);
 						identifiers[loc] = id;

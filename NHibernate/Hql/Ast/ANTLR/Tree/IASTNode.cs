@@ -30,7 +30,7 @@ namespace NHibernate.Hql.Ast.ANTLR.Tree
 
 		IASTNode DupNode();
 
-		// TODO - not sure we need this...
+		// xTODO - not sure we need this...
 		IToken Token { get; }
 
 		string ToStringTree();

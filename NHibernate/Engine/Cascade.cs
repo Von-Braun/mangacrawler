@@ -264,7 +264,7 @@ namespace NHibernate.Engine
 		/// <summary> Delete any entities that were removed from the collection</summary>
 		private void DeleteOrphans(string entityName, IPersistentCollection pc)
 		{
-			//TODO: suck this logic into the collection!
+			//xTODO: suck this logic into the collection!
 			ICollection orphans;
 			if (pc.WasInitialized)
 			{

@@ -153,7 +153,7 @@ namespace NHibernate.Engine
 				joinFragment.HasFilterCondition = joinFragment.AddCondition(filterCondition);
 				if (includeExtraJoins)
 				{
-					//TODO: not quite sure about the full implications of this!
+					//xTODO: not quite sure about the full implications of this!
 					AddExtraJoins(joinFragment, rootAlias, rootJoinable, true);
 				}
 			}
@@ -209,7 +209,7 @@ namespace NHibernate.Engine
 					);
 				if (includeExtraJoins)
 				{
-					//TODO: not quite sure about the full implications of this!
+					//xTODO: not quite sure about the full implications of this!
 					AddExtraJoins(joinFragment, join.Alias, join.Joinable, join.JoinType == JoinType.InnerJoin);
 				}
 				last = join.Joinable;

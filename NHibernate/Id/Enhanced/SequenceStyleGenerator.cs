@@ -114,7 +114,7 @@ namespace NHibernate.Id.Enhanced
 			{
 				if (OptimizerFactory.Pool.Equals(optimizationStrategy) && !dialect.SupportsPooledSequences)
 				{
-					// TODO : may even be better to fall back to a pooled table strategy here so that the db stored values remain consistent...
+					// xTODO : may even be better to fall back to a pooled table strategy here so that the db stored values remain consistent...
 					optimizationStrategy = OptimizerFactory.HiLo;
 				}
 				databaseStructure = new SequenceStructure(dialect, sequenceName, initialValue, incrementSize);
