@@ -51,7 +51,7 @@ namespace MangaCrawlerTest
             a_info.DownloadSeries();
             var series = a_info.Series;
 
-            ConnectionsLimiter.DownloadWithRetry(() => new HtmlWeb().Load(a_info.URL));
+            Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_info.URL));
 
             if (a_count > 0)
             {
@@ -81,7 +81,7 @@ namespace MangaCrawlerTest
             a_info.DownloadChapters();
             var chapters = a_info.Chapters;
 
-            ConnectionsLimiter.DownloadWithRetry(() => new HtmlWeb().Load(a_info.URL));
+            Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_info.URL));
 
             if (!a_ongoing)
             {
@@ -114,7 +114,7 @@ namespace MangaCrawlerTest
 
             TestContext.WriteLine("    Testing chapter {0}", a_info.Title);
 
-            ConnectionsLimiter.DownloadWithRetry(() => new HtmlWeb().Load(a_info.URL));
+            Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_info.URL));
 
             TaskInfo task_info = new TaskInfo(a_info, "", false);
 

@@ -30,7 +30,7 @@ namespace MangaCrawlerLib
 
             if (mre != null)
             {
-                while (!mre.WaitOne(100))
+                do
                 {
                     if (a_token.IsCancellationRequested)
                     {
@@ -56,9 +56,11 @@ namespace MangaCrawlerLib
                                 }
                             }
                         }
+
                         a_token.ThrowIfCancellationRequested();
                     }
                 }
+                while (!mre.WaitOne(100));
 
                 mre.Close();
             }

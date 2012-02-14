@@ -27,6 +27,11 @@ namespace MangaCrawlerLib
             }
         }
 
+        public void WaitOne(P a_priority)
+        {
+            WaitOne(CancellationToken.None, a_priority);
+        }
+
         public void WaitOne(CancellationToken a_token, P a_priority)
         {
             ManualResetEvent mre = null;
@@ -47,55 +52,34 @@ namespace MangaCrawlerLib
                 Loggers.ConLimits.InfoFormat("waiting, {0} / {1}, queue: {2}", 
                     m_working, m_count, m_queue.Count);
 
-                while (!mre.WaitOne(100))
+                if (a_token != CancellationToken.None)
                 {
-                    if (a_token.IsCancellationRequested)
+                    do
                     {
-                        Loggers.ConLimits.InfoFormat("Cancellation requested");
-
-                        lock (m_lock)
+                        if (a_token.IsCancellationRequested)
                         {
-                            if (mre.WaitOne(0))
-                                Release();
-                            else if (m_queue.Values.Contains(mre))
-                                m_queue.RemoveByValue(mre);
+                            Loggers.ConLimits.InfoFormat("Cancellation requested");
+
+                            lock (m_lock)
+                            {
+                                if (mre.WaitOne(0))
+                                    Release();
+                                else if (m_queue.Values.Contains(mre))
+                                    m_queue.RemoveByValue(mre);
+                            }
+
+                            a_token.ThrowIfCancellationRequested();
                         }
-                        a_token.ThrowIfCancellationRequested();
                     }
+                    while (!mre.WaitOne(100));
                 }
+                else
+                    mre.WaitOne();
 
                 mre.Close();
             }
 
             Loggers.ConLimits.InfoFormat("aquired, {0} / {1}, queue: {2}",
-                m_working, m_count, m_queue.Count);
-        }
-
-        public void WaitOne(P a_priority)
-        {
-            ManualResetEvent mre = null;
-
-            lock (m_lock)
-            {
-                if (m_working == m_count)
-                {
-                    mre = new ManualResetEvent(false);
-                    m_queue.Add(a_priority, mre);
-                }
-                else
-                    m_working++;
-            }
-
-            if (mre != null)
-            {
-                Loggers.ConLimits.InfoFormat("waiting, {0} / {1}, queue: {2}", 
-                    m_working, m_count, m_queue.Count);
-
-                mre.WaitOne();
-                mre.Close();
-            }
-
-            Loggers.ConLimits.InfoFormat("Aquired, {0} / {1}, queue: {2}", 
                 m_working, m_count, m_queue.Count);
         }
 

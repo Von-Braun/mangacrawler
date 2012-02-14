@@ -34,7 +34,7 @@ namespace MangaCrawlerLib
         internal override void DownloadSeries(ServerInfo a_info, Action<int, 
             IEnumerable<SerieInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes(
                 "/html/body/center/div/div[2]/div/div[2]/table/tr/td/a");
@@ -51,7 +51,7 @@ namespace MangaCrawlerLib
         internal override void DownloadChapters(SerieInfo a_info, Action<int, 
             IEnumerable<ChapterInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var chapters_or_volumes_enum =
                 doc.DocumentNode.SelectNodes("//table[@class='snif']/tr/td/a");
@@ -84,7 +84,7 @@ namespace MangaCrawlerLib
                 {
                     try
                     {
-                        doc = ConnectionsLimiter.DownloadDocument(a_info, 
+                        doc = DownloadDocument(a_info.Server, 
                             chapter_or_volume.GetAttributeValue("href", ""));
 
                         var pages = doc.DocumentNode.SelectNodes(
@@ -137,7 +137,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var pages = doc.DocumentNode.SelectNodes(
                 "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
@@ -159,7 +159,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             string script = doc.DocumentNode.SelectSingleNode("/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
 

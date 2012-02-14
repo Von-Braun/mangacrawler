@@ -20,7 +20,7 @@ namespace MangaCrawlerLib
 
         internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes("//div[@class='m_s_title']/a");
 
@@ -34,7 +34,7 @@ namespace MangaCrawlerLib
 
         internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var chapters = doc.DocumentNode.SelectNodes("//div[@id='manga_nareo']/div").Skip(1);
 
@@ -54,13 +54,21 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var url = doc.DocumentNode.SelectSingleNode("//div[@id='Summary']/p[2]/a[2]");
 
-            doc = ConnectionsLimiter.DownloadDocument(a_info, url.GetAttributeValue("href", ""));
+            doc = DownloadDocument(a_info.Server, url.GetAttributeValue("href", ""));
 
-            a_info.Token.ThrowIfCancellationRequested();
+            if (a_info.Token.IsCancellationRequested)
+            {
+                Loggers.Cancellation.InfoFormat(
+                    "Pages - token cancelled, a_url: {0}",
+                    a_info.URL);
+
+                a_info.Token.ThrowIfCancellationRequested();
+            }
+
 
             var pages = doc.DocumentNode.SelectNodes("//div[@class='inner_heading_right']/h3/select[2]/option");
 
@@ -77,7 +85,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info,
+            HtmlDocument doc = DownloadDocument(a_info.TaskInfo.Server,
                 a_info.TaskInfo.URLPart + "/" + a_info.URLPart);
 
             var node = doc.DocumentNode.SelectSingleNode("//div[@class='inner_full_view']/h3/a/img");

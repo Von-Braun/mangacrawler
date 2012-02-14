@@ -113,9 +113,9 @@ namespace MangaCrawlerLib
                     Loggers.Cancellation.InfoFormat(
                         "#1 cancellation requested, task: {0} state: {1}",
                         this, State);
-                }
 
-                Token.ThrowIfCancellationRequested();
+                    Token.ThrowIfCancellationRequested();
+                }
 
                 State = TaskState.Downloading;
                 Pages.AddRange(Server.Crawler.DownloadPages(this));
@@ -125,9 +125,9 @@ namespace MangaCrawlerLib
                     Loggers.Cancellation.InfoFormat(
                         "#2 cancellation requested, task: {0} state: {1}",
                         this, State);
-                }
 
-                Token.ThrowIfCancellationRequested();
+                    Token.ThrowIfCancellationRequested();
+                }
 
                 Parallel.ForEach(Pages, 
 
@@ -166,9 +166,9 @@ namespace MangaCrawlerLib
                     Loggers.Cancellation.InfoFormat(
                         "#3 cancellation requested, task: {0} state: {1}",
                         this, State);
-                }
 
-                Token.ThrowIfCancellationRequested();
+                    Token.ThrowIfCancellationRequested();
+                }
 
                 if (CBZ)
                     CreateCBZ();
@@ -215,7 +215,15 @@ namespace MangaCrawlerLib
                 foreach (var page in Pages)
                 {
                     zip.AddFile(page.GetImageFilePath(), "");
-                    Token.ThrowIfCancellationRequested();
+
+                    if (Token.IsCancellationRequested)
+                    {
+                        Loggers.Cancellation.InfoFormat(
+                            "cancellation requested, task: {0} state: {1}",
+                            this, State);
+
+                        Token.ThrowIfCancellationRequested();
+                    }
                 }
 
                 zip.Save(zip_file);

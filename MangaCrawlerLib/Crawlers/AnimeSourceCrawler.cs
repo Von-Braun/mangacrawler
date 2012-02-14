@@ -26,7 +26,7 @@ namespace MangaCrawlerLib
         internal override void DownloadSeries(ServerInfo a_info, 
             Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes(
                 "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/table/tr/td[2]");
@@ -43,7 +43,7 @@ namespace MangaCrawlerLib
 
         internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var chapters = doc.DocumentNode.SelectNodes(
                 "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/blockquote/a");
@@ -56,7 +56,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='pageid']/option");
 
@@ -90,7 +90,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             string xpath;
             if (a_info.TaskInfo.Pages.Count() == a_info.Index)

@@ -22,7 +22,7 @@ namespace MangaCrawlerLib
 
         internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var numbers = doc.DocumentNode.SelectSingleNode("//div[@class='pagenav']").SelectNodes("div/a");
             var number = Int32.Parse(numbers.Reverse().Take(2).Last().InnerText);
@@ -53,7 +53,7 @@ namespace MangaCrawlerLib
                 {
                     page = number + 1 - page;
 
-                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(a_info, 
+                    HtmlDocument page_doc = DownloadDocument(a_info, 
                         "http://www.otakuworks.com/manga/" + page);
 
                     var page_series = page_doc.DocumentNode.SelectNodes("//div[@id='subframe']/div").
@@ -86,7 +86,7 @@ namespace MangaCrawlerLib
 
         internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var page_chapters = doc.DocumentNode.SelectNodes("//div[@id='filelist']/div[@class='sbox3']/a");
 
@@ -103,7 +103,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
             var pages = Int32.Parse(doc.DocumentNode.SelectSingleNode("//select[@id='fpage1']/../strong").InnerText);
 
             for (int i = 1; i <= pages; i++)
@@ -115,7 +115,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var node = doc.DocumentNode.SelectSingleNode("//div[@id='filelist']/a/img");
 
