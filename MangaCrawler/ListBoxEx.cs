@@ -15,6 +15,10 @@ namespace MangaCrawler
     {
         private bool m_reloading;
 
+        public ListBoxEx()
+        { 
+        }
+
         protected override void OnSelectedIndexChanged(EventArgs e)
         {
             if (!m_reloading)

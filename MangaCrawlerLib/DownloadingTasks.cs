@@ -38,7 +38,7 @@ namespace MangaCrawlerLib
             }
             catch (Exception ex)
             {
-                Loggers.DownloadingTasks.Error(ex);
+                Loggers.MangaCrawler.Error(ex);
                 result = new DownloadingTasks();
             }
 
@@ -56,7 +56,7 @@ namespace MangaCrawlerLib
             Task.Factory.StartNew(() =>
             {
                 if ((DateTime.Now - dt).TotalMilliseconds > 100)
-                    Loggers.DownloadingTasks.Warn("Save task idle more than 100ms");
+                    Loggers.MangaCrawler.Warn("Save task idle more than 100ms");
 
                 try
                 {
@@ -66,7 +66,7 @@ namespace MangaCrawlerLib
                 }
                 catch (Exception ex)
                 {
-                    Loggers.DownloadingTasks.Error(ex);
+                    Loggers.MangaCrawler.Error(ex);
                 }
             });
         }

@@ -71,6 +71,9 @@ namespace MangaCrawlerLib
                 (Activator.CreateInstance(type) as IClassMapping).Map(mapper);
 
             HbmMapping mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
+
+            Loggers.NHibernate.Info(mapping.AsString());
+
             Configuration.AddDeserializedMapping(mapping, "MangaCrawler"); 
         }
 
