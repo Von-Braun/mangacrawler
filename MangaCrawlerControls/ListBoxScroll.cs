@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 
-namespace MangaCrawler
+namespace MangaCrawlerControls
 {
     public class ListBoxScroll : ListBox
     {

@@ -43,7 +43,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.chapterURLButton = new System.Windows.Forms.Button();
             this.downloadButton = new System.Windows.Forms.Button();
-            this.chaptersListBox = new MangaCrawler.ListBoxEx();
+            this.chaptersListBox = new MangaCrawlerControls.ListBoxEx();
             this.label7 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -53,10 +53,10 @@
             this.panel8 = new System.Windows.Forms.Panel();
             this.seriesURLButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.seriesListBox = new MangaCrawler.ListBoxEx();
+            this.seriesListBox = new MangaCrawlerControls.ListBoxEx();
             this.cbzCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.serversListBox = new MangaCrawler.ListBoxEx();
+            this.serversListBox = new MangaCrawlerControls.ListBoxEx();
             this.serverURLButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.directoryChooseButton = new System.Windows.Forms.Button();
@@ -159,7 +159,7 @@
             this.chaptersListBox.MinimumSize = new System.Drawing.Size(164, 4);
             this.chaptersListBox.Name = "chaptersListBox";
             this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.chaptersListBox.VerticalScroll += new MangaCrawler.ListBoxScroll.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
+            this.chaptersListBox.VerticalScroll += new MangaCrawlerControls.ListBoxScroll.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
             this.chaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chaptersListBox_DrawItem);
             this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
             this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
@@ -229,7 +229,7 @@
             this.seriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.seriesListBox.FormattingEnabled = true;
             this.seriesListBox.Name = "seriesListBox";
-            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxScroll.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
+            this.seriesListBox.VerticalScroll += new MangaCrawlerControls.ListBoxScroll.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
             this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
             this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
             // 
@@ -456,7 +456,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button serverURLButton;
         private System.Windows.Forms.Label label5;
-        private ListBoxEx serversListBox;
+        private MangaCrawlerControls.ListBoxEx serversListBox;
         private System.Windows.Forms.DataGridView tasksGridView;
         private System.Windows.Forms.CheckBox cbzCheckBox;
         private System.Windows.Forms.Panel versionPanel;
@@ -465,7 +465,7 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button chapterURLButton;
         private System.Windows.Forms.Button downloadButton;
-        private ListBoxEx chaptersListBox;
+        private MangaCrawlerControls.ListBoxEx chaptersListBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
@@ -475,7 +475,7 @@
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Button seriesURLButton;
         private System.Windows.Forms.Label label4;
-        private ListBoxEx seriesListBox;
+        private MangaCrawlerControls.ListBoxEx seriesListBox;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Timer refreshTimer;
         private System.Windows.Forms.DataGridViewButtonColumn Delete;

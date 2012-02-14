@@ -8,15 +8,15 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 
-namespace MangaCrawler
+namespace MangaCrawlerControls
 {
     public class ListBoxFlickerFree : ListBoxScroll
     {
         public ListBoxFlickerFree()
         {
-            //SetStyle(ControlStyles.OptimizedDoubleBuffer |  ControlStyles.ResizeRedraw |  
-            //    ControlStyles.UserPaint, true);
-            //DrawMode = DrawMode.OwnerDrawFixed;  
+            SetStyle(ControlStyles.OptimizedDoubleBuffer |  ControlStyles.ResizeRedraw |  
+                ControlStyles.UserPaint, true);
+            DrawMode = DrawMode.OwnerDrawFixed;  
         }
 
         protected override void OnPaint(PaintEventArgs e)

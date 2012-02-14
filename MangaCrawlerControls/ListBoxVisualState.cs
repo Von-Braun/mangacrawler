@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using MangaCrawlerLib;
 
-namespace MangaCrawler
+namespace MangaCrawlerControls
 {
     public class ListBoxVisualState : VisualState
     {
