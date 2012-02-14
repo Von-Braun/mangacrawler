@@ -27,7 +27,7 @@ namespace MangaCrawlerLib
         internal override void DownloadSeries(ServerInfo a_info, Action<int, 
             IEnumerable<SerieInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var series = doc.DocumentNode.SelectNodes(
                 "/html/body/div/div[3]/div/table[2]/tbody/tr/td[1]/a");
@@ -44,7 +44,7 @@ namespace MangaCrawlerLib
         internal override void DownloadChapters(SerieInfo a_info, Action<int, 
             IEnumerable<ChapterInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var chapters = doc.DocumentNode.SelectNodes(
                 "/html/body/div/div[3]/div/table/tbody/tr");
@@ -60,7 +60,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var images = Regex.Matches(doc.DocumentNode.InnerText, 
                 "s.src = '.*(http://read\\.stoptazmo\\.com/.*//.*\\.(jpg|png|gif|bmp|jpeg))");

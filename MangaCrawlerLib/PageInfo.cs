@@ -78,7 +78,7 @@ namespace MangaCrawlerLib
 
         internal MemoryStream GetImageStream()
         {
-            return ConnectionsLimiter.GetImageStream(this);
+            return TaskInfo.Server.Crawler.GetImageStream(this);  
         }
 
         public string GetImageFilePath()

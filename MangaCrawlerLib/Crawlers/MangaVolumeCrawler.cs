@@ -27,7 +27,7 @@ namespace MangaCrawlerLib
         internal override void DownloadSeries(ServerInfo a_info, 
             Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             List<string> pages = new List<string>();
             pages.Add(a_info.URL);
@@ -52,7 +52,7 @@ namespace MangaCrawlerLib
                     "http://www.mangavolume.com/manga-archive/mangas/npage-{0}",
                     Int32.Parse(nodes.Last().InnerText) + 1);
 
-                doc = ConnectionsLimiter.DownloadDocument(a_info, next_pages_group);
+                doc = DownloadDocument(a_info, next_pages_group);
 
                 if (doc != null)
                     pages.Add(next_pages_group);
@@ -87,7 +87,7 @@ namespace MangaCrawlerLib
                 {
                     IEnumerable<HtmlNode> page_series = null;
 
-                    HtmlDocument page_doc = ConnectionsLimiter.DownloadDocument(
+                    HtmlDocument page_doc = DownloadDocument(
                         a_info, pages[page]);
                     page_series = page_doc.DocumentNode.SelectNodes(
                         "//table[@id='MostPopular']/tr/td/a");
@@ -119,7 +119,7 @@ namespace MangaCrawlerLib
         internal override void DownloadChapters(SerieInfo a_info, Action<int, 
             IEnumerable<ChapterInfo>> a_progress_callback)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             List<string> pages = new List<string>();
             pages.Add(a_info.URL);
@@ -155,7 +155,7 @@ namespace MangaCrawlerLib
                 string next_pages_group = String.Format("{0}npage-{1}", a_info.URL, 
                     Int32.Parse(nodes.Last().InnerText) + 1);
 
-                doc = ConnectionsLimiter.DownloadDocument(a_info, next_pages_group);
+                doc = DownloadDocument(a_info.Server, next_pages_group);
 
                 if (doc != null)
                     pages.Add(next_pages_group);
@@ -189,7 +189,7 @@ namespace MangaCrawlerLib
                 try
                 {
                     HtmlDocument page_doc = 
-                        ConnectionsLimiter.DownloadDocument(a_info, pages[page]);
+                        DownloadDocument(a_info.Server, pages[page]);
 
                     var page_series = page_doc.DocumentNode.SelectNodes(
                         "//table[@id='MainList']/tr/td[1]/a");
@@ -225,7 +225,7 @@ namespace MangaCrawlerLib
 
         internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@id='pages']/option");
 
@@ -246,7 +246,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_info);
 
             var img = doc.DocumentNode.SelectSingleNode(
                 "/html[1]/body[1]/div[1]/div[3]/div[1]/table[2]/tr[5]/td[1]/a[1]/img[1]");

@@ -25,7 +25,6 @@ using log4net.Layout;
 
 namespace MangaCrawler
 {
-    // TODO: richedit appender
     //
     // TODO: testowe serwery, testowe srodowisko testowe
     //
