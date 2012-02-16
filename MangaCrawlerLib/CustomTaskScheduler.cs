@@ -37,7 +37,7 @@ namespace MangaCrawlerLib
                 {
                     get
                     {
-                        var tasks = (IEnumerable<Task>)_scheduler.m__blocking_task_queue;
+                        var tasks = (IEnumerable<Task>)_scheduler.m_blocking_task_queue;
                         return tasks.Where(t => t != null).ToList();
                     }
                 }
@@ -78,68 +78,57 @@ namespace MangaCrawlerLib
             private readonly Thread[] m_threads;
 
             /// <summary>The collection of tasks to be executed on our custom threads.</summary>
-            private readonly BlockingCollection<Task> m__blocking_task_queue;
+            private readonly BlockingCollection<Task> m_blocking_task_queue;
 
             /// <summary>Initializes the scheduler.</summary>
             /// <param name="threadCount">The number of threads to create and use for processing work items.</param>
             public InnerCustomTaskScheduler(int threadCount)
-                : this(threadCount, string.Empty, false,
-                    ThreadPriority.Normal, ApartmentState.MTA, 0, null, null)
+                : this(threadCount, string.Empty)
             {
             }
 
             /// <summary>Initializes the scheduler.</summary>
             /// <param name="threadCount">The number of threads to create and use for processing work items.</param>
             /// <param name="threadName">The name to use for each of the created threads.</param>
-            /// <param name="useForegroundThreads">A Boolean value that indicates whether to use foreground threads instead of background.</param>
-            /// <param name="threadPriority">The priority to assign to each thread.</param>
-            /// <param name="threadApartmentState">The apartment state to use for each thread.</param>
-            /// <param name="threadMaxStackSize">The stack size to use for each thread.</param>
-            /// <param name="threadInit">An initialization routine to run on each thread.</param>
-            /// <param name="threadFinally">A finalization routine to run on each thread.</param>
             public InnerCustomTaskScheduler(
                 int threadCount,
-                string threadName = "",
-                bool useForegroundThreads = false,
-                ThreadPriority threadPriority = ThreadPriority.Normal,
-                ApartmentState threadApartmentState = ApartmentState.MTA,
-                int threadMaxStackSize = 0,
-                Action threadInit = null,
-                Action threadFinally = null)
+                string threadName = "")
             {
                 // Validates arguments (some validation is left up to the Thread type itself).
                 // If the thread count is 0, default to the number of logical processors.
-                if (threadCount < 0) throw new ArgumentOutOfRangeException("concurrencyLevel");
-                else if (threadCount == 0) m_concurrency_level = Environment.ProcessorCount;
-                else m_concurrency_level = threadCount;
+                if (threadCount < 0) 
+                    throw new ArgumentOutOfRangeException("concurrencyLevel");
+                else if (threadCount == 0) 
+                    m_concurrency_level = Environment.ProcessorCount;
+                else 
+                    m_concurrency_level = threadCount;
 
                 // Initialize the queue used for storing tasks
-                m__blocking_task_queue = new BlockingCollection<Task>();
+                m_blocking_task_queue = new BlockingCollection<Task>();
 
                 // Create all of the threads
                 m_threads = new Thread[threadCount];
                 for (int i = 0; i < threadCount; i++)
                 {
-                    m_threads[i] = new Thread(() => ThreadBasedDispatchLoop(threadInit, threadFinally), threadMaxStackSize)
+                    m_threads[i] = new Thread(() => ThreadBasedDispatchLoop())
                     {
-                        Priority = threadPriority,
-                        IsBackground = !useForegroundThreads,
+                        IsBackground = true,
                     };
-                    if (threadName != null) m_threads[i].Name = threadName + " (" + i + ")";
-                    m_threads[i].SetApartmentState(threadApartmentState);
+
+                    if (threadName != null) 
+                        m_threads[i].Name = threadName + " (" + i + ")";
                 }
 
                 // Start all of the threads
-                foreach (var thread in m_threads) thread.Start();
+                foreach (var thread in m_threads) 
+                    thread.Start();
             }
 
             /// <summary>The dispatch loop run by all threads in this scheduler.</summary>
-            /// <param name="threadInit">An initialization routine to run when the thread begins.</param>
-            /// <param name="threadFinally">A finalization routine to run before the thread ends.</param>
-            private void ThreadBasedDispatchLoop(Action threadInit, Action threadFinally)
+            private void ThreadBasedDispatchLoop()
             {
                 m_task_processing_thread.Value = true;
-                if (threadInit != null) threadInit();
+
                 try
                 {
                     // If the scheduler is disposed, the cancellation token will be set and
@@ -152,7 +141,7 @@ namespace MangaCrawlerLib
                             try
                             {
                                 // For each task queued to the scheduler, try to execute it.
-                                foreach (var task in m__blocking_task_queue.GetConsumingEnumerable(m_dispose_cancellation.Token))
+                                foreach (var task in m_blocking_task_queue.GetConsumingEnumerable(m_dispose_cancellation.Token))
                                 {
                                     // If the task is not null, that means it was queued to this scheduler directly.
                                     // Run it.
@@ -194,7 +183,6 @@ namespace MangaCrawlerLib
                 finally
                 {
                     // Run a cleanup routine if there was one
-                    if (threadFinally != null) threadFinally();
                     m_task_processing_thread.Value = false;
                 }
             }
@@ -216,7 +204,7 @@ namespace MangaCrawlerLib
             {
                 get
                 {
-                    return ((IEnumerable<Task>)m__blocking_task_queue).Where(t => t != null).Count();
+                    return ((IEnumerable<Task>)m_blocking_task_queue).Where(t => t != null).Count();
                 }
             }
 
@@ -309,7 +297,7 @@ namespace MangaCrawlerLib
 
                 // If the target scheduler is null (meaning we're using our own threads),
                 // add the task to the blocking queue
-                m__blocking_task_queue.Add(task);
+                m_blocking_task_queue.Add(task);
             }
 
             /// <summary>Notifies the pool that there's a new item to be executed in one of the 
@@ -333,7 +321,7 @@ namespace MangaCrawlerLib
             {
                 // Get all of the tasks, filtering out nulls, which are just placeholders
                 // for tasks in other sub-schedulers
-                return m__blocking_task_queue.Where(t => t != null).ToList();
+                return m_blocking_task_queue.Where(t => t != null).ToList();
 
             }
 
@@ -479,18 +467,19 @@ namespace MangaCrawlerLib
             }
         }
 
-        private InnerCustomTaskScheduler m_scheduler;
+        private Lazy<InnerCustomTaskScheduler> m_scheduler;
 
-        public CustomTaskScheduler(int a_thread_count)
+        public CustomTaskScheduler(int a_thread_count, string a_name)
         {
-            m_scheduler = new InnerCustomTaskScheduler(a_thread_count);
+            m_scheduler = new Lazy<InnerCustomTaskScheduler>(() =>
+                new InnerCustomTaskScheduler(a_thread_count, a_name));
         }
 
         public TaskScheduler this[Priority a_priority]
         {
             get
             {
-                return m_scheduler.Scheduler(a_priority);
+                return m_scheduler.Value.Scheduler(a_priority);
             }
         }
     }

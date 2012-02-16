@@ -244,7 +244,7 @@
     <value>chaptersListBox</value>
   </data>
   <data name="&gt;&gt;chaptersListBox.Type" xml:space="preserve">
-    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.16.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>MangaCrawlerControls.ListBoxEx, MangaCrawlerControls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;chaptersListBox.Parent" xml:space="preserve">
     <value>panel3</value>
@@ -550,7 +550,7 @@
     <value>seriesListBox</value>
   </data>
   <data name="&gt;&gt;seriesListBox.Type" xml:space="preserve">
-    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.16.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>MangaCrawlerControls.ListBoxEx, MangaCrawlerControls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;seriesListBox.Parent" xml:space="preserve">
     <value>panel2</value>
@@ -652,13 +652,13 @@
     <value>True</value>
   </data>
   <data name="serversListBox.ItemHeight" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>16</value>
   </data>
   <data name="serversListBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 19</value>
   </data>
   <data name="serversListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 259</value>
+    <value>199, 244</value>
   </data>
   <data name="serversListBox.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -667,7 +667,7 @@
     <value>serversListBox</value>
   </data>
   <data name="&gt;&gt;serversListBox.Type" xml:space="preserve">
-    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.16.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>MangaCrawlerControls.ListBoxEx, MangaCrawlerControls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;serversListBox.Parent" xml:space="preserve">
     <value>panel1</value>
@@ -682,10 +682,10 @@
     <value>NoControl</value>
   </data>
   <data name="serverURLButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 283</value>
+    <value>135, 282</value>
   </data>
   <data name="serverURLButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 23</value>
+    <value>64, 23</value>
   </data>
   <data name="serverURLButton.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -756,34 +756,34 @@
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="directoryChooseButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="mangaRootDirChooseButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="directoryChooseButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="mangaRootDirChooseButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="directoryChooseButton.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="mangaRootDirChooseButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>814, 30</value>
   </data>
-  <data name="directoryChooseButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="mangaRootDirChooseButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>22, 20</value>
   </data>
-  <data name="directoryChooseButton.TabIndex" type="System.Int32, mscorlib">
+  <data name="mangaRootDirChooseButton.TabIndex" type="System.Int32, mscorlib">
     <value>33</value>
   </data>
-  <data name="directoryChooseButton.Text" xml:space="preserve">
+  <data name="mangaRootDirChooseButton.Text" xml:space="preserve">
     <value>...</value>
   </data>
-  <data name="&gt;&gt;directoryChooseButton.Name" xml:space="preserve">
-    <value>directoryChooseButton</value>
+  <data name="&gt;&gt;mangaRootDirChooseButton.Name" xml:space="preserve">
+    <value>mangaRootDirChooseButton</value>
   </data>
-  <data name="&gt;&gt;directoryChooseButton.Type" xml:space="preserve">
+  <data name="&gt;&gt;mangaRootDirChooseButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;directoryChooseButton.Parent" xml:space="preserve">
+  <data name="&gt;&gt;mangaRootDirChooseButton.Parent" xml:space="preserve">
     <value>tabPage1</value>
   </data>
-  <data name="&gt;&gt;directoryChooseButton.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;mangaRootDirChooseButton.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
@@ -816,28 +816,28 @@
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="directoryPathTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="mangaRootDirTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="directoryPathTextBox.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="mangaRootDirTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 30</value>
   </data>
-  <data name="directoryPathTextBox.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="mangaRootDirTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>802, 20</value>
   </data>
-  <data name="directoryPathTextBox.TabIndex" type="System.Int32, mscorlib">
+  <data name="mangaRootDirTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
   </data>
-  <data name="&gt;&gt;directoryPathTextBox.Name" xml:space="preserve">
-    <value>directoryPathTextBox</value>
+  <data name="&gt;&gt;mangaRootDirTextBox.Name" xml:space="preserve">
+    <value>mangaRootDirTextBox</value>
   </data>
-  <data name="&gt;&gt;directoryPathTextBox.Type" xml:space="preserve">
+  <data name="&gt;&gt;mangaRootDirTextBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;directoryPathTextBox.Parent" xml:space="preserve">
+  <data name="&gt;&gt;mangaRootDirTextBox.Parent" xml:space="preserve">
     <value>tabPage1</value>
   </data>
-  <data name="&gt;&gt;directoryPathTextBox.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;mangaRootDirTextBox.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
@@ -942,6 +942,9 @@
   <data name="clearLogButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="clearLogButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="clearLogButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>764, 8</value>
   </data>
@@ -966,31 +969,31 @@
   <data name="&gt;&gt;clearLogButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="LogRichTextBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="logRichTextBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="LogRichTextBox.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="logRichTextBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="LogRichTextBox.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="logRichTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>844, 367</value>
   </data>
-  <data name="LogRichTextBox.TabIndex" type="System.Int32, mscorlib">
+  <data name="logRichTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="LogRichTextBox.Text" xml:space="preserve">
+  <data name="logRichTextBox.Text" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;LogRichTextBox.Name" xml:space="preserve">
-    <value>LogRichTextBox</value>
+  <data name="&gt;&gt;logRichTextBox.Name" xml:space="preserve">
+    <value>logRichTextBox</value>
   </data>
-  <data name="&gt;&gt;LogRichTextBox.Type" xml:space="preserve">
+  <data name="&gt;&gt;logRichTextBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;LogRichTextBox.Parent" xml:space="preserve">
+  <data name="&gt;&gt;logRichTextBox.Parent" xml:space="preserve">
     <value>logTabPage</value>
   </data>
-  <data name="&gt;&gt;LogRichTextBox.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;logRichTextBox.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="logTabPage.Location" type="System.Drawing.Point, System.Drawing">
@@ -1098,9 +1101,6 @@
   <metadata name="refreshTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>337, 17</value>
   </metadata>
-  <metadata name="saveTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>417, 17</value>
-  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -1147,12 +1147,6 @@
     <value>refreshTimer</value>
   </data>
   <data name="&gt;&gt;refreshTimer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;saveTimer.Name" xml:space="preserve">
-    <value>saveTimer</value>
-  </data>
-  <data name="&gt;&gt;saveTimer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

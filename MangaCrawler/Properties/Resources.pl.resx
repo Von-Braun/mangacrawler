@@ -123,10 +123,7 @@
   <data name="Deleting" xml:space="preserve">
     <value>USUWAM</value>
   </data>
-  <data name="DirError1" xml:space="preserve">
-    <value>Ścieżka do katalogu jest niepoprawna: '{0}'</value>
-  </data>
-  <data name="DirError2" xml:space="preserve">
+  <data name="DirError" xml:space="preserve">
     <value>Nie mogę utworzyć katalogu: '{0}'</value>
   </data>
   <data name="Downloaded" xml:space="preserve">

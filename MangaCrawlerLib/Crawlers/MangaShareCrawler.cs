@@ -10,7 +10,7 @@ namespace MangaCrawlerLib
 {
     internal class MangaShareCrawler : Crawler
     {
-        internal override string Name
+        public override string Name
         {
             get
             {
@@ -18,7 +18,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
+        public override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = DownloadDocument(a_info);
 
@@ -33,7 +33,7 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
+        public override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
             string url = String.Format("{0}/chapter-001/page001.html", a_info.URL);
             HtmlDocument doc = DownloadDocument(a_info);
@@ -47,7 +47,7 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
+        public override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
             HtmlDocument doc = DownloadDocument(a_info);
 
@@ -64,7 +64,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override string GetImageURL(PageInfo a_info)
+        public override string GetImageURL(PageInfo a_info)
         {
             HtmlDocument doc = DownloadDocument(a_info);
 
@@ -76,22 +76,22 @@ namespace MangaCrawlerLib
             return doc.DocumentNode.SelectSingleNode("//div[@id='page']/img").GetAttributeValue("src", "");
         }
 
-        internal override string GetServerURL()
+        public override string GetServerURL()
         {
             return "http://read.mangashare.com/dir";
         }
 
-        internal override string GetSerieURL(SerieInfo a_info)
+        public override string GetSerieURL(SerieInfo a_info)
         {
             return "http://read.mangashare.com/" + a_info.URLPart;
         }
 
-        internal override string GetChapterURL(ChapterInfo a_info)
+        public override string GetChapterURL(ChapterInfo a_info)
         {
             return a_info.URLPart;
         }
 
-        internal override string GetPageURL(PageInfo a_info)
+        public override string GetPageURL(PageInfo a_info)
         {
             string str = a_info.TaskInfo.URLPart;
             int index = str.LastIndexOf("/page");

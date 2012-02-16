@@ -13,7 +13,10 @@ namespace MangaCrawlerLib
 {
     public class ChapterInfo
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string m_url;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ChapterState m_state;
 
         public TaskInfo Task;

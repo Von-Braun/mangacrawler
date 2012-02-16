@@ -123,10 +123,7 @@
   <data name="Deleting" xml:space="preserve">
     <value>DELETING</value>
   </data>
-  <data name="DirError1" xml:space="preserve">
-    <value>Directory path is invalid: '{0}'</value>
-  </data>
-  <data name="DirError2" xml:space="preserve">
+  <data name="DirError" xml:space="preserve">
     <value>Can't create directory: '{0}'</value>
   </data>
   <data name="Downloaded" xml:space="preserve">

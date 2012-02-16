@@ -16,15 +16,16 @@ namespace MangaCrawlerLib
 {
     public class TaskInfo
     {
-        private Object m_lock = new Object();
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CancellationTokenSource m_cancellation_token_source = new CancellationTokenSource();
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         [YAXNode("State")]
         private TaskState m_state = TaskState.Waiting;
 
-        private ServerInfo m_server;
-
         public List<PageInfo> Pages { get; private set; }
+
+        public ServerInfo Server { get; private set; }
 
         [YAXNode]
         internal string URL { get; private set; }
@@ -42,7 +43,7 @@ namespace MangaCrawlerLib
         public string Chapter { get; private set; }
 
         [YAXNode]
-        public string ImagesBaseDir { get; private set; }
+        public string ChapterDir { get; private set; }
 
         [YAXNode]
         public bool CBZ { get; private set; }
@@ -52,25 +53,16 @@ namespace MangaCrawlerLib
             Pages = new List<PageInfo>();
         }
 
-        internal TaskInfo(ChapterInfo a_chapter_info, string a_images_base_dir, bool a_cbz) : this()
+        internal TaskInfo(ChapterInfo a_chapter_info, string a_manga_root_dir, bool a_cbz) : this()
         {
             URL = a_chapter_info.URL;
             URLPart = a_chapter_info.URLPart;
             Serie = a_chapter_info.Serie.Title;
             ServerName = a_chapter_info.Serie.Server.Name;
+            Server = DownloadManager.Servers.FirstOrDefault(s => s.Name == ServerName);
             Chapter = a_chapter_info.Title;
-            ImagesBaseDir = a_images_base_dir;
+            ChapterDir = GetChapterDirectory(a_manga_root_dir);
             CBZ = a_cbz;
-        }
-
-        public ServerInfo Server 
-        {
-            get
-            {
-                if (m_server == null)
-                    m_server = DownloadManager.Servers.FirstOrDefault(s => s.Name == ServerName);
-                return m_server;
-            }
         }
 
         public TaskState State
@@ -85,6 +77,17 @@ namespace MangaCrawlerLib
                 Loggers.MangaCrawler.InfoFormat("{0} -> {1}", State, value);
 
                 m_state = value;
+            }
+        }
+
+        public bool IsWorking
+        {
+            get
+            {
+                return (m_state == TaskState.Waiting) ||
+                       (m_state == TaskState.Downloading) ||
+                       (m_state == TaskState.Deleting) ||
+                       (m_state == TaskState.Zipping);
             }
         }
 
@@ -106,8 +109,6 @@ namespace MangaCrawlerLib
 
             try
             {
-                new DirectoryInfo(ImagesBaseDir).DeleteAll();
-
                 if (Token.IsCancellationRequested)
                 {
                     Loggers.Cancellation.InfoFormat(
@@ -266,19 +267,18 @@ namespace MangaCrawlerLib
 
         public void DeleteTask()
         {
-            Loggers.MangaCrawler.InfoFormat("Task: {0}, state: {1}", this, State);
+            var s = State;
 
-            lock (m_lock)
+            Loggers.MangaCrawler.InfoFormat("Task: {0}, state: {1}", this, s);
+
+            if ((s == TaskState.Downloading) ||
+                (s == TaskState.Waiting) ||
+                (s == TaskState.Zipping))
             {
-                if ((State == TaskState.Downloading) ||
-                    (State == TaskState.Waiting) ||
-                    (State == TaskState.Zipping))
-                {
-                    Loggers.MangaCrawler.Info("Cancelling tasks");
-                    m_cancellation_token_source.Cancel();
+                Loggers.MangaCrawler.Info("Cancelling tasks");
+                m_cancellation_token_source.Cancel();
 
-                    State = TaskState.Deleting;
-                }
+                s = TaskState.Deleting;
             }
         }
 
@@ -286,55 +286,53 @@ namespace MangaCrawlerLib
         {
             get
             {
-                lock (m_lock)
+                var s = State;
+                
+                switch (s)
                 {
-                    switch (State)
-                    {
-                        case TaskState.Error: 
-                            return MangaCrawlerLib.Properties.Resources.TaskProgressError;
-                        case TaskState.Aborted: 
-                            return MangaCrawlerLib.Properties.Resources.TaskProgressAborted;
-                        case TaskState.Waiting: 
-                            return MangaCrawlerLib.Properties.Resources.TaskProgressWaiting;
-                        case TaskState.Deleting: 
-                            return MangaCrawlerLib.Properties.Resources.TaskProgressDeleting;
-                        case TaskState.Downloaded: 
-                            return MangaCrawlerLib.Properties.Resources.TaskProgressDownloaded;
-                        case TaskState.Zipping: 
-                            return MangaCrawlerLib.Properties.Resources.TaskProgressZipping;
-                        case TaskState.Downloading: 
-                            return String.Format("{0}/{1}", DownloadedPages, Pages.Count());
-                        default: throw new NotImplementedException();
-                    }
+                    case TaskState.Error: 
+                        return MangaCrawlerLib.Properties.Resources.TaskProgressError;
+                    case TaskState.Aborted: 
+                        return MangaCrawlerLib.Properties.Resources.TaskProgressAborted;
+                    case TaskState.Waiting: 
+                        return MangaCrawlerLib.Properties.Resources.TaskProgressWaiting;
+                    case TaskState.Deleting: 
+                        return MangaCrawlerLib.Properties.Resources.TaskProgressDeleting;
+                    case TaskState.Downloaded: 
+                        return MangaCrawlerLib.Properties.Resources.TaskProgressDownloaded;
+                    case TaskState.Zipping: 
+                        return MangaCrawlerLib.Properties.Resources.TaskProgressZipping;
+                    case TaskState.Downloading: 
+                        return String.Format("{0}/{1}", DownloadedPages, Pages.Count());
+                    default: throw new NotImplementedException();
                 }
             }
         }
 
         internal void FinishDownload(bool a_error)
         {
-            Loggers.MangaCrawler.InfoFormat("Task: {0}, state: {1}, error: {2}", 
-                this, State, a_error);
+            var s = State;
 
-            lock (m_lock)
+            Loggers.MangaCrawler.InfoFormat("Task: {0}, state: {1}, error: {2}",
+                this, s, a_error);
+
+            if ((s == TaskState.Waiting) || (s == TaskState.Downloading))
             {
-                if ((State == TaskState.Waiting) || (State == TaskState.Downloading))
+                if (a_error)
+                    State = TaskState.Error;
+                else
                 {
-                    if (a_error)
-                        State = TaskState.Error;
+                    if (DownloadedPages == Pages.Count())
+                        State = TaskState.Downloaded;
                     else
-                    {
-                        if (DownloadedPages == Pages.Count())
-                            State = TaskState.Downloaded;
-                        else
-                            State = TaskState.Error;
-                    }
+                        State = TaskState.Error;
                 }
+            }
 
-                if (State != TaskState.Downloaded)
-                {
-                    if (m_cancellation_token_source.IsCancellationRequested)
-                        State = TaskState.Aborted;
-                }
+            if (s != TaskState.Downloaded)
+            {
+                if (m_cancellation_token_source.IsCancellationRequested)
+                    State = TaskState.Aborted;
             }
         }
 
@@ -347,12 +345,12 @@ namespace MangaCrawlerLib
             }
         }
 
-        public string GetImagesDirectory()
+        public string GetChapterDirectory(string a_images_base_dir)
         {
-            if (ImagesBaseDir.Last() == Path.DirectorySeparatorChar)
-                ImagesBaseDir = ImagesBaseDir.RemoveFromRight(1);
+            if (a_images_base_dir.Last() == Path.DirectorySeparatorChar)
+                a_images_base_dir = a_images_base_dir.RemoveFromRight(1);
 
-            return ImagesBaseDir +
+            return a_images_base_dir +
                    Path.DirectorySeparatorChar +
                    FileUtils.RemoveInvalidFileDirectoryCharacters(ServerName) +
                    Path.DirectorySeparatorChar +

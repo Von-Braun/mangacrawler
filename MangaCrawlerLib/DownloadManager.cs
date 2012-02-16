@@ -36,7 +36,7 @@ namespace MangaCrawlerLib
         //internal static DownloadedChapters Downloaded;
         //internal static DownloadingTasks Downloading;
 
-        public static Func<string> GetImagesBaseDir;
+        public static Func<string> GetMangaRootDir;
         public static Func<bool> UseCBZ;
 
         private static Object s_server_lock = new Object();
@@ -186,8 +186,6 @@ namespace MangaCrawlerLib
 
         public static void DownloadPages(IEnumerable<ChapterInfo> a_chapter_infos)
         {
-            string baseDir = GetImagesBaseDir();
-
             foreach (var chapter_info in a_chapter_infos)
             {
                 TaskInfo task_info = null;
@@ -198,13 +196,19 @@ namespace MangaCrawlerLib
 
                     if (task_info != null)
                     {
-                        Loggers.MangaCrawler.InfoFormat(
-                            "Already in work, task: {0} state: {1}",
-                            task_info, task_info.State);
-                        continue;
+                        if (task_info.IsWorking)
+                        {
+                            Loggers.MangaCrawler.InfoFormat(
+                                "Already in work, task: {0} state: {1}",
+                                task_info, task_info.State);
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        task_info = new TaskInfo(chapter_info, GetMangaRootDir(), UseCBZ());
                     }
 
-                    task_info = new TaskInfo(chapter_info, GetImagesBaseDir(), UseCBZ());
                     chapter_info.Task = task_info;
 
                     Loggers.MangaCrawler.InfoFormat(
@@ -257,11 +261,6 @@ namespace MangaCrawlerLib
             //Downloaded = new DownloadedChapters(a_settings_dir);
             //Downloading = DownloadingTasks.Load(a_settings_dir);
             //Downloading.Restore();
-        }
-
-        public static void Save()
-        {
-            //Downloading.Save();
         }
     }
 }

@@ -9,9 +9,11 @@ namespace MangaCrawlerLib
 {
     public class SerieInfo
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string m_url;
-        private IEnumerable<ChapterInfo> m_chapters;
-        private Object m_lock = new Object();
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private List<ChapterInfo> m_chapters = new List<ChapterInfo>();
 
         public ServerInfo Server { get; private set; }
         internal string URLPart { get; private set; }
@@ -33,14 +35,9 @@ namespace MangaCrawlerLib
 
         public IEnumerable<ChapterInfo> Chapters
         {
-            [DebuggerStepThrough]
             get
             {
-                if (m_chapters == null)
-                    return new ChapterInfo[0];
-
-                return from ch in m_chapters
-                       select ch;
+                return m_chapters;
             }
         }
 
@@ -65,14 +62,11 @@ namespace MangaCrawlerLib
                 {
                     var chapters = result.ToList();
 
-                    if (m_chapters != null)
+                    foreach (var chapter in m_chapters)
                     {
-                        foreach (var chapter in m_chapters)
-                        {
-                            var el = chapters.Find(s => (s.Title == chapter.Title) && (s.URL == chapter.URL));
-                            if (el != null)
-                                chapters[chapters.IndexOf(el)] = chapter;
-                        }
+                        var el = chapters.Find(s => (s.Title == chapter.Title) && (s.URL == chapter.URL));
+                        if (el != null)
+                            chapters[chapters.IndexOf(el)] = chapter;
                     }
 
                     m_chapters = chapters;
@@ -101,10 +95,8 @@ namespace MangaCrawlerLib
         {
             get
             {
-                lock (m_lock)
-                {
-                    return (State == SerieState.Error) || (State == SerieState.Initial);
-                }
+                var s = State;
+                return (s == SerieState.Error) || (s == SerieState.Initial);
             }
         }
     }

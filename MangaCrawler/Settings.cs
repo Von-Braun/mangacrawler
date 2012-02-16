@@ -14,8 +14,19 @@ namespace MangaCrawler
         private static string SETTINGS_XML = "settings.xml";
         private static string SETTINGS_DIR = "MangaCrawler";
 
-        private string m_images_base_dir =
-            Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+        [YAXNode("MangaRootDir")]
+        private string m_manga_root_dir = Environment.GetFolderPath(
+            Environment.SpecialFolder.DesktopDirectory) +
+            Path.DirectorySeparatorChar + Application.ProductName;
+
+        [YAXNode("SeriesFilter")]
+        private string m_series_filter = "";
+
+        [YAXNode("SplitterDistance")]
+        private int m_splitter_distance = 200;
+
+        [YAXNode("UseCBZ")]
+        private bool m_use_cbs = false;
 
         private static Settings s_instance;
 
@@ -33,8 +44,8 @@ namespace MangaCrawler
 
         public static string GetSettingsDir()
         {
-            return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + 
-                "\\" + SETTINGS_DIR + "\\";
+            return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                Path.DirectorySeparatorChar + SETTINGS_DIR + Path.DirectorySeparatorChar;
         }
 
         public void Save()
@@ -55,29 +66,56 @@ namespace MangaCrawler
         {
         }
 
-        [YAXNode]
-        public string ImagesBaseDir
+        public string MangaRootDir
         {
             get
             {
-                return m_images_base_dir;
+                return m_manga_root_dir;
             }
             set
             {
-                if (String.IsNullOrWhiteSpace(value))
-                    value = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-
-                m_images_base_dir = value;
+                m_manga_root_dir = value;
+                Save();
             }
         }
 
-        [YAXNode]
-        public string SeriesFilter = "";
+        public string SeriesFilter
+        {
+            get
+            {
+                return m_series_filter;
+            }
+            set
+            {
+                m_series_filter = value;
+                Save();
+            }
+        }
 
-        [YAXNode]
-        public int SplitterDistance = 200;
+        public int SplitterDistance
+        {
+            get
+            {
+                return m_splitter_distance;
+            }
+            set
+            {
+                m_splitter_distance = value;
+                Save();
+            }
+        }
 
-        [YAXNode]
-        public bool UseCBZ = false;
+        public bool UseCBZ
+        {
+            get
+            {
+                return m_use_cbs;
+            }
+            set
+            {
+                m_use_cbs = value;
+                Save();
+            }
+        }
     }
 }
