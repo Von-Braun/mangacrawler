@@ -59,9 +59,9 @@
             this.serversListBox = new MangaCrawlerControls.ListBoxEx();
             this.serverURLButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.directoryChooseButton = new System.Windows.Forms.Button();
+            this.mangaRootDirChooseButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.directoryPathTextBox = new System.Windows.Forms.TextBox();
+            this.mangaRootDirTextBox = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tasksGridView = new System.Windows.Forms.DataGridView();
             this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -73,7 +73,6 @@
             this.versionPanel = new System.Windows.Forms.Panel();
             this.versionLinkLabel = new System.Windows.Forms.LinkLabel();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
-            this.saveTimer = new System.Windows.Forms.Timer(this.components);
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -104,9 +103,9 @@
             this.tabPage1.Controls.Add(this.panel4);
             this.tabPage1.Controls.Add(this.cbzCheckBox);
             this.tabPage1.Controls.Add(this.panel1);
-            this.tabPage1.Controls.Add(this.directoryChooseButton);
+            this.tabPage1.Controls.Add(this.mangaRootDirChooseButton);
             this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.directoryPathTextBox);
+            this.tabPage1.Controls.Add(this.mangaRootDirTextBox);
             resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -270,23 +269,23 @@
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
-            // directoryChooseButton
+            // mangaRootDirChooseButton
             // 
-            resources.ApplyResources(this.directoryChooseButton, "directoryChooseButton");
-            this.directoryChooseButton.Name = "directoryChooseButton";
-            this.directoryChooseButton.UseVisualStyleBackColor = true;
-            this.directoryChooseButton.Click += new System.EventHandler(this.directoryChooseButton_Click);
+            resources.ApplyResources(this.mangaRootDirChooseButton, "mangaRootDirChooseButton");
+            this.mangaRootDirChooseButton.Name = "mangaRootDirChooseButton";
+            this.mangaRootDirChooseButton.UseVisualStyleBackColor = true;
+            this.mangaRootDirChooseButton.Click += new System.EventHandler(this.mangaRootDirChooseButton_Click);
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
-            // directoryPathTextBox
+            // mangaRootDirTextBox
             // 
-            resources.ApplyResources(this.directoryPathTextBox, "directoryPathTextBox");
-            this.directoryPathTextBox.Name = "directoryPathTextBox";
-            this.directoryPathTextBox.TextChanged += new System.EventHandler(this.directoryPathTextBox_TextChanged);
+            resources.ApplyResources(this.mangaRootDirTextBox, "mangaRootDirTextBox");
+            this.mangaRootDirTextBox.Name = "mangaRootDirTextBox";
+            this.mangaRootDirTextBox.TextChanged += new System.EventHandler(this.mangaRootDirTextBox_TextChanged);
             // 
             // tabPage2
             // 
@@ -379,10 +378,10 @@
             this.clearLogButton.UseVisualStyleBackColor = true;
             this.clearLogButton.Click += new System.EventHandler(this.clearLogButton_Click);
             // 
-            // LogRichTextBox
+            // logRichTextBox
             // 
-            resources.ApplyResources(this.logRichTextBox, "LogRichTextBox");
-            this.logRichTextBox.Name = "LogRichTextBox";
+            resources.ApplyResources(this.logRichTextBox, "logRichTextBox");
+            this.logRichTextBox.Name = "logRichTextBox";
             // 
             // versionPanel
             // 
@@ -399,15 +398,8 @@
             // 
             // refreshTimer
             // 
-            this.refreshTimer.Enabled = true;
             this.refreshTimer.Interval = 500;
             this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
-            // 
-            // saveTimer
-            // 
-            this.saveTimer.Enabled = true;
-            this.saveTimer.Interval = 10000;
-            this.saveTimer.Tick += new System.EventHandler(this.saveTimer_Tick);
             // 
             // MangaCrawlerForm
             // 
@@ -450,9 +442,9 @@
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox directoryPathTextBox;
+        private System.Windows.Forms.TextBox mangaRootDirTextBox;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Button directoryChooseButton;
+        private System.Windows.Forms.Button mangaRootDirChooseButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button serverURLButton;
         private System.Windows.Forms.Label label5;
@@ -484,7 +476,6 @@
         private System.Windows.Forms.TabPage logTabPage;
         private System.Windows.Forms.Button clearLogButton;
         private System.Windows.Forms.RichTextBox logRichTextBox;
-        private System.Windows.Forms.Timer saveTimer;
     }
 }
 

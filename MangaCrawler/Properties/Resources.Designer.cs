@@ -88,20 +88,11 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directory path is invalid: &apos;{0}&apos;.
-        /// </summary>
-        internal static string DirError1 {
-            get {
-                return ResourceManager.GetString("DirError1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t create directory: &apos;{0}&apos;.
         /// </summary>
-        internal static string DirError2 {
+        internal static string DirError {
             get {
-                return ResourceManager.GetString("DirError2", resourceCulture);
+                return ResourceManager.GetString("DirError", resourceCulture);
             }
         }
         

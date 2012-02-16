@@ -11,15 +11,15 @@ namespace MangaCrawlerLib
 {
     internal abstract class Crawler
     {
-        internal abstract string Name { get; }
-        internal abstract void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback);
-        internal abstract void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback);
-        internal abstract IEnumerable<PageInfo> DownloadPages(TaskInfo a_info);
-        internal abstract string GetImageURL(PageInfo a_info);
+        public abstract string Name { get; }
+        public abstract void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback);
+        public abstract void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback);
+        public abstract IEnumerable<PageInfo> DownloadPages(TaskInfo a_info);
+        public abstract string GetImageURL(PageInfo a_info);
 
-        internal abstract string GetServerURL();
+        public abstract string GetServerURL();
 
-        internal static T DownloadWithRetry<T>(Func<T> a_func)
+        public static T DownloadWithRetry<T>(Func<T> a_func)
         {
             WebException ex1 = null;
 
@@ -41,32 +41,32 @@ namespace MangaCrawlerLib
             throw ex1;
         }
 
-        internal HtmlDocument DownloadDocument(ServerInfo a_info)
+        public HtmlDocument DownloadDocument(ServerInfo a_info)
         {
             return DownloadDocument(a_info, a_info.URL, CancellationToken.None);
         }
 
-        internal HtmlDocument DownloadDocument(ServerInfo a_info, string a_url)
+        public HtmlDocument DownloadDocument(ServerInfo a_info, string a_url)
         {
             return DownloadDocument(a_info, a_url, CancellationToken.None);
         }
 
-        internal HtmlDocument DownloadDocument(SerieInfo a_info)
+        public HtmlDocument DownloadDocument(SerieInfo a_info)
         {
             return DownloadDocument(a_info.Server, a_info.URL, CancellationToken.None);
         }
 
-        internal HtmlDocument DownloadDocument(PageInfo a_info)
+        public HtmlDocument DownloadDocument(PageInfo a_info)
         {
             return DownloadDocument(a_info.TaskInfo.Server, a_info.URL, CancellationToken.None);
         }
 
-        internal HtmlDocument DownloadDocument(TaskInfo a_info)
+        public HtmlDocument DownloadDocument(TaskInfo a_info)
         {
             return DownloadDocument(a_info.Server, a_info.URL, CancellationToken.None);
         }
 
-        internal virtual HtmlDocument DownloadDocument(ServerInfo a_info, string a_url, CancellationToken a_token)
+        public virtual HtmlDocument DownloadDocument(ServerInfo a_info, string a_url, CancellationToken a_token)
         {
             return Crawler.DownloadWithRetry(() =>
             {
@@ -107,7 +107,7 @@ namespace MangaCrawlerLib
             });
         }
 
-        internal virtual MemoryStream GetImageStream(PageInfo a_info)
+        public virtual MemoryStream GetImageStream(PageInfo a_info)
         {
             return DownloadWithRetry(() =>
             {
@@ -137,22 +137,22 @@ namespace MangaCrawlerLib
             });
         }
 
-        internal virtual string GetSerieURL(SerieInfo a_info)
+        public virtual string GetSerieURL(SerieInfo a_info)
         {
             return a_info.URLPart;
         }
 
-        internal virtual string GetChapterURL(ChapterInfo a_info)
+        public virtual string GetChapterURL(ChapterInfo a_info)
         {
             return a_info.URLPart;
         }
 
-        internal virtual string GetPageURL(PageInfo a_info)
+        public virtual string GetPageURL(PageInfo a_info)
         {
             return a_info.URLPart;
         }
 
-        internal virtual int MaxConnectionsPerServer
+        public virtual int MaxConnectionsPerServer
         {
             get
             {

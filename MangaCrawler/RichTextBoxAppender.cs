@@ -8,6 +8,7 @@ using log4net.Util;
 using log4net.Core;
 using System.Drawing;
 using TomanuExtensions;
+using System.Diagnostics;
 
 namespace MangaCrawler
 {
@@ -16,8 +17,6 @@ namespace MangaCrawler
         private RichTextBox m_rich_text_box = null;
         private LevelMapping m_level_mapping = new LevelMapping();
         public int MaxLines = 100000;
-
-        private delegate void UpdateControlDelegate(LoggingEvent a_logging_event);
 
         public RichTextBoxAppender(RichTextBox a_rich_text_box)
             : base()
@@ -28,6 +27,7 @@ namespace MangaCrawler
         private void UpdateControl(LoggingEvent a_logging_event)
         {
             LevelTextStyle selectedStyle = m_level_mapping.Lookup(a_logging_event.Level) as LevelTextStyle;
+
             if (selectedStyle != null)
             {
                 m_rich_text_box.SelectionBackColor = selectedStyle.BackColor;
@@ -57,9 +57,8 @@ namespace MangaCrawler
         {
             if (m_rich_text_box.InvokeRequired)
             {
-                m_rich_text_box.Invoke(
-                    new UpdateControlDelegate(UpdateControl),
-                    new object[] { a_logging_event });
+                Action<LoggingEvent> update_action = UpdateControl;
+                m_rich_text_box.BeginInvoke(update_action, a_logging_event);
             }
             else
             {

@@ -26,9 +26,11 @@ using log4net.Layout;
 namespace MangaCrawler
 {
     //
-    // TODO: testowe serwery, testowe srodowisko testowe
+    // TODO: testowe serwery, testowe srodowisko testowe, wiesza sie
     //
-    // TODO: dodac nowa karte na ktorej bedzie mozna wykreslic ilosc polaczen ogolnie i na serwer
+    // TODO: chapter powienine miec page, wraz s sciezka, hashem
+    // 
+    // TODO: jesli zbyt duzo bledow web to zmiejszamy liczbe polaczen na serwer
     //
     // TODO: wersja to data, ustawiana automatycznie podczas budowania, generowanie jakiegos pliku 
     //       z data.
@@ -66,6 +68,8 @@ namespace MangaCrawler
 
     public partial class MangaCrawlerForm : Form
     {
+        private Color BAD_DIR = Color.Red;
+
         public MangaCrawlerForm()
         {
             InitializeComponent();
@@ -73,20 +77,28 @@ namespace MangaCrawler
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
-            log4net.Config.XmlConfigurator.Configure();
-
             SetupLog4NET();
 
             Text = String.Format("{0} {1}.{2}", Text,
                 Assembly.GetAssembly(GetType()).GetName().Version.Major, 
                 Assembly.GetAssembly(GetType()).GetName().Version.Minor);
 
-            DownloadManager.GetImagesBaseDir = () => Settings.Instance.ImagesBaseDir;
+            DownloadManager.GetMangaRootDir = () => 
+            {
+                string str = Settings.Instance.MangaRootDir;
+                if (mangaRootDirTextBox.Text.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                {
+                    mangaRootDirTextBox.Text = mangaRootDirTextBox.Text.Remove(
+                        mangaRootDirTextBox.Text.Length - 1);
+                }
+                return str;
+            };
+
             DownloadManager.UseCBZ = () => Settings.Instance.UseCBZ;
             DownloadManager.GetSeriesVisualState += () => new ListBoxVisualState(seriesListBox);
             DownloadManager.GetChaptersVisualState += () => new ListBoxVisualState(chaptersListBox);
             
-            directoryPathTextBox.Text = Settings.Instance.ImagesBaseDir;
+            mangaRootDirTextBox.Text = Settings.Instance.MangaRootDir;
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
             splitter1.SplitPosition = Settings.Instance.SplitterDistance;
             cbzCheckBox.Checked = Settings.Instance.UseCBZ;
@@ -106,6 +118,8 @@ namespace MangaCrawler
 
             tasksGridView.AutoGenerateColumns = false;
             tasksGridView.DataSource = new BindingList<TaskInfo>();
+
+            refreshTimer.Enabled = true;
 
             UpdateSeriesTab();
         }
@@ -143,22 +157,11 @@ namespace MangaCrawler
             rba.ActivateOptions();
         }
 
-        private void directoryChooseButton_Click(object sender, EventArgs e)
+        private void mangaRootDirChooseButton_Click(object sender, EventArgs e)
         {
-            folderBrowserDialog.SelectedPath = directoryChooseButton.Text;
+            folderBrowserDialog.SelectedPath = mangaRootDirTextBox.Text;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                directoryPathTextBox.Text = folderBrowserDialog.SelectedPath;
-        }
-
-        private void directoryTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (directoryPathTextBox.Text.EndsWith(Path.DirectorySeparatorChar.ToString()))
-            {
-                directoryPathTextBox.Text = directoryPathTextBox.Text.Remove(
-                    directoryPathTextBox.Text.Length - 1);
-            }
-
-            Settings.Instance.ImagesBaseDir = directoryPathTextBox.Text;
+                mangaRootDirTextBox.Text = folderBrowserDialog.SelectedPath;
         }
 
         private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -206,29 +209,13 @@ namespace MangaCrawler
         }
 
         public static bool IsDirectoryPathValid()
-
         {
             try
             {
-                new DirectoryInfo(Settings.Instance.ImagesBaseDir);
+                new DirectoryInfo(Settings.Instance.MangaRootDir);
             }
             catch
             {
-                MessageBox.Show(String.Format(Resources.DirError1, 
-                    Settings.Instance.ImagesBaseDir),
-                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-
-            try
-            {
-                new DirectoryInfo(Settings.Instance.ImagesBaseDir).Create();
-            }
-            catch
-            {
-                MessageBox.Show(String.Format(Resources.DirError2, 
-                    Settings.Instance.ImagesBaseDir),
-                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -237,10 +224,32 @@ namespace MangaCrawler
 
         private void DownloadSelectedChapters()
         {
+            if (!IsDirectoryPathValid())
+            {
+                PulseMangaRootDirTextBox();
+                return;
+            }
+
+
+            try
+            {
+                new DirectoryInfo(Settings.Instance.MangaRootDir).Create();
+            }
+            catch
+            {
+                MessageBox.Show(String.Format(Resources.DirError, 
+                    Settings.Instance.MangaRootDir),
+                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (chaptersListBox.SelectedItems.Count == 0)
-                System.Media.SystemSounds.Beep.Play();
-            else if (IsDirectoryPathValid())
-                DownloadManager.DownloadPages(chaptersListBox.SelectedItems.Cast<ChapterInfo>());
+            {
+                SystemSounds.Beep.Play();
+                return;
+            }
+
+            DownloadManager.DownloadPages(chaptersListBox.SelectedItems.Cast<ChapterInfo>());
         }
 
         private bool ShowingDownloadingTab
@@ -309,10 +318,14 @@ namespace MangaCrawler
             }
         }
 
-        private void directoryPathTextBox_TextChanged(object sender, EventArgs e)
+        private void mangaRootDirTextBox_TextChanged(object sender, EventArgs e)
         {
-            Settings.Instance.ImagesBaseDir = directoryPathTextBox.Text;
-            directoryPathTextBox.Text = Settings.Instance.ImagesBaseDir;
+            Settings.Instance.MangaRootDir = mangaRootDirTextBox.Text;
+
+            if (!IsDirectoryPathValid())
+                mangaRootDirTextBox.BackColor = BAD_DIR;
+            else
+                mangaRootDirTextBox.BackColor = SystemColors.Window;
         }
 
         private void chaptersListBox_KeyDown(object sender, KeyEventArgs e)
@@ -332,7 +345,17 @@ namespace MangaCrawler
         private void serverURLButton_Click(object sender, EventArgs e)
         {
             if (DownloadManager.SelectedServer != null)
-                Process.Start(DownloadManager.SelectedServer.URL);
+            {
+                try
+                {
+                    Process.Start(DownloadManager.SelectedServer.URL);
+                }
+                catch
+                {
+                    Loggers.GUI.Error("Exception");
+                    SystemSounds.Beep.Play();
+                }
+            }
             else
                 SystemSounds.Beep.Play();
         }
@@ -340,7 +363,17 @@ namespace MangaCrawler
         private void seriesURLButton_Click(object sender, EventArgs e)
         {
             if (DownloadManager.SelectedSerie != null)
-                Process.Start(DownloadManager.SelectedSerie.URL);
+            {
+                try
+                {
+                    Process.Start(DownloadManager.SelectedSerie.URL);
+                }
+                catch
+                {
+                    Loggers.GUI.Error("Exception");
+                    SystemSounds.Beep.Play();
+                }
+            }
             else
                 SystemSounds.Beep.Play();
         }
@@ -348,7 +381,17 @@ namespace MangaCrawler
         private void chapterURLButton_Click(object sender, EventArgs e)
         {
             if (DownloadManager.SelectedChapter != null)
-                Process.Start(DownloadManager.SelectedChapter.URL);
+            {
+                try
+                {
+                    Process.Start(DownloadManager.SelectedChapter.URL);
+                }
+                catch
+                {
+                    Loggers.GUI.Error("Exception");
+                    SystemSounds.Beep.Play();
+                }
+            }
             else
                 SystemSounds.Beep.Play();
         }
@@ -594,78 +637,96 @@ namespace MangaCrawler
                 if (version1 > version2)
                 {
                     Action action = () => versionLinkLabel.Text = Resources.NewVersion;
-                        
                     Invoke(action);
 
-                    Task.Factory.StartNew(() => PulseNewVersion());
+                    Task.Factory.StartNew(() => PulseNewVersionLinkLabel());
                 }
             }
             catch
             {
+                Loggers.GUI.Error("Exception");
             }
         }
 
-        private IEnumerable<Color> PulseColors
+        private void Pulse(Color a_color_org, Color a_color_alter, int a_count, int pulse_time_ms, Action<Color> a_action)
         {
-            get
-            {
-                Color color1 = versionLinkLabel.LinkColor;
+            const int SLEEP_TIME = 25;
+            int steps = pulse_time_ms / SLEEP_TIME;
 
-                // Parameters.
-                Color color2 = Color.Red;
-                const int steps = 256;
-                const int count = 12;
+            Func<IEnumerable<Color>> get_colors = () =>
+            {
+                List<Color> result = new List<Color>();
 
                 // limit to byte
-                Func<int, int> limit = 
+                Func<int, int> limit =
                     (c) => (c < 0) ? byte.MinValue : (c > 255) ? byte.MaxValue : c;
 
                 // ph=0 return c1 ... ph=255 return c2
                 Func<int, int, int, int> calc =
                     (c1, c2, ph) => limit(c1 + (c2 - c1) * ph / 255);
 
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < a_count; i++)
                 {
                     for (int phase = 0; phase < steps; phase++)
                     {
                         // 0 ... steps/2 ... 0
                         var p = steps / 2 - Math.Abs(phase - steps / 2);
 
-                        // 0 ... 2*pi ... 0
-                        var pp = p * 2 * Math.PI / (steps / 2);
+                        // 0 ... pi ... 0
+                        var pp = p * Math.PI / (steps / 2);
 
                         // 1 ... -1 ... 1
                         pp = Math.Cos(pp);
 
+                        // 2 .. 0 .. 2
+                        pp = pp + 1;
+
+                        // 0 .. 2 .. 0
+                        pp = 2 - pp;
+
                         // 0 ... 1 ... 0
-                        pp = (2 - (pp + 1)) / 2;
+                        pp = pp / 2;
 
                         // 0 ... 255 ... 0 
                         p = limit((int)(Math.Round(pp * 255)));
 
-                        var r = calc(color1.R, color2.R, p);
-                        var g = calc(color1.G, color2.G, p);
-                        var b = calc(color1.B, color2.B, p);
-                        yield return Color.FromArgb(r, g, b);
+                        var r = calc(a_color_org.R, a_color_alter.R, p);
+                        var g = calc(a_color_org.G, a_color_alter.G, p);
+                        var b = calc(a_color_org.B, a_color_alter.B, p);
+                        result.Add(Color.FromArgb(r, g, b));
                     }
                 }
-            }
+
+                return result;
+            };
+
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    foreach (var color in get_colors())
+                    {
+                        Invoke(a_action, color);
+                        Thread.Sleep(SLEEP_TIME);
+                    }
+                }
+                catch
+                {
+                    Loggers.GUI.Error("Exception");
+                }
+            });
         }
 
-        private void PulseNewVersion()
+        private void PulseNewVersionLinkLabel()
         {
-            try
-            {
-                foreach (var color in PulseColors)
-                {
-                    Action action = () => versionLinkLabel.LinkColor = color;
-                    Invoke(action);
-                    Thread.Sleep(4);
-                }
-            }
-            catch
-            {
-            }
+            Pulse(versionLinkLabel.LinkColor, Color.Red, 12, 700, (c) => versionLinkLabel.LinkColor = c);
+        }
+
+        private void PulseMangaRootDirTextBox()
+        {
+            Color c1 = mangaRootDirTextBox.BackColor;
+            Color c2 = (c1 == BAD_DIR) ? SystemColors.Window : BAD_DIR;
+            Pulse(c1, c2, 4, 500, (c) => mangaRootDirTextBox.BackColor = c);
         }
 
         private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
@@ -755,10 +816,9 @@ namespace MangaCrawler
             logRichTextBox.Clear();
         }
 
-        private void saveTimer_Tick(object sender, EventArgs e)
+        private void serversListBox_DrawItem_1(object sender, DrawItemEventArgs e)
         {
-            Settings.Instance.Save();
-            DownloadManager.Save();
+
         }
     }
 }

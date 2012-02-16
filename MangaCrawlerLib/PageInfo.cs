@@ -14,8 +14,13 @@ namespace MangaCrawlerLib
     public class PageInfo
     {
         private string m_imageURL;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string m_name;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string m_url;
+
         private string m_imageFilePath;
 
         internal TaskInfo TaskInfo { get; private set; }
@@ -88,17 +93,18 @@ namespace MangaCrawlerLib
 
         public void DownloadAndSavePageImage()
         {
-            m_imageFilePath = TaskInfo.ImagesBaseDir +
+            m_imageFilePath = TaskInfo.ChapterDir +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(
                     Path.GetExtension(GetImageURL()).ToLower());
 
-            new DirectoryInfo(TaskInfo.ImagesBaseDir).Create();
+            new DirectoryInfo(TaskInfo.ChapterDir).Create();
 
             FileInfo temp_file = new FileInfo(Path.GetTempFileName());
 
             try
             {
+
                 using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
                 {
                     Stream ims = null;
@@ -132,9 +138,10 @@ namespace MangaCrawlerLib
 
                 if (image_file.Exists)
                     image_file.Delete();
+
                 temp_file.MoveTo(image_file.FullName);
             }
-            catch
+            catch 
             {
                 temp_file.Delete();
                 throw;

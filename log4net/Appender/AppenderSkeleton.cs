@@ -25,6 +25,7 @@ using log4net.Filter;
 using log4net.Util;
 using log4net.Layout;
 using log4net.Core;
+using System.Diagnostics;
 
 namespace log4net.Appender
 {

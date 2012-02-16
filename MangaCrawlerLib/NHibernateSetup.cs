@@ -46,7 +46,6 @@ namespace MangaCrawlerLib
                     "Data Source=\"{0}\\MangaCrawler\\manga.db\";Version=3",
                     System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData));
 
-                // TODO: skonfigurowac logowanie, powiazac je jakos z nlog, albo z niego zrezygnowac
                 if (a_log)
                 {
                     db.LogFormattedSql = true;
@@ -60,7 +59,6 @@ namespace MangaCrawlerLib
         {
             ModelMapper mapper = new ModelMapper();
 
-            // TODO: czy da sie to zautomatyzowac
             var types = from type in Assembly.GetAssembly(typeof(NHibernateSetup)).GetTypes()
                         where !type.IsInterface
                         where type.IsImplementInterface(typeof(IClassMapping))
@@ -83,20 +81,11 @@ namespace MangaCrawlerLib
             new SchemaExport(Configuration).Create(false, true);
         }
 
-        // TODO: jakie zastosowanie
-        protected static bool ValidateSchema()
+        // TODO: po co jest ValidateSchema
+        protected static void ValidateSchema()
         {
-            try
-            {
-                SchemaValidator schemaValidator = new SchemaValidator(Configuration);
-                schemaValidator.Validate();
-                return true;
-            }
-            catch (HibernateException e)
-            {
-                Console.WriteLine(e.Message); // TODO: log
-                return false;
-            }
+            SchemaValidator schemaValidator = new SchemaValidator(Configuration);
+            schemaValidator.Validate();
         }
     }
 }

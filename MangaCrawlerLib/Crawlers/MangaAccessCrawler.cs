@@ -10,7 +10,7 @@ namespace MangaCrawlerLib
 {
     internal class MangaAccessCrawler : Crawler
     {
-        internal override string Name
+        public override string Name
         {
             get 
             {
@@ -18,7 +18,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal override void DownloadSeries(ServerInfo a_info, Action<int, 
+        public override void DownloadSeries(ServerInfo a_info, Action<int, 
             IEnumerable<SerieInfo>> a_progress_callback)
         {
             HtmlDocument doc = DownloadDocument(a_info);
@@ -34,7 +34,7 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
+        public override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
         {
             HtmlDocument doc = DownloadDocument(a_info);
 
@@ -48,7 +48,7 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        internal override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
+        public override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
             HtmlDocument doc = DownloadDocument(a_info);
 
@@ -59,7 +59,7 @@ namespace MangaCrawlerLib
                        page.NextSibling.InnerText);
         }
 
-        internal override string GetImageURL(PageInfo a_info)
+        public override string GetImageURL(PageInfo a_info)
         {
             HtmlDocument doc = DownloadDocument(a_info);
             
@@ -68,22 +68,22 @@ namespace MangaCrawlerLib
             return image.GetAttributeValue("src", "");
         }
 
-        internal override string GetPageURL(PageInfo a_info)
+        public override string GetPageURL(PageInfo a_info)
         {
             return "http://manga-access.com" + a_info.URLPart;
         }
 
-        internal override string GetChapterURL(ChapterInfo a_info)
+        public override string GetChapterURL(ChapterInfo a_info)
         {
             return "http://manga-access.com" + a_info.URLPart;
         }
 
-        internal override string GetSerieURL(SerieInfo a_info)
+        public override string GetSerieURL(SerieInfo a_info)
         {
             return "http://manga-access.com" + a_info.URLPart;
         }
 
-        internal override string GetServerURL()
+        public override string GetServerURL()
         {
             return "http://www.manga-access.com/manga/list";
         }
