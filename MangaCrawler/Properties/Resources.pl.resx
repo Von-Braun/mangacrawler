@@ -156,4 +156,27 @@
   <data name="WasDownloaded" xml:space="preserve">
     <value>Już pobrane </value>
   </data>
+  <data name="DownloadingChapterInfo" xml:space="preserve">
+    <value>serwer: {0}
+seria: {1}
+rozdział: {2}</value>
+  </data>
+  <data name="WorkProgressAborted" xml:space="preserve">
+    <value>Anulowane</value>
+  </data>
+  <data name="WorkProgressDeleting" xml:space="preserve">
+    <value>Usuwam</value>
+  </data>
+  <data name="WorkProgressDownloaded" xml:space="preserve">
+    <value>Pobrane</value>
+  </data>
+  <data name="WorkProgressError" xml:space="preserve">
+    <value>Błąd</value>
+  </data>
+  <data name="WorkProgressWaiting" xml:space="preserve">
+    <value>Czekam</value>
+  </data>
+  <data name="WorkProgressZipping" xml:space="preserve">
+    <value>Pakuję</value>
+  </data>
 </root>

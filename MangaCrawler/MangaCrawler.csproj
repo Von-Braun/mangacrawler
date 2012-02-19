@@ -139,7 +139,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SerieListItem.cs" />
+    <Compile Include="ChapterListItem.cs" />
     <Compile Include="RichTextBoxAppender.cs" />
+    <Compile Include="ServerListItem.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="MangaCrawlerForm.cs">
       <SubType>Form</SubType>
@@ -149,6 +152,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkGridRow.cs" />
     <EmbeddedResource Include="MangaCrawlerForm.pl.resx">
       <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
     </EmbeddedResource>

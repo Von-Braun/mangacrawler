@@ -64,15 +64,15 @@
             this.mangaRootDirTextBox = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.worksGridView = new System.Windows.Forms.DataGridView();
-            this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Chapter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.logTabPage = new System.Windows.Forms.TabPage();
             this.clearLogButton = new System.Windows.Forms.Button();
             this.logRichTextBox = new System.Windows.Forms.RichTextBox();
             this.versionPanel = new System.Windows.Forms.Panel();
             this.versionLinkLabel = new System.Windows.Forms.LinkLabel();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
+            this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Info = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -294,7 +294,7 @@
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // workssGridView
+            // worksGridView
             // 
             this.worksGridView.AllowUserToAddRows = false;
             this.worksGridView.AllowUserToResizeRows = false;
@@ -315,7 +315,7 @@
             this.worksGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.worksGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Delete,
-            this.Chapter,
+            this.Info,
             this.Progress});
             resources.ApplyResources(this.worksGridView, "worksGridView");
             this.worksGridView.MultiSelect = false;
@@ -334,34 +334,6 @@
             this.worksGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.worksGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.worksGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.worksGridView_CellContentClick);
-            // 
-            // Delete
-            // 
-            this.Delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            resources.ApplyResources(this.Delete, "Delete");
-            this.Delete.Name = "Delete";
-            this.Delete.ReadOnly = true;
-            this.Delete.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Delete.Text = "Usuń";
-            this.Delete.UseColumnTextForButtonValue = true;
-            // 
-            // Chapter
-            // 
-            this.Chapter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Chapter.DataPropertyName = "WorkName";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Chapter.DefaultCellStyle = dataGridViewCellStyle3;
-            resources.ApplyResources(this.Chapter, "Chapter");
-            this.Chapter.Name = "Chapter";
-            this.Chapter.ReadOnly = true;
-            // 
-            // Progress
-            // 
-            this.Progress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Progress.DataPropertyName = "WorkProgress";
-            resources.ApplyResources(this.Progress, "Progress");
-            this.Progress.Name = "Progress";
-            this.Progress.ReadOnly = true;
             // 
             // logTabPage
             // 
@@ -400,6 +372,34 @@
             // 
             this.refreshTimer.Interval = 500;
             this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
+            // 
+            // Delete
+            // 
+            this.Delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            resources.ApplyResources(this.Delete, "Delete");
+            this.Delete.Name = "Delete";
+            this.Delete.ReadOnly = true;
+            this.Delete.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Delete.Text = "Usuń";
+            this.Delete.UseColumnTextForButtonValue = true;
+            // 
+            // Info
+            // 
+            this.Info.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Info.DataPropertyName = "Info";
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Info.DefaultCellStyle = dataGridViewCellStyle3;
+            resources.ApplyResources(this.Info, "Info");
+            this.Info.Name = "Info";
+            this.Info.ReadOnly = true;
+            // 
+            // Progress
+            // 
+            this.Progress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Progress.DataPropertyName = "Progress";
+            resources.ApplyResources(this.Progress, "Progress");
+            this.Progress.Name = "Progress";
+            this.Progress.ReadOnly = true;
             // 
             // MangaCrawlerForm
             // 
@@ -470,12 +470,12 @@
         private MangaCrawlerControls.ListBoxEx seriesListBox;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Timer refreshTimer;
-        private System.Windows.Forms.DataGridViewButtonColumn Delete;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Chapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Progress;
         private System.Windows.Forms.TabPage logTabPage;
         private System.Windows.Forms.Button clearLogButton;
         private System.Windows.Forms.RichTextBox logRichTextBox;
+        private System.Windows.Forms.DataGridViewButtonColumn Delete;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Info;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Progress;
     }
 }
 

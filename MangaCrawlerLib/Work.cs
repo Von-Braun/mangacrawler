@@ -254,34 +254,6 @@ namespace MangaCrawlerLib
             }
         }
 
-        // TODO: string w gui tylko
-        public string WorkProgress
-        {
-            get
-            {
-                var s = State;
-                
-                switch (s)
-                {
-                    case WorkState.Error: 
-                        return MangaCrawlerLib.Properties.Resources.WorkProgressError;
-                    case WorkState.Aborted: 
-                        return MangaCrawlerLib.Properties.Resources.WorkProgressAborted;
-                    case WorkState.Waiting: 
-                        return MangaCrawlerLib.Properties.Resources.WorkProgressWaiting;
-                    case WorkState.Deleting: 
-                        return MangaCrawlerLib.Properties.Resources.WorkProgressDeleting;
-                    case WorkState.Downloaded: 
-                        return MangaCrawlerLib.Properties.Resources.WorkProgressDownloaded;
-                    case WorkState.Zipping: 
-                        return MangaCrawlerLib.Properties.Resources.WorkProgressZipping;
-                    case WorkState.Downloading: 
-                        return String.Format("{0}/{1}", DownloadedPages, Pages.Count());
-                    default: throw new NotImplementedException();
-                }
-            }
-        }
-
         internal void FinishDownload(bool a_error)
         {
             var s = State;
@@ -306,15 +278,6 @@ namespace MangaCrawlerLib
             {
                 if (m_cancellation_token_source.IsCancellationRequested)
                     State = WorkState.Aborted;
-            }
-        }
-
-        public string WorkTitle
-        {
-            get
-            {
-                return String.Format(MangaCrawlerLib.Properties.Resources.DownloadingChapterInfo,
-                     Chapter.Serie.Server.Name, Chapter.Serie.Title, Chapter.Title);
             }
         }
 

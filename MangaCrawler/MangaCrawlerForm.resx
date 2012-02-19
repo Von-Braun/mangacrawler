@@ -876,11 +876,11 @@
   <data name="Delete.Width" type="System.Int32, mscorlib">
     <value>60</value>
   </data>
-  <metadata name="Chapter.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="Info.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="Chapter.HeaderText" xml:space="preserve">
-    <value>Chapter</value>
+  <data name="Info.HeaderText" xml:space="preserve">
+    <value>Info</value>
   </data>
   <metadata name="Progress.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1125,16 +1125,22 @@
   <data name="&gt;&gt;folderBrowserDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;refreshTimer.Name" xml:space="preserve">
+    <value>refreshTimer</value>
+  </data>
+  <data name="&gt;&gt;refreshTimer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;Delete.Name" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="&gt;&gt;Delete.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewButtonColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Chapter.Name" xml:space="preserve">
-    <value>Chapter</value>
+  <data name="&gt;&gt;Info.Name" xml:space="preserve">
+    <value>Info</value>
   </data>
-  <data name="&gt;&gt;Chapter.Type" xml:space="preserve">
+  <data name="&gt;&gt;Info.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Progress.Name" xml:space="preserve">
@@ -1142,12 +1148,6 @@
   </data>
   <data name="&gt;&gt;Progress.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;refreshTimer.Name" xml:space="preserve">
-    <value>refreshTimer</value>
-  </data>
-  <data name="&gt;&gt;refreshTimer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MangaCrawlerForm</value>
