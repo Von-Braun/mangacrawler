@@ -117,7 +117,7 @@ namespace MangaCrawler
                 null, worksGridView, new object[] { true });
 
             worksGridView.AutoGenerateColumns = false;
-            worksGridView.DataSource = new BindingList<Work>();
+            worksGridView.DataSource = new BindingList<WorkGridRow>();
 
             refreshTimer.Enabled = true;
 
@@ -273,20 +273,20 @@ namespace MangaCrawler
             if (!ShowingDownloadingTab)
                 return;
 
-            BindingList<Work> list = (BindingList<Work>)worksGridView.DataSource;
+            BindingList<WorkGridRow> list = (BindingList<WorkGridRow>)worksGridView.DataSource;
 
             var works = DownloadManager.Works;
 
             var add = (from work in works
-                       where !list.Contains(work)
+                       where !list.Any(w => w.Work == work)
                        select work).ToList();
 
             var remove = (from work in list
-                          where !works.Contains(work)
+                          where !works.Any(w => w == work.Work)
                           select work).ToList();
 
             foreach (var el in add)
-                list.Add(el);
+                list.Add(new WorkGridRow(el));
             foreach (var el in remove)
                 list.Remove(el);
 
@@ -405,8 +405,8 @@ namespace MangaCrawler
         {
             if ((e.ColumnIndex == 0) && (e.RowIndex >= 0))
             {
-                BindingList<Work> list = (BindingList<Work>)worksGridView.DataSource;
-                list[e.RowIndex].DeleteWork();
+                BindingList<WorkGridRow> list = (BindingList<WorkGridRow>)worksGridView.DataSource;
+                list[e.RowIndex].Work.DeleteWork();
                 UpdateWorksTab();
             }
         }
