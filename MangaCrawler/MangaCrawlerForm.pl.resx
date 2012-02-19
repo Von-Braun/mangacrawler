@@ -282,13 +282,13 @@
   <data name="Progress.HeaderText" xml:space="preserve">
     <value>Postęp</value>
   </data>
-  <data name="tasksGridView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="worksGridView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="tasksGridView.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="worksGridView.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tasksGridView.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="worksGridView.Size" type="System.Drawing.Size, System.Drawing">
     <value>843, 372</value>
   </data>
   <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">

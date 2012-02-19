@@ -11,7 +11,7 @@ namespace MangaCrawlerLib
         private static Dictionary<string, CustomTaskScheduler> s_schedulers =
             new Dictionary<string, CustomTaskScheduler>();
 
-        public static CustomTaskScheduler Get(ServerInfo a_server)
+        public static CustomTaskScheduler Get(Server a_server)
         {
             CustomTaskScheduler cts;
             if (s_schedulers.TryGetValue(a_server.URL, out cts))

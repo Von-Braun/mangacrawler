@@ -74,54 +74,54 @@ namespace MangaCrawlerLib.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cancelled.
         /// </summary>
-        internal static string TaskProgressAborted {
+        internal static string WorkProgressAborted {
             get {
-                return ResourceManager.GetString("TaskProgressAborted", resourceCulture);
+                return ResourceManager.GetString("WorkProgressAborted", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Deleting.
         /// </summary>
-        internal static string TaskProgressDeleting {
+        internal static string WorkProgressDeleting {
             get {
-                return ResourceManager.GetString("TaskProgressDeleting", resourceCulture);
+                return ResourceManager.GetString("WorkProgressDeleting", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Downloaded.
         /// </summary>
-        internal static string TaskProgressDownloaded {
+        internal static string WorkProgressDownloaded {
             get {
-                return ResourceManager.GetString("TaskProgressDownloaded", resourceCulture);
+                return ResourceManager.GetString("WorkProgressDownloaded", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
-        internal static string TaskProgressError {
+        internal static string WorkProgressError {
             get {
-                return ResourceManager.GetString("TaskProgressError", resourceCulture);
+                return ResourceManager.GetString("WorkProgressError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Waiting.
         /// </summary>
-        internal static string TaskProgressWaiting {
+        internal static string WorkProgressWaiting {
             get {
-                return ResourceManager.GetString("TaskProgressWaiting", resourceCulture);
+                return ResourceManager.GetString("WorkProgressWaiting", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Zipping.
         /// </summary>
-        internal static string TaskProgressZipping {
+        internal static string WorkProgressZipping {
             get {
-                return ResourceManager.GetString("TaskProgressZipping", resourceCulture);
+                return ResourceManager.GetString("WorkProgressZipping", resourceCulture);
             }
         }
     }

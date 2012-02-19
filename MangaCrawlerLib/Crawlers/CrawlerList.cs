@@ -34,7 +34,7 @@ namespace MangaCrawlerLib.Crawlers
 
         public static IEnumerable<Crawler> GetRealCrawlers()
         {
-            return from c in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
+            return from c in System.Reflection.Assembly.GetAssembly(typeof(Server)).GetTypes()
                    where c.IsClass
                    where !c.IsAbstract
                    where c.IsDerivedFrom(typeof(Crawler))
@@ -47,7 +47,7 @@ namespace MangaCrawlerLib.Crawlers
         // TODO: na samym poczatku sprawdzic czy mamy wszystkie powiazania servery w bazie, 
         // kasowanie powinno byc kaskadowe, skasowac z bazy te ze starych wersji, baza danych ma mie info o wersji
 
-        public static Crawler Get(ServerInfo a_server)
+        public static Crawler Get(Server a_server)
         {
             return s_map[a_server.URL];
         }

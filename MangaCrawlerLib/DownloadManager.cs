@@ -20,17 +20,17 @@ namespace MangaCrawlerLib
     {
         internal static string UserAgent = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:10.0) Gecko/20100101 Firefox/10.0";
 
-        private static List<ServerInfo> s_servers;
-        private static ServerInfo s_selected_server_info;
-        private static Dictionary<ServerInfo, SerieInfo> s_selected_series =
-            new Dictionary<ServerInfo, SerieInfo>();
-        private static Dictionary<ServerInfo, VisualState> s_series_visual_states = 
-            new Dictionary<ServerInfo, VisualState>();
-        private static Dictionary<SerieInfo, ChapterInfo> s_selected_chapters =
-            new Dictionary<SerieInfo, ChapterInfo>();
-        private static Dictionary<SerieInfo, VisualState> s_chapters_visual_states =
-            new Dictionary<SerieInfo, VisualState>();
-        private static List<TaskInfo> s_tasks = new List<TaskInfo>();
+        private static List<Server> s_servers;
+        private static Server s_selected_server;
+        private static Dictionary<Server, Serie> s_selected_series =
+            new Dictionary<Server, Serie>();
+        private static Dictionary<Server, VisualState> s_series_visual_states = 
+            new Dictionary<Server, VisualState>();
+        private static Dictionary<Serie, Chapter> s_selected_chapters =
+            new Dictionary<Serie, Chapter>();
+        private static Dictionary<Serie, VisualState> s_chapters_visual_states =
+            new Dictionary<Serie, VisualState>();
+        private static List<Work> s_works = new List<Work>();
 
         private static string s_settings_dir;
 
@@ -87,7 +87,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static SerieInfo SelectedSerie
+        public static Serie SelectedSerie
         {
             get
             {
@@ -108,20 +108,20 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static ServerInfo SelectedServer
+        public static Server SelectedServer
         {
             get
             {
-                return s_selected_server_info;
+                return s_selected_server;
             }
             set
             {
-                s_selected_server_info = value;
-                DownloadSeries(s_selected_server_info);
+                s_selected_server = value;
+                DownloadSeries(s_selected_server);
             }
         }
 
-        public static ChapterInfo SelectedChapter
+        public static Chapter SelectedChapter
         {
             get
             {
@@ -142,94 +142,94 @@ namespace MangaCrawlerLib
             }
         }
 
-        private static void DownloadSeries(ServerInfo a_server_info)
+        private static void DownloadSeries(Server a_server)
         {
-            if (a_server_info == null)
+            if (a_server == null)
                 return;
 
             lock (s_server_lock)
             {
-                if (!a_server_info.DownloadRequired)
+                if (!a_server.DownloadRequired)
                     return;
-                a_server_info.State = ServerState.Downloading;
+                a_server.State = ServerState.Downloading;
             }
 
             Task task = new Task(() =>
             {
-                a_server_info.DownloadSeries();
+                a_server.DownloadSeries();
             }, TaskCreationOptions.LongRunning);
 
-            task.Start(a_server_info.Scheduler[Priority.Series]);
+            task.Start(a_server.Scheduler[Priority.Series]);
         }
 
-        private static void DownloadChapters(SerieInfo a_serie_info)
+        private static void DownloadChapters(Serie a_serie)
         {
-            if (a_serie_info == null)
+            if (a_serie == null)
                 return;
 
             lock (s_serie_lock)
             {
-                if (!a_serie_info.DownloadRequired)
+                if (!a_serie.DownloadRequired)
                     return;
-                a_serie_info.State = SerieState.Downloading;
+                a_serie.State = SerieState.Downloading;
             }
 
             Task task = new Task(() =>
             {
-                a_serie_info.DownloadChapters();
+                a_serie.DownloadChapters();
             }, TaskCreationOptions.LongRunning);
 
-            task.Start(a_serie_info.Server.Scheduler[Priority.Chapters]);
+            task.Start(a_serie.Server.Scheduler[Priority.Chapters]);
         }
 
-        public static void DownloadPages(IEnumerable<ChapterInfo> a_chapter_infos)
+        public static void DownloadPages(IEnumerable<Chapter> a_chapters)
         {
-            foreach (var chapter_info in a_chapter_infos)
+            foreach (var chapter in a_chapters)
             {
-                TaskInfo task_info = null;
+                Work work = null;
 
                 lock (s_chapter_lock)
                 {
-                    task_info = chapter_info.FindTask();
+                    work = chapter.FindWork();
 
-                    if (task_info != null)
+                    if (work != null)
                     {
-                        if (task_info.IsWorking)
+                        if (work.IsWorking)
                         {
                             Loggers.MangaCrawler.InfoFormat(
-                                "Already in work, task: {0} state: {1}",
-                                task_info, task_info.State);
+                                "Already in work, work: {0} state: {1}",
+                                work, work.State);
                             continue;
                         }
                     }
                     else
                     {
-                        task_info = new TaskInfo(chapter_info, GetMangaRootDir(), UseCBZ());
+                        work = new Work(chapter, GetMangaRootDir(), UseCBZ());
                     }
 
-                    chapter_info.Task = task_info;
+                    chapter.Work = work;
 
                     Loggers.MangaCrawler.InfoFormat(
-                        "Task: {0} state: {1}",
-                        task_info, task_info.State);
+                        "Work: {0} state: {1}",
+                        work, work.State);
 
                 }
 
-                lock (s_tasks)
+                lock (s_works)
                 {
-                    s_tasks.Add(task_info);
+                    s_works.Add(work);
                 }
 
                 Task task = new Task(() =>
                 {
-                    task_info.DownloadPages();
+                    work.DownloadPages();
                 }, TaskCreationOptions.LongRunning);
 
-                task.Start(task_info.Chapter.Serie.Server.Scheduler[Priority.Pages]);
+                task.Start(work.Chapter.Serie.Server.Scheduler[Priority.Pages]);
             }
         }
 
-        public static IEnumerable<ServerInfo> Servers
+        public static IEnumerable<Server> Servers
         {
             get
             {
@@ -237,13 +237,13 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static IEnumerable<TaskInfo> Tasks
+        public static IEnumerable<Work> Works
         {
             get
             {
-                lock (s_tasks)
+                lock (s_works)
                 {
-                    return s_tasks.ToArray();
+                    return s_works.ToArray();
                 }
             }
         }

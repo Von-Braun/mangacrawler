@@ -24,32 +24,32 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override void DownloadSeries(ServerInfo a_info, Action<int, 
-            IEnumerable<SerieInfo>> a_progress_callback)
+        public override void DownloadSeries(Server a_server, Action<int, 
+            IEnumerable<Serie>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_server);
 
             var series = doc.DocumentNode.SelectNodes(
                 "/html/body/div/div[3]/div/table[2]/tbody/tr/td[1]/a");
 
             var result = from serie in series
-                            select new SerieInfo(a_info,
+                            select new Serie(a_server,
                                                 serie.GetAttributeValue("href", ""),
                                                 serie.InnerText);
 
             a_progress_callback(100, result);
         }
 
-        public override void DownloadChapters(SerieInfo a_info, Action<int, 
-            IEnumerable<ChapterInfo>> a_progress_callback)
+        public override void DownloadChapters(Serie a_serie, Action<int, 
+            IEnumerable<Chapter>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_serie);
 
             var chapters = doc.DocumentNode.SelectNodes(
                 "/html/body/div/div[3]/div/table/tbody/tr");
 
             var result = from chapter in chapters.Skip(1)
-                            select new ChapterInfo(a_info,
+                            select new Chapter(a_serie,
                                 chapter.SelectSingleNode("td[3]/a").GetAttributeValue("href", ""),
                                 Path.GetFileNameWithoutExtension(chapter.SelectSingleNode("td[1]").
                                 InnerText));
@@ -57,9 +57,9 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result.Reverse());
         }
 
-        public override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
+        public override IEnumerable<Page> DownloadPages(Work a_work)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_work);
 
             var images = Regex.Matches(doc.DocumentNode.InnerText, 
                 "s.src = '.*(http://read\\.stoptazmo\\.com/.*//.*\\.(jpg|png|gif|bmp|jpeg))");
@@ -68,14 +68,14 @@ namespace MangaCrawlerLib
             {
                 string img_url = images[i].Groups[1].Value;
                 string name = Path.GetFileNameWithoutExtension(img_url);
-                yield return new PageInfo(a_info, img_url, i, name);
+                yield return new Page(a_work, img_url, i, name);
             }
         }
 
         // TODO: 
-        public override string GetImageURL(PageInfo a_info)
+        public override string GetImageURL(Page a_page)
         {
-            return a_info.URL;
+            return a_page.URL;
         }
 
         public override string GetServerURL()

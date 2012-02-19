@@ -24,13 +24,13 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override void DownloadSeries(ServerInfo a_info, 
-            Action<int, IEnumerable<SerieInfo>> a_progress_callback)
+        public override void DownloadSeries(Server a_server, 
+            Action<int, IEnumerable<Serie>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_server);
 
             List<string> pages = new List<string>();
-            pages.Add(a_info.URL);
+            pages.Add(a_server.URL);
 
             do
             {
@@ -52,7 +52,7 @@ namespace MangaCrawlerLib
                     "http://www.mangavolume.com/manga-archive/mangas/npage-{0}",
                     Int32.Parse(nodes.Last().InnerText) + 1);
 
-                doc = DownloadDocument(a_info, next_pages_group);
+                doc = DownloadDocument(a_server, next_pages_group);
 
                 if (doc != null)
                     pages.Add(next_pages_group);
@@ -70,7 +70,7 @@ namespace MangaCrawlerLib
             {
                 var result = from serie in series
                              orderby serie.Item1, serie.Item2
-                             select new SerieInfo(a_info, serie.Item4, serie.Item3);
+                             select new Serie(a_server, serie.Item4, serie.Item3);
 
                 a_progress_callback(progress, result.ToArray());
             };
@@ -79,7 +79,7 @@ namespace MangaCrawlerLib
                 new ParallelOptions()
                 {
                     MaxDegreeOfParallelism = MaxConnectionsPerServer,
-                    TaskScheduler = a_info.Scheduler[Priority.Series], 
+                    TaskScheduler = a_server.Scheduler[Priority.Series], 
                 },
                 (page, state) =>
             {
@@ -88,7 +88,7 @@ namespace MangaCrawlerLib
                     IEnumerable<HtmlNode> page_series = null;
 
                     HtmlDocument page_doc = DownloadDocument(
-                        a_info, pages[page]);
+                        a_server, pages[page]);
                     page_series = page_doc.DocumentNode.SelectNodes(
                         "//table[@id='MostPopular']/tr/td/a");
 
@@ -116,13 +116,13 @@ namespace MangaCrawlerLib
             update(100);
         }
 
-        public override void DownloadChapters(SerieInfo a_info, Action<int, 
-            IEnumerable<ChapterInfo>> a_progress_callback)
+        public override void DownloadChapters(Serie a_serie, Action<int, 
+            IEnumerable<Chapter>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_serie);
 
             List<string> pages = new List<string>();
-            pages.Add(a_info.URL);
+            pages.Add(a_serie.URL);
 
             var license = doc.DocumentNode.SelectSingleNode("//div[@id='LicenseWarning']");
 
@@ -152,10 +152,10 @@ namespace MangaCrawlerLib
                                select "http://www.mangavolume.com" + 
                                node.GetAttributeValue("href", ""));
 
-                string next_pages_group = String.Format("{0}npage-{1}", a_info.URL, 
+                string next_pages_group = String.Format("{0}npage-{1}", a_serie.URL, 
                     Int32.Parse(nodes.Last().InnerText) + 1);
 
-                doc = DownloadDocument(a_info.Server, next_pages_group);
+                doc = DownloadDocument(a_serie.Server, next_pages_group);
 
                 if (doc != null)
                     pages.Add(next_pages_group);
@@ -173,7 +173,7 @@ namespace MangaCrawlerLib
             {
                 var result = from serie in series
                                 orderby serie.Item1, serie.Item2
-                                select new ChapterInfo(a_info, serie.Item4, serie.Item3);
+                                select new Chapter(a_serie, serie.Item4, serie.Item3);
 
                 a_progress_callback(progress, result.ToArray());
             };
@@ -182,14 +182,14 @@ namespace MangaCrawlerLib
                 new ParallelOptions()
                 {
                     MaxDegreeOfParallelism = MaxConnectionsPerServer,
-                    TaskScheduler = a_info.Server.Scheduler[Priority.Chapters], 
+                    TaskScheduler = a_serie.Server.Scheduler[Priority.Chapters], 
                 },
                 (page, state) =>
             {
                 try
                 {
                     HtmlDocument page_doc = 
-                        DownloadDocument(a_info.Server, pages[page]);
+                        DownloadDocument(a_serie.Server, pages[page]);
 
                     var page_series = page_doc.DocumentNode.SelectNodes(
                         "//table[@id='MainList']/tr/td[1]/a");
@@ -223,9 +223,9 @@ namespace MangaCrawlerLib
             update(100);
         }
 
-        public override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
+        public override IEnumerable<Page> DownloadPages(Work a_work)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_work);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@id='pages']/option");
 
@@ -234,8 +234,8 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                PageInfo pi = new PageInfo(
-                    a_info,
+                Page pi = new Page(
+                    a_work,
                     String.Format("http://www.mangavolume.com{0}", 
                         page.GetAttributeValue("value", "")),
                     index);
@@ -244,9 +244,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override string GetImageURL(PageInfo a_info)
+        public override string GetImageURL(Page a_page)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_page);
 
             var img = doc.DocumentNode.SelectSingleNode(
                 "/html[1]/body[1]/div[1]/div[3]/div[1]/table[2]/tr[5]/td[1]/a[1]/img[1]");

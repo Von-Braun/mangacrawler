@@ -11,7 +11,7 @@ using TomanuExtensions.Utils;
 
 namespace MangaCrawlerLib
 {
-    public class PageInfo
+    public class Page
     {
         private string m_imageURL;
 
@@ -20,14 +20,14 @@ namespace MangaCrawlerLib
 
         private string m_imageFilePath;
 
-        internal TaskInfo TaskInfo { get; private set; }
+        internal Work Work { get; private set; }
         internal int Index { get; private set; }
         internal string URL { get; private set; }
         internal bool Downloaded { get; private set; }
 
-        internal PageInfo(TaskInfo a_task_info, string a_url, int a_index, string a_name = null)
+        internal Page(Work a_work, string a_url, int a_index, string a_name = null)
         {
-            TaskInfo = a_task_info;
+            Work = a_work;
             URL = HttpUtility.HtmlDecode(a_url);
             Index = a_index;
 
@@ -56,7 +56,7 @@ namespace MangaCrawlerLib
         internal string GetImageURL()
         {
             if (m_imageURL == null)
-                m_imageURL = HttpUtility.HtmlDecode(TaskInfo.Chapter.Serie.Server.Crawler.GetImageURL(this));
+                m_imageURL = HttpUtility.HtmlDecode(Work.Chapter.Serie.Server.Crawler.GetImageURL(this));
 
             return m_imageURL;
         }
@@ -64,12 +64,12 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return String.Format("{0} - {1}/{2}",
-                    TaskInfo, Index, TaskInfo.Pages.Count());
+                    Work, Index, Work.Pages.Count());
         }
 
         internal MemoryStream GetImageStream()
         {
-            return TaskInfo.Chapter.Serie.Server.Crawler.GetImageStream(this);  
+            return Work.Chapter.Serie.Server.Crawler.GetImageStream(this);  
         }
 
         public string GetImageFilePath()
@@ -79,21 +79,21 @@ namespace MangaCrawlerLib
 
         public void DownloadAndSavePageImage()
         {
-            if (TaskInfo.Token.IsCancellationRequested)
+            if (Work.Token.IsCancellationRequested)
             {
                 Loggers.Cancellation.InfoFormat(
-                    "#2 cancellation requested, task: {0} state: {1}",
-                    this, TaskInfo.State);
+                    "#2 cancellation requested, work: {0} state: {1}",
+                    this, Work.State);
 
-                TaskInfo.Token.ThrowIfCancellationRequested();
+                Work.Token.ThrowIfCancellationRequested();
             }
 
-            m_imageFilePath = TaskInfo.ChapterDir +
+            m_imageFilePath = Work.ChapterDir +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(
                     Path.GetExtension(GetImageURL()).ToLower());
 
-            new DirectoryInfo(TaskInfo.ChapterDir).Create();
+            new DirectoryInfo(Work.ChapterDir).Create();
 
             FileInfo temp_file = new FileInfo(Path.GetTempFileName());
 

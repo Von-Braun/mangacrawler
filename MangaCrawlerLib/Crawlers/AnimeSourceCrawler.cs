@@ -23,10 +23,10 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override void DownloadSeries(ServerInfo a_info, 
-            Action<int, IEnumerable<SerieInfo>> a_progress_callback)
+        public override void DownloadSeries(Server a_server, 
+            Action<int, IEnumerable<Serie>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_server);
 
             var series = doc.DocumentNode.SelectNodes(
                 "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/table/tr/td[2]");
@@ -34,7 +34,7 @@ namespace MangaCrawlerLib
             var result = from serie in series
                          where (serie.ChildNodes[7].InnerText.Trim() != "2")
                          orderby serie.SelectSingleNode("font").FirstChild.InnerText
-                         select new SerieInfo(a_info,
+                         select new Serie(a_server,
                                               "http://www.anime-source.com/banzai/" + 
                                               serie.SelectSingleNode("a[2]").GetAttributeValue("href", ""),
                                               serie.SelectSingleNode("font").FirstChild.InnerText);
@@ -42,24 +42,24 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        public override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
+        public override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_serie);
 
             var chapters = doc.DocumentNode.SelectNodes(
                 "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/blockquote/a");
 
             var result = from chapter in chapters.Skip(1)
-                         select new ChapterInfo(a_info, 
+                         select new Chapter(a_serie, 
                                                 "http://www.anime-source.com/banzai/" + chapter.GetAttributeValue("href", ""), 
                                                 chapter.InnerText);
 
             a_progress_callback(100, result.Reverse());
         }
 
-        public override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
+        public override IEnumerable<Page> DownloadPages(Work a_work)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_work);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='pageid']/option");
 
@@ -72,7 +72,7 @@ namespace MangaCrawlerLib
 
                 for (int page = 1; page <= pages_count; page++)
                 {
-                    PageInfo pi = new PageInfo(a_info, a_info.URL + "&page=" + page, page);
+                    Page pi = new Page(a_work, a_work.URL + "&page=" + page, page);
 
                     yield return pi;
                 }
@@ -84,7 +84,7 @@ namespace MangaCrawlerLib
                 {
                     index++;
 
-                    PageInfo pi = new PageInfo(a_info, 
+                    Page pi = new Page(a_work, 
                                                "http://www.anime-source.com/banzai/" + page.GetAttributeValue("value", ""),
                                                index);
 
@@ -93,12 +93,12 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override string GetImageURL(PageInfo a_info)
+        public override string GetImageURL(Page a_page)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_page);
 
             string xpath;
-            if (a_info.TaskInfo.Pages.Count() == a_info.Index)
+            if (a_page.Work.Pages.Count() == a_page.Index)
                 xpath = "/html/body/center/table/tr/td/table[5]/tr/td/div/img";
             else
                 xpath = "/html/body/center/table/tr/td/table[5]/tr/td/div/a/img";

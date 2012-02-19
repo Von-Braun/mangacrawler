@@ -18,23 +18,23 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback)
+        public override void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_server);
 
             var series = doc.DocumentNode.SelectNodes("//div[@class='m_s_title']/a");
 
             var result = from serie in series.Skip(1)
-                         select new SerieInfo(a_info,
+                         select new Serie(a_server,
                                               serie.GetAttributeValue("href", "").RemoveFromRight(1),
                                               serie.InnerText);
 
             a_progress_callback(100, result);
         }
 
-        public override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
+        public override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_serie);
 
             var chapters = doc.DocumentNode.SelectNodes("//div[@id='manga_nareo']/div").Skip(1);
 
@@ -42,31 +42,31 @@ namespace MangaCrawlerLib
                        where !ch.SelectSingleNode("div[3]").InnerText.ToLower().Contains("soon")
                        select ch.SelectSingleNode("div[1]/a")).ToArray();
 
-            List<ChapterInfo> result = new List<ChapterInfo>();
+            List<Chapter> result = new List<Chapter>();
             foreach (var ch in chs)
             {
                 if (ch != null)
-                    result.Add(new ChapterInfo(a_info, ch.GetAttributeValue("href", ""), ch.InnerText));
+                    result.Add(new Chapter(a_serie, ch.GetAttributeValue("href", ""), ch.InnerText));
             }
 
             a_progress_callback(100, result);
         }
 
-        public override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
+        public override IEnumerable<Page> DownloadPages(Work a_work)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_work);
 
             var url = doc.DocumentNode.SelectSingleNode("//div[@id='Summary']/p[2]/a[2]");
 
-            doc = DownloadDocument(a_info.Chapter.Serie.Server, url.GetAttributeValue("href", ""));
+            doc = DownloadDocument(a_work.Chapter.Serie.Server, url.GetAttributeValue("href", ""));
 
-            if (a_info.Token.IsCancellationRequested)
+            if (a_work.Token.IsCancellationRequested)
             {
                 Loggers.Cancellation.InfoFormat(
                     "Pages - token cancelled, a_url: {0}",
-                    a_info.URL);
+                    a_work.URL);
 
-                a_info.Token.ThrowIfCancellationRequested();
+                a_work.Token.ThrowIfCancellationRequested();
             }
 
 
@@ -77,15 +77,15 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                PageInfo pi = new PageInfo(a_info, page.GetAttributeValue("value", ""), index, page.NextSibling.InnerText);
+                Page pi = new Page(a_work, page.GetAttributeValue("value", ""), index, page.NextSibling.InnerText);
 
                 yield return pi;
             }
         }
 
-        public override string GetImageURL(PageInfo a_info)
+        public override string GetImageURL(Page a_page)
         {
-            HtmlDocument doc = DownloadDocument(a_info.TaskInfo.Chapter.Serie.Server, a_info.URL);
+            HtmlDocument doc = DownloadDocument(a_page.Work.Chapter.Serie.Server, a_page.URL);
 
             var node = doc.DocumentNode.SelectSingleNode("//div[@class='inner_full_view']/h3/a/img");
 
