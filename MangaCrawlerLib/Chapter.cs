@@ -11,17 +11,17 @@ using TomanuExtensions.Utils;
 
 namespace MangaCrawlerLib
 {
-    public class ChapterInfo
+    public class Chapter
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ChapterState m_state;
 
-        public TaskInfo Task;
+        public Work Work;
         public string URL { get; private set; }
-        public SerieInfo Serie { get; private set; }
+        public Serie Serie { get; private set; }
         public string Title { get; private set; }
         
-        internal ChapterInfo(SerieInfo a_serie, string a_url, string a_title)
+        internal Chapter(Serie a_serie, string a_url, string a_title)
         {
             Serie = a_serie;
             URL = HttpUtility.HtmlDecode(a_url);
@@ -37,12 +37,12 @@ namespace MangaCrawlerLib
             m_state = ChapterState.Initial;
         }
 
-        public TaskInfo FindTask()
+        public Work FindWork()
         {
-            foreach (var task in DownloadManager.Tasks)
+            foreach (var work in DownloadManager.Works)
             {
-                if (task.Chapter == this)
-                    return task;
+                if (work.Chapter == this)
+                    return work;
             }
 
             return null;
@@ -52,19 +52,19 @@ namespace MangaCrawlerLib
         {
             get
             {
-                if (Task == null)
+                if (Work == null)
                     return m_state;
                 else
                 {
-                    switch (Task.State)
+                    switch (Work.State)
                     {
-                        case TaskState.Aborted: return ChapterState.Aborted;
-                        case TaskState.Deleting: return ChapterState.Deleting;
-                        case TaskState.Downloaded: return ChapterState.Downloaded;
-                        case TaskState.Downloading: return ChapterState.Downloading;
-                        case TaskState.Error: return ChapterState.Error;
-                        case TaskState.Waiting: return ChapterState.Waiting;
-                        case TaskState.Zipping: return ChapterState.Zipping;
+                        case WorkState.Aborted: return ChapterState.Aborted;
+                        case WorkState.Deleting: return ChapterState.Deleting;
+                        case WorkState.Downloaded: return ChapterState.Downloaded;
+                        case WorkState.Downloading: return ChapterState.Downloading;
+                        case WorkState.Error: return ChapterState.Error;
+                        case WorkState.Waiting: return ChapterState.Waiting;
+                        case WorkState.Zipping: return ChapterState.Zipping;
                         default: throw new NotImplementedException();
                     }
                 }

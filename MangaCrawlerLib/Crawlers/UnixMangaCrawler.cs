@@ -31,27 +31,27 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override void DownloadSeries(ServerInfo a_info, Action<int, 
-            IEnumerable<SerieInfo>> a_progress_callback)
+        public override void DownloadSeries(Server a_server, Action<int, 
+            IEnumerable<Serie>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_server);
 
             var series = doc.DocumentNode.SelectNodes(
                 "/html/body/center/div/div[2]/div/div[2]/table/tr/td/a");
 
             var result = from serie in series
-                         select new SerieInfo(
-                             a_info,
+                         select new Serie(
+                             a_server,
                              serie.GetAttributeValue("href", ""),
                              serie.GetAttributeValue("title", ""));
 
             a_progress_callback(100, result);
         }
 
-        public override void DownloadChapters(SerieInfo a_info, Action<int, 
-            IEnumerable<ChapterInfo>> a_progress_callback)
+        public override void DownloadChapters(Serie a_serie, Action<int, 
+            IEnumerable<Chapter>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_serie);
 
             var chapters_or_volumes_enum =
                 doc.DocumentNode.SelectNodes("//table[@class='snif']/tr/td/a");
@@ -62,7 +62,7 @@ namespace MangaCrawlerLib
                     "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
 
                 a_progress_callback(100, 
-                    new [] { new ChapterInfo(a_info, a_info.URL, a_info.Title) } );
+                    new [] { new Chapter(a_serie, a_serie.URL, a_serie.Title) } );
             }
             else
             {
@@ -71,20 +71,20 @@ namespace MangaCrawlerLib
 
                 int progress = 0;
 
-                ConcurrentBag<Tuple<int, int, ChapterInfo>> chapters = 
-                    new ConcurrentBag<Tuple<int, int, ChapterInfo>>();
+                ConcurrentBag<Tuple<int, int, Chapter>> chapters = 
+                    new ConcurrentBag<Tuple<int, int, Chapter>>();
 
                 Parallel.ForEach(chapters_or_volumes, 
                     new ParallelOptions() 
                     {
                         MaxDegreeOfParallelism = MaxConnectionsPerServer,
-                        TaskScheduler = a_info.Server.Scheduler[Priority.Chapters], 
+                        TaskScheduler = a_serie.Server.Scheduler[Priority.Chapters], 
                     },
                     (chapter_or_volume, state) =>
                 {
                     try
                     {
-                        doc = DownloadDocument(a_info.Server, 
+                        doc = DownloadDocument(a_serie.Server, 
                             chapter_or_volume.GetAttributeValue("href", ""));
 
                         var pages = doc.DocumentNode.SelectNodes(
@@ -92,10 +92,10 @@ namespace MangaCrawlerLib
 
                         if (pages != null)
                         {
-                            chapters.Add(new Tuple<int, int, ChapterInfo>(
+                            chapters.Add(new Tuple<int, int, Chapter>(
                                 chapters_or_volumes.IndexOf(chapter_or_volume),
                                 0,
-                                new ChapterInfo(a_info, chapter_or_volume.GetAttributeValue(
+                                new Chapter(a_serie, chapter_or_volume.GetAttributeValue(
                                     "href", ""), chapter_or_volume.InnerText)
                             ));
                         }
@@ -110,10 +110,10 @@ namespace MangaCrawlerLib
 
                             foreach (var chapter in chapters1)
                             {
-                                chapters.Add(new Tuple<int, int, ChapterInfo>(
+                                chapters.Add(new Tuple<int, int, Chapter>(
                                     chapters_or_volumes.IndexOf(chapter_or_volume),
                                     chapters1.IndexOf(chapter),
-                                    new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), 
+                                    new Chapter(a_serie, chapter.GetAttributeValue("href", ""), 
                                         chapter.InnerText)
                                 ));
                             }
@@ -135,9 +135,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
+        public override IEnumerable<Page> DownloadPages(Work a_work)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_work);
 
             var pages = doc.DocumentNode.SelectNodes(
                 "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
@@ -150,16 +150,16 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                PageInfo pi = new PageInfo(a_info, page.GetAttributeValue("href", ""), index, 
+                Page pi = new Page(a_work, page.GetAttributeValue("href", ""), index, 
                     Path.GetFileNameWithoutExtension(page.InnerText));
 
                 yield return pi;
             }
         }
 
-        public override string GetImageURL(PageInfo a_info)
+        public override string GetImageURL(Page a_page)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_page);
 
             string script = doc.DocumentNode.SelectSingleNode("/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
 

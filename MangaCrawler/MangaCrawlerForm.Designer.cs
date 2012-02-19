@@ -63,7 +63,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.mangaRootDirTextBox = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tasksGridView = new System.Windows.Forms.DataGridView();
+            this.worksGridView = new System.Windows.Forms.DataGridView();
             this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Chapter = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -83,7 +83,7 @@
             this.panel8.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tasksGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.worksGridView)).BeginInit();
             this.logTabPage.SuspendLayout();
             this.versionPanel.SuspendLayout();
             this.SuspendLayout();
@@ -289,21 +289,21 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.tasksGridView);
+            this.tabPage2.Controls.Add(this.worksGridView);
             resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // tasksGridView
+            // workssGridView
             // 
-            this.tasksGridView.AllowUserToAddRows = false;
-            this.tasksGridView.AllowUserToResizeRows = false;
+            this.worksGridView.AllowUserToAddRows = false;
+            this.worksGridView.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tasksGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.tasksGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.tasksGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.tasksGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.worksGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.worksGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.worksGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.worksGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -311,16 +311,16 @@
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.tasksGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.tasksGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tasksGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.worksGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.worksGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.worksGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Delete,
             this.Chapter,
             this.Progress});
-            resources.ApplyResources(this.tasksGridView, "tasksGridView");
-            this.tasksGridView.MultiSelect = false;
-            this.tasksGridView.Name = "tasksGridView";
-            this.tasksGridView.ReadOnly = true;
+            resources.ApplyResources(this.worksGridView, "worksGridView");
+            this.worksGridView.MultiSelect = false;
+            this.worksGridView.Name = "worksGridView";
+            this.worksGridView.ReadOnly = true;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -328,12 +328,12 @@
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.tasksGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.tasksGridView.RowHeadersVisible = false;
+            this.worksGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.worksGridView.RowHeadersVisible = false;
             dataGridViewCellStyle5.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tasksGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
-            this.tasksGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.tasksGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tasksGridView_CellContentClick);
+            this.worksGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            this.worksGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.worksGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.worksGridView_CellContentClick);
             // 
             // Delete
             // 
@@ -348,7 +348,7 @@
             // Chapter
             // 
             this.Chapter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Chapter.DataPropertyName = "TaskTitle";
+            this.Chapter.DataPropertyName = "WorkName";
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.Chapter.DefaultCellStyle = dataGridViewCellStyle3;
             resources.ApplyResources(this.Chapter, "Chapter");
@@ -358,7 +358,7 @@
             // Progress
             // 
             this.Progress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Progress.DataPropertyName = "TaskProgress";
+            this.Progress.DataPropertyName = "WorkProgress";
             resources.ApplyResources(this.Progress, "Progress");
             this.Progress.Name = "Progress";
             this.Progress.ReadOnly = true;
@@ -428,7 +428,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tasksGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.worksGridView)).EndInit();
             this.logTabPage.ResumeLayout(false);
             this.versionPanel.ResumeLayout(false);
             this.versionPanel.PerformLayout();
@@ -449,7 +449,7 @@
         private System.Windows.Forms.Button serverURLButton;
         private System.Windows.Forms.Label label5;
         private MangaCrawlerControls.ListBoxEx serversListBox;
-        private System.Windows.Forms.DataGridView tasksGridView;
+        private System.Windows.Forms.DataGridView worksGridView;
         private System.Windows.Forms.CheckBox cbzCheckBox;
         private System.Windows.Forms.Panel versionPanel;
         private System.Windows.Forms.LinkLabel versionLinkLabel;

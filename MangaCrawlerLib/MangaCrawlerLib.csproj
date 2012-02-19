@@ -68,13 +68,13 @@
     <Compile Include="NHibernateSetup.cs" />
     <Compile Include="SchedulerList.cs" />
     <Compile Include="ServerList.cs" />
-    <Compile Include="TaskInfo.cs" />
+    <Compile Include="Work.cs" />
     <Compile Include="Loggers.cs" />
     <Compile Include="OrderedList.cs" />
     <Compile Include="Priority.cs" />
     <Compile Include="QueueSemaphore.cs" />
     <Compile Include="Crawlers\AnimeSourceCrawler.cs" />
-    <Compile Include="ChapterInfo.cs" />
+    <Compile Include="Chapter.cs" />
     <Compile Include="ConnectionsLimiter.cs" />
     <Compile Include="Crawler.cs" />
     <Compile Include="Crawlers\MangaAccessCrawler.cs" />
@@ -93,12 +93,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="VisualState.cs" />
-    <Compile Include="PageInfo.cs" />
+    <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueMutex.cs" />
     <Compile Include="CustomTaskScheduler.cs" />
-    <Compile Include="SerieInfo.cs" />
-    <Compile Include="ServerInfo.cs" />
+    <Compile Include="Serie.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="Crawlers\SpectrumNexusCrawler.cs" />
     <Compile Include="Crawlers\StopTazmoCrawler.cs" />
     <Compile Include="Crawlers\UnixMangaCrawler.cs" />

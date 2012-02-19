@@ -13,11 +13,11 @@ namespace MangaCrawlerLib
     {
         public abstract string Name { get; }
 
-        public abstract void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback);
-        public abstract void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback);
-        public abstract IEnumerable<PageInfo> DownloadPages(TaskInfo a_info);
+        public abstract void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback);
+        public abstract void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback);
+        public abstract IEnumerable<Page> DownloadPages(Work a_work);
         public abstract string GetServerURL();
-        public abstract string GetImageURL(PageInfo a_info);
+        public abstract string GetImageURL(Page a_page);
 
         public static T DownloadWithRetry<T>(Func<T> a_func)
         {
@@ -41,32 +41,32 @@ namespace MangaCrawlerLib
             throw ex1;
         }
 
-        public HtmlDocument DownloadDocument(ServerInfo a_info)
+        public HtmlDocument DownloadDocument(Server a_server)
         {
-            return DownloadDocument(a_info, a_info.URL, CancellationToken.None);
+            return DownloadDocument(a_server, a_server.URL, CancellationToken.None);
         }
 
-        public HtmlDocument DownloadDocument(ServerInfo a_info, string a_url)
+        public HtmlDocument DownloadDocument(Server a_server, string a_url)
         {
-            return DownloadDocument(a_info, a_url, CancellationToken.None);
+            return DownloadDocument(a_server, a_url, CancellationToken.None);
         }
 
-        public HtmlDocument DownloadDocument(SerieInfo a_info)
+        public HtmlDocument DownloadDocument(Serie a_serie)
         {
-            return DownloadDocument(a_info.Server, a_info.URL, CancellationToken.None);
+            return DownloadDocument(a_serie.Server, a_serie.URL, CancellationToken.None);
         }
 
-        public HtmlDocument DownloadDocument(PageInfo a_info)
+        public HtmlDocument DownloadDocument(Page a_page)
         {
-            return DownloadDocument(a_info.TaskInfo.Chapter.Serie.Server, a_info.URL, CancellationToken.None);
+            return DownloadDocument(a_page.Work.Chapter.Serie.Server, a_page.URL, CancellationToken.None);
         }
 
-        public HtmlDocument DownloadDocument(TaskInfo a_info)
+        public HtmlDocument DownloadDocument(Work a_work)
         {
-            return DownloadDocument(a_info.Chapter.Serie.Server, a_info.URL, CancellationToken.None);
+            return DownloadDocument(a_work.Chapter.Serie.Server, a_work.URL, CancellationToken.None);
         }
 
-        public virtual HtmlDocument DownloadDocument(ServerInfo a_info, string a_url, CancellationToken a_token)
+        public virtual HtmlDocument DownloadDocument(Server a_server, string a_url, CancellationToken a_token)
         {
             return Crawler.DownloadWithRetry(() =>
             {
@@ -82,7 +82,7 @@ namespace MangaCrawlerLib
                     }
                 }
 
-                ConnectionsLimiter.Aquire(a_info, a_token, Priority.Series);
+                ConnectionsLimiter.Aquire(a_server, a_token, Priority.Series);
 
                 try
                 {
@@ -102,25 +102,25 @@ namespace MangaCrawlerLib
                 }
                 finally
                 {
-                    ConnectionsLimiter.Release(a_info);
+                    ConnectionsLimiter.Release(a_server);
                 }
             });
         }
 
-        public virtual MemoryStream GetImageStream(PageInfo a_info)
+        public virtual MemoryStream GetImageStream(Page a_page)
         {
             return DownloadWithRetry(() =>
             {
                 try
                 {
-                    ConnectionsLimiter.Aquire(a_info.TaskInfo.Chapter.Serie.Server, a_info.TaskInfo.Token, Priority.Image);
+                    ConnectionsLimiter.Aquire(a_page.Work.Chapter.Serie.Server, a_page.Work.Token, Priority.Image);
 
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
-                        a_info.GetImageURL());
+                        a_page.GetImageURL());
 
                     myReq.UserAgent = DownloadManager.UserAgent;
                     myReq.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-                    myReq.Referer = a_info.URL;
+                    myReq.Referer = a_page.URL;
 
                     byte[] buffer = new byte[4*1024];
 
@@ -135,13 +135,13 @@ namespace MangaCrawlerLib
                             if (readed == 0)
                                 break;
 
-                            if (a_info.TaskInfo.Token.IsCancellationRequested)
+                            if (a_page.Work.Token.IsCancellationRequested)
                             {
                                 Loggers.Cancellation.InfoFormat(
-                                    "cancellation requested, task: {0} state: {1}",
-                                    this, a_info.TaskInfo.State);
+                                    "cancellation requested, work: {0} state: {1}",
+                                    this, a_page.Work.State);
 
-                                a_info.TaskInfo.Token.ThrowIfCancellationRequested();
+                                a_page.Work.Token.ThrowIfCancellationRequested();
                             }
 
                             mem_stream.Write(buffer, 0, readed);
@@ -153,7 +153,7 @@ namespace MangaCrawlerLib
                 }
                 finally
                 {
-                    ConnectionsLimiter.Release(a_info.TaskInfo.Chapter.Serie.Server);
+                    ConnectionsLimiter.Release(a_page.Work.Chapter.Serie.Server);
                 }
             });
         }

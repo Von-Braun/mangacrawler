@@ -10,10 +10,10 @@ using MangaCrawlerLib.Crawlers;
 
 namespace MangaCrawlerLib
 {
-    public class ServerInfo
+    public class Server
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private List<SerieInfo> m_series = new List<SerieInfo>();
+        private List<Serie> m_series = new List<Serie>();
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Crawler m_crawler;
@@ -26,7 +26,7 @@ namespace MangaCrawlerLib
         public int DownloadProgress { get; private set; }
         public ServerState State;
 
-        internal ServerInfo(string a_url, string a_name)
+        internal Server(string a_url, string a_name)
         {
             URL = a_url;
             Name = a_name;
@@ -54,7 +54,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public IEnumerable<SerieInfo> Series
+        public IEnumerable<Serie> Series
         {
             get
             {

@@ -24,26 +24,26 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override void DownloadSeries(ServerInfo a_info, Action<int, 
-            IEnumerable<SerieInfo>> a_progress_callback)
+        public override void DownloadSeries(Server a_server, Action<int, 
+            IEnumerable<Serie>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_server);
 
             var series = doc.DocumentNode.SelectNodes(
                 "//div[@class='manga_list']/ul/li/a");
 
             var result = from serie in series
-                         select new SerieInfo(a_info,
+                         select new Serie(a_server,
                                               serie.GetAttributeValue("href", ""),
                                               serie.InnerText);
 
             a_progress_callback(100, result);
         }
 
-        public override void DownloadChapters(SerieInfo a_info, Action<int, 
-            IEnumerable<ChapterInfo>> a_progress_callback)
+        public override void DownloadChapters(Serie a_serie, Action<int, 
+            IEnumerable<Chapter>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_serie);
 
             var chapters = doc.DocumentNode.SelectNodes(
                 "//div[@id='chapters']/ul/li/div/h3/a").Concat(
@@ -51,15 +51,15 @@ namespace MangaCrawlerLib
                         "//div[@id='chapters']/ul/li/div/h4/a"));
 
             var result = from chapter in chapters
-                         select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), 
+                         select new Chapter(a_serie, chapter.GetAttributeValue("href", ""), 
                              chapter.InnerText);
 
             a_progress_callback(100, result);
         }
 
-        public override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
+        public override IEnumerable<Page> DownloadPages(Work a_work)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_work);
 
             var pages = doc.DocumentNode.SelectSingleNode("//div[@class='r m']").
                 SelectNodes("div[@class='l']/select[@class='m']/option");
@@ -68,9 +68,9 @@ namespace MangaCrawlerLib
 
             foreach (var page in pages)
             {
-                PageInfo pi = new PageInfo(
-                    a_info,
-                    a_info.URL.Replace("1.html", String.Format("{0}.html", page.GetAttributeValue("value", ""))), 
+                Page pi = new Page(
+                    a_work,
+                    a_work.URL.Replace("1.html", String.Format("{0}.html", page.GetAttributeValue("value", ""))), 
                     index);
 
                 index++;
@@ -79,9 +79,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override string GetImageURL(PageInfo a_info)
+        public override string GetImageURL(Page a_page)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_page);
 
             var node = doc.DocumentNode.SelectSingleNode("//img[@id='image']");
 

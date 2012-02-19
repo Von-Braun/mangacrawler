@@ -13,27 +13,27 @@ using Ionic.Zip;
 
 namespace MangaCrawlerLib
 {
-    public class TaskInfo
+    public class Work
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CancellationTokenSource m_cancellation_token_source = new CancellationTokenSource();
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private TaskState m_state = TaskState.Waiting;
+        private WorkState m_state = WorkState.Waiting;
 
-        public List<PageInfo> Pages { get; private set; }
-        public ChapterInfo Chapter { get; private set; }
+        public List<Page> Pages { get; private set; }
+        public Chapter Chapter { get; private set; }
         public string ChapterDir { get; private set; }
         public bool CBZ { get; private set; }
 
-        internal TaskInfo()
+        internal Work()
         {
-            Pages = new List<PageInfo>();
+            Pages = new List<Page>();
         }
 
-        internal TaskInfo(ChapterInfo a_chapter_info, string a_manga_root_dir, bool a_cbz) : this()
+        internal Work(Chapter a_chapter, string a_manga_root_dir, bool a_cbz) : this()
         {
-            Chapter = a_chapter_info;
+            Chapter = a_chapter;
             ChapterDir = GetChapterDirectory(a_manga_root_dir);
             CBZ = a_cbz;
         }
@@ -46,7 +46,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public TaskState State
+        public WorkState State
         {
             get
             {
@@ -65,10 +65,10 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return (m_state == TaskState.Waiting) ||
-                       (m_state == TaskState.Downloading) ||
-                       (m_state == TaskState.Deleting) ||
-                       (m_state == TaskState.Zipping);
+                return (m_state == WorkState.Waiting) ||
+                       (m_state == WorkState.Downloading) ||
+                       (m_state == WorkState.Deleting) ||
+                       (m_state == WorkState.Zipping);
             }
         }
 
@@ -81,7 +81,7 @@ namespace MangaCrawlerLib
             catch (OperationCanceledException)
             {
                 Loggers.Cancellation.InfoFormat(
-                    "#1 operation cancelled, task: {0} state: {1}",
+                    "#1 operation cancelled, work: {0} state: {1}",
                     this, State);
 
                 FinishDownload(true);
@@ -93,13 +93,13 @@ namespace MangaCrawlerLib
                 if (Token.IsCancellationRequested)
                 {
                     Loggers.Cancellation.InfoFormat(
-                        "#1 cancellation requested, task: {0} state: {1}",
+                        "#1 cancellation requested, work: {0} state: {1}",
                         this, State);
 
                     Token.ThrowIfCancellationRequested();
                 }
 
-                State = TaskState.Downloading;
+                State = WorkState.Downloading;
                 Pages.AddRange(Chapter.Serie.Server.Crawler.DownloadPages(this));
 
                 Parallel.ForEach(Pages, 
@@ -118,7 +118,7 @@ namespace MangaCrawlerLib
                         catch (OperationCanceledException ex1)
                         {
                             Loggers.Cancellation.InfoFormat(
-                                "OperationCanceledException, task: {0} state: {1}, {2}",
+                                "OperationCanceledException, work: {0} state: {1}, {2}",
                                 this, State, ex1);
 
                             state.Break();
@@ -126,7 +126,7 @@ namespace MangaCrawlerLib
                         catch (Exception ex2)
                         {
                             Loggers.MangaCrawler.InfoFormat(
-                                "1 Exception, task: {0} state: {1}, {2}",
+                                "1 Exception, work: {0} state: {1}, {2}",
                                 this, State, ex2);
 
                             state.Break();
@@ -137,7 +137,7 @@ namespace MangaCrawlerLib
                 if (Token.IsCancellationRequested)
                 {
                     Loggers.Cancellation.InfoFormat(
-                        "#3 cancellation requested, task: {0} state: {1}",
+                        "#3 cancellation requested, work: {0} state: {1}",
                         this, State);
 
                     Token.ThrowIfCancellationRequested();
@@ -151,7 +151,7 @@ namespace MangaCrawlerLib
             catch (Exception ex)
             {
                 Loggers.MangaCrawler.InfoFormat(
-                    "#2 Exception, task: {0} state: {1}, {2}",
+                    "#2 Exception, work: {0} state: {1}, {2}",
                     this, State, ex);
 
                 FinishDownload(a_error: true);
@@ -165,10 +165,10 @@ namespace MangaCrawlerLib
         private void CreateCBZ()
         {
             Loggers.MangaCrawler.InfoFormat(
-                "Task: {0} state: {1}",
+                "Work: {0} state: {1}",
                 this, State);
 
-            State = TaskState.Zipping;
+            State = WorkState.Zipping;
 
             var dir = new DirectoryInfo(Pages.First().GetImageFilePath()).Parent;
 
@@ -192,7 +192,7 @@ namespace MangaCrawlerLib
                     if (Token.IsCancellationRequested)
                     {
                         Loggers.Cancellation.InfoFormat(
-                            "cancellation requested, task: {0} state: {1}",
+                            "cancellation requested, work: {0} state: {1}",
                             this, State);
 
                         Token.ThrowIfCancellationRequested();
@@ -237,24 +237,25 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void DeleteTask()
+        public void DeleteWork()
         {
             var s = State;
 
-            Loggers.MangaCrawler.InfoFormat("Task: {0}, state: {1}", this, s);
+            Loggers.MangaCrawler.InfoFormat("Work: {0}, state: {1}", this, s);
 
-            if ((s == TaskState.Downloading) ||
-                (s == TaskState.Waiting) ||
-                (s == TaskState.Zipping))
+            if ((s == WorkState.Downloading) ||
+                (s == WorkState.Waiting) ||
+                (s == WorkState.Zipping))
             {
-                Loggers.MangaCrawler.Info("Cancelling tasks");
+                Loggers.MangaCrawler.Info("Cancelling work");
                 m_cancellation_token_source.Cancel();
 
-                State = TaskState.Deleting;
+                State = WorkState.Deleting;
             }
         }
 
-        public string TaskProgress
+        // TODO: string w gui tylko
+        public string WorkProgress
         {
             get
             {
@@ -262,19 +263,19 @@ namespace MangaCrawlerLib
                 
                 switch (s)
                 {
-                    case TaskState.Error: 
-                        return MangaCrawlerLib.Properties.Resources.TaskProgressError;
-                    case TaskState.Aborted: 
-                        return MangaCrawlerLib.Properties.Resources.TaskProgressAborted;
-                    case TaskState.Waiting: 
-                        return MangaCrawlerLib.Properties.Resources.TaskProgressWaiting;
-                    case TaskState.Deleting: 
-                        return MangaCrawlerLib.Properties.Resources.TaskProgressDeleting;
-                    case TaskState.Downloaded: 
-                        return MangaCrawlerLib.Properties.Resources.TaskProgressDownloaded;
-                    case TaskState.Zipping: 
-                        return MangaCrawlerLib.Properties.Resources.TaskProgressZipping;
-                    case TaskState.Downloading: 
+                    case WorkState.Error: 
+                        return MangaCrawlerLib.Properties.Resources.WorkProgressError;
+                    case WorkState.Aborted: 
+                        return MangaCrawlerLib.Properties.Resources.WorkProgressAborted;
+                    case WorkState.Waiting: 
+                        return MangaCrawlerLib.Properties.Resources.WorkProgressWaiting;
+                    case WorkState.Deleting: 
+                        return MangaCrawlerLib.Properties.Resources.WorkProgressDeleting;
+                    case WorkState.Downloaded: 
+                        return MangaCrawlerLib.Properties.Resources.WorkProgressDownloaded;
+                    case WorkState.Zipping: 
+                        return MangaCrawlerLib.Properties.Resources.WorkProgressZipping;
+                    case WorkState.Downloading: 
                         return String.Format("{0}/{1}", DownloadedPages, Pages.Count());
                     default: throw new NotImplementedException();
                 }
@@ -285,30 +286,30 @@ namespace MangaCrawlerLib
         {
             var s = State;
 
-            Loggers.MangaCrawler.InfoFormat("Task: {0}, state: {1}, error: {2}",
+            Loggers.MangaCrawler.InfoFormat("Work: {0}, state: {1}, error: {2}",
                 this, s, a_error);
 
-            if ((s == TaskState.Waiting) || (s == TaskState.Downloading))
+            if ((s == WorkState.Waiting) || (s == WorkState.Downloading))
             {
                 if (a_error)
-                    State = TaskState.Error;
+                    State = WorkState.Error;
                 else
                 {
                     if (DownloadedPages == Pages.Count())
-                        State = TaskState.Downloaded;
+                        State = WorkState.Downloaded;
                     else
-                        State = TaskState.Error;
+                        State = WorkState.Error;
                 }
             }
 
-            if (s != TaskState.Downloaded)
+            if (s != WorkState.Downloaded)
             {
                 if (m_cancellation_token_source.IsCancellationRequested)
-                    State = TaskState.Aborted;
+                    State = WorkState.Aborted;
             }
         }
 
-        public string TaskTitle
+        public string WorkTitle
         {
             get
             {

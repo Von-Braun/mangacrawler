@@ -36,7 +36,7 @@ namespace MangaCrawlerLib
         Error
     }
 
-    public enum TaskState
+    public enum WorkState
     {
         Aborted,
         Waiting,

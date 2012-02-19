@@ -7,18 +7,18 @@ using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
-    public class SerieInfo
+    public class Serie
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private List<ChapterInfo> m_chapters = new List<ChapterInfo>();
+        private List<Chapter> m_chapters = new List<Chapter>();
 
-        public ServerInfo Server { get; private set; }
+        public Server Server { get; private set; }
         public string URL { get; private set; }
         public int DownloadProgress { get; private set; }
         public string Title { get; private set; }
         public SerieState State;
 
-        internal SerieInfo(ServerInfo a_server, string a_url, string a_title)
+        internal Serie(Server a_server, string a_url, string a_title)
         {
             URL = HttpUtility.HtmlDecode(a_url);
             Server = a_server;
@@ -30,7 +30,7 @@ namespace MangaCrawlerLib
             Title = HttpUtility.HtmlDecode(Title);
         }
 
-        public IEnumerable<ChapterInfo> Chapters
+        public IEnumerable<Chapter> Chapters
         {
             get
             {

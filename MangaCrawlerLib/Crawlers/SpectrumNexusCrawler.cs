@@ -19,10 +19,10 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override void DownloadSeries(ServerInfo a_info, Action<int, 
-            IEnumerable<SerieInfo>> a_progress_callback)
+        public override void DownloadSeries(Server a_server, Action<int, 
+            IEnumerable<Serie>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_server);
 
             var series = doc.DocumentNode.SelectNodes("//div[@class='mangaJump']/select").Elements().ToList();
 
@@ -45,12 +45,12 @@ namespace MangaCrawlerLib
                 series.RemoveRange(0, splitter_index + 1);
             }
 
-            List<SerieInfo> result = new List<SerieInfo>();
+            List<Serie> result = new List<Serie>();
 
             for (int i = 0; i < series.Count; i += 2)
             {
-                SerieInfo si = new SerieInfo(
-                    a_info,
+                Serie si = new Serie(
+                    a_server,
                     "http://www.thespectrum.net" + series[i].GetAttributeValue("value", ""), 
                     series[i + 1].InnerText);
 
@@ -60,22 +60,22 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        public override void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback)
+        public override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_serie);
 
             var link_strong_nodes = doc.DocumentNode.SelectNodes("//a");
             var begin_reading_strong_node = link_strong_nodes.Where(
                 n => n.InnerText.StartsWith("Begin Reading"));
             var href = begin_reading_strong_node.First().GetAttributeValue("href", "");
 
-            doc = DownloadDocument(a_info.Server, href);
+            doc = DownloadDocument(a_serie.Server, href);
 
             var chapters = doc.DocumentNode.SelectNodes("//select[@name='ch']/option");
 
             var result = from chapter in chapters
-                         select new ChapterInfo(
-                             a_info,
+                         select new Chapter(
+                             a_serie,
                              "http://www.thespectrum.net" + href + "?ch=" +
                                  chapter.GetAttributeValue("value", "").Replace(" ", "+") + "&page=1",
                              chapter.NextSibling.InnerText);
@@ -83,9 +83,9 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result.Reverse());
         }
 
-        public override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
+        public override IEnumerable<Page> DownloadPages(Work a_work)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_work);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='page']/option");
 
@@ -94,7 +94,7 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                PageInfo pi = new PageInfo(a_info, a_info.URL + "&page=" + 
+                Page pi = new Page(a_work, a_work.URL + "&page=" + 
                     page.GetAttributeValue("value", ""), 
                     index, page.NextSibling.InnerText);
 
@@ -102,13 +102,13 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override string GetImageURL(PageInfo a_info)
+        public override string GetImageURL(Page a_page)
         {
-            HtmlDocument doc = DownloadDocument(a_info);
+            HtmlDocument doc = DownloadDocument(a_page);
 
             var img = doc.DocumentNode.SelectSingleNode("//div[@class='imgContainer']/a/img");
 
-            if (a_info.URL.ToLower().Contains("view.thespectrum.net"))
+            if (a_page.URL.ToLower().Contains("view.thespectrum.net"))
             {
                 return "http://view.thespectrum.net/" + img.GetAttributeValue("src", "").
                     RemoveFromLeft(1);

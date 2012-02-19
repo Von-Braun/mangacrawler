@@ -122,22 +122,22 @@
 serie: {1}
 chapter: {2}</value>
   </data>
-  <data name="TaskProgressAborted" xml:space="preserve">
+  <data name="WorkProgressAborted" xml:space="preserve">
     <value>Cancelled</value>
   </data>
-  <data name="TaskProgressDeleting" xml:space="preserve">
+  <data name="WorkProgressDeleting" xml:space="preserve">
     <value>Deleting</value>
   </data>
-  <data name="TaskProgressDownloaded" xml:space="preserve">
+  <data name="WorkProgressDownloaded" xml:space="preserve">
     <value>Downloaded</value>
   </data>
-  <data name="TaskProgressError" xml:space="preserve">
+  <data name="WorkProgressError" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="TaskProgressWaiting" xml:space="preserve">
+  <data name="WorkProgressWaiting" xml:space="preserve">
     <value>Waiting</value>
   </data>
-  <data name="TaskProgressZipping" xml:space="preserve">
+  <data name="WorkProgressZipping" xml:space="preserve">
     <value>Zipping</value>
   </data>
 </root>
