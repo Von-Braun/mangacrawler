@@ -73,7 +73,8 @@ namespace MangaCrawlerLib
 
                         for (int i = 0; i < page_series.Length; i += 2)
                         {
-                            string link = page_series[i].SelectSingleNode("a").GetAttributeValue("href", "");
+                            string link = "http://www.mangarun.com/" + 
+                                page_series[i].SelectSingleNode("a").GetAttributeValue("href", "");
                             string name = page_series[i + 1].SelectSingleNode("span").InnerText;
 
                             Tuple<int, int, string, string> s =
@@ -156,7 +157,8 @@ namespace MangaCrawlerLib
 
                         for (int i = 0; i < page_chapters.Length; i += 2)
                         {
-                            string link = page_chapters[i].SelectSingleNode("a").GetAttributeValue("href", "");
+                            string link = "http://www.mangarun.com/" + 
+                                page_chapters[i].SelectSingleNode("a").GetAttributeValue("href", "");
                             string name = page_chapters[i + 1].SelectSingleNode("span").InnerText;
 
                             Tuple<int, int, string, string> s =
@@ -202,14 +204,14 @@ namespace MangaCrawlerLib
                 new ParallelOptions()
                 {
                     MaxDegreeOfParallelism = MaxConnectionsPerServer,
-                    TaskScheduler = a_info.Server.Scheduler[Priority.Pages], 
+                    TaskScheduler = a_info.Chapter.Serie.Server.Scheduler[Priority.Pages], 
                 },
                 (page, state) =>
                 {
                     try
                     {
                         HtmlDocument page_doc = DownloadDocument(
-                            a_info.Server, pages[page]);
+                            a_info.Chapter.Serie.Server, pages[page]);
 
                         var page_pages1 = page_doc.DocumentNode.SelectNodes(
                             "/html/body/table/td");
@@ -232,7 +234,8 @@ namespace MangaCrawlerLib
 
                         foreach (var p in page_pages)
                         {
-                            string link = p.SelectSingleNode("div[2]/a[1]").GetAttributeValue("href", "");
+                            string link = "http://www.mangarun.com/" + 
+                                p.SelectSingleNode("div[2]/a[1]").GetAttributeValue("href", "");
                             string name = p.SelectSingleNode("div[1]").InnerText;
 
                             Tuple<int, int, string, string> s =
@@ -280,21 +283,6 @@ namespace MangaCrawlerLib
         public override string GetServerURL()
         {
             return "http://www.mangarun.com/";
-        }
-
-        public override string GetChapterURL(ChapterInfo a_info)
-        {
-            return "http://www.mangarun.com/" + a_info.URLPart;
-        }
-
-        public override string GetSerieURL(SerieInfo a_info)
-        {
-            return "http://www.mangarun.com/" + a_info.URLPart;
-        }
-
-        public override string GetPageURL(PageInfo a_info)
-        {
-            return "http://www.mangarun.com/" + a_info.URLPart;
         }
     }
 }

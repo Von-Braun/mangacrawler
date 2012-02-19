@@ -93,7 +93,10 @@ namespace MangaCrawlerLib
             if (page_chapters != null)
             {
                 var result = from chapter in page_chapters
-                                select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
+                                select new ChapterInfo(
+                                    a_info, 
+                                    "http://www.otakuworks.com" + chapter.GetAttributeValue("href", ""), 
+                                    chapter.InnerText);
 
                 a_progress_callback(100, result);
             }
@@ -108,7 +111,11 @@ namespace MangaCrawlerLib
 
             for (int i = 1; i <= pages; i++)
             {
-                PageInfo pi = new PageInfo(a_info, a_info.URLPart + "/" + i.ToString(), i);
+                PageInfo pi = new PageInfo(
+                    a_info, 
+                    a_info.URL + "/" + i.ToString(), 
+                    i);
+
                 yield return pi;
             }
         }
@@ -123,16 +130,6 @@ namespace MangaCrawlerLib
                 node = doc.DocumentNode.SelectSingleNode("//div[@id='filelist']/img");
 
             return node.GetAttributeValue("src", "");
-        }
-
-        public override string GetChapterURL(ChapterInfo a_info)
-        {
-            return "http://www.otakuworks.com" + a_info.URLPart;
-        }
-
-        public override string GetPageURL(PageInfo a_info)
-        {
-            return "http://www.otakuworks.com" + a_info.URLPart;
         }
 
         public override string GetServerURL()

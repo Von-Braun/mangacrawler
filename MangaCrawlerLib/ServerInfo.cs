@@ -13,65 +13,44 @@ namespace MangaCrawlerLib
     public class ServerInfo
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string m_url;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private List<SerieInfo> m_series = new List<SerieInfo>();
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private Crawler m_crawler;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private CustomTaskScheduler m_scheduler;
+
+        public string URL { get; private set; }
+        public string Name { get; private set; }
         public int DownloadProgress { get; private set; }
         public ServerState State;
-        internal CustomTaskScheduler Scheduler { get; private set; }
-        internal Crawler Crawler { get; private set; }
 
-        private static readonly ServerInfo[] s_servers_infos;
-
-        static ServerInfo()
+        internal ServerInfo(string a_url, string a_name)
         {
-            #if TEST_SERVERS
-            s_servers_infos = new [] 
-            {
-                //new ServerInfo(new TestServerCrawler("normal", 1000, false, false, false, 0)), 
-                //new ServerInfo(new TestServerCrawler("empty", 500, false, false, true, 0)), 
-                new ServerInfo(new TestServerCrawler("fast", 300, false, false, false, 0)), 
-                //new ServerInfo(new TestServerCrawler("fast, max_con", 300, false, false, false, 1)), 
-                //new ServerInfo(new TestServerCrawler("very_slow", 3000, false, false, false, 0)), 
-                //new ServerInfo(new TestServerCrawler("normal, slow series chapters", 1000, true, true, false, 0)), 
-                //new ServerInfo(new TestServerCrawler("fast, slow series chapters", 300, true, true, false, 0)), 
-                //new ServerInfo(new TestServerCrawler("very_slow, slow series chapters", 3000, true, true, false, 0)), 
-                //new ServerInfo(new TestServerCrawler("very_slow, max_con, slow series chapters", 3000, true, true, false, 1)), 
-            };
-            #else
-            s_serversInfos = (from hf in System.Reflection.Assembly.GetAssembly(typeof(ServerInfo)).GetTypes()
-                              where hf.IsClass
-                              where !hf.IsAbstract
-                              where hf.IsDerivedFrom(typeof(Crawler))
-                              where hf != typeof(MangaToshokanCrawler)
-                              select new ServerInfo((Crawler)Activator.CreateInstance(hf))).ToArray();
-            #endif
+            URL = a_url;
+            Name = a_name;
         }
 
-        internal ServerInfo(Crawler a_crawler)
-        {
-            Crawler = a_crawler;
-            Scheduler = new CustomTaskScheduler(Crawler.MaxConnectionsPerServer, Crawler.Name);
-        }
-
-        public static IEnumerable<ServerInfo> ServersInfos
+        internal CustomTaskScheduler Scheduler 
         {
             get
             {
-                return s_servers_infos;
+                if (m_scheduler == null)
+                    m_scheduler = SchedulerList.Get(this);
+
+                return m_scheduler;
             }
         }
 
-        public string URL
+        internal Crawler Crawler
         {
             get
             {
-                if (m_url == null)
-                    m_url = HttpUtility.HtmlDecode(Crawler.GetServerURL());
+                if (m_crawler == null)
+                    m_crawler = CrawlerList.Get(this);
 
-                return m_url;
+                return m_crawler;
             }
         }
 
@@ -112,110 +91,6 @@ namespace MangaCrawlerLib
             catch (Exception)
             {
                 State = ServerState.Error;
-            }
-        }
-
-        public string Name
-        {
-            get
-            {
-                return Crawler.Name;
-            }
-        }
-
-        public static ServerInfo AnimeSource
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new AnimeSourceCrawler().Name);
-            }
-        }
-
-        public static ServerInfo MangaAccess
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new MangaAccessCrawler().Name);
-            }
-        }
-
-        public static ServerInfo MangaFox
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new MangaFoxCrawler().Name);
-            }
-        }
-
-        public static ServerInfo MangaRun
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new MangaRunCrawler().Name);
-            }
-        }
-
-        public static ServerInfo MangaShare
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new MangaShareCrawler().Name);
-            }
-        }
-
-        public static ServerInfo MangaToshokan
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new MangaToshokanCrawler().Name);
-            }
-        }
-
-        public static ServerInfo MangaVolume
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new MangaVolumeCrawler().Name);
-            }
-        }
-
-        public static ServerInfo OtakuWorks
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new OtakuWorksCrawler().Name);
-            }
-        }
-
-        public static ServerInfo OurManga
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new OurMangaCrawler().Name);
-            }
-        }
-
-        public static ServerInfo SpectrumNexus
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new SpectrumNexusCrawler().Name);
-            }
-        }
-
-        public static ServerInfo StopTazmo
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new StopTazmoCrawler().Name);
-            }
-        }
-
-        public static ServerInfo UnixManga
-        {
-            get
-            {
-                return ServersInfos.First(si => si.Name == new UnixMangaCrawler().Name);
             }
         }
 

@@ -62,12 +62,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crawlers\CrawlerList.cs" />
     <Compile Include="Crawlers\TestServerCrawler.cs" />
     <Compile Include="IClassMapping.cs" />
     <Compile Include="NHibernateSetup.cs" />
+    <Compile Include="SchedulerList.cs" />
+    <Compile Include="ServerList.cs" />
     <Compile Include="TaskInfo.cs" />
-    <Compile Include="DownloadedChapters.cs" />
-    <Compile Include="DownloadingTasks.cs" />
     <Compile Include="Loggers.cs" />
     <Compile Include="OrderedList.cs" />
     <Compile Include="Priority.cs" />

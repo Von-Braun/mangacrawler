@@ -14,20 +14,17 @@ namespace MangaCrawlerLib
     public class ChapterInfo
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string m_url;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ChapterState m_state;
 
         public TaskInfo Task;
-        internal string URLPart { get; private set; }
+        public string URL { get; private set; }
         public SerieInfo Serie { get; private set; }
         public string Title { get; private set; }
         
-        internal ChapterInfo(SerieInfo a_serie, string a_url_part, string a_title)
+        internal ChapterInfo(SerieInfo a_serie, string a_url, string a_title)
         {
             Serie = a_serie;
-            URLPart = a_url_part;
+            URL = HttpUtility.HtmlDecode(a_url);
 
             Title = a_title.Trim();
             Title = Title.Replace("\t", " ");
@@ -44,14 +41,8 @@ namespace MangaCrawlerLib
         {
             foreach (var task in DownloadManager.Tasks)
             {
-                if (task.Chapter != Title)
-                    continue;
-                if (task.Serie != Serie.Title)
-                    continue;
-                if (task.ServerName != Serie.Server.Name)
-                    continue;
-
-                return task;
+                if (task.Chapter == this)
+                    return task;
             }
 
             return null;
@@ -79,17 +70,6 @@ namespace MangaCrawlerLib
                 }
             }
            
-        }
-
-        public string URL
-        {
-            get
-            {
-                if (m_url == null)
-                    m_url = HttpUtility.HtmlDecode(Serie.Server.Crawler.GetChapterURL(this));
-
-                return m_url;
-            }
         }
 
         public override string ToString()

@@ -58,7 +58,7 @@ namespace MangaCrawlerLib
 
             var url = doc.DocumentNode.SelectSingleNode("//div[@id='Summary']/p[2]/a[2]");
 
-            doc = DownloadDocument(a_info.Server, url.GetAttributeValue("href", ""));
+            doc = DownloadDocument(a_info.Chapter.Serie.Server, url.GetAttributeValue("href", ""));
 
             if (a_info.Token.IsCancellationRequested)
             {
@@ -85,8 +85,7 @@ namespace MangaCrawlerLib
 
         public override string GetImageURL(PageInfo a_info)
         {
-            HtmlDocument doc = DownloadDocument(a_info.TaskInfo.Server,
-                a_info.TaskInfo.URLPart + "/" + a_info.URLPart);
+            HtmlDocument doc = DownloadDocument(a_info.TaskInfo.Chapter.Serie.Server, a_info.URL);
 
             var node = doc.DocumentNode.SelectSingleNode("//div[@class='inner_full_view']/h3/a/img");
 

@@ -26,8 +26,9 @@ namespace MangaCrawlerLib
 
             var result = from serie in series 
                          select new SerieInfo(a_info, 
-                                              serie.SelectSingleNode("td[@class='datarow-0']/a").GetAttributeValue("href", "").
-                                                  Split(new char[] { '/' }).Last(), 
+                                              "http://read.mangashare.com/" + 
+                                                  serie.SelectSingleNode("td[@class='datarow-0']/a").
+                                                  GetAttributeValue("href", "").Split(new char[] { '/' }).Last(), 
                                               serie.SelectSingleNode("td[@class='datarow-1']/text()").InnerText);
 
             a_progress_callback(100, result);
@@ -58,7 +59,12 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                PageInfo pi = new PageInfo(a_info, page.GetAttributeValue("Value", ""), index);
+                string link = page.GetAttributeValue("Value", "");
+                int page_index = link.LastIndexOf("/page");
+                link = link.Left(page_index + 5);
+                link += a_info.URL + ".html";
+
+                PageInfo pi = new PageInfo(a_info, link, index);
 
                 yield return pi;
             }
@@ -79,25 +85,6 @@ namespace MangaCrawlerLib
         public override string GetServerURL()
         {
             return "http://read.mangashare.com/dir";
-        }
-
-        public override string GetSerieURL(SerieInfo a_info)
-        {
-            return "http://read.mangashare.com/" + a_info.URLPart;
-        }
-
-        public override string GetChapterURL(ChapterInfo a_info)
-        {
-            return a_info.URLPart;
-        }
-
-        public override string GetPageURL(PageInfo a_info)
-        {
-            string str = a_info.TaskInfo.URLPart;
-            int index = str.LastIndexOf("/page");
-            str = str.Left(index + 5);
-            str += a_info.URLPart + ".html";
-            return str;
         }
     }
 }

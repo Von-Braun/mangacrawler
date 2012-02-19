@@ -18,20 +18,17 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string m_name;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string m_url;
-
         private string m_imageFilePath;
 
         internal TaskInfo TaskInfo { get; private set; }
         internal int Index { get; private set; }
-        internal string URLPart { get; private set; }
+        internal string URL { get; private set; }
         internal bool Downloaded { get; private set; }
 
-        internal PageInfo(TaskInfo a_task_info, string a_url_part, int a_index, string a_name = null)
+        internal PageInfo(TaskInfo a_task_info, string a_url, int a_index, string a_name = null)
         {
             TaskInfo = a_task_info;
-            URLPart = a_url_part;
+            URL = HttpUtility.HtmlDecode(a_url);
             Index = a_index;
 
             if (a_name != null)
@@ -56,21 +53,10 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal string URL
-        {
-            get
-            {
-                if (m_url == null)
-                    m_url = HttpUtility.HtmlDecode(TaskInfo.Server.Crawler.GetPageURL(this));
-
-                return m_url;
-            }
-        }
-
         internal string GetImageURL()
         {
             if (m_imageURL == null)
-                m_imageURL = HttpUtility.HtmlDecode(TaskInfo.Server.Crawler.GetImageURL(this));
+                m_imageURL = HttpUtility.HtmlDecode(TaskInfo.Chapter.Serie.Server.Crawler.GetImageURL(this));
 
             return m_imageURL;
         }
@@ -83,7 +69,7 @@ namespace MangaCrawlerLib
 
         internal MemoryStream GetImageStream()
         {
-            return TaskInfo.Server.Crawler.GetImageStream(this);  
+            return TaskInfo.Chapter.Serie.Server.Crawler.GetImageStream(this);  
         }
 
         public string GetImageFilePath()
@@ -93,6 +79,15 @@ namespace MangaCrawlerLib
 
         public void DownloadAndSavePageImage()
         {
+            if (TaskInfo.Token.IsCancellationRequested)
+            {
+                Loggers.Cancellation.InfoFormat(
+                    "#2 cancellation requested, task: {0} state: {1}",
+                    this, TaskInfo.State);
+
+                TaskInfo.Token.ThrowIfCancellationRequested();
+            }
+
             m_imageFilePath = TaskInfo.ChapterDir +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(

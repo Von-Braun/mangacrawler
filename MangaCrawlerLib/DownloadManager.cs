@@ -20,7 +20,7 @@ namespace MangaCrawlerLib
     {
         internal static string UserAgent = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:10.0) Gecko/20100101 Firefox/10.0";
 
-        private static ServerInfo[] s_servers;
+        private static List<ServerInfo> s_servers;
         private static ServerInfo s_selected_server_info;
         private static Dictionary<ServerInfo, SerieInfo> s_selected_series =
             new Dictionary<ServerInfo, SerieInfo>();
@@ -33,8 +33,6 @@ namespace MangaCrawlerLib
         private static List<TaskInfo> s_tasks = new List<TaskInfo>();
 
         private static string s_settings_dir;
-        //internal static DownloadedChapters Downloaded;
-        //internal static DownloadingTasks Downloading;
 
         public static Func<string> GetMangaRootDir;
         public static Func<bool> UseCBZ;
@@ -50,7 +48,7 @@ namespace MangaCrawlerLib
         {
             HtmlWeb.UserAgent_Actual = UserAgent;
 
-            s_servers = ServerInfo.ServersInfos.ToArray();
+            s_servers = ServerList.Servers.ToList();
         }
 
         public static VisualState SeriesVisualState
@@ -217,23 +215,18 @@ namespace MangaCrawlerLib
 
                 }
 
-                StartTask(task_info);
+                lock (s_tasks)
+                {
+                    s_tasks.Add(task_info);
+                }
+
+                Task task = new Task(() =>
+                {
+                    task_info.DownloadPages();
+                }, TaskCreationOptions.LongRunning);
+
+                task.Start(task_info.Chapter.Serie.Server.Scheduler[Priority.Pages]);
             }
-        }
-
-        public static void StartTask(TaskInfo a_task_info)
-        {
-            lock (s_tasks)
-            {
-                s_tasks.Add(a_task_info);
-            }
-
-            Task task = new Task(() =>
-            {
-                a_task_info.DownloadPages();
-            }, TaskCreationOptions.LongRunning);
-
-            task.Start(a_task_info.Server.Scheduler[Priority.Pages]);
         }
 
         public static IEnumerable<ServerInfo> Servers
@@ -258,9 +251,6 @@ namespace MangaCrawlerLib
         public static void Load(string a_settings_dir)
         {
             s_settings_dir = a_settings_dir;
-            //Downloaded = new DownloadedChapters(a_settings_dir);
-            //Downloading = DownloadingTasks.Load(a_settings_dir);
-            //Downloading.Restore();
         }
     }
 }

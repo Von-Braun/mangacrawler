@@ -26,12 +26,12 @@ namespace MangaCrawlerLib
 
         static ConnectionsLimiter()
         {
-            foreach (var si in ServerInfo.ServersInfos)
+            foreach (var si in ServerList.Servers)
             {
                 s_serverConnections.Add(si,
                     new QueuedSemaphore<Priority>(si.Crawler.MaxConnectionsPerServer));
             }
-            foreach (var si in ServerInfo.ServersInfos)
+            foreach (var si in ServerList.Servers)
                 s_one_chapter_per_server.Add(si, new QueuedMutex());
         }
 
@@ -40,7 +40,7 @@ namespace MangaCrawlerLib
             Loggers.ConLimits.InfoFormat("Locking one per server, task: {0} state: {1}",
                 a_task_info, a_task_info.State);
 
-            s_one_chapter_per_server[a_task_info.Server].WaitOne(a_task_info.Token);
+            s_one_chapter_per_server[a_task_info.Chapter.Serie.Server].WaitOne(a_task_info.Token);
 
             Loggers.ConLimits.InfoFormat("Locked one per server, task: {0} state: {1}",
                a_task_info, a_task_info.State);
@@ -51,7 +51,7 @@ namespace MangaCrawlerLib
             Loggers.ConLimits.InfoFormat("Releasing one per server, task: {0} state: {1}",
                 a_task_info, a_task_info.State);
 
-            s_one_chapter_per_server[a_task_info.Server].ReleaseMutex();
+            s_one_chapter_per_server[a_task_info.Chapter.Serie.Server].ReleaseMutex();
         }
 
         public static void Aquire(ServerInfo a_info, Priority a_priority)

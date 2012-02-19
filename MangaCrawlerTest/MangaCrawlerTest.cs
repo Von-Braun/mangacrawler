@@ -173,7 +173,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void AnimeSourceTest()
         {
-            var series = TestServer(ServerInfo.AnimeSource, 53);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(AnimeSourceCrawler)), 53);
 
             {
                 var chapters = TestSerie(series.First(
@@ -214,7 +214,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaAccessTest()
         {
-            var series = TestServer(ServerInfo.MangaAccess, 1147);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(MangaAccessCrawler)), 1147);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "07-Ghost"), 51);
@@ -254,7 +254,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaFoxTest()
         {
-            var series = TestServer(ServerInfo.MangaFox, 6821);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(MangaFoxCrawler)), 6821);
             
             {
                 var chapters = TestSerie(series.First(s => s.Title == ".hack//G.U.+"), 26);
@@ -320,7 +320,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaRunTest()
         {
-            var series = TestServer(ServerInfo.MangaRun, 374);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(MangaRunCrawler)), 374);
             
             {
                 var chapters = TestSerie(series.First(s => s.Title == "666satan"), 78);
@@ -360,7 +360,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaShareTest()
         {
-            var series = TestServer(ServerInfo.MangaShare, 143);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(MangaShareCrawler)), 143);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 77);
@@ -421,7 +421,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void _closed_MangaToshokanTest()
         {
-            var series = TestServer(ServerInfo.MangaToshokan, 1150);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(MangaToshokanCrawler)), 1150);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "Angel Shop"), 15);
@@ -461,7 +461,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaVolumeTest()
         {
-            var series = TestServer(ServerInfo.MangaVolume, 1077);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(MangaVolumeCrawler)), 1077);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "3x3 Eyes"), 414, true);
@@ -503,7 +503,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void OtakuWorksTest()
         {
-            var series = TestServer(ServerInfo.OtakuWorks, 4901);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(OtakuWorksCrawler )), 4901);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "Ai Kora"), 92);
@@ -548,7 +548,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void OurMangaTest()
         {
-            var series = TestServer(ServerInfo.OurManga, 2140);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(OurMangaCrawler)), 2140);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "090 - Eko To Issho"), 61);
@@ -588,7 +588,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void SpectrumNexusTest()
         {
-            var series = TestServer(ServerInfo.SpectrumNexus, 119);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(SpectrumNexusCrawler)), 119);
 
             {
                 var chapters = TestSerie(series.First(
@@ -645,7 +645,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void StopTazmoTest()
         {
-            var series = TestServer(ServerInfo.StopTazmo, 1902);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(StopTazmoCrawler)), 1902);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 78);
@@ -685,7 +685,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void UnixMangaTest()
         {
-            var series = TestServer(ServerInfo.UnixManga, 1572);
+            var series = TestServer(ServerList.Servers.First(s => s.Crawler.GetType() == typeof(UnixMangaCrawler)), 1572);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 460, true);
@@ -770,11 +770,11 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void _RandomTestAll()
         {
-            Parallel.ForEach(ServerInfo.ServersInfos,
+            Parallel.ForEach(ServerList.Servers,
                 new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = ServerInfo.ServersInfos.Count(),
-                    TaskScheduler = new CustomTaskScheduler.InnerCustomTaskScheduler(ServerInfo.ServersInfos.Count())
+                    MaxDegreeOfParallelism = ServerList.Servers.Count(),
+                    TaskScheduler = new CustomTaskScheduler.InnerCustomTaskScheduler(ServerList.Servers.Count())
 
                 },
                 server => 

@@ -35,6 +35,7 @@ namespace MangaCrawlerLib
                          where (serie.ChildNodes[7].InnerText.Trim() != "2")
                          orderby serie.SelectSingleNode("font").FirstChild.InnerText
                          select new SerieInfo(a_info,
+                                              "http://www.anime-source.com/banzai/" + 
                                               serie.SelectSingleNode("a[2]").GetAttributeValue("href", ""),
                                               serie.SelectSingleNode("font").FirstChild.InnerText);
 
@@ -49,7 +50,9 @@ namespace MangaCrawlerLib
                 "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/blockquote/a");
 
             var result = from chapter in chapters.Skip(1)
-                         select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), chapter.InnerText);
+                         select new ChapterInfo(a_info, 
+                                                "http://www.anime-source.com/banzai/" + chapter.GetAttributeValue("href", ""), 
+                                                chapter.InnerText);
 
             a_progress_callback(100, result.Reverse());
         }
@@ -69,7 +72,7 @@ namespace MangaCrawlerLib
 
                 for (int page = 1; page <= pages_count; page++)
                 {
-                    PageInfo pi = new PageInfo(a_info, a_info.URLPart + "&page=" + page, page);
+                    PageInfo pi = new PageInfo(a_info, a_info.URL + "&page=" + page, page);
 
                     yield return pi;
                 }
@@ -81,7 +84,9 @@ namespace MangaCrawlerLib
                 {
                     index++;
 
-                    PageInfo pi = new PageInfo(a_info, page.GetAttributeValue("value", ""), index);
+                    PageInfo pi = new PageInfo(a_info, 
+                                               "http://www.anime-source.com/banzai/" + page.GetAttributeValue("value", ""),
+                                               index);
 
                     yield return pi;
                 }
@@ -112,27 +117,12 @@ namespace MangaCrawlerLib
                 return node.GetAttributeValue("src", "");
             }
             else
-                return "http://www.anime-source.com/" + node.GetAttributeValue("src", "").RemoveFromLeft(1);
+                return "http://www.anime-source.com" + node.GetAttributeValue("src", "");
         }
-
+        
         public override string GetServerURL()
         {
             return "http://www.anime-source.com/banzai/modules.php?name=Manga";
-        }
-
-        public override string GetSerieURL(SerieInfo a_info)
-        {
-            return "http://www.anime-source.com/banzai/" + a_info.URLPart;
-        }
-
-        public override string GetChapterURL(ChapterInfo a_info)
-        {
-            return "http://www.anime-source.com/banzai/" + a_info.URLPart;
-        }
-
-        public override string GetPageURL(PageInfo a_info)
-        {
-            return "http://www.anime-source.com/banzai/" + a_info.URLPart;
         }
     }
 }

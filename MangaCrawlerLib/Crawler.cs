@@ -12,12 +12,12 @@ namespace MangaCrawlerLib
     internal abstract class Crawler
     {
         public abstract string Name { get; }
+
         public abstract void DownloadSeries(ServerInfo a_info, Action<int, IEnumerable<SerieInfo>> a_progress_callback);
         public abstract void DownloadChapters(SerieInfo a_info, Action<int, IEnumerable<ChapterInfo>> a_progress_callback);
         public abstract IEnumerable<PageInfo> DownloadPages(TaskInfo a_info);
-        public abstract string GetImageURL(PageInfo a_info);
-
         public abstract string GetServerURL();
+        public abstract string GetImageURL(PageInfo a_info);
 
         public static T DownloadWithRetry<T>(Func<T> a_func)
         {
@@ -58,12 +58,12 @@ namespace MangaCrawlerLib
 
         public HtmlDocument DownloadDocument(PageInfo a_info)
         {
-            return DownloadDocument(a_info.TaskInfo.Server, a_info.URL, CancellationToken.None);
+            return DownloadDocument(a_info.TaskInfo.Chapter.Serie.Server, a_info.URL, CancellationToken.None);
         }
 
         public HtmlDocument DownloadDocument(TaskInfo a_info)
         {
-            return DownloadDocument(a_info.Server, a_info.URL, CancellationToken.None);
+            return DownloadDocument(a_info.Chapter.Serie.Server, a_info.URL, CancellationToken.None);
         }
 
         public virtual HtmlDocument DownloadDocument(ServerInfo a_info, string a_url, CancellationToken a_token)
@@ -113,7 +113,7 @@ namespace MangaCrawlerLib
             {
                 try
                 {
-                    ConnectionsLimiter.Aquire(a_info.TaskInfo.Server, a_info.TaskInfo.Token, Priority.Image);
+                    ConnectionsLimiter.Aquire(a_info.TaskInfo.Chapter.Serie.Server, a_info.TaskInfo.Token, Priority.Image);
 
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
                         a_info.GetImageURL());
@@ -122,34 +122,40 @@ namespace MangaCrawlerLib
                     myReq.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
                     myReq.Referer = a_info.URL;
 
+                    byte[] buffer = new byte[4*1024];
+
                     using (Stream image_stream = myReq.GetResponse().GetResponseStream())
                     {
                         MemoryStream mem_stream = new MemoryStream();
-                        image_stream.CopyTo(mem_stream);
+
+                        for (;;)
+                        {
+                            int readed = image_stream.Read(buffer, 0, buffer.Length);
+
+                            if (readed == 0)
+                                break;
+
+                            if (a_info.TaskInfo.Token.IsCancellationRequested)
+                            {
+                                Loggers.Cancellation.InfoFormat(
+                                    "cancellation requested, task: {0} state: {1}",
+                                    this, a_info.TaskInfo.State);
+
+                                a_info.TaskInfo.Token.ThrowIfCancellationRequested();
+                            }
+
+                            mem_stream.Write(buffer, 0, readed);
+                        }
+
                         mem_stream.Position = 0;
                         return mem_stream;
                     }
                 }
                 finally
                 {
-                    ConnectionsLimiter.Release(a_info.TaskInfo.Server);
+                    ConnectionsLimiter.Release(a_info.TaskInfo.Chapter.Serie.Server);
                 }
             });
-        }
-
-        public virtual string GetSerieURL(SerieInfo a_info)
-        {
-            return a_info.URLPart;
-        }
-
-        public virtual string GetChapterURL(ChapterInfo a_info)
-        {
-            return a_info.URLPart;
-        }
-
-        public virtual string GetPageURL(PageInfo a_info)
-        {
-            return a_info.URLPart;
         }
 
         public virtual int MaxConnectionsPerServer

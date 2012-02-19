@@ -8,7 +8,6 @@ using System.Threading;
 using System.Diagnostics;
 using TomanuExtensions;
 using TomanuExtensions.Utils;
-using YAXLib;
 using System.Threading.Tasks;
 using Ionic.Zip;
 
@@ -20,32 +19,11 @@ namespace MangaCrawlerLib
         private CancellationTokenSource m_cancellation_token_source = new CancellationTokenSource();
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        [YAXNode("State")]
         private TaskState m_state = TaskState.Waiting;
 
         public List<PageInfo> Pages { get; private set; }
-
-        public ServerInfo Server { get; private set; }
-
-        [YAXNode]
-        internal string URL { get; private set; }
-
-        [YAXNode]
-        internal string URLPart { get; private set; }
-
-        [YAXNode]
-        public string Serie { get; private set; }
-
-        [YAXNode]
-        public string ServerName { get; private set; }
-
-        [YAXNode]
-        public string Chapter { get; private set; }
-
-        [YAXNode]
+        public ChapterInfo Chapter { get; private set; }
         public string ChapterDir { get; private set; }
-
-        [YAXNode]
         public bool CBZ { get; private set; }
 
         internal TaskInfo()
@@ -55,14 +33,17 @@ namespace MangaCrawlerLib
 
         internal TaskInfo(ChapterInfo a_chapter_info, string a_manga_root_dir, bool a_cbz) : this()
         {
-            URL = a_chapter_info.URL;
-            URLPart = a_chapter_info.URLPart;
-            Serie = a_chapter_info.Serie.Title;
-            ServerName = a_chapter_info.Serie.Server.Name;
-            Server = DownloadManager.Servers.FirstOrDefault(s => s.Name == ServerName);
-            Chapter = a_chapter_info.Title;
+            Chapter = a_chapter_info;
             ChapterDir = GetChapterDirectory(a_manga_root_dir);
             CBZ = a_cbz;
+        }
+
+        internal string URL
+        {
+            get
+            {
+                return Chapter.URL;
+            }
         }
 
         public TaskState State
@@ -119,23 +100,14 @@ namespace MangaCrawlerLib
                 }
 
                 State = TaskState.Downloading;
-                Pages.AddRange(Server.Crawler.DownloadPages(this));
-
-                if (Token.IsCancellationRequested)
-                {
-                    Loggers.Cancellation.InfoFormat(
-                        "#2 cancellation requested, task: {0} state: {1}",
-                        this, State);
-
-                    Token.ThrowIfCancellationRequested();
-                }
+                Pages.AddRange(Chapter.Serie.Server.Crawler.DownloadPages(this));
 
                 Parallel.ForEach(Pages, 
 
                     new ParallelOptions()
                     {
-                        MaxDegreeOfParallelism = Server.Crawler.MaxConnectionsPerServer,
-                        TaskScheduler = Server.Scheduler[Priority.Pages],
+                        MaxDegreeOfParallelism = Chapter.Serie.Server.Crawler.MaxConnectionsPerServer,
+                        TaskScheduler = Chapter.Serie.Server.Scheduler[Priority.Pages],
                     },
                     (page, state) =>
                     {
@@ -246,7 +218,7 @@ namespace MangaCrawlerLib
 
         public override string ToString()
         {
-            return String.Format("{0} - {1} - {2}", Server, Serie, Chapter);
+            return String.Format("{0} - {1} - {2}", Chapter.Serie.Server.Name, Chapter.Serie.Title, Chapter.Title);
         }
 
         public int DownloadedPages
@@ -278,7 +250,7 @@ namespace MangaCrawlerLib
                 Loggers.MangaCrawler.Info("Cancelling tasks");
                 m_cancellation_token_source.Cancel();
 
-                s = TaskState.Deleting;
+                State = TaskState.Deleting;
             }
         }
 
@@ -341,7 +313,7 @@ namespace MangaCrawlerLib
             get
             {
                 return String.Format(MangaCrawlerLib.Properties.Resources.DownloadingChapterInfo,
-                    Server, Serie, Chapter);
+                     Chapter.Serie.Server.Name, Chapter.Serie.Title, Chapter.Title);
             }
         }
 
@@ -352,11 +324,11 @@ namespace MangaCrawlerLib
 
             return a_images_base_dir +
                    Path.DirectorySeparatorChar +
-                   FileUtils.RemoveInvalidFileDirectoryCharacters(ServerName) +
+                   FileUtils.RemoveInvalidFileDirectoryCharacters(Chapter.Serie.Server.Name) +
                    Path.DirectorySeparatorChar +
-                   FileUtils.RemoveInvalidFileDirectoryCharacters(Serie) +
+                   FileUtils.RemoveInvalidFileDirectoryCharacters(Chapter.Serie.Title) +
                    Path.DirectorySeparatorChar +
-                   FileUtils.RemoveInvalidFileDirectoryCharacters(Chapter) +
+                   FileUtils.RemoveInvalidFileDirectoryCharacters(Chapter.Title) +
                    Path.DirectorySeparatorChar;
         }
     }

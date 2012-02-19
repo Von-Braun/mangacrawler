@@ -49,8 +49,11 @@ namespace MangaCrawlerLib
 
             for (int i = 0; i < series.Count; i += 2)
             {
-                SerieInfo si = new SerieInfo(a_info,
-                    series[i].GetAttributeValue("value", ""), series[i + 1].InnerText);
+                SerieInfo si = new SerieInfo(
+                    a_info,
+                    "http://www.thespectrum.net" + series[i].GetAttributeValue("value", ""), 
+                    series[i + 1].InnerText);
+
                 result.Add(si);
             }
 
@@ -71,9 +74,11 @@ namespace MangaCrawlerLib
             var chapters = doc.DocumentNode.SelectNodes("//select[@name='ch']/option");
 
             var result = from chapter in chapters
-                            select new ChapterInfo(a_info, href + "?ch=" +
-                                chapter.GetAttributeValue("value", "").Replace(" ", "+"),
-                                chapter.NextSibling.InnerText);
+                         select new ChapterInfo(
+                             a_info,
+                             "http://www.thespectrum.net" + href + "?ch=" +
+                                 chapter.GetAttributeValue("value", "").Replace(" ", "+") + "&page=1",
+                             chapter.NextSibling.InnerText);
 
             a_progress_callback(100, result.Reverse());
         }
@@ -89,7 +94,7 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                PageInfo pi = new PageInfo(a_info, a_info.URLPart + "&page=" + 
+                PageInfo pi = new PageInfo(a_info, a_info.URL + "&page=" + 
                     page.GetAttributeValue("value", ""), 
                     index, page.NextSibling.InnerText);
 
@@ -113,16 +118,6 @@ namespace MangaCrawlerLib
                 return "http://view.mangamonger.com/" + img.GetAttributeValue("src", "").
                     RemoveFromLeft(1);
             }
-        }
-
-        public override string GetChapterURL(ChapterInfo a_info)
-        {
-            return "http://www.thespectrum.net" + a_info.URLPart + "&page=1";
-        }
-
-        public override string GetSerieURL(SerieInfo a_info)
-        {
-            return "http://www.thespectrum.net" + a_info.URLPart;
         }
 
         public override string GetServerURL()
