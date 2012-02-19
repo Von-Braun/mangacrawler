@@ -12,7 +12,6 @@ using TomanuExtensions;
 
 namespace MangaCrawlerLib.Crawlers
 {
-    #if TEST_SERVERS
     internal class TestServerCrawler : Crawler
     {
         private const int MIN_SERVER_DELAY = 250;
@@ -210,10 +209,8 @@ namespace MangaCrawlerLib.Crawlers
 
         public override IEnumerable<PageInfo> DownloadPages(TaskInfo a_info)
         {
-            Debug.Assert(a_info.Server.Name == m_name);
-
-            var serie = m_series.First(s => s.Title == a_info.Serie);
-            var chapter = GenerateChapters(serie).First(c => c.Title == a_info.Chapter);
+            var serie = m_series.First(s => s.Title == a_info.Chapter.Serie.Title);
+            var chapter = GenerateChapters(serie).First(c => c.Title == a_info.Chapter.Title);
             var pages = GeneratePages(chapter).ToList();
 
             var result = from page in pages
@@ -230,9 +227,9 @@ namespace MangaCrawlerLib.Crawlers
             Bitmap bmp = new Bitmap(NextInt(600, 2000), NextInt(600, 2000));
             using (Graphics g = Graphics.FromImage(bmp))
             {
-                string str = "server: " + a_info.TaskInfo.ServerName + Environment.NewLine +
-                             "serie: " + a_info.TaskInfo.Serie + Environment.NewLine +
-                             "chapter: " + a_info.TaskInfo.Chapter + Environment.NewLine +
+                string str = "server: " + a_info.TaskInfo.Chapter.Serie.Server.Name + Environment.NewLine +
+                             "serie: " + a_info.TaskInfo.Chapter.Serie.Title + Environment.NewLine +
+                             "chapter: " + a_info.TaskInfo.Chapter.Title + Environment.NewLine +
                              "page: " + a_info.Name;
 
                 g.DrawString(
@@ -257,8 +254,7 @@ namespace MangaCrawlerLib.Crawlers
 
         public override string GetServerURL()
         {
-            return "fake_server_url";
+            return m_name;
         }
     }
-    #endif
 }

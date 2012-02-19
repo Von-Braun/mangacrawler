@@ -11,7 +11,7 @@ namespace MangaCrawlerLib
     {
         private Object m_lock = new Object();
         private Queue<ManualResetEvent> m_queue = new Queue<ManualResetEvent>();
-        private bool m_firstGo = false;
+        private bool m_first_go = false;
 
         public void WaitOne(CancellationToken a_token)
         {
@@ -19,13 +19,13 @@ namespace MangaCrawlerLib
 
             lock (m_lock)
             {
-                if (m_firstGo)
+                if (m_first_go)
                 {
                     mre = new ManualResetEvent(false);
                     m_queue.Enqueue(mre);
                 }
                 else
-                    m_firstGo = true;
+                    m_first_go = true;
             }
 
             if (mre != null)
@@ -74,7 +74,7 @@ namespace MangaCrawlerLib
                     m_queue.Dequeue().Set();
 
                 if (m_queue.Count == 0)
-                    m_firstGo = false;
+                    m_first_go = false;
             }
         }
     }

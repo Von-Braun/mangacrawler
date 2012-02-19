@@ -27,7 +27,8 @@ namespace MangaCrawlerLib
                          where (row.ChildNodes.Count >= 8)
                          where (row.ChildNodes[3].InnerText != "None")
                          select new SerieInfo(a_info, 
-                                              row.ChildNodes[1].ChildNodes[0].GetAttributeValue("href", ""), 
+                                              "http://www.mangatoshokan.com" + 
+                                                  row.ChildNodes[1].ChildNodes[0].GetAttributeValue("href", ""), 
                                               row.ChildNodes[1].ChildNodes[0].InnerText);
 
             a_progress_callback(100, result);
@@ -47,8 +48,9 @@ namespace MangaCrawlerLib
 
             var result = from chapter in chapters.Reverse().Skip(3).Reverse()
                          where chapter.NextSibling.InnerText != "[Series End]"
-                         select new ChapterInfo(a_info, chapter.GetAttributeValue("value", ""), 
-                             chapter.NextSibling.InnerText);
+                         select new ChapterInfo(a_info, 
+                                                "http://www.mangatoshokan.com" + chapter.GetAttributeValue("value", ""), 
+                                                chapter.NextSibling.InnerText);
 
             a_progress_callback(100, result.Reverse());
         }
@@ -69,7 +71,10 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                yield return new PageInfo(a_info, page.GetAttributeValue("value", ""), index, page.NextSibling.InnerText);
+                yield return new PageInfo(a_info, 
+                                          "http://www.mangatoshokan.com" + page.GetAttributeValue("value", ""), 
+                                          index, 
+                                          page.NextSibling.InnerText);
             }
         }
 
@@ -85,21 +90,6 @@ namespace MangaCrawlerLib
         public override string GetServerURL()
         {
             return "http://www.mangatoshokan.com/read";
-        }
-
-        public override string GetSerieURL(SerieInfo a_info)
-        {
-            return "http://www.mangatoshokan.com" + a_info.URLPart;
-        }
-
-        public override string GetChapterURL(ChapterInfo a_info)
-        {
-            return "http://www.mangatoshokan.com" + a_info.URLPart;
-        }
-
-        public override string GetPageURL(PageInfo a_info)
-        {
-            return "http://www.mangatoshokan.com" + a_info.URLPart;
         }
     }
 }

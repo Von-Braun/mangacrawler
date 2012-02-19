@@ -34,8 +34,7 @@ namespace MangaCrawlerLib
 
             var result = from serie in series
                             select new SerieInfo(a_info,
-                                                serie.GetAttributeValue("href", "").
-                                                RemoveFromRight(1),
+                                                serie.GetAttributeValue("href", ""),
                                                 serie.InnerText);
 
             a_progress_callback(100, result);
@@ -73,14 +72,10 @@ namespace MangaCrawlerLib
             }
         }
 
+        // TODO: 
         public override string GetImageURL(PageInfo a_info)
         {
             return a_info.URL;
-        }
-
-        public override string GetSerieURL(SerieInfo a_info)
-        {
-            return base.GetSerieURL(a_info) + "/";
         }
 
         public override string GetServerURL()

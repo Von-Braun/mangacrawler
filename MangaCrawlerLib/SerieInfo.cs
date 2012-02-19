@@ -10,20 +10,17 @@ namespace MangaCrawlerLib
     public class SerieInfo
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string m_url;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private List<ChapterInfo> m_chapters = new List<ChapterInfo>();
 
         public ServerInfo Server { get; private set; }
-        internal string URLPart { get; private set; }
+        public string URL { get; private set; }
         public int DownloadProgress { get; private set; }
         public string Title { get; private set; }
         public SerieState State;
 
-        internal SerieInfo(ServerInfo a_server, string a_url_part, string a_title)
+        internal SerieInfo(ServerInfo a_server, string a_url, string a_title)
         {
-            URLPart = a_url_part;
+            URL = HttpUtility.HtmlDecode(a_url);
             Server = a_server;
 
             Title = a_title.Trim();
@@ -38,17 +35,6 @@ namespace MangaCrawlerLib
             get
             {
                 return m_chapters;
-            }
-        }
-
-        public string URL
-        {
-            get
-            {
-                if (m_url == null)
-                    m_url = HttpUtility.HtmlDecode(Server.Crawler.GetSerieURL(this));
-
-                return m_url;
             }
         }
 

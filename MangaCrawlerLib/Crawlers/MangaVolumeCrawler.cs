@@ -98,7 +98,7 @@ namespace MangaCrawlerLib
                         Tuple<int, int, string, string> s =
                             new Tuple<int, int, string, string>(page, index++, 
                                 serie.SelectSingleNode("span").InnerText,
-                                serie.GetAttributeValue("href", "").RemoveFromLeft(1));
+                                "http://www.mangavolume.com" + serie.GetAttributeValue("href", ""));
 
                         series.Add(s);
                     }
@@ -205,7 +205,7 @@ namespace MangaCrawlerLib
                     {
                         Tuple<int, int, string, string> s =
                             new Tuple<int, int, string, string>(page, index++, serie.InnerText,
-                                serie.GetAttributeValue("href", "").RemoveFromLeft(1));
+                                "http://www.mangatoshokan.com" + serie.GetAttributeValue("href", ""));
 
                         series.Add(s);
                     }
@@ -272,16 +272,6 @@ namespace MangaCrawlerLib
         public override string GetServerURL()
         {
             return "http://www.mangavolume.com/manga-archive/mangas/";
-        }
-
-        public override string GetSerieURL(SerieInfo a_info)
-        {
-            return "http://www.mangavolume.com/" + a_info.URLPart;
-        }
-
-        public override string GetChapterURL(ChapterInfo a_info)
-        {
-            return "http://www.mangavolume.com/" + a_info.URLPart;
         }
     }
 }
