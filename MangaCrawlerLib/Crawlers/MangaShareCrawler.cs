@@ -48,9 +48,9 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        public override IEnumerable<Page> DownloadPages(Work a_work)
+        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            HtmlDocument doc = DownloadDocument(a_work);
+            HtmlDocument doc = DownloadDocument(a_chapter);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='pagejump']/option");
 
@@ -62,9 +62,9 @@ namespace MangaCrawlerLib
                 string link = page.GetAttributeValue("Value", "");
                 int page_index = link.LastIndexOf("/page");
                 link = link.Left(page_index + 5);
-                link += a_work.URL + ".html";
+                link += a_chapter.URL + ".html";
 
-                Page pi = new Page(a_work, link, index);
+                Page pi = new Page(a_chapter, link, index);
 
                 yield return pi;
             }

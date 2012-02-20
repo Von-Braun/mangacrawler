@@ -207,14 +207,14 @@ namespace MangaCrawlerLib.Crawlers
             }
         }
 
-        public override IEnumerable<Page> DownloadPages(Work a_work)
+        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            var serie = m_series.First(s => s.Title == a_work.Chapter.Serie.Title);
-            var chapter = GenerateChapters(serie).First(c => c.Title == a_work.Chapter.Title);
+            var serie = m_series.First(s => s.Title == a_chapter.Serie.Title);
+            var chapter = GenerateChapters(serie).First(c => c.Title == a_chapter.Title);
             var pages = GeneratePages(chapter).ToList();
 
             var result = from page in pages
-                         select new Page(a_work, "fakse_page_url",
+                         select new Page(a_chapter, "fakse_page_url",
                              pages.IndexOf(page) + 1, page);
 
             Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
@@ -227,9 +227,9 @@ namespace MangaCrawlerLib.Crawlers
             Bitmap bmp = new Bitmap(NextInt(600, 2000), NextInt(600, 2000));
             using (Graphics g = Graphics.FromImage(bmp))
             {
-                string str = "server: " + a_page.Work.Chapter.Serie.Server.Name + Environment.NewLine +
-                             "serie: " + a_page.Work.Chapter.Serie.Title + Environment.NewLine +
-                             "chapter: " + a_page.Work.Chapter.Title + Environment.NewLine +
+                string str = "server: " + a_page.Chapter.Serie.Server.Name + Environment.NewLine +
+                             "serie: " + a_page.Chapter.Serie.Title + Environment.NewLine +
+                             "chapter: " + a_page.Chapter.Title + Environment.NewLine +
                              "page: " + a_page.Name;
 
                 g.DrawString(

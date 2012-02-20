@@ -57,9 +57,9 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result.Reverse());
         }
 
-        public override IEnumerable<Page> DownloadPages(Work a_work)
+        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            HtmlDocument doc = DownloadDocument(a_work);
+            HtmlDocument doc = DownloadDocument(a_chapter);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='pageid']/option");
 
@@ -72,7 +72,7 @@ namespace MangaCrawlerLib
 
                 for (int page = 1; page <= pages_count; page++)
                 {
-                    Page pi = new Page(a_work, a_work.URL + "&page=" + page, page);
+                    Page pi = new Page(a_chapter, a_chapter.URL + "&page=" + page, page);
 
                     yield return pi;
                 }
@@ -84,9 +84,9 @@ namespace MangaCrawlerLib
                 {
                     index++;
 
-                    Page pi = new Page(a_work, 
-                                               "http://www.anime-source.com/banzai/" + page.GetAttributeValue("value", ""),
-                                               index);
+                    Page pi = new Page(a_chapter, 
+                                       "http://www.anime-source.com/banzai/" + page.GetAttributeValue("value", ""),
+                                       index);
 
                     yield return pi;
                 }
@@ -98,7 +98,7 @@ namespace MangaCrawlerLib
             HtmlDocument doc = DownloadDocument(a_page);
 
             string xpath;
-            if (a_page.Work.Pages.Count() == a_page.Index)
+            if (a_page.Chapter.Pages.Count() == a_page.Index)
                 xpath = "/html/body/center/table/tr/td/table[5]/tr/td/div/img";
             else
                 xpath = "/html/body/center/table/tr/td/table[5]/tr/td/div/a/img";

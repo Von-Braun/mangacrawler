@@ -68,6 +68,35 @@ namespace MangaCrawler
 
     public partial class MangaCrawlerForm : Form
     {
+        private Dictionary<Server, VisualState> m_series_visual_states =
+            new Dictionary<Server, VisualState>();
+        private Dictionary<Serie, VisualState> m_chapters_visual_states =
+            new Dictionary<Serie, VisualState>();
+
+        public Serie SelectedSerie
+        {
+            get
+            {
+                return seriesListBox.SelectedItem as Serie;
+            }
+        }
+
+        public Server SelectedServer
+        {
+            get
+            {
+                return serversListBox.SelectedItem as Server;
+            }
+        }
+
+        public Chapter SelectedChapter
+        {
+            get
+            {
+                return chaptersListBox.SelectedItem as Chapter;
+            }
+        }
+
         private Color BAD_DIR = Color.Red;
 
         public MangaCrawlerForm()
@@ -95,8 +124,6 @@ namespace MangaCrawler
             };
 
             DownloadManager.UseCBZ = () => Settings.Instance.UseCBZ;
-            DownloadManager.GetSeriesVisualState += () => new ListBoxVisualState(seriesListBox);
-            DownloadManager.GetChaptersVisualState += () => new ListBoxVisualState(chaptersListBox);
             
             mangaRootDirTextBox.Text = Settings.Instance.MangaRootDir;
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
@@ -166,41 +193,45 @@ namespace MangaCrawler
 
         private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DownloadManager.SelectedServer = (Server)serversListBox.SelectedItem;
-            UpdateChapters();
-        }
+            DownloadManager.DownloadSeries(SelectedServer);
 
-        private Server SelectedServer
-        {
-            get
-            {
-                return (Server)serversListBox.SelectedItem;
-            }
-        }
+            UpdateSeries();
 
-        private Serie SelectedSerie
-        {
-            get
+            if (SelectedServer != null)
             {
-                return (Serie)seriesListBox.SelectedItem;
+                VisualState vs;
+                if (m_series_visual_states.TryGetValue(SelectedServer, out vs))
+                    vs.Restore();
             }
         }
 
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DownloadManager.SelectedSerie = (Serie)seriesListBox.SelectedItem;
+            if (SelectedServer != null)
+                m_series_visual_states[SelectedServer] = new ListBoxVisualState(seriesListBox);
+            
+            DownloadManager.DownloadChapters(SelectedSerie);
+
             UpdateChapters();
+
+            if (SelectedSerie != null)
+            {
+                VisualState vs;
+                if (m_chapters_visual_states.TryGetValue(SelectedSerie, out vs))
+                    vs.Restore();
+            }
         }
 
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DownloadManager.SelectedChapter = (Chapter)chaptersListBox.SelectedItem;
+            if (SelectedSerie != null)
+                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState(chaptersListBox);
         }
 
         private void seriesSearchTextBox_TextChanged(object sender, EventArgs e)
         {
             Settings.Instance.SeriesFilter = seriesSearchTextBox.Text;
-            UpdateSeriesTab();
+            UpdateSeries();
         }
 
         private void downloadButton_Click(object sender, EventArgs e)
@@ -344,11 +375,11 @@ namespace MangaCrawler
 
         private void serverURLButton_Click(object sender, EventArgs e)
         {
-            if (DownloadManager.SelectedServer != null)
+            if (SelectedServer != null)
             {
                 try
                 {
-                    Process.Start(DownloadManager.SelectedServer.URL);
+                    Process.Start(SelectedServer.URL);
                 }
                 catch
                 {
@@ -362,11 +393,11 @@ namespace MangaCrawler
 
         private void seriesURLButton_Click(object sender, EventArgs e)
         {
-            if (DownloadManager.SelectedSerie != null)
+            if (SelectedSerie != null)
             {
                 try
                 {
-                    Process.Start(DownloadManager.SelectedSerie.URL);
+                    Process.Start(SelectedSerie.URL);
                 }
                 catch
                 {
@@ -380,11 +411,11 @@ namespace MangaCrawler
 
         private void chapterURLButton_Click(object sender, EventArgs e)
         {
-            if (DownloadManager.SelectedChapter != null)
+            if (SelectedChapter != null)
             {
                 try
                 {
-                    Process.Start(DownloadManager.SelectedChapter.URL);
+                    Process.Start(SelectedChapter.URL);
                 }
                 catch
                 {
@@ -413,12 +444,14 @@ namespace MangaCrawler
 
         private void seriesListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
-            DownloadManager.SeriesVisualState = DownloadManager.GetSeriesVisualState();
+            if (SelectedServer != null)
+                m_series_visual_states[SelectedServer] = new ListBoxVisualState(seriesListBox);
         }
 
         private void chaptersListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
-            DownloadManager.ChaptersVisualState = DownloadManager.GetChaptersVisualState();
+            if (SelectedSerie != null)
+                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState(chaptersListBox);
         }
 
         private void ListBox_DrawItem(DrawItemEventArgs e, string a_text, 
@@ -588,7 +621,7 @@ namespace MangaCrawler
                     case ChapterState.Downloading:
                     {
                         e.Graphics.DrawString(
-                            String.Format("{0}/{1}", chapter.Work.DownloadedPages, chapter.Work.Pages.Count),
+                            String.Format("{0}/{1}", chapter.DownloadedPages, chapter.Pages.Count()),
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
                     }

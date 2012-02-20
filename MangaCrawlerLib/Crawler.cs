@@ -15,7 +15,7 @@ namespace MangaCrawlerLib
 
         public abstract void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback);
         public abstract void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback);
-        public abstract IEnumerable<Page> DownloadPages(Work a_work);
+        public abstract IEnumerable<Page> DownloadPages(Chapter a_chapter);
         public abstract string GetServerURL();
         public abstract string GetImageURL(Page a_page);
 
@@ -58,12 +58,12 @@ namespace MangaCrawlerLib
 
         public HtmlDocument DownloadDocument(Page a_page)
         {
-            return DownloadDocument(a_page.Work.Chapter.Serie.Server, a_page.URL, CancellationToken.None);
+            return DownloadDocument(a_page.Chapter.Work.Chapter.Serie.Server, a_page.URL, CancellationToken.None);
         }
 
-        public HtmlDocument DownloadDocument(Work a_work)
+        public HtmlDocument DownloadDocument(Chapter a_chapter)
         {
-            return DownloadDocument(a_work.Chapter.Serie.Server, a_work.URL, CancellationToken.None);
+            return DownloadDocument(a_chapter.Serie.Server, a_chapter.URL, CancellationToken.None);
         }
 
         public virtual HtmlDocument DownloadDocument(Server a_server, string a_url, CancellationToken a_token)
@@ -113,7 +113,7 @@ namespace MangaCrawlerLib
             {
                 try
                 {
-                    ConnectionsLimiter.Aquire(a_page.Work.Chapter.Serie.Server, a_page.Work.Token, Priority.Image);
+                    ConnectionsLimiter.Aquire(a_page.Chapter.Serie.Server, a_page.Chapter.Work.Token, Priority.Image);
 
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
                         a_page.GetImageURL());
@@ -135,13 +135,13 @@ namespace MangaCrawlerLib
                             if (readed == 0)
                                 break;
 
-                            if (a_page.Work.Token.IsCancellationRequested)
+                            if (a_page.Chapter.Work.Token.IsCancellationRequested)
                             {
                                 Loggers.Cancellation.InfoFormat(
                                     "cancellation requested, work: {0} state: {1}",
-                                    this, a_page.Work.State);
+                                    this, a_page.Chapter.Work.State);
 
-                                a_page.Work.Token.ThrowIfCancellationRequested();
+                                a_page.Chapter.Work.Token.ThrowIfCancellationRequested();
                             }
 
                             mem_stream.Write(buffer, 0, readed);
@@ -153,7 +153,7 @@ namespace MangaCrawlerLib
                 }
                 finally
                 {
-                    ConnectionsLimiter.Release(a_page.Work.Chapter.Serie.Server);
+                    ConnectionsLimiter.Release(a_page.Chapter.Serie.Server);
                 }
             });
         }

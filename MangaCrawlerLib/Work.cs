@@ -21,28 +21,31 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private WorkState m_state = WorkState.Waiting;
 
-        public List<Page> Pages { get; private set; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private DateTime m_last_change;
+
         public Chapter Chapter { get; private set; }
         public string ChapterDir { get; private set; }
         public bool CBZ { get; private set; }
 
-        internal Work()
-        {
-            Pages = new List<Page>();
-        }
-
-        internal Work(Chapter a_chapter, string a_manga_root_dir, bool a_cbz) : this()
+        internal Work(Chapter a_chapter, string a_manga_root_dir, bool a_cbz) 
         {
             Chapter = a_chapter;
             ChapterDir = GetChapterDirectory(a_manga_root_dir);
             CBZ = a_cbz;
+            LastChange = DateTime.Now;
         }
 
-        internal string URL
+        public DateTime LastChange
         {
             get
             {
-                return Chapter.URL;
+                return m_last_change;
+            }
+            private set
+            {
+                m_last_change = value;
+                Chapter.LastChange = value;
             }
         }
 
@@ -58,6 +61,7 @@ namespace MangaCrawlerLib
                 Loggers.MangaCrawler.InfoFormat("{0} -> {1}", State, value);
 
                 m_state = value;
+                LastChange = DateTime.Now;
             }
         }
 
@@ -76,7 +80,7 @@ namespace MangaCrawlerLib
         {
             try
             {
-                ConnectionsLimiter.BeginDownloadPages(this);
+                ConnectionsLimiter.BeginDownloadPages(Chapter);
             }
             catch (OperationCanceledException)
             {
@@ -100,9 +104,11 @@ namespace MangaCrawlerLib
                 }
 
                 State = WorkState.Downloading;
-                Pages.AddRange(Chapter.Serie.Server.Crawler.DownloadPages(this));
 
-                Parallel.ForEach(Pages, 
+                Chapter.AddPages(Chapter.Serie.Server.Crawler.DownloadPages(Chapter));
+                LastChange = DateTime.Now;
+
+                Parallel.ForEach(Chapter.Pages, 
 
                     new ParallelOptions()
                     {
@@ -114,6 +120,7 @@ namespace MangaCrawlerLib
                         try
                         {
                             page.DownloadAndSavePageImage();
+                            LastChange = DateTime.Now;
                         }
                         catch (OperationCanceledException ex1)
                         {
@@ -158,7 +165,7 @@ namespace MangaCrawlerLib
             }
             finally
             {
-                ConnectionsLimiter.EndDownloadPages(this);
+                ConnectionsLimiter.EndDownloadPages(Chapter);
             }
         }
 
@@ -170,7 +177,7 @@ namespace MangaCrawlerLib
 
             State = WorkState.Zipping;
 
-            var dir = new DirectoryInfo(Pages.First().GetImageFilePath()).Parent;
+            var dir = new DirectoryInfo(Chapter.Pages.First().GetImageFilePath()).Parent;
 
             var zip_file = dir.FullName + ".cbz";
 
@@ -185,7 +192,7 @@ namespace MangaCrawlerLib
             {
                 zip.UseUnicodeAsNecessary = true;
 
-                foreach (var page in Pages)
+                foreach (var page in Chapter.Pages)
                 {
                     zip.AddFile(page.GetImageFilePath(), "");
 
@@ -204,7 +211,7 @@ namespace MangaCrawlerLib
 
             try
             {
-                foreach (var page in Pages)
+                foreach (var page in Chapter.Pages)
                     new FileInfo(page.GetImageFilePath()).Delete();
 
                 if ((dir.GetFiles().Count() == 0) && (dir.GetDirectories().Count() == 0))
@@ -219,14 +226,6 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return String.Format("{0} - {1} - {2}", Chapter.Serie.Server.Name, Chapter.Serie.Title, Chapter.Title);
-        }
-
-        public int DownloadedPages
-        {
-            get
-            {
-                return Pages.Count(p => p.Downloaded);
-            }
         }
 
         internal CancellationToken Token
@@ -267,7 +266,7 @@ namespace MangaCrawlerLib
                     State = WorkState.Error;
                 else
                 {
-                    if (DownloadedPages == Pages.Count())
+                    if (Chapter.DownloadedPages == Chapter.Pages.Count())
                         State = WorkState.Downloaded;
                     else
                         State = WorkState.Error;

@@ -7,12 +7,11 @@ using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
+    // TODO: Zlikwidowac
     public abstract class VisualState
     {
-        protected abstract void Clear();
         public abstract void Restore();
-        public abstract void RaiseSelectionChanged();
+        // TODO: tylko to co sie zmienilo
         public abstract void ReloadItems<T>(IEnumerable<T> a_enum) where T : class;
-        public abstract bool ItemSelected { get; }
     }
 }

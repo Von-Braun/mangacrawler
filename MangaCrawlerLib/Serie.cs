@@ -12,11 +12,14 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private List<Chapter> m_chapters = new List<Chapter>();
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private SerieState m_state = SerieState.Initial;
+
         public Server Server { get; private set; }
         public string URL { get; private set; }
         public int DownloadProgress { get; private set; }
         public string Title { get; private set; }
-        public SerieState State;
+        public DateTime LastChange { get; private set; }
 
         internal Serie(Server a_server, string a_url, string a_title)
         {
@@ -28,6 +31,21 @@ namespace MangaCrawlerLib
             while (Title.IndexOf("  ") != -1)
                 Title = Title.Replace("  ", " ");
             Title = HttpUtility.HtmlDecode(Title);
+
+            LastChange = DateTime.Now;
+        }
+
+        public SerieState State
+        {
+            get
+            {
+                return m_state;
+            }
+            set
+            {
+                m_state = value;
+                LastChange = DateTime.Now;
+            }
         }
 
         public IEnumerable<Chapter> Chapters
@@ -56,8 +74,8 @@ namespace MangaCrawlerLib
                     }
 
                     m_chapters = chapters;
-
                     DownloadProgress = progress;
+                    LastChange = DateTime.Now;
                 });
 
                 State = SerieState.Downloaded;

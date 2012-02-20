@@ -104,16 +104,16 @@ namespace MangaCrawlerLib
                 a_progress_callback(100, new List<Chapter>());
         }
 
-        public override IEnumerable<Page> DownloadPages(Work a_work)
+        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            HtmlDocument doc = DownloadDocument(a_work);
+            HtmlDocument doc = DownloadDocument(a_chapter);
             var pages = Int32.Parse(doc.DocumentNode.SelectSingleNode("//select[@id='fpage1']/../strong").InnerText);
 
             for (int i = 1; i <= pages; i++)
             {
                 Page pi = new Page(
-                    a_work, 
-                    a_work.URL + "/" + i.ToString(), 
+                    a_chapter,
+                    a_chapter.URL + "/" + i.ToString(), 
                     i);
 
                 yield return pi;

@@ -55,9 +55,9 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result.Reverse());
         }
 
-        public override IEnumerable<Page> DownloadPages(Work a_work)
+        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            HtmlDocument doc = DownloadDocument(a_work);
+            HtmlDocument doc = DownloadDocument(a_chapter);
 
             var pages = doc.DocumentNode.SelectNodes("/html/body/div/div/table/tr/td[3]/select/option").AsEnumerable();
 
@@ -71,10 +71,10 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                yield return new Page(a_work, 
-                                          "http://www.mangatoshokan.com" + page.GetAttributeValue("value", ""), 
-                                          index, 
-                                          page.NextSibling.InnerText);
+                yield return new Page(a_chapter, 
+                                      "http://www.mangatoshokan.com" + page.GetAttributeValue("value", ""), 
+                                      index, 
+                                      page.NextSibling.InnerText);
             }
         }
 

@@ -10,7 +10,7 @@ namespace MangaCrawler
     {
         public Chapter Chapter { get; private set; }
 
-        public ChapterListItem(Serie a_chapter)
+        public ChapterListItem(Chapter a_chapter)
         {
             Chapter = a_chapter;
         }

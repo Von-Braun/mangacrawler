@@ -23,14 +23,6 @@ namespace MangaCrawlerControls
             SaveState();
         }
 
-        public override bool ItemSelected 
-        { 
-            get
-            {
-                return m_selectedItem != null;
-            }
-        }
-
         public override string ToString()
         {
             return String.Format("selected_item: {0}; selected_index: {1}; top_item: {2}; top_index: {3}",
@@ -68,18 +60,13 @@ namespace MangaCrawlerControls
                 m_listBox.TopIndex = m_listBox.Items.Count - 1;
         }
 
-        protected override void Clear()
+        private void Clear()
         {
             m_topIndex = -1;
             m_topItem = null;
             m_selectedItems = new Object[0];
             m_selectedItem = null;
             m_selectedIndex = -1;
-        }
-
-        public override void RaiseSelectionChanged()
-        {
-            m_listBox.RaiseSelectionChanged();
         }
 
         public override void ReloadItems<T>(IEnumerable<T> a_enum)
@@ -93,9 +80,6 @@ namespace MangaCrawlerControls
                 Clear();
 
             m_listBox.ReloadItems(a_enum, this);
-
-            if (m_selectedItem != prev_state.m_selectedItem)
-                RaiseSelectionChanged();
         }
     }
 }
