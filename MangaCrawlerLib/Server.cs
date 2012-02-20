@@ -19,19 +19,35 @@ namespace MangaCrawlerLib
         private Crawler m_crawler;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private ServerState m_state = ServerState.Initial;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CustomTaskScheduler m_scheduler;
 
         public string URL { get; private set; }
         public string Name { get; private set; }
         public int DownloadProgress { get; private set; }
-        public ServerState State;
+        public DateTime LastChange { get; private set; }
 
         internal Server(string a_url, string a_name)
         {
             URL = a_url;
             Name = a_name;
+            LastChange = DateTime.Now;
         }
 
+        public ServerState State
+        {
+            get
+            {
+                return m_state;
+            }
+            set
+            {
+                m_state = value;
+                LastChange = DateTime.Now;
+            }
+        }
         internal CustomTaskScheduler Scheduler 
         {
             get
@@ -81,6 +97,7 @@ namespace MangaCrawlerLib
 
                     m_series = series;
                     DownloadProgress = progress;
+                    LastChange = DateTime.Now;
                 });
 
                 State = ServerState.Downloaded;

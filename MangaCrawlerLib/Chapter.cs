@@ -14,12 +14,16 @@ namespace MangaCrawlerLib
     public class Chapter
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ChapterState m_state;
+        private ChapterState m_state = ChapterState.Initial;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private List<Page> m_pages = new List<Page>();
 
         public Work Work;
         public string URL { get; private set; }
         public Serie Serie { get; private set; }
         public string Title { get; private set; }
+        public DateTime LastChange { get; internal set; }
         
         internal Chapter(Serie a_serie, string a_url, string a_title)
         {
@@ -32,12 +36,24 @@ namespace MangaCrawlerLib
                 Title = Title.Replace("  ", " ");
             Title = HttpUtility.HtmlDecode(Title);
 
-            //m_state = DownloadManager.Downloaded.WasDownloaded(this) ?
-            //    ChapterState.WasDownloaded : ChapterState.Initial;
-            m_state = ChapterState.Initial;
+            LastChange = DateTime.Now;
         }
 
-        public Work FindWork()
+        public IEnumerable<Page> Pages 
+        {
+            get
+            {
+                return m_pages;
+            }
+        }
+
+        public void AddPages(IEnumerable<Page> a_pages)
+        {
+            m_pages.AddRange(a_pages);
+            LastChange = DateTime.Now;
+        }
+
+        internal Work FindWork()
         {
             foreach (var work in DownloadManager.Works)
             {
@@ -84,6 +100,14 @@ namespace MangaCrawlerLib
                 return (State == ChapterState.Error) ||
                        (State == ChapterState.Initial) &&
                        (State == ChapterState.Aborted);
+            }
+        }
+
+        public int DownloadedPages
+        {
+            get
+            {
+                return Pages.Count(p => p.Downloaded);
             }
         }
     }

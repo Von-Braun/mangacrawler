@@ -78,10 +78,5 @@ namespace MangaCrawlerControls
                 m_reloading = false;
             }
         }
-
-        public void RaiseSelectionChanged()
-        {
-            OnSelectedIndexChanged(new EventArgs());
-        }
     }
 }

@@ -135,9 +135,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override IEnumerable<Page> DownloadPages(Work a_work)
+        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            HtmlDocument doc = DownloadDocument(a_work);
+            HtmlDocument doc = DownloadDocument(a_chapter);
 
             var pages = doc.DocumentNode.SelectNodes(
                 "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
@@ -150,7 +150,7 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                Page pi = new Page(a_work, page.GetAttributeValue("href", ""), index, 
+                Page pi = new Page(a_chapter, page.GetAttributeValue("href", ""), index, 
                     Path.GetFileNameWithoutExtension(page.InnerText));
 
                 yield return pi;

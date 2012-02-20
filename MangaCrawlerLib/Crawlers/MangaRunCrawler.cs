@@ -182,12 +182,12 @@ namespace MangaCrawlerLib
             update(100);          
         }
 
-        public override IEnumerable<Page> DownloadPages(Work a_work)
+        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            HtmlDocument doc = DownloadDocument(a_work);
+            HtmlDocument doc = DownloadDocument(a_chapter);
 
             List<string> pages = new List<string>();
-            pages.Add(a_work.URL);
+            pages.Add(a_chapter.URL);
             var pages_list = doc.DocumentNode.SelectNodes("/html/body/div[2]/a");
             if (pages_list != null)
             {
@@ -204,14 +204,14 @@ namespace MangaCrawlerLib
                 new ParallelOptions()
                 {
                     MaxDegreeOfParallelism = MaxConnectionsPerServer,
-                    TaskScheduler = a_work.Chapter.Serie.Server.Scheduler[Priority.Pages], 
+                    TaskScheduler = a_chapter.Serie.Server.Scheduler[Priority.Pages], 
                 },
                 (page, state) =>
                 {
                     try
                     {
                         HtmlDocument page_doc = DownloadDocument(
-                            a_work.Chapter.Serie.Server, pages[page]);
+                            a_chapter.Serie.Server, pages[page]);
 
                         var page_pages1 = page_doc.DocumentNode.SelectNodes(
                             "/html/body/table/td");
@@ -246,13 +246,13 @@ namespace MangaCrawlerLib
                             index += 1;
                         }
 
-                        if (a_work.Token.IsCancellationRequested)
+                        if (a_chapter.Work.Token.IsCancellationRequested)
                         {
                             Loggers.Cancellation.InfoFormat(
                                 "Pages - token cancelled, a_url: {0}",
-                                a_work.URL);
+                                a_chapter.URL);
 
-                            a_work.Token.ThrowIfCancellationRequested();
+                            a_chapter.Work.Token.ThrowIfCancellationRequested();
                         }
 
                         pages_progress++;
@@ -267,7 +267,7 @@ namespace MangaCrawlerLib
 
             return from serie in result
                    orderby serie.Item1, serie.Item2
-                   select new Page(a_work, serie.Item4, result.IndexOf(serie) + 1, serie.Item3);
+                   select new Page(a_chapter, serie.Item4, result.IndexOf(serie) + 1, serie.Item3);
         }
 
         public override string GetImageURL(Page a_page)

@@ -57,9 +57,9 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result.Reverse());
         }
 
-        public override IEnumerable<Page> DownloadPages(Work a_work)
+        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            HtmlDocument doc = DownloadDocument(a_work);
+            HtmlDocument doc = DownloadDocument(a_chapter);
 
             var images = Regex.Matches(doc.DocumentNode.InnerText, 
                 "s.src = '.*(http://read\\.stoptazmo\\.com/.*//.*\\.(jpg|png|gif|bmp|jpeg))");
@@ -68,7 +68,7 @@ namespace MangaCrawlerLib
             {
                 string img_url = images[i].Groups[1].Value;
                 string name = Path.GetFileNameWithoutExtension(img_url);
-                yield return new Page(a_work, img_url, i, name);
+                yield return new Page(a_chapter, img_url, i, name);
             }
         }
 

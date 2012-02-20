@@ -43,22 +43,22 @@ namespace MangaCrawlerLib
 
             var result = from chapter in chapters
                          select new Chapter(a_serie, 
-                                                "http://manga-access.com" + chapter.GetAttributeValue("href", ""), 
-                                                chapter.InnerText);
+                                            "http://manga-access.com" + chapter.GetAttributeValue("href", ""), 
+                                            chapter.InnerText);
 
             a_progress_callback(100, result);
         }
 
-        public override IEnumerable<Page> DownloadPages(Work a_work)
+        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            HtmlDocument doc = DownloadDocument(a_work);
+            HtmlDocument doc = DownloadDocument(a_chapter);
 
             var pages = doc.DocumentNode.SelectNodes("//select[@id='page_switch']/option");
 
             return from page in pages
-                   select new Page(a_work, 
-                                       "http://manga-access.com" + page.GetAttributeValue("value", ""), pages.IndexOf(page) + 1,
-                                       page.NextSibling.InnerText);
+                   select new Page(a_chapter, 
+                                   "http://manga-access.com" + page.GetAttributeValue("value", ""), pages.IndexOf(page) + 1,
+                                   page.NextSibling.InnerText);
         }
 
         public override string GetImageURL(Page a_page)
