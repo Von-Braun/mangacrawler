@@ -13,25 +13,24 @@ namespace MangaCrawlerLib
 {
     public class Page
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string m_image_url;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string m_name;
-
-        private string m_image_file_path;
-
         public Chapter Chapter { get; private set; }
-        internal int Index { get; private set; }
+        public int Index { get; private set; }
         public string URL { get; private set; }
         public bool Downloaded { get; private set; }
         public DateTime LastChange { get; private set; }
+        public int ID { get; private set; }
+        public string ImageFilePath { get; private set; }
+        public string Name { get; private set; }
+        public string ImageURL { get; private set; }
+        public byte[] Hash { get; private set; }
 
         internal Page(Chapter a_chapter, string a_url, int a_index, string a_name = null)
         {
+            ID = IDGenerator.Next();
             Chapter = a_chapter;
             URL = HttpUtility.HtmlDecode(a_url);
             Index = a_index;
+            LastChange = DateTime.Now;
 
             if (a_name != null)
             {
@@ -39,33 +38,11 @@ namespace MangaCrawlerLib
                 a_name = a_name.Replace("\t", " ");
                 while (a_name.IndexOf("  ") != -1)
                     a_name = a_name.Replace("  ", " ");
-                m_name = HttpUtility.HtmlDecode(m_name);
-                m_name = FileUtils.RemoveInvalidFileDirectoryCharacters(a_name);
+                a_name = HttpUtility.HtmlDecode(a_name);
+                Name = FileUtils.RemoveInvalidFileDirectoryCharacters(a_name);
             }
-
-            LastChange = DateTime.Now;
-        }
-
-        internal string Name
-        {
-            get
-            {
-                if (m_name == null)
-                    return Index.ToString();
-                else
-                    return m_name;
-            }
-        }
-
-        internal string GetImageURL()
-        {
-            if (m_image_url == null)
-            {
-                m_image_url = HttpUtility.HtmlDecode(Chapter.Serie.Server.Crawler.GetImageURL(this));
-                LastChange = DateTime.Now;
-            }
-
-            return m_image_url;
+            else
+                Name = Index.ToString();
         }
 
         public override string ToString()
@@ -79,26 +56,25 @@ namespace MangaCrawlerLib
             return Chapter.Serie.Server.Crawler.GetImageStream(this);  
         }
 
-        public string GetImageFilePath()
-        {
-            return m_image_file_path;
-        }
-
         public void DownloadAndSavePageImage()
         {
             if (Chapter.Work.Token.IsCancellationRequested)
             {
                 Loggers.Cancellation.InfoFormat(
                     "#2 cancellation requested, work: {0} state: {1}",
-                    this, Chapter.Work.State);
+                    this, Chapter.State);
 
                 Chapter.Work.Token.ThrowIfCancellationRequested();
             }
 
-            m_image_file_path = Chapter.Work.ChapterDir +
+            ImageURL = HttpUtility.HtmlDecode(Chapter.Serie.Server.Crawler.GetImageURL(this));
+
+            ImageFilePath = Chapter.Work.ChapterDir +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(
-                    Path.GetExtension(GetImageURL()).ToLower());
+                    Path.GetExtension(ImageURL).ToLower());
+
+            LastChange = DateTime.Now;
 
             new DirectoryInfo(Chapter.Work.ChapterDir).Create();
 
@@ -109,11 +85,11 @@ namespace MangaCrawlerLib
 
                 using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
                 {
-                    Stream ims = null;
+                    MemoryStream ms = null;
 
                     try
                     {
-                        ims = GetImageStream();
+                        ms = GetImageStream();
                     }
                     catch (WebException)
                     {
@@ -124,8 +100,8 @@ namespace MangaCrawlerLib
 
                     try
                     {
-                        System.Drawing.Image.FromStream(ims);
-                        ims.Position = 0;
+                        System.Drawing.Image.FromStream(ms);
+                        ms.Position = 0;
                     }
                     catch
                     {
@@ -133,10 +109,15 @@ namespace MangaCrawlerLib
                         return;
                     }
 
-                    ims.CopyTo(file_stream);
+                    ms.CopyTo(file_stream);
+
+                    ms.Position = 0;
+                    byte[] hash;
+                    TomanuExtensions.Utils.Hash.CalculateSHA256(ms, out hash);
+                    Hash = hash;
                 }
 
-                FileInfo image_file = new FileInfo(m_image_file_path);
+                FileInfo image_file = new FileInfo(ImageFilePath);
 
                 if (image_file.Exists)
                     image_file.Delete();

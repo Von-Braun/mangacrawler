@@ -73,42 +73,36 @@ namespace MangaCrawlerLib
         {
             foreach (var chapter in a_chapters)
             {
-                Work work = null;
-
-                work = chapter.FindWork();
-
-                if (work != null)
+                if (chapter.Work != null)
                 {
-                    if (work.IsWorking)
+                    if (chapter.Work.IsWorking)
                     {
                         Loggers.MangaCrawler.InfoFormat(
                             "Already in work, work: {0} state: {1}",
-                            work, work.State);
+                            chapter.Work, chapter.State);
                         continue;
                     }
                 }
                 else
                 {
-                    work = new Work(chapter, GetMangaRootDir(), UseCBZ());
+                    chapter.Work = new Work(chapter, GetMangaRootDir(), UseCBZ());
                 }
-
-                chapter.Work = work;
 
                 Loggers.MangaCrawler.InfoFormat(
                     "Work: {0} state: {1}",
-                    work, work.State);
+                    chapter.Work, chapter.State);
 
                 lock (s_works)
                 {
-                    s_works.Add(work);
+                    s_works.Add(chapter.Work);
                 }
 
                 Task task = new Task(() =>
                 {
-                    work.DownloadPages();
+                    chapter.Work.DownloadPages();
                 }, TaskCreationOptions.LongRunning);
 
-                task.Start(work.Chapter.Serie.Server.Scheduler[Priority.Pages]);
+                task.Start(chapter.Serie.Server.Scheduler[Priority.Pages]);
             }
         }
 

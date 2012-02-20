@@ -18,61 +18,27 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CancellationTokenSource m_cancellation_token_source = new CancellationTokenSource();
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private WorkState m_state = WorkState.Waiting;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private DateTime m_last_change;
-
         public Chapter Chapter { get; private set; }
         public string ChapterDir { get; private set; }
         public bool CBZ { get; private set; }
+        public int ID { get; private set; }
 
         internal Work(Chapter a_chapter, string a_manga_root_dir, bool a_cbz) 
         {
+            ID = IDGenerator.Next();
             Chapter = a_chapter;
             ChapterDir = GetChapterDirectory(a_manga_root_dir);
             CBZ = a_cbz;
-            LastChange = DateTime.Now;
-        }
-
-        public DateTime LastChange
-        {
-            get
-            {
-                return m_last_change;
-            }
-            private set
-            {
-                m_last_change = value;
-                Chapter.LastChange = value;
-            }
-        }
-
-        public WorkState State
-        {
-            get
-            {
-
-                return m_state;
-            }
-            set
-            {
-                Loggers.MangaCrawler.InfoFormat("{0} -> {1}", State, value);
-
-                m_state = value;
-                LastChange = DateTime.Now;
-            }
         }
 
         public bool IsWorking
         {
             get
             {
-                return (m_state == WorkState.Waiting) ||
-                       (m_state == WorkState.Downloading) ||
-                       (m_state == WorkState.Deleting) ||
-                       (m_state == WorkState.Zipping);
+                return (Chapter.State == ChapterState.Waiting) ||
+                       (Chapter.State == ChapterState.Downloading) ||
+                       (Chapter.State == ChapterState.Deleting) ||
+                       (Chapter.State == ChapterState.Zipping);
             }
         }
 
@@ -86,7 +52,7 @@ namespace MangaCrawlerLib
             {
                 Loggers.Cancellation.InfoFormat(
                     "#1 operation cancelled, work: {0} state: {1}",
-                    this, State);
+                    this, Chapter.State);
 
                 FinishDownload(true);
                 return;
@@ -98,15 +64,16 @@ namespace MangaCrawlerLib
                 {
                     Loggers.Cancellation.InfoFormat(
                         "#1 cancellation requested, work: {0} state: {1}",
-                        this, State);
+                        this, Chapter.State);
 
                     Token.ThrowIfCancellationRequested();
                 }
 
-                State = WorkState.Downloading;
+                Chapter.State = ChapterState.Downloading;
+                Chapter.LastChange = DateTime.Now;
 
                 Chapter.AddPages(Chapter.Serie.Server.Crawler.DownloadPages(Chapter));
-                LastChange = DateTime.Now;
+                Chapter.LastChange = DateTime.Now;
 
                 Parallel.ForEach(Chapter.Pages, 
 
@@ -120,13 +87,13 @@ namespace MangaCrawlerLib
                         try
                         {
                             page.DownloadAndSavePageImage();
-                            LastChange = DateTime.Now;
+                            Chapter.LastChange = DateTime.Now;
                         }
                         catch (OperationCanceledException ex1)
                         {
                             Loggers.Cancellation.InfoFormat(
                                 "OperationCanceledException, work: {0} state: {1}, {2}",
-                                this, State, ex1);
+                                this, Chapter.State, ex1);
 
                             state.Break();
                         }
@@ -134,7 +101,7 @@ namespace MangaCrawlerLib
                         {
                             Loggers.MangaCrawler.InfoFormat(
                                 "1 Exception, work: {0} state: {1}, {2}",
-                                this, State, ex2);
+                                this, Chapter.State, ex2);
 
                             state.Break();
                             throw;
@@ -145,7 +112,7 @@ namespace MangaCrawlerLib
                 {
                     Loggers.Cancellation.InfoFormat(
                         "#3 cancellation requested, work: {0} state: {1}",
-                        this, State);
+                        this, Chapter.State);
 
                     Token.ThrowIfCancellationRequested();
                 }
@@ -159,7 +126,7 @@ namespace MangaCrawlerLib
             {
                 Loggers.MangaCrawler.InfoFormat(
                     "#2 Exception, work: {0} state: {1}, {2}",
-                    this, State, ex);
+                    this, Chapter.State, ex);
 
                 FinishDownload(a_error: true);
             }
@@ -173,11 +140,11 @@ namespace MangaCrawlerLib
         {
             Loggers.MangaCrawler.InfoFormat(
                 "Work: {0} state: {1}",
-                this, State);
+                this, Chapter.State);
 
-            State = WorkState.Zipping;
+            Chapter.State = ChapterState.Zipping;
 
-            var dir = new DirectoryInfo(Chapter.Pages.First().GetImageFilePath()).Parent;
+            var dir = new DirectoryInfo(Chapter.Pages.First().ImageFilePath).Parent;
 
             var zip_file = dir.FullName + ".cbz";
 
@@ -194,13 +161,13 @@ namespace MangaCrawlerLib
 
                 foreach (var page in Chapter.Pages)
                 {
-                    zip.AddFile(page.GetImageFilePath(), "");
+                    zip.AddFile(page.ImageFilePath, "");
 
                     if (Token.IsCancellationRequested)
                     {
                         Loggers.Cancellation.InfoFormat(
                             "cancellation requested, work: {0} state: {1}",
-                            this, State);
+                            this, Chapter.State);
 
                         Token.ThrowIfCancellationRequested();
                     }
@@ -212,7 +179,7 @@ namespace MangaCrawlerLib
             try
             {
                 foreach (var page in Chapter.Pages)
-                    new FileInfo(page.GetImageFilePath()).Delete();
+                    new FileInfo(page.ImageFilePath).Delete();
 
                 if ((dir.GetFiles().Count() == 0) && (dir.GetDirectories().Count() == 0))
                     dir.Delete();
@@ -238,45 +205,45 @@ namespace MangaCrawlerLib
 
         public void DeleteWork()
         {
-            var s = State;
+            var s = Chapter.State;
 
             Loggers.MangaCrawler.InfoFormat("Work: {0}, state: {1}", this, s);
 
-            if ((s == WorkState.Downloading) ||
-                (s == WorkState.Waiting) ||
-                (s == WorkState.Zipping))
+            if ((s == ChapterState.Downloading) ||
+                (s == ChapterState.Waiting) ||
+                (s == ChapterState.Zipping))
             {
                 Loggers.MangaCrawler.Info("Cancelling work");
                 m_cancellation_token_source.Cancel();
 
-                State = WorkState.Deleting;
+                Chapter.State = ChapterState.Deleting;
             }
         }
 
         internal void FinishDownload(bool a_error)
         {
-            var s = State;
+            var s = Chapter.State;
 
             Loggers.MangaCrawler.InfoFormat("Work: {0}, state: {1}, error: {2}",
                 this, s, a_error);
 
-            if ((s == WorkState.Waiting) || (s == WorkState.Downloading))
+            if ((s == ChapterState.Waiting) || (s == ChapterState.Downloading))
             {
                 if (a_error)
-                    State = WorkState.Error;
+                    Chapter.State = ChapterState.Error;
                 else
                 {
                     if (Chapter.DownloadedPages == Chapter.Pages.Count())
-                        State = WorkState.Downloaded;
+                        Chapter.State = ChapterState.Downloaded;
                     else
-                        State = WorkState.Error;
+                        Chapter.State = ChapterState.Error;
                 }
             }
 
-            if (s != WorkState.Downloaded)
+            if (s != ChapterState.Downloaded)
             {
                 if (m_cancellation_token_source.IsCancellationRequested)
-                    State = WorkState.Aborted;
+                    Chapter.State = ChapterState.Aborted;
             }
         }
 

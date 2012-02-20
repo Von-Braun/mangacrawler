@@ -19,23 +19,23 @@ namespace MangaCrawler
         {
             get
             {
-                var s = Work.State;
+                ChapterState s = Work.Chapter.State;
 
                 switch (s)
                 {
-                    case WorkState.Error:
+                    case ChapterState.Error:
                     return MangaCrawler.Properties.Resources.WorkProgressError;
-                    case WorkState.Aborted:
+                    case ChapterState.Aborted:
                     return MangaCrawler.Properties.Resources.WorkProgressAborted;
-                    case WorkState.Waiting:
+                    case ChapterState.Waiting:
                     return MangaCrawler.Properties.Resources.WorkProgressWaiting;
-                    case WorkState.Deleting:
+                    case ChapterState.Deleting:
                     return MangaCrawler.Properties.Resources.WorkProgressDeleting;
-                    case WorkState.Downloaded:
+                    case ChapterState.Downloaded:
                     return MangaCrawler.Properties.Resources.WorkProgressDownloaded;
-                    case WorkState.Zipping:
+                    case ChapterState.Zipping:
                     return MangaCrawler.Properties.Resources.WorkProgressZipping;
-                    case WorkState.Downloading:
+                    case ChapterState.Downloading:
                     return String.Format("{0}/{1}", Work.Chapter.DownloadedPages, Work.Chapter.Pages.Count());
                     default: throw new NotImplementedException();
                 }

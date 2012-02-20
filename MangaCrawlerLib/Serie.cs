@@ -20,19 +20,20 @@ namespace MangaCrawlerLib
         public int DownloadProgress { get; private set; }
         public string Title { get; private set; }
         public DateTime LastChange { get; private set; }
+        public int ID { get; private set; }
 
         internal Serie(Server a_server, string a_url, string a_title)
         {
+            ID = IDGenerator.Next();
             URL = HttpUtility.HtmlDecode(a_url);
             Server = a_server;
+            LastChange = DateTime.Now;
 
             Title = a_title.Trim();
             Title = Title.Replace("\t", " ");
             while (Title.IndexOf("  ") != -1)
                 Title = Title.Replace("  ", " ");
             Title = HttpUtility.HtmlDecode(Title);
-
-            LastChange = DateTime.Now;
         }
 
         public SerieState State
