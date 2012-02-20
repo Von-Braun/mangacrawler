@@ -171,15 +171,6 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Already downloaded.
-        /// </summary>
-        internal static string WasDownloaded {
-            get {
-                return ResourceManager.GetString("WasDownloaded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cancelled.
         /// </summary>
         internal static string WorkProgressAborted {

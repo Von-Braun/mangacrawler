@@ -153,9 +153,6 @@
   <data name="Aborted" xml:space="preserve">
     <value>Anuluje</value>
   </data>
-  <data name="WasDownloaded" xml:space="preserve">
-    <value>Już pobrane </value>
-  </data>
   <data name="DownloadingChapterInfo" xml:space="preserve">
     <value>serwer: {0}
 seria: {1}

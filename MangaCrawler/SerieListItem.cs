@@ -19,5 +19,20 @@ namespace MangaCrawler
         {
             return Serie.Title;
         }
+
+        public override bool Equals(object a_obj)
+        {
+            if (a_obj == null)
+                return false;
+            SerieListItem sli = a_obj as SerieListItem;
+            if (sli == null)
+                return false;
+            return Serie.Equals(sli.Serie);
+        }
+
+        public override int GetHashCode()
+        {
+            return Serie.GetHashCode();
+        }
     }
 }

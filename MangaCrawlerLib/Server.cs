@@ -28,9 +28,11 @@ namespace MangaCrawlerLib
         public string Name { get; private set; }
         public int DownloadProgress { get; private set; }
         public DateTime LastChange { get; private set; }
+        public int ID { get; private set; }
 
         internal Server(string a_url, string a_name)
         {
+            ID = IDGenerator.Next();
             URL = a_url;
             Name = a_name;
             LastChange = DateTime.Now;

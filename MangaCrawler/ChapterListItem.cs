@@ -19,5 +19,20 @@ namespace MangaCrawler
         {
             return Chapter.Title;
         }
+
+        public override bool Equals(object a_obj)
+        {
+            if (a_obj == null)
+                return false;
+            ChapterListItem cli = a_obj as ChapterListItem;
+            if (cli == null)
+                return false;
+            return Chapter.Equals(cli.Chapter);
+        }
+
+        public override int GetHashCode()
+        {
+            return Chapter.GetHashCode();
+        }
     }
 }

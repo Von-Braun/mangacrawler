@@ -116,7 +116,7 @@ namespace MangaCrawlerLib
                     ConnectionsLimiter.Aquire(a_page.Chapter.Serie.Server, a_page.Chapter.Work.Token, Priority.Image);
 
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
-                        a_page.GetImageURL());
+                        a_page.ImageURL);
 
                     myReq.UserAgent = DownloadManager.UserAgent;
                     myReq.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
@@ -139,7 +139,7 @@ namespace MangaCrawlerLib
                             {
                                 Loggers.Cancellation.InfoFormat(
                                     "cancellation requested, work: {0} state: {1}",
-                                    this, a_page.Chapter.Work.State);
+                                    this, a_page.Chapter.State);
 
                                 a_page.Chapter.Work.Token.ThrowIfCancellationRequested();
                             }

@@ -68,34 +68,10 @@ namespace MangaCrawler
 
     public partial class MangaCrawlerForm : Form
     {
-        private Dictionary<Server, VisualState> m_series_visual_states =
-            new Dictionary<Server, VisualState>();
-        private Dictionary<Serie, VisualState> m_chapters_visual_states =
-            new Dictionary<Serie, VisualState>();
-
-        public Serie SelectedSerie
-        {
-            get
-            {
-                return seriesListBox.SelectedItem as Serie;
-            }
-        }
-
-        public Server SelectedServer
-        {
-            get
-            {
-                return serversListBox.SelectedItem as Server;
-            }
-        }
-
-        public Chapter SelectedChapter
-        {
-            get
-            {
-                return chaptersListBox.SelectedItem as Chapter;
-            }
-        }
+        private Dictionary<Server, ListBoxVisualState<SerieListItem>> m_series_visual_states =
+            new Dictionary<Server, ListBoxVisualState<SerieListItem>>();
+        private Dictionary<Serie, ListBoxVisualState<ChapterListItem>> m_chapters_visual_states =
+            new Dictionary<Serie, ListBoxVisualState<ChapterListItem>>();
 
         private Color BAD_DIR = Color.Red;
 
@@ -184,6 +160,39 @@ namespace MangaCrawler
             rba.ActivateOptions();
         }
 
+        public Serie SelectedSerie
+        {
+            get
+            {
+                if (seriesListBox.SelectedItem == null)
+                    return null;
+
+                return (seriesListBox.SelectedItem as SerieListItem).Serie;
+            }
+        }
+
+        public Server SelectedServer
+        {
+            get
+            {
+                if (serversListBox.SelectedItem == null)
+                    return null;
+
+                return (serversListBox.SelectedItem as ServerListItem).Server;
+            }
+        }
+
+        public Chapter SelectedChapter
+        {
+            get
+            {
+                if (chaptersListBox.SelectedItem == null)
+                    return null;
+
+                return (chaptersListBox.SelectedItem as ChapterListItem).Chapter;
+            }
+        }
+
         private void mangaRootDirChooseButton_Click(object sender, EventArgs e)
         {
             folderBrowserDialog.SelectedPath = mangaRootDirTextBox.Text;
@@ -199,7 +208,7 @@ namespace MangaCrawler
 
             if (SelectedServer != null)
             {
-                VisualState vs;
+                ListBoxVisualState<SerieListItem> vs;
                 if (m_series_visual_states.TryGetValue(SelectedServer, out vs))
                     vs.Restore();
             }
@@ -208,7 +217,7 @@ namespace MangaCrawler
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedServer != null)
-                m_series_visual_states[SelectedServer] = new ListBoxVisualState(seriesListBox);
+                m_series_visual_states[SelectedServer] = new ListBoxVisualState<SerieListItem>(seriesListBox);
             
             DownloadManager.DownloadChapters(SelectedSerie);
 
@@ -216,7 +225,7 @@ namespace MangaCrawler
 
             if (SelectedSerie != null)
             {
-                VisualState vs;
+                ListBoxVisualState<ChapterListItem> vs;
                 if (m_chapters_visual_states.TryGetValue(SelectedSerie, out vs))
                     vs.Restore();
             }
@@ -225,7 +234,7 @@ namespace MangaCrawler
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedSerie != null)
-                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState(chaptersListBox);
+                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState<ChapterListItem>(chaptersListBox);
         }
 
         private void seriesSearchTextBox_TextChanged(object sender, EventArgs e)
@@ -280,7 +289,8 @@ namespace MangaCrawler
                 return;
             }
 
-            DownloadManager.DownloadPages(chaptersListBox.SelectedItems.Cast<Chapter>());
+            DownloadManager.DownloadPages(
+                chaptersListBox.SelectedItems.Cast<ChapterListItem>().Select(cli => cli.Chapter));
         }
 
         private bool ShowingDownloadingTab
@@ -328,7 +338,7 @@ namespace MangaCrawler
         {
             get
             {
-                return DownloadManager.Works.Any(t => t.State == WorkState.Downloading);
+                return DownloadManager.Works.Any(w => w.Chapter.State == ChapterState.Downloading);
             }
         }
 
@@ -445,13 +455,13 @@ namespace MangaCrawler
         private void seriesListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (SelectedServer != null)
-                m_series_visual_states[SelectedServer] = new ListBoxVisualState(seriesListBox);
+                m_series_visual_states[SelectedServer] = new ListBoxVisualState<SerieListItem>(seriesListBox);
         }
 
         private void chaptersListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (SelectedSerie != null)
-                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState(chaptersListBox);
+                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState<ChapterListItem>(chaptersListBox);
         }
 
         private void ListBox_DrawItem(DrawItemEventArgs e, string a_text, 
@@ -487,7 +497,7 @@ namespace MangaCrawler
             if (e.Index == -1)
                 return;
 
-            Server server = (Server)serversListBox.Items[e.Index];
+            Server server = (serversListBox.Items[e.Index] as ServerListItem).Server;
 
             Action<Rectangle, Font> draw_tip = (rect, font) =>
             {
@@ -533,7 +543,7 @@ namespace MangaCrawler
             if (e.Index == -1)
                 return;
 
-            Serie serie = (Serie)seriesListBox.Items[e.Index];
+            Serie serie = (seriesListBox.Items[e.Index] as SerieListItem).Serie;
 
             Action<Rectangle, Font> draw_tip = (rect, font) =>
             {
@@ -576,7 +586,7 @@ namespace MangaCrawler
 
         private void chaptersListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            Chapter chapter = (Chapter)chaptersListBox.Items[e.Index];
+            Chapter chapter = (chaptersListBox.Items[e.Index] as ChapterListItem).Chapter;
 
             Action<Rectangle, Font> draw_tip = (rect, font) =>
             {
@@ -597,12 +607,6 @@ namespace MangaCrawler
                     case ChapterState.Downloaded:
 
                         e.Graphics.DrawString(Resources.Downloaded, font,
-                            Brushes.Green, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case ChapterState.WasDownloaded:
-
-                        e.Graphics.DrawString(Resources.WasDownloaded, font,
                             Brushes.Green, rect, StringFormat.GenericDefault);
                         break;
 
@@ -782,6 +786,9 @@ namespace MangaCrawler
 
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
+            if (serversListBox.SelectedItem == null)
+                return;
+
             UpdateWorksTab();
             UpdateSeriesTab();
         }
@@ -802,15 +809,15 @@ namespace MangaCrawler
             if (!ShowingSeriesTab)
                 return;
 
-            Chapter[] ar = new Chapter[0];
+            ChapterListItem[] ar = new ChapterListItem[0];
 
             if (SelectedSerie != null)
             {
                 ar = (from ch in SelectedSerie.Chapters
-                      select ch).ToArray();
+                      select new ChapterListItem(ch)).ToArray();
             }
 
-            new ListBoxVisualState(chaptersListBox).ReloadItems(ar);
+            new ListBoxVisualState<ChapterListItem>(chaptersListBox).ReloadItems(ar);
         }
 
         private void UpdateServers()
@@ -818,7 +825,10 @@ namespace MangaCrawler
             if (!ShowingSeriesTab)
                 return;
 
-            new ListBoxVisualState(serversListBox).ReloadItems(DownloadManager.Servers);
+            var ar = from server in DownloadManager.Servers
+                     select new ServerListItem(server);
+
+            new ListBoxVisualState<ServerListItem>(serversListBox).ReloadItems(ar.ToArray());
         }
 
         private void UpdateSeries()
@@ -826,17 +836,17 @@ namespace MangaCrawler
             if (!ShowingSeriesTab)
                 return;
 
-            Serie[] ar = new Serie[0];
+            SerieListItem[] ar = new SerieListItem[0];
 
             if (SelectedServer != null)
             {
                 string filter = seriesSearchTextBox.Text.ToLower();
                 ar = (from serie in SelectedServer.Series
                       where serie.Title.ToLower().IndexOf(filter) != -1
-                      select serie).ToArray();
+                      select new SerieListItem(serie)).ToArray();
             }
 
-            new ListBoxVisualState(seriesListBox).ReloadItems(ar);
+            new ListBoxVisualState<SerieListItem>(seriesListBox).ReloadItems(ar);
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)

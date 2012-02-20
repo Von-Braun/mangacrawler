@@ -14,9 +14,6 @@ namespace MangaCrawlerLib
     public class Chapter
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ChapterState m_state = ChapterState.Initial;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private List<Page> m_pages = new List<Page>();
 
         public Work Work;
@@ -24,19 +21,21 @@ namespace MangaCrawlerLib
         public Serie Serie { get; private set; }
         public string Title { get; private set; }
         public DateTime LastChange { get; internal set; }
+        public int ID { get; private set; }
+        public ChapterState State { get; internal set; }
         
         internal Chapter(Serie a_serie, string a_url, string a_title)
         {
+            ID = IDGenerator.Next();
             Serie = a_serie;
             URL = HttpUtility.HtmlDecode(a_url);
+            LastChange = DateTime.Now;
 
             Title = a_title.Trim();
             Title = Title.Replace("\t", " ");
             while (Title.IndexOf("  ") != -1)
                 Title = Title.Replace("  ", " ");
             Title = HttpUtility.HtmlDecode(Title);
-
-            LastChange = DateTime.Now;
         }
 
         public IEnumerable<Page> Pages 
@@ -62,30 +61,6 @@ namespace MangaCrawlerLib
             }
 
             return null;
-        }
-
-        public ChapterState State
-        {
-            get
-            {
-                if (Work == null)
-                    return m_state;
-                else
-                {
-                    switch (Work.State)
-                    {
-                        case WorkState.Aborted: return ChapterState.Aborted;
-                        case WorkState.Deleting: return ChapterState.Deleting;
-                        case WorkState.Downloaded: return ChapterState.Downloaded;
-                        case WorkState.Downloading: return ChapterState.Downloading;
-                        case WorkState.Error: return ChapterState.Error;
-                        case WorkState.Waiting: return ChapterState.Waiting;
-                        case WorkState.Zipping: return ChapterState.Zipping;
-                        default: throw new NotImplementedException();
-                    }
-                }
-            }
-           
         }
 
         public override string ToString()
