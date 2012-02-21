@@ -7,14 +7,12 @@ using System.Diagnostics;
 using TomanuExtensions;
 using System.Threading;
 using MangaCrawlerLib.Crawlers;
+using NHibernate.Mapping.ByCode;
 
 namespace MangaCrawlerLib
 {
-    public class Server
+    public class Server : IClassMapping
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private List<Serie> m_series = new List<Serie>();
-
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Crawler m_crawler;
 
@@ -24,18 +22,35 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CustomTaskScheduler m_scheduler;
 
-        public string URL { get; private set; }
-        public string Name { get; private set; }
-        public int DownloadProgress { get; private set; }
-        public DateTime LastChange { get; private set; }
-        public int ID { get; private set; }
+        public virtual int ID { get; private set; }
+        public virtual string URL { get; private set; }
+        public virtual string Name { get; private set; }
+        public virtual int DownloadProgress { get; private set; }
+        public virtual DateTime LastChange { get; private set; }
+        public virtual List<Serie> Series { get; private set; }
 
         internal Server(string a_url, string a_name)
         {
             ID = IDGenerator.Next();
+            Series = new List<Serie>();
             URL = a_url;
             Name = a_name;
             LastChange = DateTime.Now;
+        }
+
+        public void Map(ModelMapper a_mapper)
+        {
+            a_mapper.Class<Server>(m =>
+            {
+                m.Lazy(true);
+                m.Id(c => c.ID);
+                m.Property(c => c.LastChange);
+                m.Property(c => c.URL);
+                m.Property(c => c.DownloadProgress);
+                m.Property(c => c.Name);
+                m.Property(c => c.State);
+                m.Property(c => c.Series);
+            });
         }
 
         public ServerState State
@@ -72,12 +87,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        public IEnumerable<Serie> Series
+        public IEnumerable<Serie> GetSeries()
         {
-            get
-            {
-                return m_series;
-            }
+            return Series;
         }
 
         internal void DownloadSeries()
@@ -90,14 +102,14 @@ namespace MangaCrawlerLib
                 {
                     var series = result.ToList();
 
-                    foreach (var serie in m_series)
+                    foreach (var serie in Series)
                     {
                         var el = series.Find(s => (s.Title == serie.Title) && (s.URL == serie.URL));
                         if (el != null)
                             series[series.IndexOf(el)] = serie;
                     }
 
-                    m_series = series;
+                    Series = series;
                     DownloadProgress = progress;
                     LastChange = DateTime.Now;
                 });

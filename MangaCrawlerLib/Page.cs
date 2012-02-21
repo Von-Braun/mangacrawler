@@ -8,21 +8,22 @@ using System.Web;
 using System.Diagnostics;
 using System.Threading;
 using TomanuExtensions.Utils;
+using NHibernate.Mapping.ByCode;
 
 namespace MangaCrawlerLib
 {
-    public class Page
+    public class Page : IClassMapping
     {
-        public Chapter Chapter { get; private set; }
-        public int Index { get; private set; }
-        public string URL { get; private set; }
-        public bool Downloaded { get; private set; }
-        public DateTime LastChange { get; private set; }
-        public int ID { get; private set; }
-        public string ImageFilePath { get; private set; }
-        public string Name { get; private set; }
-        public string ImageURL { get; private set; }
-        public byte[] Hash { get; private set; }
+        public virtual int ID { get; private set; }
+        public virtual Chapter Chapter { get; private set; }
+        public virtual DateTime LastChange { get; private set; }
+        public virtual int Index { get; private set; }
+        public virtual string URL { get; private set; }
+        public virtual bool Downloaded { get; private set; }
+        public virtual string ImageFilePath { get; private set; }
+        public virtual string Name { get; private set; }
+        public virtual string ImageURL { get; private set; }
+        public virtual byte[] Hash { get; private set; }
 
         internal Page(Chapter a_chapter, string a_url, int a_index, string a_name = null)
         {
@@ -43,6 +44,24 @@ namespace MangaCrawlerLib
             }
             else
                 Name = Index.ToString();
+        }
+
+        public void Map(ModelMapper a_mapper)
+        {
+            a_mapper.Class<Page>(m =>
+            {
+                m.Lazy(true);
+                m.Id(c => c.ID);
+                m.Property(c => c.Chapter);
+                m.Property(c => c.LastChange);
+                m.Property(c => c.Index);
+                m.Property(c => c.URL);
+                m.Property(c => c.Downloaded);
+                m.Property(c => c.ImageFilePath);
+                m.Property(c => c.Name);
+                m.Property(c => c.ImageURL);
+                m.Property(c => c.Hash);
+            });
         }
 
         public override string ToString()

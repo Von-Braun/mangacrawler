@@ -10,6 +10,7 @@ using NHibernate.Mapping.ByCode;
 using NHibernate.Tool.hbm2ddl;
 using System.Reflection;
 using TomanuExtensions;
+using System.Runtime.Serialization;
 
 namespace MangaCrawlerLib
 {
@@ -17,6 +18,9 @@ namespace MangaCrawlerLib
     {
         private static Configuration Configuration;
         private static ISessionFactory SessionFactory;
+
+        public static string DatabaseDir;
+        public readonly static string DatabaseName = "manga.db";
 
         public static void Setup(bool a_log)
         {
@@ -31,6 +35,7 @@ namespace MangaCrawlerLib
             return SessionFactory.OpenSession();
         }
 
+
         private static void CreateConfiguration(bool a_log)
         {
             Configuration = new Configuration();
@@ -43,8 +48,8 @@ namespace MangaCrawlerLib
                 db.IsolationLevel = IsolationLevel.ReadCommitted;
                 db.HqlToSqlSubstitutions = "true=1;false=0";
                 db.ConnectionString = String.Format(
-                    "Data Source=\"{0}\\MangaCrawler\\manga.db\";Version=3",
-                    System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData));
+                    "Data Source=\"{0}\\{1}\";Version=3",
+                    DatabaseDir, DatabaseName);
 
                 if (a_log)
                 {
@@ -66,7 +71,8 @@ namespace MangaCrawlerLib
                         select type;
 
             foreach (var type in types)
-                (Activator.CreateInstance(type) as IClassMapping).Map(mapper);
+                (type.GetConstructor().Invoke() as IClassMapping).Map(mapper);
+               // (FormatterServices.GetUninitializedObject(type) as IClassMapping).Map(mapper);
 
             HbmMapping mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
 

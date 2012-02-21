@@ -10,25 +10,38 @@ using TomanuExtensions;
 using TomanuExtensions.Utils;
 using System.Threading.Tasks;
 using Ionic.Zip;
+using NHibernate.Mapping.ByCode;
 
 namespace MangaCrawlerLib
 {
-    public class Work
+    internal class ChapterWork : IClassMapping
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CancellationTokenSource m_cancellation_token_source = new CancellationTokenSource();
 
-        public Chapter Chapter { get; private set; }
-        public string ChapterDir { get; private set; }
-        public bool CBZ { get; private set; }
+        public virtual Chapter Chapter { get; private set; }
+        public virtual string ChapterDir { get; private set; }
+        public virtual bool CBZ { get; private set; }
         public int ID { get; private set; }
 
-        internal Work(Chapter a_chapter, string a_manga_root_dir, bool a_cbz) 
+        internal ChapterWork(Chapter a_chapter, string a_manga_root_dir, bool a_cbz) 
         {
             ID = IDGenerator.Next();
             Chapter = a_chapter;
             ChapterDir = GetChapterDirectory(a_manga_root_dir);
             CBZ = a_cbz;
+        }
+
+        public void Map(ModelMapper a_mapper)
+        {
+            a_mapper.Class<ChapterWork>(m =>
+            {
+                m.Lazy(true);
+                m.Id(c => c.ID);
+                m.Property(c => c.Chapter);
+                m.Property(c => c.ChapterDir);
+                m.Property(c => c.CBZ);
+            });
         }
 
         public bool IsWorking
