@@ -564,6 +564,7 @@ namespace log4net.Core
 		/// <param name="repositoryName">in/out param to hold the repository name to use for the assembly, caller should set this to the default value before calling.</param>
 		/// <param name="repositoryType">in/out param to hold the type of the repository to create for the assembly, caller should set this to the default value before calling.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="assembly" /> is <see langword="null" />.</exception>
+        [System.Diagnostics.DebuggerNonUserCode]
 		private void GetInfoForAssembly(Assembly assembly, ref string repositoryName, ref Type repositoryType)
 		{
 			if (assembly == null)

@@ -8,24 +8,30 @@ using System.Threading;
 using System.Diagnostics;
 using TomanuExtensions;
 using TomanuExtensions.Utils;
+using NHibernate.Mapping.ByCode;
 
 namespace MangaCrawlerLib
 {
-    public class Chapter
+    public class Chapter : IClassMapping
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private List<Page> m_pages = new List<Page>();
+        private ChapterState m_state = ChapterState.Initial;
 
-        public Work Work;
-        public string URL { get; private set; }
-        public Serie Serie { get; private set; }
-        public string Title { get; private set; }
-        public DateTime LastChange { get; internal set; }
-        public int ID { get; private set; }
-        public ChapterState State { get; internal set; }
-        
+        internal virtual ChapterWork Work { get; private set; }
+        public virtual string URL { get; private set; }
+        public virtual Serie Serie { get; private set; }
+        public virtual string Title { get; private set; }
+        public virtual DateTime LastChange { get; internal set; }
+        public virtual int ID { get; private set; }
+        internal virtual List<Page> Pages { get; set; }
+
+        private Chapter()
+        {
+        }
+
         internal Chapter(Serie a_serie, string a_url, string a_title)
         {
+            Pages = new List<Page>();
             ID = IDGenerator.Next();
             Serie = a_serie;
             URL = HttpUtility.HtmlDecode(a_url);
@@ -38,34 +44,49 @@ namespace MangaCrawlerLib
             Title = HttpUtility.HtmlDecode(Title);
         }
 
-        public IEnumerable<Page> Pages 
+        public void Map(ModelMapper a_mapper)
+        {
+            a_mapper.Class<Chapter>(m =>
+            {
+                m.Lazy(true);
+                m.Id(c => c.ID);
+                m.Property(c => c.URL);
+                m.Property(c => c.Serie);
+                m.Property(c => c.Title);
+                m.Property(c => c.Pages);
+                m.Property(c => c.Work);
+                m.Property(c => c.LastChange);
+                m.Property(c => c.State);
+            });
+        }
+
+        public virtual ChapterState State
         {
             get
             {
-                return m_pages;
+                return m_state;
+            }
+            internal set
+            {
+                m_state = value;
+                LastChange = DateTime.Now;
             }
         }
 
         public void AddPages(IEnumerable<Page> a_pages)
         {
-            m_pages.AddRange(a_pages);
+            Pages.AddRange(a_pages);
             LastChange = DateTime.Now;
-        }
-
-        internal Work FindWork()
-        {
-            foreach (var work in DownloadManager.Works)
-            {
-                if (work.Chapter == this)
-                    return work;
-            }
-
-            return null;
         }
 
         public override string ToString()
         {
             return String.Format("{0} - {1}", Serie, Title);
+        }
+
+        public IEnumerable<Page> GetPages()
+        {
+            return Pages;
         }
 
         internal bool DownloadRequired
@@ -84,6 +105,19 @@ namespace MangaCrawlerLib
             {
                 return Pages.Count(p => p.Downloaded);
             }
+        }
+
+        public void DeleteWork()
+        {
+            ChapterWork work = Work;
+            if (work == null)
+                return;
+            work.DeleteWork();
+        }
+
+        internal void CreateWork(string a_manga_root_dir, bool a_cbz)
+        {
+            Work = new ChapterWork(this, a_manga_root_dir, a_cbz);
         }
     }
 }

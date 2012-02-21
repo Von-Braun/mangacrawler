@@ -18,7 +18,6 @@ using HtmlAgilityPack;
 using System.Media;
 using MangaCrawler.Properties;
 using log4net;
-using MangaCrawlerControls;
 using log4net.Core;
 using log4net.Config;
 using log4net.Layout;
@@ -319,11 +318,11 @@ namespace MangaCrawler
             var works = DownloadManager.Works;
 
             var add = (from work in works
-                       where !list.Any(w => w.Work == work)
+                       where !list.Any(w => w.Chapter == work)
                        select work).ToList();
 
             var remove = (from work in list
-                          where !works.Any(w => w == work.Work)
+                          where !works.Any(w => w == work.Chapter)
                           select work).ToList();
 
             foreach (var el in add)
@@ -338,7 +337,7 @@ namespace MangaCrawler
         {
             get
             {
-                return DownloadManager.Works.Any(w => w.Chapter.State == ChapterState.Downloading);
+                return DownloadManager.Works.Any(w => w.State == ChapterState.Downloading);
             }
         }
 
@@ -447,7 +446,7 @@ namespace MangaCrawler
             if ((e.ColumnIndex == 0) && (e.RowIndex >= 0))
             {
                 BindingList<WorkGridRow> list = (BindingList<WorkGridRow>)worksGridView.DataSource;
-                list[e.RowIndex].Work.DeleteWork();
+                list[e.RowIndex].Chapter.DeleteWork();
                 UpdateWorksTab();
             }
         }
@@ -625,7 +624,7 @@ namespace MangaCrawler
                     case ChapterState.Downloading:
                     {
                         e.Graphics.DrawString(
-                            String.Format("{0}/{1}", chapter.DownloadedPages, chapter.Pages.Count()),
+                            String.Format("{0}/{1}", chapter.DownloadedPages, chapter.GetPages().Count()),
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
                     }

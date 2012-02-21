@@ -437,6 +437,7 @@ namespace log4net.Util
 		/// where the assembly was loaded from.
 		/// </para>
 		/// </remarks>
+        [System.Diagnostics.DebuggerNonUserCode]
 		public static string AssemblyLocationInfo(Assembly myAssembly)
 		{
 #if NETCF

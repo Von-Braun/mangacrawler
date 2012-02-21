@@ -21,7 +21,7 @@ namespace MangaCrawlerLib
         internal static string UserAgent = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:10.0) Gecko/20100101 Firefox/10.0";
 
         private static List<Server> s_servers;
-        private static List<Work> s_works = new List<Work>();
+        private static List<ChapterWork> s_works = new List<ChapterWork>();
 
         private static string s_settings_dir;
 
@@ -31,8 +31,6 @@ namespace MangaCrawlerLib
         static DownloadManager()
         {
             HtmlWeb.UserAgent_Actual = UserAgent;
-
-            s_servers = ServerList.Servers.ToList();
         }
 
         public static void DownloadSeries(Server a_server)
@@ -85,7 +83,7 @@ namespace MangaCrawlerLib
                 }
                 else
                 {
-                    chapter.Work = new Work(chapter, GetMangaRootDir(), UseCBZ());
+                    chapter.CreateWork(GetMangaRootDir(), UseCBZ());
                 }
 
                 Loggers.MangaCrawler.InfoFormat(
@@ -97,12 +95,26 @@ namespace MangaCrawlerLib
                     s_works.Add(chapter.Work);
                 }
 
+                chapter.State = ChapterState.Downloading;
+
                 Task task = new Task(() =>
                 {
                     chapter.Work.DownloadPages();
                 }, TaskCreationOptions.LongRunning);
 
                 task.Start(chapter.Serie.Server.Scheduler[Priority.Pages]);
+            }
+        }
+
+        public static IEnumerable<Chapter> Works
+        {
+            get
+            {
+                lock (s_works)
+                {
+                    return (from work in s_works
+                            select work.Chapter).ToArray();
+                }
             }
         }
 
@@ -114,20 +126,14 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static IEnumerable<Work> Works
-        {
-            get
-            {
-                lock (s_works)
-                {
-                    return s_works.ToArray();
-                }
-            }
-        }
-
         public static void Load(string a_settings_dir)
         {
             s_settings_dir = a_settings_dir;
+
+            s_servers = ServerList.Servers.ToList();
+
+            NHibernateSetup.DatabaseDir = a_settings_dir;
+            NHibernateSetup.Setup(true);
         }
     }
 }

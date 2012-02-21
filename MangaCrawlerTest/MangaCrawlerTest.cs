@@ -116,7 +116,7 @@ namespace MangaCrawlerTest
 
             Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_chapter.URL));
 
-            Work work = new Work(a_chapter, "", false);
+            ChapterWork work = new ChapterWork(a_chapter, "", false);
 
 
             work.DownloadPages();
@@ -825,7 +825,7 @@ namespace MangaCrawlerTest
                         },
                         (chapter) => 
                     {
-                        Work work = new Work(chapter, "", false);
+                        ChapterWork work = new ChapterWork(chapter, "", false);
                         try
                         {
                             work.DownloadPages();

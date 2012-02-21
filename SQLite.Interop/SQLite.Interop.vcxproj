@@ -124,6 +124,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo copying SQLLite.Interop.Dll
+copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)ManagaCrawler\bin\x86\Debug" &gt; NUL
+copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\x86\Release" &gt; NUL</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -137,6 +142,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>echo copying SQLLite.Interop.Dll
+copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\Debug" &gt; NUL
+copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\Release" &gt; NUL
+copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\x64\Debug" &gt; NUL
+copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\x64\Release" &gt; NUL</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
