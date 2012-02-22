@@ -35,7 +35,6 @@ namespace MangaCrawlerLib
             return SessionFactory.OpenSession();
         }
 
-
         private static void CreateConfiguration(bool a_log)
         {
             Configuration = new Configuration();

@@ -125,9 +125,8 @@
       <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>echo copying SQLLite.Interop.Dll
-copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)ManagaCrawler\bin\x86\Debug" &gt; NUL
-copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\x86\Release" &gt; NUL</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -143,11 +142,8 @@ copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\x86\Release" 
       <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>echo copying SQLLite.Interop.Dll
-copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\Debug" &gt; NUL
-copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\Release" &gt; NUL
-copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\x64\Debug" &gt; NUL
-copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\x64\Release" &gt; NUL</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -168,6 +164,10 @@ copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\x64\Release" 
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -187,6 +187,10 @@ copy "$(TargetDir)SQLite.Interop*" "$(SolutionDir)MangaCrawler\bin\x64\Release" 
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,7 +14,7 @@ using NHibernate.Mapping.ByCode;
 
 namespace MangaCrawlerLib
 {
-    internal class ChapterWork : IClassMapping
+    internal class ChapterWork //: IClassMapping
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CancellationTokenSource m_cancellation_token_source = new CancellationTokenSource();

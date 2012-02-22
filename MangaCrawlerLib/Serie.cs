@@ -5,14 +5,12 @@ using System.Text;
 using System.Web;
 using System.Diagnostics;
 using NHibernate.Mapping.ByCode;
+using System.Collections.ObjectModel;
 
 namespace MangaCrawlerLib
 {
-    public class Serie : IClassMapping
+    public class Serie //: IClassMapping
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private List<Chapter> m_chapters = new List<Chapter>();
-
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private SerieState m_state = SerieState.Initial;
 
@@ -22,7 +20,7 @@ namespace MangaCrawlerLib
         public virtual Server Server { get; private set; }
         public virtual int DownloadProgress { get; private set; }
         public virtual string Title { get; private set; }
-        public virtual List<Chapter> Chapters { get; private set; }
+        internal virtual List<Chapter> Chapters { get; private set; }
 
         internal Serie(Server a_server, string a_url, string a_title)
         {
@@ -68,9 +66,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        public IEnumerable<Chapter> GetChapters()
+        public ReadOnlyCollection<Chapter> GetChapters()
         {
-            return m_chapters;
+            return Chapters.AsReadOnly();
         }
 
         internal void DownloadChapters()
@@ -83,14 +81,14 @@ namespace MangaCrawlerLib
                 {
                     var chapters = result.ToList();
 
-                    foreach (var chapter in m_chapters)
+                    foreach (var chapter in Chapters)
                     {
                         var el = chapters.Find(s => (s.Title == chapter.Title) && (s.URL == chapter.URL));
                         if (el != null)
                             chapters[chapters.IndexOf(el)] = chapter;
                     }
 
-                    m_chapters = chapters;
+                    Chapters = chapters;
                     DownloadProgress = progress;
                     LastChange = DateTime.Now;
                 });
