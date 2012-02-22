@@ -12,7 +12,7 @@ using NHibernate.Mapping.ByCode;
 
 namespace MangaCrawlerLib
 {
-    public class Page : IClassMapping
+    public class Page //: IClassMapping
     {
         public virtual int ID { get; private set; }
         public virtual Chapter Chapter { get; private set; }

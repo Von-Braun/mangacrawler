@@ -9,10 +9,11 @@ using System.Diagnostics;
 using TomanuExtensions;
 using TomanuExtensions.Utils;
 using NHibernate.Mapping.ByCode;
+using System.Collections.ObjectModel;
 
 namespace MangaCrawlerLib
 {
-    public class Chapter : IClassMapping
+    public class Chapter //: IClassMapping
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ChapterState m_state = ChapterState.Initial;
@@ -49,14 +50,41 @@ namespace MangaCrawlerLib
             a_mapper.Class<Chapter>(m =>
             {
                 m.Lazy(true);
-                m.Id(c => c.ID);
-                m.Property(c => c.URL);
-                m.Property(c => c.Serie);
-                m.Property(c => c.Title);
-                m.Property(c => c.Pages);
-                m.Property(c => c.Work);
-                m.Property(c => c.LastChange);
-                m.Property(c => c.State);
+                m.Id(c => c.ID, p =>
+                {
+                    p.Generator(Generators.HighLow);
+                });
+                m.Property(c => c.URL, p =>
+                {
+                    p.NotNullable(true);
+                });
+                m.Property(c => c.Serie, p =>
+                {
+                    p.NotNullable(true);
+                });
+                m.Property(c => c.Title, p =>
+                {
+                    p.NotNullable(true);
+                });
+                m.Property(c => c.Work, p =>
+                {
+                    p.NotNullable(false);
+                });
+                m.Version(c => c.LastChange, p =>
+                {
+                });
+                m.Property(c => c.LastChange, p =>
+                {
+                    p.NotNullable(true);
+                });
+                m.Property(c => c.State, p =>
+                {
+                    p.NotNullable(true);
+                });
+                m.Property(c => c.Pages, p =>
+                {
+                    p.NotNullable(true);
+                });
             });
         }
 
@@ -84,9 +112,9 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Serie, Title);
         }
 
-        public IEnumerable<Page> GetPages()
+        public ReadOnlyCollection<Page> GetPages()
         {
-            return Pages;
+            return Pages.AsReadOnly();
         }
 
         internal bool DownloadRequired

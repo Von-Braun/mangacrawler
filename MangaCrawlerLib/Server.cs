@@ -8,10 +8,11 @@ using TomanuExtensions;
 using System.Threading;
 using MangaCrawlerLib.Crawlers;
 using NHibernate.Mapping.ByCode;
+using System.Collections.ObjectModel;
 
 namespace MangaCrawlerLib
 {
-    public class Server : IClassMapping
+    public class Server //: IClassMapping
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Crawler m_crawler;
@@ -27,7 +28,7 @@ namespace MangaCrawlerLib
         public virtual string Name { get; private set; }
         public virtual int DownloadProgress { get; private set; }
         public virtual DateTime LastChange { get; private set; }
-        public virtual List<Serie> Series { get; private set; }
+        internal virtual List<Serie> Series { get; private set; }
 
         internal Server(string a_url, string a_name)
         {
@@ -51,6 +52,11 @@ namespace MangaCrawlerLib
                 m.Property(c => c.State);
                 m.Property(c => c.Series);
             });
+        }
+
+        public ReadOnlyCollection<Serie> GetSeries()
+        {
+            return Series.AsReadOnly();
         }
 
         public ServerState State
@@ -85,11 +91,6 @@ namespace MangaCrawlerLib
 
                 return m_crawler;
             }
-        }
-
-        public IEnumerable<Serie> GetSeries()
-        {
-            return Series;
         }
 
         internal void DownloadSeries()
