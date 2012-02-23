@@ -103,7 +103,7 @@ namespace MangaCrawlerLib
                         series.Add(s);
                     }
 
-                    series_progress++;
+                    Interlocked.Increment(ref series_progress);
                     update(series_progress * 100 / pages.Count);
                 }
                 catch
@@ -210,7 +210,7 @@ namespace MangaCrawlerLib
                         series.Add(s);
                     }
 
-                    chapters_progress++;
+                    Interlocked.Increment(ref chapters_progress);
                     update(chapters_progress * 100 / pages.Count);
                 }
                 catch

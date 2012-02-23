@@ -85,7 +85,7 @@ namespace MangaCrawlerLib
                             index += 1;
                         }
 
-                        series_progress++;
+                        Interlocked.Increment(ref series_progress);
                         update(series_progress * 100 / pages.Count);
                     }
                     catch
@@ -169,7 +169,7 @@ namespace MangaCrawlerLib
                             index += 1;
                         }
 
-                        chapters_progress++;
+                        Interlocked.Increment(ref chapters_progress);
                         update(chapters_progress * 100 / pages.Count);
                     }
                     catch
@@ -197,8 +197,6 @@ namespace MangaCrawlerLib
 
             ConcurrentBag<Tuple<int, int, string, string>> result =
                 new ConcurrentBag<Tuple<int, int, string, string>>();
-
-            int pages_progress = 0;
 
             Parallel.For(0, pages.Count,
                 new ParallelOptions()
@@ -254,8 +252,6 @@ namespace MangaCrawlerLib
 
                             a_chapter.Work.Token.ThrowIfCancellationRequested();
                         }
-
-                        pages_progress++;
                     }
                     catch
                     {

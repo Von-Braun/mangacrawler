@@ -72,7 +72,6 @@ namespace MangaCrawlerLib
             }
         }
 
-        // TODO: 
         public override string GetImageURL(Page a_page)
         {
             return a_page.URL;

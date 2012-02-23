@@ -14,7 +14,6 @@ namespace MangaCrawlerLib
 {
     internal class UnixMangaCrawler : Crawler
     {
-        // TODO: potrzebne jeszcze
         public override int MaxConnectionsPerServer
         {
             get
@@ -58,9 +57,6 @@ namespace MangaCrawlerLib
 
             if (chapters_or_volumes_enum == null)
             {
-                var pages = doc.DocumentNode.SelectNodes(
-                    "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
-
                 a_progress_callback(100, 
                     new [] { new Chapter(a_serie, a_serie.URL, a_serie.Title) } );
             }
@@ -69,10 +65,24 @@ namespace MangaCrawlerLib
                 var chapters_or_volumes = 
                     chapters_or_volumes_enum.Skip(3).Reverse().Skip(1).Reverse().ToList();
 
-                int progress = 0;
+                if (a_serie.Title == "Bleach")
+                {
+                //    chapters_or_volumes = new List<HtmlNode>() { chapters_or_volumes[187] };
+                }
+
+                int chapters_progress = 0;
 
                 ConcurrentBag<Tuple<int, int, Chapter>> chapters = 
                     new ConcurrentBag<Tuple<int, int, Chapter>>();
+
+                Action<int> update = (progress) =>
+                {
+                    var result = from chapter in chapters
+                                 orderby chapter.Item1, chapter.Item2
+                                 select chapter.Item3;
+
+                    a_progress_callback(progress, result);
+                };
 
                 Parallel.ForEach(chapters_or_volumes, 
                     new ParallelOptions() 
@@ -101,6 +111,9 @@ namespace MangaCrawlerLib
                         }
                         else
                         {
+                            if (doc.DocumentNode.InnerText.Contains("500 - Internal server error"))
+                                return;
+
                             var chapters1 =
                                 doc.DocumentNode.SelectNodes(
                                     "/html/body/center/div/div[2]/div/div[2]/table/tr/td/a").
@@ -119,12 +132,8 @@ namespace MangaCrawlerLib
                             }
                         }
 
-                        var result = from chapter in chapters
-                                     orderby chapter.Item1, chapter.Item2
-                                     select chapter.Item3;
-
-                        progress++;
-                        a_progress_callback(progress * 100 / chapters_or_volumes.Count, result);
+                        Interlocked.Increment(ref chapters_progress);
+                        update(chapters_progress * 100 / chapters_or_volumes.Count);
                     }
                     catch
                     {
@@ -132,6 +141,8 @@ namespace MangaCrawlerLib
                         throw;
                     }
                 });
+
+                update(100);
             }
         }
 
