@@ -72,6 +72,9 @@ namespace MangaCrawlerLib
 
         internal MemoryStream GetImageStream()
         {
+            if (ImageURL == null)
+                ImageURL = HttpUtility.HtmlDecode(Chapter.Serie.Server.Crawler.GetImageURL(this));
+
             return Chapter.Serie.Server.Crawler.GetImageStream(this);  
         }
 

@@ -45,10 +45,14 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
-            var chapters = doc.DocumentNode.SelectNodes(
-                "//div[@id='chapters']/ul/li/div/h3/a").Concat(
-                    doc.DocumentNode.SelectNodes(
-                        "//div[@id='chapters']/ul/li/div/h4/a"));
+            var ch1 = doc.DocumentNode.SelectNodes("//ul[@class='chlist']/li/div/h3/a");
+            var ch2 = doc.DocumentNode.SelectNodes("//ul[@class='chlist']/li/div/h4/a");
+
+            List<HtmlNode> chapters = new List<HtmlNode>();
+            if (ch1 != null)
+                chapters.AddRange(ch1);
+            if (ch2 != null)
+                chapters.AddRange(ch2);
 
             var result = from chapter in chapters
                          select new Chapter(a_serie, chapter.GetAttributeValue("href", ""), 
@@ -61,8 +65,12 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = DownloadDocument(a_chapter);
 
-            var pages = doc.DocumentNode.SelectSingleNode("//div[@class='r m']").
-                SelectNodes("div[@class='l']/select[@class='m']/option");
+            var m = doc.DocumentNode.SelectSingleNode("//div[@class='r m']");
+
+            if (m == null)
+                yield break;
+
+            var pages = m.SelectNodes("div[@class='l']/select[@class='m']/option");
 
             int index = 1;
 

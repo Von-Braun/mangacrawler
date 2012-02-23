@@ -83,7 +83,6 @@
     <Compile Include="Crawlers\MangaFoxCrawler.cs" />
     <Compile Include="Crawlers\MangaRunCrawler.cs" />
     <Compile Include="Crawlers\MangaShareCrawler.cs" />
-    <Compile Include="Crawlers\MangaToshokanCrawler.cs" />
     <Compile Include="Crawlers\MangaVolumeCrawler.cs" />
     <Compile Include="Crawlers\OtakuWorksCrawler.cs" />
     <Compile Include="Crawlers\OurMangaCrawler.cs" />

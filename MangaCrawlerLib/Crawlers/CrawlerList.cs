@@ -38,7 +38,6 @@ namespace MangaCrawlerLib.Crawlers
                    where c.IsClass
                    where !c.IsAbstract
                    where c.IsDerivedFrom(typeof(Crawler))
-                   where c != typeof(MangaToshokanCrawler)
                    where c != typeof(TestServerCrawler)
                    orderby c.Name
                    select (Crawler)Activator.CreateInstance(c);
