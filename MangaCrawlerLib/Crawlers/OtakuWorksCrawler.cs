@@ -71,7 +71,7 @@ namespace MangaCrawlerLib
                         series.Add(s);
                     }
 
-                    series_progress++;
+                    Interlocked.Increment(ref series_progress);
                     update(series_progress * 100 / number);
                 }
                 catch

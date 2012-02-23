@@ -64,10 +64,16 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
-            var link_strong_nodes = doc.DocumentNode.SelectNodes("//a");
-            var begin_reading_strong_node = link_strong_nodes.Where(
-                n => n.InnerText.StartsWith("Begin Reading"));
-            var href = begin_reading_strong_node.First().GetAttributeValue("href", "");
+            var n1 = doc.DocumentNode.SelectNodes("//b");
+            var n2 = n1.Where(n => n.InnerText.StartsWith("Current Status")).First();
+
+            var n3 = n2.NextSibling;
+            while (n3.Name != "b")
+                n3 = n3.NextSibling;
+            while (n3.Name != "a")
+                n3 = n3.NextSibling;
+
+            var href = n3.GetAttributeValue("href", "");
 
             doc = DownloadDocument(a_serie.Server, href);
 
@@ -76,8 +82,7 @@ namespace MangaCrawlerLib
             var result = from chapter in chapters
                          select new Chapter(
                              a_serie,
-                             "http://www.thespectrum.net" + href + "?ch=" +
-                                 chapter.GetAttributeValue("value", "").Replace(" ", "+") + "&page=1",
+                             href + "?ch=" + chapter.GetAttributeValue("value", "").Replace(" ", "+") + "&page=1",
                              chapter.NextSibling.InnerText);
 
             a_progress_callback(100, result.Reverse());

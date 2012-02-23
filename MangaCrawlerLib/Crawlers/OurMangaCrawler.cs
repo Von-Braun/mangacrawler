@@ -77,7 +77,11 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                Page pi = new Page(a_chapter, page.GetAttributeValue("value", ""), index, page.NextSibling.InnerText);
+                Page pi = new Page(
+                    a_chapter, 
+                    a_chapter.URL + "/" + page.GetAttributeValue("value", ""), 
+                    index, 
+                    page.NextSibling.InnerText);
 
                 yield return pi;
             }
