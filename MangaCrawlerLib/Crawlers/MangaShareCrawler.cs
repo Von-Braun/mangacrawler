@@ -59,10 +59,10 @@ namespace MangaCrawlerLib
             {
                 index++;
 
-                string link = page.GetAttributeValue("Value", "");
+                string link = a_chapter.URL;
                 int page_index = link.LastIndexOf("/page");
                 link = link.Left(page_index + 5);
-                link += a_chapter.URL + ".html";
+                link += page.GetAttributeValue("Value", "") + ".html";
 
                 Page pi = new Page(a_chapter, link, index);
 

@@ -77,12 +77,12 @@ namespace MangaCrawler
         public MangaCrawlerForm()
         {
             InitializeComponent();
+
+            Settings.Instance.FormState.Init(this);
         }
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
-            SetupLog4NET();
-
             Text = String.Format("{0} {1}.{2}", Text,
                 Assembly.GetAssembly(GetType()).GetName().Version.Major, 
                 Assembly.GetAssembly(GetType()).GetName().Version.Minor);
@@ -99,11 +99,13 @@ namespace MangaCrawler
             };
 
             DownloadManager.UseCBZ = () => Settings.Instance.UseCBZ;
-            
+
             mangaRootDirTextBox.Text = Settings.Instance.MangaRootDir;
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
             splitter1.SplitPosition = Settings.Instance.SplitterDistance;
             cbzCheckBox.Checked = Settings.Instance.UseCBZ;
+
+            SetupLog4NET();
 
             DownloadManager.Load(Settings.GetSettingsDir());
 
@@ -402,11 +404,18 @@ namespace MangaCrawler
 
         private void seriesURLButton_Click(object sender, EventArgs e)
         {
-            if (SelectedSerie != null)
+            var serie = SelectedSerie;
+            if (serie == null)
+            {
+                if (seriesListBox.Items.Count == 1)
+                    serie = (seriesListBox.Items[0] as SerieListItem).Serie;
+            }
+
+            if (serie != null)
             {
                 try
                 {
-                    Process.Start(SelectedSerie.URL);
+                    Process.Start(serie.URL);
                 }
                 catch
                 {
@@ -420,11 +429,18 @@ namespace MangaCrawler
 
         private void chapterURLButton_Click(object sender, EventArgs e)
         {
-            if (SelectedChapter != null)
+            var chapter = SelectedChapter;
+            if (chapter == null)
+            {
+                if (chaptersListBox.Items.Count == 1)
+                    chapter = (chaptersListBox.Items[0] as ChapterListItem).Chapter;
+
+            }
+            if (chapter != null)
             {
                 try
                 {
-                    Process.Start(SelectedChapter.URL);
+                    Process.Start(chapter.URL);
                 }
                 catch
                 {
@@ -856,11 +872,6 @@ namespace MangaCrawler
         private void clearLogButton_Click(object sender, EventArgs e)
         {
             logRichTextBox.Clear();
-        }
-
-        private void serversListBox_DrawItem_1(object sender, DrawItemEventArgs e)
-        {
-
         }
     }
 }

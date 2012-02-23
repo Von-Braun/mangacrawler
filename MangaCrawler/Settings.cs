@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using YAXLib;
 using System.Reflection;
 using System.IO;
+using System.Drawing;
 
 namespace MangaCrawler
 {
@@ -27,6 +28,9 @@ namespace MangaCrawler
 
         [YAXNode("UseCBZ")]
         private bool m_use_cbs = false;
+
+        [YAXNode]
+        public FormState FormState = new FormState();
 
         private static Settings s_instance;
 
@@ -64,6 +68,13 @@ namespace MangaCrawler
 
         protected Settings()
         {
+            FormState.Changed += () => Save();
+        }
+
+        [YAXOnDeserialized]
+        private void OnDeserialized()
+        {
+            FormState.Changed += () => Save();
         }
 
         public string MangaRootDir

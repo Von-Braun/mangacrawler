@@ -205,7 +205,7 @@ namespace MangaCrawlerLib
                     {
                         Tuple<int, int, string, string> s =
                             new Tuple<int, int, string, string>(page, index++, serie.InnerText,
-                                "http://www.mangatoshokan.com" + serie.GetAttributeValue("href", ""));
+                                "http://www.mangavolume.com" + serie.GetAttributeValue("href", ""));
 
                         series.Add(s);
                     }
@@ -265,7 +265,7 @@ namespace MangaCrawlerLib
                 img = doc.DocumentNode.SelectSingleNode(
                     "/html[1]/body[1]/div[1]/div[3]/div[1]/table[1]/tr[5]/td[1]/img[1]");
             }
-
+            
             return img.GetAttributeValue("src", "");
         }
 

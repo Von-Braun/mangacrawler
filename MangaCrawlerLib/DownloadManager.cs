@@ -95,7 +95,7 @@ namespace MangaCrawlerLib
                     s_works.Add(chapter.Work);
                 }
 
-                chapter.State = ChapterState.Downloading;
+                chapter.State = ChapterState.Waiting;
 
                 Task task = new Task(() =>
                 {
