@@ -14,15 +14,19 @@ using NHibernate.Mapping.ByCode;
 
 namespace MangaCrawlerLib
 {
-    internal class ChapterWork //: IClassMapping
+    public class ChapterWork : IClassMapping
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CancellationTokenSource m_cancellation_token_source = new CancellationTokenSource();
 
-        public virtual Chapter Chapter { get; private set; }
-        public virtual string ChapterDir { get; private set; }
-        public virtual bool CBZ { get; private set; }
-        public int ID { get; private set; }
+        public virtual Chapter Chapter { get; protected internal set; }
+        public virtual string ChapterDir { get; protected internal set; }
+        public virtual bool CBZ { get; protected internal set; }
+        public virtual int ID { get; protected internal set; }
+
+        protected internal ChapterWork()
+        {
+        }
 
         internal ChapterWork(Chapter a_chapter, string a_manga_root_dir, bool a_cbz) 
         {
@@ -32,19 +36,19 @@ namespace MangaCrawlerLib
             CBZ = a_cbz;
         }
 
-        public void Map(ModelMapper a_mapper)
+        public virtual void Map(ModelMapper a_mapper)
         {
             a_mapper.Class<ChapterWork>(m =>
             {
                 m.Lazy(true);
                 m.Id(c => c.ID);
-                m.Property(c => c.Chapter);
+                //m.Property(c => c.Chapter);
                 m.Property(c => c.ChapterDir);
                 m.Property(c => c.CBZ);
             });
         }
 
-        public bool IsWorking
+        public virtual bool IsWorking
         {
             get
             {
@@ -55,7 +59,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal void DownloadPages()
+        protected internal virtual void DownloadPages()
         {
             try
             {
@@ -208,7 +212,7 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1} - {2}", Chapter.Serie.Server.Name, Chapter.Serie.Title, Chapter.Title);
         }
 
-        internal CancellationToken Token
+        protected internal virtual CancellationToken Token
         {
             get
             {
@@ -216,7 +220,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void DeleteWork()
+        internal protected virtual void DeleteWork()
         {
             var s = Chapter.State;
 
@@ -233,7 +237,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal void FinishDownload(bool a_error)
+        internal protected virtual void FinishDownload(bool a_error)
         {
             var s = Chapter.State;
 
@@ -260,7 +264,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public string GetChapterDirectory(string a_images_base_dir)
+        protected internal virtual string GetChapterDirectory(string a_images_base_dir)
         {
             if (a_images_base_dir.Last() == Path.DirectorySeparatorChar)
                 a_images_base_dir = a_images_base_dir.RemoveFromRight(1);

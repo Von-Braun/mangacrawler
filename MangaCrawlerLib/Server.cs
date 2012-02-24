@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 
 namespace MangaCrawlerLib
 {
-    public class Server //: IClassMapping
+    public class Server : IClassMapping
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Crawler m_crawler;
@@ -23,14 +23,18 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CustomTaskScheduler m_scheduler;
 
-        public virtual int ID { get; private set; }
-        public virtual string URL { get; private set; }
-        public virtual string Name { get; private set; }
-        public virtual int DownloadProgress { get; private set; }
-        public virtual DateTime LastChange { get; private set; }
-        internal virtual List<Serie> Series { get; private set; }
+        public virtual int ID { get; protected internal set; }
+        public virtual string URL { get; protected internal set; }
+        public virtual string Name { get; protected internal set; }
+        public virtual int DownloadProgress { get; protected internal set; }
+        public virtual DateTime LastChange { get; protected internal set; }
+        protected internal virtual List<Serie> Series { get; set; }
 
-        internal Server(string a_url, string a_name)
+        protected internal Server()
+        {
+        }
+
+        protected internal Server(string a_url, string a_name)
         {
             ID = IDGenerator.Next();
             Series = new List<Serie>();
@@ -39,7 +43,7 @@ namespace MangaCrawlerLib
             LastChange = DateTime.Now;
         }
 
-        public void Map(ModelMapper a_mapper)
+        public virtual void Map(ModelMapper a_mapper)
         {
             a_mapper.Class<Server>(m =>
             {
@@ -50,16 +54,16 @@ namespace MangaCrawlerLib
                 m.Property(c => c.DownloadProgress);
                 m.Property(c => c.Name);
                 m.Property(c => c.State);
-                m.Property(c => c.Series);
+                //m.Property(c => c.Series);
             });
         }
 
-        public ReadOnlyCollection<Serie> GetSeries()
+        public virtual ReadOnlyCollection<Serie> GetSeries()
         {
             return Series.AsReadOnly();
         }
 
-        public ServerState State
+        public virtual ServerState State
         {
             get
             {
@@ -71,7 +75,8 @@ namespace MangaCrawlerLib
                 LastChange = DateTime.Now;
             }
         }
-        internal CustomTaskScheduler Scheduler 
+
+        protected internal virtual CustomTaskScheduler Scheduler 
         {
             get
             {
@@ -82,7 +87,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal Crawler Crawler
+        protected internal virtual Crawler Crawler
         {
             get
             {
@@ -93,7 +98,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal void DownloadSeries()
+        protected internal virtual void DownloadSeries()
         {
             try
             {
@@ -131,7 +136,7 @@ namespace MangaCrawlerLib
             return Name;
         }
 
-        internal bool DownloadRequired
+        protected internal virtual bool DownloadRequired
         {
             get
             {

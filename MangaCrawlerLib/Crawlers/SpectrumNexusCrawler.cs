@@ -19,7 +19,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override void DownloadSeries(Server a_server, Action<int, 
+        internal override void DownloadSeries(Server a_server, Action<int, 
             IEnumerable<Serie>> a_progress_callback)
         {
             HtmlDocument doc = DownloadDocument(a_server);
@@ -60,7 +60,7 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result);
         }
 
-        public override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
+        internal override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
@@ -88,7 +88,7 @@ namespace MangaCrawlerLib
             a_progress_callback(100, result.Reverse());
         }
 
-        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
+        internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
             HtmlDocument doc = DownloadDocument(a_chapter);
 
@@ -107,7 +107,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override string GetImageURL(Page a_page)
+        internal override string GetImageURL(Page a_page)
         {
             HtmlDocument doc = DownloadDocument(a_page);
 

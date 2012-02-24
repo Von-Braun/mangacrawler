@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MangaCrawlerLib
 {
-    public static class IDGenerator
+    internal static class IDGenerator
     {
         private static Object s_lock = new Object();
         private static int s_id = 0;

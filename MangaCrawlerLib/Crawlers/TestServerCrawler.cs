@@ -95,7 +95,7 @@ namespace MangaCrawlerLib.Crawlers
             }
         }
 
-        public override void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback)
+        internal override void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback)
         {
             Debug.Assert(a_server.Name == m_name);
 
@@ -172,7 +172,7 @@ namespace MangaCrawlerLib.Crawlers
 
         }
 
-        public override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
+        internal override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
             Debug.Assert(a_serie.Server.Name == m_name);
 
@@ -207,7 +207,7 @@ namespace MangaCrawlerLib.Crawlers
             }
         }
 
-        public override IEnumerable<Page> DownloadPages(Chapter a_chapter)
+        internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
             var serie = m_series.First(s => s.Title == a_chapter.Serie.Title);
             var chapter = GenerateChapters(serie).First(c => c.Title == a_chapter.Title);
@@ -222,7 +222,7 @@ namespace MangaCrawlerLib.Crawlers
             return result;
         }
 
-        public override MemoryStream GetImageStream(Page a_page)
+        internal override MemoryStream GetImageStream(Page a_page)
         {
             Bitmap bmp = new Bitmap(NextInt(600, 2000), NextInt(600, 2000));
             using (Graphics g = Graphics.FromImage(bmp))
@@ -247,7 +247,7 @@ namespace MangaCrawlerLib.Crawlers
             return ms;
         }
 
-        public override string GetImageURL(Page a_page)
+        internal override string GetImageURL(Page a_page)
         {
             return "fake_image_url.jpg";
         }
