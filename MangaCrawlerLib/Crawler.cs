@@ -9,17 +9,17 @@ using HtmlAgilityPack;
 
 namespace MangaCrawlerLib
 {
-    internal abstract class Crawler
+    public abstract class Crawler
     {
         public abstract string Name { get; }
 
-        public abstract void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback);
-        public abstract void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback);
-        public abstract IEnumerable<Page> DownloadPages(Chapter a_chapter);
+        internal abstract void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback);
+        internal abstract void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback);
+        internal abstract IEnumerable<Page> DownloadPages(Chapter a_chapter);
         public abstract string GetServerURL();
-        public abstract string GetImageURL(Page a_page);
+        internal abstract string GetImageURL(Page a_page);
 
-        public static T DownloadWithRetry<T>(Func<T> a_func)
+        internal static T DownloadWithRetry<T>(Func<T> a_func)
         {
             WebException ex1 = null;
 
@@ -41,32 +41,32 @@ namespace MangaCrawlerLib
             throw ex1;
         }
 
-        public HtmlDocument DownloadDocument(Server a_server)
+        internal HtmlDocument DownloadDocument(Server a_server)
         {
             return DownloadDocument(a_server, a_server.URL, CancellationToken.None);
         }
 
-        public HtmlDocument DownloadDocument(Server a_server, string a_url)
+        internal HtmlDocument DownloadDocument(Server a_server, string a_url)
         {
             return DownloadDocument(a_server, a_url, CancellationToken.None);
         }
 
-        public HtmlDocument DownloadDocument(Serie a_serie)
+        internal HtmlDocument DownloadDocument(Serie a_serie)
         {
             return DownloadDocument(a_serie.Server, a_serie.URL, CancellationToken.None);
         }
 
-        public HtmlDocument DownloadDocument(Page a_page)
+        internal HtmlDocument DownloadDocument(Page a_page)
         {
             return DownloadDocument(a_page.Chapter.Work.Chapter.Serie.Server, a_page.URL, CancellationToken.None);
         }
 
-        public HtmlDocument DownloadDocument(Chapter a_chapter)
+        internal HtmlDocument DownloadDocument(Chapter a_chapter)
         {
             return DownloadDocument(a_chapter.Serie.Server, a_chapter.URL, CancellationToken.None);
         }
 
-        public virtual HtmlDocument DownloadDocument(Server a_server, string a_url, CancellationToken a_token)
+        internal virtual HtmlDocument DownloadDocument(Server a_server, string a_url, CancellationToken a_token)
         {
             return Crawler.DownloadWithRetry(() =>
             {
@@ -107,7 +107,7 @@ namespace MangaCrawlerLib
             });
         }
 
-        public virtual MemoryStream GetImageStream(Page a_page)
+        internal virtual MemoryStream GetImageStream(Page a_page)
         {
             return DownloadWithRetry(() =>
             {

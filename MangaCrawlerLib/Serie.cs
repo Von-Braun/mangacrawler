@@ -9,18 +9,22 @@ using System.Collections.ObjectModel;
 
 namespace MangaCrawlerLib
 {
-    public class Serie //: IClassMapping
+    public class Serie : IClassMapping
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private SerieState m_state = SerieState.Initial;
 
-        public virtual int ID { get; private set; }
-        public virtual DateTime LastChange { get; private set; }
-        public virtual string URL { get; private set; }
-        public virtual Server Server { get; private set; }
-        public virtual int DownloadProgress { get; private set; }
-        public virtual string Title { get; private set; }
-        internal virtual List<Chapter> Chapters { get; private set; }
+        public virtual int ID { get; protected internal set; }
+        public virtual DateTime LastChange { get; protected internal set; }
+        public virtual string URL { get; protected internal set; }
+        public virtual Server Server { get; protected internal set; }
+        public virtual int DownloadProgress { get; protected internal set; }
+        public virtual string Title { get; protected internal set; }
+        protected internal virtual List<Chapter> Chapters { get; set; }
+
+        protected internal Serie()
+        {
+        }
 
         internal Serie(Server a_server, string a_url, string a_title)
         {
@@ -37,7 +41,7 @@ namespace MangaCrawlerLib
             Title = HttpUtility.HtmlDecode(Title);
         }
 
-        public void Map(ModelMapper a_mapper)
+        public virtual void Map(ModelMapper a_mapper)
         {
             a_mapper.Class<Serie>(m =>
             {
@@ -45,15 +49,15 @@ namespace MangaCrawlerLib
                 m.Id(c => c.ID);
                 m.Property(c => c.LastChange);
                 m.Property(c => c.URL);
-                m.Property(c => c.Server);
+                //m.Property(c => c.Server);
                 m.Property(c => c.DownloadProgress);
                 m.Property(c => c.Title);
                 m.Property(c => c.State);
-                m.Property(c => c.Chapters);
+                //m.Property(c => c.Chapters);
             });
         }
 
-        public SerieState State
+        public virtual SerieState State
         {
             get
             {
@@ -66,12 +70,12 @@ namespace MangaCrawlerLib
             }
         }
 
-        public ReadOnlyCollection<Chapter> GetChapters()
+        public virtual ReadOnlyCollection<Chapter> GetChapters()
         {
             return Chapters.AsReadOnly();
         }
 
-        internal void DownloadChapters()
+        protected internal virtual void DownloadChapters()
         {
             try
             {
@@ -110,7 +114,7 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Server.Name, Title);
         }
 
-        internal bool DownloadRequired
+        protected internal virtual bool DownloadRequired
         {
             get
             {

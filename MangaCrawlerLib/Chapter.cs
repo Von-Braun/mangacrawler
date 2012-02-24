@@ -13,20 +13,20 @@ using System.Collections.ObjectModel;
 
 namespace MangaCrawlerLib
 {
-    public class Chapter //: IClassMapping
+    public class Chapter : IClassMapping
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ChapterState m_state = ChapterState.Initial;
 
-        internal virtual ChapterWork Work { get; private set; }
-        public virtual string URL { get; private set; }
-        public virtual Serie Serie { get; private set; }
-        public virtual string Title { get; private set; }
-        public virtual DateTime LastChange { get; internal set; }
-        public virtual int ID { get; private set; }
-        internal virtual List<Page> Pages { get; set; }
+        protected internal virtual ChapterWork Work { get; set; }
+        public virtual string URL { get; protected internal set; }
+        public virtual Serie Serie { get; protected internal set; }
+        public virtual string Title { get; protected internal set; }
+        public virtual DateTime LastChange { get; protected internal set; }
+        public virtual int ID { get; protected internal set; }
+        protected internal virtual List<Page> Pages { get; set; }
 
-        private Chapter()
+        protected internal Chapter()
         {
         }
 
@@ -45,7 +45,7 @@ namespace MangaCrawlerLib
             Title = HttpUtility.HtmlDecode(Title);
         }
 
-        public void Map(ModelMapper a_mapper)
+        public virtual void Map(ModelMapper a_mapper)
         {
             a_mapper.Class<Chapter>(m =>
             {
@@ -58,33 +58,29 @@ namespace MangaCrawlerLib
                 {
                     p.NotNullable(true);
                 });
-                m.Property(c => c.Serie, p =>
-                {
-                    p.NotNullable(true);
-                });
+                //m.Property(c => c.Serie, p =>
+                //{
+                //    p.NotNullable(true);
+                //});
                 m.Property(c => c.Title, p =>
                 {
                     p.NotNullable(true);
                 });
-                m.Property(c => c.Work, p =>
-                {
-                    p.NotNullable(false);
-                });
+                //m.Property(c => c.Work, p =>
+                //{
+                //    p.NotNullable(false);
+                //});
                 m.Version(c => c.LastChange, p =>
                 {
-                });
-                m.Property(c => c.LastChange, p =>
-                {
-                    p.NotNullable(true);
                 });
                 m.Property(c => c.State, p =>
                 {
                     p.NotNullable(true);
                 });
-                m.Property(c => c.Pages, p =>
-                {
-                    p.NotNullable(true);
-                });
+                //m.Property(c => c.Pages, p =>
+                //{
+                //    p.NotNullable(true);
+                //});
             });
         }
 
@@ -94,14 +90,14 @@ namespace MangaCrawlerLib
             {
                 return m_state;
             }
-            internal set
+            internal protected set
             {
                 m_state = value;
                 LastChange = DateTime.Now;
             }
         }
 
-        public void AddPages(IEnumerable<Page> a_pages)
+        protected internal virtual void AddPages(IEnumerable<Page> a_pages)
         {
             Pages.AddRange(a_pages);
             LastChange = DateTime.Now;
@@ -112,12 +108,12 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Serie, Title);
         }
 
-        public ReadOnlyCollection<Page> GetPages()
+        public virtual ReadOnlyCollection<Page> GetPages()
         {
             return Pages.AsReadOnly();
         }
 
-        internal bool DownloadRequired
+        protected internal virtual bool DownloadRequired
         {
             get
             {
@@ -127,7 +123,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public int DownloadedPages
+        public virtual int DownloadedPages
         {
             get
             {
@@ -135,7 +131,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void DeleteWork()
+        public virtual void DeleteWork()
         {
             ChapterWork work = Work;
             if (work == null)
@@ -143,7 +139,7 @@ namespace MangaCrawlerLib
             work.DeleteWork();
         }
 
-        internal void CreateWork(string a_manga_root_dir, bool a_cbz)
+        protected internal virtual void CreateWork(string a_manga_root_dir, bool a_cbz)
         {
             Work = new ChapterWork(this, a_manga_root_dir, a_cbz);
         }

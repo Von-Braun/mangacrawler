@@ -9,14 +9,14 @@ using System.Threading;
 
 namespace MangaCrawlerLib
 {
-    internal class CustomTaskScheduler
+    public class CustomTaskScheduler
     {
         /// <summary>
         /// Provides control over number of threads and priorities. This is what we need.
         /// </summary>
         [DebuggerTypeProxy(typeof(CustomTaskSchedulerDebugView))]
         [DebuggerDisplay("Id={Id}, Queues={DebugQueueCount}, ScheduledTasks = {DebugTaskCount}")]
-        public class InnerCustomTaskScheduler : TaskScheduler, IDisposable
+        internal class InnerCustomTaskScheduler : TaskScheduler, IDisposable
         {
             /// <summary>Debug view for the CustomTaskScheduler.</summary>
             private class CustomTaskSchedulerDebugView
@@ -469,13 +469,13 @@ namespace MangaCrawlerLib
 
         private Lazy<InnerCustomTaskScheduler> m_scheduler;
 
-        public CustomTaskScheduler(int a_thread_count, string a_name)
+        internal CustomTaskScheduler(int a_thread_count, string a_name)
         {
             m_scheduler = new Lazy<InnerCustomTaskScheduler>(() =>
                 new InnerCustomTaskScheduler(a_thread_count, a_name));
         }
 
-        public TaskScheduler this[Priority a_priority]
+        internal TaskScheduler this[Priority a_priority]
         {
             get
             {

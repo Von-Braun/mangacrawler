@@ -70,8 +70,12 @@ namespace MangaCrawlerLib
                         select type;
 
             foreach (var type in types)
-                (type.GetConstructor().Invoke() as IClassMapping).Map(mapper);
-               // (FormatterServices.GetUninitializedObject(type) as IClassMapping).Map(mapper);
+            {
+                ConstructorInfo ci = type.GetConstructor(
+                    BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
+                IClassMapping cm = ci.Invoke() as IClassMapping;
+                cm.Map(mapper);
+            }
 
             HbmMapping mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
 
@@ -84,13 +88,6 @@ namespace MangaCrawlerLib
         {
             new SchemaExport(Configuration).Drop(false, true);
             new SchemaExport(Configuration).Create(false, true);
-        }
-
-        // TODO: po co jest ValidateSchema
-        protected static void ValidateSchema()
-        {
-            SchemaValidator schemaValidator = new SchemaValidator(Configuration);
-            schemaValidator.Validate();
         }
     }
 }
