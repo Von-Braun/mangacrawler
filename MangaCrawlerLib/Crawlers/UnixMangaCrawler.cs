@@ -65,11 +65,6 @@ namespace MangaCrawlerLib
                 var chapters_or_volumes = 
                     chapters_or_volumes_enum.Skip(3).Reverse().Skip(1).Reverse().ToList();
 
-                if (a_serie.Title == "Bleach")
-                {
-                //    chapters_or_volumes = new List<HtmlNode>() { chapters_or_volumes[187] };
-                }
-
                 int chapters_progress = 0;
 
                 ConcurrentBag<Tuple<int, int, Chapter>> chapters = 

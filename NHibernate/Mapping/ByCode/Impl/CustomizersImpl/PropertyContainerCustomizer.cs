@@ -233,19 +233,24 @@ namespace NHibernate.Mapping.ByCode.Impl.CustomizersImpl
 			Bag(property, collectionMapping, x => { });
 		}
 
-		protected virtual void RegisterBagMapping<TElement>(Expression<Func<TEntity, IEnumerable<TElement>>> property, Action<IBagPropertiesMapper<TEntity, TElement>> collectionMapping, Action<ICollectionElementRelation<TElement>> mapping)
+		protected virtual void RegisterBagMapping<TElement>(Expression<Func<TEntity, IEnumerable<TElement>>> property, 
+            Action<IBagPropertiesMapper<TEntity, TElement>> collectionMapping, 
+            Action<ICollectionElementRelation<TElement>> mapping)
 		{
 			MemberInfo member = TypeExtensions.DecodeMemberAccessExpression(property);
 			MemberInfo memberOf = TypeExtensions.DecodeMemberAccessExpressionOf(property);
 			RegisterBagMapping<TElement>(collectionMapping, mapping, member, memberOf);
 		}
 
-		protected void RegisterBagMapping<TElement>(Action<IBagPropertiesMapper<TEntity, TElement>> collectionMapping, Action<ICollectionElementRelation<TElement>> mapping, params MemberInfo[] members)
+		protected void RegisterBagMapping<TElement>(Action<IBagPropertiesMapper<TEntity, TElement>> collectionMapping, 
+            Action<ICollectionElementRelation<TElement>> mapping, params MemberInfo[] members)
 		{
 			foreach (var member in members)
 			{
-				collectionMapping(new BagPropertiesCustomizer<TEntity, TElement>(explicitDeclarationsHolder, new PropertyPath(null, member), CustomizersHolder));
-				mapping(new CollectionElementRelationCustomizer<TElement>(explicitDeclarationsHolder, new PropertyPath(PropertyPath, member), CustomizersHolder));
+				collectionMapping(new BagPropertiesCustomizer<TEntity, TElement>(explicitDeclarationsHolder, 
+                    new PropertyPath(null, member), CustomizersHolder));
+				mapping(new CollectionElementRelationCustomizer<TElement>(explicitDeclarationsHolder, 
+                    new PropertyPath(PropertyPath, member), CustomizersHolder));
 			}
 		}
 
@@ -261,19 +266,24 @@ namespace NHibernate.Mapping.ByCode.Impl.CustomizersImpl
 			List(property, collectionMapping, x => { });
 		}
 
-		protected virtual void RegisterListMapping<TElement>(Expression<Func<TEntity, IEnumerable<TElement>>> property, Action<IListPropertiesMapper<TEntity, TElement>> collectionMapping, Action<ICollectionElementRelation<TElement>> mapping)
+		protected virtual void RegisterListMapping<TElement>(Expression<Func<TEntity, IEnumerable<TElement>>> property, 
+            Action<IListPropertiesMapper<TEntity, TElement>> collectionMapping, 
+            Action<ICollectionElementRelation<TElement>> mapping)
 		{
 			MemberInfo member = TypeExtensions.DecodeMemberAccessExpression(property);
 			MemberInfo memberOf = TypeExtensions.DecodeMemberAccessExpressionOf(property);
 			RegisterListMapping<TElement>(collectionMapping, mapping, member, memberOf);
 		}
 
-		protected void RegisterListMapping<TElement>(Action<IListPropertiesMapper<TEntity, TElement>> collectionMapping, Action<ICollectionElementRelation<TElement>> mapping, params MemberInfo[] members)
+		protected void RegisterListMapping<TElement>(Action<IListPropertiesMapper<TEntity, TElement>> collectionMapping, 
+            Action<ICollectionElementRelation<TElement>> mapping, params MemberInfo[] members)
 		{
 			foreach (var member in members)
 			{
-				collectionMapping(new ListPropertiesCustomizer<TEntity, TElement>(explicitDeclarationsHolder, new PropertyPath(null, member), CustomizersHolder));
-				mapping(new CollectionElementRelationCustomizer<TElement>(explicitDeclarationsHolder, new PropertyPath(PropertyPath, member), CustomizersHolder));
+				collectionMapping(new ListPropertiesCustomizer<TEntity, TElement>(explicitDeclarationsHolder, 
+                    new PropertyPath(null, member), CustomizersHolder));
+				mapping(new CollectionElementRelationCustomizer<TElement>(explicitDeclarationsHolder, 
+                    new PropertyPath(PropertyPath, member), CustomizersHolder));
 			}
 		}
 
@@ -284,33 +294,41 @@ namespace NHibernate.Mapping.ByCode.Impl.CustomizersImpl
 		{
 			RegisterMapMapping(property, collectionMapping, keyMapping, mapping);
 		}
+
 		public void Map<TKey, TElement>(Expression<Func<TEntity, IDictionary<TKey, TElement>>> property,
-																		Action<IMapPropertiesMapper<TEntity, TKey, TElement>> collectionMapping)
+            Action<IMapPropertiesMapper<TEntity, TKey, TElement>> collectionMapping)
 		{
 			Map(property, collectionMapping, keyMapping => { }, x => { });
 		}
 
-		protected virtual void RegisterMapMapping<TKey, TElement>(Expression<Func<TEntity, IDictionary<TKey, TElement>>> property, Action<IMapPropertiesMapper<TEntity, TKey, TElement>> collectionMapping, Action<IMapKeyRelation<TKey>> keyMapping, Action<ICollectionElementRelation<TElement>> mapping)
+		protected virtual void RegisterMapMapping<TKey, TElement>(Expression<Func<TEntity, IDictionary<TKey, TElement>>> property,
+            Action<IMapPropertiesMapper<TEntity, TKey, TElement>> collectionMapping, 
+            Action<IMapKeyRelation<TKey>> keyMapping, Action<ICollectionElementRelation<TElement>> mapping)
 		{
 			MemberInfo member = TypeExtensions.DecodeMemberAccessExpression(property);
 			MemberInfo memberOf = TypeExtensions.DecodeMemberAccessExpressionOf(property);
 			RegisterMapMapping<TKey, TElement>(collectionMapping, keyMapping, mapping, member, memberOf);
 		}
 
-		protected virtual void RegisterMapMapping<TKey, TElement>(Action<IMapPropertiesMapper<TEntity, TKey, TElement>> collectionMapping, Action<IMapKeyRelation<TKey>> keyMapping, Action<ICollectionElementRelation<TElement>> mapping, params MemberInfo[] members)
+		protected virtual void RegisterMapMapping<TKey, 
+            TElement>(Action<IMapPropertiesMapper<TEntity, TKey, TElement>> collectionMapping, 
+            Action<IMapKeyRelation<TKey>> keyMapping, Action<ICollectionElementRelation<TElement>> mapping, 
+            params MemberInfo[] members)
 		{
 			foreach (var member in members)
 			{
 				var memberPath = new PropertyPath(PropertyPath, member);
-				collectionMapping(new MapPropertiesCustomizer<TEntity, TKey, TElement>(explicitDeclarationsHolder, memberPath, CustomizersHolder));
+				collectionMapping(new MapPropertiesCustomizer<TEntity, TKey, TElement>(explicitDeclarationsHolder, memberPath, 
+                    CustomizersHolder));
 				keyMapping(new MapKeyRelationCustomizer<TKey>(explicitDeclarationsHolder, memberPath, CustomizersHolder));
-				mapping(new CollectionElementRelationCustomizer<TElement>(explicitDeclarationsHolder, memberPath, CustomizersHolder));
+				mapping(new CollectionElementRelationCustomizer<TElement>(explicitDeclarationsHolder, memberPath, 
+                    CustomizersHolder));
 			}
 		}
 
 		public void Map<TKey, TElement>(Expression<Func<TEntity, IDictionary<TKey, TElement>>> property,
-																		Action<IMapPropertiesMapper<TEntity, TKey, TElement>> collectionMapping,
-																		Action<ICollectionElementRelation<TElement>> mapping)
+            Action<IMapPropertiesMapper<TEntity, TKey, TElement>> collectionMapping, 
+            Action<ICollectionElementRelation<TElement>> mapping)
 		{
 			Map(property, collectionMapping, keyMapping => { }, mapping);
 		}
@@ -328,30 +346,38 @@ namespace NHibernate.Mapping.ByCode.Impl.CustomizersImpl
 			RegisterIdBagMapping(property, collectionMapping, x => { });
 		}
 
-		protected virtual void RegisterIdBagMapping<TElement>(Expression<Func<TEntity, IEnumerable<TElement>>> property, Action<IIdBagPropertiesMapper<TEntity, TElement>> collectionMapping, Action<ICollectionElementRelation<TElement>> mapping)
+		protected virtual void RegisterIdBagMapping<TElement>(Expression<Func<TEntity, IEnumerable<TElement>>> property, 
+            Action<IIdBagPropertiesMapper<TEntity, TElement>> collectionMapping, 
+            Action<ICollectionElementRelation<TElement>> mapping)
 		{
 			MemberInfo member = TypeExtensions.DecodeMemberAccessExpression(property);
 			MemberInfo memberOf = TypeExtensions.DecodeMemberAccessExpressionOf(property);
 			RegisterIdBagMapping<TElement>(collectionMapping, mapping, member, memberOf);
 		}
 
-		protected virtual void RegisterIdBagMapping<TElement>(Action<IIdBagPropertiesMapper<TEntity, TElement>> collectionMapping, Action<ICollectionElementRelation<TElement>> mapping,params MemberInfo[] members)
+		protected virtual void RegisterIdBagMapping<TElement>(Action<IIdBagPropertiesMapper<TEntity, TElement>> collectionMapping, 
+            Action<ICollectionElementRelation<TElement>> mapping,params MemberInfo[] members)
 		{
 			foreach (var member in members)
 			{
-				collectionMapping(new IdBagPropertiesCustomizer<TEntity, TElement>(explicitDeclarationsHolder, new PropertyPath(null, member), CustomizersHolder));
-				mapping(new CollectionElementRelationCustomizer<TElement>(explicitDeclarationsHolder, new PropertyPath(PropertyPath, member), CustomizersHolder));
+				collectionMapping(new IdBagPropertiesCustomizer<TEntity, TElement>(explicitDeclarationsHolder, 
+                    new PropertyPath(null, member), CustomizersHolder));
+				mapping(new CollectionElementRelationCustomizer<TElement>(explicitDeclarationsHolder, 
+                    new PropertyPath(PropertyPath, member), CustomizersHolder));
 			}
 		}
 
-		public void Set<TElement>(string notVisiblePropertyOrFieldName, Action<ISetPropertiesMapper<TEntity, TElement>> collectionMapping, Action<ICollectionElementRelation<TElement>> mapping)
+		public void Set<TElement>(string notVisiblePropertyOrFieldName, 
+            Action<ISetPropertiesMapper<TEntity, TElement>> collectionMapping, 
+            Action<ICollectionElementRelation<TElement>> mapping)
 		{
 			MemberInfo member = GetPropertyOrFieldMatchingNameOrThrow(notVisiblePropertyOrFieldName);
 			var collectionElementType = member.GetPropertyOrFieldType().DetermineCollectionElementType();
 			if(!typeof(TElement).Equals(collectionElementType))
 			{
-				throw new MappingException(string.Format("Wrong collection element type. For the property/field '{0}' of {1} was expected a collection of {2} but was {3}",
-				                                         notVisiblePropertyOrFieldName, typeof (TEntity).FullName, typeof (TElement).Name, collectionElementType.Name));
+				throw new MappingException(string.Format(
+                    "Wrong collection element type. For the property/field '{0}' of {1} was expected a collection of {2} but was {3}", 
+                    notVisiblePropertyOrFieldName, typeof (TEntity).FullName, typeof (TElement).Name, collectionElementType.Name));
 			}
 			MemberInfo memberOf = member.GetMemberFromReflectedType(typeof(TEntity));
 			RegisterSetMapping<TElement>(collectionMapping, mapping, member, memberOf);

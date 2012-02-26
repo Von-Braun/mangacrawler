@@ -60,13 +60,13 @@ namespace MangaCrawlerLib
 
             doc = DownloadDocument(a_chapter.Serie.Server, url.GetAttributeValue("href", ""));
 
-            if (a_chapter.Work.Token.IsCancellationRequested)
+            if (a_chapter.Token.IsCancellationRequested)
             {
                 Loggers.Cancellation.InfoFormat(
                     "Pages - token cancelled, a_url: {0}",
                     a_chapter.URL);
 
-                a_chapter.Work.Token.ThrowIfCancellationRequested();
+                a_chapter.Token.ThrowIfCancellationRequested();
             }
 
 
@@ -89,7 +89,7 @@ namespace MangaCrawlerLib
 
         internal override string GetImageURL(Page a_page)
         {
-            HtmlDocument doc = DownloadDocument(a_page.Chapter.Work.Chapter.Serie.Server, a_page.URL);
+            HtmlDocument doc = DownloadDocument(a_page.Chapter.Serie.Server, a_page.URL);
 
             var node = doc.DocumentNode.SelectSingleNode("//div[@class='inner_full_view']/h3/a/img");
 

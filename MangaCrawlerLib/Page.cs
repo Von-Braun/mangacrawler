@@ -50,21 +50,20 @@ namespace MangaCrawlerLib
                 Name = Index.ToString();
         }
 
-        public virtual void Map(ModelMapper a_mapper)
+        private void Map(ModelMapper a_mapper)
         {
             a_mapper.Class<Page>(m =>
             {
-                m.Lazy(true);
-                m.Id(c => c.ID);
-                //m.Property(c => c.Chapter);
-                m.Property(c => c.LastChange);
+                m.Id(c => c.ID, mapper => mapper.Generator(Generators.Native));
+                m.Version(c => c.LastChange, mapper => { });
                 m.Property(c => c.Index);
-                m.Property(c => c.URL);
+                m.Property(c => c.URL, mapping => mapping.NotNullable(true));
                 m.Property(c => c.Downloaded);
-                m.Property(c => c.ImageFilePath);
-                m.Property(c => c.Name);
-                m.Property(c => c.ImageURL);
-                m.Property(c => c.Hash);
+                m.Property(c => c.ImageFilePath, mapping => mapping.NotNullable(true));
+                m.Property(c => c.Name, mapping => mapping.NotNullable(true));
+                m.Property(c => c.ImageURL, mapping => mapping.NotNullable(true));
+                m.Property(c => c.Hash, mapping => mapping.NotNullable(true));
+                m.ManyToOne(c => c.Chapter, mapping => mapping.NotNullable(true));
             });
         }
 
@@ -84,25 +83,25 @@ namespace MangaCrawlerLib
 
         protected internal virtual void DownloadAndSavePageImage()
         {
-            if (Chapter.Work.Token.IsCancellationRequested)
+            if (Chapter.Token.IsCancellationRequested)
             {
                 Loggers.Cancellation.InfoFormat(
                     "#2 cancellation requested, work: {0} state: {1}",
                     this, Chapter.State);
 
-                Chapter.Work.Token.ThrowIfCancellationRequested();
+                Chapter.Token.ThrowIfCancellationRequested();
             }
 
             ImageURL = HttpUtility.HtmlDecode(Chapter.Serie.Server.Crawler.GetImageURL(this));
 
-            ImageFilePath = Chapter.Work.ChapterDir +
+            ImageFilePath = Chapter.ChapterDir +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
                 FileUtils.RemoveInvalidFileDirectoryCharacters(
                     Path.GetExtension(ImageURL).ToLower());
 
             LastChange = DateTime.Now;
 
-            new DirectoryInfo(Chapter.Work.ChapterDir).Create();
+            new DirectoryInfo(Chapter.ChapterDir).Create();
 
             FileInfo temp_file = new FileInfo(Path.GetTempFileName());
 

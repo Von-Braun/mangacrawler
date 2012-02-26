@@ -8,6 +8,5 @@ namespace MangaCrawlerLib
 {
     public interface IClassMapping
     {
-        void Map(ModelMapper a_mapper);
     }
 }

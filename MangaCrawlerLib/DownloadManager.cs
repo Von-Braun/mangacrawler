@@ -21,7 +21,7 @@ namespace MangaCrawlerLib
         internal static string UserAgent = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:10.0) Gecko/20100101 Firefox/10.0";
 
         private static List<Server> s_servers;
-        private static List<ChapterWork> s_works = new List<ChapterWork>();
+        private static List<Chapter> s_works = new List<Chapter>();
 
         private static string s_settings_dir;
 
@@ -71,15 +71,12 @@ namespace MangaCrawlerLib
         {
             foreach (var chapter in a_chapters)
             {
-                if (chapter.Work != null)
+                if (chapter.IsWorking)
                 {
-                    if (chapter.Work.IsWorking)
-                    {
-                        Loggers.MangaCrawler.InfoFormat(
-                            "Already in work, work: {0} state: {1}",
-                            chapter.Work, chapter.State);
-                        continue;
-                    }
+                    Loggers.MangaCrawler.InfoFormat(
+                        "Already in work, chapter: {0} state: {1}",
+                        chapter, chapter.State);
+                    continue;
                 }
                 else
                 {
@@ -87,19 +84,17 @@ namespace MangaCrawlerLib
                 }
 
                 Loggers.MangaCrawler.InfoFormat(
-                    "Work: {0} state: {1}",
-                    chapter.Work, chapter.State);
+                    "Chapter: {0} state: {1}",
+                    chapter, chapter.State);
 
                 lock (s_works)
                 {
-                    s_works.Add(chapter.Work);
+                    s_works.Add(chapter);
                 }
-
-                chapter.State = ChapterState.Waiting;
 
                 Task task = new Task(() =>
                 {
-                    chapter.Work.DownloadPages();
+                    chapter.DownloadPages();
                 }, TaskCreationOptions.LongRunning);
 
                 task.Start(chapter.Serie.Server.Scheduler[Priority.Pages]);
@@ -112,8 +107,8 @@ namespace MangaCrawlerLib
             {
                 lock (s_works)
                 {
-                    return (from work in s_works
-                            select work.Chapter).ToArray();
+                    return (from chapter in s_works
+                            select chapter).ToArray();
                 }
             }
         }

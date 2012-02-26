@@ -69,7 +69,6 @@
     <Compile Include="NHibernateSetup.cs" />
     <Compile Include="SchedulerList.cs" />
     <Compile Include="ServerList.cs" />
-    <Compile Include="ChapterWork.cs" />
     <Compile Include="Loggers.cs" />
     <Compile Include="OrderedList.cs" />
     <Compile Include="Priority.cs" />

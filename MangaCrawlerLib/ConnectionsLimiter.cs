@@ -37,19 +37,19 @@ namespace MangaCrawlerLib
 
         public static void BeginDownloadPages(Chapter a_chapter)
         {
-            Loggers.ConLimits.InfoFormat("Locking one per server, work: {0} state: {1}",
-                a_chapter.Work, a_chapter.State);
+            Loggers.ConLimits.InfoFormat("Locking one per server, chapter: {0} state: {1}",
+                a_chapter, a_chapter.State);
 
-            s_one_chapter_per_server[a_chapter.Serie.Server].WaitOne(a_chapter.Work.Token);
+            s_one_chapter_per_server[a_chapter.Serie.Server].WaitOne(a_chapter.Token);
 
-            Loggers.ConLimits.InfoFormat("Locked one per server, work: {0} state: {1}",
-               a_chapter.Work, a_chapter.State);
+            Loggers.ConLimits.InfoFormat("Locked one per server, chapter: {0} state: {1}",
+               a_chapter, a_chapter.State);
         }
 
         public static void EndDownloadPages(Chapter a_chapter)
         {
-            Loggers.ConLimits.InfoFormat("Releasing one per server, work: {0} state: {1}",
-                a_chapter.Work, a_chapter.State);
+            Loggers.ConLimits.InfoFormat("Releasing one per server, chapter: {0} state: {1}",
+                a_chapter, a_chapter.State);
 
             s_one_chapter_per_server[a_chapter.Serie.Server].ReleaseMutex();
         }
