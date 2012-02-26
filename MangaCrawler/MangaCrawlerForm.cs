@@ -527,7 +527,7 @@ namespace MangaCrawler
                     case ServerState.Downloaded:
 
                         e.Graphics.DrawString(
-                            String.Format(Resources.Series, server.GetSeries().Count), 
+                            String.Format(Resources.Series, server.GetSeries().Count()), 
                             font, Brushes.Green, rect, StringFormat.GenericDefault); 
                         break;
 
@@ -573,7 +573,7 @@ namespace MangaCrawler
                     case SerieState.Downloaded:
 
                         e.Graphics.DrawString(
-                            String.Format(Resources.Chapters, serie.GetChapters().Count), 
+                            String.Format(Resources.Chapters, serie.GetChapters().Count()), 
                             font, Brushes.Green, rect, StringFormat.GenericDefault);
                         break;
 

@@ -28,7 +28,7 @@ namespace MangaCrawlerLib
         public virtual string Name { get; protected internal set; }
         public virtual int DownloadProgress { get; protected internal set; }
         public virtual DateTime LastChange { get; protected internal set; }
-        protected internal virtual List<Serie> Series { get; set; }
+        protected internal virtual IList<Serie> Series { get; set; }
 
         protected internal Server()
         {
@@ -43,24 +43,23 @@ namespace MangaCrawlerLib
             LastChange = DateTime.Now;
         }
 
-        public virtual void Map(ModelMapper a_mapper)
+        private void Map(ModelMapper a_mapper)
         {
             a_mapper.Class<Server>(m =>
             {
-                m.Lazy(true);
-                m.Id(c => c.ID);
-                m.Property(c => c.LastChange);
-                m.Property(c => c.URL);
+                m.Id(c => c.ID, mapping => mapping.Generator(Generators.Native));
+                m.Version(c => c.LastChange, mapping => { });
+                m.Property(c => c.URL, mapping => mapping.NotNullable(true));
                 m.Property(c => c.DownloadProgress);
-                m.Property(c => c.Name);
-                m.Property(c => c.State);
-                //m.Property(c => c.Series);
+                m.Property(c => c.Name, mapping => mapping.NotNullable(true));
+                m.Property(c => c.State, mapping => mapping.NotNullable(true));
+                m.List<Serie>("Series", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
             });
         }
 
-        public virtual ReadOnlyCollection<Serie> GetSeries()
+        public virtual IEnumerable<Serie> GetSeries()
         {
-            return Series.AsReadOnly();
+            return Series;
         }
 
         public virtual ServerState State

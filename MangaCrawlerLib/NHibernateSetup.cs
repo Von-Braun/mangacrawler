@@ -50,17 +50,15 @@ namespace MangaCrawlerLib
                     "Data Source=\"{0}\\{1}\";Version=3",
                     DatabaseDir, DatabaseName);
 
-                if (a_log)
-                {
-                    db.LogFormattedSql = true;
-                    db.LogSqlInConsole = true;
-                    db.AutoCommentSql = true;
-                }
+                db.LogFormattedSql = a_log;
+                db.LogSqlInConsole = a_log;
+                db.AutoCommentSql = a_log;
             });
         }
 
         private static void AddMappings()
         {
+            
             ModelMapper mapper = new ModelMapper();
 
             var types = from type in Assembly.GetAssembly(typeof(NHibernateSetup)).GetTypes()
@@ -72,14 +70,19 @@ namespace MangaCrawlerLib
             foreach (var type in types)
             {
                 ConstructorInfo ci = type.GetConstructor(
-                    BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
                 IClassMapping cm = ci.Invoke() as IClassMapping;
-                cm.Map(mapper);
+                cm.GetType().InvokeMember(
+                    "Map", 
+                    BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod,
+                    null, 
+                    cm, 
+                    mapper);
             }
 
             HbmMapping mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
-
-            Loggers.NHibernate.Info(mapping.AsString());
+            
+            Loggers.NH.Info(mapping.AsString());
 
             Configuration.AddDeserializedMapping(mapping, "MangaCrawler"); 
         }

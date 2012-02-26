@@ -399,7 +399,7 @@ namespace System.Data.SQLite
 #endif
 
 #if DEBUG
-          Trace.WriteLine(String.Format("Prepare: {0}", stmt));
+          //Trace.WriteLine(String.Format("Prepare: {0}", stmt));
 #endif
 
           if (n == 17)

@@ -987,8 +987,8 @@ namespace System.Data.SQLite
 #if DEBUG
         try
         {
-          Trace.WriteLine(String.Format(
-              "FinalizeStatement: {0}", handle));
+          //Trace.WriteLine(String.Format(
+          //    "FinalizeStatement: {0}", handle));
         }
         catch
         {
@@ -1008,9 +1008,9 @@ namespace System.Data.SQLite
 #if DEBUG
         try
         {
-          Trace.WriteLine(String.Format(
-              "FinalizeStatement: {0}, exception: {1}",
-              handle, e));
+          //Trace.WriteLine(String.Format(
+          //    "FinalizeStatement: {0}, exception: {1}",
+          //    handle, e));
         }
         catch
         {

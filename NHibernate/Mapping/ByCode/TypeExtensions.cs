@@ -154,7 +154,26 @@ namespace NHibernate.Mapping.ByCode
 			}
 			else
 			{
-				memberOfReflectType = typeof (TEntity).GetProperty(memberOfDeclaringType.Name, memberOfDeclaringType.GetPropertyOrFieldType());
+				memberOfReflectType = typeof (TEntity).GetProperty(
+                    memberOfDeclaringType.Name, memberOfDeclaringType.GetPropertyOrFieldType());
+
+                // tomanu
+                if (memberOfReflectType == null)
+                {
+                    memberOfReflectType = typeof(TEntity).GetProperty(
+                        memberOfDeclaringType.Name, 
+                        BindingFlags.NonPublic | BindingFlags.Instance, 
+                        null, 
+                        memberOfDeclaringType.GetPropertyOrFieldType(), 
+                        System.Type.EmptyTypes, 
+                        null);
+
+                    if (memberOfReflectType != null)
+                    {
+                        throw new Exception("Use overloaded method for hidden properties.");
+                    }
+                }
+                // end tomanu
 			}
 			return memberOfReflectType;
 		}

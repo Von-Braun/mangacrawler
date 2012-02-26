@@ -20,7 +20,7 @@ namespace MangaCrawlerLib
         public virtual Server Server { get; protected internal set; }
         public virtual int DownloadProgress { get; protected internal set; }
         public virtual string Title { get; protected internal set; }
-        protected internal virtual List<Chapter> Chapters { get; set; }
+        protected internal virtual IList<Chapter> Chapters { get; set; }
 
         protected internal Serie()
         {
@@ -41,19 +41,18 @@ namespace MangaCrawlerLib
             Title = HttpUtility.HtmlDecode(Title);
         }
 
-        public virtual void Map(ModelMapper a_mapper)
+        private void Map(ModelMapper a_mapper)
         {
             a_mapper.Class<Serie>(m =>
             {
-                m.Lazy(true);
-                m.Id(c => c.ID);
-                m.Property(c => c.LastChange);
-                m.Property(c => c.URL);
-                //m.Property(c => c.Server);
+                m.Id(c => c.ID, mapping => mapping.Generator(Generators.Native));
+                m.Version(c => c.LastChange, mapping => { });
+                m.Property(c => c.URL, mapping => mapping.NotNullable(true));
                 m.Property(c => c.DownloadProgress);
-                m.Property(c => c.Title);
-                m.Property(c => c.State);
-                //m.Property(c => c.Chapters);
+                m.Property(c => c.Title, mapping => mapping.NotNullable(true));
+                m.Property(c => c.State, mapping => mapping.NotNullable(true));
+                m.List<Chapter>("Chapters", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
+                m.ManyToOne(c => c.Server, mapping => mapping.NotNullable(true));
             });
         }
 
@@ -70,9 +69,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        public virtual ReadOnlyCollection<Chapter> GetChapters()
+        public virtual IEnumerable<Chapter> GetChapters()
         {
-            return Chapters.AsReadOnly();
+            return Chapters;
         }
 
         protected internal virtual void DownloadChapters()

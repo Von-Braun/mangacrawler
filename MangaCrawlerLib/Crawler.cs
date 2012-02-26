@@ -58,7 +58,7 @@ namespace MangaCrawlerLib
 
         internal HtmlDocument DownloadDocument(Page a_page)
         {
-            return DownloadDocument(a_page.Chapter.Work.Chapter.Serie.Server, a_page.URL, CancellationToken.None);
+            return DownloadDocument(a_page.Chapter.Serie.Server, a_page.URL, CancellationToken.None);
         }
 
         internal HtmlDocument DownloadDocument(Chapter a_chapter)
@@ -113,7 +113,7 @@ namespace MangaCrawlerLib
             {
                 try
                 {
-                    ConnectionsLimiter.Aquire(a_page.Chapter.Serie.Server, a_page.Chapter.Work.Token, Priority.Image);
+                    ConnectionsLimiter.Aquire(a_page.Chapter.Serie.Server, a_page.Chapter.Token, Priority.Image);
 
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
                         a_page.ImageURL);
@@ -135,13 +135,13 @@ namespace MangaCrawlerLib
                             if (readed == 0)
                                 break;
 
-                            if (a_page.Chapter.Work.Token.IsCancellationRequested)
+                            if (a_page.Chapter.Token.IsCancellationRequested)
                             {
                                 Loggers.Cancellation.InfoFormat(
                                     "cancellation requested, work: {0} state: {1}",
                                     this, a_page.Chapter.State);
 
-                                a_page.Chapter.Work.Token.ThrowIfCancellationRequested();
+                                a_page.Chapter.Token.ThrowIfCancellationRequested();
                             }
 
                             mem_stream.Write(buffer, 0, readed);

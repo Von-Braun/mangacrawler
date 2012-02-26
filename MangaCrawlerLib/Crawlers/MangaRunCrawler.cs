@@ -244,13 +244,13 @@ namespace MangaCrawlerLib
                             index += 1;
                         }
 
-                        if (a_chapter.Work.Token.IsCancellationRequested)
+                        if (a_chapter.Token.IsCancellationRequested)
                         {
                             Loggers.Cancellation.InfoFormat(
                                 "Pages - token cancelled, a_url: {0}",
                                 a_chapter.URL);
 
-                            a_chapter.Work.Token.ThrowIfCancellationRequested();
+                            a_chapter.Token.ThrowIfCancellationRequested();
                         }
                     }
                     catch
