@@ -14,13 +14,15 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private SerieState m_state = SerieState.Initial;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private IList<Chapter> m_chapters = new List<Chapter>();
+
         public virtual int ID { get; protected internal set; }
         public virtual DateTime LastChange { get; protected internal set; }
         public virtual string URL { get; protected internal set; }
         public virtual Server Server { get; protected internal set; }
         public virtual int DownloadProgress { get; protected internal set; }
         public virtual string Title { get; protected internal set; }
-        protected internal virtual IList<Chapter> Chapters { get; set; }
 
         protected internal Serie()
         {
@@ -31,8 +33,6 @@ namespace MangaCrawlerLib
             ID = IDGenerator.Next();
             URL = HttpUtility.HtmlDecode(a_url);
             Server = a_server;
-            Chapters = new List<Chapter>();
-            LastChange = DateTime.Now;
 
             Title = a_title.Trim();
             Title = Title.Replace("\t", " ");
@@ -51,7 +51,7 @@ namespace MangaCrawlerLib
                 m.Property(c => c.DownloadProgress);
                 m.Property(c => c.Title, mapping => mapping.NotNullable(true));
                 m.Property(c => c.State, mapping => mapping.NotNullable(true));
-                m.List<Chapter>("Chapters", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
+                m.List<Chapter>("m_chapters", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
                 m.ManyToOne(c => c.Server, mapping => mapping.NotNullable(true));
             });
         }
@@ -62,16 +62,19 @@ namespace MangaCrawlerLib
             {
                 return m_state;
             }
-            set
+            set // TODO: private
             {
                 m_state = value;
                 LastChange = DateTime.Now;
             }
         }
 
-        public virtual IEnumerable<Chapter> GetChapters()
+        public virtual IEnumerable<Chapter> Chapters
         {
-            return Chapters;
+            get
+            {
+                return m_chapters;
+            }
         }
 
         protected internal virtual void DownloadChapters()
@@ -91,7 +94,7 @@ namespace MangaCrawlerLib
                             chapters[chapters.IndexOf(el)] = chapter;
                     }
 
-                    Chapters = chapters;
+                    m_chapters = chapters;
                     DownloadProgress = progress;
                     LastChange = DateTime.Now;
                 });

@@ -23,12 +23,14 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CustomTaskScheduler m_scheduler;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private IList<Serie> m_series = new List<Serie>();
+
         public virtual int ID { get; protected internal set; }
         public virtual string URL { get; protected internal set; }
         public virtual string Name { get; protected internal set; }
         public virtual int DownloadProgress { get; protected internal set; }
         public virtual DateTime LastChange { get; protected internal set; }
-        protected internal virtual IList<Serie> Series { get; set; }
 
         protected internal Server()
         {
@@ -37,10 +39,8 @@ namespace MangaCrawlerLib
         protected internal Server(string a_url, string a_name)
         {
             ID = IDGenerator.Next();
-            Series = new List<Serie>();
             URL = a_url;
             Name = a_name;
-            LastChange = DateTime.Now;
         }
 
         private void Map(ModelMapper a_mapper)
@@ -53,13 +53,16 @@ namespace MangaCrawlerLib
                 m.Property(c => c.DownloadProgress);
                 m.Property(c => c.Name, mapping => mapping.NotNullable(true));
                 m.Property(c => c.State, mapping => mapping.NotNullable(true));
-                m.List<Serie>("Series", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
+                m.List<Serie>("m_series", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
             });
         }
 
-        public virtual IEnumerable<Serie> GetSeries()
+        public virtual IEnumerable<Serie> Series
         {
-            return Series;
+            get
+            {
+                return m_series;
+            }
         }
 
         public virtual ServerState State
@@ -68,7 +71,7 @@ namespace MangaCrawlerLib
             {
                 return m_state;
             }
-            set
+            set // TODO: private
             {
                 m_state = value;
                 LastChange = DateTime.Now;
@@ -114,7 +117,7 @@ namespace MangaCrawlerLib
                             series[series.IndexOf(el)] = serie;
                     }
 
-                    Series = series;
+                    m_series = series;
                     DownloadProgress = progress;
                     LastChange = DateTime.Now;
                 });

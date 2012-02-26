@@ -78,11 +78,9 @@ namespace MangaCrawlerLib
                         chapter, chapter.State);
                     continue;
                 }
-                else
-                {
-                    chapter.CreateWork(GetMangaRootDir(), UseCBZ());
-                }
 
+                chapter.State = ChapterState.Downloading;
+                
                 Loggers.MangaCrawler.InfoFormat(
                     "Chapter: {0} state: {1}",
                     chapter, chapter.State);
@@ -94,7 +92,7 @@ namespace MangaCrawlerLib
 
                 Task task = new Task(() =>
                 {
-                    chapter.DownloadPages();
+                    chapter.DownloadPages(GetMangaRootDir(), UseCBZ());
                 }, TaskCreationOptions.LongRunning);
 
                 task.Start(chapter.Serie.Server.Scheduler[Priority.Pages]);
