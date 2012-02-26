@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseEntity.cs" />
     <Compile Include="Crawlers\CrawlerList.cs" />
     <Compile Include="Crawlers\TestServerCrawler.cs" />
     <Compile Include="IClassMapping.cs" />

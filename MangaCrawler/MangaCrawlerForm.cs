@@ -527,7 +527,7 @@ namespace MangaCrawler
                     case ServerState.Downloaded:
 
                         e.Graphics.DrawString(
-                            String.Format(Resources.Series, server.GetSeries().Count()), 
+                            String.Format(Resources.Series, server.Series.Count()), 
                             font, Brushes.Green, rect, StringFormat.GenericDefault); 
                         break;
 
@@ -573,7 +573,7 @@ namespace MangaCrawler
                     case SerieState.Downloaded:
 
                         e.Graphics.DrawString(
-                            String.Format(Resources.Chapters, serie.GetChapters().Count()), 
+                            String.Format(Resources.Chapters, serie.Chapters.Count()), 
                             font, Brushes.Green, rect, StringFormat.GenericDefault);
                         break;
 
@@ -640,7 +640,7 @@ namespace MangaCrawler
                     case ChapterState.Downloading:
                     {
                         e.Graphics.DrawString(
-                            String.Format("{0}/{1}", chapter.DownloadedPages, chapter.GetPages().Count()),
+                            String.Format("{0}/{1}", chapter.DownloadedPages, chapter.Pages.Count()),
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
                     }
@@ -828,7 +828,7 @@ namespace MangaCrawler
 
             if (SelectedSerie != null)
             {
-                ar = (from ch in SelectedSerie.GetChapters()
+                ar = (from ch in SelectedSerie.Chapters
                       select new ChapterListItem(ch)).ToArray();
             }
 
@@ -856,7 +856,7 @@ namespace MangaCrawler
             if (SelectedServer != null)
             {
                 string filter = seriesSearchTextBox.Text.ToLower();
-                ar = (from serie in SelectedServer.GetSeries()
+                ar = (from serie in SelectedServer.Series
                       where serie.Title.ToLower().IndexOf(filter) != -1
                       select new SerieListItem(serie)).ToArray();
             }

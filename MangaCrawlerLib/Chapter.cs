@@ -23,12 +23,14 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CancellationTokenSource m_cancellation_token_source = new CancellationTokenSource();
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private IList<Page> m_pages = new List<Page>();
+
         public virtual int ID { get; protected internal set; }
         public virtual string URL { get; protected internal set; }
         public virtual Serie Serie { get; protected internal set; }
         public virtual string Title { get; protected internal set; }
         public virtual DateTime LastChange { get; protected internal set; }
-        protected internal virtual IList<Page> Pages { get; set; }
         public virtual string ChapterDir { get; protected internal set; }
         public virtual bool CBZ { get; protected internal set; }
 
@@ -38,11 +40,9 @@ namespace MangaCrawlerLib
 
         internal Chapter(Serie a_serie, string a_url, string a_title)
         {
-            Pages = new List<Page>();
             ID = IDGenerator.Next();
             Serie = a_serie;
             URL = HttpUtility.HtmlDecode(a_url);
-            LastChange = DateTime.Now;
 
             a_title = a_title.Trim();
             a_title = a_title.Replace("\t", " ");
@@ -63,7 +63,7 @@ namespace MangaCrawlerLib
                 m.Property(c => c.ChapterDir, mapping => mapping.NotNullable(true));
                 m.Property(c => c.CBZ);
                 m.ManyToOne(c => c.Serie, mapping => mapping.NotNullable(true));
-                m.List<Page>("Pages", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
+                m.List<Page>("m_pages", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
             });
         }
 
@@ -73,7 +73,7 @@ namespace MangaCrawlerLib
             {
                 return m_State;
             }
-            internal protected set
+            set // TODO: private
             {
                 m_State = value;
                 LastChange = DateTime.Now;
@@ -85,9 +85,12 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Serie, Title);
         }
 
-        public virtual IEnumerable<Page> GetPages()
+        public virtual IEnumerable<Page> Pages
         {
-            return Pages;
+            get
+            {
+                return m_pages;
+            }
         }
 
         protected internal virtual bool DownloadRequired
@@ -115,13 +118,6 @@ namespace MangaCrawlerLib
 
                 State = ChapterState.Deleting;
             }
-        }
-
-        protected internal virtual void CreateWork(string a_manga_root_dir, bool a_cbz)
-        {
-            ChapterDir = GetChapterDirectory(a_manga_root_dir);
-            CBZ = a_cbz;
-            State = ChapterState.Waiting;
         }
 
         public virtual bool IsWorking
@@ -177,8 +173,10 @@ namespace MangaCrawlerLib
                    Path.DirectorySeparatorChar;
         }
 
-        protected internal virtual void DownloadPages()
+        protected internal virtual void DownloadPagesList()
         {
+            State = ChapterState.Waiting;
+
             try
             {
                 ConnectionsLimiter.BeginDownloadPages(this);
@@ -204,11 +202,64 @@ namespace MangaCrawlerLib
                     Token.ThrowIfCancellationRequested();
                 }
 
-                State = ChapterState.Downloading;
+                m_pages = Serie.Server.Crawler.DownloadPages(this).ToList();
                 LastChange = DateTime.Now;
 
-                Pages = Serie.Server.Crawler.DownloadPages(this).ToList();
-                LastChange = DateTime.Now;
+                if (Token.IsCancellationRequested)
+                {
+                    Loggers.Cancellation.InfoFormat(
+                        "#2 cancellation requested, work: {0} state: {1}",
+                        this, State);
+
+                    Token.ThrowIfCancellationRequested();
+                }
+            }
+            catch (Exception ex)
+            {
+                Loggers.MangaCrawler.InfoFormat(
+                    "Exception, work: {0} state: {1}, {2}",
+                    this, State, ex);
+
+                FinishDownload(a_error: true);
+            }
+            finally
+            {
+                ConnectionsLimiter.EndDownloadPages(this);
+            }
+        }
+
+        protected internal virtual void DownloadPages(string a_manga_root_dir, bool a_cbz)
+        {
+            ChapterDir = GetChapterDirectory(a_manga_root_dir);
+            CBZ = a_cbz;
+            State = ChapterState.Waiting;
+
+            try
+            {
+                ConnectionsLimiter.BeginDownloadPages(this);
+            }
+            catch (OperationCanceledException)
+            {
+                Loggers.Cancellation.InfoFormat(
+                    "#1 operation cancelled, work: {0} state: {1}",
+                    this, State);
+
+                FinishDownload(true);
+                return;
+            }
+
+            try
+            {
+                if (Token.IsCancellationRequested)
+                {
+                    Loggers.Cancellation.InfoFormat(
+                        "#1 cancellation requested, work: {0} state: {1}",
+                        this, State);
+
+                    Token.ThrowIfCancellationRequested();
+                }
+
+                DownloadPagesList();
 
                 Parallel.ForEach(Pages,
 

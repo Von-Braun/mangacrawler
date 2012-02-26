@@ -35,7 +35,6 @@ namespace MangaCrawlerLib
             Chapter = a_chapter;
             URL = HttpUtility.HtmlDecode(a_url);
             Index = a_index;
-            LastChange = DateTime.Now;
 
             if (a_name != null)
             {

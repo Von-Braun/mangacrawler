@@ -128,8 +128,7 @@ namespace MangaCrawlerTest
 
             Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_chapter.URL));
 
-            a_chapter.CreateWork(".", false);
-            a_chapter.Pages = a_chapter.Serie.Server.Crawler.DownloadPages(a_chapter).ToList();
+            a_chapter.DownloadPagesList();
 
             var pages = a_chapter.Pages.ToList();
 
@@ -767,11 +766,9 @@ namespace MangaCrawlerTest
                         },
                         (chapter) => 
                     {
-                        chapter.CreateWork(".", false);
                         try
                         {
-                            chapter.CreateWork(".", false);
-                            chapter.Pages = chapter.Serie.Server.Crawler.DownloadPages(chapter).ToList();
+                            chapter.DownloadPagesList();
                         }
                         catch
                         {
