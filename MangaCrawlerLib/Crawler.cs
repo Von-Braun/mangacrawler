@@ -58,12 +58,12 @@ namespace MangaCrawlerLib
 
         internal HtmlDocument DownloadDocument(Page a_page)
         {
-            return DownloadDocument(a_page.Chapter.Serie.Server, a_page.URL, CancellationToken.None);
+            return DownloadDocument(a_page.Server, a_page.URL, CancellationToken.None);
         }
 
         internal HtmlDocument DownloadDocument(Chapter a_chapter)
         {
-            return DownloadDocument(a_chapter.Serie.Server, a_chapter.URL, CancellationToken.None);
+            return DownloadDocument(a_chapter.Server, a_chapter.URL, CancellationToken.None);
         }
 
         internal virtual HtmlDocument DownloadDocument(Server a_server, string a_url, CancellationToken a_token)
@@ -113,7 +113,7 @@ namespace MangaCrawlerLib
             {
                 try
                 {
-                    ConnectionsLimiter.Aquire(a_page.Chapter.Serie.Server, a_page.Chapter.Token, Priority.Image);
+                    ConnectionsLimiter.Aquire(a_page.Server, a_page.Chapter.Token, Priority.Image);
 
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
                         a_page.ImageURL);
@@ -153,7 +153,7 @@ namespace MangaCrawlerLib
                 }
                 finally
                 {
-                    ConnectionsLimiter.Release(a_page.Chapter.Serie.Server);
+                    ConnectionsLimiter.Release(a_page.Server);
                 }
             });
         }

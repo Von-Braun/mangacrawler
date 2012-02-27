@@ -40,7 +40,7 @@ namespace MangaCrawlerLib
             Loggers.ConLimits.InfoFormat("Locking one per server, chapter: {0} state: {1}",
                 a_chapter, a_chapter.State);
 
-            s_one_chapter_per_server[a_chapter.Serie.Server].WaitOne(a_chapter.Token);
+            s_one_chapter_per_server[a_chapter.Server].WaitOne(a_chapter.Token);
 
             Loggers.ConLimits.InfoFormat("Locked one per server, chapter: {0} state: {1}",
                a_chapter, a_chapter.State);
@@ -51,7 +51,7 @@ namespace MangaCrawlerLib
             Loggers.ConLimits.InfoFormat("Releasing one per server, chapter: {0} state: {1}",
                 a_chapter, a_chapter.State);
 
-            s_one_chapter_per_server[a_chapter.Serie.Server].ReleaseMutex();
+            s_one_chapter_per_server[a_chapter.Server].ReleaseMutex();
         }
 
         public static void Aquire(Server a_server, Priority a_priority)
