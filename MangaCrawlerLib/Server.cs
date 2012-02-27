@@ -18,29 +18,26 @@ namespace MangaCrawlerLib
         private Crawler m_crawler;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ServerState m_state = ServerState.Initial;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CustomTaskScheduler m_scheduler;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IList<Serie> m_series = new List<Serie>();
+        public virtual int ID { get; protected set; }
+        public virtual ServerState State { get; protected set; }
+        public virtual DateTime LastChange { get; protected set; }
+        public virtual int DownloadProgress { get; protected set; }
+        protected virtual IList<Serie> Series { get; set; }
+        public virtual string URL { get; protected set; }
+        public virtual string Name { get; protected set; }
 
-        public virtual int ID { get; protected internal set; }
-        public virtual string URL { get; protected internal set; }
-        public virtual string Name { get; protected internal set; }
-        public virtual int DownloadProgress { get; protected internal set; }
-        public virtual DateTime LastChange { get; protected internal set; }
-
-        protected internal Server()
+        protected Server()
         {
         }
 
-        protected internal Server(string a_url, string a_name)
+        internal Server(string a_url, string a_name)
         {
             ID = IDGenerator.Next();
             URL = a_url;
             Name = a_name;
+            Series = new List<Serie>();
         }
 
         private void Map(ModelMapper a_mapper)
@@ -50,32 +47,16 @@ namespace MangaCrawlerLib
                 m.Id(c => c.ID, mapping => mapping.Generator(Generators.Native));
                 m.Version(c => c.LastChange, mapping => { });
                 m.Property(c => c.URL, mapping => mapping.NotNullable(true));
-                m.Property(c => c.DownloadProgress);
                 m.Property(c => c.Name, mapping => mapping.NotNullable(true));
+                m.Property(c => c.DownloadProgress, mapping => mapping.NotNullable(true));
                 m.Property(c => c.State, mapping => mapping.NotNullable(true));
-                m.List<Serie>("m_series", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
+                m.List<Serie>("Series", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
             });
         }
 
-        public virtual IEnumerable<Serie> Series
+        public virtual IEnumerable<Serie> GetSeries()
         {
-            get
-            {
-                return m_series;
-            }
-        }
-
-        public virtual ServerState State
-        {
-            get
-            {
-                return m_state;
-            }
-            set // TODO: private
-            {
-                m_state = value;
-                LastChange = DateTime.Now;
-            }
+            return Series;
         }
 
         protected internal virtual CustomTaskScheduler Scheduler 
@@ -117,9 +98,8 @@ namespace MangaCrawlerLib
                             series[series.IndexOf(el)] = serie;
                     }
 
-                    m_series = series;
+                   Series = series;
                     DownloadProgress = progress;
-                    LastChange = DateTime.Now;
                 });
 
                 State = ServerState.Downloaded;
@@ -138,13 +118,21 @@ namespace MangaCrawlerLib
             return Name;
         }
 
-        protected internal virtual bool DownloadRequired
+        private bool DownloadRequired
         {
             get
             {
                 var s = State;
                 return (s == ServerState.Error) || (s == ServerState.Initial);
             }
+        }
+
+        protected internal virtual bool BeginDownloading()
+        {
+            if (!DownloadRequired)
+                return false;
+            State = ServerState.Waiting;
+            return false;
         }
     }
 }

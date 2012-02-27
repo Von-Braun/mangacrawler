@@ -49,7 +49,7 @@ namespace MangaCrawlerTest
             TestContext.WriteLine("Testing server {0}", a_server.Name);
 
             a_server.DownloadSeries();
-            var series = a_server.Series;
+            var series = a_server.GetSeries();
 
             Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_server.URL));
 
@@ -67,10 +67,10 @@ namespace MangaCrawlerTest
                 m_error = true;
             }
 
-            Assert.IsTrue(a_server.Series.All(s => s.Title.Trim() == s.Title));
-            Assert.IsTrue(a_server.Series.All(s => !String.IsNullOrWhiteSpace(s.Title)));
+            Assert.IsTrue(a_server.GetSeries().All(s => s.Title.Trim() == s.Title));
+            Assert.IsTrue(a_server.GetSeries().All(s => !String.IsNullOrWhiteSpace(s.Title)));
 
-            return a_server.Series;
+            return a_server.GetSeries();
         }
 
         private IEnumerable<Chapter> TestSerie(Serie a_serie, int a_count, 
@@ -79,7 +79,7 @@ namespace MangaCrawlerTest
             TestContext.WriteLine("  Testing serie {0}", a_serie.Title);
 
             a_serie.DownloadChapters();
-            var chapters = a_serie.Chapters;
+            var chapters = a_serie.GetChapters();
 
             Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_serie.URL));
 
@@ -100,8 +100,8 @@ namespace MangaCrawlerTest
                     m_error = true;
             }
 
-            Assert.IsTrue(a_serie.Chapters.All(s => s.Title.Trim() == s.Title));
-            Assert.IsTrue(a_serie.Chapters.All(s => !String.IsNullOrWhiteSpace(s.Title)));
+            Assert.IsTrue(a_serie.GetChapters().All(s => s.Title.Trim() == s.Title));
+            Assert.IsTrue(a_serie.GetChapters().All(s => !String.IsNullOrWhiteSpace(s.Title)));
 
             return chapters;
         }
@@ -130,7 +130,7 @@ namespace MangaCrawlerTest
 
             a_chapter.DownloadPagesList();
 
-            var pages = a_chapter.Pages.ToList();
+            var pages = a_chapter.GetPages().ToList();
 
             if (!a_ongoing)
             {
@@ -145,8 +145,8 @@ namespace MangaCrawlerTest
                 TestContext.WriteLine("    Ongoing");
             }
 
-            Assert.IsTrue(a_chapter.Pages.All(s => s.Name.Trim() == s.Name));
-            Assert.IsTrue(a_chapter.Pages.All(s => !String.IsNullOrWhiteSpace(s.Name)));
+            Assert.IsTrue(a_chapter.GetPages().All(s => s.Name.Trim() == s.Name));
+            Assert.IsTrue(a_chapter.GetPages().All(s => !String.IsNullOrWhiteSpace(s.Name)));
 
             return pages;
         }
@@ -730,12 +730,12 @@ namespace MangaCrawlerTest
                         server);
                 }
 
-                if (server.Series.Count() == 0)
+                if (server.GetSeries().Count() == 0)
                 {
                     TestContext.WriteLine("{0} - Server have no series", server);
                 }
-                
-                Parallel.ForEach(TakeRandom(server.Series, 0.1),
+
+                Parallel.ForEach(TakeRandom(server.GetSeries(), 0.1),
                     new ParallelOptions()
                     {
                         MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer, 
@@ -753,16 +753,16 @@ namespace MangaCrawlerTest
                             "{0} - Exception while downloading chapters from serie", serie);
                     }
 
-                    if (serie.Chapters.Count() == 0)
+                    if (serie.GetChapters().Count() == 0)
                     {
                         TestContext.WriteLine("{0} - Serie has no chapters", serie);
                     }
 
-                    Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
+                    Parallel.ForEach(TakeRandom(serie.GetChapters(), 0.1),
                         new ParallelOptions()
                         {
                             MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer,
-                            TaskScheduler = serie.Server.Scheduler[Priority.Chapters]
+                            TaskScheduler = serie.Scheduler[Priority.Chapters]
                         },
                         (chapter) => 
                     {
@@ -776,16 +776,16 @@ namespace MangaCrawlerTest
                                 "{0} - Exception while downloading pages from chapter", chapter);
                         }
 
-                        if (chapter.Pages.Count() == 0)
+                        if (chapter.GetPages().Count() == 0)
                         {
                             TestContext.WriteLine("{0} - Chapter have no pages", chapter);
                         }
 
-                        Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), 
+                        Parallel.ForEach(TakeRandom(chapter.GetPages(), 0.1), 
                             new ParallelOptions()
                             {
-                                MaxDegreeOfParallelism = chapter.Serie.Server.Crawler.MaxConnectionsPerServer,
-                                TaskScheduler = chapter.Serie.Server.Scheduler[Priority.Pages]
+                                MaxDegreeOfParallelism = chapter.Crawler.MaxConnectionsPerServer,
+                                TaskScheduler = chapter.Scheduler[Priority.Pages]
                             }, 
                             (page) =>
                         {

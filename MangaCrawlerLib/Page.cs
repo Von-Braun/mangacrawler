@@ -14,18 +14,18 @@ namespace MangaCrawlerLib
 {
     public class Page : IClassMapping
     {
-        public virtual int ID { get; protected internal set; }
-        public virtual Chapter Chapter { get; protected internal set; }
-        public virtual DateTime LastChange { get; protected internal set; }
-        public virtual int Index { get; protected internal set; }
-        public virtual string URL { get; protected internal set; }
-        public virtual bool Downloaded { get; protected internal set; }
-        public virtual string ImageFilePath { get; protected internal set; }
-        public virtual string Name { get; protected internal set; }
-        public virtual string ImageURL { get; protected internal set; }
-        public virtual byte[] Hash { get; protected internal set; }
+        public virtual int ID { get; protected set; }
+        public virtual Chapter Chapter { get; protected set; }
+        public virtual DateTime LastChange { get; protected set; }
+        public virtual int Index { get; protected set; }
+        public virtual string URL { get; protected set; }
+        public virtual byte[] Hash { get; protected set; }
+        public virtual string ImageURL { get; protected set; }
+        public virtual bool Downloaded { get; protected set; }
+        public virtual string Name { get; protected set; }
+        public virtual string ImageFilePath { get; protected set; }
 
-        protected internal Page()
+        protected Page()
         {
         }
 
@@ -55,9 +55,9 @@ namespace MangaCrawlerLib
             {
                 m.Id(c => c.ID, mapper => mapper.Generator(Generators.Native));
                 m.Version(c => c.LastChange, mapper => { });
-                m.Property(c => c.Index);
+                m.Property(c => c.Index, mapper => { });
                 m.Property(c => c.URL, mapping => mapping.NotNullable(true));
-                m.Property(c => c.Downloaded);
+                m.Property(c => c.Downloaded, mapping => { });
                 m.Property(c => c.ImageFilePath, mapping => mapping.NotNullable(true));
                 m.Property(c => c.Name, mapping => mapping.NotNullable(true));
                 m.Property(c => c.ImageURL, mapping => mapping.NotNullable(true));
@@ -66,18 +66,50 @@ namespace MangaCrawlerLib
             });
         }
 
+        protected internal virtual CustomTaskScheduler Scheduler
+        {
+            get
+            {
+                return Chapter.Scheduler;
+            }
+        }
+
+        protected internal virtual Crawler Crawler
+        {
+            get
+            {
+                return Chapter.Crawler;
+            }
+        }
+
+        public virtual Server Server
+        {
+            get
+            {
+                return Chapter.Server;
+            }
+        }
+
+        public virtual Serie Serie
+        {
+            get
+            {
+                return Chapter.Serie;
+            }
+        }
+
         public override string ToString()
         {
             return String.Format("{0} - {1}/{2}",
-                    Chapter, Index, Chapter.Pages.Count());
+                    Chapter, Index, Chapter.GetPages().Count());
         }
 
         protected internal virtual MemoryStream GetImageStream()
         {
             if (ImageURL == null)
-                ImageURL = HttpUtility.HtmlDecode(Chapter.Serie.Server.Crawler.GetImageURL(this));
+                ImageURL = HttpUtility.HtmlDecode(Crawler.GetImageURL(this));
 
-            return Chapter.Serie.Server.Crawler.GetImageStream(this);  
+            return Crawler.GetImageStream(this);  
         }
 
         protected internal virtual void DownloadAndSavePageImage()
@@ -90,15 +122,6 @@ namespace MangaCrawlerLib
 
                 Chapter.Token.ThrowIfCancellationRequested();
             }
-
-            ImageURL = HttpUtility.HtmlDecode(Chapter.Serie.Server.Crawler.GetImageURL(this));
-
-            ImageFilePath = Chapter.ChapterDir +
-                FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
-                FileUtils.RemoveInvalidFileDirectoryCharacters(
-                    Path.GetExtension(ImageURL).ToLower());
-
-            LastChange = DateTime.Now;
 
             new DirectoryInfo(Chapter.ChapterDir).Create();
 
@@ -141,6 +164,11 @@ namespace MangaCrawlerLib
                     Hash = hash;
                 }
 
+                ImageFilePath = Chapter.ChapterDir +
+                   FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
+                   FileUtils.RemoveInvalidFileDirectoryCharacters(
+                       Path.GetExtension(ImageURL).ToLower());
+
                 FileInfo image_file = new FileInfo(ImageFilePath);
 
                 if (image_file.Exists)
@@ -154,7 +182,6 @@ namespace MangaCrawlerLib
                 throw;
             }
 
-            LastChange = DateTime.Now;
             Downloaded = true;
         }
     }

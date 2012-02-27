@@ -6,39 +6,37 @@ using System.Web;
 using System.Diagnostics;
 using NHibernate.Mapping.ByCode;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
     public class Serie : IClassMapping
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private SerieState m_state = SerieState.Initial;
+        public virtual int ID { get; protected set; }
+        public virtual DateTime LastChange { get; protected set; }
+        public virtual SerieState State { get; protected set; }
+        protected virtual IList<Chapter> Chapters { get; set; }
+        public virtual string URL { get; protected set; }
+        public virtual Server Server { get; protected set; }
+        public virtual string Title { get; protected set; }
+        public virtual int DownloadProgress { get; protected set; }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private IList<Chapter> m_chapters = new List<Chapter>();
-
-        public virtual int ID { get; protected internal set; }
-        public virtual DateTime LastChange { get; protected internal set; }
-        public virtual string URL { get; protected internal set; }
-        public virtual Server Server { get; protected internal set; }
-        public virtual int DownloadProgress { get; protected internal set; }
-        public virtual string Title { get; protected internal set; }
-
-        protected internal Serie()
+        protected Serie()
         {
         }
 
         internal Serie(Server a_server, string a_url, string a_title)
         {
-            ID = IDGenerator.Next();
             URL = HttpUtility.HtmlDecode(a_url);
             Server = a_server;
+            ID = IDGenerator.Next();
+            Chapters = new List<Chapter>();
 
-            Title = a_title.Trim();
-            Title = Title.Replace("\t", " ");
-            while (Title.IndexOf("  ") != -1)
-                Title = Title.Replace("  ", " ");
-            Title = HttpUtility.HtmlDecode(Title);
+            a_title = a_title.Trim();
+            a_title = a_title.Replace("\t", " ");
+            while (a_title.IndexOf("  ") != -1)
+                a_title = a_title.Replace("  ", " ");
+            Title = HttpUtility.HtmlDecode(a_title);
         }
 
         private void Map(ModelMapper a_mapper)
@@ -48,33 +46,33 @@ namespace MangaCrawlerLib
                 m.Id(c => c.ID, mapping => mapping.Generator(Generators.Native));
                 m.Version(c => c.LastChange, mapping => { });
                 m.Property(c => c.URL, mapping => mapping.NotNullable(true));
-                m.Property(c => c.DownloadProgress);
                 m.Property(c => c.Title, mapping => mapping.NotNullable(true));
+                m.Property(c => c.DownloadProgress, mapping => mapping.NotNullable(true));
                 m.Property(c => c.State, mapping => mapping.NotNullable(true));
-                m.List<Chapter>("m_chapters", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
+                m.List<Chapter>("Chapters", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
                 m.ManyToOne(c => c.Server, mapping => mapping.NotNullable(true));
             });
         }
 
-        public virtual SerieState State
+        protected internal virtual CustomTaskScheduler Scheduler
         {
             get
             {
-                return m_state;
-            }
-            set // TODO: private
-            {
-                m_state = value;
-                LastChange = DateTime.Now;
+                return Server.Scheduler;
             }
         }
 
-        public virtual IEnumerable<Chapter> Chapters
+        protected internal virtual Crawler Crawler
         {
             get
             {
-                return m_chapters;
+                return Server.Crawler;
             }
+        }
+
+        public virtual IEnumerable<Chapter> GetChapters()
+        {
+            return Chapters;
         }
 
         protected internal virtual void DownloadChapters()
@@ -83,7 +81,7 @@ namespace MangaCrawlerLib
             {
                 DownloadProgress = 0;
 
-                Server.Crawler.DownloadChapters(this, (progress, result) =>
+                Crawler.DownloadChapters(this, (progress, result) =>
                 {
                     var chapters = result.ToList();
 
@@ -94,9 +92,8 @@ namespace MangaCrawlerLib
                             chapters[chapters.IndexOf(el)] = chapter;
                     }
 
-                    m_chapters = chapters;
+                    Chapters = chapters;
                     DownloadProgress = progress;
-                    LastChange = DateTime.Now;
                 });
 
                 State = SerieState.Downloaded;
@@ -116,13 +113,21 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Server.Name, Title);
         }
 
-        protected internal virtual bool DownloadRequired
+        private bool DownloadRequired
         {
             get
             {
                 var s = State;
                 return (s == SerieState.Error) || (s == SerieState.Initial);
             }
+        }
+
+        protected internal virtual bool BeginDownloading()
+        {
+            if (!DownloadRequired)
+                return false;
+            State = SerieState.Waiting;
+            return false;
         }
     }
 }

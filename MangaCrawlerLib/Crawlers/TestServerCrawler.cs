@@ -227,8 +227,8 @@ namespace MangaCrawlerLib.Crawlers
             Bitmap bmp = new Bitmap(NextInt(600, 2000), NextInt(600, 2000));
             using (Graphics g = Graphics.FromImage(bmp))
             {
-                string str = "server: " + a_page.Chapter.Serie.Server.Name + Environment.NewLine +
-                             "serie: " + a_page.Chapter.Serie.Title + Environment.NewLine +
+                string str = "server: " + a_page.Server.Name + Environment.NewLine +
+                             "serie: " + a_page.Serie.Title + Environment.NewLine +
                              "chapter: " + a_page.Chapter.Title + Environment.NewLine +
                              "page: " + a_page.Name;
 
