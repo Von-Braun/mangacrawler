@@ -13,16 +13,13 @@ using System.Collections.Concurrent;
 using HtmlAgilityPack;
 using TomanuExtensions;
 using System.Collections.ObjectModel;
+using NHibernate.Linq;
 
 namespace MangaCrawlerLib
 {
     public static class DownloadManager
     {
         internal static string UserAgent = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:10.0) Gecko/20100101 Firefox/10.0";
-
-        private static List<Server> s_servers;
-
-        private static string s_settings_dir;
 
         public static Func<string> GetMangaRootDir;
         public static Func<bool> UseCBZ;
@@ -37,8 +34,25 @@ namespace MangaCrawlerLib
             if (a_server == null)
                 return;
 
-            if (!a_server.BeginDownloading())
+            bool already_downloading = NH.TransactionWithResult(session => 
+            {
+                a_server = session.Load<Server>(a_server.ID);
+
+                if (!a_server.BeginWaiting())
+                    return true;
+
+                session.Update(a_server);
+
+                return false;
+            });
+
+            if (already_downloading)
+            {
+                Loggers.MangaCrawler.InfoFormat(
+                    "Already in work, server: {0} state: {1}",
+                    a_server, a_server.State);
                 return;
+            }
 
             Task task = new Task(() =>
             {
@@ -53,8 +67,25 @@ namespace MangaCrawlerLib
             if (a_serie == null)
                 return;
 
-            if (!a_serie.BeginDownloading())
+            bool already_downloading = NH.TransactionWithResult(session =>
+            {
+                a_serie = session.Load<Serie>(a_serie.ID);
+
+                if (!a_serie.BeginWaiting())
+                    return true;
+
+                session.Update(a_serie);
+
+                return false;
+            });
+
+            if (already_downloading)
+            {
+                Loggers.MangaCrawler.InfoFormat(
+                    "Already in work, serie: {0} state: {1}",
+                    a_serie, a_serie.State);
                 return;
+            }
 
             Task task = new Task(() =>
             {
@@ -68,25 +99,38 @@ namespace MangaCrawlerLib
         {
             foreach (var chapter in a_chapters)
             {
-                if (!chapter.BeginDownloading())
+                Chapter chapter_sync = null;
+
+                bool already_downloading = NH.TransactionWithResult(session =>
+                {
+                    chapter_sync = session.Load<Chapter>(chapter.ID);
+
+                    if (!chapter_sync.BeginWaiting())
+                        return true;
+
+                    session.Update(chapter_sync);
+
+                    return false;
+                });
+
+                if (already_downloading)
                 {
                     Loggers.MangaCrawler.InfoFormat(
                         "Already in work, chapter: {0} state: {1}",
-                        chapter, chapter.State);
+                        chapter_sync, chapter_sync.State);
                     continue;
                 }
 
- 
                 Loggers.MangaCrawler.InfoFormat(
                     "Chapter: {0} state: {1}",
-                    chapter, chapter.State);
+                    chapter_sync, chapter_sync.State);
 
                 Task task = new Task(() =>
                 {
-                    chapter.DownloadPages(GetMangaRootDir(), UseCBZ());
+                    chapter_sync.DownloadPages(GetMangaRootDir(), UseCBZ());
                 }, TaskCreationOptions.LongRunning);
 
-                task.Start(chapter.Scheduler[Priority.Pages]);
+                task.Start(chapter_sync.Scheduler[Priority.Pages]);
             }
         }
 
@@ -94,30 +138,15 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return (from server in s_servers
-                        from serie in server.GetSeries()
-                        from chapter in serie.GetChapters()
-                        where chapter.State != ChapterState.Initial
-                        select chapter).ToArray();
+                return NH.TransactionWithResult(session =>
+                {
+                    return (from server in session.Query<Server>().ToList()
+                            from serie in server.GetSeries()
+                            from chapter in serie.GetChapters()
+                            where chapter.State != ChapterState.Initial
+                            select chapter).ToArray();
+                });
             }
-        }
-
-        public static IEnumerable<Server> Servers
-        {
-            get
-            {
-                return s_servers;
-            }
-        }
-
-        public static void Load(string a_settings_dir)
-        {
-            s_settings_dir = a_settings_dir;
-
-            s_servers = ServerList.Servers.ToList();
-
-            NHibernateSetup.DatabaseDir = a_settings_dir;
-            NHibernateSetup.Setup(true);
         }
     }
 }

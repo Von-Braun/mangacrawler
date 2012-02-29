@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MangaCrawlerLib;
+using System.Windows.Forms;
+using System.Drawing;
+using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    public class SerieListItem
+    public class SerieListItem : ListItem
     {
         public Serie Serie { get; private set; }
 
@@ -20,19 +23,56 @@ namespace MangaCrawler
             return Serie.Title;
         }
 
-        public override bool Equals(object a_obj)
+        public override int ID
         {
-            if (a_obj == null)
-                return false;
-            SerieListItem sli = a_obj as SerieListItem;
-            if (sli == null)
-                return false;
-            return Serie.Equals(sli.Serie);
+            get
+            {
+                return Serie.ID;
+            }
         }
 
-        public override int GetHashCode()
+        public override void DrawItem(DrawItemEventArgs a_args)
         {
-            return Serie.GetHashCode();
+            if (a_args.Index == -1)
+                return;
+
+            Action<Rectangle, Font> draw_tip = (rect, font) =>
+            {
+                switch (Serie.State)
+                {
+                    case SerieState.Error:
+
+                        a_args.Graphics.DrawString(Resources.Error, font,
+                            Brushes.Red, rect, StringFormat.GenericDefault);
+                        break;
+
+                    case SerieState.Downloaded:
+
+                        a_args.Graphics.DrawString(
+                            String.Format(Resources.Chapters, Serie.ChaptersCount),
+                            font, Brushes.Green, rect, StringFormat.GenericDefault);
+                        break;
+
+                    case SerieState.Waiting:
+
+                        a_args.Graphics.DrawString(Resources.Waiting, font,
+                            Brushes.Blue, rect, StringFormat.GenericDefault);
+                        break;
+
+                    case SerieState.Downloading:
+
+                        a_args.Graphics.DrawString(
+                            String.Format("({0}%)", Serie.DownloadProgress),
+                            font, Brushes.Blue, rect, StringFormat.GenericDefault);
+                        break;
+
+                    case SerieState.Initial: break;
+
+                     default: throw new NotImplementedException();
+                }
+            };
+
+            DrawItem(a_args, Serie.Title, draw_tip);
         }
     }
 }

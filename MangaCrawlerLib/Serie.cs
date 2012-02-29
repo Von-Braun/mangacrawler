@@ -7,19 +7,21 @@ using System.Diagnostics;
 using NHibernate.Mapping.ByCode;
 using System.Collections.ObjectModel;
 using System.Threading;
+using NHibernate;
 
 namespace MangaCrawlerLib
 {
     public class Serie : IClassMapping
     {
         public virtual int ID { get; protected set; }
-        public virtual DateTime LastChange { get; protected set; }
+        protected virtual int Version { get; set; }
         public virtual SerieState State { get; protected set; }
         protected virtual IList<Chapter> Chapters { get; set; }
         public virtual string URL { get; protected set; }
         public virtual Server Server { get; protected set; }
         public virtual string Title { get; protected set; }
         public virtual int DownloadProgress { get; protected set; }
+        public virtual int ChaptersCount { get; protected set; }
 
         protected Serie()
         {
@@ -29,7 +31,6 @@ namespace MangaCrawlerLib
         {
             URL = HttpUtility.HtmlDecode(a_url);
             Server = a_server;
-            ID = IDGenerator.Next();
             Chapters = new List<Chapter>();
 
             a_title = a_title.Trim();
@@ -44,13 +45,31 @@ namespace MangaCrawlerLib
             a_mapper.Class<Serie>(m =>
             {
                 m.Id(c => c.ID, mapping => mapping.Generator(Generators.Native));
-                m.Version(c => c.LastChange, mapping => { });
+                m.Version("Version", mapping => { });
                 m.Property(c => c.URL, mapping => mapping.NotNullable(true));
                 m.Property(c => c.Title, mapping => mapping.NotNullable(true));
                 m.Property(c => c.DownloadProgress, mapping => mapping.NotNullable(true));
                 m.Property(c => c.State, mapping => mapping.NotNullable(true));
-                m.List<Chapter>("Chapters", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
-                m.ManyToOne(c => c.Server, mapping => mapping.NotNullable(true));
+                m.Property(c => c.ChaptersCount, mapping => mapping.NotNullable(true));
+
+                m.List<Chapter>(
+                    "Chapters", 
+                    list_mapping => 
+                    {
+                        //list_mapping.Inverse(false); 
+                        list_mapping.Cascade(Cascade.All); 
+                    }, 
+                    mapping => mapping.OneToMany()
+                );
+
+                m.ManyToOne(
+                    c => c.Server, 
+                    mapping => 
+                    {
+                        mapping.Fetch(FetchKind.Join);
+                        mapping.NotNullable(false); 
+                    }
+                );
             });
         }
 
@@ -79,24 +98,32 @@ namespace MangaCrawlerLib
         {
             try
             {
-                DownloadProgress = 0;
-
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
-                    var chapters = result.ToList();
-
-                    foreach (var chapter in Chapters)
+                    // TODO: na 100% usun nie istniejace
+                    NH.TransactionLockUpdate(this, () =>
                     {
-                        var el = chapters.Find(s => (s.Title == chapter.Title) && (s.URL == chapter.URL));
-                        if (el != null)
-                            chapters[chapters.IndexOf(el)] = chapter;
-                    }
+                        int index = 0;
+                        foreach (var serie in result)
+                        {
+                            if (Chapters.Count <= index)
+                                Chapters.Insert(index, serie);
+                            else
+                            {
+                                var c = Chapters[index];
 
-                    Chapters = chapters;
-                    DownloadProgress = progress;
+                                if ((c.Title != serie.Title) || (c.URL != serie.URL))
+                                    Chapters.Insert(index, serie);
+                            }
+                            index++;
+                        }
+
+                        ChaptersCount = index;
+                        DownloadProgress = progress;
+                    });
                 });
 
-                State = SerieState.Downloaded;
+                NH.TransactionLockUpdate(this, () => State = SerieState.Downloaded);
 
             }
             catch (ObjectDisposedException)
@@ -104,7 +131,7 @@ namespace MangaCrawlerLib
             }
             catch (Exception)
             {
-                State = SerieState.Error;
+                NH.TransactionLockUpdate(this, () => State = SerieState.Downloaded);
             }
         }
 
@@ -122,12 +149,23 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual bool BeginDownloading()
+        protected internal virtual void ResetState()
+        {
+            State = SerieState.Initial;
+        }
+
+        protected internal virtual bool BeginWaiting()
         {
             if (!DownloadRequired)
                 return false;
             State = SerieState.Waiting;
-            return false;
+            return true;
+        }
+
+        protected internal virtual void DownloadingStarted()
+        {
+            State = SerieState.Downloading;
+            DownloadProgress = 0;
         }
     }
 }

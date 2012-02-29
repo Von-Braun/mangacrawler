@@ -97,6 +97,8 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback)
         {
+            a_server.DownloadingStarted();
+
             Debug.Assert(a_server.Name == m_name);
 
             var toreport = (from serie in m_series

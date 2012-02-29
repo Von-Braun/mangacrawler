@@ -98,7 +98,7 @@ namespace MangaCrawlerLib
             HtmlDocument doc = DownloadDocument(a_page);
 
             string xpath;
-            if (a_page.Chapter.GetPages().Count() == a_page.Index)
+            if (a_page.Chapter.PagesCount == a_page.Index)
                 xpath = "/html/body/center/table/tr/td/table[5]/tr/td/div/img";
             else
                 xpath = "/html/body/center/table/tr/td/table[5]/tr/td/div/a/img";

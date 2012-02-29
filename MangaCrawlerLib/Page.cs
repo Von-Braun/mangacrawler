@@ -16,7 +16,7 @@ namespace MangaCrawlerLib
     {
         public virtual int ID { get; protected set; }
         public virtual Chapter Chapter { get; protected set; }
-        public virtual DateTime LastChange { get; protected set; }
+        protected virtual int Version { get; set; }
         public virtual int Index { get; protected set; }
         public virtual string URL { get; protected set; }
         public virtual byte[] Hash { get; protected set; }
@@ -31,7 +31,6 @@ namespace MangaCrawlerLib
 
         internal Page(Chapter a_chapter, string a_url, int a_index, string a_name = null)
         {
-            ID = IDGenerator.Next();
             Chapter = a_chapter;
             URL = HttpUtility.HtmlDecode(a_url);
             Index = a_index;
@@ -54,15 +53,24 @@ namespace MangaCrawlerLib
             a_mapper.Class<Page>(m =>
             {
                 m.Id(c => c.ID, mapper => mapper.Generator(Generators.Native));
-                m.Version(c => c.LastChange, mapper => { });
+                m.Version("Version", mapper => { });
                 m.Property(c => c.Index, mapper => { });
                 m.Property(c => c.URL, mapping => mapping.NotNullable(true));
                 m.Property(c => c.Downloaded, mapping => { });
-                m.Property(c => c.ImageFilePath, mapping => mapping.NotNullable(true));
+                m.Property(c => c.ImageFilePath, mapping => mapping.NotNullable(false));
                 m.Property(c => c.Name, mapping => mapping.NotNullable(true));
-                m.Property(c => c.ImageURL, mapping => mapping.NotNullable(true));
-                m.Property(c => c.Hash, mapping => mapping.NotNullable(true));
-                m.ManyToOne(c => c.Chapter, mapping => mapping.NotNullable(true));
+                m.Property(c => c.ImageURL, mapping => mapping.NotNullable(false));
+                m.Property(c => c.Hash, mapping => mapping.NotNullable(false));
+                m.ManyToOne(
+                    c => c.Chapter,
+                    mapping =>
+                    {
+                        mapping.Fetch(FetchKind.Join);
+                        mapping.NotNullable(false);
+                        //mapping.Insert(false); 
+                        //mapping.Update(false);
+                    }
+                );
             });
         }
 
@@ -101,35 +109,28 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return String.Format("{0} - {1}/{2}",
-                    Chapter, Index, Chapter.GetPages().Count());
+                    Chapter, Index, Chapter.PagesCount);
         }
 
         protected internal virtual MemoryStream GetImageStream()
         {
             if (ImageURL == null)
+            {
                 ImageURL = HttpUtility.HtmlDecode(Crawler.GetImageURL(this));
+                NH.TransactionLockUpdate(this, () => { });
+            }
 
             return Crawler.GetImageStream(this);  
         }
 
         protected internal virtual void DownloadAndSavePageImage()
         {
-            if (Chapter.Token.IsCancellationRequested)
-            {
-                Loggers.Cancellation.InfoFormat(
-                    "#2 cancellation requested, work: {0} state: {1}",
-                    this, Chapter.State);
-
-                Chapter.Token.ThrowIfCancellationRequested();
-            }
-
             new DirectoryInfo(Chapter.ChapterDir).Create();
 
             FileInfo temp_file = new FileInfo(Path.GetTempFileName());
 
             try
             {
-
                 using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
                 {
                     MemoryStream ms = null;
@@ -138,10 +139,11 @@ namespace MangaCrawlerLib
                     {
                         ms = GetImageStream();
                     }
-                    catch (WebException)
+                    catch (WebException ex)
                     {
                         // Some images are unavailable, if we get null pernamently tests
                         // will detect this.
+                        Loggers.MangaCrawler.Fatal("Exception #1", ex);
                         return;
                     }
 
@@ -150,9 +152,10 @@ namespace MangaCrawlerLib
                         System.Drawing.Image.FromStream(ms);
                         ms.Position = 0;
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         // Some junks.
+                        Loggers.MangaCrawler.Fatal("Exception #2", ex);
                         return;
                     }
 
@@ -161,13 +164,16 @@ namespace MangaCrawlerLib
                     ms.Position = 0;
                     byte[] hash;
                     TomanuExtensions.Utils.Hash.CalculateSHA256(ms, out hash);
-                    Hash = hash;
+                    NH.TransactionLockUpdate(this, () => Hash = hash);
                 }
 
-                ImageFilePath = Chapter.ChapterDir +
-                   FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
-                   FileUtils.RemoveInvalidFileDirectoryCharacters(
-                       Path.GetExtension(ImageURL).ToLower());
+                NH.TransactionLockUpdate(this, () =>
+                {
+                    ImageFilePath = Chapter.ChapterDir +
+                        FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
+                        FileUtils.RemoveInvalidFileDirectoryCharacters(
+                            Path.GetExtension(ImageURL).ToLower());
+                });
 
                 FileInfo image_file = new FileInfo(ImageFilePath);
 
@@ -175,14 +181,36 @@ namespace MangaCrawlerLib
                     image_file.Delete();
 
                 temp_file.MoveTo(image_file.FullName);
+
+                NH.TransactionLockUpdate(this, () => Downloaded = true);
             }
-            catch 
+            catch (OperationCanceledException)
             {
-                temp_file.Delete();
                 throw;
             }
+            catch (Exception ex)
+            {
+                Loggers.MangaCrawler.Fatal("Exception #3", ex);
+                NH.TransactionLockUpdate(this, () =>
+                {
+                    Downloaded = false;
+                    Hash = null;
+                    ImageFilePath = null;
+                    ImageURL = null;
+                });
+                throw;
+            }
+            finally
+            {
+                if (temp_file.Exists)
+                    temp_file.Delete();
+            }
+        }
 
-            Downloaded = true;
+        protected internal virtual bool ImageExists()
+        {
+            // TODO: na podstawie sciezki pliku i jego hasu dokonac weryfikacji
+            throw new NotImplementedException();
         }
     }
 }

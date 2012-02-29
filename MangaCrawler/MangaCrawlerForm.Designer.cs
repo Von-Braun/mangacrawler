@@ -159,7 +159,7 @@
             this.chaptersListBox.Name = "chaptersListBox";
             this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.chaptersListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
-            this.chaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chaptersListBox_DrawItem);
+            this.chaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox_DrawItem);
             this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
             this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
             this.chaptersListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chaptersListBox_KeyDown);
@@ -229,7 +229,7 @@
             this.seriesListBox.FormattingEnabled = true;
             this.seriesListBox.Name = "seriesListBox";
             this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
-            this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
+            this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox_DrawItem);
             this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
             // 
             // cbzCheckBox
@@ -254,7 +254,7 @@
             this.serversListBox.FormattingEnabled = true;
             this.serversListBox.Name = "serversListBox";
             this.serversListBox.Sorted = true;
-            this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);
+            this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox_DrawItem);
             this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
             // 
             // serverURLButton

@@ -8,13 +8,13 @@ using MangaCrawlerLib;
 
 namespace MangaCrawler
 {
-    public class ListBoxVisualState<T> where T : class
+    public class ListBoxVisualState
     {
         private ListBoxEx m_list_box;
         private int m_top_index;
-        private T m_top_item;
-        private IList<T> m_selected_items;
-        private T m_selected_item;
+        private ListItem m_top_item;
+        private ListItem[] m_selected_items;
+        private ListItem m_selected_item;
         private int m_selected_index;
 
         public ListBoxVisualState(ListBoxEx a_list)
@@ -34,9 +34,9 @@ namespace MangaCrawler
         {
             m_top_index = m_list_box.TopIndex;
             if ((m_top_index != -1) && (m_top_index < m_list_box.Items.Count))
-                m_top_item = m_list_box.Items[m_list_box.TopIndex] as T;
-            m_selected_items = m_list_box.SelectedItems.Cast<T>().ToList().AsReadOnly();
-            m_selected_item = m_list_box.SelectedItem as T;
+                m_top_item = m_list_box.Items[m_list_box.TopIndex] as ListItem;
+            m_selected_items = m_list_box.SelectedItems.Cast<ListItem>().ToArray();
+            m_selected_item = m_list_box.SelectedItem as ListItem;
             m_selected_index = m_list_box.SelectedIndex;
         }
 
@@ -52,7 +52,7 @@ namespace MangaCrawler
             else if (m_selected_index != -1)
                 m_list_box.SelectedIndex = m_list_box.Items.Count - 1;
 
-            if ((m_top_item != null) && (m_list_box.Items.Contains(m_top_item)) && (m_selected_items.Count > 0))
+            if ((m_top_item != null) && (m_list_box.Items.Contains(m_top_item)) && (m_selected_items.Length > 0))
                 m_list_box.TopIndex = m_list_box.Items.IndexOf(m_top_item);
             else if (m_top_index < m_list_box.Items.Count)
                 m_list_box.TopIndex = m_top_index;
@@ -64,14 +64,14 @@ namespace MangaCrawler
         {
             m_top_index = -1;
             m_top_item = null;
-            m_selected_items = new T[0];
+            m_selected_items = new ListItem[0];
             m_selected_item = null;
             m_selected_index = -1;
         }
 
-        public void ReloadItems(IEnumerable<T> a_enum)
+        public void ReloadItems(IEnumerable<ListItem> a_enum)
         {
-            var prev_state = new ListBoxVisualState<T>(m_list_box);
+            var prev_state = new ListBoxVisualState(m_list_box);
 
             if ((m_selected_item != null) && (!a_enum.Contains(m_selected_item)))
                 Clear();
