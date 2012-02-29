@@ -43,32 +43,37 @@ namespace MangaCrawlerLib
 
         internal HtmlDocument DownloadDocument(Server a_server)
         {
-            return DownloadDocument(a_server, a_server.URL, CancellationToken.None);
+            return DownloadDocument(a_server, a_server.URL, CancellationToken.None, 
+                () => NH.TransactionLockUpdate(a_server, () => a_server.DownloadingStarted()));
         }
 
         internal HtmlDocument DownloadDocument(Server a_server, string a_url)
         {
-            return DownloadDocument(a_server, a_url, CancellationToken.None);
+            return DownloadDocument(a_server, a_url, CancellationToken.None,
+                () => NH.TransactionLockUpdate(a_server, () => a_server.DownloadingStarted()));
         }
 
         internal HtmlDocument DownloadDocument(Serie a_serie)
         {
-            return DownloadDocument(a_serie.Server, a_serie.URL, CancellationToken.None);
+            return DownloadDocument(a_serie.Server, a_serie.URL, CancellationToken.None,
+                () => NH.TransactionLockUpdate(a_serie, () => a_serie.DownloadingStarted()));
         }
 
         internal HtmlDocument DownloadDocument(Page a_page)
         {
-            return DownloadDocument(a_page.Server, a_page.URL, CancellationToken.None);
+            return DownloadDocument(a_page.Server, a_page.URL, CancellationToken.None, null);
         }
 
         internal HtmlDocument DownloadDocument(Chapter a_chapter)
         {
-            return DownloadDocument(a_chapter.Server, a_chapter.URL, CancellationToken.None);
+            return DownloadDocument(a_chapter.Server, a_chapter.URL, CancellationToken.None,
+                () => NH.TransactionLockUpdate(a_chapter, () => a_chapter.DownloadingStarted()));
         }
 
-        internal virtual HtmlDocument DownloadDocument(Server a_server, string a_url, CancellationToken a_token)
+        internal virtual HtmlDocument DownloadDocument(Server a_server, string a_url, CancellationToken a_token, 
+            Action a_started)
         {
-            return Crawler.DownloadWithRetry(() =>
+            return DownloadWithRetry(() =>
             {
                 if (a_token != CancellationToken.None)
                 {
@@ -83,6 +88,9 @@ namespace MangaCrawlerLib
                 }
 
                 ConnectionsLimiter.Aquire(a_server, a_token, Priority.Series);
+
+                if (a_started != null)
+                    a_started();
 
                 try
                 {

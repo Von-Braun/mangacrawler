@@ -104,7 +104,7 @@ namespace MangaCrawler
             }
         }
 
-        public void ReloadItems<T>(IEnumerable<T> a_enum, ListBoxVisualState<T> a_state) where T : class
+        public void ReloadItems(IEnumerable<ListItem> a_enum, ListBoxVisualState a_state)
         {
             if (Capture)
                 return;

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MangaCrawlerLib;
+using System.Windows.Forms;
+using System.Drawing;
+using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    public class ChapterListItem
+    public class ChapterListItem : ListItem
     {
         public Chapter Chapter { get; private set; }
 
@@ -20,19 +23,73 @@ namespace MangaCrawler
             return Chapter.Title;
         }
 
-        public override bool Equals(object a_obj)
+        public override void DrawItem(DrawItemEventArgs a_args)
         {
-            if (a_obj == null)
-                return false;
-            ChapterListItem cli = a_obj as ChapterListItem;
-            if (cli == null)
-                return false;
-            return Chapter.Equals(cli.Chapter);
+            Action<Rectangle, Font> draw_tip = (rect, font) =>
+            {
+                switch (Chapter.State)
+                {
+                    case ChapterState.Error:
+
+                        a_args.Graphics.DrawString(Resources.Error, font,
+                            Brushes.Red, rect, StringFormat.GenericDefault);
+                        break;
+
+                    case ChapterState.Aborted:
+
+                        a_args.Graphics.DrawString(Resources.Aborted, font,
+                            Brushes.Red, rect, StringFormat.GenericDefault);
+                        break;
+
+                    case ChapterState.Downloaded:
+
+                        a_args.Graphics.DrawString(Resources.Downloaded, font,
+                            Brushes.Green, rect, StringFormat.GenericDefault);
+                        break;
+
+                    case ChapterState.Waiting:
+
+                        a_args.Graphics.DrawString(Resources.Waiting, font,
+                            Brushes.Blue, rect, StringFormat.GenericDefault);
+                        break;
+
+                    case ChapterState.Deleting:
+
+                        a_args.Graphics.DrawString(Resources.Deleting, font,
+                            Brushes.Red, rect, StringFormat.GenericDefault);
+                        break;
+
+                    case ChapterState.Downloading:
+                    {
+                        string text = "";
+                        if (Chapter.PagesCount == 0)
+                            text = String.Format("{0}/{1}", Chapter.PagesDownloaded, Chapter.PagesCount);
+                        a_args.Graphics.DrawString(text, font, Brushes.Blue, 
+                            rect, StringFormat.GenericDefault);
+                        break;
+                    }
+
+                    case ChapterState.Zipping:
+
+                        a_args.Graphics.DrawString(Resources.Zipping, font,
+                            Brushes.Blue, rect, StringFormat.GenericDefault);
+                        break;
+
+                    case ChapterState.Initial: break;
+
+                      default: throw new NotImplementedException();
+                }
+            };
+
+            DrawItem(a_args, Chapter.Title, draw_tip);
         }
 
-        public override int GetHashCode()
+        public override int ID
         {
-            return Chapter.GetHashCode();
+            get 
+            {
+                return Chapter.ID;
+            }
         }
     }
 }

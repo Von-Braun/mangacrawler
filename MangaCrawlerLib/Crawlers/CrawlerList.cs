@@ -43,9 +43,6 @@ namespace MangaCrawlerLib.Crawlers
                    select (Crawler)Activator.CreateInstance(c);
         }
 
-        // TODO: na samym poczatku sprawdzic czy mamy wszystkie powiazania servery w bazie, 
-        // kasowanie powinno byc kaskadowe, skasowac z bazy te ze starych wersji, baza danych ma mie info o wersji
-
         public static Crawler Get(Server a_server)
         {
             return s_map[a_server.URL];

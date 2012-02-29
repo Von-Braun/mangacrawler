@@ -9,6 +9,8 @@ using System.Threading;
 using MangaCrawlerLib.Crawlers;
 using NHibernate.Mapping.ByCode;
 using System.Collections.ObjectModel;
+using NHibernate.Type;
+using NHibernate;
 
 namespace MangaCrawlerLib
 {
@@ -21,12 +23,13 @@ namespace MangaCrawlerLib
         private CustomTaskScheduler m_scheduler;
 
         public virtual int ID { get; protected set; }
-        public virtual ServerState State { get; protected set; }
-        public virtual DateTime LastChange { get; protected set; }
+        public virtual ServerState State { get;  protected set; }
+        protected virtual int Version { get; set; }
         public virtual int DownloadProgress { get; protected set; }
         protected virtual IList<Serie> Series { get; set; }
-        public virtual string URL { get; protected set; }
-        public virtual string Name { get; protected set; }
+        public virtual string URL { get;  protected set; }
+        public virtual string Name { get;  protected set; }
+        public virtual int SeriesCount { get; protected set; }
 
         protected Server()
         {
@@ -34,7 +37,6 @@ namespace MangaCrawlerLib
 
         internal Server(string a_url, string a_name)
         {
-            ID = IDGenerator.Next();
             URL = a_url;
             Name = a_name;
             Series = new List<Serie>();
@@ -45,12 +47,18 @@ namespace MangaCrawlerLib
             a_mapper.Class<Server>(m =>
             {
                 m.Id(c => c.ID, mapping => mapping.Generator(Generators.Native));
-                m.Version(c => c.LastChange, mapping => { });
+                m.Version("Version", mapping => { });
                 m.Property(c => c.URL, mapping => mapping.NotNullable(true));
                 m.Property(c => c.Name, mapping => mapping.NotNullable(true));
                 m.Property(c => c.DownloadProgress, mapping => mapping.NotNullable(true));
                 m.Property(c => c.State, mapping => mapping.NotNullable(true));
-                m.List<Serie>("Series", list_mapping => list_mapping.Inverse(true), mapping => mapping.OneToMany());
+                m.Property(c => c.SeriesCount, mapping => mapping.NotNullable(true));
+
+                m.List<Serie>(
+                    "Series",
+                    list_mapping => list_mapping.Cascade(Cascade.All), 
+                    mapping => mapping.OneToMany()
+                );
             });
         }
 
@@ -85,31 +93,39 @@ namespace MangaCrawlerLib
         {
             try
             {
-                DownloadProgress = 0;
-
+                // TODO: na 100% usun nie istniejace
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
-                    var series = result.ToList();
-
-                    foreach (var serie in Series)
+                    NH.TransactionLockUpdate(this, () => 
                     {
-                        var el = series.Find(s => (s.Title == serie.Title) && (s.URL == serie.URL));
-                        if (el != null)
-                            series[series.IndexOf(el)] = serie;
-                    }
+                        int index = 0;
+                        foreach (var serie in result)
+                        {
+                            if (Series.Count <= index)
+                                Series.Insert(index, serie);
+                            else
+                            {
+                                var s = Series[index];
+                                
+                                if ((s.Title != serie.Title) || (s.URL != serie.URL))
+                                    Series.Insert(index, serie);
+                            }
+                            index++;
+                        }
 
-                   Series = series;
-                    DownloadProgress = progress;
+                        SeriesCount = index;
+                        DownloadProgress = progress;
+                    });
                 });
 
-                State = ServerState.Downloaded;
+                NH.TransactionLockUpdate(this, () => State = ServerState.Downloaded);
             }
             catch (ObjectDisposedException)
             {
             }
             catch (Exception)
             {
-                State = ServerState.Error;
+                NH.TransactionLockUpdate(this, () => State = ServerState.Error);
             }
         }
 
@@ -127,12 +143,23 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual bool BeginDownloading()
+        protected internal virtual void ResetState()
+        {
+            State = ServerState.Initial;
+        }
+
+        protected internal virtual bool BeginWaiting()
         {
             if (!DownloadRequired)
                 return false;
             State = ServerState.Waiting;
-            return false;
+            return true;
+        }
+
+        protected internal virtual void DownloadingStarted()
+        {
+            State = ServerState.Downloading;
+            DownloadProgress = 0;
         }
     }
 }

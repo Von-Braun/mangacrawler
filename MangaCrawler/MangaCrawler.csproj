@@ -144,6 +144,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ListBoxVisualState.cs" />
+    <Compile Include="ListItem.cs" />
     <Compile Include="SerieListItem.cs" />
     <Compile Include="ChapterListItem.cs" />
     <Compile Include="RichTextBoxAppender.cs" />
@@ -220,6 +221,10 @@
     <ProjectReference Include="..\MangaCrawlerLib\MangaCrawlerLib.csproj">
       <Project>{5CE21DA4-9AD1-4D26-B7AE-2CDF133E6ECC}</Project>
       <Name>MangaCrawlerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NHibernate\NHibernate.csproj">
+      <Project>{5909BFE7-93CF-4E5F-BE22-6293368AF01D}</Project>
+      <Name>NHibernate</Name>
     </ProjectReference>
     <ProjectReference Include="..\SQLite.NET\SQLite.NET.csproj">
       <Project>{AC139952-261A-4463-B6FA-AEBC25283A66}</Project>

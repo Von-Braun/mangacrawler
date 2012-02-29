@@ -1,26 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using System.IO;
-using System.Threading;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Collections.Concurrent;
-using System.Diagnostics;
+using System.Drawing;
+using System.Reflection;
 using MangaCrawlerLib;
 using System.Threading.Tasks;
-using System.Reflection;
-using HtmlAgilityPack;
-using System.Media;
-using MangaCrawler.Properties;
-using log4net;
-using log4net.Core;
+using System.ComponentModel;
 using log4net.Config;
+using log4net.Core;
 using log4net.Layout;
+using System.IO;
+using MangaCrawler.Properties;
+using System.Diagnostics;
+using System.Media;
+using HtmlAgilityPack;
+using System.Threading;
+using NHibernate.Linq;
+using log4net;
 
 namespace MangaCrawler
 {
@@ -67,10 +64,10 @@ namespace MangaCrawler
 
     public partial class MangaCrawlerForm : Form
     {
-        private Dictionary<Server, ListBoxVisualState<SerieListItem>> m_series_visual_states =
-            new Dictionary<Server, ListBoxVisualState<SerieListItem>>();
-        private Dictionary<Serie, ListBoxVisualState<ChapterListItem>> m_chapters_visual_states =
-            new Dictionary<Serie, ListBoxVisualState<ChapterListItem>>();
+        private Dictionary<int, ListBoxVisualState> m_series_visual_states =
+            new Dictionary<int, ListBoxVisualState>();
+        private Dictionary<int, ListBoxVisualState> m_chapters_visual_states =
+            new Dictionary<int, ListBoxVisualState>();
 
         private Color BAD_DIR = Color.Red;
 
@@ -106,14 +103,16 @@ namespace MangaCrawler
             cbzCheckBox.Checked = Settings.Instance.UseCBZ;
 
             SetupLog4NET();
+            NH.SetupFromFile(Settings.GetSettingsDir());
 
-            DownloadManager.Load(Settings.GetSettingsDir());
+            Task.Factory.StartNew(() => CheckNewVersion(), TaskCreationOptions.LongRunning);
 
-            Task.Factory.StartNew(() => CheckNewVersion(),TaskCreationOptions.LongRunning);
-#if !DEBUG
-            tabControl.TabPages.Remove(logTabPage);
-            LogManager.Shutdown();
-#endif
+            if (!Log())
+            {
+                tabControl.TabPages.Remove(logTabPage);
+                LogManager.Shutdown();
+            }
+
             //Flicker-free.
             typeof(DataGridView).InvokeMember(
                 "DoubleBuffered",
@@ -126,6 +125,15 @@ namespace MangaCrawler
             refreshTimer.Enabled = true;
 
             UpdateSeriesTab();
+        }
+
+        private bool Log()
+        {
+#if DEBUG
+            return true;
+#else
+            return false;
+#endif
         }
 
         private void SetupLog4NET()
@@ -209,8 +217,8 @@ namespace MangaCrawler
 
             if (SelectedServer != null)
             {
-                ListBoxVisualState<SerieListItem> vs;
-                if (m_series_visual_states.TryGetValue(SelectedServer, out vs))
+                ListBoxVisualState vs;
+                if (m_series_visual_states.TryGetValue(SelectedServer.ID, out vs))
                     vs.Restore();
             }
         }
@@ -218,7 +226,7 @@ namespace MangaCrawler
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedServer != null)
-                m_series_visual_states[SelectedServer] = new ListBoxVisualState<SerieListItem>(seriesListBox);
+                m_series_visual_states[SelectedServer.ID] = new ListBoxVisualState(seriesListBox);
             
             DownloadManager.DownloadChapters(SelectedSerie);
 
@@ -226,8 +234,8 @@ namespace MangaCrawler
 
             if (SelectedSerie != null)
             {
-                ListBoxVisualState<ChapterListItem> vs;
-                if (m_chapters_visual_states.TryGetValue(SelectedSerie, out vs))
+                ListBoxVisualState vs;
+                if (m_chapters_visual_states.TryGetValue(SelectedSerie.ID, out vs))
                     vs.Restore();
             }
         }
@@ -235,7 +243,7 @@ namespace MangaCrawler
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedSerie != null)
-                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState<ChapterListItem>(chaptersListBox);
+                m_chapters_visual_states[SelectedSerie.ID] = new ListBoxVisualState(chaptersListBox);
         }
 
         private void seriesSearchTextBox_TextChanged(object sender, EventArgs e)
@@ -470,194 +478,21 @@ namespace MangaCrawler
         private void seriesListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (SelectedServer != null)
-                m_series_visual_states[SelectedServer] = new ListBoxVisualState<SerieListItem>(seriesListBox);
+                m_series_visual_states[SelectedServer.ID] = new ListBoxVisualState(seriesListBox);
         }
 
         private void chaptersListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (SelectedSerie != null)
-                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState<ChapterListItem>(chaptersListBox);
+                m_chapters_visual_states[SelectedSerie.ID] = new ListBoxVisualState(chaptersListBox);
         }
 
-        private void ListBox_DrawItem(DrawItemEventArgs e, string a_text, 
-            Action<Rectangle, Font> a_draw_tip)
-        {
-            e.DrawBackground();
-
-            if (e.State.HasFlag(DrawItemState.Selected))
-                e.Graphics.FillRectangle(Brushes.LightBlue, e.Bounds);
-
-            var size = e.Graphics.MeasureString(a_text, e.Font);
-            Rectangle bounds = new Rectangle(e.Bounds.X, e.Bounds.Y +
-                (e.Bounds.Height - size.ToSize().Height) / 2,
-                e.Bounds.Width, size.ToSize().Height);
-
-            e.Graphics.DrawString(a_text, e.Font, Brushes.Black, bounds,
-                StringFormat.GenericDefault);
-
-            int left = (int)Math.Round(size.Width + e.Graphics.MeasureString(" ", e.Font).Width);
-            Font font = new Font(e.Font.FontFamily, e.Font.Size * 9 / 10, FontStyle.Bold);
-            size = e.Graphics.MeasureString("(ABGHRTW%)", font).ToSize();
-            bounds = new Rectangle(left, e.Bounds.Y +
-                (e.Bounds.Height - size.ToSize().Height) / 2 - 1,
-                bounds.Width - left, bounds.Height);
-
-            a_draw_tip(bounds, font);
-
-            e.DrawFocusRectangle();
-        }
-
-        private void serversListBox_DrawItem(object sender, DrawItemEventArgs e)
+        private void listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index == -1)
                 return;
 
-            Server server = (serversListBox.Items[e.Index] as ServerListItem).Server;
-
-            Action<Rectangle, Font> draw_tip = (rect, font) =>
-            {
-                switch (server.State)
-                {
-                    case ServerState.Error: 
-
-                        e.Graphics.DrawString(Resources.Error, font, 
-                            Brushes.Red, rect, StringFormat.GenericDefault); 
-                        break;
-
-                    case ServerState.Downloaded:
-
-                        e.Graphics.DrawString(
-                            String.Format(Resources.Series, server.GetSeries().Count()), 
-                            font, Brushes.Green, rect, StringFormat.GenericDefault); 
-                        break;
-
-                    case ServerState.Waiting: 
-
-                        e.Graphics.DrawString(Resources.Waiting, font, 
-                            Brushes.Blue, rect, StringFormat.GenericDefault); 
-                         break;
-
-                    case ServerState.Downloading: 
-
-                        e.Graphics.DrawString(
-                            String.Format("({0}%)", server.DownloadProgress), 
-                            font, Brushes.Blue, rect, StringFormat.GenericDefault); 
-                        break;
-
-                    case ServerState.Initial: break;
-
-                    default: throw new NotImplementedException();
-                }
-            };
-
-            ListBox_DrawItem(e, server.Name, draw_tip);
-        }
-
-        private void seriesListBox_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            if (e.Index == -1)
-                return;
-
-            Serie serie = (seriesListBox.Items[e.Index] as SerieListItem).Serie;
-
-            Action<Rectangle, Font> draw_tip = (rect, font) =>
-            {
-                switch (serie.State)
-                {
-                    case SerieState.Error:
-
-                        e.Graphics.DrawString(Resources.Error, font,
-                            Brushes.Red, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case SerieState.Downloaded:
-
-                        e.Graphics.DrawString(
-                            String.Format(Resources.Chapters, serie.GetChapters().Count()), 
-                            font, Brushes.Green, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case SerieState.Waiting:
-
-                        e.Graphics.DrawString(Resources.Waiting, font,
-                            Brushes.Blue, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case SerieState.Downloading:
-
-                        e.Graphics.DrawString(
-                            String.Format("({0}%)", serie.DownloadProgress), 
-                            font, Brushes.Blue, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case SerieState.Initial: break;
-
-                    default: throw new NotImplementedException();
-                }
-            };
-
-            ListBox_DrawItem(e, serie.Title, draw_tip);
-        }
-
-        private void chaptersListBox_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            Chapter chapter = (chaptersListBox.Items[e.Index] as ChapterListItem).Chapter;
-
-            Action<Rectangle, Font> draw_tip = (rect, font) =>
-            {
-                switch (chapter.State)
-                {
-                    case ChapterState.Error:
-
-                        e.Graphics.DrawString(Resources.Error, font,
-                            Brushes.Red, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case ChapterState.Aborted:
-
-                        e.Graphics.DrawString(Resources.Aborted, font,
-                            Brushes.Red, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case ChapterState.Downloaded:
-
-                        e.Graphics.DrawString(Resources.Downloaded, font,
-                            Brushes.Green, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case ChapterState.Waiting:
-
-                        e.Graphics.DrawString(Resources.Waiting, font,
-                            Brushes.Blue, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case ChapterState.Deleting:
-
-                        e.Graphics.DrawString(Resources.Deleting, font,
-                            Brushes.Red, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case ChapterState.Downloading:
-                    {
-                        e.Graphics.DrawString(
-                            String.Format("{0}/{1}", chapter.DownloadedPages, chapter.GetPages().Count()),
-                            font, Brushes.Blue, rect, StringFormat.GenericDefault);
-                        break;
-                    }
-
-                    case ChapterState.Zipping:
-
-                        e.Graphics.DrawString(Resources.Zipping, font,
-                            Brushes.Blue, rect, StringFormat.GenericDefault);
-                        break;
-
-                    case ChapterState.Initial: break;
-
-                    default: throw new NotImplementedException();
-                }
-            };
-
-            ListBox_DrawItem(e, chapter.Title, draw_tip);
+            ((sender as ListBox).Items[e.Index] as ListItem).DrawItem(e);
         }
 
         private void cbzCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -828,11 +663,15 @@ namespace MangaCrawler
 
             if (SelectedSerie != null)
             {
-                ar = (from ch in SelectedSerie.GetChapters()
-                      select new ChapterListItem(ch)).ToArray();
+                ar = NH.TransactionWithResult(session =>
+                {
+                    Serie selected_serie = session.Load<Serie>(SelectedSerie.ID);
+                    return (from ch in selected_serie.GetChapters()
+                          select new ChapterListItem(ch)).ToArray();
+                });
             }
 
-            new ListBoxVisualState<ChapterListItem>(chaptersListBox).ReloadItems(ar);
+            new ListBoxVisualState(chaptersListBox).ReloadItems(ar);
         }
 
         private void UpdateServers()
@@ -840,10 +679,10 @@ namespace MangaCrawler
             if (!ShowingSeriesTab)
                 return;
 
-            var ar = from server in DownloadManager.Servers
-                     select new ServerListItem(server);
+            var servers = (from server in NH.GetServers()
+                           select new ServerListItem(server)).ToArray();
 
-            new ListBoxVisualState<ServerListItem>(serversListBox).ReloadItems(ar.ToArray());
+            new ListBoxVisualState(serversListBox).ReloadItems(servers);
         }
 
         private void UpdateSeries()
@@ -855,13 +694,17 @@ namespace MangaCrawler
 
             if (SelectedServer != null)
             {
-                string filter = seriesSearchTextBox.Text.ToLower();
-                ar = (from serie in SelectedServer.GetSeries()
-                      where serie.Title.ToLower().IndexOf(filter) != -1
-                      select new SerieListItem(serie)).ToArray();
+                ar = NH.TransactionWithResult(session =>
+                {
+                    string filter = seriesSearchTextBox.Text.ToLower();
+                    Server selected_server = session.Load<Server>(SelectedServer.ID);
+                    return (from serie in selected_server.GetSeries()
+                            where serie.Title.ToLower().IndexOf(filter) != -1
+                            select new SerieListItem(serie)).ToArray();
+                });
             }
 
-            new ListBoxVisualState<SerieListItem>(seriesListBox).ReloadItems(ar);
+            new ListBoxVisualState(seriesListBox).ReloadItems(ar);
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)

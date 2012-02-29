@@ -1000,7 +1000,7 @@ namespace System.Data.SQLite
 #endif
       }
 #if DEBUG
-      catch (SQLiteException e)
+      catch (SQLiteException)
 #else
       catch (SQLiteException)
 #endif
