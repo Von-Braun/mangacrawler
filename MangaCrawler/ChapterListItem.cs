@@ -59,25 +59,35 @@ namespace MangaCrawler
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
 
-                    case ChapterState.Downloading:
+                    case ChapterState.DownloadingPagesList:
                     {
-                        string text = "";
-                        if (Chapter.PagesCount == 0)
-                            text = String.Format("{0}/{1}", Chapter.PagesDownloaded, Chapter.PagesCount);
-                        a_args.Graphics.DrawString(text, font, Brushes.Blue, 
-                            rect, StringFormat.GenericDefault);
+                        break;
+                    }
+
+                    case ChapterState.DownloadingPages:
+                    {
+                        a_args.Graphics.DrawString(
+                            String.Format("{0}/{1}", Chapter.PagesDownloaded, Chapter.PagesCount), 
+                            font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
                     }
 
                     case ChapterState.Zipping:
-
+                    {
                         a_args.Graphics.DrawString(Resources.Zipping, font,
                             Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
+                    }
 
-                    case ChapterState.Initial: break;
+                    case ChapterState.Initial:
+                    {
+                        break;
+                    }
 
-                      default: throw new NotImplementedException();
+                    default:
+                    {
+                        throw new NotImplementedException();
+                    }
                 }
             };
 

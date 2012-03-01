@@ -129,7 +129,7 @@ namespace MangaCrawlerTest
 
             Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_chapter.URL));
 
-            a_chapter.DownloadPagesList();
+            a_chapter.DownloadPagesList(null, false);
 
             var pages = a_chapter.GetPages().ToList();
 
@@ -769,7 +769,7 @@ namespace MangaCrawlerTest
                     {
                         try
                         {
-                            chapter.DownloadPagesList();
+                            chapter.DownloadPagesList(null, false);
                         }
                         catch
                         {

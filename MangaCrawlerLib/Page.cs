@@ -21,9 +21,9 @@ namespace MangaCrawlerLib
         public virtual string URL { get; protected set; }
         public virtual byte[] Hash { get; protected set; }
         public virtual string ImageURL { get; protected set; }
-        public virtual bool Downloaded { get; protected set; }
         public virtual string Name { get; protected set; }
         public virtual string ImageFilePath { get; protected set; }
+        public virtual PageState State { get; protected set; }
 
         protected Page()
         {
@@ -56,11 +56,12 @@ namespace MangaCrawlerLib
                 m.Version("Version", mapper => { });
                 m.Property(c => c.Index, mapper => { });
                 m.Property(c => c.URL, mapping => mapping.NotNullable(true));
-                m.Property(c => c.Downloaded, mapping => { });
                 m.Property(c => c.ImageFilePath, mapping => mapping.NotNullable(false));
                 m.Property(c => c.Name, mapping => mapping.NotNullable(true));
                 m.Property(c => c.ImageURL, mapping => mapping.NotNullable(false));
                 m.Property(c => c.Hash, mapping => mapping.NotNullable(false));
+                m.Property(c => c.State, mapping => { });
+
                 m.ManyToOne(
                     c => c.Chapter,
                     mapping =>
@@ -125,64 +126,72 @@ namespace MangaCrawlerLib
 
         protected internal virtual void DownloadAndSavePageImage()
         {
-            new DirectoryInfo(Chapter.ChapterDir).Create();
-
-            FileInfo temp_file = new FileInfo(Path.GetTempFileName());
+            Debug.Assert(State == PageState.WaitingForDownload);
 
             try
             {
-                using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
+                new DirectoryInfo(Chapter.ChapterDir).Create();
+
+                FileInfo temp_file = new FileInfo(Path.GetTempFileName());
+
+                try
                 {
-                    MemoryStream ms = null;
 
-                    try
+                    using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
                     {
-                        ms = GetImageStream();
-                    }
-                    catch (WebException ex)
-                    {
-                        // Some images are unavailable, if we get null pernamently tests
-                        // will detect this.
-                        Loggers.MangaCrawler.Fatal("Exception #1", ex);
-                        return;
-                    }
+                        MemoryStream ms = null;
 
-                    try
-                    {
-                        System.Drawing.Image.FromStream(ms);
+                        try
+                        {
+                            ms = GetImageStream();
+                        }
+                        catch (WebException ex)
+                        {
+                            Loggers.MangaCrawler.Fatal("Exception #1", ex);
+                            throw;
+                        }
+
+                        try
+                        {
+                            System.Drawing.Image.FromStream(ms);
+                            ms.Position = 0;
+                        }
+                        catch (Exception ex)
+                        {
+                            Loggers.MangaCrawler.Fatal("Exception #2", ex);
+                            throw;
+                        }
+
+                        ms.CopyTo(file_stream);
+
                         ms.Position = 0;
+                        byte[] hash;
+                        TomanuExtensions.Utils.Hash.CalculateSHA256(ms, out hash);
+                        NH.TransactionLockUpdate(this, () => Hash = hash);
                     }
-                    catch (Exception ex)
+
+                    NH.TransactionLockUpdate(this, () =>
                     {
-                        // Some junks.
-                        Loggers.MangaCrawler.Fatal("Exception #2", ex);
-                        return;
-                    }
+                        ImageFilePath = Chapter.ChapterDir +
+                            FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
+                            FileUtils.RemoveInvalidFileDirectoryCharacters(
+                                Path.GetExtension(ImageURL).ToLower());
+                    });
 
-                    ms.CopyTo(file_stream);
+                    FileInfo image_file = new FileInfo(ImageFilePath);
 
-                    ms.Position = 0;
-                    byte[] hash;
-                    TomanuExtensions.Utils.Hash.CalculateSHA256(ms, out hash);
-                    NH.TransactionLockUpdate(this, () => Hash = hash);
+                    if (image_file.Exists)
+                        image_file.Delete();
+
+                    temp_file.MoveTo(image_file.FullName);
+
+                    NH.TransactionLockUpdate(this, () => State = PageState.Downloaded );
                 }
-
-                NH.TransactionLockUpdate(this, () =>
+                finally
                 {
-                    ImageFilePath = Chapter.ChapterDir +
-                        FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
-                        FileUtils.RemoveInvalidFileDirectoryCharacters(
-                            Path.GetExtension(ImageURL).ToLower());
-                });
-
-                FileInfo image_file = new FileInfo(ImageFilePath);
-
-                if (image_file.Exists)
-                    image_file.Delete();
-
-                temp_file.MoveTo(image_file.FullName);
-
-                NH.TransactionLockUpdate(this, () => Downloaded = true);
+                    if (temp_file.Exists)
+                        temp_file.Delete();
+                }
             }
             catch (OperationCanceledException)
             {
@@ -191,26 +200,51 @@ namespace MangaCrawlerLib
             catch (Exception ex)
             {
                 Loggers.MangaCrawler.Fatal("Exception #3", ex);
-                NH.TransactionLockUpdate(this, () =>
-                {
-                    Downloaded = false;
-                    Hash = null;
-                    ImageFilePath = null;
-                    ImageURL = null;
-                });
-                throw;
-            }
-            finally
-            {
-                if (temp_file.Exists)
-                    temp_file.Delete();
+                NH.TransactionLockUpdate(this, () => State = PageState.Error);
             }
         }
 
-        protected internal virtual bool ImageExists()
+        protected internal virtual bool DownloadRequired()
         {
-            // TODO: na podstawie sciezki pliku i jego hasu dokonac weryfikacji
-            throw new NotImplementedException();
+            if (State == PageState.WaitingForDownload)
+                return true;
+
+            Debug.Assert(State == PageState.WaitingForVerify);
+
+            try
+            {
+                if (ImageFilePath == null)
+                    return false;
+                if (new FileInfo(ImageFilePath).Directory.FullName != Chapter.ChapterDir)
+                    return false;
+                if (new FileInfo(ImageFilePath).Exists)
+                    return false;
+                if (Hash == null)
+                    return false;
+
+                byte[] hash;
+                TomanuExtensions.Utils.Hash.CalculateSHA256(new FileInfo(ImageFilePath).OpenRead(), out hash);
+
+                if (!Hash.SequenceEqual(hash))
+                    return false;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Loggers.MangaCrawler.Fatal("Exception", ex);
+                return false;
+            }
+        }
+
+        protected internal virtual void PrepareToVerify()
+        {
+            State = PageState.WaitingForVerify;
+        }
+
+        protected internal virtual void PrepareToDownload()
+        {
+            State = PageState.WaitingForDownload;
         }
     }
 }

@@ -21,46 +21,79 @@ using log4net;
 
 namespace MangaCrawler
 {
-    //
-    // TODO: testowe serwery, testowe srodowisko testowe, wiesza sie
-    //
-    // TODO: chapter powienine miec page, wraz s sciezka, hashem
-    // 
-    // TODO: jesli zbyt duzo bledow web to zmiejszamy liczbe polaczen na serwer
-    //
-    // TODO: wersja to data, ustawiana automatycznie podczas budowania, generowanie jakiegos pliku 
-    //       z data.
-    //
-    // TODO: po sciagnieciu nie kasowac taska, dac mozliwosc przejrzenia mangi
-    //       lib zawsze pamieta taski, to gui je odrzuca
-    //
-    // TODO: pamietanie taskow podczas zamkniecia
-    //
-    // TODO: pamietanie pobranych
-    // 
-    // TODO: http://www.mangareader.net/alphabetical
-    // TODO: http://mangable.com/manga-list/
-    // TODO: http://www.readmangaonline.net/
-    // TODO: http://www.anymanga.com/directory/all/
-    // TODO: http://manga.animea.net/browse.html
-    // TODO: http://www.mangamonger.com/
-    //
-    // TODO: instalator, x86 i x64
-    //
-    // TODO: cache, ladowanie w cachu, update w tle, pamietanie co sie sciaglo, jakie hashe, 
-    //       podczas ponownego uruchomienia 
-    //       weryfikacja tego, pamietanie urli obrazkow, dat modyfikacji zdalnych, szybka 
-    //       weryfikacja
-    //
-    // TODO: bookmarks,
-    // TODO: wykrywanie zmian w obserwowanych seriach, praca w tle, 
-    //
-    // TODO: wpf, silverlight, telefony
-    //
-    // TODO: wbudowany browser
-    //
-    // TODO: widok wspolny dla wszystkich serwisow, scalac jakos serie, wykrywac zmiany ? 
-    //       gdzie najlepsza jakosc, gdzie duplikaty
+    /* TODO:
+     * 
+     * co zrobic jak serwer, seria, page nie istnieje po stornie serwera a my mamy z niego informacje na dysku
+     * nic nie rob, kasuj, oznacz jako skasowane, 
+     * istnieje tez mozliwosc zachowaj w wizualizacji, oznacz jako skasowane, zachowaj tak dlugo jak istnieje na dysku
+     * 
+     * co zrobic jesli chaptery nie sa dane alfabetycznie, nie sa ponumerowane, innymi slowy widok leb moze byc 
+     * nieposortowany, ale widok folderow na dysku juz tak
+     * 
+     * wbudowany browser
+     * 
+     * widok wspolny dla wszystkich serwisow, scalac jakos serie,
+     * gdzie najlepsza jakosc, gdzie duplikaty
+     * 
+     * wpf, windows phone, inne
+     * 
+     * bookmarks
+     * 
+     * po kliknieciu w chapter, podczas browse, sprawdzay czy mamy wszystkie pliki, spwadzamy czy po stronie 
+     * serwera nic sie nie zmienilo, ale nie pobieramy kazdeo obrazka na nowo by sprawdzic czy sie zmienil, moze 
+     * wystarczy srawdzic date ostatniej modyfikacji pliku, jego rozmiar, lub jakis html text z data
+     * 
+     * praca w tle, powiadamianie o zmianach w bookmarks
+     * 
+     * instalator, x86, x64
+     * 
+     * nowe serwisy:
+     * http://www.mangareader.net/alphabetical
+     * http://mangable.com/manga-list/
+     * http://www.readmangaonline.net/
+     * http://www.anymanga.com/directory/all/
+     * http://manga.animea.net/browse.html
+     * http://www.mangamonger.com/
+     * 
+     * oznaczanie w specjalny sposob juz pobranych serwerow, seri, chapterow
+     * 
+     * dla serwerow, serii, chapterow, pagow weryfikacja zdalna tylko raz na uruchomienie, albo np. dla pracy w tle
+     * kasowanie oznaczen co godzine
+     * 
+     * czy dac mozliwosc uzytkownikowi zdecydowania o predkosci pobierania i ilosci polaczen do nawiazania
+     * 
+     * pamietanie taskow podczas zamkniecia i ich wznawianie
+     * 
+     * taski, z tym mam problem, kiedy klikniemy na chapter i w niego wejdziemy poprzz browser to jest on pobierany 
+     * tak dlugo jak w nim jestesmy i nie jest na liscie taskow, taski to zupelnie inny mechanizm kiedy dorzucamy cos do 
+     * sciagania w tle, nie powinny one znikac po zakonczeniu, chyba ze dodamy taka opcje, powinny miec one nizszy priorytet
+     * niz klikniecia usera
+     * 
+     * jesli duzo bledow to zmniejszac ilosc polaczen
+     * 
+     * przejsc na nowa wersje w ktorej jest ona data, roznoczesnie zachowujac obecny system powiadamiania o nowej 
+     * wersji, najlepiej wydac wersje tymczasowa i potrzymac ja przez miesiac
+     * 
+     * Testy
+     * sciaganie losowe wielu rzeczy i ch anulowanie, brak wyjatkow, deadlockow, spojnosc danych
+     * dodac procedure ktora testuje spojnosc danych - ich stan i powiazania
+     * pobranie serii, chapterow, pagey - dodanie nowych, usuniecie istniejacych, jakies zmiany, czy ponowne 
+     *   pobranie sobie z tym radzi
+     * page - zmiana hashu juz pobranego, usunicie go z dysku
+     * page - symulacja webexcption podczas pobierania
+     * page - symulacja pobrania 0 lenth
+     * page - symulacja pobrania smieci - np 404 not found
+     * testy na series, chapter na zwrocenie jakis wyjatkow z czesci web
+     * page - wywalenie wyjatku, niemozliwy zapis pliku (na plik dac lock)
+     * podotykac wszystkiego, sprawdzic zajetosc pamieci
+     * ktos klika w element ktory nie istnieje, pojawia sie error, albo jest on w trakcie sciagania, w tym 
+     *   czasie nastepuje jego odswiezenie i znika on z listy
+     * zmiana katalogu glownego z kombinacja powyzszych
+     * 
+     * jak wszystko zacznie dzialac wykorzystac entity dla klasy bazowej, rozwazyc bardziej skomplikowana strukture, tak 
+     * by page byl osobna subclasa
+     * 
+     */
 
     public partial class MangaCrawlerForm : Form
     {
@@ -343,17 +376,9 @@ namespace MangaCrawler
             worksGridView.Invalidate();
         }
 
-        private bool DownloadingPages
-        {
-            get
-            {
-                return DownloadManager.Works.Any(w => w.State == ChapterState.Downloading);
-            }
-        }
-
         private void MangaCrawlerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (DownloadingPages)
+            if (DownloadManager.Works.Any(w => w.IsWorking))
             {
                 if ((e.CloseReason != CloseReason.WindowsShutDown) || 
                     (e.CloseReason != CloseReason.TaskManagerClosing))
@@ -529,9 +554,9 @@ namespace MangaCrawler
                     Task.Factory.StartNew(() => PulseNewVersionLinkLabel());
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Loggers.GUI.Error("Exception");
+                Loggers.GUI.Error("Exception", ex);
             }
         }
 
