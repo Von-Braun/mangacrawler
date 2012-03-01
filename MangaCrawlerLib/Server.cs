@@ -93,27 +93,16 @@ namespace MangaCrawlerLib
         {
             try
             {
-                // TODO: na 100% usun nie istniejace
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
                     NH.TransactionLockUpdate(this, () => 
                     {
-                        int index = 0;
-                        foreach (var serie in result)
-                        {
-                            if (Series.Count <= index)
-                                Series.Insert(index, serie);
-                            else
-                            {
-                                var s = Series[index];
-                                
-                                if ((s.Title != serie.Title) || (s.URL != serie.URL))
-                                    Series.Insert(index, serie);
-                            }
-                            index++;
-                        }
-
-                        SeriesCount = index;
+                        IList<Serie> removed;
+                        bool added;
+                        DownloadManager.Sync(result, Series, serie => (serie.Title + serie.URL), progress == 100, 
+                            out added, out removed);
+                       
+                        SeriesCount = Series.Count;
                         DownloadProgress = progress;
                     });
                 });

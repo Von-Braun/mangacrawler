@@ -28,10 +28,19 @@ namespace MangaCrawlerLib
         Initial,
         Aborted,
         Waiting,
-        Downloading,
+        DownloadingPagesList,
+        DownloadingPages,
         Deleting,
         Zipping,
         Downloaded,
+        Error
+    }
+
+    public enum PageState
+    {
+        WaitingForDownload,
+        WaitingForVerify, 
+        Downloaded, 
         Error
     }
 }

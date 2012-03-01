@@ -148,5 +148,53 @@ namespace MangaCrawlerLib
                 });
             }
         }
+
+        internal static void Sync<T, K>(IEnumerable<T> a_transient, IList<T> a_persisted,
+            Func<T, K> a_key_selector, bool a_remove, out bool a_added, out IList<T> a_removed) where K : IEquatable<K>
+        {
+            IDictionary<K, T> new_pages_dict = a_transient.ToDictionary<T, K>(a_key_selector);
+            IDictionary<K, T> pages_dict = a_persisted.ToDictionary(a_key_selector);
+
+            a_removed = new List<T>();
+
+            if (a_remove)
+            {
+                List<K> to_remove = new List<K>();
+
+                foreach (var key in pages_dict.Keys)
+                {
+                    if (!new_pages_dict.Keys.Contains(key))
+                        to_remove.Add(key);
+                }
+
+                a_removed = (from key in to_remove
+                            select pages_dict[key]).ToList();
+                a_persisted.RemoveRange(a_removed);
+                pages_dict.RemoveRange(to_remove);
+            }
+
+            a_added = false;
+
+            int index = 0;
+            foreach (var tr in a_transient)
+            {
+                if (a_persisted.Count <= index)
+                {
+                    a_persisted.Insert(index, tr);
+                    a_added = true;
+                }
+                else
+                {
+                    var pr = a_persisted[index];
+
+                    if (!a_key_selector(pr).Equals(a_key_selector(tr)))
+                    {
+                        a_persisted.Insert(index, tr);
+                        a_added = true;
+                    }
+                }
+                index++;
+            }
+        }
     }
 }

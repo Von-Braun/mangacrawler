@@ -100,25 +100,14 @@ namespace MangaCrawlerLib
             {
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
-                    // TODO: na 100% usun nie istniejace
                     NH.TransactionLockUpdate(this, () =>
                     {
-                        int index = 0;
-                        foreach (var serie in result)
-                        {
-                            if (Chapters.Count <= index)
-                                Chapters.Insert(index, serie);
-                            else
-                            {
-                                var c = Chapters[index];
+                        bool added;
+                        IList<Chapter> removed;
+                        DownloadManager.Sync(result, Chapters, chapter => (chapter.Title + chapter.URL),
+                            progress == 100, out added, out removed);
 
-                                if ((c.Title != serie.Title) || (c.URL != serie.URL))
-                                    Chapters.Insert(index, serie);
-                            }
-                            index++;
-                        }
-
-                        ChaptersCount = index;
+                        ChaptersCount = Chapters.Count;
                         DownloadProgress = progress;
                     });
                 });

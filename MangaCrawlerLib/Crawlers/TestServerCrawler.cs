@@ -211,6 +211,8 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
+            a_chapter.DownloadingStarted();
+
             var serie = m_series.First(s => s.Title == a_chapter.Serie.Title);
             var chapter = GenerateChapters(serie).First(c => c.Title == a_chapter.Title);
             var pages = GeneratePages(chapter).ToList();

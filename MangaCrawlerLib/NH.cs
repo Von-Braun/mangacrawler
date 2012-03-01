@@ -32,7 +32,7 @@ namespace MangaCrawlerLib
             s_database_dir = a_database_dir;
 
             Prepare();
-            //if (!CheckDatabaseSchemaAndVersion())
+            //if (!CheckDatabaseSchemaAndVersion()) // TODO:
               RecreateDatabase();
             ResetStates();
         }
@@ -94,7 +94,6 @@ namespace MangaCrawlerLib
         {
             using (var session = OpenSession())
             {
-
                 ITransaction transaction = session.BeginTransaction();
 
                 session.Lock(a_obj, LockMode.Read);
@@ -103,6 +102,31 @@ namespace MangaCrawlerLib
                 {
                     a_action();
                     session.SaveOrUpdate(a_obj);
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    Loggers.NH.Fatal("Exception", ex);
+                    transaction.Rollback();
+                }
+                finally
+                {
+                    session.Dispose();
+                }
+            }
+        }
+
+        public static void TransactionLock<T>(T a_obj, Action a_action)
+        {
+            using (var session = OpenSession())
+            {
+                ITransaction transaction = session.BeginTransaction();
+
+                session.Lock(a_obj, LockMode.Read);
+
+                try
+                {
+                    a_action();
                     transaction.Commit();
                 }
                 catch (Exception ex)
