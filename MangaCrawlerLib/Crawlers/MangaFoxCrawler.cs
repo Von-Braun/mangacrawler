@@ -20,7 +20,7 @@ namespace MangaCrawlerLib
         {
             get 
             {
-                return "MangaFox";
+                return "Manga Fox";
             }
         }
 

@@ -68,8 +68,6 @@ namespace MangaCrawlerLib
                     {
                         mapping.Fetch(FetchKind.Join);
                         mapping.NotNullable(false);
-                        //mapping.Insert(false); 
-                        //mapping.Update(false);
                     }
                 );
             });
@@ -126,7 +124,7 @@ namespace MangaCrawlerLib
 
         protected internal virtual void DownloadAndSavePageImage()
         {
-            Debug.Assert(State == PageState.WaitingForDownload);
+            Debug.Assert(State == PageState.WaitingForDownloading);
 
             try
             {
@@ -185,7 +183,7 @@ namespace MangaCrawlerLib
 
                     temp_file.MoveTo(image_file.FullName);
 
-                    NH.TransactionLockUpdate(this, () => State = PageState.Downloaded );
+                    NH.TransactionLockUpdate(this, () => SetState(PageState.Downloaded));
                 }
                 finally
                 {
@@ -200,35 +198,39 @@ namespace MangaCrawlerLib
             catch (Exception ex)
             {
                 Loggers.MangaCrawler.Fatal("Exception #3", ex);
-                NH.TransactionLockUpdate(this, () => State = PageState.Error);
+                NH.TransactionLockUpdate(this, () => SetState(PageState.Error));
             }
         }
 
         protected internal virtual bool DownloadRequired()
         {
-            if (State == PageState.WaitingForDownload)
+            if (State == PageState.WaitingForDownloading)
                 return true;
 
-            Debug.Assert(State == PageState.WaitingForVerify);
+            Debug.Assert(State == PageState.WaitingForVerifing);
+
+            NH.TransactionLockUpdate(this, () => SetState(PageState.Veryfing));
 
             try
             {
                 if (ImageFilePath == null)
-                    return false;
+                    return true;
                 if (new FileInfo(ImageFilePath).Directory.FullName != Chapter.ChapterDir)
-                    return false;
+                    return true;
                 if (new FileInfo(ImageFilePath).Exists)
-                    return false;
+                    return true;
                 if (Hash == null)
-                    return false;
+                    return true;
 
                 byte[] hash;
                 TomanuExtensions.Utils.Hash.CalculateSHA256(new FileInfo(ImageFilePath).OpenRead(), out hash);
 
                 if (!Hash.SequenceEqual(hash))
-                    return false;
+                    return true;
 
-                return true;
+                NH.TransactionLockUpdate(this, () => SetState(PageState.Veryfied));
+
+                return false;
             }
             catch (Exception ex)
             {
@@ -237,14 +239,59 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual void PrepareToVerify()
+        protected internal virtual void SetState(PageState a_state)
         {
-            State = PageState.WaitingForVerify;
-        }
+            switch (a_state)
+            {
+                case PageState.Downloaded:
+                {
+                    Debug.Assert(State == PageState.Downloading);
+                    break;
+                }
+                case PageState.Downloading:
+                {
+                    Debug.Assert((State == PageState.WaitingForDownloading) ||
+                                 (State == PageState.Veryfing));
+                    break;
+                }
+                case PageState.Error:
+                {
+                    Debug.Assert((State == PageState.Downloading) ||
+                                 (State == PageState.Veryfing));
+                    break;
+                }
+                case PageState.Veryfied:
+                {
+                    Debug.Assert(State == PageState.Veryfing);
+                    break;
+                }
+                case PageState.Veryfing:
+                {
+                    Debug.Assert(State == PageState.WaitingForVerifing);
+                    break;
+                }
+                case PageState.WaitingForVerifing:
+                {
+                    Debug.Assert((State == PageState.Downloaded) || 
+                                 (State == PageState.Initial) ||
+                                 (State == PageState.Error));
+                    break;
+                }
+                case PageState.WaitingForDownloading:
+                {
+                    Debug.Assert((State == PageState.Downloaded) ||
+                                 (State == PageState.Initial) ||
+                                 (State == PageState.Error));
+                    break;
+                }
 
-        protected internal virtual void PrepareToDownload()
-        {
-            State = PageState.WaitingForDownload;
+                default:
+                {
+                    throw new InvalidOperationException(String.Format("Unknown state: {0}", a_state));
+                }
+            }
+
+            State = a_state;
         }
     }
 }

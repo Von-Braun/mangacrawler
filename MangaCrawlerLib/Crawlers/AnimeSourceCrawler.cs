@@ -19,7 +19,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return "Anime-Source";
+                return "Anime Source";
             }
         }
 

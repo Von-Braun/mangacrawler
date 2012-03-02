@@ -26,7 +26,7 @@ namespace MangaCrawlerLib
         {
             get 
             {
-                return "UnixManga";
+                return "Unix Manga";
             }
         }
 

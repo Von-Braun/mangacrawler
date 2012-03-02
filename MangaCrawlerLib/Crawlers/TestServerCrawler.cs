@@ -97,7 +97,7 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback)
         {
-            a_server.DownloadingStarted();
+            NH.TransactionLockUpdate(a_server, () => a_server.SetState(ServerState.Downloading));
 
             Debug.Assert(a_server.Name == m_name);
 
@@ -176,10 +176,11 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
+            NH.TransactionLockUpdate(a_serie, () => a_serie.SetState(SerieState.Downloading));
+
             Debug.Assert(a_serie.Server.Name == m_name);
 
             var serie = m_series.First(s => s.Title == a_serie.Title);
-
 
             var toreport = (from chapter in GenerateChapters(serie)
                             select new Chapter(a_serie, "fakse_chapter_url", chapter.Title)).ToArray();
@@ -211,7 +212,7 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            a_chapter.DownloadingStarted();
+            NH.TransactionLockUpdate(a_chapter, () => a_chapter.SetState(ChapterState.DownloadingPagesList));
 
             var serie = m_series.First(s => s.Title == a_chapter.Serie.Title);
             var chapter = GenerateChapters(serie).First(c => c.Title == a_chapter.Title);
@@ -253,6 +254,7 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override string GetImageURL(Page a_page)
         {
+            NH.TransactionLockUpdate(a_page, () => a_page.SetState(PageState.Downloading));
             return "fake_image_url.jpg";
         }
 

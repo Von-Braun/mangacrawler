@@ -26,6 +26,7 @@ namespace MangaCrawler
      * co zrobic jak serwer, seria, page nie istnieje po stornie serwera a my mamy z niego informacje na dysku
      * nic nie rob, kasuj, oznacz jako skasowane, 
      * istnieje tez mozliwosc zachowaj w wizualizacji, oznacz jako skasowane, zachowaj tak dlugo jak istnieje na dysku
+     * a najlepiej zapytac sie usera co zrobic, skasowac, zmienic nazwe, zostawic jak jest
      * 
      * co zrobic jesli chaptery nie sa dane alfabetycznie, nie sa ponumerowane, innymi slowy widok leb moze byc 
      * nieposortowany, ale widok folderow na dysku juz tak
@@ -41,7 +42,8 @@ namespace MangaCrawler
      * 
      * po kliknieciu w chapter, podczas browse, sprawdzay czy mamy wszystkie pliki, spwadzamy czy po stronie 
      * serwera nic sie nie zmienilo, ale nie pobieramy kazdeo obrazka na nowo by sprawdzic czy sie zmienil, moze 
-     * wystarczy srawdzic date ostatniej modyfikacji pliku, jego rozmiar, lub jakis html text z data
+     * wystarczy srawdzic date ostatniej modyfikacji pliku, jego rozmiar, lub jakis html text z data, dac mozliwosc 
+     * pelnej recznej weryfikacji serii i rozdzialu
      * 
      * praca w tle, powiadamianie o zmianach w bookmarks
      * 
@@ -55,14 +57,11 @@ namespace MangaCrawler
      * http://manga.animea.net/browse.html
      * http://www.mangamonger.com/
      * 
-     * oznaczanie w specjalny sposob juz pobranych serwerow, seri, chapterow
-     * 
+     * oznaczanie w specjalny sposob juz pobranych serwerow, seri, chapterow (miedzy uruchomieniami)
      * dla serwerow, serii, chapterow, pagow weryfikacja zdalna tylko raz na uruchomienie, albo np. dla pracy w tle
      * kasowanie oznaczen co godzine
      * 
      * czy dac mozliwosc uzytkownikowi zdecydowania o predkosci pobierania i ilosci polaczen do nawiazania
-     * 
-     * pamietanie taskow podczas zamkniecia i ich wznawianie
      * 
      * taski, z tym mam problem, kiedy klikniemy na chapter i w niego wejdziemy poprzz browser to jest on pobierany 
      * tak dlugo jak w nim jestesmy i nie jest na liscie taskow, taski to zupelnie inny mechanizm kiedy dorzucamy cos do 
@@ -72,7 +71,7 @@ namespace MangaCrawler
      * jesli duzo bledow to zmniejszac ilosc polaczen
      * 
      * przejsc na nowa wersje w ktorej jest ona data, roznoczesnie zachowujac obecny system powiadamiania o nowej 
-     * wersji, najlepiej wydac wersje tymczasowa i potrzymac ja przez miesiac
+     * wersji, najlepiej wydac wersje tymczasowa i potrzymac ja przez miesiac, wyswieltac messagebox o nowej wersji
      * 
      * Testy
      * sciaganie losowe wielu rzeczy i ch anulowanie, brak wyjatkow, deadlockow, spojnosc danych
@@ -92,6 +91,16 @@ namespace MangaCrawler
      * 
      * jak wszystko zacznie dzialac wykorzystac entity dla klasy bazowej, rozwazyc bardziej skomplikowana strukture, tak 
      * by page byl osobna subclasa
+     * 
+     * pamietanie taskow podczas zamkniecia i ich wznawianie
+     * w przypadku ponownego uruchomienia jesli sa zadania otwarte to pokazac zakladke zadan albo wyswietlic message
+     * boxa bo to nie jest typowa sytuacja
+     * 
+     * zmiana katalogu bazowego - o zrobic z aktualnymi danymi, przeniesc albo skasowac, pytac sie usera najlepiej
+     * 
+     * totalnie przerobic pobieranie, recznie stowrzyc potrzebna pule watkow i recznie odpalac kolejne zadania na nich, 
+     * recznie decydowac o priorytetach, zlikwidowac takze podzial zadan na watki, tak by rzeczy sciagaly sie jeden po drugim, 
+     * a nie podzielone zostaly na dwie polwki (partitioner)
      * 
      */
 
