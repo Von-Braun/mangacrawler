@@ -20,7 +20,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return "StopTazmo";
+                return "Stop Tazmo";
             }
         }
 

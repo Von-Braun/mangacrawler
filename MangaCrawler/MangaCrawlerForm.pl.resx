@@ -217,7 +217,7 @@
     <value>177, 17</value>
   </data>
   <data name="cbzCheckBox.Text" xml:space="preserve">
-    <value>Spakuj rozdziały do formatu cbz</value>
+    <value>Spakuj rozdział do formatu cbz</value>
   </data>
   <data name="serversListBox.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>

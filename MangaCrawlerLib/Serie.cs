@@ -56,7 +56,6 @@ namespace MangaCrawlerLib
                     "Chapters", 
                     list_mapping => 
                     {
-                        //list_mapping.Inverse(false); 
                         list_mapping.Cascade(Cascade.All); 
                     }, 
                     mapping => mapping.OneToMany()
@@ -112,7 +111,7 @@ namespace MangaCrawlerLib
                     });
                 });
 
-                NH.TransactionLockUpdate(this, () => State = SerieState.Downloaded);
+                NH.TransactionLockUpdate(this, () => SetState(SerieState.Downloaded));
 
             }
             catch (ObjectDisposedException)
@@ -120,7 +119,7 @@ namespace MangaCrawlerLib
             }
             catch (Exception)
             {
-                NH.TransactionLockUpdate(this, () => State = SerieState.Downloaded);
+                NH.TransactionLockUpdate(this, () => SetState(SerieState.Downloaded));
             }
         }
 
@@ -129,32 +128,53 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Server.Name, Title);
         }
 
-        private bool DownloadRequired
+        public virtual bool DownloadRequired
         {
             get
             {
-                var s = State;
-                return (s == SerieState.Error) || (s == SerieState.Initial);
+                return (State == SerieState.Error) || (State == SerieState.Initial);
             }
         }
 
-        protected internal virtual void ResetState()
+        public virtual void SetState(SerieState a_state)
         {
-            State = SerieState.Initial;
-        }
+            switch (a_state)
+            {
+                case SerieState.Initial:
+                {
+                    break;
+                }
+                case SerieState.Waiting:
+                {
+                    Debug.Assert((State == SerieState.Downloaded) ||
+                                 (State == SerieState.Initial) ||
+                                 (State == SerieState.Error));
+                    break;
+                }
+                case SerieState.Downloading:
+                {
+                    Debug.Assert(State == SerieState.Waiting);
+                    DownloadProgress = 0;
+                    break;
+                }
+                case SerieState.Downloaded:
+                {
+                    Debug.Assert(State == SerieState.Downloading);
+                    Debug.Assert(DownloadProgress == 100);
+                    break;
+                }
+                case SerieState.Error:
+                {
+                    Debug.Assert(State == SerieState.Downloading);
+                    break;
+                }
+                default:
+                {
+                    throw new InvalidOperationException(String.Format("Unknown state: {0}", a_state));
+                }
+            }
 
-        protected internal virtual bool BeginWaiting()
-        {
-            if (!DownloadRequired)
-                return false;
-            State = SerieState.Waiting;
-            return true;
-        }
-
-        protected internal virtual void DownloadingStarted()
-        {
-            State = SerieState.Downloading;
-            DownloadProgress = 0;
+            State = a_state;
         }
     }
 }

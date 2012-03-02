@@ -44,30 +44,31 @@ namespace MangaCrawlerLib
         internal HtmlDocument DownloadDocument(Server a_server)
         {
             return DownloadDocument(a_server, a_server.URL, CancellationToken.None, 
-                () => NH.TransactionLockUpdate(a_server, () => a_server.DownloadingStarted()));
+                () => NH.TransactionLockUpdate(a_server, () => a_server.SetState(ServerState.Downloading)));
         }
 
         internal HtmlDocument DownloadDocument(Server a_server, string a_url)
         {
             return DownloadDocument(a_server, a_url, CancellationToken.None,
-                () => NH.TransactionLockUpdate(a_server, () => a_server.DownloadingStarted()));
+                () => NH.TransactionLockUpdate(a_server, () => a_server.SetState(ServerState.Downloading)));
         }
 
         internal HtmlDocument DownloadDocument(Serie a_serie)
         {
             return DownloadDocument(a_serie.Server, a_serie.URL, CancellationToken.None,
-                () => NH.TransactionLockUpdate(a_serie, () => a_serie.DownloadingStarted()));
+                () => NH.TransactionLockUpdate(a_serie, () => a_serie.SetState(SerieState.Downloading)));
         }
 
         internal HtmlDocument DownloadDocument(Page a_page)
         {
-            return DownloadDocument(a_page.Server, a_page.URL, CancellationToken.None, null);
+            return DownloadDocument(a_page.Server, a_page.URL, CancellationToken.None,
+                () => NH.TransactionLockUpdate(a_page, () => a_page.SetState(PageState.Downloading)));
         }
 
         internal HtmlDocument DownloadDocument(Chapter a_chapter)
         {
             return DownloadDocument(a_chapter.Server, a_chapter.URL, CancellationToken.None,
-                () => NH.TransactionLockUpdate(a_chapter, () => a_chapter.DownloadingStarted()));
+                () => NH.TransactionLockUpdate(a_chapter, () => a_chapter.SetState(ChapterState.DownloadingPagesList)));
         }
 
         internal virtual HtmlDocument DownloadDocument(Server a_server, string a_url, CancellationToken a_token, 

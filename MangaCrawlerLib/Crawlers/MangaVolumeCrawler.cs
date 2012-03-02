@@ -20,7 +20,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return "MangaVolume";
+                return "Manga Volume";
             }
         }
 

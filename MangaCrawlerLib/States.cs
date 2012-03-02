@@ -38,8 +38,12 @@ namespace MangaCrawlerLib
 
     public enum PageState
     {
-        WaitingForDownload,
-        WaitingForVerify, 
+        Initial, 
+        WaitingForDownloading,
+        WaitingForVerifing, 
+        Veryfing,
+        Veryfied, 
+        Downloading, 
         Downloaded, 
         Error
     }

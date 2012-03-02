@@ -53,7 +53,7 @@ namespace MangaCrawlerLib
             SessionFactory = Configuration.BuildSessionFactory();
         }
 
-        public static ISession OpenSession()
+        private static ISession OpenSession()
         {
             return SessionFactory.OpenSession();
         }
@@ -96,7 +96,8 @@ namespace MangaCrawlerLib
             {
                 ITransaction transaction = session.BeginTransaction();
 
-                session.Lock(a_obj, LockMode.Read);
+                // TODO: 
+                session.Lock(a_obj, LockMode.None);
 
                 try
                 {
@@ -127,32 +128,6 @@ namespace MangaCrawlerLib
                 try
                 {
                     a_action();
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    Loggers.NH.Fatal("Exception", ex);
-                    transaction.Rollback();
-                }
-                finally
-                {
-                    session.Dispose();
-                }
-            }
-        }
-
-        public static void TransactionLockMaybeUpdate<T>(T a_obj, Func<T, bool> a_func)
-        {
-            using (var session = OpenSession())
-            {
-                ITransaction transaction = session.BeginTransaction();
-
-                session.Lock(a_obj, LockMode.Read);
-
-                try
-                {
-                    if (a_func(a_obj))
-                        session.SaveOrUpdate(a_obj);
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -333,19 +308,19 @@ namespace MangaCrawlerLib
             {
                 foreach (var server in session.Query<Server>().Where(s => s.State != ServerState.Initial))
                 {
-                    server.ResetState();
+                    server.SetState(ServerState.Initial);
                     session.SaveOrUpdate(server);
                 }
 
                 foreach (var serie in session.Query<Serie>().Where(s => s.State != SerieState.Initial))
                 {
-                    serie.ResetState();
+                    serie.SetState(SerieState.Initial);
                     session.Update(serie);
                 }
 
                 foreach (var chapter in session.Query<Chapter>().Where(s => s.State != ChapterState.Initial))
                 {
-                    chapter.ResetState();
+                    chapter.SetState(ChapterState.Initial);
                     session.Update(chapter);
                 }
             });

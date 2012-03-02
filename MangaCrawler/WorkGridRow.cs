@@ -19,9 +19,9 @@ namespace MangaCrawler
         {
             get
             {
-                ChapterState s = Chapter.State;
+                Chapter ch = NH.TransactionWithResult(session => session.Get<Chapter>(Chapter.ID));
 
-                switch (s)
+                switch (ch.State)
                 {
                     case ChapterState.Error:
                         return MangaCrawler.Properties.Resources.WorkProgressError;

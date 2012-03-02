@@ -31,22 +31,29 @@ namespace MangaCrawlerLib
 
         public static void DownloadSeries(Server a_server)
         {
+            Loggers.Test.Info("DownloadSeries #1");
+
             if (a_server == null)
                 return;
 
-            bool already_downloading = NH.TransactionWithResult(session => 
+            Loggers.Test.Info("DownloadSeries #2 - server nor null");
+
+            bool download_required = NH.TransactionWithResult(session => 
             {
+                Loggers.Test.Info("DownloadSeries #3 - checking required in transaction");
                 a_server = session.Load<Server>(a_server.ID);
-
-                if (!a_server.BeginWaiting())
-                    return true;
-
+                if (!a_server.DownloadRequired)
+                {
+                    Loggers.Test.Info("DownloadSeries #4 - not required");
+                    return false;
+                }
+                a_server.SetState(ServerState.Waiting);
                 session.Update(a_server);
-
-                return false;
+                Loggers.Test.Info("DownloadSeries #5 - exiting transaction");
+                return true;
             });
 
-            if (already_downloading)
+            if (!download_required)
             {
                 Loggers.MangaCrawler.InfoFormat(
                     "Already in work, server: {0} state: {1}",
@@ -54,12 +61,23 @@ namespace MangaCrawlerLib
                 return;
             }
 
+            Loggers.Test.Info("DownloadSeries #6 - prepering task");
+
             Task task = new Task(() =>
             {
+                Loggers.Test.Info("DownloadSeries #7 - in task");
+
                 a_server.DownloadSeries();
+
+                Loggers.Test.Info("DownloadSeries #8 - end task");
+
             }, TaskCreationOptions.LongRunning);
 
+            Loggers.Test.Info("DownloadSeries #9 - starting task");
+
             task.Start(a_server.Scheduler[Priority.Series]);
+
+            Loggers.Test.Info("DownloadSeries #9 - task started");
         }
 
         public static void DownloadChapters(Serie a_serie)
@@ -67,19 +85,17 @@ namespace MangaCrawlerLib
             if (a_serie == null)
                 return;
 
-            bool already_downloading = NH.TransactionWithResult(session =>
+            bool download_required = NH.TransactionWithResult(session =>
             {
                 a_serie = session.Load<Serie>(a_serie.ID);
-
-                if (!a_serie.BeginWaiting())
-                    return true;
-
+                if (!a_serie.DownloadRequired)
+                    return false;
+                a_serie.SetState(SerieState.Waiting);
                 session.Update(a_serie);
-
-                return false;
+                return true;
             });
 
-            if (already_downloading)
+            if (!download_required)
             {
                 Loggers.MangaCrawler.InfoFormat(
                     "Already in work, serie: {0} state: {1}",
@@ -101,19 +117,20 @@ namespace MangaCrawlerLib
             {
                 Chapter chapter_sync = null;
 
-                bool already_downloading = NH.TransactionWithResult(session =>
+                bool download_required = NH.TransactionWithResult(session =>
                 {
                     chapter_sync = session.Load<Chapter>(chapter.ID);
 
-                    if (!chapter_sync.BeginWaiting())
-                        return true;
+                    if (chapter_sync.IsWorking)
+                        return false;
+                    chapter_sync.SetState(ChapterState.Waiting);
 
                     session.Update(chapter_sync);
 
-                    return false;
+                    return true;
                 });
 
-                if (already_downloading)
+                if (!download_required)
                 {
                     Loggers.MangaCrawler.InfoFormat(
                         "Already in work, chapter: {0} state: {1}",
