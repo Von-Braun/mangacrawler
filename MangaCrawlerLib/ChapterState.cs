@@ -145,7 +145,7 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                if ((m_state == ItemState.Waiting) || (m_state == ItemState.Downloading))
+                if ((m_state == ItemState.Waiting) || (m_state == ItemState.Downloading) || (m_state == ItemState.Zipping))
                 {
                     if (a_error)
                         m_state = ItemState.Error;

@@ -57,9 +57,7 @@ namespace MangaCrawlerLib
             foreach (var page in pages)
             {
                 index++;
-
                 PageInfo pi = new PageInfo(a_info, page.GetAttributeValue("Value", ""), index);
-
                 yield return pi;
             }
         }

@@ -61,19 +61,26 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var link_strong_nodes = doc.DocumentNode.SelectNodes("//a");
-            var begin_reading_strong_node = link_strong_nodes.Where(
-                n => n.InnerText.StartsWith("Begin Reading"));
-            var href = begin_reading_strong_node.First().GetAttributeValue("href", "");
+            var n1 = doc.DocumentNode.SelectNodes("//b");
+            var n2 = n1.Where(n => n.InnerText.StartsWith("Current Status")).First();
 
-            doc = ConnectionsLimiter.DownloadDocument(a_info, href);
+            var n3 = n2.NextSibling;
+            while (n3.Name != "b")
+                n3 = n3.NextSibling;
+            while (n3.Name != "a")
+                n3 = n3.NextSibling;
+
+            var href = n3.GetAttributeValue("href", "");
+
+            doc = ConnectionsLimiter.DownloadDocument(a_info.ServerInfo, href);
 
             var chapters = doc.DocumentNode.SelectNodes("//select[@name='ch']/option");
 
             var result = from chapter in chapters
-                            select new ChapterInfo(a_info, href + "?ch=" +
-                                chapter.GetAttributeValue("value", "").Replace(" ", "+"),
-                                chapter.NextSibling.InnerText);
+                         select new ChapterInfo(
+                             a_info,
+                             href + "?ch=" + chapter.GetAttributeValue("value", "").Replace(" ", "+") + "&page=1",
+                             chapter.NextSibling.InnerText);
 
             a_progress_callback(100, result.Reverse());
         }
@@ -118,7 +125,7 @@ namespace MangaCrawlerLib
 
         internal override string GetChapterURL(ChapterInfo a_info)
         {
-            return "http://www.thespectrum.net" + a_info.URLPart + "&page=1";
+            return a_info.URLPart + "&page=1";
         }
 
         internal override string GetSerieURL(SerieInfo a_info)

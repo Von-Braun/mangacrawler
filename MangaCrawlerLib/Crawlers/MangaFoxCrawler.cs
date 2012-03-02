@@ -45,10 +45,14 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info);
 
-            var chapters = doc.DocumentNode.SelectNodes(
-                "//div[@id='chapters']/ul/li/div/h3/a").Concat(
-                    doc.DocumentNode.SelectNodes(
-                        "//div[@id='chapters']/ul/li/div/h4/a"));
+            var ch1 = doc.DocumentNode.SelectNodes("//ul[@class='chlist']/li/div/h3/a");
+            var ch2 = doc.DocumentNode.SelectNodes("//ul[@class='chlist']/li/div/h4/a");
+
+            List<HtmlNode> chapters = new List<HtmlNode>();
+            if (ch1 != null)
+                chapters.AddRange(ch1);
+            if (ch2 != null)
+                chapters.AddRange(ch2);
 
             var result = from chapter in chapters
                          select new ChapterInfo(a_info, chapter.GetAttributeValue("href", ""), 
@@ -62,13 +66,23 @@ namespace MangaCrawlerLib
         {
             HtmlDocument doc = ConnectionsLimiter.DownloadDocument(a_info, a_token);
 
-            var pages = doc.DocumentNode.SelectSingleNode("//div[@class='r m']").
-                SelectNodes("div[@class='l']/select[@class='m']/option");
+            var m = doc.DocumentNode.SelectSingleNode("//div[@class='r m']");
+
+            if (m == null)
+                yield break;
+
+            var pages = m.SelectNodes("div[@class='l']/select[@class='m']/option");
 
             int index = 1;
 
             foreach (var page in pages)
             {
+                if (page.NextSibling != null)
+                {
+                    if (page.NextSibling.InnerText == "Comments")
+                        continue;
+                }
+
                 PageInfo pi = new PageInfo(
                     a_info,
                     a_info.URL.Replace("1.html", String.Format("{0}.html", page.GetAttributeValue("value", ""))), 

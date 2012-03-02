@@ -276,42 +276,44 @@ namespace MangaCrawlerLib
 
             foreach (var chapter_state in a_chapter_states)
             {
-                if (chapter_state.Working)
+                var chapter_state_local = chapter_state;
+
+                if (chapter_state_local.Working)
                     continue;
 
-                chapter_state.Initialize();
-                chapter_state.State = ItemState.Waiting;
+                chapter_state_local.Initialize();
+                chapter_state_local.State = ItemState.Waiting;
 
                 Task task = new Task(() =>
                 {
                     try
                     {
-                        ConnectionsLimiter.BeginDownloadPages(chapter_state.ChapterInfo, 
-                            chapter_state.Token);
+                        ConnectionsLimiter.BeginDownloadPages(chapter_state_local.ChapterInfo,
+                            chapter_state_local.Token);
                     }
                     catch (OperationCanceledException)
                     {
-                        chapter_state.Finish(true);
-                        OnChaptersChanged(chapter_state.SerieState);
+                        chapter_state_local.Finish(true);
+                        OnChaptersChanged(chapter_state_local.SerieState);
                         return;
                     }
 
                     try
                     {
-                        string dir = chapter_state.GetImageDirectory(baseDir);
+                        string dir = chapter_state_local.GetImageDirectory(baseDir);
 
                         new DirectoryInfo(dir).DeleteAll();
 
-                        chapter_state.Token.ThrowIfCancellationRequested();
+                        chapter_state_local.Token.ThrowIfCancellationRequested();
 
-                        chapter_state.State = ItemState.Downloading;
-                        OnChaptersChanged(chapter_state.SerieState);
+                        chapter_state_local.State = ItemState.Downloading;
+                        OnChaptersChanged(chapter_state_local.SerieState);
 
-                        chapter_state.ChapterInfo.DownloadPages(chapter_state.Token);
+                        chapter_state_local.ChapterInfo.DownloadPages(chapter_state_local.Token);
 
-                        chapter_state.Token.ThrowIfCancellationRequested();
+                        chapter_state_local.Token.ThrowIfCancellationRequested();
 
-                        Parallel.ForEach(chapter_state.ChapterInfo.Pages,
+                        Parallel.ForEach(chapter_state_local.ChapterInfo.Pages,
                             new ParallelOptions()
                             {
                                 MaxDegreeOfParallelism =
@@ -321,8 +323,8 @@ namespace MangaCrawlerLib
                         {
                             try
                             {
-                                if (page.DownloadAndSavePageImage(chapter_state.Token, dir))
-                                    chapter_state.PageDownloaded();
+                                if (page.DownloadAndSavePageImage(chapter_state_local.Token, dir))
+                                    chapter_state_local.PageDownloaded();
                             }
                             catch (OperationCanceledException)
                             {
@@ -334,39 +336,42 @@ namespace MangaCrawlerLib
                                 throw;
                             }
 
-                            OnChaptersChanged(chapter_state.SerieState);
+                            OnChaptersChanged(chapter_state_local.SerieState);
                         });
 
-                        if (!chapter_state.Token.IsCancellationRequested)
+                        if (!chapter_state_local.Token.IsCancellationRequested)
                         {
                             if (cbz)
                             {
-                                chapter_state.State = ItemState.Zipping;
-                                OnChaptersChanged(chapter_state.SerieState);
+                                if (chapter_state_local.DownloadedPages != 0)
+                                {
+                                    chapter_state_local.State = ItemState.Zipping;
+                                    OnChaptersChanged(chapter_state_local.SerieState);
 
-                                CreateCBZ(chapter_state);
+                                    CreateCBZ(chapter_state_local);
+                                }
                             }
                         }
 
-                        chapter_state.Finish(a_error: false);
+                        chapter_state_local.Finish(a_error: false);
                     }
                     catch
                     {
-                        chapter_state.Finish(a_error: true);
+                        chapter_state_local.Finish(a_error: true);
                     }
                     finally
                     {
-                        ConnectionsLimiter.EndDownloadPages(chapter_state.ChapterInfo);
+                        ConnectionsLimiter.EndDownloadPages(chapter_state_local.ChapterInfo);
                     }
 
-                    OnChaptersChanged(chapter_state.SerieState);
+                    OnChaptersChanged(chapter_state_local.SerieState);
 
                 });
 
-                task.Start(s_schedulers[chapter_state.SerieState.ServerState.ServerInfo].Scheduler(
+                task.Start(s_schedulers[chapter_state_local.SerieState.ServerState.ServerInfo].Scheduler(
                     Priority.Pages));
 
-                OnChaptersChanged(chapter_state.SerieState);
+                OnChaptersChanged(chapter_state_local.SerieState);
             }
         }
 
