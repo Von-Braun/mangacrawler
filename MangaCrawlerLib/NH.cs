@@ -53,17 +53,38 @@ namespace MangaCrawlerLib
             SessionFactory = Configuration.BuildSessionFactory();
         }
 
+        private static void CreateConfiguration()
+        {
+            Configuration = new Configuration();
+
+            Configuration.DataBaseIntegration(db =>
+            {
+                db.Driver<NHibernate.Driver.SQLite20Driver>();
+                db.Dialect<NHibernate.Dialect.SQLiteDialect>();
+                db.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
+                db.IsolationLevel = IsolationLevel.Serializable;
+                db.HqlToSqlSubstitutions = "true=1;false=0";
+
+                if (s_in_memory)
+                {
+                    db.ConnectionString = "Data Source=:memory:;Version=3;New=True;Pooling=True;Max Pool Size=1";
+                }
+                else
+                {
+                    db.ConnectionString = String.Format(
+                        "Data Source=\"{0}\\{1}\";Version=3",
+                        s_database_dir, s_database_name);
+                }
+
+                db.LogFormattedSql = s_log;
+                db.LogSqlInConsole = s_log;
+                db.AutoCommentSql = s_log;
+            });
+        }
+
         private static ISession OpenSession()
         {
             return SessionFactory.OpenSession();
-        }
-
-        public static Server[] GetServers()
-        {
-            return TransactionWithResult(session =>
-            {
-                return session.Query<Server>().ToArray();
-            });
         }
 
         public static void Transaction(Action<ISession> a_action)
@@ -96,7 +117,6 @@ namespace MangaCrawlerLib
             {
                 ITransaction transaction = session.BeginTransaction();
 
-                // TODO: 
                 session.Lock(a_obj, LockMode.None);
 
                 try
@@ -117,13 +137,13 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static void TransactionLock<T>(T a_obj, Action a_action)
+        public static void TransactionLock<T>(T a_obj, Action a_action) 
         {
             using (var session = OpenSession())
             {
                 ITransaction transaction = session.BeginTransaction();
 
-                session.Lock(a_obj, LockMode.Read);
+                session.Lock(a_obj, LockMode.None);
 
                 try
                 {
@@ -134,6 +154,61 @@ namespace MangaCrawlerLib
                 {
                     Loggers.NH.Fatal("Exception", ex);
                     transaction.Rollback();
+                }
+                finally
+                {
+                    session.Dispose();
+                }
+            }
+        }
+
+        public static R TransactionLockWithResult<T, R>(T a_obj, Func<R> a_func)
+        {
+            using (var session = OpenSession())
+            {
+                ITransaction transaction = session.BeginTransaction();
+
+                session.Lock(a_obj, LockMode.None);
+
+                try
+                {
+                    R result = a_func();
+                    transaction.Commit();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Loggers.NH.Fatal("Exception", ex);
+                    transaction.Rollback();
+                    return default(R);
+                }
+                finally
+                {
+                    session.Dispose();
+                }
+            }
+        }
+
+        public static R TransactionLockUpdateWithResult<T, R>(T a_obj, Func<R> a_func)
+        {
+            using (var session = OpenSession())
+            {
+                ITransaction transaction = session.BeginTransaction();
+
+                session.Lock(a_obj, LockMode.None);
+
+                try
+                {
+                    R result = a_func();
+                    session.SaveOrUpdate(a_obj);
+                    transaction.Commit();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Loggers.NH.Fatal("Exception", ex);
+                    transaction.Rollback();
+                    return default(R);
                 }
                 finally
                 {
@@ -165,35 +240,6 @@ namespace MangaCrawlerLib
                     session.Dispose();
                 }
             }
-        }
-
-        private static void CreateConfiguration()
-        {
-            Configuration = new Configuration();
-
-            Configuration.DataBaseIntegration(db =>
-            {
-                db.Driver<NHibernate.Driver.SQLite20Driver>();
-                db.Dialect<NHibernate.Dialect.SQLiteDialect>();
-                db.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
-                db.IsolationLevel = IsolationLevel.ReadCommitted;
-                db.HqlToSqlSubstitutions = "true=1;false=0";
-
-                if (s_in_memory)
-                {
-                    db.ConnectionString = "Data Source=:memory:;Version=3;New=True;Pooling=True;Max Pool Size=1";
-                }
-                else
-                {
-                    db.ConnectionString = String.Format(
-                        "Data Source=\"{0}\\{1}\";Version=3",
-                        s_database_dir, s_database_name);
-                }
-
-                db.LogFormattedSql = s_log;
-                db.LogSqlInConsole = s_log;
-                db.AutoCommentSql = s_log;
-            });
         }
 
         private static void AddMappings()

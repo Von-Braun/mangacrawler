@@ -26,12 +26,12 @@ namespace MangaCrawlerLib
 
         static ConnectionsLimiter()
         {
-            foreach (var si in NH.GetServers())
+            foreach (var si in DownloadManager.Servers)
             {
                 s_serverConnections.Add(si.ID,
                     new QueuedSemaphore<Priority>(si.Crawler.MaxConnectionsPerServer));
             }
-            foreach (var si in NH.GetServers())
+            foreach (var si in DownloadManager.Servers)
                 s_one_chapter_per_server.Add(si.ID, new QueuedMutex());
         }
 

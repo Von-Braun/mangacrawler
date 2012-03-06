@@ -61,13 +61,15 @@ namespace MangaCrawler
 
                     case ChapterState.DownloadingPagesList:
                     {
+                        a_args.Graphics.DrawString(Resources.Downloading, font,
+                            Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
                     }
 
                     case ChapterState.DownloadingPages:
                     {
                         a_args.Graphics.DrawString(
-                            String.Format("{0}/{1}", Chapter.PagesDownloaded, Chapter.PagesCount), 
+                            String.Format("{0}/{1}", Chapter.PagesDownloaded, Chapter.GetPages().Count()), 
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
                     }

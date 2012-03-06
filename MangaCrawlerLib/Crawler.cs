@@ -43,7 +43,7 @@ namespace MangaCrawlerLib
 
         internal HtmlDocument DownloadDocument(Server a_server)
         {
-            return DownloadDocument(a_server, a_server.URL, CancellationToken.None, 
+            return DownloadDocument(a_server, a_server.URL, CancellationToken.None,
                 () => NH.TransactionLockUpdate(a_server, () => a_server.SetState(ServerState.Downloading)));
         }
 
@@ -59,16 +59,16 @@ namespace MangaCrawlerLib
                 () => NH.TransactionLockUpdate(a_serie, () => a_serie.SetState(SerieState.Downloading)));
         }
 
-        internal HtmlDocument DownloadDocument(Page a_page)
-        {
-            return DownloadDocument(a_page.Server, a_page.URL, CancellationToken.None,
-                () => NH.TransactionLockUpdate(a_page, () => a_page.SetState(PageState.Downloading)));
-        }
-
         internal HtmlDocument DownloadDocument(Chapter a_chapter)
         {
             return DownloadDocument(a_chapter.Server, a_chapter.URL, CancellationToken.None,
                 () => NH.TransactionLockUpdate(a_chapter, () => a_chapter.SetState(ChapterState.DownloadingPagesList)));
+        }
+
+        internal HtmlDocument DownloadDocument(Page a_page)
+        {
+            return DownloadDocument(a_page.Server, a_page.URL, CancellationToken.None,
+                () => NH.TransactionLockUpdate(a_page, () => a_page.SetState(PageState.Downloading)));
         }
 
         internal virtual HtmlDocument DownloadDocument(Server a_server, string a_url, CancellationToken a_token, 

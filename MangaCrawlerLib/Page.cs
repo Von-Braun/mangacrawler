@@ -108,7 +108,7 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return String.Format("{0} - {1}/{2}",
-                    Chapter, Index, Chapter.PagesCount);
+                    Chapter, Index, Chapter.Pages.Count);
         }
 
         protected internal virtual MemoryStream GetImageStream()

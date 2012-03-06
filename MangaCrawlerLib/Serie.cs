@@ -16,22 +16,22 @@ namespace MangaCrawlerLib
         public virtual int ID { get; protected set; }
         protected virtual int Version { get; set; }
         public virtual SerieState State { get; protected set; }
-        protected virtual IList<Chapter> Chapters { get; set; }
         public virtual string URL { get; protected set; }
         public virtual Server Server { get; protected set; }
         public virtual string Title { get; protected set; }
         public virtual int DownloadProgress { get; protected set; }
-        public virtual int ChaptersCount { get; protected set; }
+        protected internal virtual IList<Chapter> Chapters { get; protected set; }
 
         protected Serie()
         {
+            Chapters = new List<Chapter>();
         }
 
         internal Serie(Server a_server, string a_url, string a_title)
+            : this()
         {
             URL = HttpUtility.HtmlDecode(a_url);
             Server = a_server;
-            Chapters = new List<Chapter>();
 
             a_title = a_title.Trim();
             a_title = a_title.Replace("\t", " ");
@@ -50,7 +50,6 @@ namespace MangaCrawlerLib
                 m.Property(c => c.Title, mapping => mapping.NotNullable(true));
                 m.Property(c => c.DownloadProgress, mapping => mapping.NotNullable(true));
                 m.Property(c => c.State, mapping => mapping.NotNullable(true));
-                m.Property(c => c.ChaptersCount, mapping => mapping.NotNullable(true));
 
                 m.List<Chapter>(
                     "Chapters", 
@@ -88,7 +87,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public virtual IEnumerable<Chapter> GetChapters()
+        public virtual IEnumerable <Chapter> GetChapters()
         {
             return Chapters;
         }
@@ -106,7 +105,6 @@ namespace MangaCrawlerLib
                         DownloadManager.Sync(result, Chapters, chapter => (chapter.Title + chapter.URL),
                             progress == 100, out added, out removed);
 
-                        ChaptersCount = Chapters.Count;
                         DownloadProgress = progress;
                     });
                 });

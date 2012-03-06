@@ -49,7 +49,7 @@ namespace MangaCrawler
                     case SerieState.Downloaded:
 
                         a_args.Graphics.DrawString(
-                            String.Format(Resources.Chapters, Serie.ChaptersCount),
+                            String.Format(Resources.Chapters, Serie.GetChapters().Count()),
                             font, Brushes.Green, rect, StringFormat.GenericDefault);
                         break;
 

@@ -19,7 +19,7 @@ namespace MangaCrawlerTest
     [TestClass]
     public class MangaCrawlerTest
     {
-        private TestContext m_testContextInstance;
+        private TestContext m_test_context_instance;
 
         [TestInitialize]
         public void Initialize()
@@ -31,11 +31,11 @@ namespace MangaCrawlerTest
         {
             get
             {
-                return m_testContextInstance;
+                return m_test_context_instance;
             }
             set
             {
-                m_testContextInstance = value;
+                m_test_context_instance = value;
             }
         }
 
@@ -52,7 +52,7 @@ namespace MangaCrawlerTest
             TestContext.WriteLine("Testing server {0}", a_server.Name);
 
             a_server.DownloadSeries();
-            var series = a_server.GetSeries();
+            var series = a_server.Series;
 
             Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_server.URL));
 
@@ -70,10 +70,10 @@ namespace MangaCrawlerTest
                 m_error = true;
             }
 
-            Assert.IsTrue(a_server.GetSeries().All(s => s.Title.Trim() == s.Title));
-            Assert.IsTrue(a_server.GetSeries().All(s => !String.IsNullOrWhiteSpace(s.Title)));
+            Assert.IsTrue(a_server.Series.All(s => s.Title.Trim() == s.Title));
+            Assert.IsTrue(a_server.Series.All(s => !String.IsNullOrWhiteSpace(s.Title)));
 
-            return a_server.GetSeries();
+            return a_server.Series;
         }
 
         private IEnumerable<Chapter> TestSerie(Serie a_serie, int a_count, 
@@ -82,7 +82,7 @@ namespace MangaCrawlerTest
             TestContext.WriteLine("  Testing serie {0}", a_serie.Title);
 
             a_serie.DownloadChapters();
-            var chapters = a_serie.GetChapters();
+            var chapters = a_serie.Chapters;
 
             Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_serie.URL));
 
@@ -103,8 +103,8 @@ namespace MangaCrawlerTest
                     m_error = true;
             }
 
-            Assert.IsTrue(a_serie.GetChapters().All(s => s.Title.Trim() == s.Title));
-            Assert.IsTrue(a_serie.GetChapters().All(s => !String.IsNullOrWhiteSpace(s.Title)));
+            Assert.IsTrue(a_serie.Chapters.All(s => s.Title.Trim() == s.Title));
+            Assert.IsTrue(a_serie.Chapters.All(s => !String.IsNullOrWhiteSpace(s.Title)));
 
             return chapters;
         }
@@ -133,7 +133,7 @@ namespace MangaCrawlerTest
 
             a_chapter.DownloadPagesList(null, false);
 
-            var pages = a_chapter.GetPages().ToList();
+            var pages = a_chapter.Pages.ToList();
 
             if (!a_ongoing)
             {
@@ -148,8 +148,8 @@ namespace MangaCrawlerTest
                 TestContext.WriteLine("    Ongoing");
             }
 
-            Assert.IsTrue(a_chapter.GetPages().All(s => s.Name.Trim() == s.Name));
-            Assert.IsTrue(a_chapter.GetPages().All(s => !String.IsNullOrWhiteSpace(s.Name)));
+            Assert.IsTrue(a_chapter.Pages.All(s => s.Name.Trim() == s.Name));
+            Assert.IsTrue(a_chapter.Pages.All(s => !String.IsNullOrWhiteSpace(s.Name)));
 
             return pages;
         }
@@ -204,7 +204,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void AnimeSourceTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(AnimeSourceCrawler)), 53);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(AnimeSourceCrawler)), 53);
 
             {
                 var chapters = TestSerie(series.First(
@@ -246,7 +246,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaAccessTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(MangaAccessCrawler)), 4054);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(MangaAccessCrawler)), 4054);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "07-Ghost"), 66);
@@ -286,7 +286,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaFoxTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(MangaFoxCrawler)), 8961);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(MangaFoxCrawler)), 8961);
             
             {
                 var chapters = TestSerie(series.First(s => s.Title == ".hack//G.U.+"), 26);
@@ -339,7 +339,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaRunTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(MangaRunCrawler)), 323);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(MangaRunCrawler)), 323);
             
             {
                 var chapters = TestSerie(series.First(s => s.Title == "666satan"), 78);
@@ -379,7 +379,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaShareTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(MangaShareCrawler)), 187);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(MangaShareCrawler)), 187);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "Akumetsu"), 73);
@@ -419,7 +419,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void MangaVolumeTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(MangaVolumeCrawler)), 1141);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(MangaVolumeCrawler)), 1141);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 76);
@@ -461,7 +461,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void OtakuWorksTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(OtakuWorksCrawler)), 6702);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(OtakuWorksCrawler)), 6702);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "Ai Kora"), 92);
@@ -506,7 +506,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void OurMangaTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(OurMangaCrawler)), 2993);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(OurMangaCrawler)), 2993);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "090 - Eko To Issho"), 61);
@@ -546,7 +546,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void SpectrumNexusTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(SpectrumNexusCrawler)), 114);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(SpectrumNexusCrawler)), 114);
 
             {
                 var chapters = TestSerie(series.First(
@@ -591,7 +591,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void StopTazmoTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(StopTazmoCrawler)), 2793);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(StopTazmoCrawler)), 2793);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 78);
@@ -631,7 +631,7 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void UnixMangaTest()
         {
-            var series = TestServer(NH.GetServers().First(s => s.Crawler.GetType() == typeof(UnixMangaCrawler)), 1613);
+            var series = TestServer(DownloadManager.Servers.First(s => s.Crawler.GetType() == typeof(UnixMangaCrawler)), 1613);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 499, true);
@@ -714,12 +714,11 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void _RandomTestAll()
         {
-            Parallel.ForEach(NH.GetServers(),
+            Parallel.ForEach(DownloadManager.Servers,
                 new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = NH.GetServers().Count(),
-                    TaskScheduler = new CustomTaskScheduler.InnerCustomTaskScheduler(NH.GetServers().Count())
-
+                    MaxDegreeOfParallelism = DownloadManager.Servers.Count(), 
+                    TaskScheduler = new CustomTaskScheduler.InnerCustomTaskScheduler(DownloadManager.Servers.Count())
                 },
                 server => 
             {
@@ -733,12 +732,12 @@ namespace MangaCrawlerTest
                         server);
                 }
 
-                if (server.SeriesCount == 0)
+                if (server.Series.Count == 0)
                 {
                     TestContext.WriteLine("{0} - Server have no series", server);
                 }
 
-                Parallel.ForEach(TakeRandom(server.GetSeries(), 0.1),
+                Parallel.ForEach(TakeRandom(server.Series, 0.1),
                     new ParallelOptions()
                     {
                         MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer, 
@@ -756,12 +755,12 @@ namespace MangaCrawlerTest
                             "{0} - Exception while downloading chapters from serie", serie);
                     }
 
-                    if (serie.ChaptersCount == 0)
+                    if (serie.Chapters.Count == 0)
                     {
                         TestContext.WriteLine("{0} - Serie has no chapters", serie);
                     }
 
-                    Parallel.ForEach(TakeRandom(serie.GetChapters(), 0.1),
+                    Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
                         new ParallelOptions()
                         {
                             MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer,
@@ -779,12 +778,12 @@ namespace MangaCrawlerTest
                                 "{0} - Exception while downloading pages from chapter", chapter);
                         }
 
-                        if (chapter.PagesCount == 0)
+                        if (chapter.Pages.Count == 0)
                         {
                             TestContext.WriteLine("{0} - Chapter have no pages", chapter);
                         }
 
-                        Parallel.ForEach(TakeRandom(chapter.GetPages(), 0.1), 
+                        Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), 
                             new ParallelOptions()
                             {
                                 MaxDegreeOfParallelism = chapter.Crawler.MaxConnectionsPerServer,

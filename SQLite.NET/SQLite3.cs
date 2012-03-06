@@ -233,7 +233,7 @@ namespace System.Data.SQLite
 #endif
 
 #if DEBUG
-        Trace.WriteLine(String.Format("Open: {0}", db));
+        //Trace.WriteLine(String.Format("Open: {0}", db));
 #endif
 
         if (n > 0) throw new SQLiteException(n, null);
