@@ -26,20 +26,20 @@ namespace MangaCrawlerLib
         public virtual ServerState State { get;  protected set; }
         protected virtual int Version { get; set; }
         public virtual int DownloadProgress { get; protected set; }
-        protected virtual IList<Serie> Series { get; set; }
         public virtual string URL { get;  protected set; }
         public virtual string Name { get;  protected set; }
-        public virtual int SeriesCount { get; protected set; }
+        protected internal virtual IList<Serie> Series { get; protected set; }
 
         protected Server()
         {
+            Series = new List<Serie>();
         }
 
         internal Server(string a_url, string a_name)
+            : this()
         {
             URL = a_url;
             Name = a_name;
-            Series = new List<Serie>();
         }
 
         private void Map(ModelMapper a_mapper)
@@ -52,7 +52,6 @@ namespace MangaCrawlerLib
                 m.Property(c => c.Name, mapping => mapping.NotNullable(true));
                 m.Property(c => c.DownloadProgress, mapping => mapping.NotNullable(true));
                 m.Property(c => c.State, mapping => mapping.NotNullable(true));
-                m.Property(c => c.SeriesCount, mapping => mapping.NotNullable(true));
 
                 m.List<Serie>(
                     "Series",
@@ -95,28 +94,13 @@ namespace MangaCrawlerLib
             {
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
-                    //TODO: 
-                    NH.Transaction(session =>
-                        {
-                            var s = session.Get<Server>(ID);
-                            s.SeriesCount = 111;
-                            session.Update(s);
-                        });
-
-                    NH.Transaction(session =>
-                        {
-                            session.Update(this);
-                            SeriesCount.ToString();
-                        });
-
-                    NH.TransactionLockUpdate(this, () => 
+                    NH.TransactionLockUpdate(this, () =>
                     {
                         IList<Serie> removed;
                         bool added;
-                        DownloadManager.Sync(result, Series, serie => (serie.Title + serie.URL), progress == 100, 
+                        DownloadManager.Sync(result, Series, serie => (serie.Title + serie.URL), progress == 100,
                             out added, out removed);
-                       
-                        SeriesCount = Series.Count;
+
                         DownloadProgress = progress;
                     });
                 });

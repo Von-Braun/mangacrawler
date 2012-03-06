@@ -911,8 +911,8 @@ namespace System.Data.SQLite
 #if DEBUG
         try
         {
-          Trace.WriteLine(String.Format(
-              "CloseConnection: {0}", handle));
+          //Trace.WriteLine(String.Format(
+          //    "CloseConnection: {0}", handle));
         }
         catch
         {

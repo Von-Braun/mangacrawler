@@ -50,6 +50,7 @@ namespace MangaCrawler
      * instalator, x86, x64
      * 
      * nowe serwisy:
+     * http://www.mangahere.com/
      * http://www.mangareader.net/alphabetical
      * http://mangable.com/manga-list/
      * http://www.readmangaonline.net/
@@ -90,7 +91,7 @@ namespace MangaCrawler
      * zmiana katalogu glownego z kombinacja powyzszych
      * 
      * jak wszystko zacznie dzialac wykorzystac entity dla klasy bazowej, rozwazyc bardziej skomplikowana strukture, tak 
-     * by page byl osobna subclasa
+     * by page byl osobna subclasa, iclassmapping tam przeniesc
      * 
      * pamietanie taskow podczas zamkniecia i ich wznawianie
      * w przypadku ponownego uruchomienia jesli sa zadania otwarte to pokazac zakladke zadan albo wyswietlic message
@@ -101,6 +102,11 @@ namespace MangaCrawler
      * totalnie przerobic pobieranie, recznie stowrzyc potrzebna pule watkow i recznie odpalac kolejne zadania na nich, 
      * recznie decydowac o priorytetach, zlikwidowac takze podzial zadan na watki, tak by rzeczy sciagaly sie jeden po drugim, 
      * a nie podzielone zostaly na dwie polwki (partitioner)
+     * 
+     * jak usuwac skonczone worksy z downloadmanagera, najlepiej tak blednych nie usuwac wogole, skonczone usuwac 
+     * tylko jesli tak zostalo zaznaczone
+     * 
+     * dodac przycisk przejdz do katalogu, dla calej bazy, servera, serii, chapteru
      * 
      */
 
@@ -673,8 +679,13 @@ namespace MangaCrawler
             if (serversListBox.SelectedItem == null)
                 return;
 
-            UpdateWorksTab();
-            UpdateSeriesTab();
+            var t = TomanuExtensions.Utils.Profiler.Measure(() =>
+            {
+                UpdateWorksTab();
+                UpdateSeriesTab();
+            });
+
+            Loggers.GUI.InfoFormat("refresh time: {0} [ms]", t);
         }
 
         private void UpdateSeriesTab()
@@ -697,11 +708,10 @@ namespace MangaCrawler
 
             if (SelectedSerie != null)
             {
-                ar = NH.TransactionWithResult(session =>
+                NH.TransactionLock(SelectedSerie, () =>
                 {
-                    Serie selected_serie = session.Load<Serie>(SelectedSerie.ID);
-                    return (from ch in selected_serie.GetChapters()
-                          select new ChapterListItem(ch)).ToArray();
+                    ar = (from chapter in SelectedSerie.GetChapters()
+                          select new ChapterListItem(chapter)).ToArray();
                 });
             }
 
@@ -713,7 +723,7 @@ namespace MangaCrawler
             if (!ShowingSeriesTab)
                 return;
 
-            var servers = (from server in NH.GetServers()
+            var servers = (from server in DownloadManager.Servers
                            select new ServerListItem(server)).ToArray();
 
             new ListBoxVisualState(serversListBox).ReloadItems(servers);
@@ -728,13 +738,12 @@ namespace MangaCrawler
 
             if (SelectedServer != null)
             {
-                ar = NH.TransactionWithResult(session =>
+                NH.TransactionLock(SelectedServer, () =>
                 {
                     string filter = seriesSearchTextBox.Text.ToLower();
-                    Server selected_server = session.Load<Server>(SelectedServer.ID);
-                    return (from serie in selected_server.GetSeries()
-                            where serie.Title.ToLower().IndexOf(filter) != -1
-                            select new SerieListItem(serie)).ToArray();
+                    ar = (from serie in SelectedServer.GetSeries()
+                          where serie.Title.ToLower().IndexOf(filter) != -1
+                          select new SerieListItem(serie)).ToArray();
                 });
             }
 

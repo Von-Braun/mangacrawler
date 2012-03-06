@@ -18,8 +18,7 @@ namespace MangaCrawlerLib
 {
     public class Chapter : IClassMapping
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private CancellationTokenSource m_cancellation_token_source = new CancellationTokenSource();
+        private CancellationTokenSource m_cancellation_token_source;
 
         public virtual int ID { get; protected set; }
         public virtual ChapterState State { get; protected set; }
@@ -27,21 +26,21 @@ namespace MangaCrawlerLib
         public virtual string URL { get; protected set; }
         public virtual string ChapterDir { get; protected set; }
         public virtual Serie Serie { get; protected set; }
-        protected virtual IList<Page> Pages { get; set; }
         public virtual string Title { get; protected set; }
         protected virtual int Version { get; set; }
-        public virtual int PagesCount { get; protected set; }
         public virtual int PagesDownloaded { get; protected set; }
+        protected internal virtual IList<Page> Pages { get; protected set; }
 
         protected Chapter()
         {
+            Pages = new List<Page>();
         }
 
-        internal Chapter(Serie a_serie, string a_url, string a_title)
+        internal Chapter(Serie a_serie, string a_url, string a_title) 
+            : this()
         {
             Serie = a_serie;
             URL = HttpUtility.HtmlDecode(a_url);
-            Pages = new List<Page>();
 
             a_title = a_title.Trim();
             a_title = a_title.Replace("\t", " ");
@@ -61,7 +60,6 @@ namespace MangaCrawlerLib
                 m.Property(c => c.State, mapping => { });
                 m.Property(c => c.ChapterDir, mapping => mapping.NotNullable(false));
                 m.Property(c => c.CBZ, mapping => { });
-                m.Property(c => c.PagesCount, mapping => { });
                 m.Property(c => c.PagesDownloaded, mapping => { });
 
                 m.ManyToOne(
@@ -139,8 +137,7 @@ namespace MangaCrawlerLib
                 if (IsWorking)
                 {
                     Loggers.MangaCrawler.InfoFormat("Deleting, chapter: {0}, state: {1}", this, State);
-                    m_cancellation_token_source.Cancel();
-
+                    CancellationTokenSource.Cancel();
                     SetState(ChapterState.Deleting);
                 }
             });
@@ -171,7 +168,6 @@ namespace MangaCrawlerLib
                 IList<Page> removed;
                 DownloadManager.Sync(pages, Pages, page => (page.Name + page.URL), true, out added, out removed);
 
-                PagesCount = Pages.Count;
                 PagesDownloaded = 0;
                 ChapterDir = GetChapterDirectory(a_manga_root_dir);
                 CBZ = a_cbz;
@@ -270,7 +266,7 @@ namespace MangaCrawlerLib
                         return;
                     }
 
-                    if (m_cancellation_token_source.IsCancellationRequested)
+                    if (CancellationTokenSource.IsCancellationRequested)
                         SetState(ChapterState.Aborted);
 
                     if (PagesDownloaded != Pages.Count)
@@ -298,9 +294,9 @@ namespace MangaCrawlerLib
                 "Chapter: {0} state: {1}",
                 this, State);
 
-            if (PagesCount == 0)
+            if (Pages.Count == 0)
             {
-                Loggers.MangaCrawler.InfoFormat("PagesCount = 0 - nothing to zip");
+                Loggers.MangaCrawler.InfoFormat("Pages.Count = 0 - nothing to zip");
                 return;
             }
 
@@ -359,11 +355,21 @@ namespace MangaCrawlerLib
             }
         }
 
+        private CancellationTokenSource CancellationTokenSource
+        {
+            get
+            {
+                if (m_cancellation_token_source == null)
+                    m_cancellation_token_source = new CancellationTokenSource();
+                return m_cancellation_token_source;
+            }
+        }
+
         protected internal virtual CancellationToken Token
         {
             get
             {
-                return m_cancellation_token_source.Token;
+                return CancellationTokenSource.Token;
             }
         }
 

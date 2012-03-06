@@ -176,4 +176,10 @@ rozdział: {2}</value>
   <data name="WorkProgressZipping" xml:space="preserve">
     <value>Pakuję</value>
   </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>POBIERANIE</value>
+  </data>
+  <data name="WorkProgressDownloading" xml:space="preserve">
+    <value>Pobieranie</value>
+  </data>
 </root>

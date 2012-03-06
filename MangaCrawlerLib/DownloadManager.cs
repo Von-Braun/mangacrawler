@@ -14,6 +14,7 @@ using HtmlAgilityPack;
 using TomanuExtensions;
 using System.Collections.ObjectModel;
 using NHibernate.Linq;
+using NHibernate;
 
 namespace MangaCrawlerLib
 {
@@ -24,6 +25,9 @@ namespace MangaCrawlerLib
         public static Func<string> GetMangaRootDir;
         public static Func<bool> UseCBZ;
 
+        private static Server[] s_servers;
+        private static List<Chapter> s_works = new List<Chapter>();
+
         static DownloadManager()
         {
             HtmlWeb.UserAgent_Actual = UserAgent;
@@ -31,25 +35,14 @@ namespace MangaCrawlerLib
 
         public static void DownloadSeries(Server a_server)
         {
-            Loggers.Test.Info("DownloadSeries #1");
-
             if (a_server == null)
                 return;
 
-            Loggers.Test.Info("DownloadSeries #2 - server nor null");
-
-            bool download_required = NH.TransactionWithResult(session => 
+            bool download_required = NH.TransactionLockUpdateWithResult(a_server, () => 
             {
-                Loggers.Test.Info("DownloadSeries #3 - checking required in transaction");
-                a_server = session.Load<Server>(a_server.ID);
                 if (!a_server.DownloadRequired)
-                {
-                    Loggers.Test.Info("DownloadSeries #4 - not required");
                     return false;
-                }
                 a_server.SetState(ServerState.Waiting);
-                session.Update(a_server);
-                Loggers.Test.Info("DownloadSeries #5 - exiting transaction");
                 return true;
             });
 
@@ -61,23 +54,13 @@ namespace MangaCrawlerLib
                 return;
             }
 
-            Loggers.Test.Info("DownloadSeries #6 - prepering task");
-
             Task task = new Task(() =>
             {
-                Loggers.Test.Info("DownloadSeries #7 - in task");
-
                 a_server.DownloadSeries();
-
-                Loggers.Test.Info("DownloadSeries #8 - end task");
 
             }, TaskCreationOptions.LongRunning);
 
-            Loggers.Test.Info("DownloadSeries #9 - starting task");
-
             task.Start(a_server.Scheduler[Priority.Series]);
-
-            Loggers.Test.Info("DownloadSeries #9 - task started");
         }
 
         public static void DownloadChapters(Serie a_serie)
@@ -85,13 +68,11 @@ namespace MangaCrawlerLib
             if (a_serie == null)
                 return;
 
-            bool download_required = NH.TransactionWithResult(session =>
+            bool download_required = NH.TransactionLockUpdateWithResult(a_serie, () =>
             {
-                a_serie = session.Load<Serie>(a_serie.ID);
                 if (!a_serie.DownloadRequired)
                     return false;
                 a_serie.SetState(SerieState.Waiting);
-                session.Update(a_serie);
                 return true;
             });
 
@@ -115,17 +96,26 @@ namespace MangaCrawlerLib
         {
             foreach (var chapter in a_chapters)
             {
-                Chapter chapter_sync = null;
-
-                bool download_required = NH.TransactionWithResult(session =>
+                lock (s_works)
                 {
-                    chapter_sync = session.Load<Chapter>(chapter.ID);
+                    if (s_works.Contains(chapter))
+                    {
+                        Loggers.MangaCrawler.InfoFormat(
+                            "Already in work, chapter: {0} state: {1}",
+                            chapter, chapter.State);
+                        continue;
+                    }
 
+                    s_works.Add(chapter);
+                }
+
+                Chapter chapter_sync = chapter;
+
+                bool download_required = NH.TransactionLockUpdateWithResult(chapter_sync, () =>
+                {
                     if (chapter_sync.IsWorking)
                         return false;
                     chapter_sync.SetState(ChapterState.Waiting);
-
-                    session.Update(chapter_sync);
 
                     return true;
                 });
@@ -151,18 +141,14 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static Chapter[] Works
+        public static IEnumerable<Chapter> Works
         {
             get
             {
-                return NH.TransactionWithResult(session =>
+                lock (s_works)
                 {
-                    return (from server in session.Query<Server>().ToList()
-                            from serie in server.GetSeries()
-                            from chapter in serie.GetChapters()
-                            where chapter.State != ChapterState.Initial
-                            select chapter).ToArray();
-                });
+                    return s_works.ToArray();
+                }
             }
         }
 
@@ -211,6 +197,17 @@ namespace MangaCrawlerLib
                     }
                 }
                 index++;
+            }
+        }
+
+        public static IEnumerable<Server> Servers
+        {
+            get
+            {
+                if (s_servers == null)
+                    s_servers = NH.TransactionWithResult(session => session.Query<Server>().ToArray());
+
+                return s_servers;
             }
         }
     }
