@@ -188,7 +188,8 @@ namespace MangaCrawlerLib
                 finally
                 {
                     if (temp_file.Exists)
-                        temp_file.Delete();
+                        if (temp_file.FullName != ImageFilePath)
+                            temp_file.Delete();
                 }
             }
             catch (OperationCanceledException)

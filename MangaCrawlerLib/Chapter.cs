@@ -28,7 +28,6 @@ namespace MangaCrawlerLib
         public virtual Serie Serie { get; protected set; }
         public virtual string Title { get; protected set; }
         protected virtual int Version { get; set; }
-        public virtual int PagesDownloaded { get; protected set; }
         protected internal virtual IList<Page> Pages { get; protected set; }
 
         protected Chapter()
@@ -60,7 +59,6 @@ namespace MangaCrawlerLib
                 m.Property(c => c.State, mapping => { });
                 m.Property(c => c.ChapterDir, mapping => mapping.NotNullable(false));
                 m.Property(c => c.CBZ, mapping => { });
-                m.Property(c => c.PagesDownloaded, mapping => { });
 
                 m.ManyToOne(
                     c => c.Serie,
@@ -79,6 +77,15 @@ namespace MangaCrawlerLib
                     mapping => mapping.OneToMany()
                 );
             });
+        }
+
+        public virtual int PagesDownloaded
+        {
+            get
+            {
+                return Pages.Count(p => (p.State == PageState.Veryfied) || 
+                                        (p.State == PageState.Downloaded));
+            }
         }
 
         public virtual Server Server
@@ -168,7 +175,6 @@ namespace MangaCrawlerLib
                 IList<Page> removed;
                 DownloadManager.Sync(pages, Pages, page => (page.Name + page.URL), true, out added, out removed);
 
-                PagesDownloaded = 0;
                 ChapterDir = GetChapterDirectory(a_manga_root_dir);
                 CBZ = a_cbz;
                 SetState(ChapterState.DownloadingPages);
@@ -205,18 +211,9 @@ namespace MangaCrawlerLib
                         try
                         {
                             if (!page.DownloadRequired())
-                            {
-                                PagesDownloaded++;
                                 return;
-                            }
  
                             page.DownloadAndSavePageImage();
-
-                            NH.TransactionLockUpdate(this, () =>
-                            {
-                                if (page.State == PageState.Downloaded)
-                                    PagesDownloaded++;
-                            });
                         }
                         catch (OperationCanceledException ex1)
                         {
@@ -392,7 +389,6 @@ namespace MangaCrawlerLib
                 case ChapterState.DownloadingPagesList:
                 {
                     Debug.Assert(State == ChapterState.Waiting);
-                    PagesDownloaded = 0;
                     break;
                 }
                 case ChapterState.DownloadingPages:

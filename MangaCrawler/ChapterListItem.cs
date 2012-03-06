@@ -56,13 +56,13 @@ namespace MangaCrawler
                     case ChapterState.Deleting:
 
                         a_args.Graphics.DrawString(Resources.Deleting, font,
-                            Brushes.Red, rect, StringFormat.GenericDefault);
+                            Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
 
                     case ChapterState.DownloadingPagesList:
                     {
                         a_args.Graphics.DrawString(Resources.Downloading, font,
-                            Brushes.Red, rect, StringFormat.GenericDefault);
+                            Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
                     }
 

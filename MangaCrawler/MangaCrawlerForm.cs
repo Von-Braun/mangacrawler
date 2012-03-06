@@ -108,6 +108,9 @@ namespace MangaCrawler
      * 
      * dodac przycisk przejdz do katalogu, dla calej bazy, servera, serii, chapteru
      * 
+     * dodac mechanizm oszczedzania pamieci, albo DownloadManaer.Server za kazdym razem pobierane z bazy (wolnee) albo
+     * pamietac zaznaczane idki, lub inaczej te do pobierania i okresowo kasowac nieuzywane czesci drzewa, co pewien 
+     * czas, co pewna ilosc, co pewne zuzcie pamieci
      */
 
     public partial class MangaCrawlerForm : Form
