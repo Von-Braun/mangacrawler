@@ -16,18 +16,15 @@ using NHibernate.Type;
 
 namespace MangaCrawlerLib
 {
-    public class Chapter : IClassMapping
+    public class Chapter : Entity 
     {
         private CancellationTokenSource m_cancellation_token_source;
 
-        public virtual int ID { get; protected set; }
         public virtual ChapterState State { get; protected set; }
         public virtual bool CBZ { get; protected set; }
-        public virtual string URL { get; protected set; }
         public virtual string ChapterDir { get; protected set; }
         public virtual Serie Serie { get; protected set; }
         public virtual string Title { get; protected set; }
-        protected virtual int Version { get; set; }
         protected internal virtual IList<Page> Pages { get; protected set; }
 
         protected Chapter()
@@ -104,7 +101,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual Crawler Crawler
+        protected internal override Crawler Crawler
         {
             get
             {
@@ -204,7 +201,7 @@ namespace MangaCrawlerLib
                     new ParallelOptions()
                     {
                         MaxDegreeOfParallelism = Crawler.MaxConnectionsPerServer,
-                        TaskScheduler = Scheduler[Priority.Pages],
+                        TaskScheduler = Scheduler[Priority.Image],
                     },
                     (page, state) =>
                     {

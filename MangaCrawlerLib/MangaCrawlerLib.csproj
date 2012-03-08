@@ -111,6 +111,7 @@
     <Compile Include="Crawlers\SpectrumNexusCrawler.cs" />
     <Compile Include="Crawlers\StopTazmoCrawler.cs" />
     <Compile Include="Crawlers\UnixMangaCrawler.cs" />
+    <Compile Include="Works.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetZip\DotNetZip.csproj">

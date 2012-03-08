@@ -5,8 +5,12 @@ using System.Text;
 
 namespace MangaCrawlerLib
 {
-    public abstract class Entity
+    public abstract class Entity : IClassMapping
     {
-        protected internal abstract void DownloadingStarted();
+        public virtual int ID { get; protected set; }
+        protected virtual int Version { get; set; }
+        public virtual string URL { get; protected set; }
+
+        protected internal abstract Crawler Crawler { get; }
     }
 }

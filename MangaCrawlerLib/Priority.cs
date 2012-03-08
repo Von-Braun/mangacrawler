@@ -5,13 +5,24 @@ using System.Text;
 
 namespace MangaCrawlerLib
 {
+    /// <summary>
+    /// Higher value means higher priority.
+    /// </summary>
     [Flags]
     internal enum Priority
     {
-        Series = -2,
-        Chapters = -1,
-        Pages = 0,
-        Image = 0,
+        /// <summary>
+        /// Once per chapter.
+        /// </summary>
+        Pages = 1,
+
+        /// <summary>
+        /// For html pages and images.
+        /// </summary>
+        Image = 1, 
+
+        Series = 2, 
+        Chapters = 2
         
     }
 }

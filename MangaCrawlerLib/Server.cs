@@ -14,7 +14,7 @@ using NHibernate;
 
 namespace MangaCrawlerLib
 {
-    public class Server : IClassMapping
+    public class Server : Entity
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Crawler m_crawler;
@@ -22,11 +22,8 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private CustomTaskScheduler m_scheduler;
 
-        public virtual int ID { get; protected set; }
         public virtual ServerState State { get;  protected set; }
-        protected virtual int Version { get; set; }
         public virtual int DownloadProgress { get; protected set; }
-        public virtual string URL { get;  protected set; }
         public virtual string Name { get;  protected set; }
         protected internal virtual IList<Serie> Series { get; protected set; }
 
@@ -77,7 +74,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual Crawler Crawler
+        protected internal override Crawler Crawler
         {
             get
             {
