@@ -19,7 +19,7 @@ namespace MangaCrawlerLib
         private static Dictionary<int, QueuedMutex> s_one_chapter_per_server = 
             new Dictionary<int, QueuedMutex>();
 
-        private static Dictionary<int, QueuedSemaphore<Priority>> s_serverConnections =
+        private static Dictionary<int, QueuedSemaphore<Priority>> s_server_connections =
             new Dictionary<int, QueuedSemaphore<Priority>>();
         private static QueuedSemaphore<Priority> s_connections =
             new QueuedSemaphore<Priority>(MAX_CONNECTIONS);
@@ -28,7 +28,7 @@ namespace MangaCrawlerLib
         {
             foreach (var si in DownloadManager.Servers)
             {
-                s_serverConnections.Add(si.ID,
+                s_server_connections.Add(si.ID,
                     new QueuedSemaphore<Priority>(si.Crawler.MaxConnectionsPerServer));
             }
             foreach (var si in DownloadManager.Servers)
@@ -77,9 +77,9 @@ namespace MangaCrawlerLib
                 a_server.Name);
 
             // Should never block. Scheduler do the job. 
-            Debug.Assert(!s_serverConnections[a_server.ID].Saturated);
+            Debug.Assert(!s_server_connections[a_server.ID].Saturated);
 
-            s_serverConnections[a_server.ID].WaitOne(a_token, a_priority);
+            s_server_connections[a_server.ID].WaitOne(a_token, a_priority);
 
             Loggers.ConLimits.InfoFormat(
                 "Aquired server connection limit, server name: {0}",
@@ -92,7 +92,7 @@ namespace MangaCrawlerLib
                 "Releasing global connection limit, server name: {0}",
                 a_server.Name);
 
-            s_serverConnections[a_server.ID].Release();
+            s_server_connections[a_server.ID].Release();
 
             Loggers.ConLimits.InfoFormat(
                 "Releasing server connection limit, server name: {0}",

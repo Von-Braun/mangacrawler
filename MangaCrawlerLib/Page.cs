@@ -12,13 +12,10 @@ using NHibernate.Mapping.ByCode;
 
 namespace MangaCrawlerLib
 {
-    public class Page : IClassMapping
+    public class Page : Entity
     {
-        public virtual int ID { get; protected set; }
         public virtual Chapter Chapter { get; protected set; }
-        protected virtual int Version { get; set; }
         public virtual int Index { get; protected set; }
-        public virtual string URL { get; protected set; }
         public virtual byte[] Hash { get; protected set; }
         public virtual string ImageURL { get; protected set; }
         public virtual string Name { get; protected set; }
@@ -81,7 +78,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual Crawler Crawler
+        protected internal override Crawler Crawler
         {
             get
             {

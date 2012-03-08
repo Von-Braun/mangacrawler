@@ -11,12 +11,9 @@ using NHibernate;
 
 namespace MangaCrawlerLib
 {
-    public class Serie : IClassMapping
+    public class Serie : Entity
     {
-        public virtual int ID { get; protected set; }
-        protected virtual int Version { get; set; }
         public virtual SerieState State { get; protected set; }
-        public virtual string URL { get; protected set; }
         public virtual Server Server { get; protected set; }
         public virtual string Title { get; protected set; }
         public virtual int DownloadProgress { get; protected set; }
@@ -79,7 +76,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual Crawler Crawler
+        protected internal override Crawler Crawler
         {
             get
             {

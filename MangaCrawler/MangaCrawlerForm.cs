@@ -90,9 +90,6 @@ namespace MangaCrawler
      *   czasie nastepuje jego odswiezenie i znika on z listy
      * zmiana katalogu glownego z kombinacja powyzszych
      * 
-     * jak wszystko zacznie dzialac wykorzystac entity dla klasy bazowej, rozwazyc bardziej skomplikowana strukture, tak 
-     * by page byl osobna subclasa, iclassmapping tam przeniesc
-     * 
      * pamietanie taskow podczas zamkniecia i ich wznawianie
      * w przypadku ponownego uruchomienia jesli sa zadania otwarte to pokazac zakladke zadan albo wyswietlic message
      * boxa bo to nie jest typowa sytuacja
@@ -111,6 +108,8 @@ namespace MangaCrawler
      * dodac mechanizm oszczedzania pamieci, albo DownloadManaer.Server za kazdym razem pobierane z bazy (wolnee) albo
      * pamietac zaznaczane idki, lub inaczej te do pobierania i okresowo kasowac nieuzywane czesci drzewa, co pewien 
      * czas, co pewna ilosc, co pewne zuzcie pamieci
+     * 
+     * maksymalna ilosc polaczen, teraz jest sto, jaka powinna byc racjonalna ilosc
      */
 
     public partial class MangaCrawlerForm : Form
