@@ -13,8 +13,7 @@ using System.Collections.Concurrent;
 using HtmlAgilityPack;
 using TomanuExtensions;
 using System.Collections.ObjectModel;
-using NHibernate.Linq;
-using NHibernate;
+using MangaCrawlerLib.Crawlers;
 
 namespace MangaCrawlerLib
 {
@@ -38,15 +37,9 @@ namespace MangaCrawlerLib
             if (a_server == null)
                 return;
 
-            bool download_required = NH.TransactionLockUpdateWithResult(a_server, () => 
-            {
-                if (!a_server.DownloadRequired)
-                    return false;
-                a_server.SetState(ServerState.Waiting);
-                return true;
-            });
-
-            if (!download_required)
+            if (a_server.DownloadRequired)
+                a_server.State = ServerState.Waiting;
+            else
             {
                 Loggers.MangaCrawler.InfoFormat(
                     "Already in work, server: {0} state: {1}",
@@ -61,38 +54,14 @@ namespace MangaCrawlerLib
             }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
         }
 
-        public static void ClearCache()
-        {
-            foreach (var server in s_servers)
-            {
-                foreach (var serie in server.Series)
-                {
-                    foreach (var chapter in serie.Chapters)
-                    {
-                        chapter.CachePages.ClearCache();
-                    }
-
-                    serie.CacheChapters.ClearCache();
-                }
-
-                server.CacheSeries.ClearCache();
-            }
-        }
-
         public static void DownloadChapters(Serie a_serie)
         {
             if (a_serie == null)
                 return;
 
-            bool download_required = NH.TransactionLockUpdateWithResult(a_serie, () =>
-            {
-                if (!a_serie.DownloadRequired)
-                    return false;
-                a_serie.SetState(SerieState.Waiting);
-                return true;
-            });
-
-            if (!download_required)
+            if (a_serie.DownloadRequired)
+                a_serie.State = SerieState.Waiting;
+            else
             {
                 Loggers.MangaCrawler.InfoFormat(
                     "Already in work, serie: {0} state: {1}",
@@ -125,16 +94,9 @@ namespace MangaCrawlerLib
 
                 Chapter chapter_sync = chapter;
 
-                bool download_required = NH.TransactionLockUpdateWithResult(chapter_sync, () =>
-                {
-                    if (chapter_sync.IsWorking)
-                        return false;
-                    chapter_sync.SetState(ChapterState.Waiting);
-
-                    return true;
-                });
-
-                if (!download_required)
+                if (!chapter_sync.IsWorking)
+                    chapter_sync.State = ChapterState.Waiting;  
+                else
                 {
                     Loggers.MangaCrawler.InfoFormat(
                         "Already in work, chapter: {0} state: {1}",
@@ -169,7 +131,10 @@ namespace MangaCrawlerLib
             get
             {
                 if (s_servers == null)
-                    s_servers = NH.TransactionWithResult(session => session.Query<Server>().ToArray());
+                {
+                    s_servers = (from c in CrawlerList.Crawlers
+                                 select new Server(c.GetServerURL(), c.Name)).ToArray();
+                }
 
                 return s_servers;
             }

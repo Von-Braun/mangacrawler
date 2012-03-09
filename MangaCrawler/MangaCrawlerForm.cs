@@ -16,7 +16,6 @@ using System.Diagnostics;
 using System.Media;
 using HtmlAgilityPack;
 using System.Threading;
-using NHibernate.Linq;
 using log4net;
 
 namespace MangaCrawler
@@ -153,7 +152,6 @@ namespace MangaCrawler
             cbzCheckBox.Checked = Settings.Instance.UseCBZ;
 
             SetupLog4NET();
-            NH.SetupFromFile(Settings.GetSettingsDir());
 
             Task.Factory.StartNew(() => CheckNewVersion(), TaskCreationOptions.LongRunning);
 
@@ -683,10 +681,10 @@ namespace MangaCrawler
             if (serversListBox.SelectedItem == null)
                 return;
 
-            //UpdateWorksTab();
-            //UpdateSeriesTab();
+            UpdateWorksTab();
+            UpdateSeriesTab();
 
-            Text = (System.GC.GetTotalMemory(false) / 1024 / 1024).ToString() + " MB";
+            //Text = (System.GC.GetTotalMemory(false) / 1024 / 1024).ToString() + " MB";
         }       
 
         private void UpdateSeriesTab()
@@ -709,7 +707,7 @@ namespace MangaCrawler
 
             if (SelectedSerie != null)
             {
-                ar = (from chapter in SelectedSerie.GetChapters()
+                ar = (from chapter in SelectedSerie.Chapters
                         select new ChapterListItem(chapter)).ToArray();
             }
 
@@ -737,7 +735,7 @@ namespace MangaCrawler
             if (SelectedServer != null)
             {
                 string filter = seriesSearchTextBox.Text.ToLower();
-                ar = (from serie in SelectedServer.GetSeries()
+                ar = (from serie in SelectedServer.Series
                       where serie.Title.ToLower().IndexOf(filter) != -1
                       select new SerieListItem(serie)).ToArray();
             }
@@ -753,13 +751,6 @@ namespace MangaCrawler
         private void clearLogButton_Click(object sender, EventArgs e)
         {
             logRichTextBox.Clear();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DownloadManager.ClearCache();
-            m_chapters_visual_states.Clear();
-            m_series_visual_states.Clear();
         }
     }
 }

@@ -4,31 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Diagnostics;
-using NHibernate.Mapping.ByCode;
 using System.Collections.ObjectModel;
 using System.Threading;
-using NHibernate;
 
 namespace MangaCrawlerLib
 {
     public class Serie : Entity
     {
-        private IList<Chapter> m_chapters;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private Object m_lock = new Object();
 
-        public virtual SerieState State { get; protected set; }
-        public virtual Server Server { get; protected set; }
-        public virtual string Title { get; protected set; }
-        public virtual int DownloadProgress { get; protected set; }
-        protected internal virtual CacheList<Chapter> CacheChapters { get; protected set; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private SerieState m_state;
 
-        protected Serie()
-        {
-            Chapters = new List<Chapter>();
-        }
+        public Server Server { get; protected set; }
+        public string Title { get; protected set; }
+        public int DownloadProgress { get; protected set; }
+        public List<Chapter> Chapters { get; protected set; }
 
         internal Serie(Server a_server, string a_url, string a_title)
-            : this()
         {
+            Chapters = new List<Chapter>();
             URL = HttpUtility.HtmlDecode(a_url);
             Server = a_server;
 
@@ -39,49 +35,7 @@ namespace MangaCrawlerLib
             Title = HttpUtility.HtmlDecode(a_title);
         }
 
-        private void Map(ModelMapper a_mapper)
-        {
-            a_mapper.Class<Serie>(m =>
-            {
-                m.Id(c => c.ID, mapping => mapping.Generator(Generators.Native));
-                m.Version("Version", mapping => { });
-                m.Property(c => c.URL, mapping => mapping.NotNullable(true));
-                m.Property(c => c.Title, mapping => mapping.NotNullable(true));
-                m.Property(c => c.DownloadProgress, mapping => mapping.NotNullable(true));
-                m.Property(c => c.State, mapping => mapping.NotNullable(true));
-
-                m.List<Chapter>(
-                    "Chapters", 
-                    list_mapping => list_mapping.Cascade(Cascade.All), 
-                    mapping => mapping.OneToMany()
-                );
-
-                m.ManyToOne(
-                    c => c.Server, 
-                    mapping => 
-                    {
-                        mapping.NotNullable(false); 
-                    }
-                );
-            });
-        }
-
-        protected internal virtual IList<Chapter> Chapters
-        {
-            get
-            {
-                return m_chapters;
-            }
-
-            protected set
-            {
-                m_chapters = value;
-                CacheChapters = new CacheList<Chapter>(this, value);
-
-            }
-        }
-
-        protected internal override Crawler Crawler
+        internal override Crawler Crawler
         {
             get
             {
@@ -89,29 +43,26 @@ namespace MangaCrawlerLib
             }
         }
 
-        public virtual IEnumerable <Chapter> GetChapters()
-        {
-            return CacheChapters;
-        }
-
-        protected internal virtual void DownloadChapters()
+        internal void DownloadChapters()
         {
             try
             {
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
-                    NH.TransactionLockUpdate(this, () =>
+                    lock (m_lock)
                     {
                         IList<Chapter> added;
                         IList<Chapter> removed;
-                        CacheChapters.Sync(result, chapter => (chapter.Title + chapter.URL),
+                        List<Chapter> chapters = Chapters.ToList();
+                        Sync(result, chapters, chapter => (chapter.Title + chapter.URL),
                             progress == 100, out added, out removed);
+                        Chapters = chapters;
+                    }
 
-                        DownloadProgress = progress;
-                    });
+                    DownloadProgress = progress;
                 });
 
-                NH.TransactionLockUpdate(this, () => SetState(SerieState.Downloaded));
+                State = SerieState.Downloaded;
 
             }
             catch (ObjectDisposedException)
@@ -119,7 +70,7 @@ namespace MangaCrawlerLib
             }
             catch (Exception)
             {
-                NH.TransactionLockUpdate(this, () => SetState(SerieState.Downloaded));
+                State = SerieState.Downloaded;
             }
         }
 
@@ -128,7 +79,7 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Server.Name, Title);
         }
 
-        public virtual bool DownloadRequired
+        public bool DownloadRequired
         {
             get
             {
@@ -136,45 +87,52 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual void SetState(SerieState a_state)
+        public SerieState State
         {
-            switch (a_state)
+            get
             {
-                case SerieState.Initial:
-                {
-                    break;
-                }
-                case SerieState.Waiting:
-                {
-                    Debug.Assert((State == SerieState.Downloaded) ||
-                                 (State == SerieState.Initial) ||
-                                 (State == SerieState.Error));
-                    break;
-                }
-                case SerieState.Downloading:
-                {
-                    Debug.Assert(State == SerieState.Waiting);
-                    DownloadProgress = 0;
-                    break;
-                }
-                case SerieState.Downloaded:
-                {
-                    Debug.Assert(State == SerieState.Downloading);
-                    Debug.Assert(DownloadProgress == 100);
-                    break;
-                }
-                case SerieState.Error:
-                {
-                    Debug.Assert(State == SerieState.Downloading);
-                    break;
-                }
-                default:
-                {
-                    throw new InvalidOperationException(String.Format("Unknown state: {0}", a_state));
-                }
+                return m_state;
             }
+            set
+            {
+                switch (value)
+                {
+                    case SerieState.Initial:
+                    {
+                        break;
+                    }
+                    case SerieState.Waiting:
+                    {
+                        Debug.Assert((State == SerieState.Downloaded) ||
+                                     (State == SerieState.Initial) ||
+                                     (State == SerieState.Error));
+                        break;
+                    }
+                    case SerieState.Downloading:
+                    {
+                        Debug.Assert(State == SerieState.Waiting);
+                        DownloadProgress = 0;
+                        break;
+                    }
+                    case SerieState.Downloaded:
+                    {
+                        Debug.Assert(State == SerieState.Downloading);
+                        Debug.Assert(DownloadProgress == 100);
+                        break;
+                    }
+                    case SerieState.Error:
+                    {
+                        Debug.Assert(State == SerieState.Downloading);
+                        break;
+                    }
+                    default:
+                    {
+                        throw new InvalidOperationException(String.Format("Unknown state: {0}", value));
+                    }
+                }
 
-            State = a_state;
+                m_state = value;
+            }
         }
     }
 }

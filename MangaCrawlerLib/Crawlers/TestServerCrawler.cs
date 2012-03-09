@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using TomanuExtensions;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace MangaCrawlerLib.Crawlers
 {
@@ -98,7 +99,7 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback)
         {
-            NH.TransactionLockUpdate(a_server, () => a_server.SetState(ServerState.Downloading));
+            a_server.State = ServerState.Downloading;
 
             Limiter.Aquire(a_server);
             try
@@ -114,7 +115,6 @@ namespace MangaCrawlerLib.Crawlers
 
             var toreport = (from serie in m_series
                             select new Serie(a_server, "fake_serie_url", serie.Title)).ToArray();
-            List<Serie> result = new List<Serie>();
 
             int total = toreport.Length;
 
@@ -128,6 +128,9 @@ namespace MangaCrawlerLib.Crawlers
                     listlist.Add(part);
                 }
 
+                ConcurrentBag<Tuple<int, int, Serie>> series = 
+                    new ConcurrentBag<Tuple<int, int, Serie>>();
+
                 Parallel.ForEach(listlist, 
                     new ParallelOptions()
                     {
@@ -136,10 +139,8 @@ namespace MangaCrawlerLib.Crawlers
                     }, 
                     (list) =>
                 {
-                    lock (result)
-                    {
-                        result.AddRange(list);
-                    }
+                    foreach (var el in list)
+                        series.Add(new Tuple<int, int, Serie>(listlist.IndexOf(list), list.IndexOf(el), el));
 
                     Limiter.Aquire(a_server);
                     try
@@ -150,6 +151,10 @@ namespace MangaCrawlerLib.Crawlers
                     {
                         Limiter.Release(a_server);
                     }
+
+                    var result = (from s in series
+                                  orderby s.Item1, s.Item2
+                                  select s.Item3).ToList();
 
                     a_progress_callback(
                         result.Count * 100 / total,
@@ -207,7 +212,7 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
-            NH.TransactionLockUpdate(a_serie, () => a_serie.SetState(SerieState.Downloading));
+            a_serie.State = SerieState.Downloading;
 
             Limiter.Aquire(a_serie);
             try
@@ -225,7 +230,6 @@ namespace MangaCrawlerLib.Crawlers
 
             var toreport = (from chapter in GenerateChapters(serie)
                             select new Chapter(a_serie, "fakse_chapter_url", chapter.Title)).ToArray();
-            List<Chapter> result = new List<Chapter>();
 
             int total = toreport.Length;
 
@@ -239,6 +243,9 @@ namespace MangaCrawlerLib.Crawlers
                     listlist.Add(part);
                 }
 
+                ConcurrentBag<Tuple<int, int, Chapter>> chapters =
+                    new ConcurrentBag<Tuple<int, int, Chapter>>();
+
                 Parallel.ForEach(listlist,
                     new ParallelOptions()
                     {
@@ -247,10 +254,8 @@ namespace MangaCrawlerLib.Crawlers
                     },
                     (list) =>
                     {
-                        lock (result)
-                        {
-                            result.AddRange(list);
-                        }
+                        foreach (var el in list)
+                            chapters.Add(new Tuple<int, int, Chapter>(listlist.IndexOf(list), list.IndexOf(el), el));
 
                         Limiter.Aquire(a_serie);
                         try
@@ -261,6 +266,10 @@ namespace MangaCrawlerLib.Crawlers
                         {
                             Limiter.Release(a_serie);
                         }
+
+                        var result = (from s in chapters
+                                      orderby s.Item1, s.Item2
+                                      select s.Item3).ToList();
 
                         a_progress_callback(
                             result.Count * 100 / total,
@@ -273,7 +282,7 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
-            NH.TransactionLockUpdate(a_chapter, () => a_chapter.SetState(ChapterState.DownloadingPagesList));
+            a_chapter.State = ChapterState.DownloadingPagesList;
 
             var serie = m_series.First(s => s.Title == a_chapter.Serie.Title);
             var chapter = GenerateChapters(serie).First(c => c.Title == a_chapter.Title);
@@ -331,7 +340,7 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override string GetImageURL(Page a_page)
         {
-            NH.TransactionLockUpdate(a_page, () => a_page.SetState(PageState.Downloading));
+            a_page.State = PageState.Downloading;
             return "fake_image_url.jpg";
         }
 
