@@ -19,13 +19,14 @@ namespace MangaCrawlerLib
     public class Chapter : Entity 
     {
         private CancellationTokenSource m_cancellation_token_source;
+        private IList<Page> m_pages;
 
         public virtual ChapterState State { get; protected set; }
         public virtual bool CBZ { get; protected set; }
         public virtual string ChapterDir { get; protected set; }
         public virtual Serie Serie { get; protected set; }
         public virtual string Title { get; protected set; }
-        protected internal virtual IList<Page> Pages { get; protected set; }
+        protected internal virtual CacheList<Page> CachePages { get; protected set; }
 
         protected Chapter()
         {
@@ -49,7 +50,7 @@ namespace MangaCrawlerLib
         {
             a_mapper.Class<Chapter>(m =>
             {
-                m.Id(c => c.ID, mapper => { mapper.Generator(Generators.Native); mapper.Type(new Int32Type()); });
+                m.Id(c => c.ID, mapper => mapper.Generator(Generators.Native) );
                 m.Property(c => c.URL, mapping => mapping.NotNullable(true) );
                 m.Property(c => c.Title, mapping => mapping.NotNullable(true));
                 m.Version("Version", mapper => { });
@@ -61,7 +62,6 @@ namespace MangaCrawlerLib
                     c => c.Serie,
                     mapping =>
                     {
-                        mapping.Fetch(FetchKind.Join);
                         mapping.NotNullable(false);
                     }
                 );
@@ -76,12 +76,27 @@ namespace MangaCrawlerLib
             });
         }
 
+        protected internal virtual IList<Page> Pages
+        {
+            get
+            {
+                return m_pages;
+            }
+
+            protected set
+            {
+                m_pages = value;
+                CachePages = new CacheList<Page>(this, value);
+
+            }
+        }
+
         public virtual int PagesDownloaded
         {
             get
             {
-                return Pages.Count(p => (p.State == PageState.Veryfied) || 
-                                        (p.State == PageState.Downloaded));
+                return CachePages.Count(p => (p.State == PageState.Veryfied) ||
+                                             (p.State == PageState.Downloaded));
             }
         }
 
@@ -90,14 +105,6 @@ namespace MangaCrawlerLib
             get
             {
                 return Serie.Server;
-            }
-        }
-
-        protected internal virtual CustomTaskScheduler Scheduler
-        {
-            get
-            {
-                return Serie.Scheduler;
             }
         }
 
@@ -128,7 +135,7 @@ namespace MangaCrawlerLib
 
         public virtual IEnumerable<Page> GetPages()
         {
-            return Pages;
+            return CachePages;
         }
 
         public virtual void DeleteWork()
@@ -168,17 +175,17 @@ namespace MangaCrawlerLib
 
             NH.TransactionLockUpdate(this, () =>
             {
-                bool added;
+                IList<Page> added;
                 IList<Page> removed;
-                DownloadManager.Sync(pages, Pages, page => (page.Name + page.URL), true, out added, out removed);
+                CachePages.Sync(pages, page => (page.Name + page.URL), true, out added, out removed);
 
                 ChapterDir = GetChapterDirectory(a_manga_root_dir);
                 CBZ = a_cbz;
                 SetState(ChapterState.DownloadingPages);
 
-                foreach (var page in Pages)
+                foreach (var page in CachePages)
                 {
-                    if (added || removed.Any())
+                    if (added.Any() || removed.Any())
                         page.SetState(PageState.WaitingForDownloading);
                     else
                         page.SetState(PageState.WaitingForVerifing);
@@ -192,16 +199,16 @@ namespace MangaCrawlerLib
 
             try
             {
-                ConnectionsLimiter.BeginDownloadPages(this);
+                Limiter.BeginChapter(this);
 
                 DownloadPagesList(a_manga_root_dir, a_cbz);
 
-                Parallel.ForEach(Pages,
+                Parallel.ForEach(CachePages,
 
                     new ParallelOptions()
                     {
-                        MaxDegreeOfParallelism = Crawler.MaxConnectionsPerServer,
-                        TaskScheduler = Scheduler[Priority.Image],
+                        MaxDegreeOfParallelism = Crawler.MaxConnectionsPerServer, 
+                        TaskScheduler = Limiter.Scheduler
                     },
                     (page, state) =>
                     {
@@ -263,13 +270,13 @@ namespace MangaCrawlerLib
                     if (CancellationTokenSource.IsCancellationRequested)
                         SetState(ChapterState.Aborted);
 
-                    if (PagesDownloaded != Pages.Count)
+                    if (PagesDownloaded != CachePages.Count)
                     {
                         SetState(ChapterState.Error);
                         return;
                     }
 
-                    if (Pages.Any(p => (p.State != PageState.Downloaded) && (p.State != PageState.Veryfied)))
+                    if (CachePages.Any(p => (p.State != PageState.Downloaded) && (p.State != PageState.Veryfied)))
                     {
                         SetState(ChapterState.Error);
                         return;
@@ -278,7 +285,7 @@ namespace MangaCrawlerLib
                     SetState(ChapterState.Downloaded);
                 });
 
-                ConnectionsLimiter.EndDownloadPages(this);
+                Limiter.EndChapter(this);
             }
         }
 
@@ -288,7 +295,7 @@ namespace MangaCrawlerLib
                 "Chapter: {0} state: {1}",
                 this, State);
 
-            if (Pages.Count == 0)
+            if (CachePages.Count == 0)
             {
                 Loggers.MangaCrawler.InfoFormat("Pages.Count = 0 - nothing to zip");
                 return;
@@ -296,7 +303,7 @@ namespace MangaCrawlerLib
 
             NH.TransactionLockUpdate(this, () => SetState(ChapterState.Zipping));
 
-            var dir = new DirectoryInfo(Pages.First().ImageFilePath).Parent;
+            var dir = new DirectoryInfo(CachePages.First().ImageFilePath).Parent;
 
             var zip_file = dir.FullName + ".cbz";
 
@@ -313,7 +320,7 @@ namespace MangaCrawlerLib
                 {
                     zip.UseUnicodeAsNecessary = true;
 
-                    foreach (var page in Pages)
+                    foreach (var page in CachePages)
                     {
                         zip.AddFile(page.ImageFilePath, "");
 
@@ -337,7 +344,7 @@ namespace MangaCrawlerLib
 
             try
             {
-                foreach (var page in Pages)
+                foreach (var page in CachePages)
                     new FileInfo(page.ImageFilePath).Delete();
 
                 if ((dir.GetFiles().Count() == 0) && (dir.GetDirectories().Count() == 0))

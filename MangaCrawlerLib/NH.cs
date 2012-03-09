@@ -23,6 +23,7 @@ namespace MangaCrawlerLib
         private static ISessionFactory SessionFactory;
         private static bool s_log = false;
         private static bool s_in_memory = false;
+        private static Object s_lock = new Object();
 
         private static string s_database_dir;
         public readonly static string s_database_name = "manga.db";
@@ -32,7 +33,7 @@ namespace MangaCrawlerLib
             s_database_dir = a_database_dir;
 
             Prepare();
-            //if (!CheckDatabaseSchemaAndVersion()) // TODO:
+            //if (!CheckDatabaseSchemaAndVersion()) 
               RecreateDatabase();
             ResetStates();
         }
@@ -89,162 +90,179 @@ namespace MangaCrawlerLib
 
         public static void Transaction(Action<ISession> a_action)
         {
-            using (var session = OpenSession())
+            lock (s_lock)
             {
+                using (var session = OpenSession())
+                {
 
-                ITransaction transaction = session.BeginTransaction();
+                    ITransaction transaction = session.BeginTransaction();
 
-                try
-                {
-                    a_action(session);
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    Loggers.NH.Fatal("Exception", ex);
-                    transaction.Rollback();
-                }
-                finally
-                {
-                    session.Dispose();
+                    try
+                    {
+                        a_action(session);
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        Loggers.NH.Fatal("Exception", ex);
+                        transaction.Rollback();
+                    }
+                    finally
+                    {
+                        session.Dispose();
+                    }
                 }
             }
         }
 
         public static void TransactionLockUpdate<T>(T a_obj, Action a_action)
         {
-            using (var session = OpenSession())
+            lock (s_lock)
             {
-                ITransaction transaction = session.BeginTransaction();
+                using (var session = OpenSession())
+                {
+                    ITransaction transaction = session.BeginTransaction();
 
-                session.Lock(a_obj, LockMode.None);
+                    session.Lock(a_obj, LockMode.None);
 
-                try
-                {
-                    a_action();
-                    session.SaveOrUpdate(a_obj);
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    Loggers.NH.Fatal("Exception", ex);
-                    transaction.Rollback();
-                }
-                finally
-                {
-                    session.Dispose();
+                    try
+                    {
+                        a_action();
+                        session.SaveOrUpdate(a_obj);
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        Loggers.NH.Fatal("Exception", ex);
+                        transaction.Rollback();
+                    }
+                    finally
+                    {
+                        session.Dispose();
+                    }
                 }
             }
         }
 
         public static void TransactionLock<T>(T a_obj, Action a_action) 
         {
-            using (var session = OpenSession())
+            lock (s_lock)
             {
-                ITransaction transaction = session.BeginTransaction();
+                using (var session = OpenSession())
+                {
+                    ITransaction transaction = session.BeginTransaction();
 
-                session.Lock(a_obj, LockMode.None);
+                    session.Lock(a_obj, LockMode.None);
 
-                try
-                {
-                    a_action();
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    Loggers.NH.Fatal("Exception", ex);
-                    transaction.Rollback();
-                }
-                finally
-                {
-                    session.Dispose();
+                    try
+                    {
+                        a_action();
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        Loggers.NH.Fatal("Exception", ex);
+                        transaction.Rollback();
+                    }
+                    finally
+                    {
+                        session.Dispose();
+                    }
                 }
             }
         }
 
         public static R TransactionLockWithResult<T, R>(T a_obj, Func<R> a_func)
         {
-            using (var session = OpenSession())
+            lock (s_lock)
             {
-                ITransaction transaction = session.BeginTransaction();
+                using (var session = OpenSession())
+                {
+                    ITransaction transaction = session.BeginTransaction();
 
-                session.Lock(a_obj, LockMode.None);
+                    session.Lock(a_obj, LockMode.None);
 
-                try
-                {
-                    R result = a_func();
-                    transaction.Commit();
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    Loggers.NH.Fatal("Exception", ex);
-                    transaction.Rollback();
-                    return default(R);
-                }
-                finally
-                {
-                    session.Dispose();
+                    try
+                    {
+                        R result = a_func();
+                        transaction.Commit();
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        Loggers.NH.Fatal("Exception", ex);
+                        transaction.Rollback();
+                        return default(R);
+                    }
+                    finally
+                    {
+                        session.Dispose();
+                    }
                 }
             }
         }
 
         public static R TransactionLockUpdateWithResult<T, R>(T a_obj, Func<R> a_func)
         {
-            using (var session = OpenSession())
+            lock (s_lock)
             {
-                ITransaction transaction = session.BeginTransaction();
+                using (var session = OpenSession())
+                {
+                    ITransaction transaction = session.BeginTransaction();
 
-                session.Lock(a_obj, LockMode.None);
+                    session.Lock(a_obj, LockMode.None);
 
-                try
-                {
-                    R result = a_func();
-                    session.SaveOrUpdate(a_obj);
-                    transaction.Commit();
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    Loggers.NH.Fatal("Exception", ex);
-                    transaction.Rollback();
-                    return default(R);
-                }
-                finally
-                {
-                    session.Dispose();
+                    try
+                    {
+                        R result = a_func();
+                        session.SaveOrUpdate(a_obj);
+                        transaction.Commit();
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        Loggers.NH.Fatal("Exception", ex);
+                        transaction.Rollback();
+                        return default(R);
+                    }
+                    finally
+                    {
+                        session.Dispose();
+                    }
                 }
             }
         }
 
         public static T TransactionWithResult<T>(Func<ISession, T> a_func)
         {
-            using (var session = OpenSession())
+            lock (s_lock)
             {
-                ITransaction transaction = session.BeginTransaction();
+                using (var session = OpenSession())
+                {
+                    ITransaction transaction = session.BeginTransaction();
 
-                try
-                {
-                    T result = a_func(session);
-                    transaction.Commit();
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    Loggers.NH.Fatal("Exception", ex);
-                    transaction.Rollback();
-                    return default(T);
-                }
-                finally
-                {
-                    session.Dispose();
+                    try
+                    {
+                        T result = a_func(session);
+                        transaction.Commit();
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        Loggers.NH.Fatal("Exception", ex);
+                        transaction.Rollback();
+                        return default(T);
+                    }
+                    finally
+                    {
+                        session.Dispose();
+                    }
                 }
             }
         }
 
         private static void AddMappings()
         {
-            
             ModelMapper mapper = new ModelMapper();
 
             var types = from type in Assembly.GetAssembly(typeof(NH)).GetTypes()
@@ -283,7 +301,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static void RecreateDatabase()
+        private static void RecreateDatabase()
         {
             Loggers.NH.Info("Creating new database.");
 

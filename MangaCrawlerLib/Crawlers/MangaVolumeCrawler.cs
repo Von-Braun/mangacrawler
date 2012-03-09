@@ -79,7 +79,7 @@ namespace MangaCrawlerLib
                 new ParallelOptions()
                 {
                     MaxDegreeOfParallelism = MaxConnectionsPerServer,
-                    TaskScheduler = a_server.Scheduler[Priority.Series], 
+                    TaskScheduler = Limiter.Scheduler
                 },
                 (page, state) =>
             {
@@ -155,7 +155,7 @@ namespace MangaCrawlerLib
                 string next_pages_group = String.Format("{0}npage-{1}", a_serie.URL, 
                     Int32.Parse(nodes.Last().InnerText) + 1);
 
-                doc = DownloadDocument(a_serie.Server, next_pages_group);
+                doc = DownloadDocument(a_serie, next_pages_group);
 
                 if (doc != null)
                     pages.Add(next_pages_group);
@@ -182,14 +182,14 @@ namespace MangaCrawlerLib
                 new ParallelOptions()
                 {
                     MaxDegreeOfParallelism = MaxConnectionsPerServer,
-                    TaskScheduler = a_serie.Scheduler[Priority.Chapters], 
+                    TaskScheduler = Limiter.Scheduler
                 },
                 (page, state) =>
             {
                 try
                 {
                     HtmlDocument page_doc = 
-                        DownloadDocument(a_serie.Server, pages[page]);
+                        DownloadDocument(a_serie, pages[page]);
 
                     var page_series = page_doc.DocumentNode.SelectNodes(
                         "//table[@id='MainList']/tr/td[1]/a");

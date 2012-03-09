@@ -13,11 +13,13 @@ namespace MangaCrawlerLib
 {
     public class Serie : Entity
     {
+        private IList<Chapter> m_chapters;
+
         public virtual SerieState State { get; protected set; }
         public virtual Server Server { get; protected set; }
         public virtual string Title { get; protected set; }
         public virtual int DownloadProgress { get; protected set; }
-        protected internal virtual IList<Chapter> Chapters { get; protected set; }
+        protected internal virtual CacheList<Chapter> CacheChapters { get; protected set; }
 
         protected Serie()
         {
@@ -50,10 +52,7 @@ namespace MangaCrawlerLib
 
                 m.List<Chapter>(
                     "Chapters", 
-                    list_mapping => 
-                    {
-                        list_mapping.Cascade(Cascade.All); 
-                    }, 
+                    list_mapping => list_mapping.Cascade(Cascade.All), 
                     mapping => mapping.OneToMany()
                 );
 
@@ -61,18 +60,24 @@ namespace MangaCrawlerLib
                     c => c.Server, 
                     mapping => 
                     {
-                        mapping.Fetch(FetchKind.Join);
                         mapping.NotNullable(false); 
                     }
                 );
             });
         }
 
-        protected internal virtual CustomTaskScheduler Scheduler
+        protected internal virtual IList<Chapter> Chapters
         {
             get
             {
-                return Server.Scheduler;
+                return m_chapters;
+            }
+
+            protected set
+            {
+                m_chapters = value;
+                CacheChapters = new CacheList<Chapter>(this, value);
+
             }
         }
 
@@ -86,7 +91,7 @@ namespace MangaCrawlerLib
 
         public virtual IEnumerable <Chapter> GetChapters()
         {
-            return Chapters;
+            return CacheChapters;
         }
 
         protected internal virtual void DownloadChapters()
@@ -97,9 +102,9 @@ namespace MangaCrawlerLib
                 {
                     NH.TransactionLockUpdate(this, () =>
                     {
-                        bool added;
+                        IList<Chapter> added;
                         IList<Chapter> removed;
-                        DownloadManager.Sync(result, Chapters, chapter => (chapter.Title + chapter.URL),
+                        CacheChapters.Sync(result, chapter => (chapter.Title + chapter.URL),
                             progress == 100, out added, out removed);
 
                         DownloadProgress = progress;
@@ -131,7 +136,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public virtual void SetState(SerieState a_state)
+        protected internal virtual void SetState(SerieState a_state)
         {
             switch (a_state)
             {

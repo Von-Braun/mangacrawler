@@ -75,7 +75,7 @@ namespace MangaCrawlerLib
 
             var href = n3.GetAttributeValue("href", "");
 
-            doc = DownloadDocument(a_serie.Server, href);
+            doc = DownloadDocument(a_serie, href);
 
             var chapters = doc.DocumentNode.SelectNodes("//select[@name='ch']/option");
 

@@ -19,13 +19,12 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Crawler m_crawler;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private CustomTaskScheduler m_scheduler;
+        private IList<Serie> m_series;
 
         public virtual ServerState State { get;  protected set; }
         public virtual int DownloadProgress { get; protected set; }
         public virtual string Name { get;  protected set; }
-        protected internal virtual IList<Serie> Series { get; protected set; }
+        protected internal virtual CacheList<Serie> CacheSeries { get; protected set; }
 
         protected Server()
         {
@@ -52,26 +51,33 @@ namespace MangaCrawlerLib
 
                 m.List<Serie>(
                     "Series",
-                    list_mapping => list_mapping.Cascade(Cascade.All), 
+                    list_mapping => 
+                    {
+                        list_mapping.Cascade(Cascade.All);
+                    },
                     mapping => mapping.OneToMany()
                 );
             });
         }
 
-        public virtual IEnumerable<Serie> GetSeries()
-        {
-            return Series;
-        }
-
-        protected internal virtual CustomTaskScheduler Scheduler 
+        protected internal virtual IList<Serie> Series
         {
             get
             {
-                if (m_scheduler == null)
-                    m_scheduler = SchedulerList.Get(this);
-
-                return m_scheduler;
+                return m_series;
             }
+
+            protected set
+            {
+                m_series = value;
+                CacheSeries = new CacheList<Serie>(this, value);
+
+            }
+        }
+
+        public virtual IEnumerable<Serie> GetSeries()
+        {
+            return CacheSeries;
         }
 
         protected internal override Crawler Crawler
@@ -94,10 +100,9 @@ namespace MangaCrawlerLib
                     NH.TransactionLockUpdate(this, () =>
                     {
                         IList<Serie> removed;
-                        bool added;
-                        DownloadManager.Sync(result, Series, serie => (serie.Title + serie.URL), progress == 100,
+                        IList<Serie> added;
+                        CacheSeries.Sync(result, serie => (serie.Title + serie.URL), progress == 100,
                             out added, out removed);
-
                         DownloadProgress = progress;
                     });
                 });
@@ -126,7 +131,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public virtual void SetState(ServerState a_state)
+        protected internal virtual void SetState(ServerState a_state)
         {
             switch (a_state)
             {

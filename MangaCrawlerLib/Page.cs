@@ -70,14 +70,6 @@ namespace MangaCrawlerLib
             });
         }
 
-        protected internal virtual CustomTaskScheduler Scheduler
-        {
-            get
-            {
-                return Chapter.Scheduler;
-            }
-        }
-
         protected internal override Crawler Crawler
         {
             get
@@ -105,7 +97,7 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return String.Format("{0} - {1}/{2}",
-                    Chapter, Index, Chapter.Pages.Count);
+                    Chapter, Index, Chapter.CachePages.Count);
         }
 
         protected internal virtual MemoryStream GetImageStream()
