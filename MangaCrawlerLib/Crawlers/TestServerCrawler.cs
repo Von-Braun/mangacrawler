@@ -9,18 +9,19 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using TomanuExtensions;
+using System.Threading.Tasks;
 
 namespace MangaCrawlerLib.Crawlers
 {
     internal class TestServerCrawler : Crawler
     {
-        private const int MIN_SERVER_DELAY = 250;
+        private const int MIN_SERVER_DELAY = 50;
 
         private string m_name;
         private int m_max_server_delay;
         private bool m_slow_series;
         private bool m_slow_chapters;
-        private int m_series_per_page;
+        private int m_items_per_page;
         private List<SerieData> m_series = new List<SerieData>();
         private int m_seed;
         private Random m_random = new Random();
@@ -48,7 +49,7 @@ namespace MangaCrawlerLib.Crawlers
             m_slow_chapters = a_slow_chapters;
             Debug.Assert(a_max_server_delay > MIN_SERVER_DELAY);
             m_max_server_delay = a_max_server_delay;
-            m_series_per_page = random.Next(4, 9) * 5;
+            m_items_per_page = random.Next(4, 9) * 5;
             m_max_con = a_max_con;
 
             int maxs = (int)Math.Pow(random.Next(10, 70), 2);
@@ -99,6 +100,16 @@ namespace MangaCrawlerLib.Crawlers
         {
             NH.TransactionLockUpdate(a_server, () => a_server.SetState(ServerState.Downloading));
 
+            Limiter.Aquire(a_server);
+            try
+            {
+                Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+            }
+            finally
+            {
+                Limiter.Release(a_server);
+            }
+
             Debug.Assert(a_server.Name == m_name);
 
             var toreport = (from serie in m_series
@@ -109,24 +120,44 @@ namespace MangaCrawlerLib.Crawlers
 
             if (m_slow_series)
             {
+                List<List<Serie>> listlist = new List<List<Serie>>();
                 while (toreport.Any())
                 {
-                    result.AddRange(toreport.Take(m_series_per_page));
-                    toreport = toreport.Skip(m_series_per_page).ToArray();
+                    var part = toreport.Take(m_items_per_page).ToList();
+                    toreport = toreport.Skip(m_items_per_page).ToArray();
+                    listlist.Add(part);
+                }
 
-                    Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+                Parallel.ForEach(listlist, 
+                    new ParallelOptions()
+                    {
+                        MaxDegreeOfParallelism = MaxConnectionsPerServer,
+                        TaskScheduler = Limiter.Scheduler
+                    }, 
+                    (list) =>
+                {
+                    lock (result)
+                    {
+                        result.AddRange(list);
+                    }
+
+                    Limiter.Aquire(a_server);
+                    try
+                    {
+                      Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+                    }
+                    finally
+                    {
+                        Limiter.Release(a_server);
+                    }
 
                     a_progress_callback(
                         result.Count * 100 / total,
                         result);
-                }
+                });
             }
             else
-            {
-                Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
-
                 a_progress_callback(100, toreport);
-            }
         }
 
         private int NextInt(int a_inclusive_min, int a_exlusive_max)
@@ -178,6 +209,16 @@ namespace MangaCrawlerLib.Crawlers
         {
             NH.TransactionLockUpdate(a_serie, () => a_serie.SetState(SerieState.Downloading));
 
+            Limiter.Aquire(a_serie);
+            try
+            {
+                Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+            }
+            finally
+            {
+                Limiter.Release(a_serie);
+            }
+
             Debug.Assert(a_serie.Server.Name == m_name);
 
             var serie = m_series.First(s => s.Title == a_serie.Title);
@@ -188,26 +229,46 @@ namespace MangaCrawlerLib.Crawlers
 
             int total = toreport.Length;
 
-            if (m_slow_series)
+            if (m_slow_chapters)
             {
+                List<List<Chapter>> listlist = new List<List<Chapter>>();
                 while (toreport.Any())
                 {
-                    result.AddRange(toreport.Take(m_series_per_page));
-                    toreport = toreport.Skip(m_series_per_page).ToArray();
-
-                    Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
-
-                    a_progress_callback(
-                        result.Count * 100 / total,
-                        result);
+                    var part = toreport.Take(m_items_per_page).ToList();
+                    toreport = toreport.Skip(m_items_per_page).ToArray();
+                    listlist.Add(part);
                 }
+
+                Parallel.ForEach(listlist,
+                    new ParallelOptions()
+                    {
+                        MaxDegreeOfParallelism = MaxConnectionsPerServer,
+                        TaskScheduler = Limiter.Scheduler
+                    },
+                    (list) =>
+                    {
+                        lock (result)
+                        {
+                            result.AddRange(list);
+                        }
+
+                        Limiter.Aquire(a_serie);
+                        try
+                        {
+                            Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+                        }
+                        finally
+                        {
+                            Limiter.Release(a_serie);
+                        }
+
+                        a_progress_callback(
+                            result.Count * 100 / total,
+                            result);
+                    });
             }
             else
-            {
-                Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
-
                 a_progress_callback(100, toreport);
-            }
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)
@@ -222,7 +283,15 @@ namespace MangaCrawlerLib.Crawlers
                          select new Page(a_chapter, "fakse_page_url",
                              pages.IndexOf(page) + 1, page);
 
-            Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+            Limiter.Aquire(a_chapter);
+            try
+            {
+                Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+            }
+            finally
+            {
+                Limiter.Release(a_chapter);
+            }
 
             return result;
         }
@@ -245,7 +314,15 @@ namespace MangaCrawlerLib.Crawlers
                 );
             }
 
-            Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+            Limiter.Aquire(a_page);
+            try
+            {
+                Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+            }
+            finally
+            {
+                Limiter.Release(a_page);
+            }
 
             MemoryStream ms = new MemoryStream();
             bmp.SaveJPEG(ms, 75);

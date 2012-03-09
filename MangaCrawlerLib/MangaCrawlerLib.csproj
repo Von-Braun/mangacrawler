@@ -78,20 +78,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CacheList.cs" />
     <Compile Include="Crawlers\CrawlerList.cs" />
     <Compile Include="Crawlers\TestServerCrawler.cs" />
+    <Compile Include="CustomTaskScheduler.cs" />
     <Compile Include="DBVersion.cs" />
     <Compile Include="IClassMapping.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="Limiter.cs" />
     <Compile Include="NH.cs" />
-    <Compile Include="SchedulerList.cs" />
     <Compile Include="Loggers.cs" />
-    <Compile Include="OrderedList.cs" />
-    <Compile Include="Priority.cs" />
-    <Compile Include="QueueSemaphore.cs" />
     <Compile Include="Crawlers\AnimeSourceCrawler.cs" />
     <Compile Include="Chapter.cs" />
-    <Compile Include="ConnectionsLimiter.cs" />
     <Compile Include="Crawler.cs" />
     <Compile Include="Crawlers\MangaAccessCrawler.cs" />
     <Compile Include="DownloadManager.cs" />
@@ -104,14 +102,11 @@
     <Compile Include="States.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueueMutex.cs" />
-    <Compile Include="CustomTaskScheduler.cs" />
     <Compile Include="Serie.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Crawlers\SpectrumNexusCrawler.cs" />
     <Compile Include="Crawlers\StopTazmoCrawler.cs" />
     <Compile Include="Crawlers\UnixMangaCrawler.cs" />
-    <Compile Include="Works.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetZip\DotNetZip.csproj">

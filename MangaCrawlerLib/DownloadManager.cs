@@ -54,13 +54,29 @@ namespace MangaCrawlerLib
                 return;
             }
 
-            Task task = new Task(() =>
+            new Task(() =>
             {
                 a_server.DownloadSeries();
 
-            }, TaskCreationOptions.LongRunning);
+            }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
+        }
 
-            task.Start(a_server.Scheduler[Priority.Series]);
+        public static void ClearCache()
+        {
+            foreach (var server in s_servers)
+            {
+                foreach (var serie in server.Series)
+                {
+                    foreach (var chapter in serie.Chapters)
+                    {
+                        chapter.CachePages.ClearCache();
+                    }
+
+                    serie.CacheChapters.ClearCache();
+                }
+
+                server.CacheSeries.ClearCache();
+            }
         }
 
         public static void DownloadChapters(Serie a_serie)
@@ -84,12 +100,10 @@ namespace MangaCrawlerLib
                 return;
             }
 
-            Task task = new Task(() =>
+            new Task(() =>
             {
                 a_serie.DownloadChapters();
-            }, TaskCreationOptions.LongRunning);
-
-            task.Start(a_serie.Scheduler[Priority.Chapters]);
+            }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
         }
 
         public static void DownloadPages(IEnumerable<Chapter> a_chapters)
@@ -132,12 +146,10 @@ namespace MangaCrawlerLib
                     "Chapter: {0} state: {1}",
                     chapter_sync, chapter_sync.State);
 
-                Task task = new Task(() =>
+                new Task(() =>
                 {
                     chapter_sync.DownloadPages(GetMangaRootDir(), UseCBZ());
-                }, TaskCreationOptions.LongRunning);
-
-                task.Start(chapter_sync.Scheduler[Priority.Pages]);
+                }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
             }
         }
 
@@ -149,54 +161,6 @@ namespace MangaCrawlerLib
                 {
                     return s_works.ToArray();
                 }
-            }
-        }
-
-        internal static void Sync<T, K>(IEnumerable<T> a_transient, IList<T> a_persisted,
-            Func<T, K> a_key_selector, bool a_remove, out bool a_added, out IList<T> a_removed) where K : IEquatable<K>
-        {
-            IDictionary<K, T> new_pages_dict = a_transient.ToDictionary<T, K>(a_key_selector);
-            IDictionary<K, T> pages_dict = a_persisted.ToDictionary(a_key_selector);
-
-            a_removed = new List<T>();
-
-            if (a_remove)
-            {
-                List<K> to_remove = new List<K>();
-
-                foreach (var key in pages_dict.Keys)
-                {
-                    if (!new_pages_dict.Keys.Contains(key))
-                        to_remove.Add(key);
-                }
-
-                a_removed = (from key in to_remove
-                            select pages_dict[key]).ToList();
-                a_persisted.RemoveRange(a_removed);
-                pages_dict.RemoveRange(to_remove);
-            }
-
-            a_added = false;
-
-            int index = 0;
-            foreach (var tr in a_transient)
-            {
-                if (a_persisted.Count <= index)
-                {
-                    a_persisted.Insert(index, tr);
-                    a_added = true;
-                }
-                else
-                {
-                    var pr = a_persisted[index];
-
-                    if (!a_key_selector(pr).Equals(a_key_selector(tr)))
-                    {
-                        a_persisted.Insert(index, tr);
-                        a_added = true;
-                    }
-                }
-                index++;
             }
         }
 

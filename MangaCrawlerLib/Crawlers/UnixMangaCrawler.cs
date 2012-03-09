@@ -83,13 +83,13 @@ namespace MangaCrawlerLib
                     new ParallelOptions() 
                     {
                         MaxDegreeOfParallelism = MaxConnectionsPerServer,
-                        TaskScheduler = a_serie.Scheduler[Priority.Chapters], 
+                        TaskScheduler = Limiter.Scheduler
                     },
                     (chapter_or_volume, state) =>
                 {
                     try
                     {
-                        doc = DownloadDocument(a_serie.Server, 
+                        doc = DownloadDocument(a_serie, 
                             chapter_or_volume.GetAttributeValue("href", ""));
 
                         var pages = doc.DocumentNode.SelectNodes(

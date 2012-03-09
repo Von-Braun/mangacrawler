@@ -241,6 +241,8 @@ namespace MangaCrawler
             }
         }
 
+        // TODO: oszczedzanie paieci, czy ciagle sa locki
+
         public Chapter SelectedChapter
         {
             get
@@ -277,7 +279,7 @@ namespace MangaCrawler
         {
             if (SelectedServer != null)
                 m_series_visual_states[SelectedServer.ID] = new ListBoxVisualState(seriesListBox);
-            
+
             DownloadManager.DownloadChapters(SelectedSerie);
 
             UpdateChapters();
@@ -681,14 +683,11 @@ namespace MangaCrawler
             if (serversListBox.SelectedItem == null)
                 return;
 
-            var t = TomanuExtensions.Utils.Profiler.Measure(() =>
-            {
-                UpdateWorksTab();
-                UpdateSeriesTab();
-            });
+            //UpdateWorksTab();
+            //UpdateSeriesTab();
 
-            Loggers.GUI.InfoFormat("refresh time: {0} [ms]", t);
-        }
+            Text = (System.GC.GetTotalMemory(false) / 1024 / 1024).ToString() + " MB";
+        }       
 
         private void UpdateSeriesTab()
         {
@@ -710,11 +709,8 @@ namespace MangaCrawler
 
             if (SelectedSerie != null)
             {
-                NH.TransactionLock(SelectedSerie, () =>
-                {
-                    ar = (from chapter in SelectedSerie.GetChapters()
-                          select new ChapterListItem(chapter)).ToArray();
-                });
+                ar = (from chapter in SelectedSerie.GetChapters()
+                        select new ChapterListItem(chapter)).ToArray();
             }
 
             new ListBoxVisualState(chaptersListBox).ReloadItems(ar);
@@ -740,13 +736,10 @@ namespace MangaCrawler
 
             if (SelectedServer != null)
             {
-                NH.TransactionLock(SelectedServer, () =>
-                {
-                    string filter = seriesSearchTextBox.Text.ToLower();
-                    ar = (from serie in SelectedServer.GetSeries()
-                          where serie.Title.ToLower().IndexOf(filter) != -1
-                          select new SerieListItem(serie)).ToArray();
-                });
+                string filter = seriesSearchTextBox.Text.ToLower();
+                ar = (from serie in SelectedServer.GetSeries()
+                      where serie.Title.ToLower().IndexOf(filter) != -1
+                      select new SerieListItem(serie)).ToArray();
             }
 
             new ListBoxVisualState(seriesListBox).ReloadItems(ar);
@@ -760,6 +753,13 @@ namespace MangaCrawler
         private void clearLogButton_Click(object sender, EventArgs e)
         {
             logRichTextBox.Clear();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DownloadManager.ClearCache();
+            m_chapters_visual_states.Clear();
+            m_series_visual_states.Clear();
         }
     }
 }

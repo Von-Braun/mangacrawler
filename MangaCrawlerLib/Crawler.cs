@@ -41,59 +41,48 @@ namespace MangaCrawlerLib
             throw ex1;
         }
 
-        internal HtmlDocument DownloadDocument(Server a_server)
+        internal HtmlDocument DownloadDocument(Server a_server, string a_url = null)
         {
-            return DownloadDocument(a_server, a_server.URL, CancellationToken.None,
+            return DownloadDocument(
+                (a_url == null) ? a_server.URL : a_url, 
                 () => NH.TransactionLockUpdate(a_server, () => a_server.SetState(ServerState.Downloading)), 
-                Priority.Series);
+                () => Limiter.Aquire(a_server),
+                () => Limiter.Release(a_server));
         }
 
-        internal HtmlDocument DownloadDocument(Server a_server, string a_url)
+        internal HtmlDocument DownloadDocument(Serie a_serie, string a_url = null)
         {
-            return DownloadDocument(a_server, a_url, CancellationToken.None,
-                () => NH.TransactionLockUpdate(a_server, () => a_server.SetState(ServerState.Downloading)), 
-                Priority.Series);
-        }
-
-        internal HtmlDocument DownloadDocument(Serie a_serie)
-        {
-            return DownloadDocument(a_serie.Server, a_serie.URL, CancellationToken.None,
+            return DownloadDocument(
+                (a_url == null) ? a_serie.URL : a_url, 
                 () => NH.TransactionLockUpdate(a_serie, () => a_serie.SetState(SerieState.Downloading)), 
-                Priority.Chapters);
+                () => Limiter.Aquire(a_serie),
+                () => Limiter.Release(a_serie));
         }
 
-        internal HtmlDocument DownloadDocument(Chapter a_chapter)
+        internal HtmlDocument DownloadDocument(Chapter a_chapter, string a_url = null)
         {
-            return DownloadDocument(a_chapter.Server, a_chapter.URL, CancellationToken.None,
+            return DownloadDocument(
+                (a_url == null) ? a_chapter.URL : a_url, 
                 () => NH.TransactionLockUpdate(a_chapter, () => a_chapter.SetState(ChapterState.DownloadingPagesList)), 
-                Priority.Pages);
+                () => Limiter.Aquire(a_chapter),
+                () => Limiter.Release(a_chapter));
         }
 
-        internal HtmlDocument DownloadDocument(Page a_page)
+        internal HtmlDocument DownloadDocument(Page a_page, string a_url = null)
         {
-            return DownloadDocument(a_page.Server, a_page.URL, CancellationToken.None,
+            return DownloadDocument(
+                (a_url == null) ? a_page.URL : a_url, 
                 () => NH.TransactionLockUpdate(a_page, () => a_page.SetState(PageState.Downloading)), 
-                Priority.Image);
+                () => Limiter.Aquire(a_page),
+                () => Limiter.Release(a_page));
         }
 
-        internal virtual HtmlDocument DownloadDocument(Server a_server, string a_url, CancellationToken a_token, 
-            Action a_started, Priority a_priority)
+        internal virtual HtmlDocument DownloadDocument(string a_url, Action a_started, 
+            Action a_aquire, Action a_release)
         {
             return DownloadWithRetry(() =>
             {
-                if (a_token != CancellationToken.None)
-                {
-                    if (a_token.IsCancellationRequested)
-                    {
-                        Loggers.Cancellation.InfoFormat(
-                            "Page - #1 token cancelled, a_url: {0}",
-                            a_url);
-
-                        a_token.ThrowIfCancellationRequested();
-                    }
-                }
-
-                ConnectionsLimiter.Aquire(a_server, a_token, a_priority);
+                a_aquire();
 
                 if (a_started != null)
                     a_started();
@@ -116,7 +105,7 @@ namespace MangaCrawlerLib
                 }
                 finally
                 {
-                    ConnectionsLimiter.Release(a_server);
+                    a_release();
                 }
             });
         }
@@ -127,7 +116,7 @@ namespace MangaCrawlerLib
             {
                 try
                 {
-                    ConnectionsLimiter.Aquire(a_page.Server, a_page.Chapter.Token, Priority.Image);
+                    Limiter.Aquire(a_page);
 
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
                         a_page.ImageURL);
@@ -167,7 +156,7 @@ namespace MangaCrawlerLib
                 }
                 finally
                 {
-                    ConnectionsLimiter.Release(a_page.Server);
+                    Limiter.Release(a_page);
                 }
             });
         }
@@ -176,7 +165,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return ConnectionsLimiter.MAX_CONNECTIONS_PER_SERVER;
+                return Limiter.MAX_CONNECTIONS_PER_SERVER;
             }
         }
     }
