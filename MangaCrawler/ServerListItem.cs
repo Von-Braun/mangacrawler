@@ -50,7 +50,7 @@ namespace MangaCrawler
                     case ServerState.Downloaded:
 
                         a_args.Graphics.DrawString(
-                            String.Format(Resources.Series, Server.GetSeries().Count()),
+                            String.Format(Resources.Series, Server.Series.Count),
                             font, Brushes.Green, rect, StringFormat.GenericDefault);
                         break;
 

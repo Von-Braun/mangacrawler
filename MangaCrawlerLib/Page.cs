@@ -8,23 +8,20 @@ using System.Web;
 using System.Diagnostics;
 using System.Threading;
 using TomanuExtensions.Utils;
-using NHibernate.Mapping.ByCode;
 
 namespace MangaCrawlerLib
 {
     public class Page : Entity
     {
-        public virtual Chapter Chapter { get; protected set; }
-        public virtual int Index { get; protected set; }
-        public virtual byte[] Hash { get; protected set; }
-        public virtual string ImageURL { get; protected set; }
-        public virtual string Name { get; protected set; }
-        public virtual string ImageFilePath { get; protected set; }
-        public virtual PageState State { get; protected set; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private PageState m_state;
 
-        protected Page()
-        {
-        }
+        public Chapter Chapter { get; protected set; }
+        public int Index { get; protected set; }
+        public byte[] Hash { get; protected set; }
+        public string ImageURL { get; protected set; }
+        public string Name { get; protected set; }
+        public string ImageFilePath { get; protected set; }
 
         internal Page(Chapter a_chapter, string a_url, int a_index, string a_name = null)
         {
@@ -45,32 +42,7 @@ namespace MangaCrawlerLib
                 Name = Index.ToString();
         }
 
-        private void Map(ModelMapper a_mapper)
-        {
-            a_mapper.Class<Page>(m =>
-            {
-                m.Id(c => c.ID, mapper => mapper.Generator(Generators.Native));
-                m.Version("Version", mapper => { });
-                m.Property(c => c.Index, mapper => { });
-                m.Property(c => c.URL, mapping => mapping.NotNullable(true));
-                m.Property(c => c.ImageFilePath, mapping => mapping.NotNullable(false));
-                m.Property(c => c.Name, mapping => mapping.NotNullable(true));
-                m.Property(c => c.ImageURL, mapping => mapping.NotNullable(false));
-                m.Property(c => c.Hash, mapping => mapping.NotNullable(false));
-                m.Property(c => c.State, mapping => { });
-
-                m.ManyToOne(
-                    c => c.Chapter,
-                    mapping =>
-                    {
-                        mapping.Fetch(FetchKind.Join);
-                        mapping.NotNullable(false);
-                    }
-                );
-            });
-        }
-
-        protected internal override Crawler Crawler
+        internal override Crawler Crawler
         {
             get
             {
@@ -78,7 +50,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public virtual Server Server
+        public Server Server
         {
             get
             {
@@ -86,7 +58,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public virtual Serie Serie
+        public Serie Serie
         {
             get
             {
@@ -97,21 +69,18 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return String.Format("{0} - {1}/{2}",
-                    Chapter, Index, Chapter.CachePages.Count);
+                    Chapter, Index, Chapter.Pages.Count);
         }
 
-        protected internal virtual MemoryStream GetImageStream()
+        internal MemoryStream GetImageStream()
         {
             if (ImageURL == null)
-            {
                 ImageURL = HttpUtility.HtmlDecode(Crawler.GetImageURL(this));
-                NH.TransactionLockUpdate(this, () => { });
-            }
 
             return Crawler.GetImageStream(this);  
         }
 
-        protected internal virtual void DownloadAndSavePageImage()
+        internal void DownloadAndSavePageImage()
         {
             Debug.Assert(State == PageState.WaitingForDownloading);
 
@@ -154,16 +123,13 @@ namespace MangaCrawlerLib
                         ms.Position = 0;
                         byte[] hash;
                         TomanuExtensions.Utils.Hash.CalculateSHA256(ms, out hash);
-                        NH.TransactionLockUpdate(this, () => Hash = hash);
+                        Hash = hash;
                     }
 
-                    NH.TransactionLockUpdate(this, () =>
-                    {
-                        ImageFilePath = Chapter.ChapterDir +
-                            FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
-                            FileUtils.RemoveInvalidFileDirectoryCharacters(
-                                Path.GetExtension(ImageURL).ToLower());
-                    });
+                    ImageFilePath = Chapter.ChapterDir +
+                        FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
+                        FileUtils.RemoveInvalidFileDirectoryCharacters(
+                            Path.GetExtension(ImageURL).ToLower());
 
                     FileInfo image_file = new FileInfo(ImageFilePath);
 
@@ -172,7 +138,7 @@ namespace MangaCrawlerLib
 
                     temp_file.MoveTo(image_file.FullName);
 
-                    NH.TransactionLockUpdate(this, () => SetState(PageState.Downloaded));
+                    State = PageState.Downloaded;
                 }
                 finally
                 {
@@ -188,18 +154,18 @@ namespace MangaCrawlerLib
             catch (Exception ex)
             {
                 Loggers.MangaCrawler.Fatal("Exception #3", ex);
-                NH.TransactionLockUpdate(this, () => SetState(PageState.Error));
+                State = PageState.Error;
             }
         }
 
-        protected internal virtual bool DownloadRequired()
+        internal bool DownloadRequired()
         {
             if (State == PageState.WaitingForDownloading)
                 return true;
 
             Debug.Assert(State == PageState.WaitingForVerifing);
 
-            NH.TransactionLockUpdate(this, () => SetState(PageState.Veryfing));
+            State = PageState.Veryfing;
 
             try
             {
@@ -218,7 +184,7 @@ namespace MangaCrawlerLib
                 if (!Hash.SequenceEqual(hash))
                     return true;
 
-                NH.TransactionLockUpdate(this, () => SetState(PageState.Veryfied));
+                State = PageState.Veryfied;
 
                 return false;
             }
@@ -229,59 +195,66 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual void SetState(PageState a_state)
+        public PageState State
         {
-            switch (a_state)
+            get
             {
-                case PageState.Downloaded:
-                {
-                    Debug.Assert(State == PageState.Downloading);
-                    break;
-                }
-                case PageState.Downloading:
-                {
-                    Debug.Assert((State == PageState.WaitingForDownloading) ||
-                                 (State == PageState.Veryfing));
-                    break;
-                }
-                case PageState.Error:
-                {
-                    Debug.Assert((State == PageState.Downloading) ||
-                                 (State == PageState.Veryfing));
-                    break;
-                }
-                case PageState.Veryfied:
-                {
-                    Debug.Assert(State == PageState.Veryfing);
-                    break;
-                }
-                case PageState.Veryfing:
-                {
-                    Debug.Assert(State == PageState.WaitingForVerifing);
-                    break;
-                }
-                case PageState.WaitingForVerifing:
-                {
-                    Debug.Assert((State == PageState.Downloaded) || 
-                                 (State == PageState.Initial) ||
-                                 (State == PageState.Error));
-                    break;
-                }
-                case PageState.WaitingForDownloading:
-                {
-                    Debug.Assert((State == PageState.Downloaded) ||
-                                 (State == PageState.Initial) ||
-                                 (State == PageState.Error));
-                    break;
-                }
-
-                default:
-                {
-                    throw new InvalidOperationException(String.Format("Unknown state: {0}", a_state));
-                }
+                return m_state;
             }
+            internal set
+            {
+                switch (value)
+                {
+                    case PageState.Downloaded:
+                    {
+                        Debug.Assert(State == PageState.Downloading);
+                        break;
+                    }
+                    case PageState.Downloading:
+                    {
+                        Debug.Assert((State == PageState.WaitingForDownloading) ||
+                                     (State == PageState.Veryfing));
+                        break;
+                    }
+                    case PageState.Error:
+                    {
+                        Debug.Assert((State == PageState.Downloading) ||
+                                     (State == PageState.Veryfing));
+                        break;
+                    }
+                    case PageState.Veryfied:
+                    {
+                        Debug.Assert(State == PageState.Veryfing);
+                        break;
+                    }
+                    case PageState.Veryfing:
+                    {
+                        Debug.Assert(State == PageState.WaitingForVerifing);
+                        break;
+                    }
+                    case PageState.WaitingForVerifing:
+                    {
+                        Debug.Assert((State == PageState.Downloaded) ||
+                                     (State == PageState.Initial) ||
+                                     (State == PageState.Error));
+                        break;
+                    }
+                    case PageState.WaitingForDownloading:
+                    {
+                        Debug.Assert((State == PageState.Downloaded) ||
+                                     (State == PageState.Initial) ||
+                                     (State == PageState.Error));
+                        break;
+                    }
 
-            State = a_state;
+                    default:
+                    {
+                        throw new InvalidOperationException(String.Format("Unknown state: {0}", value));
+                    }
+                }
+
+                m_state = value;
+            }
         }
     }
 }

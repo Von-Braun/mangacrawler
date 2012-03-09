@@ -222,14 +222,6 @@
       <Project>{5CE21DA4-9AD1-4D26-B7AE-2CDF133E6ECC}</Project>
       <Name>MangaCrawlerLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NHibernate\NHibernate.csproj">
-      <Project>{5909BFE7-93CF-4E5F-BE22-6293368AF01D}</Project>
-      <Name>NHibernate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SQLite.NET\SQLite.NET.csproj">
-      <Project>{AC139952-261A-4463-B6FA-AEBC25283A66}</Project>
-      <Name>SQLite.NET</Name>
-    </ProjectReference>
     <ProjectReference Include="..\yaxlib\TomanuExtensions\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
       <Project>{4653B49E-D5A5-43B7-8CED-160E7BC09917}</Project>
       <Name>TomanuExtensionsLib</Name>
@@ -241,44 +233,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo copying SQLLite.Interop.Dll
-
-if "$(ConfigurationName)" == "Debug" (
-  if "$(PlatformName)" == "x64" (
-    copy "$(SolutionDir)SQLite.Interop\Debug_x64\SQLite.Interop*" "$(TargetDir)" &gt; NUL
-  )
-  if "$(PlatformName)" == "AnyCPU" (
-    copy "$(SolutionDir)SQLite.Interop\Debug_x64\SQLite.Interop*" "$(TargetDir)" &gt; NUL
-  )
-  if "$(PlatformName)" == "x86" (
-    copy "$(SolutionDir)SQLite.Interop\Debug_x86\SQLite.Interop*" "$(TargetDir)" &gt; NUL
-  )
-)
-
-if "$(ConfigurationName)" == "Debug Test" (
-  if "$(PlatformName)" == "x64" (
-    copy "$(SolutionDir)SQLite.Interop\Debug_x64\SQLite.Interop*" "$(TargetDir)" &gt; NUL
-  )
-  if "$(PlatformName)" == "AnyCPU" (
-    copy "$(SolutionDir)SQLite.Interop\Debug_x64\SQLite.Interop*" "$(TargetDir)" &gt; NUL
-  )
-  if "$(PlatformName)" == "x86" (
-    copy "$(SolutionDir)SQLite.Interop\Debug_x86\SQLite.Interop*" "$(TargetDir)" &gt; NUL
-  )
-)
-
-if "$(ConfigurationName)" == "Release" (
-  if "$(PlatformName)" == "x64" (
-    copy "$(SolutionDir)SQLite.Interop\Release_x64\SQLite.Interop*" "$(TargetDir)" &gt; NUL
-  )
-  if "$(PlatformName)" == "AnyCPU" (
-    copy "$(SolutionDir)SQLite.Interop\Release_x64\SQLite.Interop*" "$(TargetDir)" &gt; NUL
-  )
-  if "$(PlatformName)" == "x86" (
-    copy "$(SolutionDir)SQLite.Interop\Release_x86\SQLite.Interop*" "$(TargetDir)" &gt; NUL
-  )
-)
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

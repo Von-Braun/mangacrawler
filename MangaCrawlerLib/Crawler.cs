@@ -45,7 +45,7 @@ namespace MangaCrawlerLib
         {
             return DownloadDocument(
                 (a_url == null) ? a_server.URL : a_url, 
-                () => NH.TransactionLockUpdate(a_server, () => a_server.SetState(ServerState.Downloading)), 
+                () => a_server.State = ServerState.Downloading, 
                 () => Limiter.Aquire(a_server),
                 () => Limiter.Release(a_server));
         }
@@ -54,7 +54,7 @@ namespace MangaCrawlerLib
         {
             return DownloadDocument(
                 (a_url == null) ? a_serie.URL : a_url, 
-                () => NH.TransactionLockUpdate(a_serie, () => a_serie.SetState(SerieState.Downloading)), 
+                () => a_serie.State  = SerieState.Downloading, 
                 () => Limiter.Aquire(a_serie),
                 () => Limiter.Release(a_serie));
         }
@@ -63,7 +63,7 @@ namespace MangaCrawlerLib
         {
             return DownloadDocument(
                 (a_url == null) ? a_chapter.URL : a_url, 
-                () => NH.TransactionLockUpdate(a_chapter, () => a_chapter.SetState(ChapterState.DownloadingPagesList)), 
+                () => a_chapter.State = ChapterState.DownloadingPagesList, 
                 () => Limiter.Aquire(a_chapter),
                 () => Limiter.Release(a_chapter));
         }
@@ -72,7 +72,7 @@ namespace MangaCrawlerLib
         {
             return DownloadDocument(
                 (a_url == null) ? a_page.URL : a_url, 
-                () => NH.TransactionLockUpdate(a_page, () => a_page.SetState(PageState.Downloading)), 
+                () => a_page.State = PageState.Downloading, 
                 () => Limiter.Aquire(a_page),
                 () => Limiter.Release(a_page));
         }

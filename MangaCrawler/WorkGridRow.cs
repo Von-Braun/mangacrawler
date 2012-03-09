@@ -36,7 +36,7 @@ namespace MangaCrawler
                     case ChapterState.DownloadingPagesList:
                         return MangaCrawler.Properties.Resources.WorkProgressDownloading;
                     case ChapterState.DownloadingPages:
-                        return String.Format("{0}/{1}", Chapter.PagesDownloaded, Chapter.GetPages().Count());
+                        return String.Format("{0}/{1}", Chapter.PagesDownloaded, Chapter.Pages.Count);
                     default: throw new NotImplementedException();
                 }
             }

@@ -8,34 +8,28 @@ using System.Threading;
 using System.Diagnostics;
 using TomanuExtensions;
 using TomanuExtensions.Utils;
-using NHibernate.Mapping.ByCode;
 using System.Collections.ObjectModel;
 using Ionic.Zip;
 using System.Threading.Tasks;
-using NHibernate.Type;
 
 namespace MangaCrawlerLib
 {
     public class Chapter : Entity 
     {
         private CancellationTokenSource m_cancellation_token_source;
-        private IList<Page> m_pages;
 
-        public virtual ChapterState State { get; protected set; }
-        public virtual bool CBZ { get; protected set; }
-        public virtual string ChapterDir { get; protected set; }
-        public virtual Serie Serie { get; protected set; }
-        public virtual string Title { get; protected set; }
-        protected internal virtual CacheList<Page> CachePages { get; protected set; }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private ChapterState m_state;
 
-        protected Chapter()
-        {
-            Pages = new List<Page>();
-        }
+        public List<Page> Pages { get; private set; }
+        public bool CBZ { get; private set; }
+        public string ChapterDir { get; private set; }
+        public Serie Serie { get; private set; }
+        public string Title { get; private set; }
 
         internal Chapter(Serie a_serie, string a_url, string a_title) 
-            : this()
         {
+            Pages = new List<Page>();
             Serie = a_serie;
             URL = HttpUtility.HtmlDecode(a_url);
 
@@ -46,61 +40,16 @@ namespace MangaCrawlerLib
             Title = HttpUtility.HtmlDecode(a_title);
         }
 
-        private void Map(ModelMapper a_mapper)
-        {
-            a_mapper.Class<Chapter>(m =>
-            {
-                m.Id(c => c.ID, mapper => mapper.Generator(Generators.Native) );
-                m.Property(c => c.URL, mapping => mapping.NotNullable(true) );
-                m.Property(c => c.Title, mapping => mapping.NotNullable(true));
-                m.Version("Version", mapper => { });
-                m.Property(c => c.State, mapping => { });
-                m.Property(c => c.ChapterDir, mapping => mapping.NotNullable(false));
-                m.Property(c => c.CBZ, mapping => { });
-
-                m.ManyToOne(
-                    c => c.Serie,
-                    mapping =>
-                    {
-                        mapping.NotNullable(false);
-                    }
-                );
-
-                m.List<Page>("Pages",
-                    list_mapping => 
-                    { 
-                        list_mapping.Cascade(Cascade.All); 
-                    },
-                    mapping => mapping.OneToMany()
-                );
-            });
-        }
-
-        protected internal virtual IList<Page> Pages
+        public int PagesDownloaded
         {
             get
             {
-                return m_pages;
-            }
-
-            protected set
-            {
-                m_pages = value;
-                CachePages = new CacheList<Page>(this, value);
-
+                return Pages.Count(p => (p.State == PageState.Veryfied) ||
+                                        (p.State == PageState.Downloaded));
             }
         }
 
-        public virtual int PagesDownloaded
-        {
-            get
-            {
-                return CachePages.Count(p => (p.State == PageState.Veryfied) ||
-                                             (p.State == PageState.Downloaded));
-            }
-        }
-
-        public virtual Server Server
+        public Server Server
         {
             get
             {
@@ -108,7 +57,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal override Crawler Crawler
+        internal override Crawler Crawler
         {
             get
             {
@@ -116,7 +65,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public virtual bool IsWorking
+        public bool IsWorking
         {
             get
             {
@@ -133,25 +82,17 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Serie, Title);
         }
 
-        public virtual IEnumerable<Page> GetPages()
+        public void DeleteWork()
         {
-            return CachePages;
-        }
+            if (State == ChapterState.Deleting)
+                return;
 
-        public virtual void DeleteWork()
-        {
-            NH.TransactionLockUpdate(this, () =>
+            if (IsWorking)
             {
-                if (State == ChapterState.Deleting)
-                    return;
-
-                if (IsWorking)
-                {
-                    Loggers.MangaCrawler.InfoFormat("Deleting, chapter: {0}, state: {1}", this, State);
-                    CancellationTokenSource.Cancel();
-                    SetState(ChapterState.Deleting);
-                }
-            });
+                Loggers.MangaCrawler.InfoFormat("Deleting, chapter: {0}, state: {1}", this, State);
+                CancellationTokenSource.Cancel();
+                State = ChapterState.Deleting;
+            }
         }
 
         private string GetChapterDirectory(string a_images_base_dir)
@@ -169,31 +110,31 @@ namespace MangaCrawlerLib
                    Path.DirectorySeparatorChar;
         }
 
-        protected internal virtual void DownloadPagesList(string a_manga_root_dir, bool a_cbz)
+        internal void DownloadPagesList(string a_manga_root_dir, bool a_cbz)
         {
             var pages = Crawler.DownloadPages(this);
 
-            NH.TransactionLockUpdate(this, () =>
+            IList<Page> added;
+            IList<Page> removed;
+            Sync(pages, Pages, page => (page.Name + page.URL),
+                    true, out added, out removed);
+
+            ChapterDir = GetChapterDirectory(a_manga_root_dir);
+            CBZ = a_cbz;
+            State = ChapterState.DownloadingPages;
+
+            bool changed = added.Any() || removed.Any();
+
+            foreach (var page in Pages)
             {
-                IList<Page> added;
-                IList<Page> removed;
-                CachePages.Sync(pages, page => (page.Name + page.URL), true, out added, out removed);
-
-                ChapterDir = GetChapterDirectory(a_manga_root_dir);
-                CBZ = a_cbz;
-                SetState(ChapterState.DownloadingPages);
-
-                foreach (var page in CachePages)
-                {
-                    if (added.Any() || removed.Any())
-                        page.SetState(PageState.WaitingForDownloading);
-                    else
-                        page.SetState(PageState.WaitingForVerifing);
-                }
-            });
+                if (changed)
+                    page.State = PageState.WaitingForDownloading;
+                else
+                    page.State = PageState.WaitingForVerifing;
+            }
         }
 
-        protected internal virtual void DownloadPages(string a_manga_root_dir, bool a_cbz)
+        internal void DownloadPages(string a_manga_root_dir, bool a_cbz)
         {
             bool error = false;
 
@@ -203,7 +144,7 @@ namespace MangaCrawlerLib
 
                 DownloadPagesList(a_manga_root_dir, a_cbz);
 
-                Parallel.ForEach(CachePages,
+                Parallel.ForEach(Pages,
 
                     new ParallelOptions()
                     {
@@ -256,34 +197,19 @@ namespace MangaCrawlerLib
             }
             finally
             {
-                NH.TransactionLockUpdate(this, () =>
-                {
-                    Loggers.MangaCrawler.InfoFormat("Chapter: {0}, state: {1}, error: {2}",
-                        this, State, error);
+                Loggers.MangaCrawler.InfoFormat("Chapter: {0}, state: {1}, error: {2}",
+                    this, State, error);
 
-                    if (error)
-                    {
-                        SetState(ChapterState.Error);
-                        return;
-                    }
-
-                    if (CancellationTokenSource.IsCancellationRequested)
-                        SetState(ChapterState.Aborted);
-
-                    if (PagesDownloaded != CachePages.Count)
-                    {
-                        SetState(ChapterState.Error);
-                        return;
-                    }
-
-                    if (CachePages.Any(p => (p.State != PageState.Downloaded) && (p.State != PageState.Veryfied)))
-                    {
-                        SetState(ChapterState.Error);
-                        return;
-                    }
-
-                    SetState(ChapterState.Downloaded);
-                });
+                if (error)
+                    State = ChapterState.Error;
+                else if (CancellationTokenSource.IsCancellationRequested)
+                    State = ChapterState.Aborted;
+                else if (PagesDownloaded != Pages.Count)
+                    State = ChapterState.Error;
+                else if (Pages.Any(p => (p.State != PageState.Downloaded) && (p.State != PageState.Veryfied)))
+                    State = ChapterState.Error;
+                else
+                    State = ChapterState.Downloaded;
 
                 Limiter.EndChapter(this);
             }
@@ -295,15 +221,15 @@ namespace MangaCrawlerLib
                 "Chapter: {0} state: {1}",
                 this, State);
 
-            if (CachePages.Count == 0)
+            if (Pages.Count == 0)
             {
                 Loggers.MangaCrawler.InfoFormat("Pages.Count = 0 - nothing to zip");
                 return;
             }
 
-            NH.TransactionLockUpdate(this, () => SetState(ChapterState.Zipping));
+            State = ChapterState.Zipping;
 
-            var dir = new DirectoryInfo(CachePages.First().ImageFilePath).Parent;
+            var dir = new DirectoryInfo(Pages.First().ImageFilePath).Parent;
 
             var zip_file = dir.FullName + ".cbz";
 
@@ -320,7 +246,7 @@ namespace MangaCrawlerLib
                 {
                     zip.UseUnicodeAsNecessary = true;
 
-                    foreach (var page in CachePages)
+                    foreach (var page in Pages)
                     {
                         zip.AddFile(page.ImageFilePath, "");
 
@@ -344,7 +270,7 @@ namespace MangaCrawlerLib
 
             try
             {
-                foreach (var page in CachePages)
+                foreach (var page in Pages)
                     new FileInfo(page.ImageFilePath).Delete();
 
                 if ((dir.GetFiles().Count() == 0) && (dir.GetDirectories().Count() == 0))
@@ -366,7 +292,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual CancellationToken Token
+        internal CancellationToken Token
         {
             get
             {
@@ -374,72 +300,79 @@ namespace MangaCrawlerLib
             }
         }
 
-        protected internal virtual void SetState(ChapterState a_state)
+        public ChapterState State
         {
-            switch (a_state)
+            get
             {
-                case ChapterState.Initial:
-                {
-                    break;
-                }
-                case ChapterState.Waiting:
-                {
-                    Debug.Assert((State == ChapterState.Aborted) ||
-                                 (State == ChapterState.Downloaded) ||
-                                 (State == ChapterState.Error) ||
-                                 (State == ChapterState.Initial));
-                    break;
-                }
-                case ChapterState.DownloadingPagesList:
-                {
-                    Debug.Assert(State == ChapterState.Waiting);
-                    break;
-                }
-                case ChapterState.DownloadingPages:
-                {
-                    Debug.Assert(State == ChapterState.DownloadingPagesList);
-                    break;
-                }
-                case ChapterState.Zipping:
-                {
-                    Debug.Assert(State == ChapterState.DownloadingPages);
-                    break;
-                }
-                case ChapterState.Aborted:
-                {
-                    Debug.Assert(State == ChapterState.Deleting);
-                    break;
-                }
-                case ChapterState.Deleting:
-                {
-                    Debug.Assert((State == ChapterState.DownloadingPages) ||
-                                 (State == ChapterState.DownloadingPagesList) ||
-                                 (State == ChapterState.Waiting) ||
-                                 (State == ChapterState.Zipping));
-                    break;
-                }
-                case ChapterState.Error:
-                {
-                    Debug.Assert((State == ChapterState.DownloadingPages) ||
-                                 (State == ChapterState.DownloadingPagesList) ||
-                                 (State == ChapterState.Waiting) ||
-                                 (State == ChapterState.Error) ||
-                                 (State == ChapterState.Zipping));
-                    break;
-                }
-                case ChapterState.Downloaded:
-                {
-                    Debug.Assert((State == ChapterState.DownloadingPages) ||
-                                 (State == ChapterState.Zipping));
-                    break;
-                }
-                default:
-                {
-                    throw new InvalidOperationException(String.Format("Unknown state: {0}", a_state));
-                }
+                return m_state;
             }
+            internal set
+            {
+                switch (value)
+                {
+                    case ChapterState.Initial:
+                    {
+                        break;
+                    }
+                    case ChapterState.Waiting:
+                    {
+                        Debug.Assert((State == ChapterState.Aborted) ||
+                                     (State == ChapterState.Downloaded) ||
+                                     (State == ChapterState.Error) ||
+                                     (State == ChapterState.Initial));
+                        break;
+                    }
+                    case ChapterState.DownloadingPagesList:
+                    {
+                        Debug.Assert(State == ChapterState.Waiting);
+                        break;
+                    }
+                    case ChapterState.DownloadingPages:
+                    {
+                        Debug.Assert(State == ChapterState.DownloadingPagesList);
+                        break;
+                    }
+                    case ChapterState.Zipping:
+                    {
+                        Debug.Assert(State == ChapterState.DownloadingPages);
+                        break;
+                    }
+                    case ChapterState.Aborted:
+                    {
+                        Debug.Assert(State == ChapterState.Deleting);
+                        break;
+                    }
+                    case ChapterState.Deleting:
+                    {
+                        Debug.Assert((State == ChapterState.DownloadingPages) ||
+                                     (State == ChapterState.DownloadingPagesList) ||
+                                     (State == ChapterState.Waiting) ||
+                                     (State == ChapterState.Zipping));
+                        break;
+                    }
+                    case ChapterState.Error:
+                    {
+                        Debug.Assert((State == ChapterState.DownloadingPages) ||
+                                     (State == ChapterState.DownloadingPagesList) ||
+                                     (State == ChapterState.Waiting) ||
+                                     (State == ChapterState.Error) ||
+                                     (State == ChapterState.Zipping));
+                        break;
+                    }
+                    case ChapterState.Downloaded:
+                    {
+                        Debug.Assert((State == ChapterState.DownloadingPages) ||
+                                     (State == ChapterState.Zipping));
+                        break;
+                    }
+                    default:
+                    {
+                        throw new InvalidOperationException(String.Format("Unknown state: {0}", value));
+                    }
+                }
 
-            State = a_state;
+                m_state = value;
+            }
         }
     }
 }
