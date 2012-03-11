@@ -42,17 +42,16 @@ namespace MangaCrawlerLib
         private const int LOOP_SLEEP_MS = 500;
         private const int WAIT_SLEEP_MS = 500;
 
-        /// <summary>
-        /// Sync with app.config
-        /// </summary>
+        //// Sync with MangaCrawler/app.config
         public const int MAX_CONNECTIONS = 100;
+
         public const int MAX_CONNECTIONS_PER_SERVER = 4;
 
         private static Dictionary<int, int> s_server_connections = new Dictionary<int, int>();
         private static Dictionary<int, bool> s_one_chapter_per_server = new Dictionary<int, bool>();
         private static int s_connections = 0;
 
-        public static TaskScheduler Scheduler = new CustomTaskScheduler(MAX_CONNECTIONS);
+        public static TaskScheduler Scheduler = TaskScheduler.Current;
 
         static Limiter()
         {
@@ -115,7 +114,13 @@ namespace MangaCrawlerLib
             }
         }
 
-        private static long last = DateTime.Now.Ticks;
+        private static void Log()
+        {
+            Debug.Write(s_connections.ToString() + ", ");
+            foreach (var el in s_server_connections)
+                Debug.Write(el.Value + ", ");
+            Debug.WriteLine("");
+        }
 
         private static void Loop()
         {
