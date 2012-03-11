@@ -72,7 +72,7 @@ namespace MangaCrawlerLib
 
                 for (int page = 1; page <= pages_count; page++)
                 {
-                    Page pi = new Page(a_chapter, a_chapter.URL + "&page=" + page, page);
+                    Page pi = new Page(a_chapter, a_chapter.URL + "&page=" + page, page, "");
 
                     yield return pi;
                 }
@@ -86,7 +86,7 @@ namespace MangaCrawlerLib
 
                     Page pi = new Page(a_chapter, 
                                        "http://www.anime-source.com/banzai/" + page.GetAttributeValue("value", ""),
-                                       index);
+                                       index, "");
 
                     yield return pi;
                 }

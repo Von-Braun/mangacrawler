@@ -22,6 +22,7 @@ namespace MangaCrawlerLib
         internal static string UserAgent = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:10.0) Gecko/20100101 Firefox/10.0";
 
         public static Func<string> GetMangaRootDir;
+        public static Func<string> GetSettingsDir;
         public static Func<bool> UseCBZ;
 
         private static Server[] s_servers;
@@ -126,15 +127,17 @@ namespace MangaCrawlerLib
             }
         }
 
+        public static void Save()
+        {
+            Catalog.Save();
+        }
+
         public static IEnumerable<Server> Servers
         {
             get
             {
                 if (s_servers == null)
-                {
-                    s_servers = (from c in CrawlerList.Crawlers
-                                 select new Server(c.GetServerURL(), c.Name)).ToArray();
-                }
+                    s_servers = Catalog.Load();
 
                 return s_servers;
             }

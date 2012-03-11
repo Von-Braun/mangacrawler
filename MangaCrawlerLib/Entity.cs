@@ -8,65 +8,52 @@ namespace MangaCrawlerLib
 {
     public abstract class Entity
     {
-        private static int IDCounter = 0;
-
-        public int ID { get; protected set; }
+        public ulong ID { get; internal set; }
         public string URL { get; protected set; }
 
+        protected Entity(ulong a_id)
+        {
+            ID = a_id;
+        }
+
+        internal static List<T> MergeAndRemoveOrphans<T, K>(IList<T> a_list, IEnumerable<T> a_new, 
+            Func<T, K> a_key_selector) where T : Entity
+        {
+            bool changed;
+            return MergeAndRemoveOrphans(a_list, a_new, a_key_selector, out changed);
+        }
+
+        internal static List<T> MergeAndRemoveOrphans<T, K>(IList<T> a_list, 
+            IEnumerable<T> a_new, Func<T, K> a_key_selector, out bool a_changed) where T : Entity
+        {
+            var dict = a_list.ToDictionary(a_key_selector);
+            var result = a_new.ToList();
+
+            int replaced = 0;
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                K key = a_key_selector(result[i]);
+                if (dict.ContainsKey(key))
+                {
+                    result[i] = dict[key];
+                    dict.Remove(key);
+                    replaced++;
+                }
+            }
+
+            if (a_list.Count != result.Count)
+                a_changed = true;
+            else
+                a_changed = replaced != a_list.Count;
+
+            foreach (var orphan in dict.Values)
+                orphan.RemoveOrphan();
+
+            return result;
+        }
+
         internal abstract Crawler Crawler { get; }
-
-        internal Entity()
-        {
-            IDCounter++;
-            ID = IDCounter;
-        }
-
-        protected static void Sync<T, K>(IEnumerable<T> a_new, List<T> a_list, Func<T, K> a_key_selector,
-            bool a_remove, out IList<T> a_added, out IList<T> a_removed) where K : IEquatable<K>
-        {
-            IDictionary<K, T> new_pages_dict = a_new.ToDictionary<T, K>(a_key_selector);
-            IDictionary<K, T> pages_dict = a_list.ToDictionary(a_key_selector);
-
-            a_removed = new List<T>();
-
-            if (a_remove)
-            {
-                List<K> to_remove = new List<K>();
-
-                foreach (var key in pages_dict.Keys)
-                {
-                    if (!new_pages_dict.Keys.Contains(key))
-                        to_remove.Add(key);
-                }
-
-                a_removed = (from key in to_remove
-                             select pages_dict[key]).ToList();
-                a_list.RemoveRange(a_removed);
-                pages_dict.RemoveRange(to_remove);
-            }
-
-            a_added = new List<T>();
-
-            int index = 0;
-            foreach (var el in a_new)
-            {
-                if (a_list.Count <= index)
-                {
-                    a_list.Insert(index, el);
-                    a_added.Add(el);
-                }
-                else
-                {
-                    var pr = a_list[index];
-
-                    if (!a_key_selector(pr).Equals(a_key_selector(el)))
-                    {
-                        a_list.Insert(index, el);
-                        a_added.Add(el);
-                    }
-                }
-                index++;
-            }
-        }
+        protected internal abstract void RemoveOrphan();
     }
 }

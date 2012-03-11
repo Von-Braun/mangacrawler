@@ -85,7 +85,8 @@ namespace MangaCrawlerLib
                 Page pi = new Page(
                     a_chapter,
                     a_chapter.URL.Replace("1.html", String.Format("{0}.html", page.GetAttributeValue("value", ""))), 
-                    index);
+                    index, 
+                    "");
 
                 index++;
 

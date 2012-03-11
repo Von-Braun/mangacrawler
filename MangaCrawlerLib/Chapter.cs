@@ -16,20 +16,63 @@ namespace MangaCrawlerLib
 {
     public class Chapter : Entity 
     {
+        #region PagesCachedList
+        private class PagesCachedList : CachedList<Page>
+        {
+            private Chapter m_chapter;
+
+            public PagesCachedList(Chapter a_chapter)
+            {
+                m_chapter = a_chapter;
+            }
+
+            protected override void EnsureLoaded()
+            {
+                lock (m_load_from_xml_lock)
+                {
+                    if (m_list != null)
+                        return;
+
+                    m_list = Catalog.LoadChapterPages(m_chapter);
+
+                    if (m_list.Count != 0)
+                        m_loaded_from_xml = true;
+                }
+            }
+
+            internal override void ClearCache()
+            {
+                lock (m_load_from_xml_lock)
+                {
+                    Catalog.SaveChapterPages(m_chapter);
+                    m_list = null;
+                    m_loaded_from_xml = false;
+                }
+            }
+        }
+        #endregion
+
         private CancellationTokenSource m_cancellation_token_source;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ChapterState m_state;
 
-        public List<Page> Pages { get; private set; }
+        private PagesCachedList m_pages;
+
         public bool CBZ { get; private set; }
         public string ChapterDir { get; private set; }
         public Serie Serie { get; private set; }
         public string Title { get; private set; }
 
-        internal Chapter(Serie a_serie, string a_url, string a_title) 
+        internal Chapter(Serie a_serie, string a_url, string a_title)
+            : this(a_serie, a_url, a_title, Catalog.NextID())
         {
-            Pages = new List<Page>();
+        }
+
+        internal Chapter(Serie a_serie, string a_url, string a_title, ulong a_id)
+            : base(a_id)
+        {
+            m_pages = new PagesCachedList(this);
             Serie = a_serie;
             URL = HttpUtility.HtmlDecode(a_url);
 
@@ -38,6 +81,14 @@ namespace MangaCrawlerLib
             while (a_title.IndexOf("  ") != -1)
                 a_title = a_title.Replace("  ", " ");
             Title = HttpUtility.HtmlDecode(a_title);
+        }
+
+        public IList<Page> Pages
+        {
+            get
+            {
+                return m_pages;
+            }
         }
 
         public int PagesDownloaded
@@ -112,25 +163,22 @@ namespace MangaCrawlerLib
 
         internal void DownloadPagesList(string a_manga_root_dir, bool a_cbz)
         {
-            var pages = Crawler.DownloadPages(this);
+            var pages = Crawler.DownloadPages(this).ToList();
 
-            IList<Page> added;
-            IList<Page> removed;
-            Sync(pages, Pages, page => (page.Name + page.URL),
-                    true, out added, out removed);
+            bool changed;
+            var merged = Entity.MergeAndRemoveOrphans(m_pages, pages, p => p.Name + p.URL, out changed);
+            m_pages.ReplaceInnerCollection(merged);
 
             ChapterDir = GetChapterDirectory(a_manga_root_dir);
             CBZ = a_cbz;
             State = ChapterState.DownloadingPages;
-
-            bool changed = added.Any() || removed.Any();
 
             foreach (var page in Pages)
             {
                 if (changed)
                     page.State = PageState.WaitingForDownloading;
                 else
-                    page.State = PageState.WaitingForVerifing;
+                    page.State = PageState.WaitingForVerifying;
             }
         }
 
@@ -157,7 +205,9 @@ namespace MangaCrawlerLib
                         {
                             if (!page.DownloadRequired())
                                 return;
- 
+                            else if (page.State != PageState.WaitingForDownloading)
+                                page.State = PageState.WaitingForDownloading;
+
                             page.DownloadAndSavePageImage();
                         }
                         catch (OperationCanceledException ex1)
@@ -373,6 +423,24 @@ namespace MangaCrawlerLib
 
                 m_state = value;
             }
+        }
+
+        internal void Save()
+        {
+            if (!m_pages.Changed)
+                return;
+
+            Catalog.SaveChapterPages(this);
+
+            m_pages.Changed = false;
+        }
+
+        protected internal override void RemoveOrphan()
+        {
+            foreach (var p in Pages)
+                p.RemoveOrphan();
+
+            Catalog.DeleteCatalogFile(ID);
         }
     }
 }

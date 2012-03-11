@@ -23,7 +23,7 @@ namespace MangaCrawler
             return Serie.Title;
         }
 
-        public override int ID
+        public override ulong ID
         {
             get
             {
