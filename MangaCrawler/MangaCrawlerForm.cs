@@ -95,10 +95,6 @@ namespace MangaCrawler
      * 
      * zmiana katalogu bazowego - o zrobic z aktualnymi danymi, przeniesc albo skasowac, pytac sie usera najlepiej
      * 
-     * totalnie przerobic pobieranie, recznie stowrzyc potrzebna pule watkow i recznie odpalac kolejne zadania na nich, 
-     * recznie decydowac o priorytetach, zlikwidowac takze podzial zadan na watki, tak by rzeczy sciagaly sie jeden po drugim, 
-     * a nie podzielone zostaly na dwie polwki (partitioner)
-     * 
      * jak usuwac skonczone worksy z downloadmanagera, najlepiej tak blednych nie usuwac wogole, skonczone usuwac 
      * tylko jesli tak zostalo zaznaczone
      * 
@@ -109,6 +105,8 @@ namespace MangaCrawler
      * czas, co pewna ilosc, co pewne zuzcie pamieci
      * 
      * maksymalna ilosc polaczen, teraz jest sto, jaka powinna byc racjonalna ilosc
+     * 
+     * dodac do paraller.foreach, for, wlasny partitioner, ktory bedzie wybieral sekwencje jedna po drugiej
      */
 
     public partial class MangaCrawlerForm : Form

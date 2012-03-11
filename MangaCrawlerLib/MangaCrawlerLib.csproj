@@ -80,7 +80,6 @@
   <ItemGroup>
     <Compile Include="Crawlers\CrawlerList.cs" />
     <Compile Include="Crawlers\TestServerCrawler.cs" />
-    <Compile Include="CustomTaskScheduler.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Limiter.cs" />
     <Compile Include="Loggers.cs" />
