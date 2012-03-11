@@ -114,7 +114,8 @@ namespace MangaCrawlerLib
                 Page pi = new Page(
                     a_chapter,
                     a_chapter.URL + "/" + i.ToString(), 
-                    i);
+                    i, 
+                    "");
 
                 yield return pi;
             }

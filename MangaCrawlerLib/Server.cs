@@ -13,8 +13,41 @@ namespace MangaCrawlerLib
 {
     public class Server : Entity
     {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Object m_lock = new Object();
+        #region SeriesCachedList
+        private class SeriesCachedList : CachedList<Serie>
+        {
+            private Server m_server;
+
+            public SeriesCachedList(Server a_server)
+            {
+                m_server = a_server;
+            }
+
+            protected override void EnsureLoaded()
+            {
+                lock (m_load_from_xml_lock)
+                {
+                    if (m_list != null)
+                        return;
+
+                    m_list = Catalog.LoadServerSeries(m_server);
+
+                    if (m_list.Count != 0)
+                        m_loaded_from_xml = true;
+                }
+            }
+
+            internal override void ClearCache()
+            {
+                lock (m_load_from_xml_lock)
+                {
+                    Catalog.SaveServerSeries(m_server);
+                    m_list = null;
+                    m_loaded_from_xml = false;
+                }
+            }
+        }
+        #endregion
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Crawler m_crawler;
@@ -22,13 +55,20 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private ServerState m_state;
 
-        public int DownloadProgress { get; protected set; }
-        public string Name { get;  protected set; }
-        public List<Serie> Series { get; protected set; }
+        private CachedList<Serie> m_series;
+
+        public int DownloadProgress { get; private set; }
+        public string Name { get; private set; }
 
         internal Server(string a_url, string a_name)
+            : this(a_url, a_name, Catalog.NextID())
         {
-            Series = new List<Serie>();
+        }
+
+        internal Server(string a_url, string a_name, ulong a_id)
+            : base(a_id)
+        {
+            m_series = new SeriesCachedList(this);
             URL = a_url;
             Name = a_name;
         }
@@ -44,23 +84,32 @@ namespace MangaCrawlerLib
             }
         }
 
+        public IList<Serie> Series 
+        {
+            get
+            {
+                return m_series;
+            }
+        }
+
         internal void DownloadSeries()
         {
             try
             {
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
-                    lock (m_lock)
-                    {
-                        IList<Serie> removed;
-                        IList<Serie> added;
-                        List<Serie> series = Series.ToList();
-                        Sync(result, series, serie => (serie.Title + serie.URL), progress == 100,
-                            out added, out removed);
-                        Series = series;
-                    }
-
                     DownloadProgress = progress;
+
+                    if (m_series.LoadedFromXml)
+                    {
+                        if (progress == 100)
+                        {
+                            var merged = Entity.MergeAndRemoveOrphans(m_series, result, s => s.URL + s.Title);
+                            m_series.ReplaceInnerCollection(merged);
+                        }
+                    }
+                    else
+                        m_series.ReplaceInnerCollection(result.ToList());
                 });
 
                 State = ServerState.Downloaded;
@@ -133,6 +182,27 @@ namespace MangaCrawlerLib
 
                 m_state = value;
             }
+        }
+
+        internal void Save()
+        {
+            if (!m_series.Changed)
+                return;
+
+            Catalog.SaveServerSeries(this);
+
+            m_series.Changed = false;
+
+            foreach (var serie in Series)
+                serie.Save();
+        }
+
+        protected internal override void RemoveOrphan()
+        {
+            foreach (var s in Series)
+                s.RemoveOrphan();
+
+            Catalog.DeleteCatalogFile(ID);
         }
     }
 }

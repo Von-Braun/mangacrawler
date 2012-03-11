@@ -40,8 +40,8 @@ namespace MangaCrawlerLib
     {
         Initial, 
         WaitingForDownloading,
-        WaitingForVerifing, 
-        Veryfing,
+        WaitingForVerifying, 
+        Veryfying,
         Veryfied, 
         Downloading, 
         Downloaded, 

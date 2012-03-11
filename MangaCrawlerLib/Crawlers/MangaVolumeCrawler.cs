@@ -238,7 +238,8 @@ namespace MangaCrawlerLib
                     a_chapter,
                     String.Format("http://www.mangavolume.com{0}", 
                         page.GetAttributeValue("value", "")),
-                    index);
+                    index, 
+                    "");
 
                 yield return pi;
             }

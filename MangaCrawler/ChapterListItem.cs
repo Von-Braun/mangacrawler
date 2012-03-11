@@ -96,7 +96,7 @@ namespace MangaCrawler
             DrawItem(a_args, Chapter.Title, draw_tip);
         }
 
-        public override int ID
+        public override ulong ID
         {
             get 
             {

@@ -1,0 +1,14 @@
+syntax: glob
+DotNetZip/bin
+DotNetZip/obj
+HtmlAgilityPack/bin
+HtmlAgilityPack/obj
+MangaCrawler.suo
+MangaCrawler/bin
+MangaCrawler/obj
+MangaCrawlerLib/bin
+MangaCrawlerLib/obj
+MangaCrawlerTest/bin
+MangaCrawlerTest/obj
+log4net/bin/Debug
+log4net/obj

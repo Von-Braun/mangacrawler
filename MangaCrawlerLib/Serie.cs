@@ -11,20 +11,63 @@ namespace MangaCrawlerLib
 {
     public class Serie : Entity
     {
+        #region ChaptersCachedList
+        private class ChaptersCachedList : CachedList<Chapter>
+        {
+            private Serie m_serie;
+
+            public ChaptersCachedList(Serie a_serie)
+            {
+                m_serie = a_serie;
+            }
+
+            protected override void EnsureLoaded()
+            {
+                lock (m_load_from_xml_lock)
+                {
+                    if (m_list != null)
+                        return;
+
+                    m_list = Catalog.LoadSerieChapters(m_serie);
+
+                    if (m_list.Count != 0)
+                        m_loaded_from_xml = true;
+                }
+            }
+
+            internal override void ClearCache()
+            {
+                lock (m_load_from_xml_lock)
+                {
+                    Catalog.SaveSerieChapters(m_serie);
+                    m_list = null;
+                    m_loaded_from_xml = false;
+                }
+            }
+        }
+        #endregion
+
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Object m_lock = new Object();
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private SerieState m_state;
 
+        private CachedList<Chapter> m_chapters;
+
         public Server Server { get; protected set; }
         public string Title { get; protected set; }
         public int DownloadProgress { get; protected set; }
-        public List<Chapter> Chapters { get; protected set; }
 
         internal Serie(Server a_server, string a_url, string a_title)
+            : this(a_server, a_url, a_title, Catalog.NextID())
         {
-            Chapters = new List<Chapter>();
+        }
+
+        internal Serie(Server a_server, string a_url, string a_title, ulong a_id)
+            : base(a_id)
+        {
+            m_chapters = new ChaptersCachedList(this);
             URL = HttpUtility.HtmlDecode(a_url);
             Server = a_server;
 
@@ -33,6 +76,14 @@ namespace MangaCrawlerLib
             while (a_title.IndexOf("  ") != -1)
                 a_title = a_title.Replace("  ", " ");
             Title = HttpUtility.HtmlDecode(a_title);
+        }
+
+        public IList<Chapter> Chapters
+        {
+            get
+            {
+                return m_chapters;
+            }
         }
 
         internal override Crawler Crawler
@@ -49,17 +100,18 @@ namespace MangaCrawlerLib
             {
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
-                    lock (m_lock)
-                    {
-                        IList<Chapter> added;
-                        IList<Chapter> removed;
-                        List<Chapter> chapters = Chapters.ToList();
-                        Sync(result, chapters, chapter => (chapter.Title + chapter.URL),
-                            progress == 100, out added, out removed);
-                        Chapters = chapters;
-                    }
-
                     DownloadProgress = progress;
+
+                    if (m_chapters.LoadedFromXml)
+                    {
+                        if (progress == 100)
+                        {
+                            var merged = Entity.MergeAndRemoveOrphans(m_chapters, result, c => c.URL + c.Title);
+                            m_chapters.ReplaceInnerCollection(merged);
+                        }
+                    }
+                    else
+                        m_chapters.ReplaceInnerCollection(result.ToList());
                 });
 
                 State = SerieState.Downloaded;
@@ -133,6 +185,27 @@ namespace MangaCrawlerLib
 
                 m_state = value;
             }
+        }
+
+        internal void Save()
+        {
+            if (!m_chapters.Changed)
+                return;
+
+            Catalog.SaveSerieChapters(this);
+
+            m_chapters.Changed = false;
+
+            foreach (var chapter in Chapters)
+                chapter.Save();
+        }
+
+        protected internal override void RemoveOrphan()
+        {
+            foreach (var c in Chapters)
+                c.RemoveOrphan();
+
+            Catalog.DeleteCatalogFile(ID);
         }
     }
 }

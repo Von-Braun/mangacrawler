@@ -24,7 +24,7 @@ namespace MangaCrawler
             return Server.Name;
         }
 
-        public override int ID
+        public override ulong ID
         {
             get
             {

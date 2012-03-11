@@ -53,6 +53,6 @@ namespace MangaCrawler
         }
 
         public abstract void DrawItem(DrawItemEventArgs a_args);
-        public abstract int ID { get; }
+        public abstract ulong ID { get; }
     }
 }

@@ -47,8 +47,8 @@ namespace MangaCrawlerLib
 
         public const int MAX_CONNECTIONS_PER_SERVER = 4;
 
-        private static Dictionary<int, int> s_server_connections = new Dictionary<int, int>();
-        private static Dictionary<int, bool> s_one_chapter_per_server = new Dictionary<int, bool>();
+        private static Dictionary<Server, int> s_server_connections = new Dictionary<Server, int>();
+        private static Dictionary<Server, bool> s_one_chapter_per_server = new Dictionary<Server, bool>();
         private static int s_connections = 0;
 
         public static TaskScheduler Scheduler = TaskScheduler.Current;
@@ -57,8 +57,8 @@ namespace MangaCrawlerLib
         {
             foreach (var server in DownloadManager.Servers)
             {
-                s_server_connections[server.ID] = 0;
-                s_one_chapter_per_server[server.ID] = false;
+                s_server_connections[server] = 0;
+                s_one_chapter_per_server[server] = false;
             }
 
             Thread loop_thread = new Thread(Loop);
@@ -138,24 +138,21 @@ namespace MangaCrawlerLib
 
                         if (limit != null)
                         {
-                            // Very unlikly to happen when everything is ok. 
-                            Debug.Assert(signaled);
-
                             if (limit.Priority == Priority.Pages)
                             {
-                                Debug.Assert(!s_one_chapter_per_server[limit.Server.ID]);
-                                s_one_chapter_per_server[limit.Server.ID] = true;
+                                Debug.Assert(!s_one_chapter_per_server[limit.Server]);
+                                s_one_chapter_per_server[limit.Server] = true;
                             }
                             else
                             {
                                 if (limit.Priority == Priority.Image)
-                                    Debug.Assert(s_one_chapter_per_server[limit.Server.ID]);
+                                    Debug.Assert(s_one_chapter_per_server[limit.Server]);
                                 
                                 s_connections++;
-                                s_server_connections[limit.Server.ID]++;
+                                s_server_connections[limit.Server]++;
 
                                 Debug.Assert(s_connections <= MAX_CONNECTIONS);
-                                Debug.Assert(s_server_connections[limit.Server.ID] <= MAX_CONNECTIONS_PER_SERVER);
+                                Debug.Assert(s_server_connections[limit.Server] <= MAX_CONNECTIONS_PER_SERVER);
                             }
 
                             limit.Event.Set();
@@ -173,8 +170,8 @@ namespace MangaCrawlerLib
         {
             lock (s_limits)
             {
-                Debug.Assert(s_one_chapter_per_server[a_chapter.Server.ID]);
-                s_one_chapter_per_server[a_chapter.Server.ID] = false;
+                Debug.Assert(s_one_chapter_per_server[a_chapter.Server]);
+                s_one_chapter_per_server[a_chapter.Server] = false;
             }
 
             s_loop_event.Set();
@@ -200,10 +197,10 @@ namespace MangaCrawlerLib
             lock (s_limits)
             {
                 s_connections--;
-                s_server_connections[a_server.ID]--;
+                s_server_connections[a_server]--;
 
                 Debug.Assert(s_connections >= 0);
-                Debug.Assert(s_server_connections[a_server.ID] >= 0);
+                Debug.Assert(s_server_connections[a_server] >= 0);
             }
 
             s_loop_event.Set();
@@ -217,7 +214,7 @@ namespace MangaCrawlerLib
             {
                 if (limit.Priority == Priority.Pages)
                 {
-                    if (!s_one_chapter_per_server[limit.Server.ID])
+                    if (!s_one_chapter_per_server[limit.Server])
                     {
                         candidate = limit;
                         break;
@@ -227,7 +224,7 @@ namespace MangaCrawlerLib
                 if (s_connections == MAX_CONNECTIONS)
                     return null;
 
-                if (s_server_connections[limit.Server.ID] == MAX_CONNECTIONS_PER_SERVER)
+                if (s_server_connections[limit.Server] == MAX_CONNECTIONS_PER_SERVER)
                     continue;
 
                 if (candidate != null)

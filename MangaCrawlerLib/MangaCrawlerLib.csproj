@@ -78,6 +78,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CachedList.cs" />
+    <Compile Include="Catalog.cs" />
     <Compile Include="Crawlers\CrawlerList.cs" />
     <Compile Include="Crawlers\TestServerCrawler.cs" />
     <Compile Include="Entity.cs" />

@@ -88,6 +88,9 @@ namespace MangaCrawler
      * ktos klika w element ktory nie istnieje, pojawia sie error, albo jest on w trakcie sciagania, w tym 
      *   czasie nastepuje jego odswiezenie i znika on z listy
      * zmiana katalogu glownego z kombinacja powyzszych
+     * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
+     * usunelismy jakis serie, chapter, powinno sie pokasowac co trzeba w katalogu, dla serii, wszystkie chaptery i page, 
+     * pojawienie sie czegos nowego, czy zostanie dodany tylko jeden nowy id
      * 
      * pamietanie taskow podczas zamkniecia i ich wznawianie
      * w przypadku ponownego uruchomienia jesli sa zadania otwarte to pokazac zakladke zadan albo wyswietlic message
@@ -107,14 +110,20 @@ namespace MangaCrawler
      * maksymalna ilosc polaczen, teraz jest sto, jaka powinna byc racjonalna ilosc
      * 
      * dodac do paraller.foreach, for, wlasny partitioner, ktory bedzie wybieral sekwencje jedna po drugiej
+     * 
+     * deinstalacja powinna usunac katalog
+     * 
+     * dodac opcje numerowania stron
+     * 
+     * wyladowywac nieuzywane, zapisywac co pewien czas w tle
      */
 
     public partial class MangaCrawlerForm : Form
     {
-        private Dictionary<int, ListBoxVisualState> m_series_visual_states =
-            new Dictionary<int, ListBoxVisualState>();
-        private Dictionary<int, ListBoxVisualState> m_chapters_visual_states =
-            new Dictionary<int, ListBoxVisualState>();
+        private Dictionary<Server, ListBoxVisualState> m_series_visual_states =
+            new Dictionary<Server, ListBoxVisualState>();
+        private Dictionary<Serie, ListBoxVisualState> m_chapters_visual_states =
+            new Dictionary<Serie, ListBoxVisualState>();
 
         private Color BAD_DIR = Color.Red;
 
@@ -143,6 +152,7 @@ namespace MangaCrawler
             };
 
             DownloadManager.UseCBZ = () => Settings.Instance.UseCBZ;
+            DownloadManager.GetSettingsDir = () => Settings.GetSettingsDir();
 
             mangaRootDirTextBox.Text = Settings.Instance.MangaRootDir;
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
@@ -237,8 +247,6 @@ namespace MangaCrawler
             }
         }
 
-        // TODO: oszczedzanie paieci, czy ciagle sa locki
-
         public Chapter SelectedChapter
         {
             get
@@ -266,7 +274,7 @@ namespace MangaCrawler
             if (SelectedServer != null)
             {
                 ListBoxVisualState vs;
-                if (m_series_visual_states.TryGetValue(SelectedServer.ID, out vs))
+                if (m_series_visual_states.TryGetValue(SelectedServer, out vs))
                     vs.Restore();
             }
         }
@@ -274,7 +282,7 @@ namespace MangaCrawler
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedServer != null)
-                m_series_visual_states[SelectedServer.ID] = new ListBoxVisualState(seriesListBox);
+                m_series_visual_states[SelectedServer] = new ListBoxVisualState(seriesListBox);
 
             DownloadManager.DownloadChapters(SelectedSerie);
 
@@ -283,7 +291,7 @@ namespace MangaCrawler
             if (SelectedSerie != null)
             {
                 ListBoxVisualState vs;
-                if (m_chapters_visual_states.TryGetValue(SelectedSerie.ID, out vs))
+                if (m_chapters_visual_states.TryGetValue(SelectedSerie, out vs))
                     vs.Restore();
             }
         }
@@ -291,7 +299,7 @@ namespace MangaCrawler
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedSerie != null)
-                m_chapters_visual_states[SelectedSerie.ID] = new ListBoxVisualState(chaptersListBox);
+                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState(chaptersListBox);
         }
 
         private void seriesSearchTextBox_TextChanged(object sender, EventArgs e)
@@ -518,13 +526,13 @@ namespace MangaCrawler
         private void seriesListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (SelectedServer != null)
-                m_series_visual_states[SelectedServer.ID] = new ListBoxVisualState(seriesListBox);
+                m_series_visual_states[SelectedServer] = new ListBoxVisualState(seriesListBox);
         }
 
         private void chaptersListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (SelectedSerie != null)
-                m_chapters_visual_states[SelectedSerie.ID] = new ListBoxVisualState(chaptersListBox);
+                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState(chaptersListBox);
         }
 
         private void listBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -672,6 +680,7 @@ namespace MangaCrawler
         private void MangaCrawlerForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Settings.Instance.Save();
+            DownloadManager.Save();
         }
 
         private void refreshTimer_Tick(object sender, EventArgs e)
