@@ -9,13 +9,19 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    public class SerieListItem : ListItem
+    public class SerieListItem : ListItem<Serie>
     {
-        public Serie Serie { get; private set; }
+        public Serie Serie
+        {
+            get
+            {
+                return m_entity;
+            }
+        }
 
         public SerieListItem(Serie a_serie)
+            : base(a_serie)
         {
-            Serie = a_serie;
         }
 
         public override string ToString()

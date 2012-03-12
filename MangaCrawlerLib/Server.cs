@@ -99,17 +99,8 @@ namespace MangaCrawlerLib
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
                     DownloadProgress = progress;
-
-                    if (m_series.LoadedFromXml)
-                    {
-                        if (progress == 100)
-                        {
-                            var merged = Entity.MergeAndRemoveOrphans(m_series, result, s => s.URL + s.Title);
-                            m_series.ReplaceInnerCollection(merged);
-                        }
-                    }
-                    else
-                        m_series.ReplaceInnerCollection(result.ToList());
+                    bool merge = m_series.LoadedFromXml && (progress == 100);
+                    m_series.ReplaceInnerCollection(result, merge, s => s.URL + s.Title);
                 });
 
                 State = ServerState.Downloaded;

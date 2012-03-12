@@ -10,13 +10,19 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    public class ServerListItem : ListItem
+    public class ServerListItem : ListItem<Server>
     {
-        public Server Server { get; private set; }
+        public Server Server
+        {
+            get
+            {
+                return m_entity;
+            }
+        }
 
         public ServerListItem(Server a_server)
+            : base(a_server)
         {
-            Server = a_server;
         }
 
         public override string ToString()

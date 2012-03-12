@@ -114,7 +114,7 @@ namespace MangaCrawlerLib
                 if (!catalog_servers.Select(s => s.ID).Unique())
                     throw new XmlException();
 
-                servers = Entity.MergeAndRemoveOrphans(catalog_servers, servers, s => s.Name + s.URL);
+                servers = CachedList<Server>.MergeAndRemoveOrphans(catalog_servers, servers, s => s.Name + s.URL);
 
                 servers = (from ls in servers
                            select new Server(
