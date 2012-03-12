@@ -166,8 +166,7 @@ namespace MangaCrawlerLib
             var pages = Crawler.DownloadPages(this).ToList();
 
             bool changed;
-            var merged = Entity.MergeAndRemoveOrphans(m_pages, pages, p => p.Name + p.URL, out changed);
-            m_pages.ReplaceInnerCollection(merged);
+            m_pages.ReplaceInnerCollection(pages, true, p => p.Name + p.URL, out changed);
 
             ChapterDir = GetChapterDirectory(a_manga_root_dir);
             CBZ = a_cbz;

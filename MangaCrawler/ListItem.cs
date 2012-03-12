@@ -4,16 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
+using MangaCrawlerLib;
 
 namespace MangaCrawler
 {
-    public abstract class ListItem
+    public abstract class ListItem<T> where T : Entity
     {
+        protected T m_entity;
+
+        public ListItem(T a_entity)
+        {
+            m_entity = a_entity;
+        }
+
         public override bool Equals(object a_obj)
         {
             if (a_obj == null)
                 return false;
-            ListItem li = a_obj as ListItem;
+            ListItem<T> li = a_obj as ListItem<T>;
             if (li == null)
                 return false;
             return ID == li.ID;

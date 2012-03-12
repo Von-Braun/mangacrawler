@@ -9,17 +9,65 @@ namespace MangaCrawlerLib
     /// Thread-safe, copy on write semantic.
     /// </summary>
     /// <param name="series"></param>
-    internal abstract class CachedList<T> : IList<T>
+    internal abstract class CachedList<T> : IList<T> where T : Entity
     {
         public bool Changed;
         protected bool m_loaded_from_xml;
         protected List<T> m_list;
         protected Object m_load_from_xml_lock = new Object();
 
-        internal void ReplaceInnerCollection(List<T> a_new)
+        internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, bool a_merge, Func<T, K> a_key_selector) 
         {
-            Changed = true;
-            m_list = a_new;
+            ReplaceInnerCollection(a_new, a_merge, a_key_selector, out Changed);
+        }
+
+        internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, bool a_merge, Func<T, K> a_key_selector, 
+            out bool a_changed)
+        {
+            if (a_merge)
+                m_list = MergeAndRemoveOrphans(m_list, a_new, a_key_selector, out a_changed);
+            else
+            {
+                m_list = a_new.ToList();
+                a_changed = true;
+            }
+        }
+
+        internal static List<T> MergeAndRemoveOrphans<K>(IList<T> a_list,
+            IEnumerable<T> a_new, Func<T, K> a_key_selector)
+        {
+            bool changed;
+            return MergeAndRemoveOrphans(a_list, a_new, a_key_selector, out changed);
+        }
+
+        internal static List<T> MergeAndRemoveOrphans<K>(IList<T> a_list,
+            IEnumerable<T> a_new, Func<T, K> a_key_selector, out bool a_changed)
+        {
+            var dict = a_list.ToDictionary(a_key_selector);
+            var result = a_new.ToList();
+
+            int replaced = 0;
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                K key = a_key_selector(result[i]);
+                if (dict.ContainsKey(key))
+                {
+                    result[i] = dict[key];
+                    dict.Remove(key);
+                    replaced++;
+                }
+            }
+
+            if (a_list.Count != result.Count)
+                a_changed = true;
+            else
+                a_changed = replaced != a_list.Count;
+
+            foreach (var orphan in dict.Values)
+                orphan.RemoveOrphan();
+
+            return result;
         }
 
         internal bool LoadedFromXml

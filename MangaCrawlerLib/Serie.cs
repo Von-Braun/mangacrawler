@@ -101,17 +101,8 @@ namespace MangaCrawlerLib
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
                     DownloadProgress = progress;
-
-                    if (m_chapters.LoadedFromXml)
-                    {
-                        if (progress == 100)
-                        {
-                            var merged = Entity.MergeAndRemoveOrphans(m_chapters, result, c => c.URL + c.Title);
-                            m_chapters.ReplaceInnerCollection(merged);
-                        }
-                    }
-                    else
-                        m_chapters.ReplaceInnerCollection(result.ToList());
+                    bool merge = m_chapters.LoadedFromXml && (progress == 100);
+                    m_chapters.ReplaceInnerCollection(result, merge, s => s.URL + s.Title);
                 });
 
                 State = SerieState.Downloaded;
