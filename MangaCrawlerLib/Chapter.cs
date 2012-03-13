@@ -104,7 +104,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public bool IsWorking
+        public override bool IsWorking
         {
             get
             {
@@ -247,7 +247,7 @@ namespace MangaCrawlerLib
             }
             finally
             {
-                Loggers.MangaCrawler.InfoFormat("Chapter: {0}, state: {1}, error: {2}",
+                Loggers.MangaCrawler.DebugFormat("Chapter: {0}, state: {1}, error: {2}",
                     this, State, error);
 
                 if (error)

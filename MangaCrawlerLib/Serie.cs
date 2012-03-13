@@ -210,5 +210,13 @@ namespace MangaCrawlerLib
                    FileUtils.RemoveInvalidFileCharacters(Title) +
                    Path.DirectorySeparatorChar;
         }
+
+        public override bool IsWorking
+        {
+            get
+            {
+                return (State == SerieState.Checking) || (State == SerieState.Waiting);
+            }
+        }
     }
 }

@@ -26,13 +26,25 @@ namespace MangaCrawlerLib
         public static Func<TimeSpan> GetCheckTimeDelta;
         public static Func<bool> UseCBZ;
         public static Func<PageNamingStrategy> PageNamingStrategy;
+        public static Action UpdateGUI;
 
+        private static List<Entity> s_downloading = new List<Entity>();
         private static Server[] s_servers;
         private static List<Chapter> s_works = new List<Chapter>();
 
         static DownloadManager()
         {
             HtmlWeb.UserAgent_Actual = UserAgent;
+        }
+
+        public static bool IsDownloading()
+        {
+            bool result = s_downloading.Any();
+
+            s_downloading = (from entity in s_downloading
+                             where entity.IsWorking
+                             select entity).ToList();
+            return result;
         }
 
         public static void DownloadSeries(Server a_server)
@@ -43,9 +55,10 @@ namespace MangaCrawlerLib
             if (!a_server.DownloadRequired)
                 return;
 
+            s_downloading.Add(a_server);
             a_server.State = ServerState.Waiting;
-
             a_server.LimiterOrder = Catalog.NextID();
+            UpdateGUI();
 
             new Task(() =>
             {
@@ -59,17 +72,13 @@ namespace MangaCrawlerLib
             if (a_serie == null)
                 return;
 
-            if (a_serie.DownloadRequired)
-                a_serie.State = SerieState.Waiting;
-            else
-            {
-                Loggers.MangaCrawler.InfoFormat(
-                    "Already in work, serie: {0} state: {1}",
-                    a_serie, a_serie.State);
+            if (!a_serie.DownloadRequired)
                 return;
-            }
 
+            s_downloading.Add(a_serie);
+            a_serie.State = SerieState.Waiting;
             a_serie.LimiterOrder = Catalog.NextID();
+            UpdateGUI();
 
             new Task(() =>
             {
@@ -84,33 +93,17 @@ namespace MangaCrawlerLib
                 lock (s_works)
                 {
                     if (s_works.Contains(chapter))
-                    {
-                        Loggers.MangaCrawler.InfoFormat(
-                            "Already in work, chapter: {0} state: {1}",
-                            chapter, chapter.State);
                         continue;
-                    }
 
                     s_works.Add(chapter);
                 }
 
                 Chapter chapter_sync = chapter;
 
-                if (!chapter_sync.IsWorking)
-                    chapter_sync.State = ChapterState.Waiting;  
-                else
-                {
-                    Loggers.MangaCrawler.InfoFormat(
-                        "Already in work, chapter: {0} state: {1}",
-                        chapter_sync, chapter_sync.State);
-                    continue;
-                }
-
-                Loggers.MangaCrawler.InfoFormat(
-                    "Chapter: {0} state: {1}",
-                    chapter_sync, chapter_sync.State);
-
+                s_downloading.Add(chapter_sync);
+                chapter_sync.State = ChapterState.Waiting;  
                 chapter_sync.LimiterOrder = Catalog.NextID();
+                UpdateGUI();
 
                 new Task(() =>
                 {
