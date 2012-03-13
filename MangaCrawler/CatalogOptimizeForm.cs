@@ -13,8 +13,6 @@ namespace MangaCrawler
 {
     public partial class CatalogOptimizeForm : Form
     {
-        private const double RATIO = 0.75;
-
         public CatalogOptimizeForm()
         {
             InitializeComponent();
@@ -28,7 +26,7 @@ namespace MangaCrawler
         private void CatalogOptimizeForm_Load(object sender, EventArgs e)
         {
             label2.Text = String.Format(label2.Text, Catalog.GetCatalogSize() / 1024 / 1024,
-                (long)(Settings.Instance.MaxCatalogSize / 1024 / 1024 * RATIO));
+                (long)(Settings.Instance.MaxCatalogSize / 1024 / 1024 * Catalog.COMPACT_RATIO));
 
             backgroundWorker.RunWorkerAsync();
         }
@@ -40,7 +38,7 @@ namespace MangaCrawler
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-                Catalog.Compact(RATIO, Settings.Instance.MaxCatalogSize, () => backgroundWorker.CancellationPending);
+                Catalog.Compact(Settings.Instance.MaxCatalogSize, () => backgroundWorker.CancellationPending);
         }
     }
 }

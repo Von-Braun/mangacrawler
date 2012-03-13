@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Windows.Forms;
 using MangaCrawlerLib;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
 
 namespace MangaCrawler
 {

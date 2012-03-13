@@ -13,6 +13,7 @@ namespace MangaCrawlerLib
 {
     public class Catalog
     {
+        #region XML Nodes
         private static string CATALOG_XML = "catalog.xml";
         private static string CATALOG_NODE = "Catalog";
 
@@ -26,7 +27,7 @@ namespace MangaCrawlerLib
         private static string SERVERS_SERVER_URL_NODE = "URL";
 
         private static string SERIES_NODE = "ServerSeries";
-        private static string SERIES_SERVER_ID_NODE = "ServerID";
+        private static string SERIES_SERVER_ID_NODE = "ID";
         private static string SERIES_SERVER_NAME_NODE = "ServerName";
         private static string SERIES_SERVER_URL_NODE = "URL";
         private static string SERIES_SERIES_NODE = "Series";
@@ -38,6 +39,7 @@ namespace MangaCrawlerLib
 
         private static string CHAPTERS_NODE = "SerieChapters";
         private static string CHAPTERS_SERIE_TITLE_NODE = "Title";
+        private static string CHAPTERS_SERIE_SERVER_ID_NODE = "ServerID";
         private static string CHAPTERS_SERIE_URL_NODE = "URL";
         private static string CHAPTERS_SERIE_ID_NODE = "ID";
         private static string CHAPTERS_CHAPTERS_NODE = "Chapters";
@@ -50,6 +52,7 @@ namespace MangaCrawlerLib
         private static string PAGES_NODE = "ChapterPages";
         private static string PAGES_CHAPTER_TITLE_NODE = "Title";
         private static string PAGES_CHAPTER_URL_NODE = "URL";
+        private static string PAGES_CHAPTER_SERIE_ID_NODE = "SerieID";
         private static string PAGES_CHAPTER_ID_NODE = "ID";
         private static string PAGES_PAGES_NODE = "Pages";
         private static string PAGES_PAGE_NODE = "Page";
@@ -60,7 +63,9 @@ namespace MangaCrawlerLib
         private static string PAGES_PAGE_HASH_NODE = "Hash";
         private static string PAGES_PAGE_STATE_NODE = "State";
         private static string PAGES_PAGE_IMAGEFILEPATH_NODE = "ImageFilePath";
+        #endregion
 
+        public const double COMPACT_RATIO = 0.75;
         private static Object m_save_lock = new Object();
 
         #if TEST_SERVERS
@@ -304,10 +309,12 @@ namespace MangaCrawlerLib
 
                 string serie_title = root.Element(CHAPTERS_SERIE_TITLE_NODE).Value;
                 string serie_url = root.Element(CHAPTERS_SERIE_URL_NODE).Value;
+                ulong server_id = UInt64.Parse(root.Element(CHAPTERS_SERIE_SERVER_ID_NODE).Value);
                 ulong serie_id = UInt64.Parse(root.Element(CHAPTERS_SERIE_ID_NODE).Value);
 
                 if ((serie_title != a_serie.Title) ||
                     (serie_url != a_serie.URL) ||
+                    (server_id != a_serie.Server.ID) ||
                     (serie_id != a_serie.ID))
                 {
                     DeleteCatalogFile(a_serie.ID);
@@ -343,9 +350,10 @@ namespace MangaCrawlerLib
                 lock (m_save_lock)
                 {
                     var xml = new XElement(CHAPTERS_NODE,
-                        new XElement(CHAPTERS_CHAPTER_ID_NODE, a_serie.ID),
-                        new XElement(CHAPTERS_CHAPTER_TITLE_NODE, a_serie.Title),
-                        new XElement(CHAPTERS_CHAPTER_URL_NODE, a_serie.URL),
+                        new XElement(CHAPTERS_SERIE_ID_NODE, a_serie.ID),
+                        new XElement(CHAPTERS_SERIE_TITLE_NODE, a_serie.Title),
+                        new XElement(CHAPTERS_SERIE_SERVER_ID_NODE, a_serie.Server.ID),
+                        new XElement(CHAPTERS_SERIE_URL_NODE, a_serie.URL),
                         new XElement(CHAPTERS_CHAPTERS_NODE,
                             from c in a_serie.Chapters
                             select new XElement(CHAPTERS_CHAPTER_NODE,
@@ -377,9 +385,11 @@ namespace MangaCrawlerLib
                 string chapter_title = root.Element(PAGES_CHAPTER_TITLE_NODE).Value;
                 string chapter_url = root.Element(PAGES_CHAPTER_URL_NODE).Value;
                 ulong chapter_id = UInt64.Parse(root.Element(PAGES_CHAPTER_ID_NODE).Value);
+                ulong serie_id = UInt64.Parse(root.Element(PAGES_CHAPTER_SERIE_ID_NODE).Value);
 
                 if ((chapter_title != a_chapter.Title) ||
                     (chapter_url != a_chapter.URL) ||
+                    (serie_id != a_chapter.Serie.ID) ||
                     (chapter_id != a_chapter.ID))
                 {
                     DeleteCatalogFile(a_chapter.ID);
@@ -429,6 +439,7 @@ namespace MangaCrawlerLib
                     var xml = new XElement(PAGES_NODE,
                         new XElement(PAGES_CHAPTER_ID_NODE, a_chapter.ID),
                         new XElement(PAGES_CHAPTER_TITLE_NODE, a_chapter.Title),
+                        new XElement(PAGES_CHAPTER_SERIE_ID_NODE, a_chapter.Serie.ID),
                         new XElement(PAGES_CHAPTER_URL_NODE, a_chapter.URL),
                         new XElement(PAGES_PAGES_NODE,
                             from p in a_chapter.Pages
@@ -481,30 +492,179 @@ namespace MangaCrawlerLib
 
         }
 
-        public static long GetCatalogSize()
+        public static IEnumerable<FileInfo> GetCatalogFiles()
         {
-            return new DirectoryInfo(CatalogDir).GetFiles("*.xml").Sum(f => f.Length);
+            return new DirectoryInfo(CatalogDir).EnumerateFiles("*.xml");
         }
 
-        public static void Compact(double a_ratio, long a_max_catalog_size, Func<bool> a_cancel)
+        public static long GetCatalogSize()
         {
-            // TODO:
+            return GetCatalogFiles().Sum(f => f.Length);
+        }
 
-            /*
-             * 
-             * zbuduj liste plikow xml
-             * kazdy z nich wczytaj, ustal id, id parent, dodaj do listy
-             * 
-             * usun pliki xml ktore nie sa na liscie, ciagle 
-             * 
-             * czy ciagle za duzo
-             * 
-             * wybierz z listy plikow ten ktory zostal najdawniej zmodyfikowany, usun go i jego dzieci
-             * powtarzaj az rozmiar bedzie porzadany
-             * 
-             * 
-             * 
-             */
+        private static bool IsCompacted(long a_max_catalog_size)
+        {
+            long desire_catalog_size = (long)(a_max_catalog_size * COMPACT_RATIO);
+            long catalog_size = GetCatalogSize();
+
+            return (catalog_size < desire_catalog_size) ;
+        }
+
+        private static void DeleteOrphans(List<ulong> a_chapters = null)
+        {
+            Server[] servers = LoadCatalog();
+            List<ulong> ids = new List<ulong>();
+
+            foreach (var file in GetCatalogFiles())
+            {
+                ulong id;
+                if (UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
+                    ids.Add(id);
+            }
+
+            foreach (Server server in servers)
+            {
+                ids.Remove(server.ID);
+
+                foreach (var serie in LoadServerSeries(server))
+                {
+                    ids.Remove(serie.ID);
+
+                    foreach (var chapter in LoadSerieChapters(serie))
+                    {
+                        ids.Remove(chapter.ID);
+
+                        if (a_chapters != null)
+                            a_chapters.Add(chapter.ID);
+                    }
+                }
+            }
+
+            foreach (var id in ids)
+                DeleteCatalogFile(id);
+        }
+
+        public static void Compact(long a_max_catalog_size, Func<bool> a_cancel)
+        {
+            try
+            {
+                List<ulong> ids = new List<ulong>();
+
+                foreach (var file in GetCatalogFiles())
+                {
+                    ulong id;
+                    if (!UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
+                    {
+                        try
+                        {
+                            file.Delete();
+                        }
+                        catch (Exception ex)
+                        {
+                            Loggers.MangaCrawler.Error("Exception", ex);
+                        }
+                    }
+                }
+
+                List<ulong> chapters = new List<ulong>();
+                DeleteOrphans(chapters);
+                DeleteChaptersWithoutImages(chapters);
+                DeleteSeriesWithoutChapters();
+                CompactBruteForce(a_max_catalog_size);
+            }
+            catch (Exception ex)
+            {
+                Loggers.MangaCrawler.Error("Exception", ex);
+            }
+        }
+
+        private static void CompactBruteForce(long a_max_catalog_size)
+        {
+            List<ulong> ids = new List<ulong>();
+
+            foreach (var file in GetCatalogFiles())
+            {
+                ulong id;
+                if (UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
+                    ids.Add(id);
+            }
+
+            for (;;)
+            {
+                if (IsCompacted(a_max_catalog_size))
+                    break;
+
+                var oldest = from id in ids
+                             orderby new FileInfo(GetCatalogFile(id)).LastWriteTimeUtc
+                             select id;
+                var to_remove = ids.Take(100).ToList();
+                ids.RemoveRange(to_remove);
+
+                foreach (var id in to_remove)
+                    DeleteCatalogFile(id);
+                DeleteOrphans();
+            }
+        }
+
+        private static void DeleteSeriesWithoutChapters()
+        {
+            Server[] servers = LoadCatalog();
+            List<ulong> ids = new List<ulong>();
+
+            foreach (var file in GetCatalogFiles())
+            {
+                ulong id;
+                if (UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
+                    ids.Add(id);
+            }
+
+            foreach (Server server in servers)
+            {
+                foreach (var serie in LoadServerSeries(server))
+                {
+                    var chapters = LoadSerieChapters(serie);
+
+                    bool empty_serie = chapters.All(ch => !ids.Contains(ch.ID));
+
+                    if (empty_serie)
+                        DeleteCatalogFile(serie.ID);
+                }
+            }
+        }
+
+        private static void DeleteChaptersWithoutImages(List<ulong> a_chapters)
+        {
+            var oldest = from id in a_chapters
+                         orderby new FileInfo(GetCatalogFile(id)).LastWriteTimeUtc
+                         select id;
+
+            foreach (var old in oldest)
+            {
+                var image_files = LoadCatalogXml(old).Element(PAGES_NODE).Element(PAGES_PAGES_NODE).
+                    Elements(PAGES_PAGE_NODE).Select(el => el.Element(PAGES_PAGE_IMAGEFILEPATH_NODE).Value);
+
+                Func<bool> no_images = () =>
+                {
+                    foreach (var image in image_files)
+                    {
+                        try
+                        {
+                            if (new FileInfo(image).Exists)
+                                return false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Loggers.MangaCrawler.Error("Exception", ex);
+                            return true;
+                        }
+                    }
+
+                    return true;
+                };
+
+                if (no_images())
+                    DeleteCatalogFile(old);
+            }
         }
     }
 }

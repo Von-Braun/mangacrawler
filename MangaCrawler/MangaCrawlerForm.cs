@@ -93,6 +93,16 @@ namespace MangaCrawler
      * pojawienie sie czegos nowego, czy zostanie dodany tylko jeden nowy id
      * testy na pamietanie, przywracanie stanu vizualizacji kiedy kasowane sa zaznaczone elementy, tak ze znikaja 
      * itemy, indexy wychodza za zakres itp, multiselekcja takze test
+     * xml - wpisac cos nie poprawnego do nazwy pliku co sprawi ze fileinfo wywali wyjatek
+     * przetestowac compaktowanie 
+     * - dodac jakies inne liki
+     * - dodac xml o zlych nazwach
+     * - wprowadzac bledy w xmlach
+     * - czy usuwane sa sieroty
+     * - czy usuwane sa chaptery bez imagow (nie ma byc all image)
+     * - czy usuwane sa uste serie
+     * - czy brute force usuwa te najstarsze
+     * - czy brute force nie rusza do akcji jesli nie trzeba
      * 
      * jak usuwac skonczone worksy z downloadmanagera, najlepiej tak blednych nie usuwac wogole, skonczone usuwac 
      * tylko jesli tak zostalo zaznaczone
@@ -106,10 +116,7 @@ namespace MangaCrawler
      * 
      * deinstalacja powinna usunac katalog
      * 
-     * dodac opcje numerowania stron
-     * 
      * pamietanie pobieranych, prawidlowa reinicjalizacja stanow chapteru, stron, zapis deleting
-     * 
      */
 
     public partial class MangaCrawlerForm : Form
@@ -158,7 +165,7 @@ namespace MangaCrawler
 
             Task.Factory.StartNew(() => CheckNewVersion(), TaskCreationOptions.LongRunning);
 
-            if (!Log())
+            if (!Loggers.Log())
             {
                 tabControl.TabPages.Remove(logTabPage);
                 LogManager.Shutdown();
@@ -176,15 +183,6 @@ namespace MangaCrawler
             refreshTimer.Enabled = true;
 
             UpdateSeriesTab();
-        }
-
-        private bool Log()
-        {
-#if DEBUG
-            return true;
-#else
-            return false;
-#endif
         }
 
         private void SetupLog4NET()
