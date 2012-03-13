@@ -5,16 +5,19 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using MangaCrawlerLib;
+using System.Xml.Linq;
+using System.Xml;
+using TomanuExtensions;
 
 namespace MangaCrawler
 {
-    public class ListBoxVisualState<T> where T : Entity
+    public class ListBoxVisualState
     {
         private ListBoxEx m_list_box;
         private int m_top_index;
-        private ListItem<T> m_top_item;
-        private ListItem<T>[] m_selected_items;
-        private ListItem<T> m_selected_item;
+        private ListItem m_top_item;
+        private ListItem[] m_selected_items;
+        private ListItem m_selected_item;
         private int m_selected_index;
 
         public ListBoxVisualState(ListBoxEx a_list)
@@ -34,9 +37,9 @@ namespace MangaCrawler
         {
             m_top_index = m_list_box.TopIndex;
             if ((m_top_index != -1) && (m_top_index < m_list_box.Items.Count))
-                m_top_item = m_list_box.Items[m_list_box.TopIndex] as ListItem<T>;
-            m_selected_items = m_list_box.SelectedItems.Cast<ListItem<T>>().ToArray();
-            m_selected_item = m_list_box.SelectedItem as ListItem<T>;
+                m_top_item = m_list_box.Items[m_list_box.TopIndex] as ListItem;
+            m_selected_items = m_list_box.SelectedItems.Cast<ListItem>().ToArray();
+            m_selected_item = m_list_box.SelectedItem as ListItem;
             m_selected_index = m_list_box.SelectedIndex;
         }
 
@@ -64,15 +67,13 @@ namespace MangaCrawler
         {
             m_top_index = -1;
             m_top_item = null;
-            m_selected_items = new ListItem<T>[0];
+            m_selected_items = new ListItem[0];
             m_selected_item = null;
             m_selected_index = -1;
         }
 
-        public void ReloadItems(IEnumerable<ListItem<T>> a_enum)
+        public void ReloadItems(IEnumerable<ListItem> a_enum)
         {
-            var prev_state = new ListBoxVisualState<T>(m_list_box);
-
             if ((m_selected_item != null) && (!a_enum.Contains(m_selected_item)))
                 Clear();
 

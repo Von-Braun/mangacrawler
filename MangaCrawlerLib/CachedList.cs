@@ -18,54 +18,27 @@ namespace MangaCrawlerLib
 
         internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, bool a_merge, Func<T, K> a_key_selector) 
         {
-            ReplaceInnerCollection(a_new, a_merge, a_key_selector, out Changed);
-        }
-
-        internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, bool a_merge, Func<T, K> a_key_selector, 
-            out bool a_changed)
-        {
             if (a_merge)
-                m_list = MergeAndRemoveOrphans(m_list, a_new, a_key_selector, out a_changed);
-            else
             {
-                m_list = a_new.ToList();
-                a_changed = true;
+                EnsureLoaded();
+                m_list = Merge(m_list, a_new, a_key_selector);
             }
+            else
+                m_list = a_new.ToList();
         }
 
-        internal static List<T> MergeAndRemoveOrphans<K>(IList<T> a_list,
+        internal static List<T> Merge<K>(IList<T> a_list,
             IEnumerable<T> a_new, Func<T, K> a_key_selector)
-        {
-            bool changed;
-            return MergeAndRemoveOrphans(a_list, a_new, a_key_selector, out changed);
-        }
-
-        internal static List<T> MergeAndRemoveOrphans<K>(IList<T> a_list,
-            IEnumerable<T> a_new, Func<T, K> a_key_selector, out bool a_changed)
         {
             var dict = a_list.ToDictionary(a_key_selector);
             var result = a_new.ToList();
-
-            int replaced = 0;
 
             for (int i = 0; i < result.Count; i++)
             {
                 K key = a_key_selector(result[i]);
                 if (dict.ContainsKey(key))
-                {
                     result[i] = dict[key];
-                    dict.Remove(key);
-                    replaced++;
-                }
             }
-
-            if (a_list.Count != result.Count)
-                a_changed = true;
-            else
-                a_changed = replaced != a_list.Count;
-
-            foreach (var orphan in dict.Values)
-                orphan.RemoveOrphan();
 
             return result;
         }
@@ -74,6 +47,8 @@ namespace MangaCrawlerLib
         {
             get
             {
+                EnsureLoaded();
+
                 lock (m_load_from_xml_lock)
                 {
                     return m_loaded_from_xml;
@@ -174,6 +149,5 @@ namespace MangaCrawlerLib
         }
 
         protected abstract void EnsureLoaded();
-        internal abstract void ClearCache();
     }
 }

@@ -99,7 +99,7 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback)
         {
-            a_server.State = ServerState.Downloading;
+            a_server.State = ServerState.Checking;
 
             Limiter.Aquire(a_server);
             try
@@ -212,7 +212,7 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
-            a_serie.State = SerieState.Downloading;
+            a_serie.State = SerieState.Checking;
 
             Limiter.Aquire(a_serie);
             try

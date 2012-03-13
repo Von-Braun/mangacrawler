@@ -36,16 +36,6 @@ namespace MangaCrawlerLib
                         m_loaded_from_xml = true;
                 }
             }
-
-            internal override void ClearCache()
-            {
-                lock (m_load_from_xml_lock)
-                {
-                    Catalog.SaveServerSeries(m_server);
-                    m_list = null;
-                    m_loaded_from_xml = false;
-                }
-            }
         }
         #endregion
 
@@ -56,21 +46,30 @@ namespace MangaCrawlerLib
         private ServerState m_state;
 
         private CachedList<Serie> m_series;
+        private DateTime m_check_date_time = DateTime.MinValue;
 
         public int DownloadProgress { get; private set; }
         public string Name { get; private set; }
 
         internal Server(string a_url, string a_name)
-            : this(a_url, a_name, Catalog.NextID())
+            : this(a_url, a_name, Catalog.NextID(), ServerState.Initial)
         {
         }
 
-        internal Server(string a_url, string a_name, ulong a_id)
+        internal Server(string a_url, string a_name, ulong a_id, ServerState a_state)
             : base(a_id)
         {
             m_series = new SeriesCachedList(this);
             URL = a_url;
             Name = a_name;
+            m_state = a_state;
+
+            if (m_state == ServerState.Checking)
+                m_state = ServerState.Initial;
+            if (m_state == ServerState.Waiting)
+                m_state = ServerState.Initial;
+            if (m_state == ServerState.Checked)
+                m_state = ServerState.Initial;
         }
 
         internal override Crawler Crawler
@@ -103,7 +102,7 @@ namespace MangaCrawlerLib
                     m_series.ReplaceInnerCollection(result, merge, s => s.URL + s.Title);
                 });
 
-                State = ServerState.Downloaded;
+                State = ServerState.Checked;
             }
             catch (ObjectDisposedException)
             {
@@ -112,6 +111,9 @@ namespace MangaCrawlerLib
             {
                 State = ServerState.Error;
             }
+
+            Catalog.Save(this);
+            m_check_date_time = DateTime.Now;
         }
 
         public override string ToString()
@@ -123,7 +125,15 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return (State == ServerState.Error) || (State == ServerState.Initial);
+                if (State == ServerState.Checked)
+                {
+                    if (DateTime.Now - m_check_date_time > DownloadManager.GetCheckTimeDelta())
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                    return (State == ServerState.Error) || (State == ServerState.Initial);
             }
         }
 
@@ -143,26 +153,26 @@ namespace MangaCrawlerLib
                     }
                     case ServerState.Waiting:
                     {
-                        Debug.Assert((State == ServerState.Downloaded) ||
-                                     (State == ServerState.Initial) ||
-                                     (State == ServerState.Error));
+                        Debug.Assert((State == ServerState.Initial) ||
+                                     (State == ServerState.Error) || 
+                                     (State == ServerState.Checked));
                         break;
                     }
-                    case ServerState.Downloading:
+                    case ServerState.Checking:
                     {
                         Debug.Assert(State == ServerState.Waiting);
                         DownloadProgress = 0;
                         break;
                     }
-                    case ServerState.Downloaded:
+                    case ServerState.Checked:
                     {
-                        Debug.Assert(State == ServerState.Downloading);
+                        Debug.Assert(State == ServerState.Checking);
                         Debug.Assert(DownloadProgress == 100);
                         break;
                     }
                     case ServerState.Error:
                     {
-                        Debug.Assert(State == ServerState.Downloading);
+                        Debug.Assert(State == ServerState.Checking);
                         break;
                     }
                     default:
@@ -173,27 +183,6 @@ namespace MangaCrawlerLib
 
                 m_state = value;
             }
-        }
-
-        internal void Save()
-        {
-            if (!m_series.Changed)
-                return;
-
-            Catalog.SaveServerSeries(this);
-
-            m_series.Changed = false;
-
-            foreach (var serie in Series)
-                serie.Save();
-        }
-
-        protected internal override void RemoveOrphan()
-        {
-            foreach (var s in Series)
-                s.RemoveOrphan();
-
-            Catalog.DeleteCatalogFile(ID);
         }
     }
 }

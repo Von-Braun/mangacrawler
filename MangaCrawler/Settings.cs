@@ -32,6 +32,12 @@ namespace MangaCrawler
         [YAXNode]
         public FormState FormState = new FormState();
 
+        [YAXNode("CheckTimeDelta")]
+        private TimeSpan m_check_time_delta = new TimeSpan(hours: 0, minutes: 1, seconds: 0);
+
+        [YAXNode("MaxCatalogSize")]
+        private int m_max_catalog_size = 50 * 1024 * 1024;
+
         private static Settings s_instance;
 
         static Settings()
@@ -39,6 +45,9 @@ namespace MangaCrawler
             try
             {
                 s_instance = YAXSerializer.LoadFromFile<Settings>(GetSettingsDir() + SETTINGS_XML);
+
+                if (s_instance == null)
+                    s_instance = new Settings();
             }
             catch
             {
@@ -125,6 +134,32 @@ namespace MangaCrawler
             set
             {
                 m_use_cbs = value;
+                Save();
+            }
+        }
+
+        public TimeSpan CheckTimeDelta
+        {
+            get
+            {
+                return m_check_time_delta;
+            }
+            set
+            {
+                m_check_time_delta = value;
+                Save();
+            }
+        }
+
+        public int MaxCatalogSize
+        {
+            get
+            {
+                return m_max_catalog_size;
+            }
+            set
+            {
+                m_max_catalog_size = value;
                 Save();
             }
         }

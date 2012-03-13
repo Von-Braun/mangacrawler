@@ -17,6 +17,5 @@ namespace MangaCrawlerLib
         }
 
         internal abstract Crawler Crawler { get; }
-        protected internal abstract void RemoveOrphan();
     }
 }

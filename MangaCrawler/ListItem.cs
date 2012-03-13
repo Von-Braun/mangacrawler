@@ -8,20 +8,13 @@ using MangaCrawlerLib;
 
 namespace MangaCrawler
 {
-    public abstract class ListItem<T> where T : Entity
+    public abstract class ListItem
     {
-        protected T m_entity;
-
-        public ListItem(T a_entity)
-        {
-            m_entity = a_entity;
-        }
-
         public override bool Equals(object a_obj)
         {
             if (a_obj == null)
                 return false;
-            ListItem<T> li = a_obj as ListItem<T>;
+            ListItem li = a_obj as ListItem;
             if (li == null)
                 return false;
             return ID == li.ID;

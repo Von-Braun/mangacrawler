@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,69 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Chapters" xml:space="preserve">
-    <value>Rozdziały: {0}</value>
-  </data>
-  <data name="Deleting" xml:space="preserve">
-    <value>USUWAM</value>
-  </data>
-  <data name="DirError" xml:space="preserve">
-    <value>Nie mogę utworzyć katalogu: '{0}'</value>
-  </data>
-  <data name="Downloaded" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="Error" xml:space="preserve">
-    <value>BŁĄD</value>
-  </data>
-  <data name="ExitQuestion" xml:space="preserve">
-    <value>Trwa pobieranie. Czy na pewno zakończyć pracę programu?</value>
-  </data>
-  <data name="HomePage" xml:space="preserve">
-    <value>http://mangacrawler.codeplex.com/</value>
-  </data>
-  <data name="NewVersion" xml:space="preserve">
-    <value>Nowa wersja</value>
-  </data>
-  <data name="Series" xml:space="preserve">
-    <value>Serie: {0}</value>
-  </data>
-  <data name="Waiting" xml:space="preserve">
-    <value>CZEKAM</value>
-  </data>
-  <data name="Zipping" xml:space="preserve">
-    <value>PAKUJĘ</value>
-  </data>
-  <data name="Aborted" xml:space="preserve">
-    <value>Anuluje</value>
-  </data>
-  <data name="DownloadingChapterInfo" xml:space="preserve">
-    <value>serwer: {0}
-seria: {1}
-rozdział: {2}</value>
-  </data>
-  <data name="WorkProgressAborted" xml:space="preserve">
-    <value>Anulowane</value>
-  </data>
-  <data name="WorkProgressDeleting" xml:space="preserve">
-    <value>Usuwam</value>
-  </data>
-  <data name="WorkProgressDownloaded" xml:space="preserve">
-    <value>Pobrane</value>
-  </data>
-  <data name="WorkProgressError" xml:space="preserve">
-    <value>Błąd</value>
-  </data>
-  <data name="WorkProgressWaiting" xml:space="preserve">
-    <value>Czekam</value>
-  </data>
-  <data name="WorkProgressZipping" xml:space="preserve">
-    <value>Pakuję</value>
-  </data>
-  <data name="Downloading" xml:space="preserve">
-    <value>POBIERANIE</value>
-  </data>
-  <data name="WorkProgressDownloading" xml:space="preserve">
-    <value>Pobieranie</value>
-  </data>
+  <metadata name="backgroundWorker.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>
