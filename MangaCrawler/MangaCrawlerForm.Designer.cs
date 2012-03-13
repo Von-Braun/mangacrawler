@@ -411,6 +411,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MangaCrawlerForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MangaCrawlerForm_FormClosed);
             this.Load += new System.EventHandler(this.MangaShareCrawlerForm_Load);
+            this.Shown += new System.EventHandler(this.MangaCrawlerForm_Shown);
             this.ResizeEnd += new System.EventHandler(this.MangaCrawlerForm_ResizeEnd);
             this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

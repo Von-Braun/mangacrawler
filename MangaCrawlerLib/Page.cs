@@ -24,20 +24,17 @@ namespace MangaCrawlerLib
         public string ImageFilePath { get; protected set; }
 
         internal Page(Chapter a_chapter, string a_url, int a_index, string a_name)
-            : this(a_chapter, a_url, a_index, Catalog.NextID(), a_name)
+            : this(a_chapter, a_url, a_index, Catalog.NextID(), a_name, null, null, PageState.Initial)
         {
         }
 
         internal Page(Chapter a_chapter, string a_url, int a_index, ulong a_id, string a_name, byte[] a_hash, 
-            string a_image_file_path) : this(a_chapter, a_url, a_index, a_id, a_name)
+            string a_image_file_path, PageState a_state) : base(a_id)
         {
             Hash = a_hash;
             ImageFilePath = a_image_file_path;
-        }
+            m_state = a_state;
 
-        internal Page(Chapter a_chapter, string a_url, int a_index, ulong a_id, string a_name)
-            : base(a_id)
-        {
             Chapter = a_chapter;
             URL = HttpUtility.HtmlDecode(a_url);
             Index = a_index;
@@ -93,13 +90,11 @@ namespace MangaCrawlerLib
             return Crawler.GetImageStream(this);  
         }
 
-        internal void DownloadAndSavePageImage()
+        internal void DownloadAndSavePageImage(string a_chapter_dir, bool a_cbz)
         {
-            Debug.Assert(State == PageState.WaitingForDownloading);
-
             try
             {
-                new DirectoryInfo(Chapter.ChapterDir).Create();
+                new DirectoryInfo(a_chapter_dir).Create();
 
                 FileInfo temp_file = new FileInfo(Path.GetTempFileName());
 
@@ -139,7 +134,7 @@ namespace MangaCrawlerLib
                         Hash = hash;
                     }
 
-                    ImageFilePath = Chapter.ChapterDir +
+                    ImageFilePath = a_chapter_dir +
                         FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
                         FileUtils.RemoveInvalidFileDirectoryCharacters(
                             Path.GetExtension(ImageURL).ToLower());
@@ -171,20 +166,13 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal bool DownloadRequired()
+        internal bool RequiredDownload(string a_chapter_dir)
         {
-            if (State == PageState.WaitingForDownloading)
-                return true;
-
-            Debug.Assert(State == PageState.WaitingForVerifying);
-
-            State = PageState.Veryfying;
-
             try
             {
                 if (ImageFilePath == null)
                     return true;
-                if (new FileInfo(ImageFilePath).Directory.FullName + "\\" != Chapter.ChapterDir)
+                if (new FileInfo(ImageFilePath).Directory.FullName + "\\" != a_chapter_dir)
                     return true;
                 if (!new FileInfo(ImageFilePath).Exists)
                     return true;
@@ -196,8 +184,6 @@ namespace MangaCrawlerLib
 
                 if (!Hash.SequenceEqual(hash))
                     return true;
-
-                State = PageState.Veryfied;
 
                 return false;
             }
@@ -225,39 +211,19 @@ namespace MangaCrawlerLib
                     }
                     case PageState.Downloading:
                     {
-                        Debug.Assert((State == PageState.WaitingForDownloading) ||
-                                     (State == PageState.Veryfying));
+                        Debug.Assert(State == PageState.Waiting);
                         break;
                     }
                     case PageState.Error:
                     {
-                        Debug.Assert((State == PageState.Downloading) ||
-                                     (State == PageState.Veryfying));
+                        Debug.Assert(State == PageState.Downloading);
                         break;
                     }
-                    case PageState.Veryfied:
-                    {
-                        Debug.Assert(State == PageState.Veryfying);
-                        break;
-                    }
-                    case PageState.Veryfying:
-                    {
-                        Debug.Assert(State == PageState.WaitingForVerifying);
-                        break;
-                    }
-                    case PageState.WaitingForVerifying:
+                    
+                    case PageState.Waiting:
                     {
                         Debug.Assert((State == PageState.Downloaded) ||
                                      (State == PageState.Initial) ||
-                                     (State == PageState.Error));
-                        break;
-                    }
-                    case PageState.WaitingForDownloading:
-                    {
-                        Debug.Assert((State == PageState.Downloaded) ||
-                                     (State == PageState.Initial) ||
-                                     (State == PageState.WaitingForDownloading) ||
-                                     (State == PageState.Veryfying) ||
                                      (State == PageState.Error));
                         break;
                     }
@@ -270,11 +236,6 @@ namespace MangaCrawlerLib
 
                 m_state = value;
             }
-        }
-
-        protected internal override void RemoveOrphan()
-        {
-            Catalog.DeleteCatalogFile(ID);
         }
     }
 }

@@ -9,19 +9,13 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    public class SerieListItem : ListItem<Serie>
+    public class SerieListItem : ListItem
     {
-        public Serie Serie
-        {
-            get
-            {
-                return m_entity;
-            }
-        }
+        public Serie Serie { get; private set; }
 
         public SerieListItem(Serie a_serie)
-            : base(a_serie)
         {
+            Serie = a_serie;
         }
 
         public override string ToString()
@@ -35,6 +29,13 @@ namespace MangaCrawler
             {
                 return Serie.ID;
             }
+        }
+
+        private void DrawCount(Graphics a_graphics, Rectangle a_rect, Font a_font)
+        {
+            a_graphics.DrawString(
+                String.Format(Resources.Chapters, Serie.Chapters.Count),
+                a_font, Brushes.Green, a_rect, StringFormat.GenericDefault);
         }
 
         public override void DrawItem(DrawItemEventArgs a_args)
@@ -52,11 +53,9 @@ namespace MangaCrawler
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
 
-                    case SerieState.Downloaded:
+                    case SerieState.Checked:
 
-                        a_args.Graphics.DrawString(
-                            String.Format(Resources.Chapters, Serie.Chapters.Count),
-                            font, Brushes.Green, rect, StringFormat.GenericDefault);
+                        DrawCount(a_args.Graphics, rect, font);
                         break;
 
                     case SerieState.Waiting:
@@ -65,16 +64,22 @@ namespace MangaCrawler
                             Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
 
-                    case SerieState.Downloading:
+                    case SerieState.Checking:
 
                         a_args.Graphics.DrawString(
                             String.Format("({0}%)", Serie.DownloadProgress),
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
 
-                    case SerieState.Initial: break;
+                    case SerieState.Initial:
 
-                     default: throw new NotImplementedException();
+                        if (Serie.Chapters.Count != 0)
+                            DrawCount(a_args.Graphics, rect, font);
+                        break;
+
+                    default: 
+                         
+                         throw new NotImplementedException();
                 }
             };
 

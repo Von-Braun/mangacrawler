@@ -7,15 +7,15 @@ using System.Reflection;
 using MangaCrawlerLib;
 using System.Threading.Tasks;
 using System.ComponentModel;
-using log4net.Config;
-using log4net.Core;
-using log4net.Layout;
 using System.IO;
 using MangaCrawler.Properties;
 using System.Diagnostics;
 using System.Media;
 using HtmlAgilityPack;
 using System.Threading;
+using log4net.Core;
+using log4net.Layout;
+using log4net.Config;
 using log4net;
 
 namespace MangaCrawler
@@ -91,21 +91,14 @@ namespace MangaCrawler
      * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
      * usunelismy jakis serie, chapter, powinno sie pokasowac co trzeba w katalogu, dla serii, wszystkie chaptery i page, 
      * pojawienie sie czegos nowego, czy zostanie dodany tylko jeden nowy id
-     * 
-     * pamietanie taskow podczas zamkniecia i ich wznawianie
-     * w przypadku ponownego uruchomienia jesli sa zadania otwarte to pokazac zakladke zadan albo wyswietlic message
-     * boxa bo to nie jest typowa sytuacja
-     * 
-     * zmiana katalogu bazowego - o zrobic z aktualnymi danymi, przeniesc albo skasowac, pytac sie usera najlepiej
+     * testy na pamietanie, przywracanie stanu vizualizacji kiedy kasowane sa zaznaczone elementy, tak ze znikaja 
+     * itemy, indexy wychodza za zakres itp, multiselekcja takze test
      * 
      * jak usuwac skonczone worksy z downloadmanagera, najlepiej tak blednych nie usuwac wogole, skonczone usuwac 
      * tylko jesli tak zostalo zaznaczone
      * 
      * dodac przycisk przejdz do katalogu, dla calej bazy, servera, serii, chapteru
-     * 
-     * dodac mechanizm oszczedzania pamieci, albo DownloadManaer.Server za kazdym razem pobierane z bazy (wolnee) albo
-     * pamietac zaznaczane idki, lub inaczej te do pobierania i okresowo kasowac nieuzywane czesci drzewa, co pewien 
-     * czas, co pewna ilosc, co pewne zuzcie pamieci
+     * dodac przycisk ogladaj, odpalajacy pierwszy image
      * 
      * maksymalna ilosc polaczen, teraz jest sto, jaka powinna byc racjonalna ilosc
      * 
@@ -115,15 +108,16 @@ namespace MangaCrawler
      * 
      * dodac opcje numerowania stron
      * 
-     * wyladowywac nieuzywane, zapisywac co pewien czas w tle
+     * pamietanie pobieranych, prawidlowa reinicjalizacja stanow chapteru, stron, zapis deleting
+     * 
      */
 
     public partial class MangaCrawlerForm : Form
     {
-        private Dictionary<Server, ListBoxVisualState<Serie>> m_series_visual_states =
-            new Dictionary<Server, ListBoxVisualState<Serie>>();
-        private Dictionary<Serie, ListBoxVisualState<Chapter>> m_chapters_visual_states =
-            new Dictionary<Serie, ListBoxVisualState<Chapter>>();
+        private Dictionary<Server, ListBoxVisualState> m_series_visual_states =
+            new Dictionary<Server, ListBoxVisualState>();
+        private Dictionary<Serie, ListBoxVisualState> m_chapters_visual_states =
+            new Dictionary<Serie, ListBoxVisualState>();
 
         private Color BAD_DIR = Color.Red;
 
@@ -136,6 +130,8 @@ namespace MangaCrawler
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
+            SetupLog4NET();
+
             Text = String.Format("{0} {1}.{2}", Text,
                 Assembly.GetAssembly(GetType()).GetName().Version.Major, 
                 Assembly.GetAssembly(GetType()).GetName().Version.Minor);
@@ -153,13 +149,12 @@ namespace MangaCrawler
 
             DownloadManager.UseCBZ = () => Settings.Instance.UseCBZ;
             DownloadManager.GetSettingsDir = () => Settings.GetSettingsDir();
+            DownloadManager.GetCheckTimeDelta = () => Settings.Instance.CheckTimeDelta;
 
             mangaRootDirTextBox.Text = Settings.Instance.MangaRootDir;
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
             splitter1.SplitPosition = Settings.Instance.SplitterDistance;
             cbzCheckBox.Checked = Settings.Instance.UseCBZ;
-
-            SetupLog4NET();
 
             Task.Factory.StartNew(() => CheckNewVersion(), TaskCreationOptions.LongRunning);
 
@@ -194,8 +189,6 @@ namespace MangaCrawler
 
         private void SetupLog4NET()
         {
-            XmlConfigurator.Configure();
-            
             RichTextBoxAppender rba = new RichTextBoxAppender(logRichTextBox);
             rba.Threshold = Level.All;
             rba.Layout = new PatternLayout(
@@ -273,7 +266,7 @@ namespace MangaCrawler
 
             if (SelectedServer != null)
             {
-                ListBoxVisualState<Serie> vs;
+                ListBoxVisualState vs;
                 if (m_series_visual_states.TryGetValue(SelectedServer, out vs))
                     vs.Restore();
             }
@@ -282,7 +275,8 @@ namespace MangaCrawler
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedServer != null)
-                m_series_visual_states[SelectedServer] = new ListBoxVisualState<Serie>(seriesListBox);
+                m_series_visual_states[SelectedServer] = 
+                    new ListBoxVisualState(seriesListBox);
 
             DownloadManager.DownloadChapters(SelectedSerie);
 
@@ -290,7 +284,7 @@ namespace MangaCrawler
 
             if (SelectedSerie != null)
             {
-                ListBoxVisualState<Chapter> vs;
+                ListBoxVisualState vs;
                 if (m_chapters_visual_states.TryGetValue(SelectedSerie, out vs))
                     vs.Restore();
             }
@@ -299,7 +293,8 @@ namespace MangaCrawler
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedSerie != null)
-                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState<Chapter>(chaptersListBox);
+                m_chapters_visual_states[SelectedSerie] = 
+                    new ListBoxVisualState(chaptersListBox);
         }
 
         private void seriesSearchTextBox_TextChanged(object sender, EventArgs e)
@@ -526,13 +521,15 @@ namespace MangaCrawler
         private void seriesListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (SelectedServer != null)
-                m_series_visual_states[SelectedServer] = new ListBoxVisualState<Serie>(seriesListBox);
+                m_series_visual_states[SelectedServer] = 
+                    new ListBoxVisualState(seriesListBox);
         }
 
         private void chaptersListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (SelectedSerie != null)
-                m_chapters_visual_states[SelectedSerie] = new ListBoxVisualState<Chapter>(chaptersListBox);
+                m_chapters_visual_states[SelectedSerie] = 
+                    new ListBoxVisualState(chaptersListBox);
         }
 
         private void cbzCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -682,8 +679,6 @@ namespace MangaCrawler
 
             UpdateWorksTab();
             UpdateSeriesTab();
-
-            Text = (System.GC.GetTotalMemory(false) / 1024 / 1024).ToString() + " MB";
         }       
 
         private void UpdateSeriesTab()
@@ -710,7 +705,7 @@ namespace MangaCrawler
                         select new ChapterListItem(chapter)).ToArray();
             }
 
-            new ListBoxVisualState<Chapter>(chaptersListBox).ReloadItems(ar);
+            new ListBoxVisualState(chaptersListBox).ReloadItems(ar);
         }
 
         private void UpdateServers()
@@ -721,7 +716,7 @@ namespace MangaCrawler
             var servers = (from server in DownloadManager.Servers
                            select new ServerListItem(server)).ToArray();
 
-            new ListBoxVisualState<Server>(serversListBox).ReloadItems(servers);
+            new ListBoxVisualState(serversListBox).ReloadItems(servers);
         }
 
         private void UpdateSeries()
@@ -739,7 +734,7 @@ namespace MangaCrawler
                       select new SerieListItem(serie)).ToArray();
             }
 
-            new ListBoxVisualState<Serie>(seriesListBox).ReloadItems(ar);
+            new ListBoxVisualState(seriesListBox).ReloadItems(ar);
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -757,7 +752,7 @@ namespace MangaCrawler
             if (e.Index == -1)
                 return;
 
-            ((sender as ListBox).Items[e.Index] as ListItem<Server>).DrawItem(e);
+            ((sender as ListBox).Items[e.Index] as ListItem).DrawItem(e);
         }
 
         private void seriesListBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -765,7 +760,7 @@ namespace MangaCrawler
             if (e.Index == -1)
                 return;
 
-            ((sender as ListBox).Items[e.Index] as ListItem<Serie>).DrawItem(e);
+            ((sender as ListBox).Items[e.Index] as ListItem).DrawItem(e);
 
         }
 
@@ -774,7 +769,13 @@ namespace MangaCrawler
             if (e.Index == -1)
                 return;
 
-            ((sender as ListBox).Items[e.Index] as ListItem<Chapter>).DrawItem(e);
+            ((sender as ListBox).Items[e.Index] as ListItem).DrawItem(e);
+        }
+
+        private void MangaCrawlerForm_Shown(object sender, EventArgs e)
+        {
+            if (Catalog.GetCatalogSize() > Settings.Instance.MaxCatalogSize)
+                new CatalogOptimizeForm().ShowDialog();
         }
     }
 }

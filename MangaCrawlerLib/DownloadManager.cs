@@ -23,6 +23,7 @@ namespace MangaCrawlerLib
 
         public static Func<string> GetMangaRootDir;
         public static Func<string> GetSettingsDir;
+        public static Func<TimeSpan> GetCheckTimeDelta;
         public static Func<bool> UseCBZ;
 
         private static Server[] s_servers;
@@ -38,15 +39,10 @@ namespace MangaCrawlerLib
             if (a_server == null)
                 return;
 
-            if (a_server.DownloadRequired)
-                a_server.State = ServerState.Waiting;
-            else
-            {
-                Loggers.MangaCrawler.InfoFormat(
-                    "Already in work, server: {0} state: {1}",
-                    a_server, a_server.State);
+            if (!a_server.DownloadRequired)
                 return;
-            }
+
+            a_server.State = ServerState.Waiting;
 
             new Task(() =>
             {
@@ -129,7 +125,7 @@ namespace MangaCrawlerLib
 
         public static void Save()
         {
-            Catalog.Save();
+            Catalog.SaveCatalog();
         }
 
         public static IEnumerable<Server> Servers
@@ -137,7 +133,7 @@ namespace MangaCrawlerLib
             get
             {
                 if (s_servers == null)
-                    s_servers = Catalog.Load();
+                    s_servers = Catalog.LoadCatalog();
 
                 return s_servers;
             }

@@ -9,8 +9,8 @@ namespace MangaCrawlerLib
     {
         Initial,
         Waiting,
-        Downloading,
-        Downloaded,
+        Checking,
+        Checked,
         Error
     }
 
@@ -18,8 +18,8 @@ namespace MangaCrawlerLib
     {
         Initial,
         Waiting,
-        Downloading,
-        Downloaded,
+        Checking,
+        Checked,
         Error
     }
 
@@ -39,10 +39,7 @@ namespace MangaCrawlerLib
     public enum PageState
     {
         Initial, 
-        WaitingForDownloading,
-        WaitingForVerifying, 
-        Veryfying,
-        Veryfied, 
+        Waiting,
         Downloading, 
         Downloaded, 
         Error

@@ -44,8 +44,8 @@ namespace MangaCrawlerLib
         internal HtmlDocument DownloadDocument(Server a_server, string a_url = null)
         {
             return DownloadDocument(
-                (a_url == null) ? a_server.URL : a_url, 
-                () => a_server.State = ServerState.Downloading, 
+                (a_url == null) ? a_server.URL : a_url,
+                () => a_server.State = ServerState.Checking,
                 () => Limiter.Aquire(a_server),
                 () => Limiter.Release(a_server));
         }
@@ -54,7 +54,7 @@ namespace MangaCrawlerLib
         {
             return DownloadDocument(
                 (a_url == null) ? a_serie.URL : a_url, 
-                () => a_serie.State  = SerieState.Downloading, 
+                () => a_serie.State  = SerieState.Checking, 
                 () => Limiter.Aquire(a_serie),
                 () => Limiter.Release(a_serie));
         }

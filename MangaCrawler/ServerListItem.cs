@@ -10,19 +10,13 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    public class ServerListItem : ListItem<Server>
+    public class ServerListItem : ListItem
     {
-        public Server Server
-        {
-            get
-            {
-                return m_entity;
-            }
-        }
+        public Server Server { get; private set; }
 
         public ServerListItem(Server a_server)
-            : base(a_server)
         {
+            Server = a_server;
         }
 
         public override string ToString()
@@ -36,6 +30,13 @@ namespace MangaCrawler
             {
                 return Server.ID;
             }
+        }
+
+        private void DrawCount(Graphics a_graphics, Rectangle a_rect, Font a_font)
+        {
+            a_graphics.DrawString(
+                String.Format(Resources.Series, Server.Series.Count),
+                a_font, Brushes.Green, a_rect, StringFormat.GenericDefault);
         }
 
         public override void DrawItem(DrawItemEventArgs a_args)
@@ -53,11 +54,9 @@ namespace MangaCrawler
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
 
-                    case ServerState.Downloaded:
+                    case ServerState.Checked:
 
-                        a_args.Graphics.DrawString(
-                            String.Format(Resources.Series, Server.Series.Count),
-                            font, Brushes.Green, rect, StringFormat.GenericDefault);
+                        DrawCount(a_args.Graphics, rect, font);
                         break;
 
                     case ServerState.Waiting:
@@ -66,16 +65,22 @@ namespace MangaCrawler
                             Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
 
-                    case ServerState.Downloading:
+                    case ServerState.Checking:
 
                         a_args.Graphics.DrawString(
                             String.Format("({0}%)", Server.DownloadProgress),
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
 
-                    case ServerState.Initial: break;
+                    case ServerState.Initial:
 
-                      default: throw new NotImplementedException();
+                        if (Server.Series.Count != 0)
+                            DrawCount(a_args.Graphics, rect, font);
+                        break;
+
+                    default: 
+                          
+                          throw new NotImplementedException();
                 }
             };
 
