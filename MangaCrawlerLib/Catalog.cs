@@ -9,13 +9,17 @@ using System.IO;
 using TomanuExtensions.Utils;
 using System.Xml;
 using System.Threading;
+using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
     public class Catalog
     {
-        #region XML Nodes
         private static string CATALOG_XML = "catalog.xml";
+        private static string WORKS_XML = "works.xml";
+
+        #region XML Nodes
+
         private static string CATALOG_NODE = "Catalog";
 
         private static string GLOBAL_ID_COUNTER_NODE = "IDCounter";
@@ -48,6 +52,7 @@ namespace MangaCrawlerLib
         private static string CHAPTERS_CHAPTER_ID_NODE = "ID";
         private static string CHAPTERS_CHAPTER_STATE_NODE = "State";
         private static string CHAPTERS_CHAPTER_TITLE_NODE = "Title";
+        private static string CHAPTERS_CHAPTER_LIMITER_ORDER_NODE = "LimiterOrder";
         private static string CHAPTERS_CHAPTER_URL_NODE = "URL";
 
         private static string PAGES_NODE = "ChapterPages";
@@ -64,6 +69,13 @@ namespace MangaCrawlerLib
         private static string PAGES_PAGE_HASH_NODE = "Hash";
         private static string PAGES_PAGE_STATE_NODE = "State";
         private static string PAGES_PAGE_IMAGEFILEPATH_NODE = "ImageFilePath";
+
+        private static string WORKS_NODE = "Works";
+        private static string WORKS_WORK_NODE = "Work";
+        private static string WORKS_CHAPTER_ID_NODE = "ChapterID";
+        private static string WORKS_SERIE_ID_NODE = "SerieID";
+        private static string WORKS_SERVER_ID_NODE = "ServerID";
+
         #endregion
 
         public const double COMPACT_RATIO = 0.75;
@@ -94,6 +106,14 @@ namespace MangaCrawlerLib
             }
         }
 
+        private static string WorksFile
+        {
+            get
+            {
+                return CatalogDir + WORKS_XML;
+            }
+        }
+
         private static string CatalogDir
         {
             get
@@ -110,14 +130,21 @@ namespace MangaCrawlerLib
 
         internal static Server[] LoadCatalog()
         {
-            List<Server> servers = GetServers().ToList();
+            var doc = LoadXml(CatalogFile);
 
-            if (!new FileInfo(CatalogFile).Exists)
-                return servers.ToArray();
+            if (doc == null)
+            {
+                ClearCatalog();
+                IDCounter = 0;
+                return GetServers().ToArray();
+            }
+
+            Debug.Assert(IDCounter == 0);
+            List<Server> servers = GetServers().ToList();
 
             try
             {
-                var root = XDocument.Load(CatalogFile).Element(CATALOG_NODE);
+                var root = doc.Element(CATALOG_NODE);
 
                 IDCounter = UInt64.Parse(root.Element(GLOBAL_ID_COUNTER_NODE).Value);
 
@@ -132,6 +159,8 @@ namespace MangaCrawlerLib
 
                 if (!catalog_servers.Select(s => s.ID).Unique())
                     throw new XmlException();
+
+                
 
                 catalog_servers = (from server in catalog_servers
                                    where servers.Select(s => s.ID).Contains(server.ID)
@@ -152,18 +181,21 @@ namespace MangaCrawlerLib
             catch (Exception ex1)
             {
                 Loggers.MangaCrawler.Error("Exception #1", ex1);
-
-                try
-                {
-                    new DirectoryInfo(CatalogDir).DeleteContent();
-                }
-                catch (Exception ex2)
-                { 
-                    Loggers.MangaCrawler.Error("Exception #2", ex2);
-                }
-
+                ClearCatalog();
                 IDCounter = 0;
                 return GetServers().ToArray();
+            }
+        }
+
+        private static void ClearCatalog()
+        {
+            try
+            {
+                new DirectoryInfo(CatalogDir).DeleteContent();
+            }
+            catch (Exception ex)
+            {
+                Loggers.MangaCrawler.Error("Exception", ex);
             }
         }
 
@@ -200,9 +232,14 @@ namespace MangaCrawlerLib
 
         private static void DeleteCatalogFile(ulong a_id)
         {
+            DeleteFile(GetCatalogFile(a_id));
+        }
+
+        private static void DeleteFile(string a_path)
+        {
             try
             {
-                new FileInfo(GetCatalogFile(a_id)).Delete();
+                new FileInfo(a_path).Delete();
             }
             catch (Exception ex)
             {
@@ -224,6 +261,24 @@ namespace MangaCrawlerLib
                 Loggers.MangaCrawler.Fatal("Exception", ex);
 
                 DeleteCatalogFile(a_id);
+                return null;
+            }
+        }
+
+        private static XDocument LoadXml(string a_path)
+        {
+            if (!new FileInfo(a_path).Exists)
+                return null;
+
+            try
+            {
+                return XDocument.Load(a_path);
+            }
+            catch (Exception ex)
+            {
+                Loggers.MangaCrawler.Fatal("Exception", ex);
+
+                DeleteFile(a_path);
                 return null;
             }
         }
@@ -330,13 +385,15 @@ namespace MangaCrawlerLib
                                {
                                    ID = UInt64.Parse(chapter.Element(CHAPTERS_CHAPTER_ID_NODE).Value),
                                    Title = chapter.Element(CHAPTERS_CHAPTER_TITLE_NODE).Value,
+                                   LimiterOrder = UInt64.Parse(chapter.Element(CHAPTERS_CHAPTER_LIMITER_ORDER_NODE).Value), 
                                    URL = chapter.Element(CHAPTERS_CHAPTER_URL_NODE).Value,
                                    State = EnumExtensions.Parse<ChapterState>(
                                        chapter.Element(CHAPTERS_CHAPTER_STATE_NODE).Value)
                                };
 
                 return (from chapter in chapters
-                        select new Chapter(a_serie, chapter.URL, chapter.Title, chapter.ID, chapter.State)).ToList();
+                        select new Chapter(a_serie, chapter.URL, chapter.Title, 
+                            chapter.ID, chapter.State, chapter.LimiterOrder)).ToList();
             }
             catch (Exception ex)
             {
@@ -363,6 +420,7 @@ namespace MangaCrawlerLib
                             select new XElement(CHAPTERS_CHAPTER_NODE,
                                 new XElement(CHAPTERS_CHAPTER_ID_NODE, c.ID),
                                 new XElement(CHAPTERS_CHAPTER_TITLE_NODE, c.Title),
+                                new XElement(CHAPTERS_CHAPTER_LIMITER_ORDER_NODE, c.LimiterOrder),
                                 new XElement(CHAPTERS_CHAPTER_STATE_NODE, c.State),
                                 new XElement(CHAPTERS_CHAPTER_URL_NODE, c.URL))));
 
@@ -496,7 +554,7 @@ namespace MangaCrawlerLib
 
         }
 
-        public static IEnumerable<FileInfo> GetCatalogFiles()
+        private static IEnumerable<FileInfo> GetCatalogFiles()
         {
             return new DirectoryInfo(CatalogDir).EnumerateFiles("*.xml");
         }
@@ -550,6 +608,9 @@ namespace MangaCrawlerLib
 
         public static void Compact(long a_max_catalog_size, Func<bool> a_cancel)
         {
+            if (HashWorks())
+                return;
+            
             try
             {
                 List<ulong> ids = new List<ulong>();
@@ -668,6 +729,81 @@ namespace MangaCrawlerLib
 
                 if (no_images())
                     DeleteCatalogFile(old);
+            }
+        }
+
+        internal static List<Chapter> LoadWorks(IEnumerable<Server> a_servers)
+        {
+            if (!new FileInfo(WorksFile).Exists)
+                return new List<Chapter>();
+
+            try
+            {
+                XElement root = XDocument.Load(WorksFile).Element(WORKS_NODE);
+
+                List<Chapter> works = new List<Chapter>();
+
+                foreach (var work in root.Elements(WORKS_WORK_NODE))
+                {
+                    ulong server_id = UInt64.Parse(work.Element(WORKS_SERVER_ID_NODE).Value);
+                    Server server = a_servers.First(s => s.ID == server_id);
+
+                    ulong serie_id = UInt64.Parse(work.Element(WORKS_SERIE_ID_NODE).Value);
+                    Serie serie = server.Series.First(s => s.ID == serie_id);
+
+                    ulong chapter_id = UInt64.Parse(work.Element(WORKS_CHAPTER_ID_NODE).Value);
+                    Chapter chapter = serie.Chapters.First(c => c.ID == chapter_id);
+
+                    works.Add(chapter);
+                }
+
+                return works;
+            }
+            catch (Exception ex)
+            {
+                Loggers.MangaCrawler.Error("Exception", ex);
+                DeleteFile(WorksFile);
+                return new List<Chapter>();
+            }
+        }
+
+        private static bool HashWorks()
+        {
+            XDocument doc = LoadXml(WorksFile);
+
+            if (doc == null)
+                return false;
+
+            try
+            {
+                return doc.Element(WORKS_NODE).Elements(WORKS_WORK_NODE).Any();
+            }
+            catch (Exception ex)
+            {
+                Loggers.MangaCrawler.Error("Exception", ex);
+                return false;
+            }
+        }
+
+        internal static void SaveWorks(IEnumerable<Chapter> a_works)
+        {
+            try
+            {
+                lock (m_lock)
+                {
+                    var xml = new XElement(WORKS_NODE,
+                        from work in a_works
+                        select new XElement(WORKS_WORK_NODE,
+                            new XElement(WORKS_SERVER_ID_NODE, work.Server.ID),
+                            new XElement(WORKS_SERIE_ID_NODE, work.Serie.ID),
+                            new XElement(WORKS_CHAPTER_ID_NODE, work.ID)));
+                       
+                    xml.Save(WorksFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                Loggers.MangaCrawler.Error("Exception", ex);
             }
         }
     }

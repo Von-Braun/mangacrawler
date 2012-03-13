@@ -128,7 +128,7 @@ namespace MangaCrawlerLib
 
         public override string ToString()
         {
-            return Name;
+            return String.Format("{0} - {1}", ID, Name);
         }
 
         public bool DownloadRequired
