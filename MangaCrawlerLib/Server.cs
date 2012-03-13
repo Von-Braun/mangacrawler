@@ -8,6 +8,8 @@ using TomanuExtensions;
 using System.Threading;
 using MangaCrawlerLib.Crawlers;
 using System.Collections.ObjectModel;
+using System.IO;
+using TomanuExtensions.Utils;
 
 namespace MangaCrawlerLib
 {
@@ -135,6 +137,19 @@ namespace MangaCrawlerLib
                 else
                     return (State == ServerState.Error) || (State == ServerState.Initial);
             }
+        }
+
+        public string GetServerDirectory()
+        {
+            string manga_root_dir = DownloadManager.GetMangaRootDir();
+
+            if (manga_root_dir.Last() == Path.DirectorySeparatorChar)
+                manga_root_dir = manga_root_dir.RemoveFromRight(1);
+
+            return manga_root_dir +
+                   Path.DirectorySeparatorChar +
+                   FileUtils.RemoveInvalidFileCharacters(Name) +
+                   Path.DirectorySeparatorChar;
         }
 
         public ServerState State

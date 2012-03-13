@@ -6,6 +6,9 @@ using System.Web;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.IO;
+using TomanuExtensions.Utils;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {
@@ -184,6 +187,21 @@ namespace MangaCrawlerLib
 
                 m_state = value;
             }
+        }
+
+        public string GetSerieDirectory()
+        {
+            string manga_root_dir = DownloadManager.GetMangaRootDir();
+
+            if (manga_root_dir.Last() == Path.DirectorySeparatorChar)
+                manga_root_dir = manga_root_dir.RemoveFromRight(1);
+
+            return manga_root_dir +
+                   Path.DirectorySeparatorChar +
+                   FileUtils.RemoveInvalidFileCharacters(Server.Name) +
+                   Path.DirectorySeparatorChar +
+                   FileUtils.RemoveInvalidFileCharacters(Title) +
+                   Path.DirectorySeparatorChar;
         }
     }
 }

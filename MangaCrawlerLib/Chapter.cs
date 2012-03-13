@@ -134,18 +134,20 @@ namespace MangaCrawlerLib
             }
         }
 
-        private string GetChapterDirectory(string a_images_base_dir)
+        public string GetChapterDirectory()
         {
-            if (a_images_base_dir.Last() == Path.DirectorySeparatorChar)
-                a_images_base_dir = a_images_base_dir.RemoveFromRight(1);
+            string manga_root_dir = DownloadManager.GetMangaRootDir();
 
-            return a_images_base_dir +
+            if (manga_root_dir.Last() == Path.DirectorySeparatorChar)
+                manga_root_dir = manga_root_dir.RemoveFromRight(1);
+
+            return manga_root_dir +
                    Path.DirectorySeparatorChar +
-                   FileUtils.RemoveInvalidFileDirectoryCharacters(Serie.Server.Name) +
+                   FileUtils.RemoveInvalidFileCharacters(Serie.Server.Name) +
                    Path.DirectorySeparatorChar +
-                   FileUtils.RemoveInvalidFileDirectoryCharacters(Serie.Title) +
+                   FileUtils.RemoveInvalidFileCharacters(Serie.Title) +
                    Path.DirectorySeparatorChar +
-                   FileUtils.RemoveInvalidFileDirectoryCharacters(Title) +
+                   FileUtils.RemoveInvalidFileCharacters(Title) +
                    Path.DirectorySeparatorChar;
         }
 
@@ -163,7 +165,7 @@ namespace MangaCrawlerLib
             Catalog.Save(this);
         }
 
-        internal void DownloadPages(string a_manga_root_dir, bool a_cbz)
+        internal void DownloadPages()
         {
             bool error = false;
 
@@ -172,6 +174,14 @@ namespace MangaCrawlerLib
                 Limiter.BeginChapter(this);
 
                 DownloadPagesList();
+
+                PageNamingStrategy pns = DownloadManager.PageNamingStrategy();
+                if (pns == PageNamingStrategy.PrefixWithIndexWhenNotOrdered)
+                    if (!Pages.Select(p => p.Name).SequenceEqual(Pages.Select(p => p.Name).OrderBy(n => n)))
+                        pns = PageNamingStrategy.PrefixWithIndex;
+
+                for (int i = 0; i < Pages.Count; i++)
+                    Debug.Assert(Pages[i].Index == i + 1);
 
                 Parallel.ForEach(Pages,
 
@@ -184,7 +194,7 @@ namespace MangaCrawlerLib
                     {
                         try
                         {
-                            page.DownloadAndSavePageImage(GetChapterDirectory(a_manga_root_dir), a_cbz);
+                            page.DownloadAndSavePageImage(pns);
 
                             Catalog.Save(this);
                         }
@@ -210,7 +220,7 @@ namespace MangaCrawlerLib
 
                 Catalog.Save(this);
 
-                if (a_cbz)
+                if (DownloadManager.UseCBZ())
                     CreateCBZ();
             }
             catch (OperationCanceledException ex1)
@@ -244,6 +254,8 @@ namespace MangaCrawlerLib
 
                 Limiter.EndChapter(this);
             }
+
+            Catalog.Save(this);
         }
 
         private void CreateCBZ()
