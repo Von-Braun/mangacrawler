@@ -207,5 +207,13 @@ namespace MangaCrawlerLib
                 m_state = value;
             }
         }
+
+        public override bool IsWorking
+        {
+            get
+            {
+                return (State == ServerState.Checking) || (State == ServerState.Waiting);
+            }
+        }
     }
 }

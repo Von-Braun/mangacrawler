@@ -108,6 +108,8 @@ namespace MangaCrawler
         private Dictionary<Serie, ListBoxVisualState> m_chapters_visual_states =
             new Dictionary<Serie, ListBoxVisualState>();
 
+        private bool m_refresh_once_after_all_done;
+
         private Color BAD_DIR = Color.Red;
 
         public MangaCrawlerForm()
@@ -140,6 +142,7 @@ namespace MangaCrawler
             DownloadManager.GetSettingsDir = () => Settings.GetSettingsDir();
             DownloadManager.GetCheckTimeDelta = () => Settings.Instance.CheckTimeDelta;
             DownloadManager.PageNamingStrategy = () => Settings.Instance.PageNamingStrategy;
+            DownloadManager.UpdateGUI = () => UpdateAll();
 
             mangaRootDirTextBox.Text = Settings.Instance.MangaRootDir;
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
@@ -330,7 +333,7 @@ namespace MangaCrawler
             }
 
             DownloadManager.DownloadPages(
-                chaptersListBox.SelectedItems.Cast<ChapterListItem>().Select(cli => cli.Chapter));
+                chaptersListBox.SelectedItems.Cast<ChapterListItem>().Select(cli => cli.Chapter).ToArray());
         }
 
         private void UpdateWorksTab()
@@ -635,6 +638,20 @@ namespace MangaCrawler
 
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
+            if (DownloadManager.IsDownloading())
+            {
+                if (m_refresh_once_after_all_done)
+                    Loggers.GUI.Debug("Starting refreshing");
+                m_refresh_once_after_all_done = false;
+            }
+            else if (!m_refresh_once_after_all_done)
+            {
+                Loggers.GUI.Debug("Stopping refreshing");
+                m_refresh_once_after_all_done = true;
+            }
+            else
+                return;
+
             UpdateAll();
         }
 
