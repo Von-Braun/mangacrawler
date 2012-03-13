@@ -45,6 +45,8 @@ namespace MangaCrawlerLib
 
             a_server.State = ServerState.Waiting;
 
+            a_server.LimiterOrder = Catalog.NextID();
+
             new Task(() =>
             {
                 a_server.DownloadSeries();
@@ -66,6 +68,8 @@ namespace MangaCrawlerLib
                     a_serie, a_serie.State);
                 return;
             }
+
+            a_serie.LimiterOrder = Catalog.NextID();
 
             new Task(() =>
             {
@@ -105,6 +109,8 @@ namespace MangaCrawlerLib
                 Loggers.MangaCrawler.InfoFormat(
                     "Chapter: {0} state: {1}",
                     chapter_sync, chapter_sync.State);
+
+                chapter_sync.LimiterOrder = Catalog.NextID();
 
                 new Task(() =>
                 {

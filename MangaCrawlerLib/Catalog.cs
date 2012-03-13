@@ -8,6 +8,7 @@ using TomanuExtensions;
 using System.IO;
 using TomanuExtensions.Utils;
 using System.Xml;
+using System.Threading;
 
 namespace MangaCrawlerLib
 {
@@ -66,7 +67,7 @@ namespace MangaCrawlerLib
         #endregion
 
         public const double COMPACT_RATIO = 0.75;
-        private static Object m_save_lock = new Object();
+        private static Object m_lock = new Object();
 
         #if TEST_SERVERS
         private static string CATALOG_DIR = "Catalog_Test\\";
@@ -78,8 +79,11 @@ namespace MangaCrawlerLib
 
         internal static ulong NextID()
         {
-            IDCounter++;
-            return IDCounter;
+            lock (m_lock)
+            {
+                IDCounter++;
+                return IDCounter;
+            }
         }
 
         private static string CatalogFile
@@ -165,7 +169,7 @@ namespace MangaCrawlerLib
 
         internal static void SaveCatalog()
         {
-            lock (m_save_lock)
+            lock (m_lock)
             {
                 try
                 {
@@ -273,7 +277,7 @@ namespace MangaCrawlerLib
         {
             try
             {
-                lock (m_save_lock)
+                lock (m_lock)
                 {
                     var xml = new XElement(SERIES_NODE,
                         new XElement(SERIES_SERVER_ID_NODE, a_server.ID),
@@ -347,7 +351,7 @@ namespace MangaCrawlerLib
         {
             try
             {
-                lock (m_save_lock)
+                lock (m_lock)
                 {
                     var xml = new XElement(CHAPTERS_NODE,
                         new XElement(CHAPTERS_SERIE_ID_NODE, a_serie.ID),
@@ -434,7 +438,7 @@ namespace MangaCrawlerLib
         {
             try
             {
-                lock (m_save_lock)
+                lock (m_lock)
                 {
                     var xml = new XElement(PAGES_NODE,
                         new XElement(PAGES_CHAPTER_ID_NODE, a_chapter.ID),
