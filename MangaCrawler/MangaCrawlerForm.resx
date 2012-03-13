@@ -774,22 +774,193 @@
   <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="Delete.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="Delete.HeaderText" xml:space="preserve">
+  <data name="downloadWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="downloadWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="downloadWorkButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>267, 299</value>
+  </data>
+  <data name="downloadWorkButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 23</value>
+  </data>
+  <data name="downloadWorkButton.TabIndex" type="System.Int32, mscorlib">
+    <value>38</value>
+  </data>
+  <data name="downloadWorkButton.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="&gt;&gt;downloadWorkButton.Name" xml:space="preserve">
+    <value>downloadWorkButton</value>
+  </data>
+  <data name="&gt;&gt;downloadWorkButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;downloadWorkButton.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;downloadWorkButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="deleteWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="deleteWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="deleteWorkButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>346, 299</value>
+  </data>
+  <data name="deleteWorkButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 23</value>
+  </data>
+  <data name="deleteWorkButton.TabIndex" type="System.Int32, mscorlib">
+    <value>37</value>
+  </data>
+  <data name="deleteWorkButton.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="Delete.MinimumWidth" type="System.Int32, mscorlib">
-    <value>60</value>
+  <data name="&gt;&gt;deleteWorkButton.Name" xml:space="preserve">
+    <value>deleteWorkButton</value>
   </data>
-  <data name="Delete.Width" type="System.Int32, mscorlib">
-    <value>60</value>
+  <data name="&gt;&gt;deleteWorkButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <metadata name="Info.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="&gt;&gt;deleteWorkButton.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;deleteWorkButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="visitPageWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="visitPageWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="visitPageWorkButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>409, 299</value>
+  </data>
+  <data name="visitPageWorkButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 23</value>
+  </data>
+  <data name="visitPageWorkButton.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
+  <data name="visitPageWorkButton.Text" xml:space="preserve">
+    <value>Visit page</value>
+  </data>
+  <data name="&gt;&gt;visitPageWorkButton.Name" xml:space="preserve">
+    <value>visitPageWorkButton</value>
+  </data>
+  <data name="&gt;&gt;visitPageWorkButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;visitPageWorkButton.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;visitPageWorkButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="viewWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="viewWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="viewWorkButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>486, 299</value>
+  </data>
+  <data name="viewWorkButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 23</value>
+  </data>
+  <data name="viewWorkButton.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="viewWorkButton.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="&gt;&gt;viewWorkButton.Name" xml:space="preserve">
+    <value>viewWorkButton</value>
+  </data>
+  <data name="&gt;&gt;viewWorkButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;viewWorkButton.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;viewWorkButton.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="goToChaptersWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="goToChaptersWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="goToChaptersWorkButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>540, 299</value>
+  </data>
+  <data name="goToChaptersWorkButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 23</value>
+  </data>
+  <data name="goToChaptersWorkButton.TabIndex" type="System.Int32, mscorlib">
+    <value>34</value>
+  </data>
+  <data name="goToChaptersWorkButton.Text" xml:space="preserve">
+    <value>Go to chapters</value>
+  </data>
+  <data name="&gt;&gt;goToChaptersWorkButton.Name" xml:space="preserve">
+    <value>goToChaptersWorkButton</value>
+  </data>
+  <data name="&gt;&gt;goToChaptersWorkButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;goToChaptersWorkButton.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;goToChaptersWorkButton.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="clearDownloadedWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="clearDownloadedWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="clearDownloadedWorkButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>641, 299</value>
+  </data>
+  <data name="clearDownloadedWorkButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 23</value>
+  </data>
+  <data name="clearDownloadedWorkButton.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="clearDownloadedWorkButton.Text" xml:space="preserve">
+    <value>Clear downloaded</value>
+  </data>
+  <data name="&gt;&gt;clearDownloadedWorkButton.Name" xml:space="preserve">
+    <value>clearDownloadedWorkButton</value>
+  </data>
+  <data name="&gt;&gt;clearDownloadedWorkButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;clearDownloadedWorkButton.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;clearDownloadedWorkButton.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="worksGridView.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <metadata name="Chapter.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="Info.HeaderText" xml:space="preserve">
+  <data name="Chapter.HeaderText" xml:space="preserve">
     <value>Info</value>
   </data>
   <metadata name="Progress.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -801,14 +972,11 @@
   <data name="Progress.Width" type="System.Int32, mscorlib">
     <value>150</value>
   </data>
-  <data name="worksGridView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="worksGridView.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="worksGridView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>753, 334</value>
+    <value>753, 293</value>
   </data>
   <data name="worksGridView.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -823,7 +991,7 @@
     <value>tabPage2</value>
   </data>
   <data name="&gt;&gt;worksGridView.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>6</value>
   </data>
   <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -854,6 +1022,9 @@
   </data>
   <data name="optionslLabel.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt</value>
+  </data>
+  <data name="optionslLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="optionslLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 25</value>
@@ -938,9 +1109,6 @@
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="cbzCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
   </data>
   <data name="cbzCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1254,9 +1422,6 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>783, 388</value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>799, 424</value>
   </data>
@@ -1272,16 +1437,16 @@
   <data name="&gt;&gt;folderBrowserDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Delete.Name" xml:space="preserve">
-    <value>Delete</value>
+  <data name="&gt;&gt;refreshTimer.Name" xml:space="preserve">
+    <value>refreshTimer</value>
   </data>
-  <data name="&gt;&gt;Delete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewButtonColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;refreshTimer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Info.Name" xml:space="preserve">
-    <value>Info</value>
+  <data name="&gt;&gt;Chapter.Name" xml:space="preserve">
+    <value>Chapter</value>
   </data>
-  <data name="&gt;&gt;Info.Type" xml:space="preserve">
+  <data name="&gt;&gt;Chapter.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Progress.Name" xml:space="preserve">
@@ -1289,12 +1454,6 @@
   </data>
   <data name="&gt;&gt;Progress.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;refreshTimer.Name" xml:space="preserve">
-    <value>refreshTimer</value>
-  </data>
-  <data name="&gt;&gt;refreshTimer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MangaCrawlerForm</value>

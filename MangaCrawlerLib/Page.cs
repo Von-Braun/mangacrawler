@@ -39,6 +39,11 @@ namespace MangaCrawlerLib
             URL = HttpUtility.HtmlDecode(a_url);
             Index = a_index;
 
+            if (State == PageState.Downloading)
+                m_state = PageState.Initial;
+            if (State == PageState.Waiting)
+                m_state = PageState.Initial;
+
             if (a_name != "")
             {
                 a_name = a_name.Trim();

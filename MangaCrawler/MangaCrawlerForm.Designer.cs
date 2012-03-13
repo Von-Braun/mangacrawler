@@ -58,10 +58,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.worksGridView = new System.Windows.Forms.DataGridView();
-            this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Info = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.optionsTabPage = new System.Windows.Forms.TabPage();
+            this.optionslLabel = new System.Windows.Forms.Label();
             this.pageNamingStrategyComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cbzCheckBox = new System.Windows.Forms.CheckBox();
@@ -74,10 +72,17 @@
             this.versionPanel = new System.Windows.Forms.Panel();
             this.versionLinkLabel = new System.Windows.Forms.LinkLabel();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
+            this.Chapter = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clearDownloadedWorkButton = new System.Windows.Forms.Button();
+            this.goToChaptersWorkButton = new System.Windows.Forms.Button();
+            this.viewWorkButton = new System.Windows.Forms.Button();
+            this.visitPageWorkButton = new System.Windows.Forms.Button();
+            this.deleteWorkButton = new System.Windows.Forms.Button();
+            this.downloadWorkButton = new System.Windows.Forms.Button();
             this.chaptersListBox = new MangaCrawler.ListBoxEx();
             this.seriesListBox = new MangaCrawler.ListBoxEx();
             this.serversListBox = new MangaCrawler.ListBoxEx();
-            this.optionslLabel = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -243,6 +248,12 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.downloadWorkButton);
+            this.tabPage2.Controls.Add(this.deleteWorkButton);
+            this.tabPage2.Controls.Add(this.visitPageWorkButton);
+            this.tabPage2.Controls.Add(this.viewWorkButton);
+            this.tabPage2.Controls.Add(this.goToChaptersWorkButton);
+            this.tabPage2.Controls.Add(this.clearDownloadedWorkButton);
             this.tabPage2.Controls.Add(this.worksGridView);
             resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Name = "tabPage2";
@@ -255,6 +266,7 @@
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.worksGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            resources.ApplyResources(this.worksGridView, "worksGridView");
             this.worksGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.worksGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.worksGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
@@ -268,11 +280,8 @@
             this.worksGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.worksGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.worksGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Delete,
-            this.Info,
+            this.Chapter,
             this.Progress});
-            resources.ApplyResources(this.worksGridView, "worksGridView");
-            this.worksGridView.MultiSelect = false;
             this.worksGridView.Name = "worksGridView";
             this.worksGridView.ReadOnly = true;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -289,34 +298,6 @@
             this.worksGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.worksGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.worksGridView_CellContentClick);
             // 
-            // Delete
-            // 
-            this.Delete.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            resources.ApplyResources(this.Delete, "Delete");
-            this.Delete.Name = "Delete";
-            this.Delete.ReadOnly = true;
-            this.Delete.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Delete.Text = "Usuń";
-            this.Delete.UseColumnTextForButtonValue = true;
-            // 
-            // Info
-            // 
-            this.Info.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Info.DataPropertyName = "Info";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Info.DefaultCellStyle = dataGridViewCellStyle3;
-            resources.ApplyResources(this.Info, "Info");
-            this.Info.Name = "Info";
-            this.Info.ReadOnly = true;
-            // 
-            // Progress
-            // 
-            this.Progress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Progress.DataPropertyName = "Progress";
-            resources.ApplyResources(this.Progress, "Progress");
-            this.Progress.Name = "Progress";
-            this.Progress.ReadOnly = true;
-            // 
             // optionsTabPage
             // 
             this.optionsTabPage.Controls.Add(this.optionslLabel);
@@ -329,6 +310,12 @@
             resources.ApplyResources(this.optionsTabPage, "optionsTabPage");
             this.optionsTabPage.Name = "optionsTabPage";
             this.optionsTabPage.UseVisualStyleBackColor = true;
+            // 
+            // optionslLabel
+            // 
+            resources.ApplyResources(this.optionslLabel, "optionslLabel");
+            this.optionslLabel.ForeColor = System.Drawing.Color.Red;
+            this.optionslLabel.Name = "optionslLabel";
             // 
             // pageNamingStrategyComboBox
             // 
@@ -409,6 +396,62 @@
             this.refreshTimer.Interval = 500;
             this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
             // 
+            // Chapter
+            // 
+            this.Chapter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Chapter.DataPropertyName = "Info";
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Chapter.DefaultCellStyle = dataGridViewCellStyle3;
+            resources.ApplyResources(this.Chapter, "Chapter");
+            this.Chapter.Name = "Chapter";
+            this.Chapter.ReadOnly = true;
+            // 
+            // Progress
+            // 
+            this.Progress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Progress.DataPropertyName = "Progress";
+            resources.ApplyResources(this.Progress, "Progress");
+            this.Progress.Name = "Progress";
+            this.Progress.ReadOnly = true;
+            // 
+            // clearDownloadedWorkButton
+            // 
+            resources.ApplyResources(this.clearDownloadedWorkButton, "clearDownloadedWorkButton");
+            this.clearDownloadedWorkButton.Name = "clearDownloadedWorkButton";
+            this.clearDownloadedWorkButton.UseVisualStyleBackColor = true;
+            // 
+            // goToChaptersWorkButton
+            // 
+            resources.ApplyResources(this.goToChaptersWorkButton, "goToChaptersWorkButton");
+            this.goToChaptersWorkButton.Name = "goToChaptersWorkButton";
+            this.goToChaptersWorkButton.UseVisualStyleBackColor = true;
+            // 
+            // viewWorkButton
+            // 
+            resources.ApplyResources(this.viewWorkButton, "viewWorkButton");
+            this.viewWorkButton.Name = "viewWorkButton";
+            this.viewWorkButton.UseVisualStyleBackColor = true;
+            this.viewWorkButton.Click += new System.EventHandler(this.viewWorkButton_Click);
+            // 
+            // visitPageWorkButton
+            // 
+            resources.ApplyResources(this.visitPageWorkButton, "visitPageWorkButton");
+            this.visitPageWorkButton.Name = "visitPageWorkButton";
+            this.visitPageWorkButton.UseVisualStyleBackColor = true;
+            this.visitPageWorkButton.Click += new System.EventHandler(this.visitPageWorkButton_Click);
+            // 
+            // deleteWorkButton
+            // 
+            resources.ApplyResources(this.deleteWorkButton, "deleteWorkButton");
+            this.deleteWorkButton.Name = "deleteWorkButton";
+            this.deleteWorkButton.UseVisualStyleBackColor = true;
+            // 
+            // downloadWorkButton
+            // 
+            resources.ApplyResources(this.downloadWorkButton, "downloadWorkButton");
+            this.downloadWorkButton.Name = "downloadWorkButton";
+            this.downloadWorkButton.UseVisualStyleBackColor = true;
+            // 
             // chaptersListBox
             // 
             resources.ApplyResources(this.chaptersListBox, "chaptersListBox");
@@ -443,12 +486,6 @@
             this.serversListBox.Sorted = true;
             this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);
             this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
-            // 
-            // optionslLabel
-            // 
-            resources.ApplyResources(this.optionslLabel, "optionslLabel");
-            this.optionslLabel.ForeColor = System.Drawing.Color.Red;
-            this.optionslLabel.Name = "optionslLabel";
             // 
             // MangaCrawlerForm
             // 
@@ -511,9 +548,6 @@
         private System.Windows.Forms.TabPage logTabPage;
         private System.Windows.Forms.Button clearLogButton;
         private System.Windows.Forms.RichTextBox logRichTextBox;
-        private System.Windows.Forms.DataGridViewButtonColumn Delete;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Info;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Progress;
         private System.Windows.Forms.Button viewPagesButton;
         private System.Windows.Forms.Button openPagesFolder;
         private System.Windows.Forms.Button openSeriesFolderButton;
@@ -527,6 +561,14 @@
         private System.Windows.Forms.ComboBox pageNamingStrategyComboBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label optionslLabel;
+        private System.Windows.Forms.Button downloadWorkButton;
+        private System.Windows.Forms.Button deleteWorkButton;
+        private System.Windows.Forms.Button visitPageWorkButton;
+        private System.Windows.Forms.Button viewWorkButton;
+        private System.Windows.Forms.Button goToChaptersWorkButton;
+        private System.Windows.Forms.Button clearDownloadedWorkButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Chapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Progress;
     }
 }
 

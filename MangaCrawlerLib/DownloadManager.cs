@@ -30,7 +30,7 @@ namespace MangaCrawlerLib
 
         private static List<Entity> s_downloading = new List<Entity>();
         private static Server[] s_servers;
-        private static List<Chapter> s_works = new List<Chapter>();
+        private static ConcurrentBag<Chapter> s_works = new ConcurrentBag<Chapter>();
 
         static DownloadManager()
         {
@@ -90,20 +90,21 @@ namespace MangaCrawlerLib
         {
             foreach (var chapter in a_chapters)
             {
+                if (chapter.IsWorking)
+                    continue;
+
                 lock (s_works)
                 {
-                    if (s_works.Contains(chapter))
-                        continue;
-
-                    s_works.Add(chapter);
+                    if (!s_works.Contains(chapter))
+                        s_works.Add(chapter);
                 }
 
-                Chapter chapter_sync = chapter;
-
-                s_downloading.Add(chapter_sync);
-                chapter_sync.State = ChapterState.Waiting;  
-                chapter_sync.LimiterOrder = Catalog.NextID();
+                s_downloading.Add(chapter);
+                chapter.State = ChapterState.Waiting;
+                chapter.LimiterOrder = Catalog.NextID();
                 UpdateGUI();
+
+                Chapter chapter_sync = chapter;
 
                 new Task(() =>
                 {
@@ -116,10 +117,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                lock (s_works)
-                {
-                    return s_works.ToArray();
-                }
+                return s_works;
             }
         }
 
@@ -132,11 +130,26 @@ namespace MangaCrawlerLib
         {
             get
             {
-                if (s_servers == null)
-                    s_servers = Catalog.LoadCatalog();
-
                 return s_servers;
             }
+        }
+
+        public static void Initialize()
+        {
+            s_servers = Catalog.LoadCatalog();
+
+            IEnumerable<Chapter> works = from work in Catalog.LoadWorks(Servers)
+                                         where work.State != ChapterState.Downloaded
+                                         where work.State != ChapterState.Aborted
+                                         orderby work.LimiterOrder
+                                         select work;
+
+            DownloadPages(works);
+        }
+
+        public static void SaveWorks()
+        {
+            Catalog.SaveWorks(s_works);
         }
     }
 }

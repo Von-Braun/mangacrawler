@@ -53,17 +53,30 @@ namespace MangaCrawlerLib
         public string Title { get; private set; }
 
         internal Chapter(Serie a_serie, string a_url, string a_title)
-            : this(a_serie, a_url, a_title, Catalog.NextID(), ChapterState.Initial)
+            : this(a_serie, a_url, a_title, Catalog.NextID(), ChapterState.Initial, 0)
         {
         }
 
-        internal Chapter(Serie a_serie, string a_url, string a_title, ulong a_id, ChapterState a_state)
+        internal Chapter(Serie a_serie, string a_url, string a_title, ulong a_id, ChapterState a_state, 
+            ulong a_limiter_order)
             : base(a_id)
         {
             m_pages = new PagesCachedList(this);
+            LimiterOrder = a_limiter_order;
             Serie = a_serie;
             URL = HttpUtility.HtmlDecode(a_url);
             m_state = a_state;
+
+            if (m_state == ChapterState.Deleting)
+                m_state = ChapterState.Initial;
+            if (m_state == ChapterState.DownloadingPages)
+                m_state = ChapterState.Initial;
+            if (m_state == ChapterState.DownloadingPagesList)
+                m_state = ChapterState.Initial;
+            if (m_state == ChapterState.Waiting)
+                m_state = ChapterState.Initial;
+            if (m_state == ChapterState.Zipping)
+                m_state = ChapterState.Initial;
 
             a_title = a_title.Trim();
             a_title = a_title.Replace("\t", " ");

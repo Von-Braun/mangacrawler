@@ -18,17 +18,12 @@ using log4net.Layout;
 using log4net.Config;
 using log4net;
 
+// TODO: w siatce ma dzialac multizaznaczanie, kasowanie del, ctrl+a
+// TODO: zaimplementowac do konca dzialanie przyciskow w works
+
 namespace MangaCrawler
 {
     /* TODO:
-     * 
-     * co zrobic jak serwer, seria, page nie istnieje po stornie serwera a my mamy z niego informacje na dysku
-     * nic nie rob, kasuj, oznacz jako skasowane, 
-     * istnieje tez mozliwosc zachowaj w wizualizacji, oznacz jako skasowane, zachowaj tak dlugo jak istnieje na dysku
-     * a najlepiej zapytac sie usera co zrobic, skasowac, zmienic nazwe, zostawic jak jest
-     * 
-     * co zrobic jesli chaptery nie sa dane alfabetycznie, nie sa ponumerowane, innymi slowy widok leb moze byc 
-     * nieposortowany, ale widok folderow na dysku juz tak
      * 
      * wbudowany browser
      * 
@@ -37,11 +32,12 @@ namespace MangaCrawler
      * 
      * wpf, windows phone, inne
      * 
-     * bookmarks
+     * bookmarks, nie pamietac ich po id, dzieki temu przezyja reinstalacje, nie przechowywac ich w katalogu
      * 
      * praca w tle, powiadamianie o zmianach w bookmarks
      * 
      * instalator, x86, x64
+     * deinstalacja powinna usunac katalog
      * 
      * nowe serwisy:
      * http://www.mangahere.com/
@@ -88,16 +84,9 @@ namespace MangaCrawler
      * - czy brute force usuwa te najstarsze
      * - czy brute force nie rusza do akcji jesli nie trzeba
      * strategie zmiany nazw imaagow
-     * 
-     * jak usuwac skonczone worksy z downloadmanagera, najlepiej tak blednych nie usuwac wogole, skonczone usuwac 
-     * tylko jesli tak zostalo zaznaczone
-     * 
-     * dodac do paraller.foreach, for, wlasny partitioner, ktory bedzie wybieral sekwencje jedna po drugiej
-     * 
-     * deinstalacja powinna usunac katalog
-     * 
-     * pamietanie pobieranych, prawidlowa reinicjalizacja stanow chapteru, stron, zapis deleting
-     * zapisywac limiter order
+     * testy gui
+     * testy czy pobieranie jest w kolejnosci zaznaczania
+     * testy na dzialanie priorytetow
      * 
      */
 
@@ -164,6 +153,8 @@ namespace MangaCrawler
 
             worksGridView.AutoGenerateColumns = false;
             worksGridView.DataSource = new BindingList<WorkGridRow>();
+
+            DownloadManager.Initialize();
 
             UpdateAll();
 
@@ -313,7 +304,6 @@ namespace MangaCrawler
                 return;
             }
 
-
             try
             {
                 new DirectoryInfo(Settings.Instance.MangaRootDir).Create();
@@ -326,14 +316,18 @@ namespace MangaCrawler
                 return;
             }
 
-            if (chaptersListBox.SelectedItems.Count == 0)
+            var chapters = GetSelectedChapters();
+
+            if (chapters.Count() == 0)
             {
                 SystemSounds.Beep.Play();
                 return;
             }
 
-            DownloadManager.DownloadPages(
-                chaptersListBox.SelectedItems.Cast<ChapterListItem>().Select(cli => cli.Chapter).ToArray());
+            if (chapters.Any(c => c.IsWorking))
+                SystemSounds.Beep.Play();
+
+            DownloadManager.DownloadPages(chapters.ToArray());
         }
 
         private void UpdateWorksTab()
@@ -444,14 +438,17 @@ namespace MangaCrawler
 
         private void chapterURLButton_Click(object sender, EventArgs e)
         {
-            var chapter = SelectedChapter;
-            if (chapter == null)
-            {
-                if (chaptersListBox.Items.Count == 1)
-                    chapter = (chaptersListBox.Items[0] as ChapterListItem).Chapter;
+            var chapters = GetSelectedChapters();
 
+            if (chapters.Count() == 0)
+            {
+                SystemSounds.Beep.Play();
+                return;
             }
-            if (chapter != null)
+
+            bool error = false;
+
+            foreach (var chapter in chapters)
             {
                 try
                 {
@@ -460,10 +457,11 @@ namespace MangaCrawler
                 catch (Exception ex)
                 {
                     Loggers.GUI.Error("Exception", ex);
-                    SystemSounds.Beep.Play();
+                    error = true;
                 }
             }
-            else
+
+            if (error)
                 SystemSounds.Beep.Play();
         }
 
@@ -612,6 +610,8 @@ namespace MangaCrawler
 
         private void PulseMangaRootDirTextBox()
         {
+            SystemSounds.Beep.Play();
+            tabControl.SelectedTab = optionsTabPage;
             Color c1 = mangaRootDirTextBox.BackColor;
             Color c2 = (c1 == BAD_DIR) ? SystemColors.Window : BAD_DIR;
             Pulse(c1, c2, 4, 500, (c) => mangaRootDirTextBox.BackColor = c);
@@ -652,6 +652,7 @@ namespace MangaCrawler
             else
                 return;
 
+            DownloadManager.SaveWorks();
             UpdateAll();
         }
 
@@ -781,14 +782,17 @@ namespace MangaCrawler
 
         private void viewPagesButton_Click(object sender, EventArgs e)
         {
-            var chapter = SelectedChapter;
-            if (chapter == null)
-            {
-                if (chaptersListBox.Items.Count == 1)
-                    chapter = (chaptersListBox.Items[0] as ChapterListItem).Chapter;
+            var chapters = GetSelectedChapters();
 
+            if (chapters.Count() == 0)
+            {
+                SystemSounds.Beep.Play();
+                return;
             }
-            if (chapter != null)
+
+            bool error = false;
+
+            foreach (var chapter in chapters)
             {
                 if (chapter.Pages.Any())
                 {
@@ -803,32 +807,36 @@ namespace MangaCrawler
                             catch (Exception ex)
                             {
                                 Loggers.GUI.Error("Exception", ex);
-                                SystemSounds.Beep.Play();
+                                error = true;
                             }
                         }
                         else
-                            SystemSounds.Beep.Play();
+                            error = true;
                     }
                     else
-                        SystemSounds.Beep.Play();
+                        error = true;
                 }
                 else
-                    SystemSounds.Beep.Play();
+                    error = true;
             }
-            else
+
+            if (error)
                 SystemSounds.Beep.Play();
         }
 
         private void openPagesFolder_Click(object sender, EventArgs e)
         {
-            var chapter = SelectedChapter;
-            if (chapter == null)
-            {
-                if (chaptersListBox.Items.Count == 1)
-                    chapter = (chaptersListBox.Items[0] as ChapterListItem).Chapter;
+            var chapters = GetSelectedChapters();
 
+            if (chapters.Count() == 0)
+            {
+                SystemSounds.Beep.Play();
+                return;
             }
-            if (chapter != null)
+
+            bool error = false;
+
+            foreach (var chapter in chapters)
             {
                 try
                 {
@@ -837,11 +845,25 @@ namespace MangaCrawler
                 catch (Exception ex)
                 {
                     Loggers.GUI.Error("Exception", ex);
-                    SystemSounds.Beep.Play();
+                    error = true;
                 }
             }
-            else
+
+            if (error)
                 SystemSounds.Beep.Play();
+        }
+
+        private IEnumerable<Chapter> GetSelectedChapters()
+        {
+            var chapters = chaptersListBox.SelectedItems.Cast<ChapterListItem>().Select(c => c.Chapter);
+
+            if (chapters.Count() == 0)
+            {
+                if (chaptersListBox.Items.Count == 1)
+                    chapters = new List<Chapter>() { (chaptersListBox.Items[0] as ChapterListItem).Chapter };
+            }
+
+            return chapters;
         }
 
         private void pageNamingStrategyComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -877,6 +899,94 @@ namespace MangaCrawler
                         control.Hide();
                 }
             }
+        }
+
+        private List<Chapter> GetSelectedWorks()
+        {
+            var works = worksGridView.SelectedRows.Cast<WorkGridRow>().Select(w => w.Chapter).ToList();
+
+            if (works.Count == 0)
+            {
+                BindingList<WorkGridRow> list = (BindingList<WorkGridRow>)worksGridView.DataSource;
+                if (list.Count == 1)
+                    works.Add(list[0].Chapter);
+            }
+
+
+            return works;
+        }
+
+        private void viewWorkButton_Click(object sender, EventArgs e)
+        {
+            var works = GetSelectedWorks();
+
+            if (works.Count == 0)
+            {
+                SystemSounds.Beep.Play();
+                return;
+            }
+
+            bool error = false;
+
+            foreach (var work in works)
+            {
+                if (work.Pages.Any())
+                {
+                    if (work.Pages.First().State == PageState.Downloaded)
+                    {
+                        if (new FileInfo(work.Pages.First().ImageFilePath).Exists)
+                        {
+                            try
+                            {
+                                Process.Start(work.Pages.First().ImageFilePath);
+                            }
+                            catch (Exception ex)
+                            {
+                                Loggers.GUI.Error("Exception", ex);
+                                error = true;
+                            }
+                        }
+                        else
+                            error = true;
+                    }
+                    else
+                        error = true;
+                }
+                else
+                    error = true;
+            }
+
+            if (error)
+                SystemSounds.Beep.Play();
+        }
+
+        private void visitPageWorkButton_Click(object sender, EventArgs e)
+        {
+            var chapters = GetSelectedWorks();
+
+            if (chapters.Count() == 0)
+            {
+                SystemSounds.Beep.Play();
+                return;
+            }
+
+            bool error = false;
+
+            foreach (var chapter in chapters)
+            {
+                try
+                {
+                    Process.Start(chapter.URL);
+                }
+                catch (Exception ex)
+                {
+                    Loggers.GUI.Error("Exception", ex);
+                    error = true;
+                }
+            }
+
+            if (error)
+                SystemSounds.Beep.Play();
         }
     }
 }
