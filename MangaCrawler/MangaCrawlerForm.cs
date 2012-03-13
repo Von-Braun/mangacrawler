@@ -142,7 +142,6 @@ namespace MangaCrawler
 
             mangaRootDirTextBox.Text = Settings.Instance.MangaRootDir;
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
-            splitter1.SplitPosition = Settings.Instance.SplitterDistance;
             cbzCheckBox.Checked = Settings.Instance.UseCBZ;
 
             Task.Factory.StartNew(() => CheckNewVersion(), TaskCreationOptions.LongRunning);
@@ -162,9 +161,9 @@ namespace MangaCrawler
             worksGridView.AutoGenerateColumns = false;
             worksGridView.DataSource = new BindingList<WorkGridRow>();
 
-            refreshTimer.Enabled = true;
-
             UpdateAll();
+
+            refreshTimer.Enabled = true;
         }
 
         private void SetupLog4NET()
@@ -617,7 +616,7 @@ namespace MangaCrawler
         private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
         {
             if (panel4.Width - splitter1.SplitPosition < panel3.MinimumSize.Width)
-                splitter1.SplitPosition = panel4.Width - panel3.MinimumSize.Width;
+               splitter1.SplitPosition = panel4.Width - panel3.MinimumSize.Width;
             Settings.Instance.SplitterDistance = splitter1.SplitPosition;
         }
 
@@ -720,6 +719,8 @@ namespace MangaCrawler
 
         private void MangaCrawlerForm_Shown(object sender, EventArgs e)
         {
+            splitter1.SplitPosition = Settings.Instance.SplitterDistance;
+
             if (Catalog.GetCatalogSize() > Settings.Instance.MaxCatalogSize)
                 new CatalogOptimizeForm().ShowDialog();
         }

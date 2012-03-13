@@ -28,7 +28,7 @@ namespace MangaCrawlerLib
 
             protected override void EnsureLoaded()
             {
-                lock (m_load_from_xml_lock)
+                lock (m_lock)
                 {
                     if (m_list != null)
                         return;
@@ -155,7 +155,12 @@ namespace MangaCrawlerLib
         {
             var pages = Crawler.DownloadPages(this).ToList();
 
-            m_pages.ReplaceInnerCollection(pages, true, p => p.Name + p.URL);
+            Func<Page, string> key_selector =  p => p.Name + p.URL;
+            m_pages.ReplaceInnerCollection(
+                pages,
+                m_pages.ToDictionary(key_selector),
+                true,
+                key_selector);
 
             State = ChapterState.DownloadingPages;
 

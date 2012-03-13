@@ -27,7 +27,7 @@ namespace MangaCrawlerLib
 
             protected override void EnsureLoaded()
             {
-                lock (m_load_from_xml_lock)
+                lock (m_lock)
                 {
                     if (m_list != null)
                         return;
@@ -97,11 +97,19 @@ namespace MangaCrawlerLib
         {
             try
             {
+                Func<Serie, string> key_selector = s => s.URL + s.Title;
+
+                var dict = m_series.ToDictionary(key_selector);
+
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
                     DownloadProgress = progress;
-                    bool merge = m_series.LoadedFromXml && (progress == 100);
-                    m_series.ReplaceInnerCollection(result, merge, s => s.URL + s.Title);
+                    m_series.ToString();
+                    m_series.ReplaceInnerCollection(
+                        result, 
+                        dict, 
+                        progress == 100,
+                        key_selector);
                 });
 
                 State = ServerState.Checked;

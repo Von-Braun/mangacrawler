@@ -37,7 +37,7 @@ namespace MangaCrawler
         private TimeSpan m_check_time_delta = new TimeSpan(hours: 0, minutes: 1, seconds: 0);
 
         [YAXNode("MaxCatalogSize")]
-        private int m_max_catalog_size = 50 * 1024 * 1024;
+        private int m_max_catalog_size = 100 * 1024 * 1024;
 
         [YAXNode("PageNamingStrategy")]
         private PageNamingStrategy m_page_naming_strategy = PageNamingStrategy.DoNothing;
