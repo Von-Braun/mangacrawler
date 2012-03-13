@@ -97,6 +97,7 @@ namespace MangaCrawler
      * deinstalacja powinna usunac katalog
      * 
      * pamietanie pobieranych, prawidlowa reinicjalizacja stanow chapteru, stron, zapis deleting
+     * zapisywac limiter order
      * 
      */
 

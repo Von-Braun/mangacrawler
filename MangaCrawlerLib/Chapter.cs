@@ -186,7 +186,11 @@ namespace MangaCrawlerLib
                         pns = PageNamingStrategy.PrefixWithIndex;
 
                 for (int i = 0; i < Pages.Count; i++)
+                {
+                    Pages[i].LimiterOrder = Catalog.NextID();
+
                     Debug.Assert(Pages[i].Index == i + 1);
+                }
 
                 Parallel.ForEach(Pages,
 

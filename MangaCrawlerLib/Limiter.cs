@@ -26,12 +26,14 @@ namespace MangaCrawlerLib
             public Priority Priority { get; private set; }
             public AutoResetEvent Event { get; private set; }
             public Server Server { get; private set; }
+            public ulong LimiterOrder { get; private set; }
 
-            public Limit(Priority a_priority, Server a_server)
+            public Limit(Priority a_priority, Server a_server, ulong a_limiter_order)
             {
                 Event = new AutoResetEvent(false);
                 Priority = a_priority;
                 Server = a_server;
+                LimiterOrder = a_limiter_order;
             }
         }
         #endregion
@@ -69,32 +71,32 @@ namespace MangaCrawlerLib
 
         public static void BeginChapter(Chapter a_chapter)
         {
-            Aquire(a_chapter.Server, a_chapter.Token, Priority.Pages);
+            Aquire(a_chapter.Server, a_chapter.Token, Priority.Pages, a_chapter.LimiterOrder);
         }
 
         public static void Aquire(Server a_server)
         {
-            Aquire(a_server, CancellationToken.None, Priority.Series);
+            Aquire(a_server, CancellationToken.None, Priority.Series, a_server.LimiterOrder);
         }
 
         public static void Aquire(Serie a_serie)
         {
-            Aquire(a_serie.Server, CancellationToken.None, Priority.Chapters);
+            Aquire(a_serie.Server, CancellationToken.None, Priority.Chapters, a_serie.LimiterOrder);
         }
 
         public static void Aquire(Chapter a_chapter)
         {
-            Aquire(a_chapter.Server, a_chapter.Token, Priority.Image);
+            Aquire(a_chapter.Server, a_chapter.Token, Priority.Image, a_chapter.LimiterOrder);
         }
 
         public static void Aquire(Page a_page)
         {
-            Aquire(a_page.Server, a_page.Chapter.Token, Priority.Image);
+            Aquire(a_page.Server, a_page.Chapter.Token, Priority.Image, a_page.LimiterOrder);
         }
 
-        private static void Aquire(Server a_server, CancellationToken a_token, Priority a_priority)
+        private static void Aquire(Server a_server, CancellationToken a_token, Priority a_priority, ulong a_limiter_order)
         {
-            Limit limit = new Limit(a_priority, a_server);
+            Limit limit = new Limit(a_priority, a_server, a_limiter_order);
             lock (s_limits)
             {
                 s_limits.Add(limit);
@@ -121,8 +123,6 @@ namespace MangaCrawlerLib
                 Debug.Write(el.Value + ", ");
             Debug.WriteLine("");
         }
-
-        // TODO: odswiezac jesli cos sie zmienilo
 
         private static void Loop()
         {
@@ -208,33 +208,21 @@ namespace MangaCrawlerLib
 
         private static Limit GetLimit()
         {
-            Limit candidate = null;
+            Limit candidate = (from limit in s_limits
+                               where limit.Priority == Priority.Pages
+                               where !s_one_chapter_per_server[limit.Server]
+                               orderby limit.LimiterOrder
+                               select limit).FirstOrDefault();
 
-            foreach (var limit in s_limits)
+            if (candidate == null)
             {
-                if (limit.Priority == Priority.Pages)
+                if (s_connections < MAX_CONNECTIONS)
                 {
-                    if (!s_one_chapter_per_server[limit.Server])
-                    {
-                        candidate = limit;
-                        break;
-                    }
-                }
-                else
-                {
-                    if (s_connections == MAX_CONNECTIONS)
-                        return null;
-
-                    if (s_server_connections[limit.Server] == MAX_CONNECTIONS_PER_SERVER)
-                        continue;
-
-                    if (candidate != null)
-                    {
-                        if (candidate.Priority < limit.Priority)
-                            candidate = limit;
-                    }
-                    else
-                        candidate = limit;
+                    candidate = (from limit in s_limits
+                                 where limit.Priority != Priority.Pages
+                                 where s_server_connections[limit.Server] < MAX_CONNECTIONS_PER_SERVER
+                                 orderby limit.Priority, limit.LimiterOrder
+                                 select limit).FirstOrDefault();
                 }
             }
 

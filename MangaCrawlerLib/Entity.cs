@@ -9,6 +9,7 @@ namespace MangaCrawlerLib
     public abstract class Entity
     {
         public ulong ID { get; internal set; }
+        public ulong LimiterOrder;
         public string URL { get; protected set; }
 
         protected Entity(ulong a_id)
