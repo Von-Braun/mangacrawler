@@ -7,6 +7,7 @@ using YAXLib;
 using System.Reflection;
 using System.IO;
 using System.Drawing;
+using MangaCrawlerLib;
 
 namespace MangaCrawler
 {
@@ -37,6 +38,9 @@ namespace MangaCrawler
 
         [YAXNode("MaxCatalogSize")]
         private int m_max_catalog_size = 50 * 1024 * 1024;
+
+        [YAXNode("PageNamingStrategy")]
+        private PageNamingStrategy m_page_naming_strategy = PageNamingStrategy.DoNothing;
 
         private static Settings s_instance;
 
@@ -160,6 +164,19 @@ namespace MangaCrawler
             set
             {
                 m_max_catalog_size = value;
+                Save();
+            }
+        }
+
+        public PageNamingStrategy PageNamingStrategy
+        {
+            get
+            {
+                return m_page_naming_strategy;
+            }
+            set
+            {
+                m_page_naming_strategy = value;
                 Save();
             }
         }

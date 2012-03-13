@@ -25,6 +25,7 @@ namespace MangaCrawlerLib
         public static Func<string> GetSettingsDir;
         public static Func<TimeSpan> GetCheckTimeDelta;
         public static Func<bool> UseCBZ;
+        public static Func<PageNamingStrategy> PageNamingStrategy;
 
         private static Server[] s_servers;
         private static List<Chapter> s_works = new List<Chapter>();
@@ -107,7 +108,7 @@ namespace MangaCrawlerLib
 
                 new Task(() =>
                 {
-                    chapter_sync.DownloadPages(GetMangaRootDir(), UseCBZ());
+                    chapter_sync.DownloadPages();
                 }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
             }
         }

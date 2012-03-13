@@ -96,6 +96,7 @@
     <Compile Include="Crawlers\MangaVolumeCrawler.cs" />
     <Compile Include="Crawlers\OtakuWorksCrawler.cs" />
     <Compile Include="Crawlers\OurMangaCrawler.cs" />
+    <Compile Include="PageNamingStrategy.cs" />
     <Compile Include="States.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -46,7 +46,7 @@ namespace MangaCrawlerLib
                 while (a_name.IndexOf("  ") != -1)
                     a_name = a_name.Replace("  ", " ");
                 a_name = HttpUtility.HtmlDecode(a_name);
-                Name = FileUtils.RemoveInvalidFileDirectoryCharacters(a_name);
+                Name = FileUtils.RemoveInvalidFileCharacters(a_name);
             }
             else
                 Name = Index.ToString();
@@ -90,11 +90,11 @@ namespace MangaCrawlerLib
             return Crawler.GetImageStream(this);  
         }
 
-        internal void DownloadAndSavePageImage(string a_chapter_dir, bool a_cbz)
+        internal void DownloadAndSavePageImage(PageNamingStrategy a_pns)
         {
             try
             {
-                new DirectoryInfo(a_chapter_dir).Create();
+                new DirectoryInfo(Chapter.GetChapterDirectory()).Create();
 
                 FileInfo temp_file = new FileInfo(Path.GetTempFileName());
 
@@ -134,10 +134,19 @@ namespace MangaCrawlerLib
                         Hash = hash;
                     }
 
-                    ImageFilePath = a_chapter_dir +
-                        FileUtils.RemoveInvalidFileDirectoryCharacters(Name) +
-                        FileUtils.RemoveInvalidFileDirectoryCharacters(
-                            Path.GetExtension(ImageURL).ToLower());
+                    string file_name = Name;
+
+                    Debug.Assert(a_pns != PageNamingStrategy.PrefixWithIndexWhenNotOrdered);
+
+                    if (a_pns == PageNamingStrategy.OnlyIndex)
+                        file_name = Index.ToString();
+                    else if (a_pns == PageNamingStrategy.PrefixWithIndex)
+                        file_name = String.Format("{0} - {1}", Index, Name);
+
+                    ImageFilePath = 
+                        Chapter.GetChapterDirectory() + 
+                        FileUtils.RemoveInvalidFileCharacters(file_name) + 
+                        FileUtils.RemoveInvalidFileCharacters(Path.GetExtension(ImageURL).ToLower());
 
                     FileInfo image_file = new FileInfo(ImageFilePath);
 
