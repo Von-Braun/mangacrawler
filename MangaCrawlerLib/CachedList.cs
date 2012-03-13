@@ -14,30 +14,44 @@ namespace MangaCrawlerLib
         public bool Changed;
         protected bool m_loaded_from_xml;
         protected List<T> m_list;
-        protected Object m_load_from_xml_lock = new Object();
+        protected Object m_lock = new Object();
 
-        internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, bool a_merge, Func<T, K> a_key_selector) 
+        internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, IDictionary<K, T> a_prev, 
+            bool a_all_downloaded, Func<T, K> a_key_selector) 
         {
-            if (a_merge)
+            EnsureLoaded();
+
+            lock (m_lock)
             {
-                EnsureLoaded();
-                m_list = Merge(m_list, a_new, a_key_selector);
+                m_list = Merge(a_new, a_prev, a_key_selector);
+
+                if (a_all_downloaded)
+                    Remove(m_list, a_new, a_key_selector);
             }
-            else
-                m_list = a_new.ToList();
         }
 
-        internal static List<T> Merge<K>(IList<T> a_list,
+        internal static void Remove<K>(IList<T> a_list,
             IEnumerable<T> a_new, Func<T, K> a_key_selector)
         {
-            var dict = a_list.ToDictionary(a_key_selector);
+            var dict = a_new.ToDictionary(a_key_selector);
+
+            for (int i = a_list.Count - 1; i >= 0; i--)
+            {
+                K key = a_key_selector(a_list[i]);
+                if (!dict.ContainsKey(key))
+                    a_list.RemoveAt(i);
+            }
+        }
+
+        internal static List<T> Merge<K>(IEnumerable<T> a_new, IDictionary<K, T> a_prev, Func<T, K> a_key_selector)
+        {
             var result = a_new.ToList();
 
             for (int i = 0; i < result.Count; i++)
             {
                 K key = a_key_selector(result[i]);
-                if (dict.ContainsKey(key))
-                    result[i] = dict[key];
+                if (a_prev.ContainsKey(key))
+                    result[i] = a_prev[key];
             }
 
             return result;
@@ -49,7 +63,7 @@ namespace MangaCrawlerLib
             {
                 EnsureLoaded();
 
-                lock (m_load_from_xml_lock)
+                lock (m_lock)
                 {
                     return m_loaded_from_xml;
                 }
@@ -146,6 +160,14 @@ namespace MangaCrawlerLib
             EnsureLoaded();
 
             return m_list.GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            if (m_list == null)
+                return "Uninitialized";
+            else
+                return String.Format("Count: {0}, LoadedFromXml: {1}", m_list.Count, LoadedFromXml);
         }
 
         protected abstract void EnsureLoaded();

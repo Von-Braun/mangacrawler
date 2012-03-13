@@ -122,19 +122,19 @@ namespace MangaCrawlerLib
             Debug.WriteLine("");
         }
 
+        // TODO: odswiezac jesli cos sie zmienilo
+
         private static void Loop()
         {
             for (; ; )
             {
-                bool signaled = s_loop_event.WaitOne(LOOP_SLEEP_MS);
+                s_loop_event.WaitOne(LOOP_SLEEP_MS);
 
                 lock (s_limits)
                 {
                     for (; ; )
                     {
                         Limit limit = GetLimit();
-
-                        Debug.Assert(!s_limits.Contains(limit));
 
                         if (limit != null)
                         {
@@ -220,20 +220,22 @@ namespace MangaCrawlerLib
                         break;
                     }
                 }
-
-                if (s_connections == MAX_CONNECTIONS)
-                    return null;
-
-                if (s_server_connections[limit.Server] == MAX_CONNECTIONS_PER_SERVER)
-                    continue;
-
-                if (candidate != null)
+                else
                 {
-                    if (candidate.Priority < limit.Priority)
+                    if (s_connections == MAX_CONNECTIONS)
+                        return null;
+
+                    if (s_server_connections[limit.Server] == MAX_CONNECTIONS_PER_SERVER)
+                        continue;
+
+                    if (candidate != null)
+                    {
+                        if (candidate.Priority < limit.Priority)
+                            candidate = limit;
+                    }
+                    else
                         candidate = limit;
                 }
-                else
-                    candidate = limit;
             }
 
             if (candidate != null)
