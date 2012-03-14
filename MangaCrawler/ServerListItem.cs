@@ -34,8 +34,7 @@ namespace MangaCrawler
 
         private void DrawCount(Graphics a_graphics, Rectangle a_rect, Font a_font)
         {
-            a_graphics.DrawString(
-                String.Format(Resources.Series, Server.Series.Count),
+            a_graphics.DrawString(Server.Series.Count.ToString(),
                 a_font, Brushes.Green, a_rect, StringFormat.GenericDefault);
         }
 
@@ -54,7 +53,7 @@ namespace MangaCrawler
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
 
-                    case ServerState.Checked:
+                    case ServerState.Downloaded:
 
                         DrawCount(a_args.Graphics, rect, font);
                         break;
@@ -65,7 +64,7 @@ namespace MangaCrawler
                             Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
 
-                    case ServerState.Checking:
+                    case ServerState.Downloading:
 
                         a_args.Graphics.DrawString(
                             String.Format("({0}%)", Server.DownloadProgress),

@@ -145,14 +145,16 @@ namespace MangaCrawlerLib
                 CancellationTokenSource.Cancel();
                 State = ChapterState.Deleting;
             }
+            else
+            {
+                Loggers.MangaCrawler.InfoFormat(
+                    "Trying to delete already finished work, chapter: {0}, state: {1}", this, State);
+            }
         }
 
-        public string GetChapterDirectory()
+        public override string GetDirectory()
         {
-            string manga_root_dir = DownloadManager.GetMangaRootDir();
-
-            if (manga_root_dir.Last() == Path.DirectorySeparatorChar)
-                manga_root_dir = manga_root_dir.RemoveFromRight(1);
+            string manga_root_dir = DownloadManager.Instance.MangaSettings.GetMangaRootDir(true);
 
             return manga_root_dir +
                    Path.DirectorySeparatorChar +
@@ -193,7 +195,7 @@ namespace MangaCrawlerLib
 
                 DownloadPagesList();
 
-                PageNamingStrategy pns = DownloadManager.PageNamingStrategy();
+                PageNamingStrategy pns = DownloadManager.Instance.MangaSettings.PageNamingStrategy;
                 if (pns == PageNamingStrategy.PrefixWithIndexWhenNotOrdered)
                     if (!Pages.Select(p => p.Name).SequenceEqual(Pages.Select(p => p.Name).OrderBy(n => n)))
                         pns = PageNamingStrategy.PrefixWithIndex;
@@ -242,7 +244,7 @@ namespace MangaCrawlerLib
 
                 Catalog.Save(this);
 
-                if (DownloadManager.UseCBZ())
+                if (DownloadManager.Instance.MangaSettings.UseCBZ)
                     CreateCBZ();
             }
             catch (OperationCanceledException ex1)
@@ -330,20 +332,7 @@ namespace MangaCrawlerLib
             }
             catch (Exception ex)
             {
-                Loggers.MangaCrawler.Fatal("Exception #1", ex);
-            }
-
-            try
-            {
-                foreach (var page in Pages)
-                    new FileInfo(page.ImageFilePath).Delete();
-
-                if ((dir.GetFiles().Count() == 0) && (dir.GetDirectories().Count() == 0))
-                    dir.Delete();
-            }
-            catch (Exception ex)
-            {
-                Loggers.MangaCrawler.Fatal("Exception #2", ex);
+                Loggers.MangaCrawler.Fatal("Exception", ex);
             }
         }
 

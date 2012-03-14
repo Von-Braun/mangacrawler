@@ -17,37 +17,54 @@ using MangaCrawlerLib.Crawlers;
 
 namespace MangaCrawlerLib
 {
-    public static class DownloadManager
+    public class DownloadManager
     {
-        internal static string UserAgent = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:10.0) Gecko/20100101 Firefox/10.0";
+        public string SettingsDir { get; private set; }
+        public MangaSettings MangaSettings { get; private set; }
+        public Action UpdateGUI { get; private set; }
 
-        public static Func<string> GetMangaRootDir;
-        public static Func<string> GetSettingsDir;
-        public static Func<TimeSpan> GetCheckTimeDelta;
-        public static Func<bool> UseCBZ;
-        public static Func<PageNamingStrategy> PageNamingStrategy;
-        public static Action UpdateGUI;
+        private List<Entity> m_downloading = new List<Entity>();
+        private Server[] m_servers;
+        private List<Chapter> m_works = new List<Chapter>();
 
-        private static List<Entity> s_downloading = new List<Entity>();
-        private static Server[] s_servers;
-        private static ConcurrentBag<Chapter> s_works = new ConcurrentBag<Chapter>();
+        public static DownloadManager Instance { get; private set; }
 
-        static DownloadManager()
+        public static void Create(MangaSettings a_manga_settings, string a_settings_dir, Action a_update_gui)
         {
-            HtmlWeb.UserAgent_Actual = UserAgent;
+            Instance = new DownloadManager(a_manga_settings, a_settings_dir, a_update_gui);
+            Instance.Initialize();
         }
 
-        public static bool IsDownloading()
+        private void Initialize()
         {
-            bool result = s_downloading.Any();
+            m_servers = Catalog.LoadCatalog();
 
-            s_downloading = (from entity in s_downloading
+            IEnumerable<Chapter> works = from work in Catalog.LoadWorks(Servers)
+                                         orderby work.LimiterOrder
+                                         select work;
+            DownloadPages(works);
+        }
+
+        private  DownloadManager(MangaSettings a_manga_settings, string a_settings_dir, Action a_update_gui)
+        {
+            SettingsDir = a_settings_dir;
+            MangaSettings = a_manga_settings;
+            UpdateGUI = a_update_gui;
+
+            HtmlWeb.UserAgent_Actual = a_manga_settings.UserAgent;
+        }
+
+        public bool IsDownloading()
+        {
+            bool result = m_downloading.Any();
+
+            m_downloading = (from entity in m_downloading
                              where entity.IsWorking
                              select entity).ToList();
             return result;
         }
 
-        public static void DownloadSeries(Server a_server)
+        public void DownloadSeries(Server a_server)
         {
             if (a_server == null)
                 return;
@@ -55,7 +72,7 @@ namespace MangaCrawlerLib
             if (!a_server.DownloadRequired)
                 return;
 
-            s_downloading.Add(a_server);
+            m_downloading.Add(a_server);
             a_server.State = ServerState.Waiting;
             a_server.LimiterOrder = Catalog.NextID();
             UpdateGUI();
@@ -67,7 +84,7 @@ namespace MangaCrawlerLib
             }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
         }
 
-        public static void DownloadChapters(Serie a_serie)
+        public void DownloadChapters(Serie a_serie)
         {
             if (a_serie == null)
                 return;
@@ -75,7 +92,7 @@ namespace MangaCrawlerLib
             if (!a_serie.DownloadRequired)
                 return;
 
-            s_downloading.Add(a_serie);
+            m_downloading.Add(a_serie);
             a_serie.State = SerieState.Waiting;
             a_serie.LimiterOrder = Catalog.NextID();
             UpdateGUI();
@@ -86,20 +103,21 @@ namespace MangaCrawlerLib
             }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
         }
 
-        public static void DownloadPages(IEnumerable<Chapter> a_chapters)
+        public void DownloadPages(IEnumerable<Chapter> a_chapters)
         {
             foreach (var chapter in a_chapters)
             {
                 if (chapter.IsWorking)
                     continue;
 
-                lock (s_works)
+                lock (m_works)
                 {
-                    if (!s_works.Contains(chapter))
-                        s_works.Add(chapter);
+                    if (m_works.Contains(chapter))
+                        m_works.Remove(chapter);
+                    m_works.Add(chapter);
                 }
 
-                s_downloading.Add(chapter);
+                m_downloading.Add(chapter);
                 chapter.State = ChapterState.Waiting;
                 chapter.LimiterOrder = Catalog.NextID();
                 UpdateGUI();
@@ -113,43 +131,51 @@ namespace MangaCrawlerLib
             }
         }
 
-        public static IEnumerable<Chapter> Works
+        public IEnumerable<Chapter> Works
         {
             get
             {
-                return s_works;
+                lock (m_works)
+                {
+                    return m_works.ToArray();
+                }
             }
         }
 
-        public static void Save()
+        public void Save()
         {
             Catalog.SaveCatalog();
         }
 
-        public static IEnumerable<Server> Servers
+        public IEnumerable<Server> Servers
         {
             get
             {
-                return s_servers;
+                return m_servers;
             }
         }
 
-        public static void Initialize()
+        public void SaveWorks()
         {
-            s_servers = Catalog.LoadCatalog();
+            IEnumerable<Chapter> copy; 
 
-            IEnumerable<Chapter> works = from work in Catalog.LoadWorks(Servers)
-                                         where work.State != ChapterState.Downloaded
-                                         where work.State != ChapterState.Aborted
-                                         orderby work.LimiterOrder
-                                         select work;
+            lock (m_works)
+            {
+                copy = m_works.ToArray();
+            }
 
-            DownloadPages(works);
+            copy = copy.Where(c => c.IsWorking);
+
+            Catalog.SaveWorks(copy);
         }
 
-        public static void SaveWorks()
+        public void RemoveWork(Chapter a_work)
         {
-            Catalog.SaveWorks(s_works);
+            lock (m_works)
+            {
+                if (!m_works.Remove(a_work))
+                    Loggers.MangaCrawler.WarnFormat("Chapter not in s_works: {0}", a_work);
+            }
         }
     }
 }

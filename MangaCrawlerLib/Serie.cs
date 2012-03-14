@@ -66,11 +66,11 @@ namespace MangaCrawlerLib
             Server = a_server;
             m_state = a_state;
 
-            if (m_state == SerieState.Checking)
+            if (m_state == SerieState.Downloading)
                 m_state = SerieState.Initial;
             if (m_state == SerieState.Waiting)
                 m_state = SerieState.Initial;
-            if (m_state == SerieState.Checked)
+            if (m_state == SerieState.Downloaded)
                 m_state = SerieState.Initial;
 
             a_title = a_title.Trim();
@@ -114,14 +114,14 @@ namespace MangaCrawlerLib
                         key_selector);
                 });
 
-                State = SerieState.Checked;
+                State = SerieState.Downloaded;
             }
             catch (ObjectDisposedException)
             {
             }
             catch (Exception)
             {
-                State = SerieState.Checked;
+                State = SerieState.Downloaded;
             }
 
             Catalog.Save(this);
@@ -137,14 +137,17 @@ namespace MangaCrawlerLib
         {
             get
             {
-                if (State == SerieState.Checked)
+                if (State == SerieState.Downloaded)
                 {
-                    if (DateTime.Now - m_check_date_time > DownloadManager.GetCheckTimeDelta())
+                    if (DateTime.Now - m_check_date_time > DownloadManager.Instance.MangaSettings.CheckTimeDelta)
                         return true;
                     else
                         return false;
                 }
-                return (State == SerieState.Error) || (State == SerieState.Initial);
+                else if (State == SerieState.Checking)
+                    return false;
+                else
+                    return (State == SerieState.Error) || (State == SerieState.Initial);
             }
         }
 
@@ -164,26 +167,34 @@ namespace MangaCrawlerLib
                     }
                     case SerieState.Waiting:
                     {
-                        Debug.Assert((State == SerieState.Checked) ||
+                        Debug.Assert((State == SerieState.Downloaded) ||
                                      (State == SerieState.Initial) ||
                                      (State == SerieState.Error));
                         break;
                     }
-                    case SerieState.Checking:
+                    case SerieState.Downloading:
                     {
                         Debug.Assert(State == SerieState.Waiting);
                         DownloadProgress = 0;
                         break;
                     }
-                    case SerieState.Checked:
+                    case SerieState.Checking:
                     {
-                        Debug.Assert(State == SerieState.Checking);
+                        Debug.Assert((State == SerieState.Initial) ||
+                                     (State == SerieState.Error) ||
+                                     (State == SerieState.Downloaded));
+                        break;
+                    }
+                    case SerieState.Downloaded:
+                    {
+                        Debug.Assert(State == SerieState.Downloading);
                         Debug.Assert(DownloadProgress == 100);
                         break;
                     }
                     case SerieState.Error:
                     {
-                        Debug.Assert(State == SerieState.Checking);
+                        Debug.Assert((State == SerieState.Checking) ||
+                                     (State == SerieState.Downloading));
                         break;
                     }
                     default:
@@ -196,12 +207,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        public string GetSerieDirectory()
+        public override string GetDirectory()
         {
-            string manga_root_dir = DownloadManager.GetMangaRootDir();
-
-            if (manga_root_dir.Last() == Path.DirectorySeparatorChar)
-                manga_root_dir = manga_root_dir.RemoveFromRight(1);
+            string manga_root_dir = DownloadManager.Instance.MangaSettings.GetMangaRootDir(true); ;
 
             return manga_root_dir +
                    Path.DirectorySeparatorChar +
@@ -215,7 +223,9 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return (State == SerieState.Checking) || (State == SerieState.Waiting);
+                return (State == SerieState.Downloading) ||
+                       (State == SerieState.Checking) ||
+                       (State == SerieState.Waiting);
             }
         }
     }

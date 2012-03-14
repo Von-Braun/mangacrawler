@@ -48,8 +48,11 @@ namespace MangaCrawlerLib.Crawlers
             Random random = new Random(m_seed);
             m_slow_series = a_slow_series;
             m_slow_chapters = a_slow_chapters;
-            Debug.Assert(a_max_server_delay > MIN_SERVER_DELAY);
+
+            if (a_max_server_delay != 0)
+                Debug.Assert(a_max_server_delay > MIN_SERVER_DELAY);
             m_max_server_delay = a_max_server_delay;
+
             m_items_per_page = random.Next(4, 9) * 5;
             m_max_con = a_max_con;
 
@@ -97,14 +100,21 @@ namespace MangaCrawlerLib.Crawlers
             }
         }
 
+        private void Sleep()
+        {
+            if (m_max_server_delay == 0)
+                return;
+            Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+        }
+
         internal override void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback)
         {
-            a_server.State = ServerState.Checking;
+            a_server.State = ServerState.Downloading;
 
             Limiter.Aquire(a_server);
             try
             {
-                Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+                Sleep();
             }
             finally
             {
@@ -145,7 +155,7 @@ namespace MangaCrawlerLib.Crawlers
                     Limiter.Aquire(a_server);
                     try
                     {
-                      Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+                      Sleep();
                     }
                     finally
                     {
@@ -212,12 +222,12 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
-            a_serie.State = SerieState.Checking;
+            a_serie.State = SerieState.Downloading;
 
             Limiter.Aquire(a_serie);
             try
             {
-                Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+                Sleep();
             }
             finally
             {
@@ -260,7 +270,7 @@ namespace MangaCrawlerLib.Crawlers
                         Limiter.Aquire(a_serie);
                         try
                         {
-                            Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+                            Sleep();
                         }
                         finally
                         {
@@ -295,7 +305,7 @@ namespace MangaCrawlerLib.Crawlers
             Limiter.Aquire(a_chapter);
             try
             {
-                Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+                Sleep();
             }
             finally
             {
@@ -326,7 +336,7 @@ namespace MangaCrawlerLib.Crawlers
             Limiter.Aquire(a_page);
             try
             {
-                Thread.Sleep(NextInt(MIN_SERVER_DELAY, m_max_server_delay));
+                Sleep();
             }
             finally
             {

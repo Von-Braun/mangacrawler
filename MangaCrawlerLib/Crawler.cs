@@ -45,7 +45,7 @@ namespace MangaCrawlerLib
         {
             return DownloadDocument(
                 (a_url == null) ? a_server.URL : a_url,
-                () => a_server.State = ServerState.Checking,
+                () => a_server.State = ServerState.Downloading,
                 () => Limiter.Aquire(a_server),
                 () => Limiter.Release(a_server));
         }
@@ -54,7 +54,7 @@ namespace MangaCrawlerLib
         {
             return DownloadDocument(
                 (a_url == null) ? a_serie.URL : a_url, 
-                () => a_serie.State  = SerieState.Checking, 
+                () => a_serie.State  = SerieState.Downloading, 
                 () => Limiter.Aquire(a_serie),
                 () => Limiter.Release(a_serie));
         }
@@ -121,7 +121,7 @@ namespace MangaCrawlerLib
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
                         a_page.ImageURL);
 
-                    myReq.UserAgent = DownloadManager.UserAgent;
+                    myReq.UserAgent = DownloadManager.Instance.MangaSettings.UserAgent;
                     myReq.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
                     myReq.Referer = a_page.URL;
 
@@ -165,7 +165,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return Limiter.MAX_CONNECTIONS_PER_SERVER;
+                return DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer;
             }
         }
     }

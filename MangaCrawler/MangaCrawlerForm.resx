@@ -124,52 +124,58 @@
   <data name="tabControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="panel4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="splitPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="splitter1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="splitter.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="splitter1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 0</value>
+  <data name="splitter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>234, 0</value>
   </data>
-  <data name="splitter1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="splitter.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 100, 0, 0</value>
   </data>
-  <data name="splitter1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="splitter.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 100</value>
   </data>
-  <data name="splitter1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="splitter.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 328</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="splitter1.TabIndex" type="System.Int32, mscorlib">
+  <data name="splitter.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
   </data>
-  <data name="&gt;&gt;splitter1.Name" xml:space="preserve">
-    <value>splitter1</value>
+  <data name="&gt;&gt;splitter.Name" xml:space="preserve">
+    <value>splitter</value>
   </data>
-  <data name="&gt;&gt;splitter1.Type" xml:space="preserve">
+  <data name="&gt;&gt;splitter.Type" xml:space="preserve">
     <value>System.Windows.Forms.Splitter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitter1.Parent" xml:space="preserve">
-    <value>panel4</value>
+  <data name="&gt;&gt;splitter.Parent" xml:space="preserve">
+    <value>splitPanel</value>
   </data>
-  <data name="&gt;&gt;splitter1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;splitter.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="viewPagesButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
+    <value>Bottom, Right</value>
+  </data>
+  <data name="viewPagesButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="viewPagesButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="viewPagesButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="viewPagesButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>254, 300</value>
+    <value>291, 300</value>
   </data>
   <data name="viewPagesButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>40, 23</value>
   </data>
   <data name="viewPagesButton.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -184,22 +190,28 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;viewPagesButton.Parent" xml:space="preserve">
-    <value>panel3</value>
+    <value>chaptersPanel</value>
   </data>
   <data name="&gt;&gt;viewPagesButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="openPagesFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
+    <value>Bottom, Right</value>
+  </data>
+  <data name="openPagesFolder.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="openPagesFolder.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="openPagesFolder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="openPagesFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>174, 300</value>
+    <value>213, 300</value>
   </data>
   <data name="openPagesFolder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>72, 23</value>
   </data>
   <data name="openPagesFolder.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
@@ -214,22 +226,28 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;openPagesFolder.Parent" xml:space="preserve">
-    <value>panel3</value>
+    <value>chaptersPanel</value>
   </data>
   <data name="&gt;&gt;openPagesFolder.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="chapterURLButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
+    <value>Bottom, Right</value>
+  </data>
+  <data name="chapterURLButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chapterURLButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="chapterURLButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="chapterURLButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 300</value>
+    <value>144, 300</value>
   </data>
   <data name="chapterURLButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>63, 23</value>
   </data>
   <data name="chapterURLButton.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -244,22 +262,28 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;chapterURLButton.Parent" xml:space="preserve">
-    <value>panel3</value>
+    <value>chaptersPanel</value>
   </data>
   <data name="&gt;&gt;chapterURLButton.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="downloadButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
+    <value>Bottom, Right</value>
+  </data>
+  <data name="downloadButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="downloadButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="downloadButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="downloadButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 300</value>
+    <value>73, 300</value>
   </data>
   <data name="downloadButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>65, 23</value>
   </data>
   <data name="downloadButton.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -274,7 +298,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;downloadButton.Parent" xml:space="preserve">
-    <value>panel3</value>
+    <value>chaptersPanel</value>
   </data>
   <data name="&gt;&gt;downloadButton.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -295,7 +319,7 @@
     <value>12, 19</value>
   </data>
   <data name="chaptersListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>317, 273</value>
+    <value>319, 273</value>
   </data>
   <data name="chaptersListBox.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
@@ -304,10 +328,10 @@
     <value>chaptersListBox</value>
   </data>
   <data name="&gt;&gt;chaptersListBox.Type" xml:space="preserve">
-    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.16.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;chaptersListBox.Parent" xml:space="preserve">
-    <value>panel3</value>
+    <value>chaptersPanel</value>
   </data>
   <data name="&gt;&gt;chaptersListBox.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -337,40 +361,76 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>panel3</value>
+    <value>chaptersPanel</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="chaptersPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>199, 0</value>
+  <data name="chaptersPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>234, 0</value>
   </data>
-  <data name="panel3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="chaptersPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="panel3.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="chaptersPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="chaptersPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>335, 328</value>
   </data>
-  <data name="panel3.TabIndex" type="System.Int32, mscorlib">
+  <data name="chaptersPanel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;panel3.Name" xml:space="preserve">
-    <value>panel3</value>
+  <data name="&gt;&gt;chaptersPanel.Name" xml:space="preserve">
+    <value>chaptersPanel</value>
   </data>
-  <data name="&gt;&gt;panel3.Type" xml:space="preserve">
+  <data name="&gt;&gt;chaptersPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panel3.Parent" xml:space="preserve">
-    <value>panel4</value>
+  <data name="&gt;&gt;chaptersPanel.Parent" xml:space="preserve">
+    <value>splitPanel</value>
   </data>
-  <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;chaptersPanel.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="checkSeriesButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="checkSeriesButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkSeriesButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="checkSeriesButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="checkSeriesButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>33, 300</value>
+  </data>
+  <data name="checkSeriesButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 23</value>
+  </data>
+  <data name="checkSeriesButton.TabIndex" type="System.Int32, mscorlib">
+    <value>37</value>
+  </data>
+  <data name="checkSeriesButton.Text" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="&gt;&gt;checkSeriesButton.Name" xml:space="preserve">
+    <value>checkSeriesButton</value>
+  </data>
+  <data name="&gt;&gt;checkSeriesButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkSeriesButton.Parent" xml:space="preserve">
+    <value>seriesPanel</value>
+  </data>
+  <data name="&gt;&gt;checkSeriesButton.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="seriesSearchTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -379,7 +439,7 @@
     <value>53, 272</value>
   </data>
   <data name="seriesSearchTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 20</value>
+    <value>175, 20</value>
   </data>
   <data name="seriesSearchTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -391,10 +451,10 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;seriesSearchTextBox.Parent" xml:space="preserve">
-    <value>panel2</value>
+    <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;seriesSearchTextBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -424,22 +484,28 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>panel2</value>
+    <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="openSeriesFolderButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
+  </data>
+  <data name="openSeriesFolderButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="openSeriesFolderButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="openSeriesFolderButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="openSeriesFolderButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 300</value>
+    <value>87, 300</value>
   </data>
   <data name="openSeriesFolderButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 23</value>
+    <value>72, 23</value>
   </data>
   <data name="openSeriesFolderButton.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -454,22 +520,28 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;openSeriesFolderButton.Parent" xml:space="preserve">
-    <value>panel2</value>
+    <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;openSeriesFolderButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="seriesURLButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
+  </data>
+  <data name="seriesURLButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="seriesURLButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="seriesURLButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="seriesURLButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 300</value>
+    <value>165, 300</value>
   </data>
   <data name="seriesURLButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 23</value>
+    <value>63, 23</value>
   </data>
   <data name="seriesURLButton.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -484,10 +556,10 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;seriesURLButton.Parent" xml:space="preserve">
-    <value>panel2</value>
+    <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;seriesURLButton.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -514,10 +586,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>panel2</value>
+    <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="seriesListBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -535,7 +607,7 @@
     <value>2, 19</value>
   </data>
   <data name="seriesListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 247</value>
+    <value>226, 247</value>
   </data>
   <data name="seriesListBox.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -544,79 +616,85 @@
     <value>seriesListBox</value>
   </data>
   <data name="&gt;&gt;seriesListBox.Type" xml:space="preserve">
-    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.16.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;seriesListBox.Parent" xml:space="preserve">
-    <value>panel2</value>
+    <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;seriesListBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
-  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="seriesPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Left</value>
   </data>
-  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="seriesPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="panel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="seriesPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="panel2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="seriesPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 328</value>
+  <data name="seriesPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 328</value>
   </data>
-  <data name="panel2.TabIndex" type="System.Int32, mscorlib">
+  <data name="seriesPanel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
-    <value>panel2</value>
+  <data name="&gt;&gt;seriesPanel.Name" xml:space="preserve">
+    <value>seriesPanel</value>
   </data>
-  <data name="&gt;&gt;panel2.Type" xml:space="preserve">
+  <data name="&gt;&gt;seriesPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
-    <value>panel4</value>
+  <data name="&gt;&gt;seriesPanel.Parent" xml:space="preserve">
+    <value>splitPanel</value>
   </data>
-  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;seriesPanel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="panel4.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="splitPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>216, 3</value>
   </data>
-  <data name="panel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>534, 328</value>
+  <data name="splitPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>569, 328</value>
   </data>
-  <data name="panel4.TabIndex" type="System.Int32, mscorlib">
+  <data name="splitPanel.TabIndex" type="System.Int32, mscorlib">
     <value>39</value>
   </data>
-  <data name="&gt;&gt;panel4.Name" xml:space="preserve">
-    <value>panel4</value>
+  <data name="&gt;&gt;splitPanel.Name" xml:space="preserve">
+    <value>splitPanel</value>
   </data>
-  <data name="&gt;&gt;panel4.Type" xml:space="preserve">
+  <data name="&gt;&gt;splitPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panel4.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+  <data name="&gt;&gt;splitPanel.Parent" xml:space="preserve">
+    <value>seriesTabPage</value>
   </data>
-  <data name="&gt;&gt;panel4.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;splitPanel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="panel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="serversPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
   <data name="openServerFolderButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
+  <data name="openServerFolderButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="openServerFolderButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
   <data name="openServerFolderButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="openServerFolderButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>48, 300</value>
+    <value>57, 300</value>
   </data>
   <data name="openServerFolderButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>81, 23</value>
+    <value>72, 23</value>
   </data>
   <data name="openServerFolderButton.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
@@ -631,7 +709,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;openServerFolderButton.Parent" xml:space="preserve">
-    <value>panel1</value>
+    <value>serversPanel</value>
   </data>
   <data name="&gt;&gt;openServerFolderButton.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -661,16 +739,22 @@
     <value>serversListBox</value>
   </data>
   <data name="&gt;&gt;serversListBox.Type" xml:space="preserve">
-    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.16.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;serversListBox.Parent" xml:space="preserve">
-    <value>panel1</value>
+    <value>serversPanel</value>
   </data>
   <data name="&gt;&gt;serversListBox.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="serverURLButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
+  </data>
+  <data name="serverURLButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="serverURLButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="serverURLButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -679,7 +763,7 @@
     <value>135, 300</value>
   </data>
   <data name="serverURLButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 23</value>
+    <value>63, 23</value>
   </data>
   <data name="serverURLButton.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -694,7 +778,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;serverURLButton.Parent" xml:space="preserve">
-    <value>panel1</value>
+    <value>serversPanel</value>
   </data>
   <data name="&gt;&gt;serverURLButton.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -724,67 +808,109 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
-    <value>panel1</value>
+    <value>serversPanel</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="serversPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 3</value>
   </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="serversPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>199, 329</value>
   </data>
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="serversPanel.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
   </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
+  <data name="&gt;&gt;serversPanel.Name" xml:space="preserve">
+    <value>serversPanel</value>
   </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+  <data name="&gt;&gt;serversPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+  <data name="&gt;&gt;serversPanel.Parent" xml:space="preserve">
+    <value>seriesTabPage</value>
   </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;serversPanel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="seriesTabPage.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>753, 334</value>
+  <data name="seriesTabPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>788, 334</value>
   </data>
-  <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
+  <data name="seriesTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="tabPage1.Text" xml:space="preserve">
+  <data name="seriesTabPage.Text" xml:space="preserve">
     <value>Series</value>
   </data>
-  <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
-    <value>tabPage1</value>
+  <data name="&gt;&gt;seriesTabPage.Name" xml:space="preserve">
+    <value>seriesTabPage</value>
   </data>
-  <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
+  <data name="&gt;&gt;seriesTabPage.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;seriesTabPage.Parent" xml:space="preserve">
     <value>tabControl</value>
   </data>
-  <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;seriesTabPage.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="openFolderWorksButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="openFolderWorksButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="openFolderWorksButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="openFolderWorksButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="openFolderWorksButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>596, 299</value>
+  </data>
+  <data name="openFolderWorksButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 23</value>
+  </data>
+  <data name="openFolderWorksButton.TabIndex" type="System.Int32, mscorlib">
+    <value>39</value>
+  </data>
+  <data name="openFolderWorksButton.Text" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="&gt;&gt;openFolderWorksButton.Name" xml:space="preserve">
+    <value>openFolderWorksButton</value>
+  </data>
+  <data name="&gt;&gt;openFolderWorksButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;openFolderWorksButton.Parent" xml:space="preserve">
+    <value>worksTabPage</value>
+  </data>
+  <data name="&gt;&gt;openFolderWorksButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="downloadWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
+  <data name="downloadWorkButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="downloadWorkButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
   <data name="downloadWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="downloadWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>267, 299</value>
+    <value>378, 299</value>
   </data>
   <data name="downloadWorkButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 23</value>
+    <value>65, 23</value>
   </data>
   <data name="downloadWorkButton.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -799,22 +925,28 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;downloadWorkButton.Parent" xml:space="preserve">
-    <value>tabPage2</value>
+    <value>worksTabPage</value>
   </data>
   <data name="&gt;&gt;downloadWorkButton.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="deleteWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
+  </data>
+  <data name="deleteWorkButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="deleteWorkButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="deleteWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="deleteWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>346, 299</value>
+    <value>449, 299</value>
   </data>
   <data name="deleteWorkButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 23</value>
+    <value>48, 23</value>
   </data>
   <data name="deleteWorkButton.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
@@ -829,22 +961,28 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;deleteWorkButton.Parent" xml:space="preserve">
-    <value>tabPage2</value>
+    <value>worksTabPage</value>
   </data>
   <data name="&gt;&gt;deleteWorkButton.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="visitPageWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
+  </data>
+  <data name="visitPageWorkButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="visitPageWorkButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="visitPageWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="visitPageWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>409, 299</value>
+    <value>674, 299</value>
   </data>
   <data name="visitPageWorkButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 23</value>
+    <value>63, 23</value>
   </data>
   <data name="visitPageWorkButton.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
@@ -859,22 +997,28 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;visitPageWorkButton.Parent" xml:space="preserve">
-    <value>tabPage2</value>
+    <value>worksTabPage</value>
   </data>
   <data name="&gt;&gt;visitPageWorkButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="viewWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
+  </data>
+  <data name="viewWorkButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="viewWorkButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="viewWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="viewWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>486, 299</value>
+    <value>743, 299</value>
   </data>
   <data name="viewWorkButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 23</value>
+    <value>40, 23</value>
   </data>
   <data name="viewWorkButton.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -889,22 +1033,28 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;viewWorkButton.Parent" xml:space="preserve">
-    <value>tabPage2</value>
+    <value>worksTabPage</value>
   </data>
   <data name="&gt;&gt;viewWorkButton.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="goToChaptersWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
+  </data>
+  <data name="goToChaptersWorkButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="goToChaptersWorkButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="goToChaptersWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="goToChaptersWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>540, 299</value>
+    <value>503, 299</value>
   </data>
   <data name="goToChaptersWorkButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 23</value>
+    <value>87, 23</value>
   </data>
   <data name="goToChaptersWorkButton.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
@@ -919,39 +1069,9 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;goToChaptersWorkButton.Parent" xml:space="preserve">
-    <value>tabPage2</value>
+    <value>worksTabPage</value>
   </data>
   <data name="&gt;&gt;goToChaptersWorkButton.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="clearDownloadedWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="clearDownloadedWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="clearDownloadedWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>641, 299</value>
-  </data>
-  <data name="clearDownloadedWorkButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 23</value>
-  </data>
-  <data name="clearDownloadedWorkButton.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
-  </data>
-  <data name="clearDownloadedWorkButton.Text" xml:space="preserve">
-    <value>Clear downloaded</value>
-  </data>
-  <data name="&gt;&gt;clearDownloadedWorkButton.Name" xml:space="preserve">
-    <value>clearDownloadedWorkButton</value>
-  </data>
-  <data name="&gt;&gt;clearDownloadedWorkButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;clearDownloadedWorkButton.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;clearDownloadedWorkButton.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="worksGridView.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -976,7 +1096,7 @@
     <value>0, 0</value>
   </data>
   <data name="worksGridView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>753, 293</value>
+    <value>785, 293</value>
   </data>
   <data name="worksGridView.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -988,33 +1108,33 @@
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;worksGridView.Parent" xml:space="preserve">
-    <value>tabPage2</value>
+    <value>worksTabPage</value>
   </data>
   <data name="&gt;&gt;worksGridView.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="worksTabPage.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>753, 334</value>
+  <data name="worksTabPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>788, 334</value>
   </data>
-  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
+  <data name="worksTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="tabPage2.Text" xml:space="preserve">
+  <data name="worksTabPage.Text" xml:space="preserve">
     <value>Downloading</value>
   </data>
-  <data name="&gt;&gt;tabPage2.Name" xml:space="preserve">
-    <value>tabPage2</value>
+  <data name="&gt;&gt;worksTabPage.Name" xml:space="preserve">
+    <value>worksTabPage</value>
   </data>
-  <data name="&gt;&gt;tabPage2.Type" xml:space="preserve">
+  <data name="&gt;&gt;worksTabPage.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabPage2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;worksTabPage.Parent" xml:space="preserve">
     <value>tabControl</value>
   </data>
-  <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;worksTabPage.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="optionslLabel.AutoSize" type="System.Boolean, mscorlib">
@@ -1060,7 +1180,7 @@
     <value>Use page index</value>
   </data>
   <data name="pageNamingStrategyComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>133, 92</value>
+    <value>126, 112</value>
   </data>
   <data name="pageNamingStrategyComboBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>304, 21</value>
@@ -1087,7 +1207,7 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 92</value>
+    <value>8, 112</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>112, 13</value>
@@ -1117,16 +1237,16 @@
     <value>NoControl</value>
   </data>
   <data name="cbzCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 54</value>
+    <value>8, 69</value>
   </data>
   <data name="cbzCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 17</value>
+    <value>214, 17</value>
   </data>
   <data name="cbzCheckBox.TabIndex" type="System.Int32, mscorlib">
     <value>42</value>
   </data>
   <data name="cbzCheckBox.Text" xml:space="preserve">
-    <value>Zip chapter to cbz</value>
+    <value>Zip chapter to comic book archive (cbz)</value>
   </data>
   <data name="&gt;&gt;cbzCheckBox.Name" xml:space="preserve">
     <value>cbzCheckBox</value>
@@ -1228,7 +1348,7 @@
     <value>4, 22</value>
   </data>
   <data name="optionsTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>753, 334</value>
+    <value>788, 334</value>
   </data>
   <data name="optionsTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1285,7 +1405,7 @@
     <value>0, 0</value>
   </data>
   <data name="logRichTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>753, 334</value>
+    <value>788, 334</value>
   </data>
   <data name="logRichTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1309,7 +1429,7 @@
     <value>4, 22</value>
   </data>
   <data name="logTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>753, 334</value>
+    <value>788, 334</value>
   </data>
   <data name="logTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1329,11 +1449,38 @@
   <data name="&gt;&gt;logTabPage.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="bookmarksTabPage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="bookmarksTabPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="bookmarksTabPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>788, 334</value>
+  </data>
+  <data name="bookmarksTabPage.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="bookmarksTabPage.Text" xml:space="preserve">
+    <value>Bookmarks</value>
+  </data>
+  <data name="&gt;&gt;bookmarksTabPage.Name" xml:space="preserve">
+    <value>bookmarksTabPage</value>
+  </data>
+  <data name="&gt;&gt;bookmarksTabPage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bookmarksTabPage.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;bookmarksTabPage.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="tabControl.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
   </data>
   <data name="tabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>761, 360</value>
+    <value>796, 360</value>
   </data>
   <data name="tabControl.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -1387,7 +1534,7 @@
     <value>0</value>
   </data>
   <data name="versionPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>699, 3</value>
+    <value>734, 3</value>
   </data>
   <data name="versionPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 25</value>
@@ -1420,10 +1567,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>783, 388</value>
+    <value>818, 388</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>799, 424</value>
+    <value>834, 424</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>
@@ -1437,12 +1584,6 @@
   <data name="&gt;&gt;folderBrowserDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;refreshTimer.Name" xml:space="preserve">
-    <value>refreshTimer</value>
-  </data>
-  <data name="&gt;&gt;refreshTimer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;Chapter.Name" xml:space="preserve">
     <value>Chapter</value>
   </data>
@@ -1454,6 +1595,12 @@
   </data>
   <data name="&gt;&gt;Progress.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;refreshTimer.Name" xml:space="preserve">
+    <value>refreshTimer</value>
+  </data>
+  <data name="&gt;&gt;refreshTimer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MangaCrawlerForm</value>

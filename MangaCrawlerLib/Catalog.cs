@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
-    public class Catalog
+    public static class Catalog
     {
         private static string CATALOG_XML = "catalog.xml";
         private static string WORKS_XML = "works.xml";
@@ -118,7 +118,8 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return DownloadManager.GetSettingsDir() + CATALOG_DIR;
+                return DownloadManager.Instance.MangaSettings.GetMangaRootDir(true) + 
+                    Path.DirectorySeparatorChar + CATALOG_DIR;
             }
         }
 
@@ -210,7 +211,7 @@ namespace MangaCrawlerLib
                     var xml =
                         new XElement(CATALOG_NODE,
                             new XElement(GLOBAL_ID_COUNTER_NODE, IDCounter),
-                            new XElement(SERVERS_NODE, from s in DownloadManager.Servers
+                            new XElement(SERVERS_NODE, from s in DownloadManager.Instance.Servers
                                                        select new XElement(SERVERS_SERVER_NODE,
                                                            new XElement(SERVERS_SERVER_ID_NODE, s.ID),
                                                            new XElement(SERVERS_SERVER_NAME_NODE, s.Name),
@@ -334,6 +335,8 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
+                    new DirectoryInfo(CatalogDir).Create();
+
                     var xml = new XElement(SERIES_NODE,
                         new XElement(SERIES_SERVER_ID_NODE, a_server.ID),
                         new XElement(SERIES_SERVER_NAME_NODE, a_server.Name),
@@ -410,6 +413,8 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
+                    new DirectoryInfo(CatalogDir).Create();
+
                     var xml = new XElement(CHAPTERS_NODE,
                         new XElement(CHAPTERS_SERIE_ID_NODE, a_serie.ID),
                         new XElement(CHAPTERS_SERIE_TITLE_NODE, a_serie.Title),
@@ -498,6 +503,8 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
+                    new DirectoryInfo(CatalogDir).Create();
+
                     var xml = new XElement(PAGES_NODE,
                         new XElement(PAGES_CHAPTER_ID_NODE, a_chapter.ID),
                         new XElement(PAGES_CHAPTER_TITLE_NODE, a_chapter.Title),
@@ -556,6 +563,9 @@ namespace MangaCrawlerLib
 
         private static IEnumerable<FileInfo> GetCatalogFiles()
         {
+            if (!new FileInfo(CatalogDir).Exists)
+                return new FileInfo[] { };
+
             return new DirectoryInfo(CatalogDir).EnumerateFiles("*.xml");
         }
 
@@ -791,6 +801,8 @@ namespace MangaCrawlerLib
             {
                 lock (m_lock)
                 {
+                    new DirectoryInfo(CatalogDir).Create();
+
                     var xml = new XElement(WORKS_NODE,
                         from work in a_works
                         select new XElement(WORKS_WORK_NODE,

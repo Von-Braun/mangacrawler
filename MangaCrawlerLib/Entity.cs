@@ -19,5 +19,6 @@ namespace MangaCrawlerLib
 
         internal abstract Crawler Crawler { get; }
         public abstract bool IsWorking { get; }
+        public abstract string GetDirectory();
     }
 }
