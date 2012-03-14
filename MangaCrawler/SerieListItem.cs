@@ -71,12 +71,6 @@ namespace MangaCrawler
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
 
-                    case SerieState.Checking:
-
-                        a_args.Graphics.DrawString(Resources.Checking, font,
-                            Brushes.Blue, rect, StringFormat.GenericDefault);
-                        break;
-
                     case SerieState.Initial:
 
                         if (Serie.Chapters.Count != 0)

@@ -205,7 +205,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override bool IsWorking
+        public override bool IsDownloading
         {
             get
             {
