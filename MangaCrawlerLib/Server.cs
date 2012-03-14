@@ -66,11 +66,11 @@ namespace MangaCrawlerLib
             Name = a_name;
             m_state = a_state;
 
-            if (m_state == ServerState.Checking)
+            if (m_state == ServerState.Downloading)
                 m_state = ServerState.Initial;
             if (m_state == ServerState.Waiting)
                 m_state = ServerState.Initial;
-            if (m_state == ServerState.Checked)
+            if (m_state == ServerState.Downloaded)
                 m_state = ServerState.Initial;
         }
 
@@ -112,7 +112,7 @@ namespace MangaCrawlerLib
                         key_selector);
                 });
 
-                State = ServerState.Checked;
+                State = ServerState.Downloaded;
             }
             catch (ObjectDisposedException)
             {
@@ -135,9 +135,9 @@ namespace MangaCrawlerLib
         {
             get
             {
-                if (State == ServerState.Checked)
+                if (State == ServerState.Downloaded)
                 {
-                    if (DateTime.Now - m_check_date_time > DownloadManager.GetCheckTimeDelta())
+                    if (DateTime.Now - m_check_date_time > DownloadManager.Instance.MangaSettings.CheckTimeDelta)
                         return true;
                     else
                         return false;
@@ -147,12 +147,9 @@ namespace MangaCrawlerLib
             }
         }
 
-        public string GetServerDirectory()
+        public override string GetDirectory()
         {
-            string manga_root_dir = DownloadManager.GetMangaRootDir();
-
-            if (manga_root_dir.Last() == Path.DirectorySeparatorChar)
-                manga_root_dir = manga_root_dir.RemoveFromRight(1);
+            string manga_root_dir = DownloadManager.Instance.MangaSettings.GetMangaRootDir(true); ;
 
             return manga_root_dir +
                    Path.DirectorySeparatorChar +
@@ -178,24 +175,24 @@ namespace MangaCrawlerLib
                     {
                         Debug.Assert((State == ServerState.Initial) ||
                                      (State == ServerState.Error) || 
-                                     (State == ServerState.Checked));
+                                     (State == ServerState.Downloaded));
                         break;
                     }
-                    case ServerState.Checking:
+                    case ServerState.Downloading:
                     {
                         Debug.Assert(State == ServerState.Waiting);
                         DownloadProgress = 0;
                         break;
                     }
-                    case ServerState.Checked:
+                    case ServerState.Downloaded:
                     {
-                        Debug.Assert(State == ServerState.Checking);
+                        Debug.Assert(State == ServerState.Downloading);
                         Debug.Assert(DownloadProgress == 100);
                         break;
                     }
                     case ServerState.Error:
                     {
-                        Debug.Assert(State == ServerState.Checking);
+                        Debug.Assert(State == ServerState.Downloading);
                         break;
                     }
                     default:
@@ -212,7 +209,8 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return (State == ServerState.Checking) || (State == ServerState.Waiting);
+                return (State == ServerState.Downloading) ||
+                       (State == ServerState.Waiting);
             }
         }
     }

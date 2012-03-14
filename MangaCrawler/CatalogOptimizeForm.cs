@@ -18,7 +18,7 @@ namespace MangaCrawler
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void cancelButton_Click(object sender, EventArgs e)
         {
             backgroundWorker.CancelAsync();
         }
@@ -26,7 +26,7 @@ namespace MangaCrawler
         private void CatalogOptimizeForm_Load(object sender, EventArgs e)
         {
             label2.Text = String.Format(label2.Text, Catalog.GetCatalogSize() / 1024 / 1024,
-                (long)(Settings.Instance.MaxCatalogSize / 1024 / 1024 * Catalog.COMPACT_RATIO));
+                (long)(Settings.Instance.MangaSettings.MaxCatalogSize / 1024 / 1024 * Catalog.COMPACT_RATIO));
 
             backgroundWorker.RunWorkerAsync();
         }
@@ -38,7 +38,8 @@ namespace MangaCrawler
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-                Catalog.Compact(Settings.Instance.MaxCatalogSize, () => backgroundWorker.CancellationPending);
+            Catalog.Compact(Settings.Instance.MangaSettings.MaxCatalogSize, 
+                () => backgroundWorker.CancellationPending);
         }
     }
 }

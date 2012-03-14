@@ -70,11 +70,11 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chapters: {0}.
+        ///   Looks up a localized string similar to CHECKING.
         /// </summary>
-        internal static string Chapters {
+        internal static string Checking {
             get {
-                return ResourceManager.GetString("Chapters", resourceCulture);
+                return ResourceManager.GetString("Checking", resourceCulture);
             }
         }
         
@@ -158,15 +158,6 @@ namespace MangaCrawler.Properties {
         internal static string NewVersion {
             get {
                 return ResourceManager.GetString("NewVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Series: {0}.
-        /// </summary>
-        internal static string Series {
-            get {
-                return ResourceManager.GetString("Series", resourceCulture);
             }
         }
         

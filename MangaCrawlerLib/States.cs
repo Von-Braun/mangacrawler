@@ -9,8 +9,8 @@ namespace MangaCrawlerLib
     {
         Initial,
         Waiting,
-        Checking,
-        Checked,
+        Downloading,
+        Downloaded,
         Error
     }
 
@@ -18,8 +18,9 @@ namespace MangaCrawlerLib
     {
         Initial,
         Waiting,
-        Checking,
-        Checked,
+        Downloading,
+        Checking, 
+        Downloaded,
         Error
     }
 

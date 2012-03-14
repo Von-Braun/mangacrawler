@@ -99,7 +99,7 @@ namespace MangaCrawlerLib
         {
             try
             {
-                new DirectoryInfo(Chapter.GetChapterDirectory()).Create();
+                new DirectoryInfo(Chapter.GetDirectory()).Create();
 
                 FileInfo temp_file = new FileInfo(Path.GetTempFileName());
 
@@ -149,7 +149,7 @@ namespace MangaCrawlerLib
                         file_name = String.Format("{0} - {1}", Index, Name);
 
                     ImageFilePath = 
-                        Chapter.GetChapterDirectory() + 
+                        Chapter.GetDirectory() + 
                         FileUtils.RemoveInvalidFileCharacters(file_name) + 
                         FileUtils.RemoveInvalidFileCharacters(Path.GetExtension(ImageURL).ToLower());
 
@@ -256,8 +256,14 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return (State == PageState.Downloading) || (State == PageState.Waiting);
+                return (State == PageState.Downloading) ||
+                       (State == PageState.Waiting);
             }
+        }
+
+        public override string GetDirectory()
+        {
+            return Chapter.GetDirectory();
         }
     }
 }

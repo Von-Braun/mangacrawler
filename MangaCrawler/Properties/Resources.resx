@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Chapters" xml:space="preserve">
-    <value>Chapters: {0}</value>
-  </data>
   <data name="Deleting" xml:space="preserve">
     <value>DELETING</value>
   </data>
@@ -140,9 +137,6 @@
   </data>
   <data name="NewVersion" xml:space="preserve">
     <value>New version</value>
-  </data>
-  <data name="Series" xml:space="preserve">
-    <value>Series: {0}</value>
   </data>
   <data name="Waiting" xml:space="preserve">
     <value>WAITING</value>
@@ -181,5 +175,8 @@ chapter: {2}</value>
   </data>
   <data name="WorkProgressDownloading" xml:space="preserve">
     <value>Downloading</value>
+  </data>
+  <data name="Checking" xml:space="preserve">
+    <value>CHECKING</value>
   </data>
 </root>

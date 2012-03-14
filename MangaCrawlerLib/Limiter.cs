@@ -44,11 +44,6 @@ namespace MangaCrawlerLib
         private const int LOOP_SLEEP_MS = 500;
         private const int WAIT_SLEEP_MS = 500;
 
-        //// Sync with MangaCrawler/app.config
-        public const int MAX_CONNECTIONS = 100;
-
-        public const int MAX_CONNECTIONS_PER_SERVER = 4;
-
         private static Dictionary<Server, int> s_server_connections = new Dictionary<Server, int>();
         private static Dictionary<Server, bool> s_one_chapter_per_server = new Dictionary<Server, bool>();
         private static int s_connections = 0;
@@ -57,7 +52,7 @@ namespace MangaCrawlerLib
 
         static Limiter()
         {
-            foreach (var server in DownloadManager.Servers)
+            foreach (var server in DownloadManager.Instance.Servers)
             {
                 s_server_connections[server] = 0;
                 s_one_chapter_per_server[server] = false;
@@ -151,8 +146,10 @@ namespace MangaCrawlerLib
                                 s_connections++;
                                 s_server_connections[limit.Server]++;
 
-                                Debug.Assert(s_connections <= MAX_CONNECTIONS);
-                                Debug.Assert(s_server_connections[limit.Server] <= MAX_CONNECTIONS_PER_SERVER);
+                                Debug.Assert(s_connections <=
+                                    DownloadManager.Instance.MangaSettings.MaximumConnections);
+                                Debug.Assert(s_server_connections[limit.Server] <=
+                                    DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer);
                             }
 
                             limit.Event.Set();
@@ -216,11 +213,12 @@ namespace MangaCrawlerLib
 
             if (candidate == null)
             {
-                if (s_connections < MAX_CONNECTIONS)
+                if (s_connections < DownloadManager.Instance.MangaSettings.MaximumConnections)
                 {
                     candidate = (from limit in s_limits
                                  where limit.Priority != Priority.Pages
-                                 where s_server_connections[limit.Server] < MAX_CONNECTIONS_PER_SERVER
+                                 where s_server_connections[limit.Server] <
+                                    DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer
                                  orderby limit.Priority, limit.LimiterOrder
                                  select limit).FirstOrDefault();
                 }
