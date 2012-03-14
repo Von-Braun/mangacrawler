@@ -21,7 +21,6 @@ namespace MangaCrawlerLib
     {
         public string SettingsDir { get; private set; }
         public MangaSettings MangaSettings { get; private set; }
-        public Action UpdateGUI { get; private set; }
 
         private List<Entity> m_downloading = new List<Entity>();
         private Server[] m_servers;
@@ -29,9 +28,9 @@ namespace MangaCrawlerLib
 
         public static DownloadManager Instance { get; private set; }
 
-        public static void Create(MangaSettings a_manga_settings, string a_settings_dir, Action a_update_gui)
+        public static void Create(MangaSettings a_manga_settings, string a_settings_dir)
         {
-            Instance = new DownloadManager(a_manga_settings, a_settings_dir, a_update_gui);
+            Instance = new DownloadManager(a_manga_settings, a_settings_dir);
             Instance.Initialize();
         }
 
@@ -45,11 +44,10 @@ namespace MangaCrawlerLib
             DownloadPages(works);
         }
 
-        private  DownloadManager(MangaSettings a_manga_settings, string a_settings_dir, Action a_update_gui)
+        private  DownloadManager(MangaSettings a_manga_settings, string a_settings_dir)
         {
             SettingsDir = a_settings_dir;
             MangaSettings = a_manga_settings;
-            UpdateGUI = a_update_gui;
 
             HtmlWeb.UserAgent_Actual = a_manga_settings.UserAgent;
         }
@@ -59,7 +57,7 @@ namespace MangaCrawlerLib
             bool result = m_downloading.Any();
 
             m_downloading = (from entity in m_downloading
-                             where entity.IsWorking
+                             where entity.IsDownloading
                              select entity).ToList();
             return result;
         }
@@ -75,7 +73,6 @@ namespace MangaCrawlerLib
             m_downloading.Add(a_server);
             a_server.State = ServerState.Waiting;
             a_server.LimiterOrder = Catalog.NextID();
-            UpdateGUI();
 
             new Task(() =>
             {
@@ -95,7 +92,6 @@ namespace MangaCrawlerLib
             m_downloading.Add(a_serie);
             a_serie.State = SerieState.Waiting;
             a_serie.LimiterOrder = Catalog.NextID();
-            UpdateGUI();
 
             new Task(() =>
             {
@@ -107,7 +103,7 @@ namespace MangaCrawlerLib
         {
             foreach (var chapter in a_chapters)
             {
-                if (chapter.IsWorking)
+                if (chapter.IsDownloading)
                     continue;
 
                 lock (m_works)
@@ -120,7 +116,6 @@ namespace MangaCrawlerLib
                 m_downloading.Add(chapter);
                 chapter.State = ChapterState.Waiting;
                 chapter.LimiterOrder = Catalog.NextID();
-                UpdateGUI();
 
                 Chapter chapter_sync = chapter;
 
@@ -164,7 +159,7 @@ namespace MangaCrawlerLib
                 copy = m_works.ToArray();
             }
 
-            copy = copy.Where(c => c.IsWorking);
+            copy = copy.Where(c => c.IsDownloading);
 
             Catalog.SaveWorks(copy);
         }

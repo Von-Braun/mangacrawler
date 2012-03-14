@@ -144,8 +144,6 @@ namespace MangaCrawlerLib
                     else
                         return false;
                 }
-                else if (State == SerieState.Checking)
-                    return false;
                 else
                     return (State == SerieState.Error) || (State == SerieState.Initial);
             }
@@ -178,13 +176,6 @@ namespace MangaCrawlerLib
                         DownloadProgress = 0;
                         break;
                     }
-                    case SerieState.Checking:
-                    {
-                        Debug.Assert((State == SerieState.Initial) ||
-                                     (State == SerieState.Error) ||
-                                     (State == SerieState.Downloaded));
-                        break;
-                    }
                     case SerieState.Downloaded:
                     {
                         Debug.Assert(State == SerieState.Downloading);
@@ -193,8 +184,7 @@ namespace MangaCrawlerLib
                     }
                     case SerieState.Error:
                     {
-                        Debug.Assert((State == SerieState.Checking) ||
-                                     (State == SerieState.Downloading));
+                        Debug.Assert(State == SerieState.Downloading);
                         break;
                     }
                     default:
@@ -219,12 +209,11 @@ namespace MangaCrawlerLib
                    Path.DirectorySeparatorChar;
         }
 
-        public override bool IsWorking
+        public override bool IsDownloading
         {
             get
             {
                 return (State == SerieState.Downloading) ||
-                       (State == SerieState.Checking) ||
                        (State == SerieState.Waiting);
             }
         }

@@ -117,7 +117,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        public override bool IsWorking
+        public override bool IsDownloading
         {
             get
             {
@@ -139,7 +139,7 @@ namespace MangaCrawlerLib
             if (State == ChapterState.Deleting)
                 return;
 
-            if (IsWorking)
+            if (IsDownloading)
             {
                 Loggers.MangaCrawler.InfoFormat("Deleting, chapter: {0}, state: {1}", this, State);
                 CancellationTokenSource.Cancel();

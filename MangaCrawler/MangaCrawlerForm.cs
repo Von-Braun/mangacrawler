@@ -77,9 +77,9 @@ namespace MangaCrawler
      * testy na dzialanie priorytetow
      * testy na manga dir ze i bez slasha na koncu
      * 
-     * nowy przycisk recheck - czyli ponowne sprawdzenie hashy i pobranie w razie czego
-     * 
      * bookmarks, nie pamietac ich po id, dzieki temu przezyja reinstalacje, nie przechowywac ich w katalogu
+     * 
+     * pamietanie stanu splitter na books
      * 
      * praca w tle, powiadamianie o zmianach w bookmarks
      * 
@@ -113,8 +113,7 @@ namespace MangaCrawler
 
             DownloadManager.Create(
                 Settings.Instance.MangaSettings, 
-                Settings.GetSettingsDir(), 
-                () => UpdateAll());
+                Settings.GetSettingsDir());
 
             mangaRootDirTextBox.Text = Settings.Instance.MangaSettings.GetMangaRootDir(false);
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
@@ -217,7 +216,7 @@ namespace MangaCrawler
         {
             DownloadManager.Instance.DownloadSeries(SelectedServer);
 
-            UpdateSeries();
+            UpdateAll();
 
             if (SelectedServer != null)
             {
@@ -235,7 +234,7 @@ namespace MangaCrawler
 
             DownloadManager.Instance.DownloadChapters(SelectedSerie);
 
-            UpdateChapters();
+            UpdateAll();
 
             if (SelectedSerie != null)
             {
@@ -303,10 +302,11 @@ namespace MangaCrawler
                 return;
             }
 
-            if (a_chapters.Any(c => c.IsWorking))
+            if (a_chapters.Any(c => c.IsDownloading))
                 SystemSounds.Beep.Play();
 
             DownloadManager.Instance.DownloadPages(a_chapters);
+            UpdateAll();
         }
 
         private void UpdateWorksTab()
@@ -343,7 +343,7 @@ namespace MangaCrawler
 
         private void MangaCrawlerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (DownloadManager.Instance.Works.Any(w => w.IsWorking))
+            if (DownloadManager.Instance.Works.Any(w => w.IsDownloading))
             {
                 if ((e.CloseReason != CloseReason.WindowsShutDown) || 
                     (e.CloseReason != CloseReason.TaskManagerClosing))
@@ -804,7 +804,7 @@ namespace MangaCrawler
 
         private void UpdateOptions()
         {
-            bool show = DownloadManager.Instance.Works.All(w => !w.IsWorking);
+            bool show = DownloadManager.Instance.Works.All(w => !w.IsDownloading);
 
             foreach (var control in optionsTabPage.Controls.Cast<Control>())
             {
@@ -928,30 +928,7 @@ namespace MangaCrawler
 
         private void downloadWorkButton_Click(object sender, EventArgs e)
         {
-            var works = GetSelectedWorks();
-
-            if (!works.Any())
-            {
-                SystemSounds.Beep.Play();
-                return;
-            }
-
-            bool error = false;
-
-            List<Chapter> download = new List<Chapter>();
-
-            foreach (var work in works)
-            {
-                if (work.IsWorking)
-                    error = true;
-                else
-                    download.Add(work);
-            }
-
-            DownloadManager.Instance.DownloadPages(download);
-
-            if (error)
-                SystemSounds.Beep.Play();
+            DownloadChapters(GetSelectedWorks());
         }
 
         // TODO: pobieranie juz pobranego, co sie dzieje z works, czy sa dwa wpisy
@@ -974,7 +951,7 @@ namespace MangaCrawler
 
             foreach (var work in works)
             {
-                if (work.IsWorking)
+                if (work.IsDownloading)
                     work.DeleteWork();
                 else
                     DownloadManager.Instance.RemoveWork(work);
@@ -992,32 +969,6 @@ namespace MangaCrawler
         {
             if (chaptersPanel.Bounds.Right > splitPanel.ClientRectangle.Right)
                 splitter.SplitPosition = splitPanel.Width - chaptersPanel.MinimumSize.Width;
-        }
-
-        private void checkSeriesButton_Click(object sender, EventArgs e)
-        {
-            var serie = SelectedSerie;
-            if (serie == null)
-            {
-                if (seriesListBox.Items.Count == 1)
-                    serie = (seriesListBox.Items[0] as SerieListItem).Serie;
-            }
-
-            if ((serie == null) || serie.IsWorking)
-            {
-                SystemSounds.Beep.Play();
-                return;
-            }
-
-            // TODO: 
-
-            /*
-             * iddownloading zastapic isworking - sprawdzic czy to ma sens
-             * w chapterze trzeba pamietac stan use cbz
-             * po sprawdzeniu kiedu ponowne pobranie jest wymagane walnac flaga incomplete i tyle
-             */
-
-            //DownloadManager.Instance.CheckSerie(serie);
         }
     }
 }
