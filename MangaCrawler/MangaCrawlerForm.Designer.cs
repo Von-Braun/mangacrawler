@@ -40,80 +40,97 @@
             this.versionLinkLabel = new System.Windows.Forms.LinkLabel();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.bookmarksTabPage = new System.Windows.Forms.TabPage();
-            this.splitterBooksPanel = new System.Windows.Forms.Panel();
-            this.seriesBooksPanel = new System.Windows.Forms.Panel();
-            this.seriesBooksListBox = new MangaCrawler.ListBoxEx();
-            this.label8 = new System.Windows.Forms.Label();
-            this.visitSerieBooksButton = new System.Windows.Forms.Button();
-            this.openSerieFolderBooksButton = new System.Windows.Forms.Button();
-            this.removeSerieBooksPanel = new System.Windows.Forms.Button();
-            this.chaptersBooksPanel = new System.Windows.Forms.Panel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.chaptersBooksListBox = new MangaCrawler.ListBoxEx();
-            this.downloadChapterBooksButton = new System.Windows.Forms.Button();
-            this.visitChapterBooksButton = new System.Windows.Forms.Button();
-            this.openChapterFolderBooksButton = new System.Windows.Forms.Button();
-            this.viewChapterBoksButton = new System.Windows.Forms.Button();
+            this.splitBookmarksPanel = new System.Windows.Forms.Panel();
             this.splitterBooks = new System.Windows.Forms.Splitter();
+            this.chapterBookmarksPanel = new System.Windows.Forms.Panel();
+            this.viewChapterBoksButton = new System.Windows.Forms.Button();
+            this.openChapterFolderBooksButton = new System.Windows.Forms.Button();
+            this.visitChapterBooksButton = new System.Windows.Forms.Button();
+            this.downloadChapterBooksButton = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.serieBookmarksPanel = new System.Windows.Forms.Panel();
+            this.removeSerieBooksPanel = new System.Windows.Forms.Button();
+            this.openSerieFolderBooksButton = new System.Windows.Forms.Button();
+            this.visitSerieBooksButton = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             this.logTabPage = new System.Windows.Forms.TabPage();
-            this.logRichTextBox = new System.Windows.Forms.RichTextBox();
             this.clearLogButton = new System.Windows.Forms.Button();
+            this.logRichTextBox = new System.Windows.Forms.RichTextBox();
             this.optionsTabPage = new System.Windows.Forms.TabPage();
-            this.mangaRootDirTextBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.mangaRootDirChooseButton = new System.Windows.Forms.Button();
-            this.cbzCheckBox = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pageNamingStrategyComboBox = new System.Windows.Forms.ComboBox();
             this.optionslLabel = new System.Windows.Forms.Label();
+            this.pageNamingStrategyComboBox = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbzCheckBox = new System.Windows.Forms.CheckBox();
+            this.mangaRootDirChooseButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.mangaRootDirTextBox = new System.Windows.Forms.TextBox();
             this.worksTabPage = new System.Windows.Forms.TabPage();
-            this.worksGridView = new System.Windows.Forms.DataGridView();
-            this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Chapter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.goToChaptersWorkButton = new System.Windows.Forms.Button();
-            this.viewWorkButton = new System.Windows.Forms.Button();
-            this.visitPageWorkButton = new System.Windows.Forms.Button();
-            this.deleteWorkButton = new System.Windows.Forms.Button();
-            this.downloadWorkButton = new System.Windows.Forms.Button();
             this.openFolderWorksButton = new System.Windows.Forms.Button();
+            this.downloadWorkButton = new System.Windows.Forms.Button();
+            this.deleteWorkButton = new System.Windows.Forms.Button();
+            this.visitPageWorkButton = new System.Windows.Forms.Button();
+            this.viewWorkButton = new System.Windows.Forms.Button();
+            this.goToChaptersWorkButton = new System.Windows.Forms.Button();
+            this.worksGridView = new System.Windows.Forms.DataGridView();
+            this.Chapter = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.seriesTabPage = new System.Windows.Forms.TabPage();
-            this.serversPanel = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.serverURLButton = new System.Windows.Forms.Button();
-            this.serversListBox = new MangaCrawler.ListBoxEx();
-            this.openServerFolderButton = new System.Windows.Forms.Button();
             this.splitPanel = new System.Windows.Forms.Panel();
-            this.seriesPanel = new System.Windows.Forms.Panel();
-            this.seriesListBox = new MangaCrawler.ListBoxEx();
-            this.label4 = new System.Windows.Forms.Label();
-            this.seriesURLButton = new System.Windows.Forms.Button();
-            this.openSeriesFolderButton = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.seriesSearchTextBox = new System.Windows.Forms.TextBox();
-            this.chaptersPanel = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.chaptersListBox = new MangaCrawler.ListBoxEx();
-            this.downloadButton = new System.Windows.Forms.Button();
-            this.chapterURLButton = new System.Windows.Forms.Button();
-            this.openPagesFolder = new System.Windows.Forms.Button();
-            this.viewPagesButton = new System.Windows.Forms.Button();
             this.splitter = new System.Windows.Forms.Splitter();
+            this.chaptersPanel = new System.Windows.Forms.Panel();
+            this.viewPagesButton = new System.Windows.Forms.Button();
+            this.openPagesFolder = new System.Windows.Forms.Button();
+            this.chapterURLButton = new System.Windows.Forms.Button();
+            this.downloadButton = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.seriesPanel = new System.Windows.Forms.Panel();
+            this.BookmarkSerieButton = new System.Windows.Forms.Button();
+            this.seriesSearchTextBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.openSeriesFolderButton = new System.Windows.Forms.Button();
+            this.seriesURLButton = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.serversPanel = new System.Windows.Forms.Panel();
+            this.openServerFolderButton = new System.Windows.Forms.Button();
+            this.serverURLButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.debugContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.resetCheckDatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addSerieFirsttoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addSerieMiddleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addSerieLastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeSerieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addChapterFirstToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addChapterMiddleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addChapterLastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renameSerieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renameChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeSerieURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeChapterURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chaptersListBox = new MangaCrawler.ListBoxEx();
+            this.seriesListBox = new MangaCrawler.ListBoxEx();
+            this.serversListBox = new MangaCrawler.ListBoxEx();
+            this.chapterBookmarksListBox = new MangaCrawler.ListBoxEx();
+            this.serieBookmarksListBox = new MangaCrawler.ListBoxEx();
+            this.playSoundWhenDownloadedCheckBox = new System.Windows.Forms.CheckBox();
             this.versionPanel.SuspendLayout();
             this.bookmarksTabPage.SuspendLayout();
-            this.splitterBooksPanel.SuspendLayout();
-            this.seriesBooksPanel.SuspendLayout();
-            this.chaptersBooksPanel.SuspendLayout();
+            this.splitBookmarksPanel.SuspendLayout();
+            this.chapterBookmarksPanel.SuspendLayout();
+            this.serieBookmarksPanel.SuspendLayout();
             this.logTabPage.SuspendLayout();
             this.optionsTabPage.SuspendLayout();
             this.worksTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.worksGridView)).BeginInit();
             this.seriesTabPage.SuspendLayout();
-            this.serversPanel.SuspendLayout();
             this.splitPanel.SuspendLayout();
-            this.seriesPanel.SuspendLayout();
             this.chaptersPanel.SuspendLayout();
+            this.seriesPanel.SuspendLayout();
+            this.serversPanel.SuspendLayout();
             this.tabControl.SuspendLayout();
+            this.debugContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // versionPanel
@@ -136,108 +153,19 @@
             // 
             // bookmarksTabPage
             // 
-            this.bookmarksTabPage.Controls.Add(this.splitterBooksPanel);
+            this.bookmarksTabPage.Controls.Add(this.splitBookmarksPanel);
             resources.ApplyResources(this.bookmarksTabPage, "bookmarksTabPage");
             this.bookmarksTabPage.Name = "bookmarksTabPage";
             this.bookmarksTabPage.UseVisualStyleBackColor = true;
             // 
-            // splitterBooksPanel
+            // splitBookmarksPanel
             // 
-            this.splitterBooksPanel.Controls.Add(this.splitterBooks);
-            this.splitterBooksPanel.Controls.Add(this.chaptersBooksPanel);
-            this.splitterBooksPanel.Controls.Add(this.seriesBooksPanel);
-            resources.ApplyResources(this.splitterBooksPanel, "splitterBooksPanel");
-            this.splitterBooksPanel.Name = "splitterBooksPanel";
-            // 
-            // seriesBooksPanel
-            // 
-            this.seriesBooksPanel.Controls.Add(this.removeSerieBooksPanel);
-            this.seriesBooksPanel.Controls.Add(this.openSerieFolderBooksButton);
-            this.seriesBooksPanel.Controls.Add(this.visitSerieBooksButton);
-            this.seriesBooksPanel.Controls.Add(this.label8);
-            this.seriesBooksPanel.Controls.Add(this.seriesBooksListBox);
-            resources.ApplyResources(this.seriesBooksPanel, "seriesBooksPanel");
-            this.seriesBooksPanel.MinimumSize = new System.Drawing.Size(234, 0);
-            this.seriesBooksPanel.Name = "seriesBooksPanel";
-            // 
-            // seriesBooksListBox
-            // 
-            resources.ApplyResources(this.seriesBooksListBox, "seriesBooksListBox");
-            this.seriesBooksListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.seriesBooksListBox.FormattingEnabled = true;
-            this.seriesBooksListBox.Name = "seriesBooksListBox";
-            // 
-            // label8
-            // 
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.Name = "label8";
-            // 
-            // visitSerieBooksButton
-            // 
-            resources.ApplyResources(this.visitSerieBooksButton, "visitSerieBooksButton");
-            this.visitSerieBooksButton.Name = "visitSerieBooksButton";
-            this.visitSerieBooksButton.UseVisualStyleBackColor = true;
-            // 
-            // openSerieFolderBooksButton
-            // 
-            resources.ApplyResources(this.openSerieFolderBooksButton, "openSerieFolderBooksButton");
-            this.openSerieFolderBooksButton.Name = "openSerieFolderBooksButton";
-            this.openSerieFolderBooksButton.UseVisualStyleBackColor = true;
-            // 
-            // removeSerieBooksPanel
-            // 
-            resources.ApplyResources(this.removeSerieBooksPanel, "removeSerieBooksPanel");
-            this.removeSerieBooksPanel.Name = "removeSerieBooksPanel";
-            this.removeSerieBooksPanel.UseVisualStyleBackColor = true;
-            // 
-            // chaptersBooksPanel
-            // 
-            this.chaptersBooksPanel.Controls.Add(this.viewChapterBoksButton);
-            this.chaptersBooksPanel.Controls.Add(this.openChapterFolderBooksButton);
-            this.chaptersBooksPanel.Controls.Add(this.visitChapterBooksButton);
-            this.chaptersBooksPanel.Controls.Add(this.downloadChapterBooksButton);
-            this.chaptersBooksPanel.Controls.Add(this.chaptersBooksListBox);
-            this.chaptersBooksPanel.Controls.Add(this.label9);
-            resources.ApplyResources(this.chaptersBooksPanel, "chaptersBooksPanel");
-            this.chaptersBooksPanel.MinimumSize = new System.Drawing.Size(334, 0);
-            this.chaptersBooksPanel.Name = "chaptersBooksPanel";
-            // 
-            // label9
-            // 
-            resources.ApplyResources(this.label9, "label9");
-            this.label9.Name = "label9";
-            // 
-            // chaptersBooksListBox
-            // 
-            resources.ApplyResources(this.chaptersBooksListBox, "chaptersBooksListBox");
-            this.chaptersBooksListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.chaptersBooksListBox.FormattingEnabled = true;
-            this.chaptersBooksListBox.Name = "chaptersBooksListBox";
-            this.chaptersBooksListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            // 
-            // downloadChapterBooksButton
-            // 
-            resources.ApplyResources(this.downloadChapterBooksButton, "downloadChapterBooksButton");
-            this.downloadChapterBooksButton.Name = "downloadChapterBooksButton";
-            this.downloadChapterBooksButton.UseVisualStyleBackColor = true;
-            // 
-            // visitChapterBooksButton
-            // 
-            resources.ApplyResources(this.visitChapterBooksButton, "visitChapterBooksButton");
-            this.visitChapterBooksButton.Name = "visitChapterBooksButton";
-            this.visitChapterBooksButton.UseVisualStyleBackColor = true;
-            // 
-            // openChapterFolderBooksButton
-            // 
-            resources.ApplyResources(this.openChapterFolderBooksButton, "openChapterFolderBooksButton");
-            this.openChapterFolderBooksButton.Name = "openChapterFolderBooksButton";
-            this.openChapterFolderBooksButton.UseVisualStyleBackColor = true;
-            // 
-            // viewChapterBoksButton
-            // 
-            resources.ApplyResources(this.viewChapterBoksButton, "viewChapterBoksButton");
-            this.viewChapterBoksButton.Name = "viewChapterBoksButton";
-            this.viewChapterBoksButton.UseVisualStyleBackColor = true;
+            this.splitBookmarksPanel.Controls.Add(this.splitterBooks);
+            this.splitBookmarksPanel.Controls.Add(this.chapterBookmarksPanel);
+            this.splitBookmarksPanel.Controls.Add(this.serieBookmarksPanel);
+            resources.ApplyResources(this.splitBookmarksPanel, "splitBookmarksPanel");
+            this.splitBookmarksPanel.MinimumSize = new System.Drawing.Size(782, 0);
+            this.splitBookmarksPanel.Name = "splitBookmarksPanel";
             // 
             // splitterBooks
             // 
@@ -245,6 +173,89 @@
             resources.ApplyResources(this.splitterBooks, "splitterBooks");
             this.splitterBooks.Name = "splitterBooks";
             this.splitterBooks.TabStop = false;
+            this.splitterBooks.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitterBooks_SplitterMoved);
+            // 
+            // chapterBookmarksPanel
+            // 
+            this.chapterBookmarksPanel.Controls.Add(this.viewChapterBoksButton);
+            this.chapterBookmarksPanel.Controls.Add(this.openChapterFolderBooksButton);
+            this.chapterBookmarksPanel.Controls.Add(this.visitChapterBooksButton);
+            this.chapterBookmarksPanel.Controls.Add(this.downloadChapterBooksButton);
+            this.chapterBookmarksPanel.Controls.Add(this.chapterBookmarksListBox);
+            this.chapterBookmarksPanel.Controls.Add(this.label9);
+            resources.ApplyResources(this.chapterBookmarksPanel, "chapterBookmarksPanel");
+            this.chapterBookmarksPanel.MinimumSize = new System.Drawing.Size(439, 0);
+            this.chapterBookmarksPanel.Name = "chapterBookmarksPanel";
+            // 
+            // viewChapterBoksButton
+            // 
+            resources.ApplyResources(this.viewChapterBoksButton, "viewChapterBoksButton");
+            this.viewChapterBoksButton.Name = "viewChapterBoksButton";
+            this.viewChapterBoksButton.UseVisualStyleBackColor = true;
+            this.viewChapterBoksButton.Click += new System.EventHandler(this.viewChapterBoksButton_Click);
+            // 
+            // openChapterFolderBooksButton
+            // 
+            resources.ApplyResources(this.openChapterFolderBooksButton, "openChapterFolderBooksButton");
+            this.openChapterFolderBooksButton.Name = "openChapterFolderBooksButton";
+            this.openChapterFolderBooksButton.UseVisualStyleBackColor = true;
+            this.openChapterFolderBooksButton.Click += new System.EventHandler(this.openChapterFolderBooksButton_Click);
+            // 
+            // visitChapterBooksButton
+            // 
+            resources.ApplyResources(this.visitChapterBooksButton, "visitChapterBooksButton");
+            this.visitChapterBooksButton.Name = "visitChapterBooksButton";
+            this.visitChapterBooksButton.UseVisualStyleBackColor = true;
+            this.visitChapterBooksButton.Click += new System.EventHandler(this.visitChapterBooksButton_Click);
+            // 
+            // downloadChapterBooksButton
+            // 
+            resources.ApplyResources(this.downloadChapterBooksButton, "downloadChapterBooksButton");
+            this.downloadChapterBooksButton.Name = "downloadChapterBooksButton";
+            this.downloadChapterBooksButton.UseVisualStyleBackColor = true;
+            this.downloadChapterBooksButton.Click += new System.EventHandler(this.downloadChapterBooksButton_Click);
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
+            // serieBookmarksPanel
+            // 
+            this.serieBookmarksPanel.Controls.Add(this.removeSerieBooksPanel);
+            this.serieBookmarksPanel.Controls.Add(this.openSerieFolderBooksButton);
+            this.serieBookmarksPanel.Controls.Add(this.visitSerieBooksButton);
+            this.serieBookmarksPanel.Controls.Add(this.label8);
+            this.serieBookmarksPanel.Controls.Add(this.serieBookmarksListBox);
+            resources.ApplyResources(this.serieBookmarksPanel, "serieBookmarksPanel");
+            this.serieBookmarksPanel.MinimumSize = new System.Drawing.Size(343, 0);
+            this.serieBookmarksPanel.Name = "serieBookmarksPanel";
+            // 
+            // removeSerieBooksPanel
+            // 
+            resources.ApplyResources(this.removeSerieBooksPanel, "removeSerieBooksPanel");
+            this.removeSerieBooksPanel.Name = "removeSerieBooksPanel";
+            this.removeSerieBooksPanel.UseVisualStyleBackColor = true;
+            this.removeSerieBooksPanel.Click += new System.EventHandler(this.removeSerieBooksPanel_Click);
+            // 
+            // openSerieFolderBooksButton
+            // 
+            resources.ApplyResources(this.openSerieFolderBooksButton, "openSerieFolderBooksButton");
+            this.openSerieFolderBooksButton.Name = "openSerieFolderBooksButton";
+            this.openSerieFolderBooksButton.UseVisualStyleBackColor = true;
+            this.openSerieFolderBooksButton.Click += new System.EventHandler(this.openSerieFolderBooksButton_Click);
+            // 
+            // visitSerieBooksButton
+            // 
+            resources.ApplyResources(this.visitSerieBooksButton, "visitSerieBooksButton");
+            this.visitSerieBooksButton.Name = "visitSerieBooksButton";
+            this.visitSerieBooksButton.UseVisualStyleBackColor = true;
+            this.visitSerieBooksButton.Click += new System.EventHandler(this.visitSerieBooksButton_Click);
+            // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
             // 
             // logTabPage
             // 
@@ -254,11 +265,6 @@
             this.logTabPage.Name = "logTabPage";
             this.logTabPage.UseVisualStyleBackColor = true;
             // 
-            // logRichTextBox
-            // 
-            resources.ApplyResources(this.logRichTextBox, "logRichTextBox");
-            this.logRichTextBox.Name = "logRichTextBox";
-            // 
             // clearLogButton
             // 
             resources.ApplyResources(this.clearLogButton, "clearLogButton");
@@ -266,8 +272,14 @@
             this.clearLogButton.UseVisualStyleBackColor = true;
             this.clearLogButton.Click += new System.EventHandler(this.clearLogButton_Click);
             // 
+            // logRichTextBox
+            // 
+            resources.ApplyResources(this.logRichTextBox, "logRichTextBox");
+            this.logRichTextBox.Name = "logRichTextBox";
+            // 
             // optionsTabPage
             // 
+            this.optionsTabPage.Controls.Add(this.playSoundWhenDownloadedCheckBox);
             this.optionsTabPage.Controls.Add(this.optionslLabel);
             this.optionsTabPage.Controls.Add(this.pageNamingStrategyComboBox);
             this.optionsTabPage.Controls.Add(this.label1);
@@ -279,35 +291,11 @@
             this.optionsTabPage.Name = "optionsTabPage";
             this.optionsTabPage.UseVisualStyleBackColor = true;
             // 
-            // mangaRootDirTextBox
+            // optionslLabel
             // 
-            resources.ApplyResources(this.mangaRootDirTextBox, "mangaRootDirTextBox");
-            this.mangaRootDirTextBox.Name = "mangaRootDirTextBox";
-            this.mangaRootDirTextBox.TextChanged += new System.EventHandler(this.mangaRootDirTextBox_TextChanged);
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // mangaRootDirChooseButton
-            // 
-            resources.ApplyResources(this.mangaRootDirChooseButton, "mangaRootDirChooseButton");
-            this.mangaRootDirChooseButton.Name = "mangaRootDirChooseButton";
-            this.mangaRootDirChooseButton.UseVisualStyleBackColor = true;
-            this.mangaRootDirChooseButton.Click += new System.EventHandler(this.mangaRootDirChooseButton_Click);
-            // 
-            // cbzCheckBox
-            // 
-            resources.ApplyResources(this.cbzCheckBox, "cbzCheckBox");
-            this.cbzCheckBox.Name = "cbzCheckBox";
-            this.cbzCheckBox.UseVisualStyleBackColor = true;
-            this.cbzCheckBox.Click += new System.EventHandler(this.cbzCheckBox_CheckedChanged);
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
+            resources.ApplyResources(this.optionslLabel, "optionslLabel");
+            this.optionslLabel.ForeColor = System.Drawing.Color.Red;
+            this.optionslLabel.Name = "optionslLabel";
             // 
             // pageNamingStrategyComboBox
             // 
@@ -320,11 +308,35 @@
             this.pageNamingStrategyComboBox.Name = "pageNamingStrategyComboBox";
             this.pageNamingStrategyComboBox.SelectedIndexChanged += new System.EventHandler(this.pageNamingStrategyComboBox_SelectedIndexChanged);
             // 
-            // optionslLabel
+            // label1
             // 
-            resources.ApplyResources(this.optionslLabel, "optionslLabel");
-            this.optionslLabel.ForeColor = System.Drawing.Color.Red;
-            this.optionslLabel.Name = "optionslLabel";
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // cbzCheckBox
+            // 
+            resources.ApplyResources(this.cbzCheckBox, "cbzCheckBox");
+            this.cbzCheckBox.Name = "cbzCheckBox";
+            this.cbzCheckBox.UseVisualStyleBackColor = true;
+            this.cbzCheckBox.Click += new System.EventHandler(this.cbzCheckBox_CheckedChanged);
+            // 
+            // mangaRootDirChooseButton
+            // 
+            resources.ApplyResources(this.mangaRootDirChooseButton, "mangaRootDirChooseButton");
+            this.mangaRootDirChooseButton.Name = "mangaRootDirChooseButton";
+            this.mangaRootDirChooseButton.UseVisualStyleBackColor = true;
+            this.mangaRootDirChooseButton.Click += new System.EventHandler(this.mangaRootDirChooseButton_Click);
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // mangaRootDirTextBox
+            // 
+            resources.ApplyResources(this.mangaRootDirTextBox, "mangaRootDirTextBox");
+            this.mangaRootDirTextBox.Name = "mangaRootDirTextBox";
+            this.mangaRootDirTextBox.TextChanged += new System.EventHandler(this.mangaRootDirTextBox_TextChanged);
             // 
             // worksTabPage
             // 
@@ -338,6 +350,48 @@
             resources.ApplyResources(this.worksTabPage, "worksTabPage");
             this.worksTabPage.Name = "worksTabPage";
             this.worksTabPage.UseVisualStyleBackColor = true;
+            // 
+            // openFolderWorksButton
+            // 
+            resources.ApplyResources(this.openFolderWorksButton, "openFolderWorksButton");
+            this.openFolderWorksButton.Name = "openFolderWorksButton";
+            this.openFolderWorksButton.UseVisualStyleBackColor = true;
+            this.openFolderWorksButton.Click += new System.EventHandler(this.openFolderWorksButton_Click);
+            // 
+            // downloadWorkButton
+            // 
+            resources.ApplyResources(this.downloadWorkButton, "downloadWorkButton");
+            this.downloadWorkButton.Name = "downloadWorkButton";
+            this.downloadWorkButton.UseVisualStyleBackColor = true;
+            this.downloadWorkButton.Click += new System.EventHandler(this.downloadWorkButton_Click);
+            // 
+            // deleteWorkButton
+            // 
+            resources.ApplyResources(this.deleteWorkButton, "deleteWorkButton");
+            this.deleteWorkButton.Name = "deleteWorkButton";
+            this.deleteWorkButton.UseVisualStyleBackColor = true;
+            this.deleteWorkButton.Click += new System.EventHandler(this.deleteWorkButton_Click);
+            // 
+            // visitPageWorkButton
+            // 
+            resources.ApplyResources(this.visitPageWorkButton, "visitPageWorkButton");
+            this.visitPageWorkButton.Name = "visitPageWorkButton";
+            this.visitPageWorkButton.UseVisualStyleBackColor = true;
+            this.visitPageWorkButton.Click += new System.EventHandler(this.visitPageWorkButton_Click);
+            // 
+            // viewWorkButton
+            // 
+            resources.ApplyResources(this.viewWorkButton, "viewWorkButton");
+            this.viewWorkButton.Name = "viewWorkButton";
+            this.viewWorkButton.UseVisualStyleBackColor = true;
+            this.viewWorkButton.Click += new System.EventHandler(this.viewWorkButton_Click);
+            // 
+            // goToChaptersWorkButton
+            // 
+            resources.ApplyResources(this.goToChaptersWorkButton, "goToChaptersWorkButton");
+            this.goToChaptersWorkButton.Name = "goToChaptersWorkButton";
+            this.goToChaptersWorkButton.UseVisualStyleBackColor = true;
+            this.goToChaptersWorkButton.Click += new System.EventHandler(this.goToChaptersWorkButton_Click);
             // 
             // worksGridView
             // 
@@ -379,14 +433,6 @@
             this.worksGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.worksGridView_CellContentClick);
             this.worksGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.worksGridView_KeyDown);
             // 
-            // Progress
-            // 
-            this.Progress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Progress.DataPropertyName = "Progress";
-            resources.ApplyResources(this.Progress, "Progress");
-            this.Progress.Name = "Progress";
-            this.Progress.ReadOnly = true;
-            // 
             // Chapter
             // 
             this.Chapter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -397,47 +443,13 @@
             this.Chapter.Name = "Chapter";
             this.Chapter.ReadOnly = true;
             // 
-            // goToChaptersWorkButton
+            // Progress
             // 
-            resources.ApplyResources(this.goToChaptersWorkButton, "goToChaptersWorkButton");
-            this.goToChaptersWorkButton.Name = "goToChaptersWorkButton";
-            this.goToChaptersWorkButton.UseVisualStyleBackColor = true;
-            this.goToChaptersWorkButton.Click += new System.EventHandler(this.goToChaptersWorkButton_Click);
-            // 
-            // viewWorkButton
-            // 
-            resources.ApplyResources(this.viewWorkButton, "viewWorkButton");
-            this.viewWorkButton.Name = "viewWorkButton";
-            this.viewWorkButton.UseVisualStyleBackColor = true;
-            this.viewWorkButton.Click += new System.EventHandler(this.viewWorkButton_Click);
-            // 
-            // visitPageWorkButton
-            // 
-            resources.ApplyResources(this.visitPageWorkButton, "visitPageWorkButton");
-            this.visitPageWorkButton.Name = "visitPageWorkButton";
-            this.visitPageWorkButton.UseVisualStyleBackColor = true;
-            this.visitPageWorkButton.Click += new System.EventHandler(this.visitPageWorkButton_Click);
-            // 
-            // deleteWorkButton
-            // 
-            resources.ApplyResources(this.deleteWorkButton, "deleteWorkButton");
-            this.deleteWorkButton.Name = "deleteWorkButton";
-            this.deleteWorkButton.UseVisualStyleBackColor = true;
-            this.deleteWorkButton.Click += new System.EventHandler(this.deleteWorkButton_Click);
-            // 
-            // downloadWorkButton
-            // 
-            resources.ApplyResources(this.downloadWorkButton, "downloadWorkButton");
-            this.downloadWorkButton.Name = "downloadWorkButton";
-            this.downloadWorkButton.UseVisualStyleBackColor = true;
-            this.downloadWorkButton.Click += new System.EventHandler(this.downloadWorkButton_Click);
-            // 
-            // openFolderWorksButton
-            // 
-            resources.ApplyResources(this.openFolderWorksButton, "openFolderWorksButton");
-            this.openFolderWorksButton.Name = "openFolderWorksButton";
-            this.openFolderWorksButton.UseVisualStyleBackColor = true;
-            this.openFolderWorksButton.Click += new System.EventHandler(this.openFolderWorksButton_Click);
+            this.Progress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Progress.DataPropertyName = "Progress";
+            resources.ApplyResources(this.Progress, "Progress");
+            this.Progress.Name = "Progress";
+            this.Progress.ReadOnly = true;
             // 
             // seriesTabPage
             // 
@@ -447,44 +459,6 @@
             this.seriesTabPage.Name = "seriesTabPage";
             this.seriesTabPage.UseVisualStyleBackColor = true;
             // 
-            // serversPanel
-            // 
-            resources.ApplyResources(this.serversPanel, "serversPanel");
-            this.serversPanel.Controls.Add(this.openServerFolderButton);
-            this.serversPanel.Controls.Add(this.serversListBox);
-            this.serversPanel.Controls.Add(this.serverURLButton);
-            this.serversPanel.Controls.Add(this.label5);
-            this.serversPanel.Name = "serversPanel";
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
-            // serverURLButton
-            // 
-            resources.ApplyResources(this.serverURLButton, "serverURLButton");
-            this.serverURLButton.Name = "serverURLButton";
-            this.serverURLButton.UseVisualStyleBackColor = true;
-            this.serverURLButton.Click += new System.EventHandler(this.serverURLButton_Click);
-            // 
-            // serversListBox
-            // 
-            resources.ApplyResources(this.serversListBox, "serversListBox");
-            this.serversListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.serversListBox.FormattingEnabled = true;
-            this.serversListBox.Name = "serversListBox";
-            this.serversListBox.Sorted = true;
-            this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);
-            this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
-            // 
-            // openServerFolderButton
-            // 
-            resources.ApplyResources(this.openServerFolderButton, "openServerFolderButton");
-            this.openServerFolderButton.Name = "openServerFolderButton";
-            this.openServerFolderButton.UseVisualStyleBackColor = true;
-            this.openServerFolderButton.Click += new System.EventHandler(this.openServerFolderButton_Click);
-            // 
             // splitPanel
             // 
             resources.ApplyResources(this.splitPanel, "splitPanel");
@@ -493,57 +467,13 @@
             this.splitPanel.Controls.Add(this.seriesPanel);
             this.splitPanel.Name = "splitPanel";
             // 
-            // seriesPanel
+            // splitter
             // 
-            this.seriesPanel.Controls.Add(this.seriesSearchTextBox);
-            this.seriesPanel.Controls.Add(this.label6);
-            this.seriesPanel.Controls.Add(this.openSeriesFolderButton);
-            this.seriesPanel.Controls.Add(this.seriesURLButton);
-            this.seriesPanel.Controls.Add(this.label4);
-            this.seriesPanel.Controls.Add(this.seriesListBox);
-            resources.ApplyResources(this.seriesPanel, "seriesPanel");
-            this.seriesPanel.MinimumSize = new System.Drawing.Size(234, 0);
-            this.seriesPanel.Name = "seriesPanel";
-            // 
-            // seriesListBox
-            // 
-            resources.ApplyResources(this.seriesListBox, "seriesListBox");
-            this.seriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.seriesListBox.FormattingEnabled = true;
-            this.seriesListBox.Name = "seriesListBox";
-            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
-            this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
-            this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
-            // seriesURLButton
-            // 
-            resources.ApplyResources(this.seriesURLButton, "seriesURLButton");
-            this.seriesURLButton.Name = "seriesURLButton";
-            this.seriesURLButton.UseVisualStyleBackColor = true;
-            this.seriesURLButton.Click += new System.EventHandler(this.seriesURLButton_Click);
-            // 
-            // openSeriesFolderButton
-            // 
-            resources.ApplyResources(this.openSeriesFolderButton, "openSeriesFolderButton");
-            this.openSeriesFolderButton.Name = "openSeriesFolderButton";
-            this.openSeriesFolderButton.UseVisualStyleBackColor = true;
-            this.openSeriesFolderButton.Click += new System.EventHandler(this.openSeriesFolderButton_Click);
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // seriesSearchTextBox
-            // 
-            resources.ApplyResources(this.seriesSearchTextBox, "seriesSearchTextBox");
-            this.seriesSearchTextBox.Name = "seriesSearchTextBox";
-            this.seriesSearchTextBox.TextChanged += new System.EventHandler(this.seriesSearchTextBox_TextChanged);
+            this.splitter.BackColor = System.Drawing.SystemColors.Menu;
+            resources.ApplyResources(this.splitter, "splitter");
+            this.splitter.Name = "splitter";
+            this.splitter.TabStop = false;
+            this.splitter.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitter1_SplitterMoved);
             // 
             // chaptersPanel
             // 
@@ -557,10 +487,225 @@
             this.chaptersPanel.MinimumSize = new System.Drawing.Size(334, 0);
             this.chaptersPanel.Name = "chaptersPanel";
             // 
+            // viewPagesButton
+            // 
+            resources.ApplyResources(this.viewPagesButton, "viewPagesButton");
+            this.viewPagesButton.Name = "viewPagesButton";
+            this.viewPagesButton.UseVisualStyleBackColor = true;
+            this.viewPagesButton.Click += new System.EventHandler(this.viewPagesButton_Click);
+            // 
+            // openPagesFolder
+            // 
+            resources.ApplyResources(this.openPagesFolder, "openPagesFolder");
+            this.openPagesFolder.Name = "openPagesFolder";
+            this.openPagesFolder.UseVisualStyleBackColor = true;
+            this.openPagesFolder.Click += new System.EventHandler(this.openPagesFolder_Click);
+            // 
+            // chapterURLButton
+            // 
+            resources.ApplyResources(this.chapterURLButton, "chapterURLButton");
+            this.chapterURLButton.Name = "chapterURLButton";
+            this.chapterURLButton.UseVisualStyleBackColor = true;
+            this.chapterURLButton.Click += new System.EventHandler(this.chapterURLButton_Click);
+            // 
+            // downloadButton
+            // 
+            resources.ApplyResources(this.downloadButton, "downloadButton");
+            this.downloadButton.Name = "downloadButton";
+            this.downloadButton.UseVisualStyleBackColor = true;
+            this.downloadButton.Click += new System.EventHandler(this.downloadButton_Click);
+            // 
             // label7
             // 
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
+            // 
+            // seriesPanel
+            // 
+            this.seriesPanel.Controls.Add(this.BookmarkSerieButton);
+            this.seriesPanel.Controls.Add(this.seriesSearchTextBox);
+            this.seriesPanel.Controls.Add(this.label6);
+            this.seriesPanel.Controls.Add(this.openSeriesFolderButton);
+            this.seriesPanel.Controls.Add(this.seriesURLButton);
+            this.seriesPanel.Controls.Add(this.label4);
+            this.seriesPanel.Controls.Add(this.seriesListBox);
+            resources.ApplyResources(this.seriesPanel, "seriesPanel");
+            this.seriesPanel.MinimumSize = new System.Drawing.Size(234, 0);
+            this.seriesPanel.Name = "seriesPanel";
+            // 
+            // BookmarkSerieButton
+            // 
+            resources.ApplyResources(this.BookmarkSerieButton, "BookmarkSerieButton");
+            this.BookmarkSerieButton.Name = "BookmarkSerieButton";
+            this.BookmarkSerieButton.UseVisualStyleBackColor = true;
+            this.BookmarkSerieButton.Click += new System.EventHandler(this.BookmarkSerieButton_Click);
+            // 
+            // seriesSearchTextBox
+            // 
+            resources.ApplyResources(this.seriesSearchTextBox, "seriesSearchTextBox");
+            this.seriesSearchTextBox.Name = "seriesSearchTextBox";
+            this.seriesSearchTextBox.TextChanged += new System.EventHandler(this.seriesSearchTextBox_TextChanged);
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // openSeriesFolderButton
+            // 
+            resources.ApplyResources(this.openSeriesFolderButton, "openSeriesFolderButton");
+            this.openSeriesFolderButton.Name = "openSeriesFolderButton";
+            this.openSeriesFolderButton.UseVisualStyleBackColor = true;
+            this.openSeriesFolderButton.Click += new System.EventHandler(this.openSeriesFolderButton_Click);
+            // 
+            // seriesURLButton
+            // 
+            resources.ApplyResources(this.seriesURLButton, "seriesURLButton");
+            this.seriesURLButton.Name = "seriesURLButton";
+            this.seriesURLButton.UseVisualStyleBackColor = true;
+            this.seriesURLButton.Click += new System.EventHandler(this.seriesURLButton_Click);
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // serversPanel
+            // 
+            resources.ApplyResources(this.serversPanel, "serversPanel");
+            this.serversPanel.Controls.Add(this.openServerFolderButton);
+            this.serversPanel.Controls.Add(this.serversListBox);
+            this.serversPanel.Controls.Add(this.serverURLButton);
+            this.serversPanel.Controls.Add(this.label5);
+            this.serversPanel.Name = "serversPanel";
+            // 
+            // openServerFolderButton
+            // 
+            resources.ApplyResources(this.openServerFolderButton, "openServerFolderButton");
+            this.openServerFolderButton.Name = "openServerFolderButton";
+            this.openServerFolderButton.UseVisualStyleBackColor = true;
+            this.openServerFolderButton.Click += new System.EventHandler(this.openServerFolderButton_Click);
+            // 
+            // serverURLButton
+            // 
+            resources.ApplyResources(this.serverURLButton, "serverURLButton");
+            this.serverURLButton.Name = "serverURLButton";
+            this.serverURLButton.UseVisualStyleBackColor = true;
+            this.serverURLButton.Click += new System.EventHandler(this.serverURLButton_Click);
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.Name = "label5";
+            // 
+            // tabControl
+            // 
+            resources.ApplyResources(this.tabControl, "tabControl");
+            this.tabControl.Controls.Add(this.seriesTabPage);
+            this.tabControl.Controls.Add(this.worksTabPage);
+            this.tabControl.Controls.Add(this.bookmarksTabPage);
+            this.tabControl.Controls.Add(this.optionsTabPage);
+            this.tabControl.Controls.Add(this.logTabPage);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
+            // 
+            // debugContextMenuStrip
+            // 
+            this.debugContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.resetCheckDatesToolStripMenuItem,
+            this.addSerieFirsttoolStripMenuItem,
+            this.addSerieMiddleToolStripMenuItem,
+            this.addSerieLastToolStripMenuItem,
+            this.removeSerieToolStripMenuItem,
+            this.addChapterFirstToolStripMenuItem,
+            this.addChapterMiddleToolStripMenuItem,
+            this.addChapterLastToolStripMenuItem,
+            this.removeChapterToolStripMenuItem,
+            this.renameSerieToolStripMenuItem,
+            this.renameChapterToolStripMenuItem,
+            this.changeSerieURLToolStripMenuItem,
+            this.changeChapterURLToolStripMenuItem});
+            this.debugContextMenuStrip.Name = "debugContextMenuStrip";
+            resources.ApplyResources(this.debugContextMenuStrip, "debugContextMenuStrip");
+            // 
+            // resetCheckDatesToolStripMenuItem
+            // 
+            this.resetCheckDatesToolStripMenuItem.Name = "resetCheckDatesToolStripMenuItem";
+            resources.ApplyResources(this.resetCheckDatesToolStripMenuItem, "resetCheckDatesToolStripMenuItem");
+            this.resetCheckDatesToolStripMenuItem.Click += new System.EventHandler(this.resetCheckDatesToolStripMenuItem_Click);
+            // 
+            // addSerieFirsttoolStripMenuItem
+            // 
+            this.addSerieFirsttoolStripMenuItem.Name = "addSerieFirsttoolStripMenuItem";
+            resources.ApplyResources(this.addSerieFirsttoolStripMenuItem, "addSerieFirsttoolStripMenuItem");
+            this.addSerieFirsttoolStripMenuItem.Click += new System.EventHandler(this.addSerieFirsttoolStripMenuItem_Click);
+            // 
+            // addSerieMiddleToolStripMenuItem
+            // 
+            this.addSerieMiddleToolStripMenuItem.Name = "addSerieMiddleToolStripMenuItem";
+            resources.ApplyResources(this.addSerieMiddleToolStripMenuItem, "addSerieMiddleToolStripMenuItem");
+            this.addSerieMiddleToolStripMenuItem.Click += new System.EventHandler(this.addSerieMiddleToolStripMenuItem_Click);
+            // 
+            // addSerieLastToolStripMenuItem
+            // 
+            this.addSerieLastToolStripMenuItem.Name = "addSerieLastToolStripMenuItem";
+            resources.ApplyResources(this.addSerieLastToolStripMenuItem, "addSerieLastToolStripMenuItem");
+            this.addSerieLastToolStripMenuItem.Click += new System.EventHandler(this.addSerieLastToolStripMenuItem_Click);
+            // 
+            // removeSerieToolStripMenuItem
+            // 
+            this.removeSerieToolStripMenuItem.Name = "removeSerieToolStripMenuItem";
+            resources.ApplyResources(this.removeSerieToolStripMenuItem, "removeSerieToolStripMenuItem");
+            this.removeSerieToolStripMenuItem.Click += new System.EventHandler(this.removeSerieToolStripMenuItem_Click);
+            // 
+            // addChapterFirstToolStripMenuItem
+            // 
+            this.addChapterFirstToolStripMenuItem.Name = "addChapterFirstToolStripMenuItem";
+            resources.ApplyResources(this.addChapterFirstToolStripMenuItem, "addChapterFirstToolStripMenuItem");
+            this.addChapterFirstToolStripMenuItem.Click += new System.EventHandler(this.addChapterFirstToolStripMenuItem_Click);
+            // 
+            // addChapterMiddleToolStripMenuItem
+            // 
+            this.addChapterMiddleToolStripMenuItem.Name = "addChapterMiddleToolStripMenuItem";
+            resources.ApplyResources(this.addChapterMiddleToolStripMenuItem, "addChapterMiddleToolStripMenuItem");
+            this.addChapterMiddleToolStripMenuItem.Click += new System.EventHandler(this.addChapterMiddleToolStripMenuItem_Click);
+            // 
+            // addChapterLastToolStripMenuItem
+            // 
+            this.addChapterLastToolStripMenuItem.Name = "addChapterLastToolStripMenuItem";
+            resources.ApplyResources(this.addChapterLastToolStripMenuItem, "addChapterLastToolStripMenuItem");
+            this.addChapterLastToolStripMenuItem.Click += new System.EventHandler(this.addChapterLastToolStripMenuItem_Click);
+            // 
+            // removeChapterToolStripMenuItem
+            // 
+            this.removeChapterToolStripMenuItem.Name = "removeChapterToolStripMenuItem";
+            resources.ApplyResources(this.removeChapterToolStripMenuItem, "removeChapterToolStripMenuItem");
+            this.removeChapterToolStripMenuItem.Click += new System.EventHandler(this.removeChapterToolStripMenuItem_Click);
+            // 
+            // renameSerieToolStripMenuItem
+            // 
+            this.renameSerieToolStripMenuItem.Name = "renameSerieToolStripMenuItem";
+            resources.ApplyResources(this.renameSerieToolStripMenuItem, "renameSerieToolStripMenuItem");
+            this.renameSerieToolStripMenuItem.Click += new System.EventHandler(this.renameSerieToolStripMenuItem_Click);
+            // 
+            // renameChapterToolStripMenuItem
+            // 
+            this.renameChapterToolStripMenuItem.Name = "renameChapterToolStripMenuItem";
+            resources.ApplyResources(this.renameChapterToolStripMenuItem, "renameChapterToolStripMenuItem");
+            this.renameChapterToolStripMenuItem.Click += new System.EventHandler(this.renameChapterToolStripMenuItem_Click);
+            // 
+            // changeSerieURLToolStripMenuItem
+            // 
+            this.changeSerieURLToolStripMenuItem.Name = "changeSerieURLToolStripMenuItem";
+            resources.ApplyResources(this.changeSerieURLToolStripMenuItem, "changeSerieURLToolStripMenuItem");
+            this.changeSerieURLToolStripMenuItem.Click += new System.EventHandler(this.changeSerieURLToolStripMenuItem_Click);
+            // 
+            // changeChapterURLToolStripMenuItem
+            // 
+            this.changeChapterURLToolStripMenuItem.Name = "changeChapterURLToolStripMenuItem";
+            resources.ApplyResources(this.changeChapterURLToolStripMenuItem, "changeChapterURLToolStripMenuItem");
+            this.changeChapterURLToolStripMenuItem.Click += new System.EventHandler(this.changeChapterURLToolStripMenuItem_Click);
             // 
             // chaptersListBox
             // 
@@ -574,76 +719,76 @@
             this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
             this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
             this.chaptersListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chaptersListBox_KeyDown);
-            this.chaptersListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.chaptersListBox_MouseDoubleClick);
             // 
-            // downloadButton
+            // seriesListBox
             // 
-            resources.ApplyResources(this.downloadButton, "downloadButton");
-            this.downloadButton.Name = "downloadButton";
-            this.downloadButton.UseVisualStyleBackColor = true;
-            this.downloadButton.Click += new System.EventHandler(this.downloadButton_Click);
+            resources.ApplyResources(this.seriesListBox, "seriesListBox");
+            this.seriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.seriesListBox.FormattingEnabled = true;
+            this.seriesListBox.Name = "seriesListBox";
+            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
+            this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
+            this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
             // 
-            // chapterURLButton
+            // serversListBox
             // 
-            resources.ApplyResources(this.chapterURLButton, "chapterURLButton");
-            this.chapterURLButton.Name = "chapterURLButton";
-            this.chapterURLButton.UseVisualStyleBackColor = true;
-            this.chapterURLButton.Click += new System.EventHandler(this.chapterURLButton_Click);
+            resources.ApplyResources(this.serversListBox, "serversListBox");
+            this.serversListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.serversListBox.FormattingEnabled = true;
+            this.serversListBox.Name = "serversListBox";
+            this.serversListBox.Sorted = true;
+            this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);
+            this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
             // 
-            // openPagesFolder
+            // chapterBookmarksListBox
             // 
-            resources.ApplyResources(this.openPagesFolder, "openPagesFolder");
-            this.openPagesFolder.Name = "openPagesFolder";
-            this.openPagesFolder.UseVisualStyleBackColor = true;
-            this.openPagesFolder.Click += new System.EventHandler(this.openPagesFolder_Click);
+            resources.ApplyResources(this.chapterBookmarksListBox, "chapterBookmarksListBox");
+            this.chapterBookmarksListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.chapterBookmarksListBox.FormattingEnabled = true;
+            this.chapterBookmarksListBox.Name = "chapterBookmarksListBox";
+            this.chapterBookmarksListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.chapterBookmarksListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chapterBookmarksListBox_VerticalScroll);
+            this.chapterBookmarksListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chapterBookmarksListBox_DrawItem);
+            this.chapterBookmarksListBox.SelectedIndexChanged += new System.EventHandler(this.chapterBookmarksListBox_SelectedIndexChanged);
+            this.chapterBookmarksListBox.DoubleClick += new System.EventHandler(this.chapterBookmarksListBox_DoubleClick);
+            this.chapterBookmarksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chapterBookmarksListBox_KeyDown);
             // 
-            // viewPagesButton
+            // serieBookmarksListBox
             // 
-            resources.ApplyResources(this.viewPagesButton, "viewPagesButton");
-            this.viewPagesButton.Name = "viewPagesButton";
-            this.viewPagesButton.UseVisualStyleBackColor = true;
-            this.viewPagesButton.Click += new System.EventHandler(this.viewPagesButton_Click);
+            resources.ApplyResources(this.serieBookmarksListBox, "serieBookmarksListBox");
+            this.serieBookmarksListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.serieBookmarksListBox.FormattingEnabled = true;
+            this.serieBookmarksListBox.Name = "serieBookmarksListBox";
+            this.serieBookmarksListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serieBookmarksListBox_DrawItem);
+            this.serieBookmarksListBox.SelectedIndexChanged += new System.EventHandler(this.serieBookmarksListBox_SelectedIndexChanged);
+            this.serieBookmarksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
             // 
-            // splitter
+            // playSoundWhenDownloadedCheckBox
             // 
-            this.splitter.BackColor = System.Drawing.SystemColors.Menu;
-            resources.ApplyResources(this.splitter, "splitter");
-            this.splitter.Name = "splitter";
-            this.splitter.TabStop = false;
-            this.splitter.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitter1_SplitterMoved);
-            // 
-            // tabControl
-            // 
-            resources.ApplyResources(this.tabControl, "tabControl");
-            this.tabControl.Controls.Add(this.seriesTabPage);
-            this.tabControl.Controls.Add(this.worksTabPage);
-            this.tabControl.Controls.Add(this.optionsTabPage);
-            this.tabControl.Controls.Add(this.logTabPage);
-            this.tabControl.Controls.Add(this.bookmarksTabPage);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
+            resources.ApplyResources(this.playSoundWhenDownloadedCheckBox, "playSoundWhenDownloadedCheckBox");
+            this.playSoundWhenDownloadedCheckBox.Name = "playSoundWhenDownloadedCheckBox";
+            this.playSoundWhenDownloadedCheckBox.UseVisualStyleBackColor = true;
             // 
             // MangaCrawlerForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ContextMenuStrip = this.debugContextMenuStrip;
             this.Controls.Add(this.versionPanel);
             this.Controls.Add(this.tabControl);
             this.Name = "MangaCrawlerForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MangaCrawlerForm_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MangaCrawlerForm_FormClosed);
             this.Load += new System.EventHandler(this.MangaShareCrawlerForm_Load);
             this.Shown += new System.EventHandler(this.MangaCrawlerForm_Shown);
             this.ResizeEnd += new System.EventHandler(this.MangaCrawlerForm_ResizeEnd);
             this.versionPanel.ResumeLayout(false);
             this.versionPanel.PerformLayout();
             this.bookmarksTabPage.ResumeLayout(false);
-            this.splitterBooksPanel.ResumeLayout(false);
-            this.seriesBooksPanel.ResumeLayout(false);
-            this.seriesBooksPanel.PerformLayout();
-            this.chaptersBooksPanel.ResumeLayout(false);
-            this.chaptersBooksPanel.PerformLayout();
+            this.splitBookmarksPanel.ResumeLayout(false);
+            this.chapterBookmarksPanel.ResumeLayout(false);
+            this.chapterBookmarksPanel.PerformLayout();
+            this.serieBookmarksPanel.ResumeLayout(false);
+            this.serieBookmarksPanel.PerformLayout();
             this.logTabPage.ResumeLayout(false);
             this.optionsTabPage.ResumeLayout(false);
             this.optionsTabPage.PerformLayout();
@@ -651,14 +796,15 @@
             this.worksTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.worksGridView)).EndInit();
             this.seriesTabPage.ResumeLayout(false);
-            this.serversPanel.ResumeLayout(false);
-            this.serversPanel.PerformLayout();
             this.splitPanel.ResumeLayout(false);
-            this.seriesPanel.ResumeLayout(false);
-            this.seriesPanel.PerformLayout();
             this.chaptersPanel.ResumeLayout(false);
             this.chaptersPanel.PerformLayout();
+            this.seriesPanel.ResumeLayout(false);
+            this.seriesPanel.PerformLayout();
+            this.serversPanel.ResumeLayout(false);
+            this.serversPanel.PerformLayout();
             this.tabControl.ResumeLayout(false);
+            this.debugContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -670,21 +816,21 @@
         private System.Windows.Forms.LinkLabel versionLinkLabel;
         private System.Windows.Forms.Timer refreshTimer;
         private System.Windows.Forms.TabPage bookmarksTabPage;
-        private System.Windows.Forms.Panel splitterBooksPanel;
+        private System.Windows.Forms.Panel splitBookmarksPanel;
         private System.Windows.Forms.Splitter splitterBooks;
-        private System.Windows.Forms.Panel chaptersBooksPanel;
+        private System.Windows.Forms.Panel chapterBookmarksPanel;
         private System.Windows.Forms.Button viewChapterBoksButton;
         private System.Windows.Forms.Button openChapterFolderBooksButton;
         private System.Windows.Forms.Button visitChapterBooksButton;
         private System.Windows.Forms.Button downloadChapterBooksButton;
-        private ListBoxEx chaptersBooksListBox;
+        private ListBoxEx chapterBookmarksListBox;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Panel seriesBooksPanel;
+        private System.Windows.Forms.Panel serieBookmarksPanel;
         private System.Windows.Forms.Button removeSerieBooksPanel;
         private System.Windows.Forms.Button openSerieFolderBooksButton;
         private System.Windows.Forms.Button visitSerieBooksButton;
         private System.Windows.Forms.Label label8;
-        private ListBoxEx seriesBooksListBox;
+        private ListBoxEx serieBookmarksListBox;
         private System.Windows.Forms.TabPage logTabPage;
         private System.Windows.Forms.Button clearLogButton;
         private System.Windows.Forms.RichTextBox logRichTextBox;
@@ -729,6 +875,22 @@
         private System.Windows.Forms.Button serverURLButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.Button BookmarkSerieButton;
+        private System.Windows.Forms.ContextMenuStrip debugContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem resetCheckDatesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addSerieFirsttoolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addSerieMiddleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addSerieLastToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeSerieToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addChapterFirstToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addChapterMiddleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addChapterLastToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeChapterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem renameSerieToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem renameChapterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeSerieURLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeChapterURLToolStripMenuItem;
+        private System.Windows.Forms.CheckBox playSoundWhenDownloadedCheckBox;
     }
 }
 

@@ -93,23 +93,28 @@ namespace MangaCrawlerLib
             }
         }
 
+        internal void ResetCheckDate()
+        {
+            m_check_date_time = DateTime.MinValue;
+
+            if (m_series.Filled)
+            {
+                foreach (var serie in Series)
+                    serie.ResetCheckDate();
+            }
+        }
+
         internal void DownloadSeries()
         {
             try
             {
-                Func<Serie, string> key_selector = s => s.URL + s.Title;
-
-                var dict = m_series.ToDictionary(key_selector);
-
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
+                    if (!m_series.LoadedFromXml)
+                        m_series.ReplaceInnerCollection(result);
+                    else if (progress == 100)
+                        m_series.ReplaceInnerCollection(result, (s) => s.Title + s.URL);
                     DownloadProgress = progress;
-                    m_series.ToString();
-                    m_series.ReplaceInnerCollection(
-                        result, 
-                        dict, 
-                        progress == 100,
-                        key_selector);
                 });
 
                 State = ServerState.Downloaded;

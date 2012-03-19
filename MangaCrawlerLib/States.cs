@@ -19,7 +19,7 @@ namespace MangaCrawlerLib
         Initial,
         Waiting,
         Downloading,
-        Downloaded,
+        Downloaded, 
         Error
     }
 

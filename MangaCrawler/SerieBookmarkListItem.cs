@@ -9,18 +9,18 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    public class SerieListItem : ListItem
+    public class SerieBookmarkListItem : ListItem
     {
-        public Serie Serie { get; private set; }
+        public Serie Serie { get; private set; } 
 
-        public SerieListItem(Serie a_serie)
+        public SerieBookmarkListItem(Serie a_serie)
         {
             Serie = a_serie;
         }
 
         public override string ToString()
         {
-            return Serie.Title;
+            return String.Format("{0} [{1}]", Serie.Title, Serie.Server.Name);
         }
 
         public override ulong ID
@@ -33,12 +33,8 @@ namespace MangaCrawler
 
         private void DrawCount(Graphics a_graphics, Rectangle a_rect, Font a_font)
         {
-            string str = Serie.Chapters.Count.ToString();
-
-            if (Serie.IsBookmarked)
-                str = Resources.Bookmarked;
-
-            a_graphics.DrawString(str, 
+            a_graphics.DrawString(
+                Serie.Chapters.Count.ToString(),
                 a_font, Brushes.Green, a_rect, StringFormat.GenericDefault);
         }
 
@@ -52,33 +48,42 @@ namespace MangaCrawler
                 switch (Serie.State)
                 {
                     case SerieState.Error:
-
+                    {
                         a_args.Graphics.DrawString(Resources.Error, font,
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
-
+                    }
                     case SerieState.Downloaded:
-
-                        DrawCount(a_args.Graphics, rect, font);
+                    {
+                        if (Serie.Chapters.Any(c => !c.BookmarkIgnored))
+                        {
+                            a_args.Graphics.DrawString(Resources.New, font,
+                                Brushes.Red, rect, StringFormat.GenericDefault);
+                        }
+                        else
+                        {
+                            if (Serie.Chapters.Count != 0)
+                                DrawCount(a_args.Graphics, rect, font);
+                        }
                         break;
-
+                    }
                     case SerieState.Waiting:
-
+                    {
                         a_args.Graphics.DrawString(Resources.Waiting, font,
                             Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
-
+                    }
                     case SerieState.Downloading:
-
+                    {
                         a_args.Graphics.DrawString(
                             String.Format("({0}%)", Serie.DownloadProgress),
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
-
+                    }
                     case SerieState.Initial:
-
+                    {
                         break;
-
+                    }
                     default: 
                          
                          throw new NotImplementedException();

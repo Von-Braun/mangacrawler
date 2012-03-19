@@ -179,4 +179,10 @@ chapter: {2}</value>
   <data name="Checking" xml:space="preserve">
     <value>CHECKING</value>
   </data>
+  <data name="Bookmarked" xml:space="preserve">
+    <value>BOOKMARKED</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>NEW</value>
+  </data>
 </root>

@@ -9,11 +9,11 @@ using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    public class ChapterListItem : ListItem
+    public class ChapterBookmarkListItem : ListItem
     {
         public Chapter Chapter { get; private set; }
 
-        public ChapterListItem(Chapter a_chapter)
+        public ChapterBookmarkListItem(Chapter a_chapter)
         {
             Chapter = a_chapter;
         }
@@ -80,6 +80,11 @@ namespace MangaCrawler
                     }
                     case ChapterState.Initial:
                     {
+                        if (!Chapter.BookmarkIgnored)
+                        {
+                            a_args.Graphics.DrawString(Resources.New, font,
+                                Brushes.Red, rect, StringFormat.GenericDefault);
+                        }
                         break;
                     }
                     default:

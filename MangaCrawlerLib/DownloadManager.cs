@@ -21,10 +21,11 @@ namespace MangaCrawlerLib
     {
         public string SettingsDir { get; private set; }
         public MangaSettings MangaSettings { get; private set; }
+        public Bookmarks Bookmarks { get; private set; }
+        public Works Works { get; private set; }
 
         private List<Entity> m_downloading = new List<Entity>();
         private Server[] m_servers;
-        private List<Chapter> m_works = new List<Chapter>();
 
         public static DownloadManager Instance { get; private set; }
 
@@ -38,16 +39,16 @@ namespace MangaCrawlerLib
         {
             m_servers = Catalog.LoadCatalog();
 
-            IEnumerable<Chapter> works = from work in Catalog.LoadWorks(Servers)
-                                         orderby work.LimiterOrder
-                                         select work;
-            DownloadPages(works);
+            Bookmarks.Load();
+            Works.Load();
         }
 
         private  DownloadManager(MangaSettings a_manga_settings, string a_settings_dir)
         {
             SettingsDir = a_settings_dir;
             MangaSettings = a_manga_settings;
+            Bookmarks = new Bookmarks();
+            Works = new Works();
 
             HtmlWeb.UserAgent_Actual = a_manga_settings.UserAgent;
         }
@@ -106,12 +107,7 @@ namespace MangaCrawlerLib
                 if (chapter.IsDownloading)
                     continue;
 
-                lock (m_works)
-                {
-                    if (m_works.Contains(chapter))
-                        m_works.Remove(chapter);
-                    m_works.Add(chapter);
-                }
+                Works.Add(chapter);
 
                 m_downloading.Add(chapter);
                 chapter.State = ChapterState.Waiting;
@@ -126,22 +122,6 @@ namespace MangaCrawlerLib
             }
         }
 
-        public IEnumerable<Chapter> Works
-        {
-            get
-            {
-                lock (m_works)
-                {
-                    return m_works.ToArray();
-                }
-            }
-        }
-
-        public void Save()
-        {
-            Catalog.SaveCatalog();
-        }
-
         public IEnumerable<Server> Servers
         {
             get
@@ -150,27 +130,50 @@ namespace MangaCrawlerLib
             }
         }
 
-        public void SaveWorks()
+        public void Debug_ResetCheckDate()
         {
-            IEnumerable<Chapter> copy; 
-
-            lock (m_works)
-            {
-                copy = m_works.ToArray();
-            }
-
-            copy = copy.Where(c => c.IsDownloading);
-
-            Catalog.SaveWorks(copy);
+            foreach (var server in Servers)
+                server.ResetCheckDate();
         }
 
-        public void RemoveWork(Chapter a_work)
+        public void Debug_InsertSerie(int a_index, Server a_server)
         {
-            lock (m_works)
-            {
-                if (!m_works.Remove(a_work))
-                    Loggers.MangaCrawler.WarnFormat("Chapter not in s_works: {0}", a_work);
-            }
+            (a_server.Crawler as TestServerCrawler).Debug_InsertSerie(a_index);
+        }
+
+        public void Debug_RemoveSerie(Server a_server, Serie SelectedSerie)
+        {
+            (a_server.Crawler as TestServerCrawler).Debug_RemoveSerie(SelectedSerie);
+        }
+
+        public void Debug_InsertChapter(int a_index, Serie a_serie)
+        {
+            (a_serie.Crawler as TestServerCrawler).Debug_InsertChapter(a_serie, a_index);
+        }
+
+        public void Debug_RemoveChapter(Chapter a_chapter)
+        {
+            (a_chapter.Crawler as TestServerCrawler).Debug_RemoveChapter(a_chapter);
+        }
+
+        public void Debug_RenameSerie(Serie a_serie)
+        {
+            (a_serie.Crawler as TestServerCrawler).Debug_RenameSerie(a_serie);
+        }
+
+        public void Debug_RenameChapter(Chapter a_chapter)
+        {
+            (a_chapter.Crawler as TestServerCrawler).Debug_RenameChapter(a_chapter);
+        }
+
+        public void Debug_ChangeSerieURL(Serie a_serie)
+        {
+            (a_serie.Crawler as TestServerCrawler).Debug_ChangeSerieURL(a_serie);
+        }
+
+        public void Debug_ChangeChapterURL(Chapter a_chapter)
+        {
+            (a_chapter.Crawler as TestServerCrawler).Debug_ChangeChapterURL(a_chapter);
         }
     }
 }

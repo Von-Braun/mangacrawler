@@ -70,8 +70,6 @@ namespace MangaCrawlerLib
                 m_state = SerieState.Initial;
             if (m_state == SerieState.Waiting)
                 m_state = SerieState.Initial;
-            if (m_state == SerieState.Downloaded)
-                m_state = SerieState.Initial;
 
             a_title = a_title.Trim();
             a_title = a_title.Replace("\t", " ");
@@ -96,22 +94,22 @@ namespace MangaCrawlerLib
             }
         }
 
+        internal void ResetCheckDate()
+        {
+            m_check_date_time = DateTime.MinValue;
+        }
+
         internal void DownloadChapters()
         {
             try
             {
-                Func<Chapter, string> key_selector = s => s.URL + s.Title;
-
-                var dict = m_chapters.ToDictionary(key_selector);
-
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
-                    DownloadProgress = progress;
-                    m_chapters.ReplaceInnerCollection(
-                        result,  
-                        dict, 
-                        progress == 100, 
-                        key_selector);
+                    if (!m_chapters.LoadedFromXml)
+                        m_chapters.ReplaceInnerCollection(result);
+                    else if (progress == 100)
+                        m_chapters.ReplaceInnerCollection(result, (c) => c.Title + c.URL);
+                    DownloadProgress = progress; 
                 });
 
                 State = SerieState.Downloaded;
@@ -215,6 +213,14 @@ namespace MangaCrawlerLib
             {
                 return (State == SerieState.Downloading) ||
                        (State == SerieState.Waiting);
+            }
+        }
+
+        public bool IsBookmarked
+        {
+            get
+            {
+                return DownloadManager.Instance.Bookmarks.List.Contains(this);
             }
         }
     }

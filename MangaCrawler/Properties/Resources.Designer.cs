@@ -70,6 +70,15 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BOOKMARKED.
+        /// </summary>
+        internal static string Bookmarked {
+            get {
+                return ResourceManager.GetString("Bookmarked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CHECKING.
         /// </summary>
         internal static string Checking {
@@ -149,6 +158,15 @@ namespace MangaCrawler.Properties {
         internal static string HomePage {
             get {
                 return ResourceManager.GetString("HomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NEW.
+        /// </summary>
+        internal static string New {
+            get {
+                return ResourceManager.GetString("New", resourceCulture);
             }
         }
         

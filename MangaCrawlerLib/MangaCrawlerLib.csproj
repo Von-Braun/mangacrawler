@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bookmarks.cs" />
     <Compile Include="CachedList.cs" />
     <Compile Include="Catalog.cs" />
     <Compile Include="Crawlers\CrawlerList.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Crawlers\OurMangaCrawler.cs" />
     <Compile Include="PageNamingStrategy.cs" />
     <Compile Include="MangaSettings.cs" />
+    <Compile Include="SequentialPartitioner.cs" />
     <Compile Include="States.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="Crawlers\SpectrumNexusCrawler.cs" />
     <Compile Include="Crawlers\StopTazmoCrawler.cs" />
     <Compile Include="Crawlers\UnixMangaCrawler.cs" />
+    <Compile Include="Works.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotNetZip\DotNetZip.csproj">

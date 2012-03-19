@@ -15,6 +15,8 @@
     <SysCallCount>10</SysCallCount>
     <SamplingCounter Name="" ReloadValue="00000000000f4240" DisplayName="" />
     <RelocateBinaries>false</RelocateBinaries>
+    <AdditionalArgruments />
+    <TargetCLRVersion>Automatic</TargetCLRVersion>
     <CollectOnHpcCluster>false</CollectOnHpcCluster>
     <HPCSettings>
       <NumberOfProcesses>0</NumberOfProcesses>
@@ -39,18 +41,26 @@
       </PdhCounters>
     </PdhSettings>
   </Options>
-  <ExcludeSmallFuncs>true</ExcludeSmallFuncs>
+  <ExcludeSmallFuncs>false</ExcludeSmallFuncs>
   <JScriptProfilingEnabled>false</JScriptProfilingEnabled>
   <PreinstrumentEvent>
+    <InstrEventProgram />
+    <InstrEventArguments />
+    <InstrEventDescription />
     <InstrEventExclude>false</InstrEventExclude>
   </PreinstrumentEvent>
   <PostinstrumentEvent>
+    <InstrEventProgram />
+    <InstrEventArguments />
+    <InstrEventDescription />
     <InstrEventExclude>false</InstrEventExclude>
   </PostinstrumentEvent>
   <Binaries>
     <ProjBinary>
       <Path>D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\obj\Debug\MangaCrawler.exe</Path>
-      <ArgumentTimestamp>01/01/0001 00:00:00</ArgumentTimestamp>
+      <AdditionalArgruments />
+      <TargetCLRVersion>Automatic</TargetCLRVersion>
+      <ArgumentTimestamp>03/15/2012 21:41:04</ArgumentTimestamp>
       <Instrument>true</Instrument>
       <Sample>true</Sample>
       <ExternalWebsite>false</ExternalWebsite>
@@ -64,7 +74,7 @@
       <Arguments />
       <NetAppHost>IIS</NetAppHost>
       <NetBrowser>InternetExplorer</NetBrowser>
-      <ExcludeSmallFuncs>true</ExcludeSmallFuncs>
+      <ExcludeSmallFuncs>false</ExcludeSmallFuncs>
       <JScriptProfilingEnabled>false</JScriptProfilingEnabled>
       <PreinstrumentEvent>
         <InstrEventExclude>false</InstrEventExclude>
@@ -79,7 +89,7 @@
   </Binaries>
   <Reports>
     <Report>
-      <Path>D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler120224.vsp</Path>
+      <Path>D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler120315.vsp</Path>
     </Report>
   </Reports>
   <Launches>

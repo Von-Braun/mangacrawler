@@ -31,8 +31,14 @@ namespace MangaCrawler
         [YAXNode("SplitterDistance")]
         private int m_splitter_distance = 200;
 
+        [YAXNode("SplitterBookmarksDistance")]
+        private int m_splitter_bookmarks_distance = 300;
+
         [YAXNode]
         public FormState FormState = new FormState();
+
+        [YAXNode("PlaySoundWhenDownloaded")]
+        private bool m_play_sound_when_downloaded = true;
 
         private static Settings s_instance;
 
@@ -94,6 +100,19 @@ namespace MangaCrawler
             MangaSettings.Changed += () => Save();
         }
 
+        public bool PlaySoundWhenDownloaded
+        {
+            get
+            {
+                return m_play_sound_when_downloaded;
+            }
+            set
+            {
+                m_play_sound_when_downloaded = value;
+                Save();
+            }
+        }
+
         public string SeriesFilter
         {
             get
@@ -116,6 +135,19 @@ namespace MangaCrawler
             set
             {
                 m_splitter_distance = value;
+                Save();
+            }
+        }
+
+        public int SplitterBookmarksDistance
+        {
+            get
+            {
+                return m_splitter_bookmarks_distance;
+            }
+            set
+            {
+                m_splitter_bookmarks_distance = value;
                 Save();
             }
         }

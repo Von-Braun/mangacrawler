@@ -83,7 +83,7 @@ namespace MangaCrawler
                 }
             };
 
-            DrawItem(a_args, Server.Name, draw_tip);
+            DrawItem(a_args, draw_tip);
         }
     }
 }
