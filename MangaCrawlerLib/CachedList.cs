@@ -11,22 +11,25 @@ namespace MangaCrawlerLib
     /// <param name="series"></param>
     internal abstract class CachedList<T> : IList<T> where T : Entity
     {
-        public bool Changed;
         protected bool m_loaded_from_xml;
         protected List<T> m_list;
         protected Object m_lock = new Object();
 
-        internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, IDictionary<K, T> a_prev, 
-            bool a_all_downloaded, Func<T, K> a_key_selector) 
+        internal void ReplaceInnerCollection(IEnumerable<T> a_new) 
+        {
+            EnsureLoaded();
+
+            m_list = a_new.ToList();
+        }
+
+        internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, Func<T, K> a_key_selector)
         {
             EnsureLoaded();
 
             lock (m_lock)
             {
-                m_list = Merge(a_new, a_prev, a_key_selector);
-
-                if (a_all_downloaded)
-                    Remove(m_list, a_new, a_key_selector);
+                m_list = Merge(a_new, m_list, a_key_selector);
+                Remove(m_list, a_new, a_key_selector);
             }
         }
 
@@ -43,18 +46,28 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal static List<T> Merge<K>(IEnumerable<T> a_new, IDictionary<K, T> a_prev, Func<T, K> a_key_selector)
+        internal static List<T> Merge<K>(IEnumerable<T> a_new, IEnumerable<T> a_prev, Func<T, K> a_key_selector)
         {
+            IDictionary<K, T> dict = a_prev.ToDictionary(a_key_selector);
+
             var result = a_new.ToList();
 
             for (int i = 0; i < result.Count; i++)
             {
                 K key = a_key_selector(result[i]);
-                if (a_prev.ContainsKey(key))
-                    result[i] = a_prev[key];
+                if (dict.ContainsKey(key))
+                    result[i] = dict[key];
             }
 
             return result;
+        }
+
+        internal bool Filled
+        {
+            get
+            {
+                return (m_list != null);
+            }
         }
 
         internal bool LoadedFromXml
@@ -164,10 +177,12 @@ namespace MangaCrawlerLib
 
         public override string ToString()
         {
-            if (m_list == null)
+            var list = m_list;
+            
+            if (list == null)
                 return "Uninitialized";
             else
-                return String.Format("Count: {0}, LoadedFromXml: {1}", m_list.Count, LoadedFromXml);
+                return String.Format("Count: {0}, LoadedFromXml: {1}", list.Count, LoadedFromXml);
         }
 
         protected abstract void EnsureLoaded();

@@ -25,7 +25,7 @@ namespace MangaCrawler
             return ID.GetHashCode();
         }
 
-        protected void DrawItem(DrawItemEventArgs e, string a_text,
+        protected void DrawItem(DrawItemEventArgs e,
             Action<Rectangle, Font> a_draw_tip)
         {
             e.DrawBackground();
@@ -33,12 +33,14 @@ namespace MangaCrawler
             if (e.State.HasFlag(DrawItemState.Selected))
                 e.Graphics.FillRectangle(Brushes.LightBlue, e.Bounds);
 
-            var size = e.Graphics.MeasureString(a_text, e.Font);
+            String text = ToString();
+
+            var size = e.Graphics.MeasureString(text, e.Font);
             Rectangle bounds = new Rectangle(e.Bounds.X, e.Bounds.Y +
                 (e.Bounds.Height - size.ToSize().Height) / 2,
                 e.Bounds.Width, size.ToSize().Height);
 
-            e.Graphics.DrawString(a_text, e.Font, Brushes.Black, bounds,
+            e.Graphics.DrawString(text, e.Font, Brushes.Black, bounds,
                 StringFormat.GenericDefault);
 
             int left = (int)Math.Round(size.Width + e.Graphics.MeasureString(" ", e.Font).Width);

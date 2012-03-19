@@ -178,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;versionPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <metadata name="refreshTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>337, 17</value>
@@ -187,7 +187,7 @@
     <value>NoControl</value>
   </data>
   <data name="splitterBooks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 0</value>
+    <value>343, 0</value>
   </data>
   <data name="splitterBooks.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 100, 0, 0</value>
@@ -208,7 +208,7 @@
     <value>System.Windows.Forms.Splitter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;splitterBooks.Parent" xml:space="preserve">
-    <value>splitterBooksPanel</value>
+    <value>splitBookmarksPanel</value>
   </data>
   <data name="&gt;&gt;splitterBooks.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -226,7 +226,7 @@
     <value>NoControl</value>
   </data>
   <data name="viewChapterBoksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>429, 301</value>
+    <value>391, 301</value>
   </data>
   <data name="viewChapterBoksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 23</value>
@@ -244,7 +244,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;viewChapterBoksButton.Parent" xml:space="preserve">
-    <value>chaptersBooksPanel</value>
+    <value>chapterBookmarksPanel</value>
   </data>
   <data name="&gt;&gt;viewChapterBoksButton.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -262,7 +262,7 @@
     <value>NoControl</value>
   </data>
   <data name="openChapterFolderBooksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>351, 301</value>
+    <value>313, 301</value>
   </data>
   <data name="openChapterFolderBooksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 23</value>
@@ -280,7 +280,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;openChapterFolderBooksButton.Parent" xml:space="preserve">
-    <value>chaptersBooksPanel</value>
+    <value>chapterBookmarksPanel</value>
   </data>
   <data name="&gt;&gt;openChapterFolderBooksButton.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -298,7 +298,7 @@
     <value>NoControl</value>
   </data>
   <data name="visitChapterBooksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 301</value>
+    <value>244, 301</value>
   </data>
   <data name="visitChapterBooksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 23</value>
@@ -316,7 +316,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;visitChapterBooksButton.Parent" xml:space="preserve">
-    <value>chaptersBooksPanel</value>
+    <value>chapterBookmarksPanel</value>
   </data>
   <data name="&gt;&gt;visitChapterBooksButton.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -334,7 +334,7 @@
     <value>NoControl</value>
   </data>
   <data name="downloadChapterBooksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>211, 301</value>
+    <value>173, 301</value>
   </data>
   <data name="downloadChapterBooksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 23</value>
@@ -352,42 +352,42 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;downloadChapterBooksButton.Parent" xml:space="preserve">
-    <value>chaptersBooksPanel</value>
+    <value>chapterBookmarksPanel</value>
   </data>
   <data name="&gt;&gt;downloadChapterBooksButton.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="chaptersBooksListBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="chapterBookmarksListBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="chaptersBooksListBox.HorizontalScrollbar" type="System.Boolean, mscorlib">
+  <data name="chapterBookmarksListBox.HorizontalScrollbar" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="chaptersBooksListBox.IntegralHeight" type="System.Boolean, mscorlib">
+  <data name="chapterBookmarksListBox.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="chaptersBooksListBox.ItemHeight" type="System.Int32, mscorlib">
+  <data name="chapterBookmarksListBox.ItemHeight" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="chaptersBooksListBox.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="chapterBookmarksListBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 20</value>
   </data>
-  <data name="chaptersBooksListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>458, 273</value>
+  <data name="chapterBookmarksListBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>420, 273</value>
   </data>
-  <data name="chaptersBooksListBox.TabIndex" type="System.Int32, mscorlib">
+  <data name="chapterBookmarksListBox.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
   </data>
-  <data name="&gt;&gt;chaptersBooksListBox.Name" xml:space="preserve">
-    <value>chaptersBooksListBox</value>
+  <data name="&gt;&gt;chapterBookmarksListBox.Name" xml:space="preserve">
+    <value>chapterBookmarksListBox</value>
   </data>
-  <data name="&gt;&gt;chaptersBooksListBox.Type" xml:space="preserve">
+  <data name="&gt;&gt;chapterBookmarksListBox.Type" xml:space="preserve">
     <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;chaptersBooksListBox.Parent" xml:space="preserve">
-    <value>chaptersBooksPanel</value>
+  <data name="&gt;&gt;chapterBookmarksListBox.Parent" xml:space="preserve">
+    <value>chapterBookmarksPanel</value>
   </data>
-  <data name="&gt;&gt;chaptersBooksListBox.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;chapterBookmarksListBox.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
@@ -415,39 +415,39 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>chaptersBooksPanel</value>
+    <value>chapterBookmarksPanel</value>
   </data>
   <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="chaptersBooksPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="chapterBookmarksPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="chaptersBooksPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>305, 0</value>
+  <data name="chapterBookmarksPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>343, 0</value>
   </data>
-  <data name="chaptersBooksPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="chapterBookmarksPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="chaptersBooksPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="chapterBookmarksPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="chaptersBooksPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>477, 328</value>
+  <data name="chapterBookmarksPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>439, 328</value>
   </data>
-  <data name="chaptersBooksPanel.TabIndex" type="System.Int32, mscorlib">
+  <data name="chapterBookmarksPanel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;chaptersBooksPanel.Name" xml:space="preserve">
-    <value>chaptersBooksPanel</value>
+  <data name="&gt;&gt;chapterBookmarksPanel.Name" xml:space="preserve">
+    <value>chapterBookmarksPanel</value>
   </data>
-  <data name="&gt;&gt;chaptersBooksPanel.Type" xml:space="preserve">
+  <data name="&gt;&gt;chapterBookmarksPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;chaptersBooksPanel.Parent" xml:space="preserve">
-    <value>splitterBooksPanel</value>
+  <data name="&gt;&gt;chapterBookmarksPanel.Parent" xml:space="preserve">
+    <value>splitBookmarksPanel</value>
   </data>
-  <data name="&gt;&gt;chaptersBooksPanel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;chapterBookmarksPanel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="removeSerieBooksPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -463,7 +463,7 @@
     <value>NoControl</value>
   </data>
   <data name="removeSerieBooksPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>97, 301</value>
+    <value>133, 301</value>
   </data>
   <data name="removeSerieBooksPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 23</value>
@@ -481,7 +481,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;removeSerieBooksPanel.Parent" xml:space="preserve">
-    <value>seriesBooksPanel</value>
+    <value>serieBookmarksPanel</value>
   </data>
   <data name="&gt;&gt;removeSerieBooksPanel.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -499,7 +499,7 @@
     <value>NoControl</value>
   </data>
   <data name="openSerieFolderBooksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 301</value>
+    <value>196, 301</value>
   </data>
   <data name="openSerieFolderBooksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 23</value>
@@ -517,7 +517,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;openSerieFolderBooksButton.Parent" xml:space="preserve">
-    <value>seriesBooksPanel</value>
+    <value>serieBookmarksPanel</value>
   </data>
   <data name="&gt;&gt;openSerieFolderBooksButton.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -535,7 +535,7 @@
     <value>NoControl</value>
   </data>
   <data name="visitSerieBooksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>238, 301</value>
+    <value>274, 301</value>
   </data>
   <data name="visitSerieBooksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 23</value>
@@ -553,7 +553,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;visitSerieBooksButton.Parent" xml:space="preserve">
-    <value>seriesBooksPanel</value>
+    <value>serieBookmarksPanel</value>
   </data>
   <data name="&gt;&gt;visitSerieBooksButton.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -583,96 +583,96 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>seriesBooksPanel</value>
+    <value>serieBookmarksPanel</value>
   </data>
   <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="seriesBooksListBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="serieBookmarksListBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="seriesBooksListBox.HorizontalScrollbar" type="System.Boolean, mscorlib">
+  <data name="serieBookmarksListBox.HorizontalScrollbar" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="seriesBooksListBox.IntegralHeight" type="System.Boolean, mscorlib">
+  <data name="serieBookmarksListBox.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="seriesBooksListBox.ItemHeight" type="System.Int32, mscorlib">
+  <data name="serieBookmarksListBox.ItemHeight" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="seriesBooksListBox.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="serieBookmarksListBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 20</value>
   </data>
-  <data name="seriesBooksListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>292, 273</value>
+  <data name="serieBookmarksListBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 273</value>
   </data>
-  <data name="seriesBooksListBox.TabIndex" type="System.Int32, mscorlib">
+  <data name="serieBookmarksListBox.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
   </data>
-  <data name="&gt;&gt;seriesBooksListBox.Name" xml:space="preserve">
-    <value>seriesBooksListBox</value>
+  <data name="&gt;&gt;serieBookmarksListBox.Name" xml:space="preserve">
+    <value>serieBookmarksListBox</value>
   </data>
-  <data name="&gt;&gt;seriesBooksListBox.Type" xml:space="preserve">
+  <data name="&gt;&gt;serieBookmarksListBox.Type" xml:space="preserve">
     <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;seriesBooksListBox.Parent" xml:space="preserve">
-    <value>seriesBooksPanel</value>
+  <data name="&gt;&gt;serieBookmarksListBox.Parent" xml:space="preserve">
+    <value>serieBookmarksPanel</value>
   </data>
-  <data name="&gt;&gt;seriesBooksListBox.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;serieBookmarksListBox.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="seriesBooksPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="serieBookmarksPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Left</value>
   </data>
-  <data name="seriesBooksPanel.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="serieBookmarksPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="seriesBooksPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="serieBookmarksPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="seriesBooksPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="serieBookmarksPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="seriesBooksPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 328</value>
+  <data name="serieBookmarksPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>343, 328</value>
   </data>
-  <data name="seriesBooksPanel.TabIndex" type="System.Int32, mscorlib">
+  <data name="serieBookmarksPanel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;seriesBooksPanel.Name" xml:space="preserve">
-    <value>seriesBooksPanel</value>
+  <data name="&gt;&gt;serieBookmarksPanel.Name" xml:space="preserve">
+    <value>serieBookmarksPanel</value>
   </data>
-  <data name="&gt;&gt;seriesBooksPanel.Type" xml:space="preserve">
+  <data name="&gt;&gt;serieBookmarksPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;seriesBooksPanel.Parent" xml:space="preserve">
-    <value>splitterBooksPanel</value>
+  <data name="&gt;&gt;serieBookmarksPanel.Parent" xml:space="preserve">
+    <value>splitBookmarksPanel</value>
   </data>
-  <data name="&gt;&gt;seriesBooksPanel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;serieBookmarksPanel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="splitterBooksPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="splitBookmarksPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="splitterBooksPanel.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="splitBookmarksPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
-  <data name="splitterBooksPanel.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="splitBookmarksPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>782, 328</value>
   </data>
-  <data name="splitterBooksPanel.TabIndex" type="System.Int32, mscorlib">
+  <data name="splitBookmarksPanel.TabIndex" type="System.Int32, mscorlib">
     <value>41</value>
   </data>
-  <data name="&gt;&gt;splitterBooksPanel.Name" xml:space="preserve">
-    <value>splitterBooksPanel</value>
+  <data name="&gt;&gt;splitBookmarksPanel.Name" xml:space="preserve">
+    <value>splitBookmarksPanel</value>
   </data>
-  <data name="&gt;&gt;splitterBooksPanel.Type" xml:space="preserve">
+  <data name="&gt;&gt;splitBookmarksPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;splitterBooksPanel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;splitBookmarksPanel.Parent" xml:space="preserve">
     <value>bookmarksTabPage</value>
   </data>
-  <data name="&gt;&gt;splitterBooksPanel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;splitBookmarksPanel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="bookmarksTabPage.Location" type="System.Drawing.Point, System.Drawing">
@@ -700,7 +700,7 @@
     <value>tabControl</value>
   </data>
   <data name="&gt;&gt;bookmarksTabPage.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="clearLogButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -781,7 +781,34 @@
     <value>tabControl</value>
   </data>
   <data name="&gt;&gt;logTabPage.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
+  </data>
+  <data name="playSoundWhenDownloadedCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="playSoundWhenDownloadedCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 157</value>
+  </data>
+  <data name="playSoundWhenDownloadedCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>260, 17</value>
+  </data>
+  <data name="playSoundWhenDownloadedCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>46</value>
+  </data>
+  <data name="playSoundWhenDownloadedCheckBox.Text" xml:space="preserve">
+    <value>Play sounds when all items has been downloaded</value>
+  </data>
+  <data name="&gt;&gt;playSoundWhenDownloadedCheckBox.Name" xml:space="preserve">
+    <value>playSoundWhenDownloadedCheckBox</value>
+  </data>
+  <data name="&gt;&gt;playSoundWhenDownloadedCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;playSoundWhenDownloadedCheckBox.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;playSoundWhenDownloadedCheckBox.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="optionslLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -814,7 +841,7 @@
     <value>optionsTabPage</value>
   </data>
   <data name="&gt;&gt;optionslLabel.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="pageNamingStrategyComboBox.Items" xml:space="preserve">
     <value>Use name from www</value>
@@ -844,7 +871,7 @@
     <value>optionsTabPage</value>
   </data>
   <data name="&gt;&gt;pageNamingStrategyComboBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -874,7 +901,7 @@
     <value>optionsTabPage</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="cbzCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -904,7 +931,7 @@
     <value>optionsTabPage</value>
   </data>
   <data name="&gt;&gt;cbzCheckBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="mangaRootDirChooseButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -934,7 +961,7 @@
     <value>optionsTabPage</value>
   </data>
   <data name="&gt;&gt;mangaRootDirChooseButton.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -964,7 +991,7 @@
     <value>optionsTabPage</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="mangaRootDirTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -988,7 +1015,7 @@
     <value>optionsTabPage</value>
   </data>
   <data name="&gt;&gt;mangaRootDirTextBox.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="optionsTabPage.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1012,7 +1039,7 @@
     <value>tabControl</value>
   </data>
   <data name="&gt;&gt;optionsTabPage.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="openFolderWorksButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -1563,6 +1590,42 @@
   <data name="&gt;&gt;chaptersPanel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="BookmarkSerieButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="BookmarkSerieButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="BookmarkSerieButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="BookmarkSerieButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BookmarkSerieButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 300</value>
+  </data>
+  <data name="BookmarkSerieButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 23</value>
+  </data>
+  <data name="BookmarkSerieButton.TabIndex" type="System.Int32, mscorlib">
+    <value>37</value>
+  </data>
+  <data name="BookmarkSerieButton.Text" xml:space="preserve">
+    <value>Bookmark</value>
+  </data>
+  <data name="&gt;&gt;BookmarkSerieButton.Name" xml:space="preserve">
+    <value>BookmarkSerieButton</value>
+  </data>
+  <data name="&gt;&gt;BookmarkSerieButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BookmarkSerieButton.Parent" xml:space="preserve">
+    <value>seriesPanel</value>
+  </data>
+  <data name="&gt;&gt;BookmarkSerieButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="seriesSearchTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -1585,7 +1648,7 @@
     <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;seriesSearchTextBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -1618,7 +1681,7 @@
     <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="openSeriesFolderButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -1654,7 +1717,7 @@
     <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;openSeriesFolderButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="seriesURLButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -1690,7 +1753,7 @@
     <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;seriesURLButton.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1720,7 +1783,7 @@
     <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="seriesListBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -1753,7 +1816,7 @@
     <value>seriesPanel</value>
   </data>
   <data name="&gt;&gt;seriesListBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="seriesPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Left</value>
@@ -2011,7 +2074,97 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tabControl.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
+  </data>
+  <metadata name="debugContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>457, 17</value>
+  </metadata>
+  <data name="resetCheckDatesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="resetCheckDatesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Reset check dates</value>
+  </data>
+  <data name="addSerieFirsttoolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="addSerieFirsttoolStripMenuItem.Text" xml:space="preserve">
+    <value>Add serie first</value>
+  </data>
+  <data name="addSerieMiddleToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="addSerieMiddleToolStripMenuItem.Text" xml:space="preserve">
+    <value>Add serie middle</value>
+  </data>
+  <data name="addSerieLastToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="addSerieLastToolStripMenuItem.Text" xml:space="preserve">
+    <value>Add serie last</value>
+  </data>
+  <data name="removeSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="removeSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Remove serie</value>
+  </data>
+  <data name="addChapterFirstToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="addChapterFirstToolStripMenuItem.Text" xml:space="preserve">
+    <value>Add chapter first</value>
+  </data>
+  <data name="addChapterMiddleToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="addChapterMiddleToolStripMenuItem.Text" xml:space="preserve">
+    <value>Add chapter middle</value>
+  </data>
+  <data name="addChapterLastToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="addChapterLastToolStripMenuItem.Text" xml:space="preserve">
+    <value>Add chapter last</value>
+  </data>
+  <data name="removeChapterToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="removeChapterToolStripMenuItem.Text" xml:space="preserve">
+    <value>Remove chapter</value>
+  </data>
+  <data name="renameSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="renameSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Rename serie</value>
+  </data>
+  <data name="renameChapterToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="renameChapterToolStripMenuItem.Text" xml:space="preserve">
+    <value>Rename chapter</value>
+  </data>
+  <data name="changeSerieURLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="changeSerieURLToolStripMenuItem.Text" xml:space="preserve">
+    <value>Change serie url</value>
+  </data>
+  <data name="changeChapterURLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="changeChapterURLToolStripMenuItem.Text" xml:space="preserve">
+    <value>Change chapter url</value>
+  </data>
+  <data name="debugContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 290</value>
+  </data>
+  <data name="&gt;&gt;debugContextMenuStrip.Name" xml:space="preserve">
+    <value>debugContextMenuStrip</value>
+  </data>
+  <data name="&gt;&gt;debugContextMenuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -2024,9 +2177,6 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>818, 388</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>834, 424</value>
@@ -2049,17 +2199,95 @@
   <data name="&gt;&gt;refreshTimer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;Chapter.Name" xml:space="preserve">
+    <value>Chapter</value>
+  </data>
+  <data name="&gt;&gt;Chapter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;Progress.Name" xml:space="preserve">
     <value>Progress</value>
   </data>
   <data name="&gt;&gt;Progress.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Chapter.Name" xml:space="preserve">
-    <value>Chapter</value>
+  <data name="&gt;&gt;resetCheckDatesToolStripMenuItem.Name" xml:space="preserve">
+    <value>resetCheckDatesToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;Chapter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;resetCheckDatesToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;addSerieFirsttoolStripMenuItem.Name" xml:space="preserve">
+    <value>addSerieFirsttoolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;addSerieFirsttoolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;addSerieMiddleToolStripMenuItem.Name" xml:space="preserve">
+    <value>addSerieMiddleToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;addSerieMiddleToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;addSerieLastToolStripMenuItem.Name" xml:space="preserve">
+    <value>addSerieLastToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;addSerieLastToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;removeSerieToolStripMenuItem.Name" xml:space="preserve">
+    <value>removeSerieToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;removeSerieToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;addChapterFirstToolStripMenuItem.Name" xml:space="preserve">
+    <value>addChapterFirstToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;addChapterFirstToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;addChapterMiddleToolStripMenuItem.Name" xml:space="preserve">
+    <value>addChapterMiddleToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;addChapterMiddleToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;addChapterLastToolStripMenuItem.Name" xml:space="preserve">
+    <value>addChapterLastToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;addChapterLastToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;removeChapterToolStripMenuItem.Name" xml:space="preserve">
+    <value>removeChapterToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;removeChapterToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;renameSerieToolStripMenuItem.Name" xml:space="preserve">
+    <value>renameSerieToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;renameSerieToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;renameChapterToolStripMenuItem.Name" xml:space="preserve">
+    <value>renameChapterToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;renameChapterToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;changeSerieURLToolStripMenuItem.Name" xml:space="preserve">
+    <value>changeSerieURLToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;changeSerieURLToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;changeChapterURLToolStripMenuItem.Name" xml:space="preserve">
+    <value>changeChapterURLToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;changeChapterURLToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MangaCrawlerForm</value>

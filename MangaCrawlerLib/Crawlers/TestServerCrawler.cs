@@ -30,13 +30,90 @@ namespace MangaCrawlerLib.Crawlers
 
         private class SerieData
         {
-            public string Title;
+            private string m_title;
+
+            public string Title
+            {
+                get
+                {
+                    return m_title;
+                }
+                set
+                {
+                    m_title = value;
+                    URL = "fake serie url - " + m_title;
+                }
+            }
+
+            public List<ChapterData> Chapters;
+
+            public IEnumerable<ChapterData> GetChapters()
+            {
+                if (Chapters != null)
+                    return Chapters;
+                else return GenerateChapters();
+            }
+
+            private IEnumerable<ChapterData> GenerateChapters()
+            {
+                if (Seed == 0)
+                    yield break;
+
+                Random random = new Random(Seed);
+
+                int maxc = (int)Math.Pow(random.Next(4, 15), 2);
+                for (int c = 1; c <= maxc; c++)
+                {
+                    ChapterData chapter = new ChapterData();
+                    chapter.Title = Title + " - Chapter " + c.ToString();
+                    chapter.Seed = random.Next();
+
+                    yield return chapter;
+                }
+
+                {
+                    ChapterData chapter = new ChapterData();
+                    chapter.Title = Title + " - empty pages";
+                    yield return chapter;
+                }
+            }
+
+            public string URL;
             public int Seed;
         }
 
         private class ChapterData
         {
-            public string Title;
+            private string m_title;
+
+            public string Title
+            {
+                get
+                {
+                    return m_title;
+                }
+                set
+                {
+                    m_title = value;
+                    URL = "fake chapter url - " + m_title;
+                }
+            }
+
+            public string URL;
+
+            public IEnumerable<string> GeneratePages()
+            {
+                if (Seed == 0)
+                    yield break;
+
+                Random random = new Random(Seed);
+
+                int maxp = (int)Math.Pow(random.Next(4, 12), 2);
+                for (int p = 1; p <= maxp; p++)
+                    yield return Title + " - Page " + p.ToString();
+
+            }
+
             public int Seed;
         }
 
@@ -124,7 +201,7 @@ namespace MangaCrawlerLib.Crawlers
             Debug.Assert(a_server.Name == m_name);
 
             var toreport = (from serie in m_series
-                            select new Serie(a_server, "fake_serie_url", serie.Title)).ToArray();
+                            select new Serie(a_server, serie.URL, serie.Title)).ToArray();
 
             int total = toreport.Length;
 
@@ -183,43 +260,6 @@ namespace MangaCrawlerLib.Crawlers
             }
         }
 
-        IEnumerable<ChapterData> GenerateChapters(SerieData a_serie)
-        {
-            if (a_serie.Seed == 0)
-                yield break;
-
-            Random random = new Random(a_serie.Seed);
-
-            int maxc = (int)Math.Pow(random.Next(4, 15), 2);
-            for (int c = 1; c <= maxc; c++)
-            {
-                ChapterData chapter = new ChapterData();
-                chapter.Title = a_serie.Title + " - Chapter " + c.ToString();
-                chapter.Seed = random.Next();
-
-                yield return chapter;
-            }
-
-            {
-                ChapterData chapter = new ChapterData();
-                chapter.Title = a_serie.Title + " - empty pages";
-                yield return chapter;
-            }
-        }
-
-        IEnumerable<string> GeneratePages(ChapterData a_chapter)
-        {
-            if (a_chapter.Seed == 0)
-                yield break;
-
-            Random random = new Random(a_chapter.Seed);
-
-            int maxp = (int)Math.Pow(random.Next(4, 12), 2);
-            for (int p = 1; p <= maxp; p++)
-                yield return a_chapter.Title + " - Page " + p.ToString();
-
-        }
-
         internal override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
             a_serie.State = SerieState.Downloading;
@@ -238,8 +278,8 @@ namespace MangaCrawlerLib.Crawlers
 
             var serie = m_series.First(s => s.Title == a_serie.Title);
 
-            var toreport = (from chapter in GenerateChapters(serie)
-                            select new Chapter(a_serie, "fakse_chapter_url", chapter.Title)).ToArray();
+            var toreport = (from chapter in serie.GetChapters()
+                            select new Chapter(a_serie, chapter.URL, chapter.Title)).ToArray();
 
             int total = toreport.Length;
 
@@ -295,8 +335,8 @@ namespace MangaCrawlerLib.Crawlers
             a_chapter.State = ChapterState.DownloadingPagesList;
 
             var serie = m_series.First(s => s.Title == a_chapter.Serie.Title);
-            var chapter = GenerateChapters(serie).First(c => c.Title == a_chapter.Title);
-            var pages = GeneratePages(chapter).ToList();
+            var chapter = serie.GetChapters().First(c => c.Title == a_chapter.Title);
+            var pages = chapter.GeneratePages().ToList();
 
             var result = from page in pages
                          select new Page(a_chapter, "fakse_page_url",
@@ -357,6 +397,78 @@ namespace MangaCrawlerLib.Crawlers
         public override string GetServerURL()
         {
             return m_name;
+        }
+
+        public void Debug_InsertSerie(int a_index)
+        {
+            m_series.Insert(a_index, new SerieData()
+            {
+                Seed = m_random.Next(), 
+                Title = ">>> added serie " + m_random.Next()
+            });
+        }
+
+        public void Debug_RemoveSerie(Serie a_serie)
+        {
+            m_series.RemoveAll(sd => sd.Title == a_serie.Title);
+        }
+
+        public void Debug_InsertChapter(Serie a_serie, int a_index)
+        {
+            SerieData serie_data = m_series.First(sd => sd.Title == a_serie.Title);
+
+            if (serie_data.Chapters == null)
+                serie_data.Chapters = serie_data.GetChapters().ToList();
+
+            serie_data.Chapters.Insert(a_index, new ChapterData()
+            {
+                Seed = m_random.Next(),
+                Title = ">>> added chapter " + m_random.Next()
+            });
+        }
+
+        public void Debug_RemoveChapter(Chapter a_chapter)
+        {
+            SerieData serie_data = m_series.First(sd => sd.Title == a_chapter.Serie.Title);
+
+            if (serie_data.Chapters == null)
+                serie_data.Chapters = serie_data.GetChapters().ToList();
+
+            serie_data.Chapters.RemoveAll(cd => cd.Title == a_chapter.Title);
+        }
+
+        public void Debug_RenameSerie(Serie a_serie)
+        {
+            SerieData serie_data = m_series.First(sd => sd.Title == a_serie.Title);
+            serie_data.Title += " " + m_random.Next();
+        }
+
+        internal void Debug_RenameChapter(Chapter a_chapter)
+        {
+            SerieData serie_data = m_series.First(sd => sd.Title == a_chapter.Serie.Title);
+
+            if (serie_data.Chapters == null)
+                serie_data.Chapters = serie_data.GetChapters().ToList();
+
+            ChapterData chapter_data = serie_data.Chapters.First(c => c.Title == a_chapter.Title);
+            chapter_data.Title += " " + m_random.Next();
+        }
+
+        internal void Debug_ChangeSerieURL(Serie a_serie)
+        {
+            SerieData serie_data = m_series.First(sd => sd.Title == a_serie.Title);
+            serie_data.URL += " " + m_random.Next();
+        }
+
+        internal void Debug_ChangeChapterURL(Chapter a_chapter)
+        {
+            SerieData serie_data = m_series.First(sd => sd.Title == a_chapter.Serie.Title);
+
+            if (serie_data.Chapters == null)
+                serie_data.Chapters = serie_data.GetChapters().ToList();
+
+            ChapterData chapter_data = serie_data.Chapters.First(c => c.Title == a_chapter.Title);
+            chapter_data.URL += " " + m_random.Next();
         }
     }
 }

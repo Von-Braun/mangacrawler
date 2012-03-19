@@ -145,6 +145,8 @@
     <Compile Include="CatalogOptimizeForm.Designer.cs">
       <DependentUpon>CatalogOptimizeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SerieBookmarkListItem.cs" />
+    <Compile Include="ChapterBookmarkListItem.cs" />
     <Compile Include="FormState.cs" />
     <Compile Include="ListBoxEx.cs">
       <SubType>Component</SubType>
