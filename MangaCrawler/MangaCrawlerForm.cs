@@ -27,7 +27,7 @@ namespace MangaCrawler
      * widok wspolny dla wszystkich serwisow, scalac jakos serie,
      * gdzie najlepsza jakosc, gdzie duplikaty
      * 
-     * wpf, windows phone, inne
+     * wpf
      * 
      * instalator, x86, x64
      * deinstalacja powinna usunac katalog
@@ -80,8 +80,6 @@ namespace MangaCrawler
      * przetestowac dzialanie wszelkich przyciskow
      * bookmark, a usuwanie serii, rozdzialu
      * 
-     * praca w tle, powiadamianie o zmianach w bookmarks
-     * 
      * zapamietywanie splittera
      * 
      */
@@ -97,6 +95,7 @@ namespace MangaCrawler
 
         private bool m_refresh_once_after_all_done;
         private bool m_working;
+        private bool m_force_close;
 
         private static Color BAD_DIR = Color.Red;
 
@@ -111,6 +110,10 @@ namespace MangaCrawler
         {
             SetupLog4NET();
 
+            Icon = Icon.FromHandle(Resources.Manga_Crawler.GetHicon());
+            notifyIcon.Icon = Icon;
+            notifyIcon.Visible = false;
+
             Text = String.Format("{0} {1}.{2}", Text,
                 Assembly.GetAssembly(GetType()).GetName().Version.Major, 
                 Assembly.GetAssembly(GetType()).GetName().Version.Minor);
@@ -122,6 +125,7 @@ namespace MangaCrawler
             mangaRootDirTextBox.Text = Settings.Instance.MangaSettings.GetMangaRootDir(false);
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
             cbzCheckBox.Checked = Settings.Instance.MangaSettings.UseCBZ;
+            MinimizeOnCloseCheckBox.Checked = Settings.Instance.MinimizeOnClose;
 
             if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.DoNothing)
                 pageNamingStrategyComboBox.SelectedIndex = 0;
@@ -155,6 +159,9 @@ namespace MangaCrawler
             UpdateAll();
 
             refreshTimer.Enabled = true;
+
+            tabControl.SelectedTab = bookmarksTabPage;
+            tabControl.SelectedTab = seriesTabPage;
         }
 
         private void SetupLog4NET()
@@ -357,23 +364,6 @@ namespace MangaCrawler
                 list.Remove(el);
 
             worksGridView.Invalidate();
-        }
-
-        private void MangaCrawlerForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (DownloadManager.Instance.Works.List.Any(w => w.IsDownloading))
-            {
-                if ((e.CloseReason != CloseReason.WindowsShutDown) || 
-                    (e.CloseReason != CloseReason.TaskManagerClosing))
-                {
-                    if (MessageBox.Show(Resources.ExitQuestion,
-                            Application.ProductName, MessageBoxButtons.YesNo, 
-                            MessageBoxIcon.Question) == DialogResult.No)
-                    {
-                        e.Cancel = true;
-                    }
-                }
-            }
         }
 
         private void mangaRootDirTextBox_TextChanged(object sender, EventArgs e)
@@ -662,6 +652,11 @@ namespace MangaCrawler
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (tabControl.SelectedTab == bookmarksTabPage)
+                splitterBookmarks.SplitPosition = Settings.Instance.SplitterBookmarksDistance;
+            else if (tabControl.SelectedTab == seriesTabPage)
+                splitter.SplitPosition = Settings.Instance.SplitterDistance;
+
             UpdateAll();
         }
 
@@ -698,7 +693,6 @@ namespace MangaCrawler
         private void MangaCrawlerForm_Shown(object sender, EventArgs e)
         {
             splitter.SplitPosition = Settings.Instance.SplitterDistance;
-            splitterBooks.SplitPosition = Settings.Instance.SplitterBookmarksDistance;
 
             if (Catalog.GetCatalogSize() > Settings.Instance.MangaSettings.MaxCatalogSize)
                 new CatalogOptimizeForm().ShowDialog();
@@ -756,6 +750,9 @@ namespace MangaCrawler
 
         private void viewPagesButton_Click(object sender, EventArgs e)
         {
+            ShowNotificationAboutNewChapters();
+            return; 
+
             ViewChapters(GetSelectedChapters());
         }
 
@@ -991,21 +988,30 @@ namespace MangaCrawler
         {
             if (splitPanel.Width - splitter.SplitPosition < chaptersPanel.MinimumSize.Width)
                 splitter.SplitPosition = splitPanel.Width - chaptersPanel.MinimumSize.Width;
+
             Settings.Instance.SplitterDistance = splitter.SplitPosition;
         }
 
         private void MangaCrawlerForm_ResizeEnd(object sender, EventArgs e)
         {
-            if (chaptersPanel.Bounds.Right > splitPanel.ClientRectangle.Right)
-                splitter.SplitPosition = splitPanel.Width - chaptersPanel.MinimumSize.Width;
+            if (tabControl.SelectedTab == seriesTabPage)
+            {
+                if (chaptersPanel.Bounds.Right > splitPanel.ClientRectangle.Right)
+                    splitter.SplitPosition = splitPanel.Width - chaptersPanel.MinimumSize.Width;
+            }
+            else if (tabControl.SelectedTab == bookmarksTabPage)
+            {
+                if (chapterBookmarksPanel.Bounds.Right > splitBookmarksPanel.ClientRectangle.Right)
+                    splitterBookmarks.SplitPosition = splitBookmarksPanel.Width - chapterBookmarksPanel.MinimumSize.Width;
+            }
         }
 
-        private void splitterBooks_SplitterMoved(object sender, SplitterEventArgs e)
+        private void splitterBookmarks_SplitterMoved(object sender, SplitterEventArgs e)
         {
-            if (splitBookmarksPanel.Width - splitterBooks.SplitPosition < chapterBookmarksPanel.MinimumSize.Width)
-                splitterBooks.SplitPosition = splitBookmarksPanel.Width - chapterBookmarksPanel.MinimumSize.Width;
+            if (splitBookmarksPanel.Width - splitterBookmarks.SplitPosition < chapterBookmarksPanel.MinimumSize.Width)
+                splitterBookmarks.SplitPosition = splitBookmarksPanel.Width - chapterBookmarksPanel.MinimumSize.Width;
 
-            Settings.Instance.SplitterBookmarksDistance = splitterBooks.SplitPosition;
+            Settings.Instance.SplitterBookmarksDistance = splitterBookmarks.SplitPosition;
         }
 
         private void BookmarkSerieButton_Click(object sender, EventArgs e)
@@ -1028,7 +1034,7 @@ namespace MangaCrawler
                      select new SerieBookmarkListItem(bookmark);
 
             new ListBoxVisualState(serieBookmarksListBox).ReloadItems(
-                ar.OrderBy(b => b.Serie.ToString()));
+                ar.OrderBy(b => b.ToString()));
         }    
 
         private void UpdateChapterBookmarks()
@@ -1254,6 +1260,115 @@ namespace MangaCrawler
         private void changeChapterURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DownloadManager.Instance.Debug_ChangeChapterURL(SelectedChapter);
+        }
+
+        private void minimizeOnCloseCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Instance.MinimizeOnClose = MinimizeOnCloseCheckBox.Checked;
+        }
+
+        private void exitTrayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            m_force_close = true;
+            Close();
+        }
+
+        private void MinimizeToTray(bool a_minimize)
+        {
+            if (a_minimize)
+            {
+                Hide();
+                ShowInTaskbar = false;
+                notifyIcon.Visible = true;
+            }
+            else
+            {
+                Show();
+                ShowInTaskbar = true;
+                notifyIcon.Visible = false;
+            }
+        }
+
+        private void MangaCrawlerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (m_force_close)
+                return;
+
+            if (Settings.Instance.MinimizeOnClose)
+            {
+                MinimizeToTray(true);
+                e.Cancel = true;
+            }
+            else if (DownloadManager.Instance.Works.List.Any(w => w.IsDownloading))
+            {
+                if ((e.CloseReason != CloseReason.WindowsShutDown) ||
+                    (e.CloseReason != CloseReason.TaskManagerClosing))
+                {
+                    if (MessageBox.Show(Resources.ExitQuestion,
+                            Application.ProductName, MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) == DialogResult.No)
+                    {
+                        e.Cancel = true;
+                    }
+                }
+            }
+        }
+
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                MinimizeToTray(false);
+        }
+
+        // TODO: 
+        // czy pokazywac balloon tip tylko jak w tray czy takze jak niekatywny
+        // czy aktywacja ma zamykac baloon tipa
+        // przetestowac dzialanie tipow jesli niekatywny, ukryty w tray
+        // co jesli uzytkownik kliknie w close na notyfikacji - pokazac ponownie, czy ignorowac, co po ponownym 
+        // uruchomieniu
+        // co ile pokazywac notyfikacje
+
+        private void ShowNotificationAboutNewChapters()
+        {
+            var new_chapters = (from serie in DownloadManager.Instance.Bookmarks.List
+                                where serie.Chapters.Any(c => !c.BookmarkIgnored)
+                                orderby new SerieBookmarkListItem(serie).ToString()
+                                select new SerieBookmarkListItem(serie)).ToArray();
+
+            if (!new_chapters.Any())
+                return;
+
+            if (Focused)
+                return;
+
+            bool too_much = false;
+
+            if (new_chapters.Length > 5)
+            {
+                too_much = true;
+                new_chapters = new_chapters.Take(4).ToArray();
+            }
+
+            notifyIcon.Visible = true;
+
+            string str = Resources.TrayNotificationNewSeries;
+            str += Environment.NewLine + new_chapters.Skip(1).Aggregate(
+                new_chapters.First().ToString(), (r, b) => r + Environment.NewLine + b.ToString());
+            if (too_much)
+                str += Environment.NewLine + "...";
+ 
+            notifyIcon.ShowBalloonTip(5000, Application.ProductName, str, ToolTipIcon.Info);
+        }
+
+        private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            MinimizeToTray(false);
+        }
+
+        private void notifyIcon_BalloonTipClosed(object sender, EventArgs e)
+        {
+            if (notifyIcon.Visible && Visible)
+                MinimizeToTray(false);
         }
     }
 }

@@ -30,18 +30,18 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MangaCrawlerForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.versionPanel = new System.Windows.Forms.Panel();
             this.versionLinkLabel = new System.Windows.Forms.LinkLabel();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.bookmarksTabPage = new System.Windows.Forms.TabPage();
             this.splitBookmarksPanel = new System.Windows.Forms.Panel();
-            this.splitterBooks = new System.Windows.Forms.Splitter();
+            this.splitterBookmarks = new System.Windows.Forms.Splitter();
             this.chapterBookmarksPanel = new System.Windows.Forms.Panel();
             this.viewChapterBoksButton = new System.Windows.Forms.Button();
             this.openChapterFolderBooksButton = new System.Windows.Forms.Button();
@@ -57,6 +57,8 @@
             this.clearLogButton = new System.Windows.Forms.Button();
             this.logRichTextBox = new System.Windows.Forms.RichTextBox();
             this.optionsTabPage = new System.Windows.Forms.TabPage();
+            this.MinimizeOnCloseCheckBox = new System.Windows.Forms.CheckBox();
+            this.playSoundWhenDownloadedCheckBox = new System.Windows.Forms.CheckBox();
             this.optionslLabel = new System.Windows.Forms.Label();
             this.pageNamingStrategyComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -109,12 +111,14 @@
             this.renameChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeSerieURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeChapterURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.trayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exitTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chaptersListBox = new MangaCrawler.ListBoxEx();
             this.seriesListBox = new MangaCrawler.ListBoxEx();
             this.serversListBox = new MangaCrawler.ListBoxEx();
             this.chapterBookmarksListBox = new MangaCrawler.ListBoxEx();
             this.serieBookmarksListBox = new MangaCrawler.ListBoxEx();
-            this.playSoundWhenDownloadedCheckBox = new System.Windows.Forms.CheckBox();
             this.versionPanel.SuspendLayout();
             this.bookmarksTabPage.SuspendLayout();
             this.splitBookmarksPanel.SuspendLayout();
@@ -131,6 +135,7 @@
             this.serversPanel.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.debugContextMenuStrip.SuspendLayout();
+            this.trayContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // versionPanel
@@ -160,7 +165,7 @@
             // 
             // splitBookmarksPanel
             // 
-            this.splitBookmarksPanel.Controls.Add(this.splitterBooks);
+            this.splitBookmarksPanel.Controls.Add(this.splitterBookmarks);
             this.splitBookmarksPanel.Controls.Add(this.chapterBookmarksPanel);
             this.splitBookmarksPanel.Controls.Add(this.serieBookmarksPanel);
             resources.ApplyResources(this.splitBookmarksPanel, "splitBookmarksPanel");
@@ -169,11 +174,11 @@
             // 
             // splitterBooks
             // 
-            this.splitterBooks.BackColor = System.Drawing.SystemColors.Menu;
-            resources.ApplyResources(this.splitterBooks, "splitterBooks");
-            this.splitterBooks.Name = "splitterBooks";
-            this.splitterBooks.TabStop = false;
-            this.splitterBooks.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitterBooks_SplitterMoved);
+            this.splitterBookmarks.BackColor = System.Drawing.SystemColors.Menu;
+            resources.ApplyResources(this.splitterBookmarks, "splitterBooks");
+            this.splitterBookmarks.Name = "splitterBooks";
+            this.splitterBookmarks.TabStop = false;
+            this.splitterBookmarks.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitterBookmarks_SplitterMoved);
             // 
             // chapterBookmarksPanel
             // 
@@ -279,6 +284,7 @@
             // 
             // optionsTabPage
             // 
+            this.optionsTabPage.Controls.Add(this.MinimizeOnCloseCheckBox);
             this.optionsTabPage.Controls.Add(this.playSoundWhenDownloadedCheckBox);
             this.optionsTabPage.Controls.Add(this.optionslLabel);
             this.optionsTabPage.Controls.Add(this.pageNamingStrategyComboBox);
@@ -290,6 +296,19 @@
             resources.ApplyResources(this.optionsTabPage, "optionsTabPage");
             this.optionsTabPage.Name = "optionsTabPage";
             this.optionsTabPage.UseVisualStyleBackColor = true;
+            // 
+            // MinimizeOnCloseCheckBox
+            // 
+            resources.ApplyResources(this.MinimizeOnCloseCheckBox, "MinimizeOnCloseCheckBox");
+            this.MinimizeOnCloseCheckBox.Name = "MinimizeOnCloseCheckBox";
+            this.MinimizeOnCloseCheckBox.UseVisualStyleBackColor = true;
+            this.MinimizeOnCloseCheckBox.CheckedChanged += new System.EventHandler(this.minimizeOnCloseCheckBox_CheckedChanged);
+            // 
+            // playSoundWhenDownloadedCheckBox
+            // 
+            resources.ApplyResources(this.playSoundWhenDownloadedCheckBox, "playSoundWhenDownloadedCheckBox");
+            this.playSoundWhenDownloadedCheckBox.Name = "playSoundWhenDownloadedCheckBox";
+            this.playSoundWhenDownloadedCheckBox.UseVisualStyleBackColor = true;
             // 
             // optionslLabel
             // 
@@ -397,38 +416,38 @@
             // 
             this.worksGridView.AllowUserToAddRows = false;
             this.worksGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.worksGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.worksGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             resources.ApplyResources(this.worksGridView, "worksGridView");
             this.worksGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.worksGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.worksGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.worksGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.worksGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.worksGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.worksGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Chapter,
             this.Progress});
             this.worksGridView.Name = "worksGridView";
             this.worksGridView.ReadOnly = true;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.worksGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.worksGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.worksGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.worksGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.worksGridView.RowsDefaultCellStyle = dataGridViewCellStyle10;
             this.worksGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.worksGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.worksGridView_CellContentClick);
             this.worksGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.worksGridView_KeyDown);
@@ -437,8 +456,8 @@
             // 
             this.Chapter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Chapter.DataPropertyName = "Info";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Chapter.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Chapter.DefaultCellStyle = dataGridViewCellStyle8;
             resources.ApplyResources(this.Chapter, "Chapter");
             this.Chapter.Name = "Chapter";
             this.Chapter.ReadOnly = true;
@@ -707,6 +726,27 @@
             resources.ApplyResources(this.changeChapterURLToolStripMenuItem, "changeChapterURLToolStripMenuItem");
             this.changeChapterURLToolStripMenuItem.Click += new System.EventHandler(this.changeChapterURLToolStripMenuItem_Click);
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.ContextMenuStrip = this.trayContextMenuStrip;
+            resources.ApplyResources(this.notifyIcon, "notifyIcon");
+            this.notifyIcon.BalloonTipClicked += new System.EventHandler(this.notifyIcon_BalloonTipClicked);
+            this.notifyIcon.BalloonTipClosed += new System.EventHandler(this.notifyIcon_BalloonTipClosed);
+            this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
+            // 
+            // trayContextMenuStrip
+            // 
+            this.trayContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitTrayToolStripMenuItem});
+            this.trayContextMenuStrip.Name = "trayContextMenuStrip";
+            resources.ApplyResources(this.trayContextMenuStrip, "trayContextMenuStrip");
+            // 
+            // exitTrayToolStripMenuItem
+            // 
+            this.exitTrayToolStripMenuItem.Name = "exitTrayToolStripMenuItem";
+            resources.ApplyResources(this.exitTrayToolStripMenuItem, "exitTrayToolStripMenuItem");
+            this.exitTrayToolStripMenuItem.Click += new System.EventHandler(this.exitTrayToolStripMenuItem_Click);
+            // 
             // chaptersListBox
             // 
             resources.ApplyResources(this.chaptersListBox, "chaptersListBox");
@@ -763,12 +803,6 @@
             this.serieBookmarksListBox.SelectedIndexChanged += new System.EventHandler(this.serieBookmarksListBox_SelectedIndexChanged);
             this.serieBookmarksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
             // 
-            // playSoundWhenDownloadedCheckBox
-            // 
-            resources.ApplyResources(this.playSoundWhenDownloadedCheckBox, "playSoundWhenDownloadedCheckBox");
-            this.playSoundWhenDownloadedCheckBox.Name = "playSoundWhenDownloadedCheckBox";
-            this.playSoundWhenDownloadedCheckBox.UseVisualStyleBackColor = true;
-            // 
             // MangaCrawlerForm
             // 
             resources.ApplyResources(this, "$this");
@@ -805,6 +839,7 @@
             this.serversPanel.PerformLayout();
             this.tabControl.ResumeLayout(false);
             this.debugContextMenuStrip.ResumeLayout(false);
+            this.trayContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -817,7 +852,7 @@
         private System.Windows.Forms.Timer refreshTimer;
         private System.Windows.Forms.TabPage bookmarksTabPage;
         private System.Windows.Forms.Panel splitBookmarksPanel;
-        private System.Windows.Forms.Splitter splitterBooks;
+        private System.Windows.Forms.Splitter splitterBookmarks;
         private System.Windows.Forms.Panel chapterBookmarksPanel;
         private System.Windows.Forms.Button viewChapterBoksButton;
         private System.Windows.Forms.Button openChapterFolderBooksButton;
@@ -891,6 +926,10 @@
         private System.Windows.Forms.ToolStripMenuItem changeSerieURLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeChapterURLToolStripMenuItem;
         private System.Windows.Forms.CheckBox playSoundWhenDownloadedCheckBox;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.CheckBox MinimizeOnCloseCheckBox;
+        private System.Windows.Forms.ContextMenuStrip trayContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem exitTrayToolStripMenuItem;
     }
 }
 

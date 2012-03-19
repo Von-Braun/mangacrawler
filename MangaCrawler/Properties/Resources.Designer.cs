@@ -161,6 +161,13 @@ namespace MangaCrawler.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Manga_Crawler {
+            get {
+                object obj = ResourceManager.GetObject("Manga_Crawler", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to NEW.
         /// </summary>
@@ -176,6 +183,15 @@ namespace MangaCrawler.Properties {
         internal static string NewVersion {
             get {
                 return ResourceManager.GetString("NewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New chapters in:.
+        /// </summary>
+        internal static string TrayNotificationNewSeries {
+            get {
+                return ResourceManager.GetString("TrayNotificationNewSeries", resourceCulture);
             }
         }
         
