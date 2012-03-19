@@ -46,7 +46,12 @@ namespace MangaCrawler
         public void Restore()
         {
             foreach (var sel_item in m_selected_items)
-                m_list_box.SetSelected(m_list_box.Items.IndexOf(sel_item), true);
+            {
+                int index = m_list_box.Items.IndexOf(sel_item);
+
+                if (index != -1)
+                    m_list_box.SetSelected(index, true);
+            }
 
             if ((m_selected_item != null) && (m_list_box.Items.Contains(m_selected_item)))
                 m_list_box.SelectedItem = m_selected_item;

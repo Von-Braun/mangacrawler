@@ -238,6 +238,9 @@
       <Name>YAXLib</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Manga Crawler.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

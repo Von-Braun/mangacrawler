@@ -40,6 +40,9 @@ namespace MangaCrawler
         [YAXNode("PlaySoundWhenDownloaded")]
         private bool m_play_sound_when_downloaded = true;
 
+        [YAXNode("MinimizeOnClose")]
+        private bool m_minimize_on_close;
+
         private static Settings s_instance;
 
         static Settings()
@@ -148,6 +151,19 @@ namespace MangaCrawler
             set
             {
                 m_splitter_bookmarks_distance = value;
+                Save();
+            }
+        }
+
+        public bool MinimizeOnClose
+        {
+            get
+            {
+                return m_minimize_on_close;
+            }
+            set
+            {
+                m_minimize_on_close = value;
                 Save();
             }
         }
