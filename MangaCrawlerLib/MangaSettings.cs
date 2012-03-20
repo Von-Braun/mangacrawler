@@ -22,8 +22,8 @@ namespace MangaCrawlerLib
         [YAXNode("UseCBZ")]
         private bool m_use_cbs = false;
 
-        [YAXNode("CheckTimeDelta")]
-        private TimeSpan m_check_time_delta = new TimeSpan(hours: 0, minutes: 1, seconds: 0);
+        [YAXNode("CheckTimePeriod")]
+        private TimeSpan m_check_time_period = new TimeSpan(hours: 0, minutes: 15, seconds: 0);
 
         [YAXNode("MaxCatalogSize")]
         private int m_max_catalog_size = 100 * 1024 * 1024;
@@ -81,15 +81,15 @@ namespace MangaCrawlerLib
             }
         }
 
-        public TimeSpan CheckTimeDelta
+        public TimeSpan CheckTimePeriod
         {
             get
             {
-                return m_check_time_delta;
+                return m_check_time_period;
             }
             private set
             {
-                m_check_time_delta = value;
+                m_check_time_period = value;
                 OnChanged();
             }
         }

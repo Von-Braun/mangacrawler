@@ -49,13 +49,21 @@ namespace MangaCrawler
                 {
                     case SerieState.Error:
                     {
-                        a_args.Graphics.DrawString(Resources.Error, font,
-                            Brushes.Red, rect, StringFormat.GenericDefault);
+                        if (Serie.GetNewChapters().Any())
+                        {
+                            a_args.Graphics.DrawString(Resources.New, font,
+                                Brushes.Red, rect, StringFormat.GenericDefault);
+                        }
+                        else
+                        {
+                            a_args.Graphics.DrawString(Resources.Error, font,
+                                Brushes.Red, rect, StringFormat.GenericDefault);
+                        }
                         break;
                     }
                     case SerieState.Downloaded:
                     {
-                        if (Serie.Chapters.Any(c => !c.BookmarkIgnored))
+                        if (Serie.GetNewChapters().Any())
                         {
                             a_args.Graphics.DrawString(Resources.New, font,
                                 Brushes.Red, rect, StringFormat.GenericDefault);

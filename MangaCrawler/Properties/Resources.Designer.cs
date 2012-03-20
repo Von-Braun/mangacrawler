@@ -61,15 +61,6 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ABORTING.
-        /// </summary>
-        internal static string Aborted {
-            get {
-                return ResourceManager.GetString("Aborted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to BOOKMARKED.
         /// </summary>
         internal static string Bookmarked {
@@ -84,6 +75,15 @@ namespace MangaCrawler.Properties {
         internal static string Checking {
             get {
                 return ResourceManager.GetString("Checking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETED.
+        /// </summary>
+        internal static string Deleted {
+            get {
+                return ResourceManager.GetString("Deleted", resourceCulture);
             }
         }
         
@@ -161,9 +161,16 @@ namespace MangaCrawler.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap Manga_Crawler {
+        internal static System.Drawing.Bitmap Manga_Crawler_Green {
             get {
-                object obj = ResourceManager.GetObject("Manga_Crawler", resourceCulture);
+                object obj = ResourceManager.GetObject("Manga_Crawler_Green", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Manga_Crawler_Orange {
+            get {
+                object obj = ResourceManager.GetObject("Manga_Crawler_Orange", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

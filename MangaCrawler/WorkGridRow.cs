@@ -23,7 +23,7 @@ namespace MangaCrawler
                 {
                     case ChapterState.Error:
                         return MangaCrawler.Properties.Resources.WorkProgressError;
-                    case ChapterState.Aborted:
+                    case ChapterState.Deleted:
                         return MangaCrawler.Properties.Resources.WorkProgressAborted;
                     case ChapterState.Waiting:
                         return MangaCrawler.Properties.Resources.WorkProgressWaiting;

@@ -63,12 +63,12 @@ namespace MangaCrawlerLib
             return result;
         }
 
-        public void DownloadSeries(Server a_server)
+        public void DownloadSeries(Server a_server, bool a_force)
         {
             if (a_server == null)
                 return;
 
-            if (!a_server.DownloadRequired)
+            if (!a_server.IsDownloadRequired(a_force))
                 return;
 
             m_downloading.Add(a_server);
@@ -82,12 +82,12 @@ namespace MangaCrawlerLib
             }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
         }
 
-        public void DownloadChapters(Serie a_serie)
+        public void DownloadChapters(Serie a_serie, bool a_force)
         {
             if (a_serie == null)
                 return;
 
-            if (!a_serie.DownloadRequired)
+            if (!a_serie.IsDownloadRequired(a_force))
                 return;
 
             m_downloading.Add(a_serie);

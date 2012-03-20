@@ -19,18 +19,34 @@ namespace MangaCrawlerLib
         {
             EnsureLoaded();
 
-            m_list = a_new.ToList();
+            var copy = m_list.ToList();
+
+            foreach (var el in m_list.Except(a_new))
+                copy.Remove(el);
+
+            int index = 0;
+            foreach (var el in a_new)
+            {
+                if (copy.Count == index)
+                    copy.Insert(index, el);
+                if (copy[index] != el)
+                    copy.Insert(index, el);
+                index++;
+            }
+
+            m_list = copy;
         }
 
-        internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, Func<T, K> a_key_selector)
+        internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, Func<T, K> a_key_selector, bool a_remove)
         {
             EnsureLoaded();
 
-            lock (m_lock)
-            {
-                m_list = Merge(a_new, m_list, a_key_selector);
-                Remove(m_list, a_new, a_key_selector);
-            }
+            var list = Merge(a_new, m_list, a_key_selector);
+
+            if (a_remove)
+                Remove(list, a_new, a_key_selector);
+
+            m_list = list;
         }
 
         internal static void Remove<K>(IList<T> a_list,

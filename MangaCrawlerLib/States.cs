@@ -26,7 +26,7 @@ namespace MangaCrawlerLib
     public enum ChapterState
     {
         Initial,
-        Aborted,
+        Deleted,
         Waiting,
         DownloadingPagesList,
         DownloadingPages,

@@ -766,9 +766,6 @@ namespace MangaCrawlerLib
             }
         }
 
-        // TODO: zapisywanie pustych kolekcji, serverow nawet jesli nie maja serii, 
-        // itp, tak by byly idki do zalodowania
-
         private static Serie LoadSerie(ulong a_serie_id)
         {
             XDocument doc = LoadCatalogXml(a_serie_id);
