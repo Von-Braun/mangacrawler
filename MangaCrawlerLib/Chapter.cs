@@ -256,7 +256,6 @@ namespace MangaCrawlerLib
                                 "Exception #1, chapter: {0} state: {1}, {2}",
                                 this, State, ex2);
 
-                            state.Break();
                             error = true;
                         }
                     }
@@ -292,7 +291,7 @@ namespace MangaCrawlerLib
                     if (error)
                         State = ChapterState.Error;
                     else if (CancellationTokenSource.IsCancellationRequested)
-                        State = ChapterState.Aborted;
+                        State = ChapterState.Deleted;
                     else if (PagesDownloaded != Pages.Count)
                         State = ChapterState.Error;
                     else if (Pages.Any(p => p.State != PageState.Downloaded))
@@ -397,7 +396,7 @@ namespace MangaCrawlerLib
                         }
                         case ChapterState.Waiting:
                         {
-                            Debug.Assert((State == ChapterState.Aborted) ||
+                            Debug.Assert((State == ChapterState.Deleted) ||
                                          (State == ChapterState.Downloaded) ||
                                          (State == ChapterState.Error) ||
                                          (State == ChapterState.Initial));
@@ -418,7 +417,7 @@ namespace MangaCrawlerLib
                             Debug.Assert(State == ChapterState.DownloadingPages);
                             break;
                         }
-                        case ChapterState.Aborted:
+                        case ChapterState.Deleted:
                         {
                             Debug.Assert(State == ChapterState.Deleting);
                             break;

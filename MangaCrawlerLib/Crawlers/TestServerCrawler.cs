@@ -47,14 +47,14 @@ namespace MangaCrawlerLib.Crawlers
 
             public List<ChapterData> Chapters;
 
-            public IEnumerable<ChapterData> GetChapters()
+            public IEnumerable<ChapterData> GetChapters(int a_count = -1)
             {
                 if (Chapters != null)
                     return Chapters;
-                else return GenerateChapters();
+                else return GenerateChapters(a_count);
             }
 
-            private IEnumerable<ChapterData> GenerateChapters()
+            private IEnumerable<ChapterData> GenerateChapters(int a_count = -1)
             {
                 if (Seed == 0)
                     yield break;
@@ -62,18 +62,42 @@ namespace MangaCrawlerLib.Crawlers
                 Random random = new Random(Seed);
 
                 int maxc = (int)Math.Pow(random.Next(4, 15), 2);
+
+                if (a_count != -1)
+                    maxc = a_count;
+
                 for (int c = 1; c <= maxc; c++)
                 {
                     ChapterData chapter = new ChapterData();
                     chapter.Title = Title + " - Chapter " + c.ToString();
                     chapter.Seed = random.Next();
-
                     yield return chapter;
                 }
 
                 {
                     ChapterData chapter = new ChapterData();
                     chapter.Title = Title + " - empty pages";
+                    yield return chapter;
+                }
+
+                {
+                    ChapterData chapter = new ChapterData();
+                    chapter.Title = Title + " - error pages none";
+                    chapter.Seed = random.Next();
+                    yield return chapter;
+                }
+
+                {
+                    ChapterData chapter = new ChapterData();
+                    chapter.Title = Title + " - error page getimageurl";
+                    chapter.Seed = random.Next();
+                    yield return chapter;
+                }
+
+                {
+                    ChapterData chapter = new ChapterData();
+                    chapter.Title = Title + " - error page getimagestream";
+                    chapter.Seed = random.Next();
                     yield return chapter;
                 }
             }
@@ -109,6 +133,12 @@ namespace MangaCrawlerLib.Crawlers
                 Random random = new Random(Seed);
 
                 int maxp = (int)Math.Pow(random.Next(4, 12), 2);
+
+                if (Title.Contains("error page getimageurl"))
+                    maxp = 100;
+                if (Title.Contains(" error page getimagestream"))
+                    maxp = 100;
+
                 for (int p = 1; p <= maxp; p++)
                     yield return Title + " - Page " + p.ToString();
 
@@ -134,25 +164,40 @@ namespace MangaCrawlerLib.Crawlers
             m_max_con = a_max_con;
 
             int maxs = (int)Math.Pow(random.Next(10, 70), 2);
+
+            if (Name.Contains("error series few"))
+                maxs = 3456;
+
             for (int s = 1; s <= maxs; s++)
             {
                 SerieData serie = new SerieData();
-                serie.Title = a_name + " - Serie " + s.ToString();
+                serie.Title = a_name + " - Serie" + s.ToString();
                 serie.Seed = random.Next();
                 m_series.Add(serie);
             }
 
             {
                 SerieData serie = new SerieData();
-                serie.Title = a_name + " - empty chapters ";
+                serie.Title = a_name + " - empty chapters";
                 m_series.Add(serie);
             }
 
             {
                 SerieData serie = new SerieData();
-                serie.Title = a_name + " - empty pages ";
+                serie.Title = a_name + " - error chapters none";
+                serie.Seed = random.Next();
                 m_series.Add(serie);
             }
+
+            {
+                SerieData serie = new SerieData();
+                serie.Title = a_name + " - error chapters few";
+                serie.Seed = random.Next();
+                m_series.Add(serie);
+            }
+
+            if (Name.Contains("error series none"))
+                m_series.Clear();
 
             if (a_empty)
                 m_series.Clear();
@@ -198,10 +243,17 @@ namespace MangaCrawlerLib.Crawlers
                 Limiter.Release(a_server);
             }
 
+            if (a_server.Name.Contains("error series none"))
+                throw new Exception();
+
             Debug.Assert(a_server.Name == m_name);
+
+            bool gen_exc = a_server.Name.Contains("error series few");
 
             var toreport = (from serie in m_series
                             select new Serie(a_server, serie.URL, serie.Title)).ToArray();
+
+            bool exc = false;
 
             int total = toreport.Length;
 
@@ -243,9 +295,22 @@ namespace MangaCrawlerLib.Crawlers
                                   orderby s.Item1, s.Item2
                                   select s.Item3).ToList();
 
+                    if (exc)
+                        if (gen_exc)
+                            return;
+
                     a_progress_callback(
                         result.Count * 100 / total,
                         result);
+
+                    if (!exc)
+                    {
+                        if (gen_exc)
+                        {
+                            exc = true;
+                            throw new Exception();
+                        }
+                    }
                 });
             }
             else
@@ -276,9 +341,24 @@ namespace MangaCrawlerLib.Crawlers
 
             Debug.Assert(a_serie.Server.Name == m_name);
 
-            var serie = m_series.First(s => s.Title == a_serie.Title);
+            var serie = m_series.FirstOrDefault(s => s.Title == a_serie.Title);
 
-            var toreport = (from chapter in serie.GetChapters()
+            if (serie == null)
+            {
+                a_progress_callback(100, new Chapter[] {});
+                return;
+            }
+
+            if (serie.Title.Contains("error chapters none"))
+                throw new Exception();
+
+            bool gen_exc = serie.Title.Contains("error chapters few");
+
+            int count = -1;
+            if (gen_exc)
+                count = m_items_per_page * 8 + m_items_per_page / 3;
+
+            var toreport = (from chapter in serie.GetChapters(count)
                             select new Chapter(a_serie, chapter.URL, chapter.Title)).ToArray();
 
             int total = toreport.Length;
@@ -295,6 +375,8 @@ namespace MangaCrawlerLib.Crawlers
 
                 ConcurrentBag<Tuple<int, int, Chapter>> chapters =
                     new ConcurrentBag<Tuple<int, int, Chapter>>();
+
+                bool exc = false;
 
                 Parallel.ForEach(listlist,
                     new ParallelOptions()
@@ -321,9 +403,22 @@ namespace MangaCrawlerLib.Crawlers
                                       orderby s.Item1, s.Item2
                                       select s.Item3).ToList();
 
+                        if (gen_exc)
+                            if (exc)
+                                return;
+
                         a_progress_callback(
                             result.Count * 100 / total,
                             result);
+
+                        if (gen_exc)
+                        {
+                            if (!exc)
+                            {
+                                exc = true;
+                                throw new Exception();
+                            }
+                        }
                     });
             }
             else
@@ -338,8 +433,11 @@ namespace MangaCrawlerLib.Crawlers
             var chapter = serie.GetChapters().First(c => c.Title == a_chapter.Title);
             var pages = chapter.GeneratePages().ToList();
 
+            if (a_chapter.Title.Contains("error pages none"))
+                throw new Exception();
+
             var result = from page in pages
-                         select new Page(a_chapter, "fakse_page_url",
+                         select new Page(a_chapter, "fake_page_url",
                              pages.IndexOf(page) + 1, page);
 
             Limiter.Aquire(a_chapter);
@@ -357,6 +455,12 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override MemoryStream GetImageStream(Page a_page)
         {
+            if (a_page.Chapter.Title.Contains("error page getimagestream"))
+            {
+                if (a_page.Index == 45)
+                    throw new Exception();
+            }
+
             Bitmap bmp = new Bitmap(NextInt(600, 2000), NextInt(600, 2000));
             using (Graphics g = Graphics.FromImage(bmp))
             {
@@ -391,6 +495,13 @@ namespace MangaCrawlerLib.Crawlers
         internal override string GetImageURL(Page a_page)
         {
             a_page.State = PageState.Downloading;
+
+            if (a_page.Chapter.Title.Contains("error page getimageurl"))
+            {
+                if (a_page.Index == 55)
+                    throw new Exception();
+            }
+
             return "fake_image_url.jpg";
         }
 

@@ -6,17 +6,27 @@ using System.Diagnostics;
 
 namespace MangaCrawlerLib
 {
+    /// <summary>
+    /// Thread safe, copy on write semantic.
+    /// </summary>
     public class Bookmarks
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private List<Serie> m_bookmarks = new List<Serie>();
 
-        public void Load()
+        internal void Load()
         {
             m_bookmarks = Catalog.LoadBookmarks();
         }
 
-        public void Save()
+        internal void RemoveNotExisted()
+        {
+            m_bookmarks = (from serie in m_bookmarks
+                           where serie.Server.Series.Contains(serie)
+                           select serie).ToList();
+        }
+
+        private void Save()
         {
             Catalog.SaveBookmarks();
         }
@@ -48,6 +58,13 @@ namespace MangaCrawlerLib
             m_bookmarks = copy;
 
             Save();
+        }
+
+        public IEnumerable<Serie> GetSeriesWithNewChapters()
+        {
+            return (from serie in m_bookmarks
+                    where serie.GetNewChapters().Any()
+                    select serie).ToList();
         }
     }
 }

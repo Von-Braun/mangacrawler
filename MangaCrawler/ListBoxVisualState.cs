@@ -79,12 +79,6 @@ namespace MangaCrawler
 
         public void ReloadItems(IEnumerable<ListItem> a_enum)
         {
-            if ((m_selected_item != null) && (!a_enum.Contains(m_selected_item)))
-                Clear();
-
-            if (a_enum.Count() == 0)
-                Clear();
-
             m_list_box.ReloadItems(a_enum, this);
         }
     }

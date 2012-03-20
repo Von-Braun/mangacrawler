@@ -239,7 +239,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Manga Crawler.png" />
+    <None Include="Resources\Manga Crawler Green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Manga Crawler Orange.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -111,12 +111,13 @@ namespace MangaCrawlerLib
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
                     if (!m_series.LoadedFromXml)
-                        m_series.ReplaceInnerCollection(result);
+                        m_series.ReplaceInnerCollection(result, s => s.Title + s.URL, false);
                     else if (progress == 100)
-                        m_series.ReplaceInnerCollection(result, (s) => s.Title + s.URL);
+                        m_series.ReplaceInnerCollection(result, s => s.Title + s.URL, true);
                     DownloadProgress = progress;
                 });
 
+                DownloadManager.Instance.Bookmarks.RemoveNotExisted();
                 State = ServerState.Downloaded;
             }
             catch (ObjectDisposedException)
@@ -136,20 +137,22 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", ID, Name);
         }
 
-        public bool DownloadRequired
+        public bool IsDownloadRequired(bool a_force)
         {
-            get
+            if (State == ServerState.Downloaded)
             {
-                if (State == ServerState.Downloaded)
+                if (!a_force)
                 {
-                    if (DateTime.Now - m_check_date_time > DownloadManager.Instance.MangaSettings.CheckTimeDelta)
+                    if (DateTime.Now - m_check_date_time > DownloadManager.Instance.MangaSettings.CheckTimePeriod)
                         return true;
                     else
                         return false;
                 }
                 else
-                    return (State == ServerState.Error) || (State == ServerState.Initial);
+                    return true;
             }
+            else
+                return (State == ServerState.Error) || (State == ServerState.Initial);
         }
 
         public override string GetDirectory()

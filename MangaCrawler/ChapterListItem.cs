@@ -35,9 +35,9 @@ namespace MangaCrawler
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
                     }
-                    case ChapterState.Aborted:
+                    case ChapterState.Deleted:
                     {
-                        a_args.Graphics.DrawString(Resources.Aborted, font,
+                        a_args.Graphics.DrawString(Resources.Deleted, font,
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
                     }

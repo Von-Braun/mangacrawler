@@ -43,6 +43,12 @@ namespace MangaCrawler
         [YAXNode("MinimizeOnClose")]
         private bool m_minimize_on_close;
 
+        [YAXNode("ShowBaloonTips")]
+        private bool m_show_baloon_tips;
+
+        [YAXNode("CheckBookmarksPeriod")]
+        private TimeSpan m_check_bookmarks_period = new TimeSpan(hours: 1, minutes: 0, seconds: 0);
+
         private static Settings s_instance;
 
         static Settings()
@@ -164,6 +170,32 @@ namespace MangaCrawler
             set
             {
                 m_minimize_on_close = value;
+                Save();
+            }
+        }
+
+        public bool ShowBaloonTips
+        {
+            get
+            {
+                return m_show_baloon_tips;
+            }
+            set
+            {
+                m_show_baloon_tips = value;
+                Save();
+            }
+        }
+
+        public TimeSpan CheckBookmarksPeriod
+        {
+            get
+            {
+                return m_check_bookmarks_period;
+            }
+            set
+            {
+                m_check_bookmarks_period = value;
                 Save();
             }
         }

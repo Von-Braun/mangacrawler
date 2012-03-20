@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {
+    /// <summary>
+    /// Thread safe, copy on write semantic.
+    /// </summary>
     public class Works
     {
         private List<Chapter> m_works = new List<Chapter>();
@@ -13,7 +17,9 @@ namespace MangaCrawlerLib
         {
             IEnumerable<Chapter> works = from work in Catalog.LoadWorks()
                                          orderby work.LimiterOrder
+                                         where work.State == ChapterState.Initial
                                          select work;
+
             DownloadManager.Instance.DownloadPages(works);
         }
 
@@ -21,51 +27,29 @@ namespace MangaCrawlerLib
         {
             get
             {
-                lock (m_works)
-                {
-                    var aborted = from work in m_works
-                                  where work.State == ChapterState.Aborted
-                                  select work;
+                m_works = (from work in m_works
+                           where work.State != ChapterState.Deleted
+                           select work).ToList();
 
-                    foreach (var el in aborted.ToArray())
-                        m_works.Remove(el);
-
-                    return m_works.ToArray();
-                }
+                return m_works;
             }
         }  
 
         public void Save()
         {
-            IEnumerable<Chapter> copy; 
-
-            lock (m_works)
-            {
-                copy = m_works.ToArray();
-            }
-
-            copy = copy.Where(c => c.IsDownloading);
-
-            Catalog.SaveWorks(copy);
+            Catalog.SaveWorks(m_works.Where(c => c.IsDownloading));
         }
 
         public void Remove(Chapter a_work)
         {
-            lock (m_works)
-            {
-                if (!m_works.Remove(a_work))
-                    Loggers.MangaCrawler.WarnFormat("Chapter not in s_works: {0}", a_work);
-            }
+            m_works = m_works.Except(a_work).ToList();
         }
 
         internal void Add(Chapter chapter)
         {
-            lock (m_works)
-            {
-                if (m_works.Contains(chapter))
-                    m_works.Remove(chapter);
-                m_works.Add(chapter);
-            }
+            var copy = m_works.ToList();
+            copy.Add(chapter);
+            m_works = copy;
         }
     }
 }

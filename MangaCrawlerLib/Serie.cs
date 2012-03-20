@@ -106,9 +106,9 @@ namespace MangaCrawlerLib
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
                     if (!m_chapters.LoadedFromXml)
-                        m_chapters.ReplaceInnerCollection(result);
+                        m_chapters.ReplaceInnerCollection(result, c => c.Title + c.URL, false);
                     else if (progress == 100)
-                        m_chapters.ReplaceInnerCollection(result, (c) => c.Title + c.URL);
+                        m_chapters.ReplaceInnerCollection(result, c => c.Title + c.URL, true);
                     DownloadProgress = progress; 
                 });
 
@@ -119,7 +119,7 @@ namespace MangaCrawlerLib
             }
             catch (Exception)
             {
-                State = SerieState.Downloaded;
+                State = SerieState.Error;
             }
 
             Catalog.Save(this);
@@ -131,20 +131,21 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Server.Name, Title);
         }
 
-        public bool DownloadRequired
+        public bool IsDownloadRequired(bool a_force)
         {
-            get
+            if (State == SerieState.Downloaded)
             {
-                if (State == SerieState.Downloaded)
+                if (!a_force)
                 {
-                    if (DateTime.Now - m_check_date_time > DownloadManager.Instance.MangaSettings.CheckTimeDelta)
+                    if (DateTime.Now - m_check_date_time > DownloadManager.Instance.MangaSettings.CheckTimePeriod)
                         return true;
                     else
                         return false;
                 }
-                else
-                    return (State == SerieState.Error) || (State == SerieState.Initial);
+                return true;
             }
+            else
+                return (State == SerieState.Error) || (State == SerieState.Initial);
         }
 
         public SerieState State
@@ -222,6 +223,13 @@ namespace MangaCrawlerLib
             {
                 return DownloadManager.Instance.Bookmarks.List.Contains(this);
             }
+        }
+
+        public IEnumerable<Chapter> GetNewChapters()
+        {
+            return (from chapter in Chapters
+                    where !chapter.BookmarkIgnored
+                    select chapter).ToList();
         }
     }
 }

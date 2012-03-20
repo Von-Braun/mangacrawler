@@ -43,25 +43,14 @@ namespace MangaCrawler
      * 
      * Testy
      * sciaganie losowe wielu rzeczy i ch anulowanie, brak wyjatkow, deadlockow, spojnosc danych
-     * dodac procedure ktora testuje spojnosc danych - ich stan i powiazania
      * pobranie serii, chapterow, pagey - dodanie nowych, usuniecie istniejacych, jakies zmiany, czy ponowne 
      *   pobranie sobie z tym radzi
-     * page - zmiana hashu juz pobranego, usunicie go z dysku
-     * page - symulacja webexcption podczas pobierania
-     * page - symulacja pobrania 0 lenth
-     * page - symulacja pobrania smieci - np 404 not found
-     * testy na series, chapter na zwrocenie jakis wyjatkow z czesci web
-     * page - wywalenie wyjatku, niemozliwy zapis pliku (na plik dac lock)
-     * podotykac wszystkiego, sprawdzic zajetosc pamieci
+     * katalog do zapisu obrazkow tylko do odczyty
      * ktos klika w element ktory nie istnieje, pojawia sie error, albo jest on w trakcie sciagania, w tym 
      *   czasie nastepuje jego odswiezenie i znika on z listy
-     * zmiana katalogu glownego z kombinacja powyzszych
      * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
-     * usunelismy jakis serie, chapter, powinno sie pokasowac co trzeba w katalogu, dla serii, wszystkie chaptery i page, 
-     * pojawienie sie czegos nowego, czy zostanie dodany tylko jeden nowy id
      * testy na pamietanie, przywracanie stanu vizualizacji kiedy kasowane sa zaznaczone elementy, tak ze znikaja 
      * itemy, indexy wychodza za zakres itp, multiselekcja takze test
-     * xml - wpisac cos nie poprawnego do nazwy pliku co sprawi ze fileinfo wywali wyjatek
      * przetestowac compaktowanie 
      * - dodac jakies inne liki
      * - dodac xml o zlych nazwach
@@ -72,16 +61,59 @@ namespace MangaCrawler
      * - czy brute force usuwa te najstarsze
      * - czy brute force nie rusza do akcji jesli nie trzeba
      * strategie zmiany nazw imaagow
-     * testy gui
-     * testy czy pobieranie jest w kolejnosci zaznaczania
-     * testy na dzialanie priorytetow
      * testy na manga dir ze i bez slasha na koncu
-     * test ze wszystkie stany potrafia sie odrysowac - niektore nie powinny przejsc do rysowania, ale moze sie zdarzyc
-     * przetestowac dzialanie wszelkich przyciskow
-     * bookmark, a usuwanie serii, rozdzialu
      * 
-     * zapamietywanie splittera
+     */
+
+    /*
+     * usuniecie serii dodanej do bookmark - odswiezenie w series tab  jak i w bookmark tab
+     *   w series tab po zmianie serwera powinna zniknac, w bookmarks powina zniknac po okresowym sprawdzeniu 
+     *   dostepnosci nowych chapterow, podobnie w zakladce serie tab jesli nie przeklikamy serwerow powinna zniknac 
+     *   po okresowym sprawdzeniu bookmarks
+     *   
+     * usuniecie rozdzialu z bookmark serii ktory jest nowy powinno zdjac znacznik new
      * 
+     * dodawanie do bookmark serii ma nie dzialac podczas pobierania serii.
+     * 
+     * usuniecie z bookmark zachowuje zaznaczenie w liscie
+     * 
+     * dodanie do bookmark dwa razy tego samego to blad
+     * 
+     * download (oba przyciski) juz pobieranych rzeczy to blad
+     * 
+     * dodanie nowego chapteru powinno spowodowac pojawienie sie nowego rozdzialu w bookmarks
+     * 
+     * dodanie nowego chapteru w minimalizacji powinno pokazac tooltip
+     * 
+     * klikniecie w tooltip powinno pokazac zkladke bookmarks, serie i nowy rozdzial, 
+     *   kiedy cos tam jest wybrane powinno zniknac
+     *   
+     * pojawienie sie czegos nowego niezaleznie od stanu minimalizajci zakladki, a takze znikniecie tego 
+     * powinno zmieniac ikone 
+     * 
+     * przetestowac elementy puste i elementy generujace bledy przy probie dostepu, sprobowac je dodac do 
+     * bookmarks i odswiezyc
+     * 
+     * zamkniecie na downloading powinno wznowic pobieranie chapteru od poczatku
+     * 
+     * usuwanie wpisow z downloading: deleted - automatycznie, error, 
+     *   downloaded - na rzadanie albo podczas nastepnego uruchomienia, 
+     *   downloading - mozna klika tak dlugo jak wejdzie w stan deleting, pozniej dzwiek
+     *   
+     * wpisy na itemach z listboxach - deleted- trwale zostaje, 
+     * downloaded - trwale zostaje, error - trwale zostaje, wszystkie ingi znikaja
+     * 
+     * //
+     * 
+     * priorytety - zalaczyc do pobierania serie - wiele na raz, rozdzialy z jednej serii - wiele na raz, 
+     * chaptery dla kazdego serwera - w kolejnosci dodania pojedynczo, dla kazdego chapteru wiele stron na raz, 
+     * serie, chaptery maja pierwszenstwo nad stronami, pobieranie chapterow wstrzymuje pobierania serii
+     * 
+     * przetestowanie pamietania i dzialania opcji
+     * 
+     * przetestowac dzialanie wszystkich przyciskow dla selekcji i multiselekcj, brak wybrania, 
+     *   juz zostalo zrobione (dodane, uruchomione)
+     *   
      */
 
     public partial class MangaCrawlerForm : Form
@@ -96,23 +128,20 @@ namespace MangaCrawler
         private bool m_refresh_once_after_all_done;
         private bool m_working;
         private bool m_force_close;
+        private DateTime m_last_bookmark_check = DateTime.Now;
+        private bool m_play_sound_when_downloaded;
 
         private static Color BAD_DIR = Color.Red;
 
         public MangaCrawlerForm()
         {
             InitializeComponent();
-
             Settings.Instance.FormState.Init(this);
         }
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
             SetupLog4NET();
-
-            Icon = Icon.FromHandle(Resources.Manga_Crawler.GetHicon());
-            notifyIcon.Icon = Icon;
-            notifyIcon.Visible = false;
 
             Text = String.Format("{0} {1}.{2}", Text,
                 Assembly.GetAssembly(GetType()).GetName().Version.Major, 
@@ -125,7 +154,10 @@ namespace MangaCrawler
             mangaRootDirTextBox.Text = Settings.Instance.MangaSettings.GetMangaRootDir(false);
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
             cbzCheckBox.Checked = Settings.Instance.MangaSettings.UseCBZ;
-            MinimizeOnCloseCheckBox.Checked = Settings.Instance.MinimizeOnClose;
+            minimizeOnCloseCheckBox.Checked = Settings.Instance.MinimizeOnClose;
+            if (!minimizeOnCloseCheckBox.Checked)
+                showBaloonTipsCheckBox.Enabled = false;
+            showBaloonTipsCheckBox.Checked = Settings.Instance.ShowBaloonTips;
 
             if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.DoNothing)
                 pageNamingStrategyComboBox.SelectedIndex = 0;
@@ -156,12 +188,26 @@ namespace MangaCrawler
             worksGridView.AutoGenerateColumns = false;
             worksGridView.DataSource = new BindingList<WorkGridRow>();
 
-            UpdateAll();
+            CheckBookmarks(a_force: true);
 
             refreshTimer.Enabled = true;
 
-            tabControl.SelectedTab = bookmarksTabPage;
-            tabControl.SelectedTab = seriesTabPage;
+            bookmarksTimer.Enabled = true;
+            bookmarksTimer.Interval = (int)Settings.Instance.MangaSettings.CheckTimePeriod.TotalMilliseconds / 10;
+            Settings.Instance.MangaSettings.Changed += () => bookmarksTimer.Interval = 
+                (int)Settings.Instance.MangaSettings.CheckTimePeriod.TotalMilliseconds / 10;
+
+            UpdateAll();
+        }
+
+        private void UpdateIcons()
+        {
+            if (DownloadManager.Instance.Bookmarks.GetSeriesWithNewChapters().Any())
+                Icon = Icon.FromHandle(Resources.Manga_Crawler_Green.GetHicon());
+            else
+                Icon = Icon.FromHandle(Resources.Manga_Crawler_Orange.GetHicon());
+            
+            notifyIcon.Icon = Icon;
         }
 
         private void SetupLog4NET()
@@ -249,7 +295,7 @@ namespace MangaCrawler
 
         private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DownloadManager.Instance.DownloadSeries(SelectedServer);
+            DownloadManager.Instance.DownloadSeries(SelectedServer, a_force: false);
 
             UpdateAll();
 
@@ -267,7 +313,7 @@ namespace MangaCrawler
                 m_series_visual_states[SelectedServer] = 
                     new ListBoxVisualState(seriesListBox);
 
-            DownloadManager.Instance.DownloadChapters(SelectedSerie);
+            DownloadManager.Instance.DownloadChapters(SelectedSerie, a_force: false);
 
             UpdateAll();
 
@@ -341,6 +387,7 @@ namespace MangaCrawler
                 SystemSounds.Beep.Play();
 
             DownloadManager.Instance.DownloadPages(a_chapters);
+            m_play_sound_when_downloaded = true;
             UpdateAll();
         }
 
@@ -583,14 +630,22 @@ namespace MangaCrawler
                 if (m_working)
                 {
                     m_working = false;
-                    SystemSounds.Beep.Play();
+
+                    if (m_play_sound_when_downloaded)
+                    {
+                        m_play_sound_when_downloaded = false;
+
+                        if (Settings.Instance.PlaySoundWhenDownloaded)
+                            SystemSounds.Beep.Play();
+                    }
                 }
 
                 return;
             }
 
             DownloadManager.Instance.Works.Save();
-            DownloadManager.Instance.Bookmarks.Save();
+            ShowNotificationAboutNewChapters();
+            UpdateIcons();
 
             UpdateAll();
         }
@@ -612,6 +667,8 @@ namespace MangaCrawler
                 UpdateSerieBookmarks();
                 UpdateChapterBookmarks();
             }
+
+            UpdateIcons();
         }
 
         private void UpdateChapters()
@@ -750,9 +807,6 @@ namespace MangaCrawler
 
         private void viewPagesButton_Click(object sender, EventArgs e)
         {
-            ShowNotificationAboutNewChapters();
-            return; 
-
             ViewChapters(GetSelectedChapters());
         }
 
@@ -967,7 +1021,7 @@ namespace MangaCrawler
         {
             var works = GetSelectedWorks();
 
-            if (!works.Any())
+            if (!works.Any() || works.Any(c => c.State == ChapterState.Deleting))
             {
                 SystemSounds.Beep.Play();
                 return;
@@ -1023,6 +1077,13 @@ namespace MangaCrawler
                     serie = (seriesListBox.Items[0] as SerieListItem).Serie;
             }
 
+            if ((serie == null) || serie.IsDownloading || 
+                DownloadManager.Instance.Bookmarks.List.Contains(serie))
+            {
+                SystemSounds.Beep.Play();
+                return;
+            }
+
             DownloadManager.Instance.Bookmarks.Add(serie);
 
             UpdateAll();
@@ -1030,11 +1091,11 @@ namespace MangaCrawler
 
         private void UpdateSerieBookmarks()
         {
-            var ar = from bookmark in DownloadManager.Instance.Bookmarks.List
-                     select new SerieBookmarkListItem(bookmark);
+            var bookmarks = (from bookmark in DownloadManager.Instance.Bookmarks.List
+                             orderby new SerieBookmarkListItem(bookmark).ToString()
+                             select new SerieBookmarkListItem(bookmark)).ToList();
 
-            new ListBoxVisualState(serieBookmarksListBox).ReloadItems(
-                ar.OrderBy(b => b.ToString()));
+            new ListBoxVisualState(serieBookmarksListBox).ReloadItems(bookmarks);
         }    
 
         private void UpdateChapterBookmarks()
@@ -1137,7 +1198,7 @@ namespace MangaCrawler
         private void serieBookmarksListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedSerieBookmark != null)
-                DownloadManager.Instance.DownloadChapters(SelectedSerieBookmark);
+                DownloadManager.Instance.DownloadChapters(SelectedSerieBookmark, a_force: false);
 
             UpdateAll();
 
@@ -1264,7 +1325,9 @@ namespace MangaCrawler
 
         private void minimizeOnCloseCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Instance.MinimizeOnClose = MinimizeOnCloseCheckBox.Checked;
+            Settings.Instance.MinimizeOnClose = minimizeOnCloseCheckBox.Checked;
+
+            showBaloonTipsCheckBox.Enabled = minimizeOnCloseCheckBox.Checked;
         }
 
         private void exitTrayToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1320,25 +1383,18 @@ namespace MangaCrawler
                 MinimizeToTray(false);
         }
 
-        // TODO: 
-        // czy pokazywac balloon tip tylko jak w tray czy takze jak niekatywny
-        // czy aktywacja ma zamykac baloon tipa
-        // przetestowac dzialanie tipow jesli niekatywny, ukryty w tray
-        // co jesli uzytkownik kliknie w close na notyfikacji - pokazac ponownie, czy ignorowac, co po ponownym 
-        // uruchomieniu
-        // co ile pokazywac notyfikacje
-
         private void ShowNotificationAboutNewChapters()
         {
-            var new_chapters = (from serie in DownloadManager.Instance.Bookmarks.List
-                                where serie.Chapters.Any(c => !c.BookmarkIgnored)
+            if (Visible)
+                return;
+            if (!Settings.Instance.ShowBaloonTips)
+                return;
+
+            var new_chapters = (from serie in DownloadManager.Instance.Bookmarks.GetSeriesWithNewChapters()
                                 orderby new SerieBookmarkListItem(serie).ToString()
                                 select new SerieBookmarkListItem(serie)).ToArray();
 
             if (!new_chapters.Any())
-                return;
-
-            if (Focused)
                 return;
 
             bool too_much = false;
@@ -1363,12 +1419,77 @@ namespace MangaCrawler
         private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
             MinimizeToTray(false);
+
+            tabControl.SelectedTab = bookmarksTabPage;
+
+            var s1 = serieBookmarksListBox.Items.Cast<SerieBookmarkListItem>().FirstOrDefault(
+                sbli => sbli.Serie.GetNewChapters().Any());
+
+            if (s1 != null)
+            {
+                serieBookmarksListBox.SelectedItem = s1;
+
+                var s2 = chapterBookmarksListBox.Items.Cast<ChapterBookmarkListItem>().FirstOrDefault(
+                    cbli => !cbli.Chapter.BookmarkIgnored);
+
+                if (s2 != null)
+                {
+                    chapterBookmarksListBox.ClearSelected();
+                    chapterBookmarksListBox.SelectedItem = s2;
+                }
+            }
         }
 
         private void notifyIcon_BalloonTipClosed(object sender, EventArgs e)
         {
             if (notifyIcon.Visible && Visible)
                 MinimizeToTray(false);
+        }
+
+        private void showBaloonTipsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Instance.ShowBaloonTips = showBaloonTipsCheckBox.Checked;
+        }
+
+        private void bookmarksTimer_Tick(object sender, EventArgs e)
+        {
+            CheckBookmarks(a_force: false);
+        }
+
+        private void checkNowBookmarksButton_Click(object sender, EventArgs e)
+        {
+            CheckBookmarks(a_force: true);
+        }
+
+        private void CheckBookmarks(bool a_force)
+        {
+            if (!a_force)
+            {
+                if (DateTime.Now - m_last_bookmark_check < Settings.Instance.CheckBookmarksPeriod)
+                    return;
+            }
+
+            m_last_bookmark_check = DateTime.Now;
+
+            foreach (var server in DownloadManager.Instance.Bookmarks.List.Select(s => s.Server).Distinct())
+                DownloadManager.Instance.DownloadSeries(server, true);
+
+            foreach (var serie in DownloadManager.Instance.Bookmarks.List)
+                DownloadManager.Instance.DownloadChapters(serie, true);
+        }
+
+        private void forceBookmarksCheckToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Task(() => 
+            {
+                Thread.Sleep(5000);
+
+                Invoke(new Action(() =>
+                {
+                    SystemSounds.Beep.Play();
+                    CheckBookmarks(a_force: true);
+                }));
+            }).Start();
         }
     }
 }

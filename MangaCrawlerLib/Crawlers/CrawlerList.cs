@@ -31,6 +31,8 @@ namespace MangaCrawlerLib.Crawlers
             yield return new TestServerCrawler("fast, slow series chapters", 300, true, true, false, 0);
             yield return new TestServerCrawler("very_slow, slow", 3000, true, true, false, 0);
             yield return new TestServerCrawler("very_slow, max_con, slow", 3000, true, true, false, 1);
+            yield return new TestServerCrawler("error series none", 3000, true, true, false, 0);
+            yield return new TestServerCrawler("error series few", 3000, true, true, false, 0);
         }
 
         public static IEnumerable<Crawler> GetRealCrawlers()
