@@ -118,11 +118,11 @@
             this.renameChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeSerieURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeChapterURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forceBookmarksCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bookmarksTimer = new System.Windows.Forms.Timer(this.components);
-            this.forceBookmarksCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versionPanel.SuspendLayout();
             this.bookmarksTabPage.SuspendLayout();
             this.splitBookmarksPanel.SuspendLayout();
@@ -352,6 +352,7 @@
             resources.ApplyResources(this.playSoundWhenDownloadedCheckBox, "playSoundWhenDownloadedCheckBox");
             this.playSoundWhenDownloadedCheckBox.Name = "playSoundWhenDownloadedCheckBox";
             this.playSoundWhenDownloadedCheckBox.UseVisualStyleBackColor = true;
+            this.playSoundWhenDownloadedCheckBox.CheckedChanged += new System.EventHandler(this.playSoundWhenDownloadedCheckBox_CheckedChanged);
             // 
             // optionslLabel
             // 
@@ -366,7 +367,9 @@
             this.pageNamingStrategyComboBox.Items.AddRange(new object[] {
             resources.GetString("pageNamingStrategyComboBox.Items"),
             resources.GetString("pageNamingStrategyComboBox.Items1"),
-            resources.GetString("pageNamingStrategyComboBox.Items2")});
+            resources.GetString("pageNamingStrategyComboBox.Items2"),
+            resources.GetString("pageNamingStrategyComboBox.Items3"),
+            resources.GetString("pageNamingStrategyComboBox.Items4")});
             resources.ApplyResources(this.pageNamingStrategyComboBox, "pageNamingStrategyComboBox");
             this.pageNamingStrategyComboBox.Name = "pageNamingStrategyComboBox";
             this.pageNamingStrategyComboBox.SelectedIndexChanged += new System.EventHandler(this.pageNamingStrategyComboBox_SelectedIndexChanged);
@@ -493,8 +496,8 @@
             dataGridViewCellStyle5.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.worksGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.worksGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.worksGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.worksGridView_CellContentClick);
             this.worksGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.worksGridView_KeyDown);
+            this.worksGridView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.worksGridView_MouseDown);
             // 
             // Chapter
             // 
@@ -804,6 +807,12 @@
             resources.ApplyResources(this.changeChapterURLToolStripMenuItem, "changeChapterURLToolStripMenuItem");
             this.changeChapterURLToolStripMenuItem.Click += new System.EventHandler(this.changeChapterURLToolStripMenuItem_Click);
             // 
+            // forceBookmarksCheckToolStripMenuItem
+            // 
+            this.forceBookmarksCheckToolStripMenuItem.Name = "forceBookmarksCheckToolStripMenuItem";
+            resources.ApplyResources(this.forceBookmarksCheckToolStripMenuItem, "forceBookmarksCheckToolStripMenuItem");
+            this.forceBookmarksCheckToolStripMenuItem.Click += new System.EventHandler(this.forceBookmarksCheckToolStripMenuItem_Click);
+            // 
             // notifyIcon
             // 
             this.notifyIcon.ContextMenuStrip = this.trayContextMenuStrip;
@@ -829,12 +838,6 @@
             // 
             this.bookmarksTimer.Interval = 1000;
             this.bookmarksTimer.Tick += new System.EventHandler(this.bookmarksTimer_Tick);
-            // 
-            // forceBookmarksCheckToolStripMenuItem
-            // 
-            this.forceBookmarksCheckToolStripMenuItem.Name = "forceBookmarksCheckToolStripMenuItem";
-            resources.ApplyResources(this.forceBookmarksCheckToolStripMenuItem, "forceBookmarksCheckToolStripMenuItem");
-            this.forceBookmarksCheckToolStripMenuItem.Click += new System.EventHandler(this.forceBookmarksCheckToolStripMenuItem_Click);
             // 
             // MangaCrawlerForm
             // 

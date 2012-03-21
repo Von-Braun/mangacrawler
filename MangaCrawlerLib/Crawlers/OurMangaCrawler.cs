@@ -60,16 +60,6 @@ namespace MangaCrawlerLib
 
             doc = DownloadDocument(a_chapter, url.GetAttributeValue("href", ""));
 
-            if (a_chapter.Token.IsCancellationRequested)
-            {
-                Loggers.Cancellation.InfoFormat(
-                    "Pages - token cancelled, a_url: {0}",
-                    a_chapter.URL);
-
-                a_chapter.Token.ThrowIfCancellationRequested();
-            }
-
-
             var pages = doc.DocumentNode.SelectNodes("//div[@class='inner_heading_right']/h3/select[2]/option");
 
             int index = 0;

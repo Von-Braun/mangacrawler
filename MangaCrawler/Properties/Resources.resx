@@ -129,12 +129,6 @@
   <data name="Error" xml:space="preserve">
     <value>ERROR</value>
   </data>
-  <data name="ExitQuestion" xml:space="preserve">
-    <value>Downloading in progress. Exit anyway?</value>
-  </data>
-  <data name="HomePage" xml:space="preserve">
-    <value>http://mangacrawler.codeplex.com/</value>
-  </data>
   <data name="NewVersion" xml:space="preserve">
     <value>New version</value>
   </data>
@@ -1421,5 +1415,8 @@ chapter: {2}</value>
   </data>
   <data name="TrayNotificationNewSeries" xml:space="preserve">
     <value>New chapters in:</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>http://mangacrawler.codeplex.com/</value>
   </data>
 </root>

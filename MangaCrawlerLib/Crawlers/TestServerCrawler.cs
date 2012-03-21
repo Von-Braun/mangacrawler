@@ -100,6 +100,13 @@ namespace MangaCrawlerLib.Crawlers
                     chapter.Seed = random.Next();
                     yield return chapter;
                 }
+
+                {
+                    ChapterData chapter = new ChapterData();
+                    chapter.Title = Title + " - out of order pages";
+                    chapter.Seed = random.Next();
+                    yield return chapter;
+                }
             }
 
             public string URL;
@@ -141,6 +148,9 @@ namespace MangaCrawlerLib.Crawlers
 
                 for (int p = 1; p <= maxp; p++)
                     yield return Title + " - Page " + p.ToString();
+
+                if (Title.Contains("out of order pages"))
+                    yield return "!! 12" + Title + " - Page last";
 
             }
 

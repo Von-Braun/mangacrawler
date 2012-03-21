@@ -15,6 +15,11 @@ namespace MangaCrawler
             Chapter = a_chapter;
         }
 
+        public override string ToString()
+        {
+            return Chapter.ToString();
+        }
+
         public string Progress
         {
             get

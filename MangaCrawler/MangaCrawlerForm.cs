@@ -31,6 +31,7 @@ namespace MangaCrawler
      * 
      * instalator, x86, x64
      * deinstalacja powinna usunac katalog
+     * przygotowac nie instalke
      * 
      * nowe serwisy:
      * http://www.mangahere.com/
@@ -41,31 +42,11 @@ namespace MangaCrawler
      * http://manga.animea.net/browse.html
      * http://www.mangamonger.com/
      * 
-     * Testy
-     * sciaganie losowe wielu rzeczy i ch anulowanie, brak wyjatkow, deadlockow, spojnosc danych
-     * pobranie serii, chapterow, pagey - dodanie nowych, usuniecie istniejacych, jakies zmiany, czy ponowne 
-     *   pobranie sobie z tym radzi
-     * katalog do zapisu obrazkow tylko do odczyty
-     * ktos klika w element ktory nie istnieje, pojawia sie error, albo jest on w trakcie sciagania, w tym 
-     *   czasie nastepuje jego odswiezenie i znika on z listy
-     * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
-     * testy na pamietanie, przywracanie stanu vizualizacji kiedy kasowane sa zaznaczone elementy, tak ze znikaja 
-     * itemy, indexy wychodza za zakres itp, multiselekcja takze test
-     * przetestowac compaktowanie 
-     * - dodac jakies inne liki
-     * - dodac xml o zlych nazwach
-     * - wprowadzac bledy w xmlach
-     * - czy usuwane sa sieroty
-     * - czy usuwane sa chaptery bez imagow (nie ma byc all image)
-     * - czy usuwane sa uste serie
-     * - czy brute force usuwa te najstarsze
-     * - czy brute force nie rusza do akcji jesli nie trzeba
-     * strategie zmiany nazw imaagow
-     * testy na manga dir ze i bez slasha na koncu
-     * 
      */
-
+    
     /*
+     * TESTY
+     * 
      * usuniecie serii dodanej do bookmark - odswiezenie w series tab  jak i w bookmark tab
      *   w series tab po zmianie serwera powinna zniknac, w bookmarks powina zniknac po okresowym sprawdzeniu 
      *   dostepnosci nowych chapterow, podobnie w zakladce serie tab jesli nie przeklikamy serwerow powinna zniknac 
@@ -103,17 +84,68 @@ namespace MangaCrawler
      * wpisy na itemach z listboxach - deleted- trwale zostaje, 
      * downloaded - trwale zostaje, error - trwale zostaje, wszystkie ingi znikaja
      * 
-     * //
-     * 
      * priorytety - zalaczyc do pobierania serie - wiele na raz, rozdzialy z jednej serii - wiele na raz, 
      * chaptery dla kazdego serwera - w kolejnosci dodania pojedynczo, dla kazdego chapteru wiele stron na raz, 
      * serie, chaptery maja pierwszenstwo nad stronami, pobieranie chapterow wstrzymuje pobierania serii
      * 
+     * ponowic pobranie anulowane rozdzialu
+     * 
+     * masowe anulowanie rozdzialow z dwoch serwerow, ich ponowne zalaczenie do pobierania
+     * 
+     * przetestowanie timera na sprawdzanie bookmarka, przetestowanie czasu zanim ponownie sprawdzimy juz pobrane
+     * 
+     * testy na manga dir ze i bez slasha na koncu
+     * 
+     * przetestowac detekcje nowej wersji
+     * 
      * przetestowanie pamietania i dzialania opcji
+     * 
+     * dodanie ponownie tego samego pobierania nie wstawia nowego work, pozycja work nie zmienia sie
+     * 
+     * jesli cbz juz istnieje powinien zostac nadpisany
+     * 
+     * dzwiek o zakonczeniu pobierania takze jesli pobieramy od startu
+     * 
+     * zaznaczenie elementu w chapte, przejscie na inna serie, zaznaczenie innego indeksu, przejscie spowrotem - w chapter 
+     * powinien byc tylko jeden chapter
+     * 
+     * usuwanie nieistniejacej zdalnie rzeczy, a zaznaczenie, w bookmark co sie dzieje jesli jednoczesnie jest bookmark, 
+     * czy bookmark.xml sie czysci, co jesli zaznaczenie to ostatni item, 
+     * 
+     * upewnic sie ze uzywane w gui enumeracje sa stale, utrwalane w momencie pobrania, tak by nic nie zmienialo sie 
+     * podczas enumeracji, jesli jakies zmiany wprowadza watki pobierajace, dotyczy chapterow dla ktorych jest multiselekcja
      * 
      * przetestowac dzialanie wszystkich przyciskow dla selekcji i multiselekcj, brak wybrania, 
      *   juz zostalo zrobione (dodane, uruchomione)
      *   
+     * menu debug nie dziala i nie ma logowania w release
+     * 
+     * *****************************
+     * 
+     * zmiana nazwy, zmiana url - nie tracimy powiazania, zmiana obu - trudno
+     * 
+     * brak dostepu do katalogu - nie mozna utworzyc katalogu, nie mozna zapisac pliku w katalogu, nie mozna 
+     * zapisac cbz, nie mozna podmienic pliku image, nie mozna podmienic pliku cbz
+     * 
+     * potestowac jak dzialaja zywe serwery
+     * 
+     * testy masowego pobierania cala noc
+     * 
+     * ktos klika w element ktory nie istnieje, pojawia sie error, albo jest on w trakcie sciagania, w tym 
+     * czasie nastepuje jego odswiezenie i znika on z listy
+     *  
+     * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
+     * 
+     * przetestowac compaktowanie 
+     * - dodac jakies inne liki
+     * - dodac xml o zlych nazwach
+     * - wprowadzac bledy w xmlach
+     * - czy usuwane sa sieroty
+     * - czy usuwane sa chaptery bez imagow (nie ma byc all image)
+     * - czy usuwane sa uste serie
+     * - czy brute force usuwa te najstarsze
+     * - czy brute force nie rusza do akcji jesli nie trzeba
+     * 
      */
 
     public partial class MangaCrawlerForm : Form
@@ -151,6 +183,8 @@ namespace MangaCrawler
                 Settings.Instance.MangaSettings, 
                 Settings.GetSettingsDir());
 
+            m_play_sound_when_downloaded = DownloadManager.Instance.Works.List.Any();
+
             mangaRootDirTextBox.Text = Settings.Instance.MangaSettings.GetMangaRootDir(false);
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
             cbzCheckBox.Checked = Settings.Instance.MangaSettings.UseCBZ;
@@ -159,12 +193,16 @@ namespace MangaCrawler
                 showBaloonTipsCheckBox.Enabled = false;
             showBaloonTipsCheckBox.Checked = Settings.Instance.ShowBaloonTips;
 
-            if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.DoNothing)
+            if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.DoNotChange)
                 pageNamingStrategyComboBox.SelectedIndex = 0;
-            else if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.PrefixWithIndexWhenNotOrdered)
+            else if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.PrefixToPreserverOrder)
                 pageNamingStrategyComboBox.SelectedIndex = 1;
-            else if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.OnlyIndex)
+            else if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.IndexToPreserveOrder)
                 pageNamingStrategyComboBox.SelectedIndex = 2;
+            else if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.AlwaysUsePrefix)
+                pageNamingStrategyComboBox.SelectedIndex = 3;
+            else if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.AlwaysUseIndex)
+                pageNamingStrategyComboBox.SelectedIndex = 4;
             else
                 Loggers.GUI.Error("Invalid PageNamingStrategy");
 
@@ -192,10 +230,8 @@ namespace MangaCrawler
 
             refreshTimer.Enabled = true;
 
-            bookmarksTimer.Enabled = true;
             bookmarksTimer.Interval = (int)Settings.Instance.MangaSettings.CheckTimePeriod.TotalMilliseconds / 10;
-            Settings.Instance.MangaSettings.Changed += () => bookmarksTimer.Interval = 
-                (int)Settings.Instance.MangaSettings.CheckTimePeriod.TotalMilliseconds / 10;
+            bookmarksTimer.Enabled = true;
 
             UpdateAll();
         }
@@ -298,13 +334,6 @@ namespace MangaCrawler
             DownloadManager.Instance.DownloadSeries(SelectedServer, a_force: false);
 
             UpdateAll();
-
-            if (SelectedServer != null)
-            {
-                ListBoxVisualState vs;
-                if (m_series_visual_states.TryGetValue(SelectedServer, out vs))
-                    vs.Restore();
-            }
         }
 
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -316,13 +345,6 @@ namespace MangaCrawler
             DownloadManager.Instance.DownloadChapters(SelectedSerie, a_force: false);
 
             UpdateAll();
-
-            if (SelectedSerie != null)
-            {
-                ListBoxVisualState vs;
-                if (m_chapters_visual_states.TryGetValue(SelectedSerie, out vs))
-                    vs.Restore();
-            }
         }
 
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -379,12 +401,9 @@ namespace MangaCrawler
 
             if (a_chapters.Count() == 0)
             {
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
                 return;
             }
-
-            if (a_chapters.Any(c => c.IsDownloading))
-                SystemSounds.Beep.Play();
 
             DownloadManager.Instance.DownloadPages(a_chapters);
             m_play_sound_when_downloaded = true;
@@ -405,10 +424,18 @@ namespace MangaCrawler
                           where !works.Any(w => w == work.Chapter)
                           select work).ToList();
 
+            bool was_empty = list.Count == 0;
+
             foreach (var el in add)
                 list.Add(new WorkGridRow(el));
             foreach (var el in remove)
                 list.Remove(el);
+
+            if (was_empty)
+            {
+                Debug.Assert(worksGridView.SelectedRows.Count != 0);
+                worksGridView.ClearSelection();
+            }
 
             worksGridView.Invalidate();
         }
@@ -462,16 +489,6 @@ namespace MangaCrawler
         private void chaptersListBox_DoubleClick(object sender, EventArgs e)
         {
             DownloadChapters(GetSelectedChapters());
-        }
-
-        private void worksGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if ((e.ColumnIndex == 0) && (e.RowIndex >= 0))
-            {
-                BindingList<WorkGridRow> list = (BindingList<WorkGridRow>)worksGridView.DataSource;
-                list[e.RowIndex].Chapter.DeleteWork();
-                UpdateWorksTab();
-            }
         }
 
         private void seriesListBox_VerticalScroll(object a_sender, bool a_tracking)
@@ -604,7 +621,7 @@ namespace MangaCrawler
 
         private void PulseMangaRootDirTextBox()
         {
-            SystemSounds.Beep.Play();
+            SystemSounds.Asterisk.Play();
             tabControl.SelectedTab = optionsTabPage;
             Color c1 = mangaRootDirTextBox.BackColor;
             Color c2 = (c1 == BAD_DIR) ? SystemColors.Window : BAD_DIR;
@@ -681,7 +698,14 @@ namespace MangaCrawler
                         select new ChapterListItem(chapter)).ToArray();
             }
 
-            new ListBoxVisualState(chaptersListBox).ReloadItems(ar);
+            ListBoxVisualState vs = new ListBoxVisualState(chaptersListBox);
+            vs.Clear();
+            if (SelectedSerie != null)
+            {
+                if (m_chapters_visual_states.ContainsKey(SelectedSerie))
+                    vs = m_chapters_visual_states[SelectedSerie];
+            }
+            vs.ReloadItems(ar);
         }
 
         private void UpdateServers()
@@ -704,7 +728,14 @@ namespace MangaCrawler
                       select new SerieListItem(serie)).ToArray();
             }
 
-            new ListBoxVisualState(seriesListBox).ReloadItems(ar);
+            ListBoxVisualState vs = new ListBoxVisualState(seriesListBox);
+            vs.Clear();
+            if (SelectedServer != null)
+            {
+                if (m_series_visual_states.ContainsKey(SelectedServer))
+                    vs = m_series_visual_states[SelectedServer];
+            }
+            vs.ReloadItems(ar);
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -762,9 +793,11 @@ namespace MangaCrawler
 
         private void OpenFolders(IEnumerable<Entity> a_entities)
         {
+            a_entities = a_entities.Where(e => e != null);
+
             if (a_entities.Count() == 0)
             {
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
                 return;
             }
 
@@ -785,7 +818,7 @@ namespace MangaCrawler
             }
 
             if (error)
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
         }
 
         private void OpenFolder(Entity a_entity)
@@ -814,7 +847,7 @@ namespace MangaCrawler
         {
             if (a_chapters.Count() == 0)
             {
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
                 return;
             }
 
@@ -824,22 +857,17 @@ namespace MangaCrawler
             {
                 if (chapter.Pages.Any())
                 {
-                    if (chapter.Pages.First().State == PageState.Downloaded)
+                    if (new FileInfo(chapter.Pages.First().ImageFilePath).Exists)
                     {
-                        if (new FileInfo(chapter.Pages.First().ImageFilePath).Exists)
+                        try
                         {
-                            try
-                            {
-                                Process.Start(chapter.Pages.First().ImageFilePath);
-                            }
-                            catch (Exception ex)
-                            {
-                                Loggers.GUI.Error("Exception", ex);
-                                error = true;
-                            }
+                            Process.Start(chapter.Pages.First().ImageFilePath);
                         }
-                        else
+                        catch (Exception ex)
+                        {
+                            Loggers.GUI.Error("Exception", ex);
                             error = true;
+                        }
                     }
                     else
                         error = true;
@@ -849,7 +877,7 @@ namespace MangaCrawler
             }
 
             if (error)
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
         }
 
         private void openPagesFolder_Click(object sender, EventArgs e)
@@ -873,11 +901,15 @@ namespace MangaCrawler
         private void pageNamingStrategyComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (pageNamingStrategyComboBox.SelectedIndex == 0)
-                Settings.Instance.MangaSettings.PageNamingStrategy = PageNamingStrategy.DoNothing;
+                Settings.Instance.MangaSettings.PageNamingStrategy = PageNamingStrategy.DoNotChange;
             else if (pageNamingStrategyComboBox.SelectedIndex == 1)
-                Settings.Instance.MangaSettings.PageNamingStrategy = PageNamingStrategy.PrefixWithIndexWhenNotOrdered;
+                Settings.Instance.MangaSettings.PageNamingStrategy = PageNamingStrategy.PrefixToPreserverOrder;
             else if (pageNamingStrategyComboBox.SelectedIndex == 2)
-                Settings.Instance.MangaSettings.PageNamingStrategy = PageNamingStrategy.OnlyIndex;
+                Settings.Instance.MangaSettings.PageNamingStrategy = PageNamingStrategy.IndexToPreserveOrder;
+            else if (pageNamingStrategyComboBox.SelectedIndex == 3)
+                Settings.Instance.MangaSettings.PageNamingStrategy = PageNamingStrategy.AlwaysUsePrefix;
+            else if (pageNamingStrategyComboBox.SelectedIndex == 4)
+                Settings.Instance.MangaSettings.PageNamingStrategy = PageNamingStrategy.AlwaysUseIndex;
             else
                 Loggers.GUI.Error("Invalid PageNamingStrategy");
         }
@@ -907,8 +939,8 @@ namespace MangaCrawler
 
         private List<Chapter> GetSelectedWorks()
         {
-            var works = worksGridView.SelectedRows.Cast<DataGridViewRow>().Select(
-                r => r.DataBoundItem).Cast<WorkGridRow>().Select(w => w.Chapter).ToList();
+            var works = worksGridView.Rows.Cast<DataGridViewRow>().Where(r => r.Selected).
+                Select(r => r.DataBoundItem).Cast<WorkGridRow>().Select(w => w.Chapter).ToList();
 
             if (works.Count == 0)
             {
@@ -936,7 +968,7 @@ namespace MangaCrawler
 
             if (a_entitites.Count() == 0)
             {
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
                 return;
             }
 
@@ -956,7 +988,7 @@ namespace MangaCrawler
             }
 
             if (error)
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
         }
 
         private void deleteWorkButton_Click(object sender, EventArgs e)
@@ -971,9 +1003,9 @@ namespace MangaCrawler
 
         private void goToChaptersWorkButton_Click(object sender, EventArgs e)
         {
-            if (GetSelectedWorks().Count != 1)
+            if (GetSelectedWorks().Count() != 1)
             {
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
                 return;
             }
 
@@ -985,25 +1017,17 @@ namespace MangaCrawler
                 serversListBox.Items.Cast<ServerListItem>().FirstOrDefault(s => s.Server == chapter.Server);
 
             if (serversListBox.SelectedItem == null)
-            {
-                SystemSounds.Beep.Play();
                 return;
-            }
 
             seriesListBox.SelectedItem = 
                 seriesListBox.Items.Cast<SerieListItem>().FirstOrDefault(s => s.Serie == chapter.Serie);
 
             if (seriesListBox.SelectedItem == null)
-            {
-                SystemSounds.Beep.Play();
                 return;
-            }
 
+            chaptersListBox.ClearSelected();
             chaptersListBox.SelectedItem = 
                 chaptersListBox.Items.Cast<ChapterListItem>().FirstOrDefault(c => c.Chapter == chapter);
-
-            if (chaptersListBox.SelectedItem == null)
-                SystemSounds.Beep.Play();
         }
 
         private void downloadWorkButton_Click(object sender, EventArgs e)
@@ -1023,14 +1047,17 @@ namespace MangaCrawler
 
             if (!works.Any() || works.Any(c => c.State == ChapterState.Deleting))
             {
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
                 return;
             }
 
             foreach (var work in works)
             {
                 if (work.IsDownloading)
+                {
                     work.DeleteWork();
+                    m_play_sound_when_downloaded = false;
+                }
                 else
                     DownloadManager.Instance.Works.Remove(work);
             }
@@ -1069,7 +1096,7 @@ namespace MangaCrawler
         }
 
         private void BookmarkSerieButton_Click(object sender, EventArgs e)
-        {
+        {     
             var serie = SelectedSerie;
             if (serie == null)
             {
@@ -1080,7 +1107,7 @@ namespace MangaCrawler
             if ((serie == null) || serie.IsDownloading || 
                 DownloadManager.Instance.Bookmarks.List.Contains(serie))
             {
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
                 return;
             }
 
@@ -1108,7 +1135,14 @@ namespace MangaCrawler
                       select new ChapterBookmarkListItem(chapter)).ToArray();
             }
 
-            new ListBoxVisualState(chapterBookmarksListBox).ReloadItems(ar);
+            ListBoxVisualState vs = new ListBoxVisualState(chapterBookmarksListBox);
+            vs.Clear();
+            if (SelectedSerieBookmark != null)
+            {
+                if (m_chapter_bookmarks_visual_states.ContainsKey(SelectedSerieBookmark))
+                    vs = m_chapter_bookmarks_visual_states[SelectedSerieBookmark];
+            }
+            vs.ReloadItems(ar);
         }
 
         private void removeSerieBooksPanel_Click(object sender, EventArgs e)
@@ -1201,13 +1235,6 @@ namespace MangaCrawler
                 DownloadManager.Instance.DownloadChapters(SelectedSerieBookmark, a_force: false);
 
             UpdateAll();
-
-            if (SelectedSerieBookmark != null)
-            {
-                ListBoxVisualState vs;
-                if (m_chapter_bookmarks_visual_states.TryGetValue(SelectedSerieBookmark, out vs))
-                    vs.Restore();
-            }
         }
 
         private void chapterBookmarksListBox_DoubleClick(object sender, EventArgs e)
@@ -1247,7 +1274,7 @@ namespace MangaCrawler
         {
             if (SelectedSerieBookmark == null)
             {
-                SystemSounds.Beep.Play();
+                SystemSounds.Asterisk.Play();
                 return;
             }
 
@@ -1258,6 +1285,7 @@ namespace MangaCrawler
 
         private void resetCheckDatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            m_last_bookmark_check = DateTime.MinValue;
             DownloadManager.Instance.Debug_ResetCheckDate();
         }
 
@@ -1362,19 +1390,6 @@ namespace MangaCrawler
                 MinimizeToTray(true);
                 e.Cancel = true;
             }
-            else if (DownloadManager.Instance.Works.List.Any(w => w.IsDownloading))
-            {
-                if ((e.CloseReason != CloseReason.WindowsShutDown) ||
-                    (e.CloseReason != CloseReason.TaskManagerClosing))
-                {
-                    if (MessageBox.Show(Resources.ExitQuestion,
-                            Application.ProductName, MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Question) == DialogResult.No)
-                    {
-                        e.Cancel = true;
-                    }
-                }
-            }
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
@@ -1422,20 +1437,20 @@ namespace MangaCrawler
 
             tabControl.SelectedTab = bookmarksTabPage;
 
-            var s1 = serieBookmarksListBox.Items.Cast<SerieBookmarkListItem>().FirstOrDefault(
+            var serie = serieBookmarksListBox.Items.Cast<SerieBookmarkListItem>().FirstOrDefault(
                 sbli => sbli.Serie.GetNewChapters().Any());
 
-            if (s1 != null)
+            if (serie != null)
             {
-                serieBookmarksListBox.SelectedItem = s1;
+                serieBookmarksListBox.SelectedItem = serie;
 
-                var s2 = chapterBookmarksListBox.Items.Cast<ChapterBookmarkListItem>().FirstOrDefault(
+                var chapter = chapterBookmarksListBox.Items.Cast<ChapterBookmarkListItem>().FirstOrDefault(
                     cbli => !cbli.Chapter.BookmarkIgnored);
 
-                if (s2 != null)
+                if (chapter != null)
                 {
                     chapterBookmarksListBox.ClearSelected();
-                    chapterBookmarksListBox.SelectedItem = s2;
+                    chapterBookmarksListBox.SelectedItem = chapter;
                 }
             }
         }
@@ -1459,6 +1474,15 @@ namespace MangaCrawler
         private void checkNowBookmarksButton_Click(object sender, EventArgs e)
         {
             CheckBookmarks(a_force: true);
+
+            var chapter = chapterBookmarksListBox.Items.Cast<ChapterBookmarkListItem>().FirstOrDefault(
+                cbli => !cbli.Chapter.BookmarkIgnored);
+
+            if (chapter != null)
+            {
+                chapterBookmarksListBox.ClearSelected();
+                chapterBookmarksListBox.SelectedItem = chapter;
+            }
         }
 
         private void CheckBookmarks(bool a_force)
@@ -1486,10 +1510,25 @@ namespace MangaCrawler
 
                 Invoke(new Action(() =>
                 {
-                    SystemSounds.Beep.Play();
+                    SystemSounds.Exclamation.Play();
                     CheckBookmarks(a_force: true);
                 }));
             }).Start();
+        }
+
+        private void playSoundWhenDownloadedCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Instance.PlaySoundWhenDownloaded = playSoundWhenDownloadedCheckBox.Checked;
+        }
+
+        private void worksGridView_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Rectangle r = worksGridView.GetCellDisplayRectangle(0, worksGridView.Rows.Count - 1, true);
+                if (e.Y > r.Bottom)
+                    worksGridView.ClearSelection();
+            }
         }
     }
 }

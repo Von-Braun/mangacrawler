@@ -65,7 +65,8 @@ namespace MangaCrawlerLib
                 (a_url == null) ? a_chapter.URL : a_url, 
                 () => a_chapter.State = ChapterState.DownloadingPagesList, 
                 () => Limiter.Aquire(a_chapter),
-                () => Limiter.Release(a_chapter));
+                () => Limiter.Release(a_chapter), 
+                a_chapter.Token);
         }
 
         internal HtmlDocument DownloadDocument(Page a_page, string a_url = null)
@@ -74,18 +75,25 @@ namespace MangaCrawlerLib
                 (a_url == null) ? a_page.URL : a_url, 
                 () => a_page.State = PageState.Downloading, 
                 () => Limiter.Aquire(a_page),
-                () => Limiter.Release(a_page));
+                () => Limiter.Release(a_page),
+                a_page.Chapter.Token);
+        }
+
+        internal virtual HtmlDocument DownloadDocument(string a_url, Action a_started,
+            Action a_aquire, Action a_release)
+        {
+            return DownloadDocument(a_url, a_started, a_aquire, a_release, CancellationToken.None);
         }
 
         internal virtual HtmlDocument DownloadDocument(string a_url, Action a_started, 
-            Action a_aquire, Action a_release)
+            Action a_aquire, Action a_release, CancellationToken a_token)
         {
             return DownloadWithRetry(() =>
             {
-                a_aquire();
-
                 if (a_started != null)
                     a_started();
+
+                a_aquire();
 
                 try
                 {
@@ -100,6 +108,8 @@ namespace MangaCrawlerLib
 
                         return null;
                     }
+
+                    a_token.ThrowIfCancellationRequested();
 
                     return page;
                 }
@@ -138,14 +148,7 @@ namespace MangaCrawlerLib
                             if (readed == 0)
                                 break;
 
-                            if (a_page.Chapter.Token.IsCancellationRequested)
-                            {
-                                Loggers.Cancellation.InfoFormat(
-                                    "cancellation requested, work: {0} state: {1}",
-                                    this, a_page.Chapter.State);
-
-                                a_page.Chapter.Token.ThrowIfCancellationRequested();
-                            }
+                            a_page.Chapter.Token.ThrowIfCancellationRequested();
 
                             mem_stream.Write(buffer, 0, readed);
                         }

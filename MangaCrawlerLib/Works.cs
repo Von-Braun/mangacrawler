@@ -45,10 +45,13 @@ namespace MangaCrawlerLib
             m_works = m_works.Except(a_work).ToList();
         }
 
-        internal void Add(Chapter chapter)
+        internal void Add(Chapter a_chapter)
         {
+            if (m_works.Contains(a_chapter))
+                return;
+
             var copy = m_works.ToList();
-            copy.Add(chapter);
+            copy.Add(a_chapter);
             m_works = copy;
         }
     }

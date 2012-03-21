@@ -158,22 +158,13 @@ namespace MangaCrawlerLib
 
         public void DeleteWork()
         {
+            if (State == ChapterState.Deleting)
+                return;
+
             lock (m_state_lock)
             {
-                if (State == ChapterState.Deleting)
-                    return;
-
                 if (IsDownloading)
-                {
-                    Loggers.MangaCrawler.InfoFormat("Deleting, chapter: {0}, state: {1}", this, State);
-                    CancellationTokenSource.Cancel();
                     State = ChapterState.Deleting;
-                }
-                else
-                {
-                    Loggers.MangaCrawler.InfoFormat(
-                        "Trying to delete already finished work, chapter: {0}, state: {1}", this, State);
-                }
             }
         }
 
@@ -208,71 +199,82 @@ namespace MangaCrawlerLib
         internal void DownloadPages()
         {
             bool error = false;
+            m_cancellation_token_source = new CancellationTokenSource();
 
             try
             {
                 Limiter.BeginChapter(this);
 
-                DownloadPagesList();
-
-                PageNamingStrategy pns = DownloadManager.Instance.MangaSettings.PageNamingStrategy;
-                if (pns == PageNamingStrategy.PrefixWithIndexWhenNotOrdered)
-                    if (!Pages.Select(p => p.Name).SequenceEqual(Pages.Select(p => p.Name).OrderBy(n => n)))
-                        pns = PageNamingStrategy.PrefixWithIndex;
-
-                for (int i = 0; i < Pages.Count; i++)
+                try
                 {
-                    Pages[i].LimiterOrder = Catalog.NextID();
+                    DownloadPagesList();
 
-                    Debug.Assert(Pages[i].Index == i + 1);
-                }
+                    var names = Pages.Select(p => p.Name);
+                    var sorted_names = Pages.Select(p => p.Name).OrderBy(n => n, new NaturalOrderStringComparer());
 
-                Parallel.ForEach(new SequentialPartitioner<Page>(Pages),
-
-                    new ParallelOptions()
+                    PageNamingStrategy pns = DownloadManager.Instance.MangaSettings.PageNamingStrategy;
+                    if (pns == PageNamingStrategy.IndexToPreserveOrder)
                     {
-                        MaxDegreeOfParallelism = Crawler.MaxConnectionsPerServer, 
-                        TaskScheduler = Limiter.Scheduler
-                    },
-                    (page, state) =>
-                    {
-                        try
-                        {
-                            page.DownloadAndSavePageImage(pns);
-
-                            Catalog.Save(this);
-                        }
-                        catch (OperationCanceledException ex1)
-                        {
-                            Loggers.Cancellation.InfoFormat(
-                                "OperationCanceledException #2, chapter: {0} state: {1}, {2}",
-                                this, State, ex1);
-
-                            state.Break();
-                        }
-                        catch (Exception ex2)
-                        {
-                            Loggers.MangaCrawler.InfoFormat(
-                                "Exception #1, chapter: {0} state: {1}, {2}",
-                                this, State, ex2);
-
-                            error = true;
-                        }
+                        if (!names.SequenceEqual(sorted_names))
+                            pns = PageNamingStrategy.AlwaysUseIndex;
                     }
-                );
+                    else if (pns == PageNamingStrategy.PrefixToPreserverOrder)
+                    {
+                        if (!names.SequenceEqual(sorted_names))
+                            pns = PageNamingStrategy.AlwaysUsePrefix;
+                    }
 
-                Catalog.Save(this);
+                    for (int i = 0; i < Pages.Count; i++)
+                    {
+                        Pages[i].LimiterOrder = Catalog.NextID();
 
-                if (DownloadManager.Instance.MangaSettings.UseCBZ)
-                    CreateCBZ();
+                        Debug.Assert(Pages[i].Index == i + 1);
+                    }
 
-                m_bookmark_ignored = true;
+                    Parallel.ForEach(new SequentialPartitioner<Page>(Pages),
+
+                        new ParallelOptions()
+                        {
+                            MaxDegreeOfParallelism = Crawler.MaxConnectionsPerServer,
+                            TaskScheduler = Limiter.Scheduler
+                        },
+                        (page, state) =>
+                        {
+                            try
+                            {
+                                page.DownloadAndSavePageImage(pns);
+
+                                Catalog.Save(this);
+                            }
+                            catch (OperationCanceledException)
+                            {
+                                state.Break();
+                            }
+                            catch (Exception ex2)
+                            {
+                                Loggers.MangaCrawler.InfoFormat(
+                                    "Exception #1, chapter: {0} state: {1}, {2}",
+                                    this, State, ex2);
+
+                                error = true;
+                            }
+                        }
+                    );
+
+                    Catalog.Save(this);
+
+                    if (DownloadManager.Instance.MangaSettings.UseCBZ)
+                        CreateCBZ();
+
+                    m_bookmark_ignored = true;
+                }
+                finally
+                {
+                    Limiter.EndChapter(this);
+                }
             }
-            catch (OperationCanceledException ex1)
+            catch (OperationCanceledException)
             {
-                Loggers.Cancellation.InfoFormat(
-                    "OperationCanceledException #2, chapter: {0} state: {1}, {2}",
-                    this, State, ex1);
             }
             catch (Exception ex)
             {
@@ -290,7 +292,7 @@ namespace MangaCrawlerLib
 
                     if (error)
                         State = ChapterState.Error;
-                    else if (CancellationTokenSource.IsCancellationRequested)
+                    else if (m_cancellation_token_source.IsCancellationRequested)
                         State = ChapterState.Deleted;
                     else if (PagesDownloaded != Pages.Count)
                         State = ChapterState.Error;
@@ -299,8 +301,6 @@ namespace MangaCrawlerLib
                     else
                         State = ChapterState.Downloaded;
                 }
-
-                Limiter.EndChapter(this);
             }
 
             Catalog.Save(this);
@@ -324,13 +324,6 @@ namespace MangaCrawlerLib
 
             var zip_file = dir.FullName + ".cbz";
 
-            int counter = 1;
-            while (new FileInfo(zip_file).Exists)
-            {
-                zip_file = String.Format("{0} ({1}).cbz", dir.FullName, counter);
-                counter++;
-            }
-
             try
             {
                 using (ZipFile zip = new ZipFile())
@@ -341,14 +334,7 @@ namespace MangaCrawlerLib
                     {
                         zip.AddFile(page.ImageFilePath, "");
 
-                        if (Token.IsCancellationRequested)
-                        {
-                            Loggers.Cancellation.InfoFormat(
-                                "cancellation requested, chapter: {0} state: {1}",
-                                this, State);
-
-                            Token.ThrowIfCancellationRequested();
-                        }
+                        Token.ThrowIfCancellationRequested();
                     }
 
                     zip.Save(zip_file);
@@ -360,21 +346,11 @@ namespace MangaCrawlerLib
             }
         }
 
-        private CancellationTokenSource CancellationTokenSource
-        {
-            get
-            {
-                if (m_cancellation_token_source == null)
-                    m_cancellation_token_source = new CancellationTokenSource();
-                return m_cancellation_token_source;
-            }
-        }
-
         internal CancellationToken Token
         {
             get
             {
-                return CancellationTokenSource.Token;
+                return m_cancellation_token_source.Token;
             }
         }
 
@@ -382,7 +358,10 @@ namespace MangaCrawlerLib
         {
             get
             {
+                lock (m_state_lock)
+                {
                 return m_state;
+                }
             }
             internal set
             {
@@ -404,16 +383,19 @@ namespace MangaCrawlerLib
                         }
                         case ChapterState.DownloadingPagesList:
                         {
+                            Token.ThrowIfCancellationRequested();
                             Debug.Assert(State == ChapterState.Waiting);
                             break;
                         }
                         case ChapterState.DownloadingPages:
                         {
+                            Token.ThrowIfCancellationRequested();
                             Debug.Assert(State == ChapterState.DownloadingPagesList);
                             break;
                         }
                         case ChapterState.Zipping:
                         {
+                            Token.ThrowIfCancellationRequested();
                             Debug.Assert(State == ChapterState.DownloadingPages);
                             break;
                         }
@@ -428,6 +410,7 @@ namespace MangaCrawlerLib
                                          (State == ChapterState.DownloadingPagesList) ||
                                          (State == ChapterState.Waiting) ||
                                          (State == ChapterState.Zipping));
+                            m_cancellation_token_source.Cancel();
                             break;
                         }
                         case ChapterState.Error:

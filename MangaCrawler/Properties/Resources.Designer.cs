@@ -144,15 +144,6 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading in progress. Exit anyway?.
-        /// </summary>
-        internal static string ExitQuestion {
-            get {
-                return ResourceManager.GetString("ExitQuestion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to http://mangacrawler.codeplex.com/.
         /// </summary>
         internal static string HomePage {

@@ -29,7 +29,7 @@ namespace MangaCrawlerLib
         private int m_max_catalog_size = 100 * 1024 * 1024;
 
         [YAXNode("PageNamingStrategy")]
-        private PageNamingStrategy m_page_naming_strategy = PageNamingStrategy.DoNothing;
+        private PageNamingStrategy m_page_naming_strategy = PageNamingStrategy.DoNotChange;
 
         // Sync with MangaCrawler/app.config
         [YAXNode("MaximumConnections")]
