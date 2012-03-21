@@ -47,7 +47,7 @@ namespace MangaCrawler
         private bool m_show_baloon_tips;
 
         [YAXNode("CheckBookmarksPeriod")]
-        private TimeSpan m_check_bookmarks_period = new TimeSpan(hours: 1, minutes: 0, seconds: 0);
+        private TimeSpan m_check_bookmarks_period = new TimeSpan(hours: 0, minutes: 30, seconds: 0);
 
         private static Settings s_instance;
 

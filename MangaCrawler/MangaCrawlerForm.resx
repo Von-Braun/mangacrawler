@@ -157,7 +157,7 @@
     <value>0</value>
   </data>
   <data name="versionPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>617, 3</value>
+    <value>636, 3</value>
   </data>
   <data name="versionPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>198, 25</value>
@@ -193,7 +193,7 @@
     <value>0, 0, 0, 100</value>
   </data>
   <data name="splitterBookmarks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 328</value>
+    <value>6, 335</value>
   </data>
   <data name="splitterBookmarks.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -223,7 +223,7 @@
     <value>NoControl</value>
   </data>
   <data name="viewChapterBoksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>391, 301</value>
+    <value>410, 308</value>
   </data>
   <data name="viewChapterBoksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 23</value>
@@ -259,7 +259,7 @@
     <value>NoControl</value>
   </data>
   <data name="openChapterFolderBooksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>313, 301</value>
+    <value>332, 308</value>
   </data>
   <data name="openChapterFolderBooksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 23</value>
@@ -295,7 +295,7 @@
     <value>NoControl</value>
   </data>
   <data name="visitChapterBooksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>244, 301</value>
+    <value>263, 308</value>
   </data>
   <data name="visitChapterBooksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 23</value>
@@ -331,7 +331,7 @@
     <value>NoControl</value>
   </data>
   <data name="downloadChapterBooksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>173, 301</value>
+    <value>192, 308</value>
   </data>
   <data name="downloadChapterBooksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 23</value>
@@ -370,7 +370,7 @@
     <value>11, 20</value>
   </data>
   <data name="chapterBookmarksListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 273</value>
+    <value>439, 280</value>
   </data>
   <data name="chapterBookmarksListBox.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
@@ -430,7 +430,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="chapterBookmarksPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>439, 328</value>
+    <value>458, 335</value>
   </data>
   <data name="chapterBookmarksPanel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -460,7 +460,7 @@
     <value>NoControl</value>
   </data>
   <data name="checkNowBookmarksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>56, 301</value>
+    <value>56, 308</value>
   </data>
   <data name="checkNowBookmarksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 23</value>
@@ -496,7 +496,7 @@
     <value>NoControl</value>
   </data>
   <data name="removeSerieBooksPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>133, 301</value>
+    <value>133, 308</value>
   </data>
   <data name="removeSerieBooksPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 23</value>
@@ -532,7 +532,7 @@
     <value>NoControl</value>
   </data>
   <data name="openSerieFolderBooksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>196, 301</value>
+    <value>196, 308</value>
   </data>
   <data name="openSerieFolderBooksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 23</value>
@@ -568,7 +568,7 @@
     <value>NoControl</value>
   </data>
   <data name="visitSerieBooksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>274, 301</value>
+    <value>274, 308</value>
   </data>
   <data name="visitSerieBooksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 23</value>
@@ -637,7 +637,7 @@
     <value>7, 20</value>
   </data>
   <data name="serieBookmarksListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>330, 273</value>
+    <value>330, 280</value>
   </data>
   <data name="serieBookmarksListBox.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
@@ -667,7 +667,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="serieBookmarksPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>343, 328</value>
+    <value>343, 335</value>
   </data>
   <data name="serieBookmarksPanel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -691,7 +691,7 @@
     <value>3, 3</value>
   </data>
   <data name="splitBookmarksPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>782, 328</value>
+    <value>801, 335</value>
   </data>
   <data name="splitBookmarksPanel.TabIndex" type="System.Int32, mscorlib">
     <value>41</value>
@@ -715,7 +715,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="bookmarksTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>788, 334</value>
+    <value>807, 341</value>
   </data>
   <data name="bookmarksTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -742,7 +742,7 @@
     <value>NoControl</value>
   </data>
   <data name="clearLogButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>764, 8</value>
+    <value>703, 12</value>
   </data>
   <data name="clearLogButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -772,7 +772,7 @@
     <value>0, 0</value>
   </data>
   <data name="logRichTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>788, 334</value>
+    <value>794, 337</value>
   </data>
   <data name="logRichTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -796,7 +796,7 @@
     <value>4, 22</value>
   </data>
   <data name="logTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>788, 334</value>
+    <value>807, 341</value>
   </data>
   <data name="logTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -940,13 +940,19 @@
     <value>3</value>
   </data>
   <data name="pageNamingStrategyComboBox.Items" xml:space="preserve">
-    <value>Use name from www</value>
+    <value>Do not change</value>
   </data>
   <data name="pageNamingStrategyComboBox.Items1" xml:space="preserve">
-    <value>Use prefixe when necessary to preserve pages order</value>
+    <value>Use prefix when necessary to preserve order</value>
   </data>
   <data name="pageNamingStrategyComboBox.Items2" xml:space="preserve">
-    <value>Use page index</value>
+    <value>Use index when necessary to preserve order</value>
+  </data>
+  <data name="pageNamingStrategyComboBox.Items3" xml:space="preserve">
+    <value>Always use prefix</value>
+  </data>
+  <data name="pageNamingStrategyComboBox.Items4" xml:space="preserve">
+    <value>Always use index</value>
   </data>
   <data name="pageNamingStrategyComboBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>126, 110</value>
@@ -1036,7 +1042,7 @@
     <value>NoControl</value>
   </data>
   <data name="mangaRootDirChooseButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>725, 28</value>
+    <value>744, 28</value>
   </data>
   <data name="mangaRootDirChooseButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>22, 20</value>
@@ -1096,7 +1102,7 @@
     <value>8, 28</value>
   </data>
   <data name="mangaRootDirTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>711, 20</value>
+    <value>730, 20</value>
   </data>
   <data name="mangaRootDirTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>39</value>
@@ -1117,7 +1123,7 @@
     <value>4, 22</value>
   </data>
   <data name="optionsTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>788, 334</value>
+    <value>807, 341</value>
   </data>
   <data name="optionsTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1150,7 +1156,7 @@
     <value>NoControl</value>
   </data>
   <data name="openFolderWorksButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>596, 299</value>
+    <value>615, 306</value>
   </data>
   <data name="openFolderWorksButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 23</value>
@@ -1186,7 +1192,7 @@
     <value>NoControl</value>
   </data>
   <data name="downloadWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>378, 299</value>
+    <value>397, 306</value>
   </data>
   <data name="downloadWorkButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 23</value>
@@ -1222,7 +1228,7 @@
     <value>NoControl</value>
   </data>
   <data name="deleteWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>449, 299</value>
+    <value>468, 306</value>
   </data>
   <data name="deleteWorkButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 23</value>
@@ -1258,7 +1264,7 @@
     <value>NoControl</value>
   </data>
   <data name="visitPageWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>674, 299</value>
+    <value>693, 306</value>
   </data>
   <data name="visitPageWorkButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 23</value>
@@ -1294,7 +1300,7 @@
     <value>NoControl</value>
   </data>
   <data name="viewWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>743, 299</value>
+    <value>762, 306</value>
   </data>
   <data name="viewWorkButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 23</value>
@@ -1330,7 +1336,7 @@
     <value>NoControl</value>
   </data>
   <data name="goToChaptersWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>503, 299</value>
+    <value>522, 306</value>
   </data>
   <data name="goToChaptersWorkButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>87, 23</value>
@@ -1375,7 +1381,7 @@
     <value>0, 0</value>
   </data>
   <data name="worksGridView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>785, 293</value>
+    <value>804, 300</value>
   </data>
   <data name="worksGridView.TabIndex" type="System.Int32, mscorlib">
     <value>32</value>
@@ -1396,7 +1402,7 @@
     <value>4, 22</value>
   </data>
   <data name="worksTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>788, 334</value>
+    <value>807, 341</value>
   </data>
   <data name="worksTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1432,7 +1438,7 @@
     <value>0, 0, 0, 100</value>
   </data>
   <data name="splitter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 328</value>
+    <value>6, 335</value>
   </data>
   <data name="splitter.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -1462,7 +1468,7 @@
     <value>NoControl</value>
   </data>
   <data name="viewPagesButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>291, 300</value>
+    <value>310, 307</value>
   </data>
   <data name="viewPagesButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 23</value>
@@ -1498,7 +1504,7 @@
     <value>NoControl</value>
   </data>
   <data name="openPagesFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>213, 300</value>
+    <value>232, 307</value>
   </data>
   <data name="openPagesFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 23</value>
@@ -1534,7 +1540,7 @@
     <value>NoControl</value>
   </data>
   <data name="chapterURLButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>144, 300</value>
+    <value>163, 307</value>
   </data>
   <data name="chapterURLButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 23</value>
@@ -1570,7 +1576,7 @@
     <value>NoControl</value>
   </data>
   <data name="downloadButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>73, 300</value>
+    <value>92, 307</value>
   </data>
   <data name="downloadButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 23</value>
@@ -1609,7 +1615,7 @@
     <value>12, 19</value>
   </data>
   <data name="chaptersListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>319, 273</value>
+    <value>338, 280</value>
   </data>
   <data name="chaptersListBox.TabIndex" type="System.Int32, mscorlib">
     <value>34</value>
@@ -1669,7 +1675,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="chaptersPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>335, 328</value>
+    <value>354, 335</value>
   </data>
   <data name="chaptersPanel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1699,7 +1705,7 @@
     <value>NoControl</value>
   </data>
   <data name="BookmarkSerieButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 300</value>
+    <value>16, 307</value>
   </data>
   <data name="BookmarkSerieButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 23</value>
@@ -1726,7 +1732,7 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="seriesSearchTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>53, 272</value>
+    <value>53, 279</value>
   </data>
   <data name="seriesSearchTextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>175, 20</value>
@@ -1756,7 +1762,7 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 275</value>
+    <value>3, 282</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>44, 13</value>
@@ -1792,7 +1798,7 @@
     <value>NoControl</value>
   </data>
   <data name="openSeriesFolderButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>87, 300</value>
+    <value>87, 307</value>
   </data>
   <data name="openSeriesFolderButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 23</value>
@@ -1828,7 +1834,7 @@
     <value>NoControl</value>
   </data>
   <data name="seriesURLButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>165, 300</value>
+    <value>165, 307</value>
   </data>
   <data name="seriesURLButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 23</value>
@@ -1897,7 +1903,7 @@
     <value>2, 19</value>
   </data>
   <data name="seriesListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 247</value>
+    <value>226, 254</value>
   </data>
   <data name="seriesListBox.TabIndex" type="System.Int32, mscorlib">
     <value>30</value>
@@ -1927,7 +1933,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="seriesPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 328</value>
+    <value>234, 335</value>
   </data>
   <data name="seriesPanel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1948,7 +1954,7 @@
     <value>216, 3</value>
   </data>
   <data name="splitPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>569, 328</value>
+    <value>588, 335</value>
   </data>
   <data name="splitPanel.TabIndex" type="System.Int32, mscorlib">
     <value>39</value>
@@ -1981,7 +1987,7 @@
     <value>NoControl</value>
   </data>
   <data name="openServerFolderButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>57, 300</value>
+    <value>57, 307</value>
   </data>
   <data name="openServerFolderButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 23</value>
@@ -2020,7 +2026,7 @@
     <value>2, 19</value>
   </data>
   <data name="serversListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>197, 273</value>
+    <value>197, 280</value>
   </data>
   <data name="serversListBox.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -2050,7 +2056,7 @@
     <value>NoControl</value>
   </data>
   <data name="serverURLButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>135, 300</value>
+    <value>135, 307</value>
   </data>
   <data name="serverURLButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>63, 23</value>
@@ -2107,7 +2113,7 @@
     <value>6, 3</value>
   </data>
   <data name="serversPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 329</value>
+    <value>199, 336</value>
   </data>
   <data name="serversPanel.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -2128,7 +2134,7 @@
     <value>4, 22</value>
   </data>
   <data name="seriesTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>788, 334</value>
+    <value>807, 341</value>
   </data>
   <data name="seriesTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2155,7 +2161,7 @@
     <value>12, 12</value>
   </data>
   <data name="tabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>796, 360</value>
+    <value>815, 367</value>
   </data>
   <data name="tabControl.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -2260,7 +2266,7 @@
     <value>Force bookmarks check</value>
   </data>
   <data name="debugContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 334</value>
+    <value>200, 312</value>
   </data>
   <data name="&gt;&gt;debugContextMenuStrip.Name" xml:space="preserve">
     <value>debugContextMenuStrip</value>
@@ -2305,7 +2311,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>818, 388</value>
+    <value>837, 395</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>834, 424</value>
@@ -2418,6 +2424,12 @@
   <data name="&gt;&gt;changeChapterURLToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;forceBookmarksCheckToolStripMenuItem.Name" xml:space="preserve">
+    <value>forceBookmarksCheckToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;forceBookmarksCheckToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;notifyIcon.Name" xml:space="preserve">
     <value>notifyIcon</value>
   </data>
@@ -2435,12 +2447,6 @@
   </data>
   <data name="&gt;&gt;bookmarksTimer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;forceBookmarksCheckToolStripMenuItem.Name" xml:space="preserve">
-    <value>forceBookmarksCheckToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;forceBookmarksCheckToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MangaCrawlerForm</value>

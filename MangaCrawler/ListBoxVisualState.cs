@@ -68,7 +68,7 @@ namespace MangaCrawler
                 m_list_box.TopIndex = m_list_box.Items.Count - 1;
         }
 
-        private void Clear()
+        public void Clear()
         {
             m_top_index = -1;
             m_top_item = null;

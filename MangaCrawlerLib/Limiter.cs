@@ -13,10 +13,10 @@ namespace MangaCrawlerLib
         #region Priority
         internal enum Priority
         {
-            Image = 1,
-            Pages = 2,
-            Chapters = 3,
-            Series = 4,
+            Chapters = 1,
+            Series = 2,
+            Pages = 3,
+            Image = 4,
         }
         #endregion
 
@@ -34,6 +34,11 @@ namespace MangaCrawlerLib
                 Priority = a_priority;
                 Server = a_server;
                 LimiterOrder = a_limiter_order;
+            }
+
+            public override string ToString()
+            {
+                return String.Format("Server: {0}, Priority: {1}, LimitOrder: {2}", Server.ID, Priority, LimiterOrder);
             }
         }
         #endregion
@@ -100,23 +105,15 @@ namespace MangaCrawlerLib
 
             while (!limit.Event.WaitOne(WAIT_SLEEP_MS))
             {
-                if (a_token != CancellationToken.None)
+                lock (s_limits)
                 {
                     if (a_token.IsCancellationRequested)
                     {
-                        Loggers.Cancellation.Info("Cancellation requested");
+                        s_limits.Remove(limit);
                         a_token.ThrowIfCancellationRequested();
                     }
                 }
             }
-        }
-
-        private static void Log()
-        {
-            Debug.Write(s_connections.ToString() + ", ");
-            foreach (var el in s_server_connections)
-                Debug.Write(el.Value + ", ");
-            Debug.WriteLine("");
         }
 
         private static void Loop()
@@ -205,24 +202,26 @@ namespace MangaCrawlerLib
 
         private static Limit GetLimit()
         {
-            Limit candidate = (from limit in s_limits
-                               where limit.Priority == Priority.Pages
-                               where !s_one_chapter_per_server[limit.Server]
-                               orderby limit.LimiterOrder
-                               select limit).FirstOrDefault();
+            Limit candidate = null;
+
+            var candidates1 = from limit in s_limits
+                              where limit.Priority != Priority.Pages
+                              where s_server_connections[limit.Server] <
+                                 DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer
+                              orderby limit.Priority, limit.LimiterOrder
+                              select limit;
+
+            var candidates2 = from limit in s_limits
+                              where limit.Priority == Priority.Pages
+                              where !s_one_chapter_per_server[limit.Server]
+                              orderby limit.LimiterOrder
+                              select limit;
+
+            if (s_connections < DownloadManager.Instance.MangaSettings.MaximumConnections)
+                candidate = candidates1.FirstOrDefault();
 
             if (candidate == null)
-            {
-                if (s_connections < DownloadManager.Instance.MangaSettings.MaximumConnections)
-                {
-                    candidate = (from limit in s_limits
-                                 where limit.Priority != Priority.Pages
-                                 where s_server_connections[limit.Server] <
-                                    DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer
-                                 orderby limit.Priority, limit.LimiterOrder
-                                 select limit).FirstOrDefault();
-                }
-            }
+                candidate = candidates2.FirstOrDefault();
 
             if (candidate != null)
                 s_limits.Remove(candidate);

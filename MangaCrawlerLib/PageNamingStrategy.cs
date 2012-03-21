@@ -7,9 +7,10 @@ namespace MangaCrawlerLib
 {
     public enum PageNamingStrategy
     {
-        DoNothing, 
-        PrefixWithIndexWhenNotOrdered, 
-        PrefixWithIndex,
-        OnlyIndex
+        DoNotChange,
+        PrefixToPreserverOrder,
+        IndexToPreserveOrder,
+        AlwaysUsePrefix,
+        AlwaysUseIndex
     }
 }

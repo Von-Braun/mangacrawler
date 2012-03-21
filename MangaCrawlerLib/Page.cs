@@ -139,14 +139,7 @@ namespace MangaCrawlerLib
                         Hash = hash;
                     }
 
-                    string file_name = Name;
-
-                    Debug.Assert(a_pns != PageNamingStrategy.PrefixWithIndexWhenNotOrdered);
-
-                    if (a_pns == PageNamingStrategy.OnlyIndex)
-                        file_name = Index.ToString();
-                    else if (a_pns == PageNamingStrategy.PrefixWithIndex)
-                        file_name = String.Format("{0} - {1}", Index, Name);
+                    string file_name = Rename(a_pns, Name);
 
                     ImageFilePath = 
                         Chapter.GetDirectory() + 
@@ -178,6 +171,19 @@ namespace MangaCrawlerLib
                 Loggers.MangaCrawler.Fatal("Exception #3", ex);
                 State = PageState.Error;
             }
+        }
+
+        private string Rename(PageNamingStrategy a_pns, string a_name)
+        {
+            Debug.Assert((a_pns != PageNamingStrategy.IndexToPreserveOrder) || 
+                         (a_pns != PageNamingStrategy.PrefixToPreserverOrder));
+
+            if (a_pns == PageNamingStrategy.AlwaysUseIndex)
+                return Index.ToString();
+            else if (a_pns == PageNamingStrategy.AlwaysUsePrefix)
+                return String.Format("{0} - {1}", Index, Name);
+            else
+                return a_name;
         }
 
         internal bool RequiredDownload(string a_chapter_dir)
