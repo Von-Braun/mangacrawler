@@ -10,7 +10,7 @@ namespace MangaCrawlerLib
     {
         public ulong ID { get; internal set; }
         public ulong LimiterOrder;
-        public string URL { get; protected set; }
+        public string URL { get; internal set; }
 
         protected Entity(ulong a_id)
         {

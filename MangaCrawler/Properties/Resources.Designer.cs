@@ -70,29 +70,29 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CANCELLED.
+        /// </summary>
+        internal static string Cancelled {
+            get {
+                return ResourceManager.GetString("Cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CANCELLING.
+        /// </summary>
+        internal static string Cancelling {
+            get {
+                return ResourceManager.GetString("Cancelling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CHECKING.
         /// </summary>
         internal static string Checking {
             get {
                 return ResourceManager.GetString("Checking", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DELETED.
-        /// </summary>
-        internal static string Deleted {
-            get {
-                return ResourceManager.GetString("Deleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DELETING.
-        /// </summary>
-        internal static string Deleting {
-            get {
-                return ResourceManager.GetString("Deleting", resourceCulture);
             }
         }
         
@@ -205,18 +205,18 @@ namespace MangaCrawler.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Cancelled.
         /// </summary>
-        internal static string WorkProgressAborted {
+        internal static string WorkProgressCancelled {
             get {
-                return ResourceManager.GetString("WorkProgressAborted", resourceCulture);
+                return ResourceManager.GetString("WorkProgressCancelled", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleting.
+        ///   Looks up a localized string similar to Cancelling.
         /// </summary>
-        internal static string WorkProgressDeleting {
+        internal static string WorkProgressCancelling {
             get {
-                return ResourceManager.GetString("WorkProgressDeleting", resourceCulture);
+                return ResourceManager.GetString("WorkProgressCancelling", resourceCulture);
             }
         }
         

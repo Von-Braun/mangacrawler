@@ -772,7 +772,7 @@
     <value>0, 0</value>
   </data>
   <data name="logRichTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>794, 337</value>
+    <value>807, 341</value>
   </data>
   <data name="logRichTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1192,7 +1192,7 @@
     <value>NoControl</value>
   </data>
   <data name="downloadWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>397, 306</value>
+    <value>360, 306</value>
   </data>
   <data name="downloadWorkButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 23</value>
@@ -1215,40 +1215,40 @@
   <data name="&gt;&gt;downloadWorkButton.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="deleteWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="cancelClearWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="deleteWorkButton.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cancelClearWorkButton.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="deleteWorkButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+  <data name="cancelClearWorkButton.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="deleteWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cancelClearWorkButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="deleteWorkButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>468, 306</value>
+  <data name="cancelClearWorkButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>431, 306</value>
   </data>
-  <data name="deleteWorkButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 23</value>
+  <data name="cancelClearWorkButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 23</value>
   </data>
-  <data name="deleteWorkButton.TabIndex" type="System.Int32, mscorlib">
+  <data name="cancelClearWorkButton.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
   </data>
-  <data name="deleteWorkButton.Text" xml:space="preserve">
-    <value>Delete</value>
+  <data name="cancelClearWorkButton.Text" xml:space="preserve">
+    <value>Cancel / Clear</value>
   </data>
-  <data name="&gt;&gt;deleteWorkButton.Name" xml:space="preserve">
-    <value>deleteWorkButton</value>
+  <data name="&gt;&gt;cancelClearWorkButton.Name" xml:space="preserve">
+    <value>cancelClearWorkButton</value>
   </data>
-  <data name="&gt;&gt;deleteWorkButton.Type" xml:space="preserve">
+  <data name="&gt;&gt;cancelClearWorkButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;deleteWorkButton.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cancelClearWorkButton.Parent" xml:space="preserve">
     <value>worksTabPage</value>
   </data>
-  <data name="&gt;&gt;deleteWorkButton.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cancelClearWorkButton.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="visitPageWorkButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -2265,8 +2265,20 @@
   <data name="forceBookmarksCheckToolStripMenuItem.Text" xml:space="preserve">
     <value>Force bookmarks check</value>
   </data>
+  <data name="clearMemoryToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 22</value>
+  </data>
+  <data name="clearMemoryToolStripMenuItem.Text" xml:space="preserve">
+    <value>Clear memory</value>
+  </data>
+  <data name="loadAllFromCatalogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>199, 22</value>
+  </data>
+  <data name="loadAllFromCatalogToolStripMenuItem.Text" xml:space="preserve">
+    <value>Load all from catalog</value>
+  </data>
   <data name="debugContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 312</value>
+    <value>200, 378</value>
   </data>
   <data name="&gt;&gt;debugContextMenuStrip.Name" xml:space="preserve">
     <value>debugContextMenuStrip</value>
@@ -2447,6 +2459,18 @@
   </data>
   <data name="&gt;&gt;bookmarksTimer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;clearMemoryToolStripMenuItem.Name" xml:space="preserve">
+    <value>clearMemoryToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;clearMemoryToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;loadAllFromCatalogToolStripMenuItem.Name" xml:space="preserve">
+    <value>loadAllFromCatalogToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;loadAllFromCatalogToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MangaCrawlerForm</value>

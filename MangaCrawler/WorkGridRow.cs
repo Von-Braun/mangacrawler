@@ -28,12 +28,12 @@ namespace MangaCrawler
                 {
                     case ChapterState.Error:
                         return MangaCrawler.Properties.Resources.WorkProgressError;
-                    case ChapterState.Deleted:
-                        return MangaCrawler.Properties.Resources.WorkProgressAborted;
+                    case ChapterState.Cancelled:
+                        return MangaCrawler.Properties.Resources.WorkProgressCancelled;
                     case ChapterState.Waiting:
                         return MangaCrawler.Properties.Resources.WorkProgressWaiting;
-                    case ChapterState.Deleting:
-                        return MangaCrawler.Properties.Resources.WorkProgressDeleting;
+                    case ChapterState.Cancelling:
+                        return MangaCrawler.Properties.Resources.WorkProgressCancelling;
                     case ChapterState.Downloaded:
                         return MangaCrawler.Properties.Resources.WorkProgressDownloaded;
                     case ChapterState.Zipping:

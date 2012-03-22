@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Deleting" xml:space="preserve">
-    <value>DELETING</value>
+  <data name="Cancelling" xml:space="preserve">
+    <value>CANCELLING</value>
   </data>
   <data name="DirError" xml:space="preserve">
     <value>Can't create directory: '{0}'</value>
@@ -138,19 +138,19 @@
   <data name="Zipping" xml:space="preserve">
     <value>ZIPPING</value>
   </data>
-  <data name="Deleted" xml:space="preserve">
-    <value>DELETED</value>
+  <data name="Cancelled" xml:space="preserve">
+    <value>CANCELLED</value>
   </data>
   <data name="DownloadingChapterInfo" xml:space="preserve">
     <value>server: {0}
 serie: {1}
 chapter: {2}</value>
   </data>
-  <data name="WorkProgressAborted" xml:space="preserve">
+  <data name="WorkProgressCancelled" xml:space="preserve">
     <value>Cancelled</value>
   </data>
-  <data name="WorkProgressDeleting" xml:space="preserve">
-    <value>Deleting</value>
+  <data name="WorkProgressCancelling" xml:space="preserve">
+    <value>Cancelling</value>
   </data>
   <data name="WorkProgressDownloaded" xml:space="preserve">
     <value>Downloaded</value>

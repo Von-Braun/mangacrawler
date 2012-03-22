@@ -47,7 +47,6 @@
             this.openChapterFolderBooksButton = new System.Windows.Forms.Button();
             this.visitChapterBooksButton = new System.Windows.Forms.Button();
             this.downloadChapterBooksButton = new System.Windows.Forms.Button();
-            this.chapterBookmarksListBox = new MangaCrawler.ListBoxEx();
             this.label9 = new System.Windows.Forms.Label();
             this.serieBookmarksPanel = new System.Windows.Forms.Panel();
             this.checkNowBookmarksButton = new System.Windows.Forms.Button();
@@ -55,7 +54,6 @@
             this.openSerieFolderBooksButton = new System.Windows.Forms.Button();
             this.visitSerieBooksButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.serieBookmarksListBox = new MangaCrawler.ListBoxEx();
             this.logTabPage = new System.Windows.Forms.TabPage();
             this.clearLogButton = new System.Windows.Forms.Button();
             this.logRichTextBox = new System.Windows.Forms.RichTextBox();
@@ -73,7 +71,7 @@
             this.worksTabPage = new System.Windows.Forms.TabPage();
             this.openFolderWorksButton = new System.Windows.Forms.Button();
             this.downloadWorkButton = new System.Windows.Forms.Button();
-            this.deleteWorkButton = new System.Windows.Forms.Button();
+            this.cancelClearWorkButton = new System.Windows.Forms.Button();
             this.visitPageWorkButton = new System.Windows.Forms.Button();
             this.viewWorkButton = new System.Windows.Forms.Button();
             this.goToChaptersWorkButton = new System.Windows.Forms.Button();
@@ -88,7 +86,6 @@
             this.openPagesFolder = new System.Windows.Forms.Button();
             this.chapterURLButton = new System.Windows.Forms.Button();
             this.downloadButton = new System.Windows.Forms.Button();
-            this.chaptersListBox = new MangaCrawler.ListBoxEx();
             this.label7 = new System.Windows.Forms.Label();
             this.seriesPanel = new System.Windows.Forms.Panel();
             this.BookmarkSerieButton = new System.Windows.Forms.Button();
@@ -97,10 +94,8 @@
             this.openSeriesFolderButton = new System.Windows.Forms.Button();
             this.seriesURLButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.seriesListBox = new MangaCrawler.ListBoxEx();
             this.serversPanel = new System.Windows.Forms.Panel();
             this.openServerFolderButton = new System.Windows.Forms.Button();
-            this.serversListBox = new MangaCrawler.ListBoxEx();
             this.serverURLButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -123,6 +118,13 @@
             this.trayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bookmarksTimer = new System.Windows.Forms.Timer(this.components);
+            this.clearMemoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chaptersListBox = new MangaCrawler.ListBoxEx();
+            this.seriesListBox = new MangaCrawler.ListBoxEx();
+            this.serversListBox = new MangaCrawler.ListBoxEx();
+            this.chapterBookmarksListBox = new MangaCrawler.ListBoxEx();
+            this.serieBookmarksListBox = new MangaCrawler.ListBoxEx();
+            this.loadAllFromCatalogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versionPanel.SuspendLayout();
             this.bookmarksTabPage.SuspendLayout();
             this.splitBookmarksPanel.SuspendLayout();
@@ -153,7 +155,7 @@
             resources.ApplyResources(this.versionLinkLabel, "versionLinkLabel");
             this.versionLinkLabel.Name = "versionLinkLabel";
             this.versionLinkLabel.TabStop = true;
-            this.versionLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.versionLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.versionLinkLabel_LinkClicked);
             // 
             // refreshTimer
             // 
@@ -224,19 +226,6 @@
             this.downloadChapterBooksButton.UseVisualStyleBackColor = true;
             this.downloadChapterBooksButton.Click += new System.EventHandler(this.downloadChapterBooksButton_Click);
             // 
-            // chapterBookmarksListBox
-            // 
-            resources.ApplyResources(this.chapterBookmarksListBox, "chapterBookmarksListBox");
-            this.chapterBookmarksListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.chapterBookmarksListBox.FormattingEnabled = true;
-            this.chapterBookmarksListBox.Name = "chapterBookmarksListBox";
-            this.chapterBookmarksListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.chapterBookmarksListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chapterBookmarksListBox_VerticalScroll);
-            this.chapterBookmarksListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chapterBookmarksListBox_DrawItem);
-            this.chapterBookmarksListBox.SelectedIndexChanged += new System.EventHandler(this.chapterBookmarksListBox_SelectedIndexChanged);
-            this.chapterBookmarksListBox.DoubleClick += new System.EventHandler(this.chapterBookmarksListBox_DoubleClick);
-            this.chapterBookmarksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chapterBookmarksListBox_KeyDown);
-            // 
             // label9
             // 
             resources.ApplyResources(this.label9, "label9");
@@ -286,16 +275,6 @@
             // 
             resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
-            // 
-            // serieBookmarksListBox
-            // 
-            resources.ApplyResources(this.serieBookmarksListBox, "serieBookmarksListBox");
-            this.serieBookmarksListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.serieBookmarksListBox.FormattingEnabled = true;
-            this.serieBookmarksListBox.Name = "serieBookmarksListBox";
-            this.serieBookmarksListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serieBookmarksListBox_DrawItem);
-            this.serieBookmarksListBox.SelectedIndexChanged += new System.EventHandler(this.serieBookmarksListBox_SelectedIndexChanged);
-            this.serieBookmarksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
             // 
             // logTabPage
             // 
@@ -408,7 +387,7 @@
             // 
             this.worksTabPage.Controls.Add(this.openFolderWorksButton);
             this.worksTabPage.Controls.Add(this.downloadWorkButton);
-            this.worksTabPage.Controls.Add(this.deleteWorkButton);
+            this.worksTabPage.Controls.Add(this.cancelClearWorkButton);
             this.worksTabPage.Controls.Add(this.visitPageWorkButton);
             this.worksTabPage.Controls.Add(this.viewWorkButton);
             this.worksTabPage.Controls.Add(this.goToChaptersWorkButton);
@@ -431,12 +410,12 @@
             this.downloadWorkButton.UseVisualStyleBackColor = true;
             this.downloadWorkButton.Click += new System.EventHandler(this.downloadWorkButton_Click);
             // 
-            // deleteWorkButton
+            // cancelClearWorkButton
             // 
-            resources.ApplyResources(this.deleteWorkButton, "deleteWorkButton");
-            this.deleteWorkButton.Name = "deleteWorkButton";
-            this.deleteWorkButton.UseVisualStyleBackColor = true;
-            this.deleteWorkButton.Click += new System.EventHandler(this.deleteWorkButton_Click);
+            resources.ApplyResources(this.cancelClearWorkButton, "cancelClearWorkButton");
+            this.cancelClearWorkButton.Name = "cancelClearWorkButton";
+            this.cancelClearWorkButton.UseVisualStyleBackColor = true;
+            this.cancelClearWorkButton.Click += new System.EventHandler(this.cancelClearWorkButton_Click);
             // 
             // visitPageWorkButton
             // 
@@ -581,19 +560,6 @@
             this.downloadButton.UseVisualStyleBackColor = true;
             this.downloadButton.Click += new System.EventHandler(this.downloadButton_Click);
             // 
-            // chaptersListBox
-            // 
-            resources.ApplyResources(this.chaptersListBox, "chaptersListBox");
-            this.chaptersListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.chaptersListBox.FormattingEnabled = true;
-            this.chaptersListBox.Name = "chaptersListBox";
-            this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.chaptersListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
-            this.chaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chaptersListBox_DrawItem);
-            this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
-            this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
-            this.chaptersListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chaptersListBox_KeyDown);
-            // 
             // label7
             // 
             resources.ApplyResources(this.label7, "label7");
@@ -649,16 +615,6 @@
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
             // 
-            // seriesListBox
-            // 
-            resources.ApplyResources(this.seriesListBox, "seriesListBox");
-            this.seriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.seriesListBox.FormattingEnabled = true;
-            this.seriesListBox.Name = "seriesListBox";
-            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
-            this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
-            this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
-            // 
             // serversPanel
             // 
             resources.ApplyResources(this.serversPanel, "serversPanel");
@@ -674,16 +630,6 @@
             this.openServerFolderButton.Name = "openServerFolderButton";
             this.openServerFolderButton.UseVisualStyleBackColor = true;
             this.openServerFolderButton.Click += new System.EventHandler(this.openServerFolderButton_Click);
-            // 
-            // serversListBox
-            // 
-            resources.ApplyResources(this.serversListBox, "serversListBox");
-            this.serversListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.serversListBox.FormattingEnabled = true;
-            this.serversListBox.Name = "serversListBox";
-            this.serversListBox.Sorted = true;
-            this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);
-            this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
             // 
             // serverURLButton
             // 
@@ -725,7 +671,9 @@
             this.renameChapterToolStripMenuItem,
             this.changeSerieURLToolStripMenuItem,
             this.changeChapterURLToolStripMenuItem,
-            this.forceBookmarksCheckToolStripMenuItem});
+            this.forceBookmarksCheckToolStripMenuItem,
+            this.clearMemoryToolStripMenuItem,
+            this.loadAllFromCatalogToolStripMenuItem});
             this.debugContextMenuStrip.Name = "debugContextMenuStrip";
             resources.ApplyResources(this.debugContextMenuStrip, "debugContextMenuStrip");
             // 
@@ -839,6 +787,74 @@
             this.bookmarksTimer.Interval = 1000;
             this.bookmarksTimer.Tick += new System.EventHandler(this.bookmarksTimer_Tick);
             // 
+            // clearMemoryToolStripMenuItem
+            // 
+            this.clearMemoryToolStripMenuItem.Name = "clearMemoryToolStripMenuItem";
+            resources.ApplyResources(this.clearMemoryToolStripMenuItem, "clearMemoryToolStripMenuItem");
+            this.clearMemoryToolStripMenuItem.Click += new System.EventHandler(this.clearMemoryToolStripMenuItem_Click);
+            // 
+            // chaptersListBox
+            // 
+            resources.ApplyResources(this.chaptersListBox, "chaptersListBox");
+            this.chaptersListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.chaptersListBox.FormattingEnabled = true;
+            this.chaptersListBox.Name = "chaptersListBox";
+            this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.chaptersListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
+            this.chaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chaptersListBox_DrawItem);
+            this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
+            this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
+            this.chaptersListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chaptersListBox_KeyDown);
+            // 
+            // seriesListBox
+            // 
+            resources.ApplyResources(this.seriesListBox, "seriesListBox");
+            this.seriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.seriesListBox.FormattingEnabled = true;
+            this.seriesListBox.Name = "seriesListBox";
+            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
+            this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
+            this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
+            // 
+            // serversListBox
+            // 
+            resources.ApplyResources(this.serversListBox, "serversListBox");
+            this.serversListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.serversListBox.FormattingEnabled = true;
+            this.serversListBox.Name = "serversListBox";
+            this.serversListBox.Sorted = true;
+            this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);
+            this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
+            // 
+            // chapterBookmarksListBox
+            // 
+            resources.ApplyResources(this.chapterBookmarksListBox, "chapterBookmarksListBox");
+            this.chapterBookmarksListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.chapterBookmarksListBox.FormattingEnabled = true;
+            this.chapterBookmarksListBox.Name = "chapterBookmarksListBox";
+            this.chapterBookmarksListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.chapterBookmarksListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chapterBookmarksListBox_VerticalScroll);
+            this.chapterBookmarksListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chapterBookmarksListBox_DrawItem);
+            this.chapterBookmarksListBox.SelectedIndexChanged += new System.EventHandler(this.chapterBookmarksListBox_SelectedIndexChanged);
+            this.chapterBookmarksListBox.DoubleClick += new System.EventHandler(this.chapterBookmarksListBox_DoubleClick);
+            this.chapterBookmarksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chapterBookmarksListBox_KeyDown);
+            // 
+            // serieBookmarksListBox
+            // 
+            resources.ApplyResources(this.serieBookmarksListBox, "serieBookmarksListBox");
+            this.serieBookmarksListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.serieBookmarksListBox.FormattingEnabled = true;
+            this.serieBookmarksListBox.Name = "serieBookmarksListBox";
+            this.serieBookmarksListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serieBookmarksListBox_DrawItem);
+            this.serieBookmarksListBox.SelectedIndexChanged += new System.EventHandler(this.serieBookmarksListBox_SelectedIndexChanged);
+            this.serieBookmarksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
+            // 
+            // loadAllFromCatalogToolStripMenuItem
+            // 
+            this.loadAllFromCatalogToolStripMenuItem.Name = "loadAllFromCatalogToolStripMenuItem";
+            resources.ApplyResources(this.loadAllFromCatalogToolStripMenuItem, "loadAllFromCatalogToolStripMenuItem");
+            this.loadAllFromCatalogToolStripMenuItem.Click += new System.EventHandler(this.loadAllFromCatalogToolStripMenuItem_Click);
+            // 
             // MangaCrawlerForm
             // 
             resources.ApplyResources(this, "$this");
@@ -915,7 +931,7 @@
         private System.Windows.Forms.TabPage worksTabPage;
         private System.Windows.Forms.Button openFolderWorksButton;
         private System.Windows.Forms.Button downloadWorkButton;
-        private System.Windows.Forms.Button deleteWorkButton;
+        private System.Windows.Forms.Button cancelClearWorkButton;
         private System.Windows.Forms.Button visitPageWorkButton;
         private System.Windows.Forms.Button viewWorkButton;
         private System.Windows.Forms.Button goToChaptersWorkButton;
@@ -969,6 +985,8 @@
         private System.Windows.Forms.Timer bookmarksTimer;
         private System.Windows.Forms.Button checkNowBookmarksButton;
         private System.Windows.Forms.ToolStripMenuItem forceBookmarksCheckToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearMemoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadAllFromCatalogToolStripMenuItem;
     }
 }
 

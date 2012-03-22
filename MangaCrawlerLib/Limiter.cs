@@ -21,7 +21,7 @@ namespace MangaCrawlerLib
         #endregion
 
         #region Limit
-        private class Limit
+        private class Limit : IDisposable
         {
             public Priority Priority { get; private set; }
             public AutoResetEvent Event { get; private set; }
@@ -39,6 +39,11 @@ namespace MangaCrawlerLib
             public override string ToString()
             {
                 return String.Format("Server: {0}, Priority: {1}, LimitOrder: {2}", Server.ID, Priority, LimiterOrder);
+            }
+
+            public void Dispose()
+            {
+                Event.Dispose();
             }
         }
         #endregion
@@ -96,21 +101,23 @@ namespace MangaCrawlerLib
 
         private static void Aquire(Server a_server, CancellationToken a_token, Priority a_priority, ulong a_limiter_order)
         {
-            Limit limit = new Limit(a_priority, a_server, a_limiter_order);
-            lock (s_limits)
-            {
-                s_limits.Add(limit);
-            }
-            s_loop_event.Set();
-
-            while (!limit.Event.WaitOne(WAIT_SLEEP_MS))
+            using (Limit limit = new Limit(a_priority, a_server, a_limiter_order))
             {
                 lock (s_limits)
                 {
-                    if (a_token.IsCancellationRequested)
+                    s_limits.Add(limit);
+                }
+                s_loop_event.Set();
+
+                while (!limit.Event.WaitOne(WAIT_SLEEP_MS))
+                {
+                    lock (s_limits)
                     {
-                        s_limits.Remove(limit);
-                        a_token.ThrowIfCancellationRequested();
+                        if (a_token.IsCancellationRequested)
+                        {
+                            s_limits.Remove(limit);
+                            a_token.ThrowIfCancellationRequested();
+                        }
                     }
                 }
             }
