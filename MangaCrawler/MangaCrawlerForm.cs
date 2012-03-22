@@ -136,9 +136,6 @@ namespace MangaCrawler
      * 
      * /////////////
      * 
-     * pozbycie sie yaxlib
-     * pozbycie sie log4net
-     * 
      * rodzielic clear od delete - clear kasuje wszystko nie tylko wybrane
      * 
      * wiele chapterow z jednego chaptera do sciagania, zamkniecie aplikacji, ponowne uruchomienie, 
