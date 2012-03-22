@@ -28,7 +28,7 @@ namespace MangaCrawlerLib
             get
             {
                 m_works = (from work in m_works
-                           where work.State != ChapterState.Deleted
+                           where work.State != ChapterState.Cancelled
                            select work).ToList();
 
                 return m_works;

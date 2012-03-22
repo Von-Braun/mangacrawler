@@ -35,9 +35,9 @@ namespace MangaCrawler
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
                     }
-                    case ChapterState.Deleted:
+                    case ChapterState.Cancelled:
                     {
-                        a_args.Graphics.DrawString(Resources.Deleted, font,
+                        a_args.Graphics.DrawString(Resources.Cancelled, font,
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
                     }
@@ -53,9 +53,9 @@ namespace MangaCrawler
                             Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
                     }
-                    case ChapterState.Deleting:
+                    case ChapterState.Cancelling:
                     {
-                        a_args.Graphics.DrawString(Resources.Deleting, font,
+                        a_args.Graphics.DrawString(Resources.Cancelling, font,
                             Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
                     }

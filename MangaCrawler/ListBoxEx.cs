@@ -72,6 +72,27 @@ namespace MangaCrawler
                 base.OnSelectedIndexChanged(e);
         }
 
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                int index = IndexFromPoint(e.Location);
+
+                if (index != ListBox.NoMatches)
+                {
+                    Object item = Items[index];
+
+                    if (!SelectedItems.Contains(item))
+                    {
+                        ClearSelected();
+                        SelectedItem = item;
+                    }
+                }
+            }
+
+            base.OnMouseDown(e);
+        }
+
         protected override void OnSelectedValueChanged(EventArgs e)
         {
             if (!m_reloading)

@@ -58,7 +58,7 @@ namespace MangaCrawlerLib
         private bool m_bookmark_ignored;
 
         public Serie Serie { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; internal set; }
 
         internal Chapter(Serie a_serie, string a_url, string a_title)
             : this(a_serie, a_url, a_title, Catalog.NextID(), ChapterState.Initial, 0, false)
@@ -76,7 +76,7 @@ namespace MangaCrawlerLib
             URL = HttpUtility.HtmlDecode(a_url);
             m_state = a_state;
 
-            if (m_state == ChapterState.Deleting)
+            if (m_state == ChapterState.Cancelling)
                 m_state = ChapterState.Initial;
             if (m_state == ChapterState.DownloadingPages)
                 m_state = ChapterState.Initial;
@@ -146,7 +146,7 @@ namespace MangaCrawlerLib
                 return (State == ChapterState.Waiting) ||
                        (State == ChapterState.DownloadingPages) ||
                        (State == ChapterState.DownloadingPagesList) ||
-                       (State == ChapterState.Deleting) ||
+                       (State == ChapterState.Cancelling) ||
                        (State == ChapterState.Zipping);
             }
         }
@@ -156,15 +156,15 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Serie, Title);
         }
 
-        public void DeleteWork()
+        public void CancelWork()
         {
-            if (State == ChapterState.Deleting)
+            if (State == ChapterState.Cancelling)
                 return;
 
             lock (m_state_lock)
             {
                 if (IsDownloading)
-                    State = ChapterState.Deleting;
+                    State = ChapterState.Cancelling;
             }
         }
 
@@ -198,7 +198,6 @@ namespace MangaCrawlerLib
 
         internal void DownloadPages()
         {
-            bool error = false;
             m_cancellation_token_source = new CancellationTokenSource();
 
             try
@@ -252,19 +251,28 @@ namespace MangaCrawlerLib
                             }
                             catch (Exception ex2)
                             {
-                                Loggers.MangaCrawler.InfoFormat(
-                                    "Exception #1, chapter: {0} state: {1}, {2}",
-                                    this, State, ex2);
+                                Loggers.MangaCrawler.Error(String.Format(
+                                    "Exception #1, chapter: {0} state: {1}",
+                                    this, State), ex2);
 
-                                error = true;
+                                State = ChapterState.Error;
                             }
                         }
                     );
 
+                    Token.ThrowIfCancellationRequested();
+   
+                    if (PagesDownloaded != Pages.Count)
+                        State = ChapterState.Error;
+                    else if (Pages.Any(p => p.State != PageState.Downloaded))
+                        State = ChapterState.Error;
+                    
+
                     Catalog.Save(this);
 
                     if (DownloadManager.Instance.MangaSettings.UseCBZ)
-                        CreateCBZ();
+                        if (State != ChapterState.Error)
+                            CreateCBZ();
 
                     m_bookmark_ignored = true;
                 }
@@ -275,31 +283,39 @@ namespace MangaCrawlerLib
             }
             catch (OperationCanceledException)
             {
+                Debug.Assert(State == ChapterState.Cancelling);
+                Debug.Assert(m_cancellation_token_source.IsCancellationRequested);
+
+                State = ChapterState.Cancelled;
             }
-            catch (Exception ex)
+            catch (Exception ex1)
             {
-                Loggers.MangaCrawler.InfoFormat(
-                    "Exception #2, chapter: {0} state: {1}, {2}",
-                    this, State, ex);
-                error = true;
+                Loggers.MangaCrawler.Error(String.Format(
+                    "Exception #2, chapter: {0} state: {1}", this, State), ex1);
+
+                State = ChapterState.Error;
+
+                try
+                {
+                    DownloadManager.Instance.DownloadChapters(Serie, true);
+                }
+                catch (Exception ex2)
+                {
+                    Loggers.MangaCrawler.Error(String.Format(
+                        "Exception #3, chapter: {0} state: {1}", this, State), ex2);
+                }
             }
             finally
             {
                 lock (m_state_lock)
                 {
-                    Loggers.MangaCrawler.DebugFormat("Chapter: {0}, state: {1}, error: {2}",
-                        this, State, error);
-
-                    if (error)
-                        State = ChapterState.Error;
-                    else if (m_cancellation_token_source.IsCancellationRequested)
-                        State = ChapterState.Deleted;
-                    else if (PagesDownloaded != Pages.Count)
-                        State = ChapterState.Error;
-                    else if (Pages.Any(p => p.State != PageState.Downloaded))
-                        State = ChapterState.Error;
-                    else
+                    if ((State != ChapterState.Error) && (State != ChapterState.Cancelled))
+                    {
+                        Debug.Assert(
+                            (State == ChapterState.DownloadingPages) || 
+                            (State == ChapterState.Zipping));
                         State = ChapterState.Downloaded;
+                    }
                 }
             }
 
@@ -308,6 +324,8 @@ namespace MangaCrawlerLib
 
         private void CreateCBZ()
         {
+            Debug.Assert(State == ChapterState.DownloadingPages);
+
             Loggers.MangaCrawler.InfoFormat(
                 "Chapter: {0} state: {1}",
                 this, State);
@@ -342,7 +360,10 @@ namespace MangaCrawlerLib
             }
             catch (Exception ex)
             {
-                Loggers.MangaCrawler.Fatal("Exception", ex);
+                State = ChapterState.Error;
+
+                Loggers.MangaCrawler.Error(String.Format(
+                        "Exception, chapter: {0} state: {1}", this, State), ex);
             }
         }
 
@@ -375,7 +396,7 @@ namespace MangaCrawlerLib
                         }
                         case ChapterState.Waiting:
                         {
-                            Debug.Assert((State == ChapterState.Deleted) ||
+                            Debug.Assert((State == ChapterState.Cancelled) ||
                                          (State == ChapterState.Downloaded) ||
                                          (State == ChapterState.Error) ||
                                          (State == ChapterState.Initial));
@@ -399,12 +420,12 @@ namespace MangaCrawlerLib
                             Debug.Assert(State == ChapterState.DownloadingPages);
                             break;
                         }
-                        case ChapterState.Deleted:
+                        case ChapterState.Cancelled:
                         {
-                            Debug.Assert(State == ChapterState.Deleting);
+                            Debug.Assert(State == ChapterState.Cancelling);
                             break;
                         }
-                        case ChapterState.Deleting:
+                        case ChapterState.Cancelling:
                         {
                             Debug.Assert((State == ChapterState.DownloadingPages) ||
                                          (State == ChapterState.DownloadingPagesList) ||
@@ -437,6 +458,14 @@ namespace MangaCrawlerLib
                     m_state = value;
                 }
             }
+        }
+
+        internal void Debug_LoadAllFromCatalog(ref int a_servers, ref int a_series, ref int a_chapters, ref int a_pages)
+        {
+            a_chapters++;
+            m_pages.Count.ToString();
+            foreach (var page in m_pages)
+                a_pages++;
         }
     }
 }

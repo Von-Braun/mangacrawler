@@ -17,6 +17,8 @@ using log4net.Core;
 using log4net.Layout;
 using log4net.Config;
 using log4net;
+using System.Runtime.InteropServices;
+using TomanuExtensions;
 
 namespace MangaCrawler
 {
@@ -43,7 +45,7 @@ namespace MangaCrawler
      * http://www.mangamonger.com/
      * 
      */
-    
+
     /*
      * TESTY
      * 
@@ -120,21 +122,32 @@ namespace MangaCrawler
      *   
      * menu debug nie dziala i nie ma logowania w release
      * 
-     * *****************************
-     * 
      * zmiana nazwy, zmiana url - nie tracimy powiazania, zmiana obu - trudno
+     * 
+     * klikniecie prawym przyciskiem w liste zaznacza element przed pojawieniem sie menu kontekstowego
      * 
      * brak dostepu do katalogu - nie mozna utworzyc katalogu, nie mozna zapisac pliku w katalogu, nie mozna 
      * zapisac cbz, nie mozna podmienic pliku image, nie mozna podmienic pliku cbz
      * 
-     * potestowac jak dzialaja zywe serwery
-     * 
-     * testy masowego pobierania cala noc
-     * 
      * ktos klika w element ktory nie istnieje, pojawia sie error, albo jest on w trakcie sciagania, w tym 
      * czasie nastepuje jego odswiezenie i znika on z listy
-     *  
-     * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
+     * 
+     * zalaczenie do pobierania mnostwa chapterow, serii, itp zobaczyc czy nie bledow pamieciowych
+     * 
+     * /////////////
+     * 
+     * pozbycie sie yaxlib
+     * pozbycie sie log4net
+     * 
+     * rodzielic clear od delete - clear kasuje wszystko nie tylko wybrane
+     * 
+     * wiele chapterow z jednego chaptera do sciagania, zamkniecie aplikacji, ponowne uruchomienie, 
+     * czy wszystkie sa wznawiane
+     * wyglada na to cos sie pobiera nawet jak wszystko sie pobralo ?
+     * 
+     * zaznaczam cos, wiele, jedno, obszar, przechodze na inna serie, klikam z shift gdzie i mam zaznaczony obszar
+     * 
+     * dodanie wielu chapterow wolne
      * 
      * przetestowac compaktowanie 
      * - dodac jakies inne liki
@@ -145,6 +158,12 @@ namespace MangaCrawler
      * - czy usuwane sa uste serie
      * - czy brute force usuwa te najstarsze
      * - czy brute force nie rusza do akcji jesli nie trzeba
+     * 
+     * /////////////////
+     * 
+     * potestowac jak dzialaja zywe serwery
+     * testy masowego pobierania cala noc
+     * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
      * 
      */
 
@@ -162,8 +181,15 @@ namespace MangaCrawler
         private bool m_force_close;
         private DateTime m_last_bookmark_check = DateTime.Now;
         private bool m_play_sound_when_downloaded;
+        private bool m_icon_created;
+        private bool m_green_icon;
 
         private static Color BAD_DIR = Color.Red;
+
+        [DllImport("user32.dll", SetLastError=true, CharSet=CharSet.Auto)]
+        private static extern uint RegisterWindowMessage(string a_name);
+
+        private uint WM_TASKBARCREATED;
 
         public MangaCrawlerForm()
         {
@@ -173,6 +199,10 @@ namespace MangaCrawler
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
+            Debug.Assert(versionLinkLabel.Text == Resources.HomePage);
+
+            WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
+
             SetupLog4NET();
 
             Text = String.Format("{0} {1}.{2}", Text,
@@ -236,14 +266,57 @@ namespace MangaCrawler
             UpdateAll();
         }
 
+        protected override void WndProc(ref Message a_msg)
+        {
+            if (a_msg.Msg == WM_TASKBARCREATED)
+            {
+                if (notifyIcon.Visible)
+                    notifyIcon.Visible = true;
+            }
+
+            base.WndProc(ref a_msg);
+        }
+
         private void UpdateIcons()
         {
-            if (DownloadManager.Instance.Bookmarks.GetSeriesWithNewChapters().Any())
+            bool need_green = DownloadManager.Instance.Bookmarks.GetSeriesWithNewChapters().Any();
+
+            if (m_icon_created)
+            {
+                if (need_green)
+                {
+                    if (m_green_icon)
+                        return;
+                }
+                if (!need_green)
+                {
+                    if (!m_green_icon)
+                        return;
+                }
+            }
+
+            m_icon_created = true;
+
+            Icon old1 = Icon;
+            Icon old2 = notifyIcon.Icon;
+
+            if (need_green)
+            {
                 Icon = Icon.FromHandle(Resources.Manga_Crawler_Green.GetHicon());
+                m_green_icon = true;
+            }
             else
+            {
                 Icon = Icon.FromHandle(Resources.Manga_Crawler_Orange.GetHicon());
-            
+                m_green_icon = false;
+            }
+
             notifyIcon.Icon = Icon;
+
+            if (old1 != null)
+                old1.Dispose();
+            if (old2 != null)
+                old2.Dispose();
         }
 
         private void SetupLog4NET()
@@ -308,17 +381,6 @@ namespace MangaCrawler
                     return null;
 
                 return (serversListBox.SelectedItem as ServerListItem).Server;
-            }
-        }
-
-        public Chapter SelectedChapter
-        {
-            get
-            {
-                if (chaptersListBox.SelectedItem == null)
-                    return null;
-
-                return (chaptersListBox.SelectedItem as ChapterListItem).Chapter;
             }
         }
 
@@ -433,7 +495,8 @@ namespace MangaCrawler
 
             if (was_empty)
             {
-                Debug.Assert(worksGridView.SelectedRows.Count != 0);
+                if (worksGridView.Rows.Count != 0)
+                    Debug.Assert(worksGridView.SelectedRows.Count != 0);
                 worksGridView.ClearSelection();
             }
 
@@ -510,7 +573,7 @@ namespace MangaCrawler
             Settings.Instance.MangaSettings.UseCBZ = cbzCheckBox.Checked;
         }
 
-        private void linkLabel1_LinkClicked(object sender, 
+        private void versionLinkLabel_LinkClicked(object sender, 
             LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(Resources.HomePage);
@@ -630,16 +693,13 @@ namespace MangaCrawler
 
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
-            if (DownloadManager.Instance.IsDownloading())
+            if (DownloadManager.Instance.NeedGUIRefresh(true))
             {
-                if (m_refresh_once_after_all_done)
-                    Loggers.GUI.Debug("Starting refreshing");
                 m_refresh_once_after_all_done = false;
                 m_working = DownloadManager.Instance.Works.List.Any();
             }
             else if (!m_refresh_once_after_all_done)
             {
-                Loggers.GUI.Debug("Stopping refreshing");
                 m_refresh_once_after_all_done = true;
             }
             else
@@ -655,6 +715,9 @@ namespace MangaCrawler
                         if (Settings.Instance.PlaySoundWhenDownloaded)
                             SystemSounds.Beep.Play();
                     }
+
+                    DownloadManager.Instance.ClearCache();
+                    GC.Collect();
                 }
 
                 return;
@@ -991,9 +1054,9 @@ namespace MangaCrawler
                 SystemSounds.Asterisk.Play();
         }
 
-        private void deleteWorkButton_Click(object sender, EventArgs e)
+        private void cancelClearWorkButton_Click(object sender, EventArgs e)
         {
-            DeleteSelectedWorks();
+            CancelClearSelectedWorks();
         }
 
         private void openFolderWorksButton_Click(object sender, EventArgs e)
@@ -1038,14 +1101,14 @@ namespace MangaCrawler
         private void worksGridView_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
-                DeleteSelectedWorks();
+                CancelClearSelectedWorks();
         }
 
-        private void DeleteSelectedWorks()
+        private void CancelClearSelectedWorks()
         {
             var works = GetSelectedWorks();
 
-            if (!works.Any() || works.Any(c => c.State == ChapterState.Deleting))
+            if (!works.Any() || works.Any(c => c.State == ChapterState.Cancelling))
             {
                 SystemSounds.Asterisk.Play();
                 return;
@@ -1055,7 +1118,7 @@ namespace MangaCrawler
             {
                 if (work.IsDownloading)
                 {
-                    work.DeleteWork();
+                    work.CancelWork();
                     m_play_sound_when_downloaded = false;
                 }
                 else
@@ -1328,7 +1391,8 @@ namespace MangaCrawler
 
         private void removeChapterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DownloadManager.Instance.Debug_RemoveChapter(SelectedChapter);
+            foreach (var chapter in GetSelectedChapters())
+                DownloadManager.Instance.Debug_RemoveChapter(chapter);
         }
 
         private void renameSerieToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1338,7 +1402,8 @@ namespace MangaCrawler
 
         private void renameChapterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DownloadManager.Instance.Debug_RenameChapter(SelectedChapter);
+            foreach (var chapter in GetSelectedChapters())
+                DownloadManager.Instance.Debug_RenameChapter(chapter);
         }
 
         private void changeSerieURLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1348,7 +1413,8 @@ namespace MangaCrawler
 
         private void changeChapterURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DownloadManager.Instance.Debug_ChangeChapterURL(SelectedChapter);
+            foreach (var chapter in GetSelectedChapters())
+                DownloadManager.Instance.Debug_ChangeChapterURL(chapter);
         }
 
         private void minimizeOnCloseCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -1369,13 +1435,17 @@ namespace MangaCrawler
             if (a_minimize)
             {
                 Hide();
-                ShowInTaskbar = false;
                 notifyIcon.Visible = true;
+
+                if (!m_working)
+                {
+                    DownloadManager.Instance.ClearCache();
+                    GC.Collect();
+                }
             }
             else
             {
                 Show();
-                ShowInTaskbar = true;
                 notifyIcon.Visible = false;
             }
         }
@@ -1529,6 +1599,23 @@ namespace MangaCrawler
                 if (e.Y > r.Bottom)
                     worksGridView.ClearSelection();
             }
+        }
+
+        private void clearMemoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DownloadManager.Instance.ClearCache();
+            GC.Collect();
+        }
+
+        private void loadAllFromCatalogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int servers = 0;
+            int series = 0;
+            int chapters = 0;
+            int pages = 0;
+            DownloadManager.Instance.Debug_LoadAllFromCatalog(ref servers, ref series, ref chapters, ref pages);
+
+            Loggers.GUI.InfoFormat("servers: {0}, series: {1}, chapters: {2}, pages: {3}", servers, series, chapters, pages);
         }
     }
 }

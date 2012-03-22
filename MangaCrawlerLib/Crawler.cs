@@ -31,7 +31,7 @@ namespace MangaCrawlerLib
                 }
                 catch (WebException ex)
                 {
-                    Loggers.MangaCrawler.Info("exception, {0}", ex);
+                    Loggers.MangaCrawler.Error("Exception, {0}", ex);
 
                     ex1 = ex;
                     continue;

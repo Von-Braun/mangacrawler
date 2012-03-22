@@ -37,6 +37,31 @@ namespace MangaCrawlerLib
                         m_loaded_from_xml = true;
                 }
             }
+
+            protected override IEnumerable<MergeRule> MergeRules
+            {
+                get
+                {
+                    yield return new MergeRule()
+                    {
+                        KeySelector = s => s.Title,
+                        Merge = (src, dest) =>
+                        {
+                            dest.Title = src.Title;
+                            dest.URL = src.URL;
+                        }
+                    };
+                    yield return new MergeRule()
+                    {
+                        KeySelector = s => s.URL,
+                        Merge = (src, dest) =>
+                        {
+                            dest.Title = src.Title;
+                            dest.URL = src.URL;
+                        }
+                    };
+                }
+            }
         }
         #endregion
 
@@ -50,7 +75,7 @@ namespace MangaCrawlerLib
         private DateTime m_check_date_time = DateTime.MinValue;
 
         public Server Server { get; protected set; }
-        public string Title { get; protected set; }
+        public string Title { get; internal set; }
         public int DownloadProgress { get; protected set; }
 
         internal Serie(Server a_server, string a_url, string a_title)
@@ -105,10 +130,10 @@ namespace MangaCrawlerLib
             {
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
-                    if (!m_chapters.LoadedFromXml)
-                        m_chapters.ReplaceInnerCollection(result, c => c.Title + c.URL, false);
+                    if (!m_chapters.IsLoadedFromXml)
+                        m_chapters.ReplaceInnerCollection(result, false);
                     else if (progress == 100)
-                        m_chapters.ReplaceInnerCollection(result, c => c.Title + c.URL, true);
+                        m_chapters.ReplaceInnerCollection(result, true);
                     DownloadProgress = progress; 
                 });
 
@@ -117,9 +142,22 @@ namespace MangaCrawlerLib
             catch (ObjectDisposedException)
             {
             }
-            catch (Exception)
+            catch (Exception ex1)
             {
                 State = SerieState.Error;
+
+                Loggers.MangaCrawler.Error(
+                    String.Format("Exception #1, serie: {0} state: {1}", this, State), ex1);
+
+                try
+                {
+                    DownloadManager.Instance.DownloadSeries(Server, true);
+                }
+                catch (Exception ex2)
+                {
+                    Loggers.MangaCrawler.Error(
+                        String.Format("Exception #2, serie: {0} state: {1}", this, State), ex2);
+                }
             }
 
             Catalog.Save(this);
@@ -230,6 +268,14 @@ namespace MangaCrawlerLib
             return (from chapter in Chapters
                     where !chapter.BookmarkIgnored
                     select chapter).ToList();
+        }
+
+        internal void Debug_LoadAllFromCatalog(ref int a_servers, ref int a_series, ref int a_chapters, ref int a_pages)
+        {
+            a_series++;
+            m_chapters.Count.ToString(); 
+            foreach (var chapter in m_chapters)
+                chapter.Debug_LoadAllFromCatalog(ref a_servers, ref a_series, ref a_chapters, ref a_pages);
         }
     }
 }

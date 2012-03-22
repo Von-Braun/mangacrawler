@@ -30,28 +30,35 @@ namespace MangaCrawlerLib.Crawlers
 
         private class SerieData
         {
-            private string m_title;
+            public void SetTitleURL(string a_title)
+            {
+                Title = a_title;
+                URL = "fake serie url - " + a_title;
+            }
 
-            public string Title
+            public string Title;
+            public string URL;
+            public int Seed;
+
+            private List<ChapterData> m_chapters;
+
+            public List<ChapterData> Chapters
             {
                 get
                 {
-                    return m_title;
+                    return m_chapters;
                 }
-                set
+                private set
                 {
-                    m_title = value;
-                    URL = "fake serie url - " + m_title;
+                    m_chapters = value;
                 }
             }
 
-            public List<ChapterData> Chapters;
-
             public IEnumerable<ChapterData> GetChapters(int a_count = -1)
             {
-                if (Chapters != null)
-                    return Chapters;
-                else return GenerateChapters(a_count);
+                if (Chapters == null)
+                    Chapters = GenerateChapters(a_count).ToList();
+                return Chapters;
             }
 
             private IEnumerable<ChapterData> GenerateChapters(int a_count = -1)
@@ -69,68 +76,58 @@ namespace MangaCrawlerLib.Crawlers
                 for (int c = 1; c <= maxc; c++)
                 {
                     ChapterData chapter = new ChapterData();
-                    chapter.Title = Title + " - Chapter " + c.ToString();
+                    chapter.SetTitleURL(Title + " - Chapter " + c.ToString());
                     chapter.Seed = random.Next();
                     yield return chapter;
                 }
 
                 {
                     ChapterData chapter = new ChapterData();
-                    chapter.Title = Title + " - empty pages";
+                    chapter.SetTitleURL(Title + " - empty pages");
                     yield return chapter;
                 }
 
                 {
                     ChapterData chapter = new ChapterData();
-                    chapter.Title = Title + " - error pages none";
+                    chapter.SetTitleURL(Title + " - error pages none");
                     chapter.Seed = random.Next();
                     yield return chapter;
                 }
 
                 {
                     ChapterData chapter = new ChapterData();
-                    chapter.Title = Title + " - error page getimageurl";
+                    chapter.SetTitleURL(Title + " - error page getimageurl");
                     chapter.Seed = random.Next();
                     yield return chapter;
                 }
 
                 {
                     ChapterData chapter = new ChapterData();
-                    chapter.Title = Title + " - error page getimagestream";
+                    chapter.SetTitleURL(Title + " - error page getimagestream");
                     chapter.Seed = random.Next();
                     yield return chapter;
                 }
 
                 {
                     ChapterData chapter = new ChapterData();
-                    chapter.Title = Title + " - out of order pages";
+                    chapter.SetTitleURL(Title + " - out of order pages");
                     chapter.Seed = random.Next();
                     yield return chapter;
                 }
             }
-
-            public string URL;
-            public int Seed;
         }
 
         private class ChapterData
         {
-            private string m_title;
-
-            public string Title
+            public void SetTitleURL(string a_title)
             {
-                get
-                {
-                    return m_title;
-                }
-                set
-                {
-                    m_title = value;
-                    URL = "fake chapter url - " + m_title;
-                }
+                Title = a_title;
+                URL = "fake chapter url - " + a_title;
             }
 
+            public string Title;
             public string URL;
+            public int Seed;
 
             public IEnumerable<string> GeneratePages()
             {
@@ -153,8 +150,6 @@ namespace MangaCrawlerLib.Crawlers
                     yield return "!! 12" + Title + " - Page last";
 
             }
-
-            public int Seed;
         }
 
         public TestServerCrawler(string a_name, int a_max_server_delay, 
@@ -181,27 +176,34 @@ namespace MangaCrawlerLib.Crawlers
             for (int s = 1; s <= maxs; s++)
             {
                 SerieData serie = new SerieData();
-                serie.Title = a_name + " - Serie" + s.ToString();
+                serie.SetTitleURL(a_name + " - Serie" + s.ToString());
                 serie.Seed = random.Next();
                 m_series.Add(serie);
             }
 
             {
                 SerieData serie = new SerieData();
-                serie.Title = a_name + " - empty chapters";
+                serie.SetTitleURL(a_name + " - empty chapters");
                 m_series.Add(serie);
             }
 
             {
                 SerieData serie = new SerieData();
-                serie.Title = a_name + " - error chapters none";
+                serie.SetTitleURL(a_name + " - error chapters none");
                 serie.Seed = random.Next();
                 m_series.Add(serie);
             }
 
             {
                 SerieData serie = new SerieData();
-                serie.Title = a_name + " - error chapters few";
+                serie.SetTitleURL(a_name + " - error chapters few");
+                serie.Seed = random.Next();
+                m_series.Add(serie);
+            }
+
+            {
+                SerieData serie = new SerieData();
+                serie.SetTitleURL(a_name + " - few chapters");
                 serie.Seed = random.Next();
                 m_series.Add(serie);
             }
@@ -277,54 +279,59 @@ namespace MangaCrawlerLib.Crawlers
                     listlist.Add(part);
                 }
 
-                ConcurrentBag<Tuple<int, int, Serie>> series = 
+                ConcurrentBag<Tuple<int, int, Serie>> series =
                     new ConcurrentBag<Tuple<int, int, Serie>>();
 
-                Parallel.ForEach(listlist, 
+                Parallel.ForEach(listlist,
                     new ParallelOptions()
                     {
                         MaxDegreeOfParallelism = MaxConnectionsPerServer,
                         TaskScheduler = Limiter.Scheduler
-                    }, 
+                    },
                     (list) =>
-                {
-                    foreach (var el in list)
-                        series.Add(new Tuple<int, int, Serie>(listlist.IndexOf(list), list.IndexOf(el), el));
-
-                    Limiter.Aquire(a_server);
-                    try
                     {
-                      Sleep();
-                    }
-                    finally
-                    {
-                        Limiter.Release(a_server);
-                    }
+                        foreach (var el in list)
+                            series.Add(new Tuple<int, int, Serie>(listlist.IndexOf(list), list.IndexOf(el), el));
 
-                    var result = (from s in series
-                                  orderby s.Item1, s.Item2
-                                  select s.Item3).ToList();
-
-                    if (exc)
-                        if (gen_exc)
-                            return;
-
-                    a_progress_callback(
-                        result.Count * 100 / total,
-                        result);
-
-                    if (!exc)
-                    {
-                        if (gen_exc)
+                        Limiter.Aquire(a_server);
+                        try
                         {
-                            exc = true;
-                            throw new Exception();
+                            Sleep();
                         }
-                    }
-                });
+                        finally
+                        {
+                            Limiter.Release(a_server);
+                        }
+
+                        var result = (from s in series
+                                      orderby s.Item1, s.Item2
+                                      select s.Item3).ToList();
+
+                        if (exc)
+                            if (gen_exc)
+                                return;
+
+                        a_progress_callback(
+                            result.Count * 100 / total,
+                            result);
+
+                        if (!exc)
+                        {
+                            if (gen_exc)
+                            {
+                                exc = true;
+                                throw new Exception();
+                            }
+                        }
+                    });
             }
             else
+            {
+                if (gen_exc)
+                    throw new Exception();
+
                 a_progress_callback(100, toreport);
+            }
         }
 
         private int NextInt(int a_inclusive_min, int a_exlusive_max)
@@ -354,10 +361,7 @@ namespace MangaCrawlerLib.Crawlers
             var serie = m_series.FirstOrDefault(s => s.Title == a_serie.Title);
 
             if (serie == null)
-            {
-                a_progress_callback(100, new Chapter[] {});
-                return;
-            }
+                throw new Exception();
 
             if (serie.Title.Contains("error chapters none"))
                 throw new Exception();
@@ -365,8 +369,12 @@ namespace MangaCrawlerLib.Crawlers
             bool gen_exc = serie.Title.Contains("error chapters few");
 
             int count = -1;
+
             if (gen_exc)
                 count = m_items_per_page * 8 + m_items_per_page / 3;
+
+            if (serie.Title.Contains("few chapters"))
+                count = 3;
 
             var toreport = (from chapter in serie.GetChapters(count)
                             select new Chapter(a_serie, chapter.URL, chapter.Title)).ToArray();
@@ -432,11 +440,18 @@ namespace MangaCrawlerLib.Crawlers
                     });
             }
             else
+            {
+                if (gen_exc)
+                    throw new Exception();
+
                 a_progress_callback(100, toreport);
+            }
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
+            a_chapter.Token.ThrowIfCancellationRequested();
+
             a_chapter.State = ChapterState.DownloadingPagesList;
 
             var serie = m_series.First(s => s.Title == a_chapter.Serie.Title);
@@ -471,39 +486,45 @@ namespace MangaCrawlerLib.Crawlers
                     throw new Exception();
             }
 
-            Bitmap bmp = new Bitmap(NextInt(600, 2000), NextInt(600, 2000));
-            using (Graphics g = Graphics.FromImage(bmp))
-            {
-                string str = "server: " + a_page.Server.Name + Environment.NewLine +
-                             "serie: " + a_page.Serie.Title + Environment.NewLine +
-                             "chapter: " + a_page.Chapter.Title + Environment.NewLine +
-                             "page: " + a_page.Name;
+            a_page.Chapter.Token.ThrowIfCancellationRequested();
 
-                g.DrawString(
-                    str, 
-                    new Font(FontFamily.GenericSansSerif, 25, FontStyle.Bold),
-                    Brushes.White,
-                    new RectangleF(10, 10, bmp.Width - 20, bmp.Height - 20)
-                );
-            }
-
-            Limiter.Aquire(a_page);
-            try
+            using (Bitmap bmp = new Bitmap(NextInt(600, 2000), NextInt(600, 2000)))
             {
-                Sleep();
-            }
-            finally
-            {
-                Limiter.Release(a_page);
-            }
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    string str = "server: " + a_page.Server.Name + Environment.NewLine +
+                                 "serie: " + a_page.Serie.Title + Environment.NewLine +
+                                 "chapter: " + a_page.Chapter.Title + Environment.NewLine +
+                                 "page: " + a_page.Name;
 
-            MemoryStream ms = new MemoryStream();
-            bmp.SaveJPEG(ms, 75);
-            return ms;
+                    g.DrawString(
+                        str,
+                        new Font(FontFamily.GenericSansSerif, 25, FontStyle.Bold),
+                        Brushes.White,
+                        new RectangleF(10, 10, bmp.Width - 20, bmp.Height - 20)
+                    );
+                }
+
+                Limiter.Aquire(a_page);
+                try
+                {
+                    Sleep();
+                }
+                finally
+                {
+                    Limiter.Release(a_page);
+                }
+
+                MemoryStream ms = new MemoryStream();
+                bmp.SaveJPEG(ms, 75);
+                return ms;
+            }
         }
 
         internal override string GetImageURL(Page a_page)
         {
+            a_page.Chapter.Token.ThrowIfCancellationRequested();
+
             a_page.State = PageState.Downloading;
 
             if (a_page.Chapter.Title.Contains("error page getimageurl"))
@@ -522,11 +543,11 @@ namespace MangaCrawlerLib.Crawlers
 
         public void Debug_InsertSerie(int a_index)
         {
-            m_series.Insert(a_index, new SerieData()
-            {
-                Seed = m_random.Next(), 
-                Title = ">>> added serie " + m_random.Next()
-            });
+            var sd = new SerieData();
+            sd.Seed = m_random.Next();
+            sd.SetTitleURL(">>> added serie " + m_random.Next());
+
+            m_series.Insert(a_index, sd);
         }
 
         public void Debug_RemoveSerie(Serie a_serie)
@@ -538,23 +559,15 @@ namespace MangaCrawlerLib.Crawlers
         {
             SerieData serie_data = m_series.First(sd => sd.Title == a_serie.Title);
 
-            if (serie_data.Chapters == null)
-                serie_data.Chapters = serie_data.GetChapters().ToList();
-
-            serie_data.Chapters.Insert(a_index, new ChapterData()
-            {
-                Seed = m_random.Next(),
-                Title = ">>> added chapter " + m_random.Next()
-            });
+            var cd = new ChapterData();
+            cd.Seed = m_random.Next();
+            cd.SetTitleURL(">>> added chapter " + m_random.Next());
+            serie_data.Chapters.Insert(a_index, cd);
         }
 
         public void Debug_RemoveChapter(Chapter a_chapter)
         {
             SerieData serie_data = m_series.First(sd => sd.Title == a_chapter.Serie.Title);
-
-            if (serie_data.Chapters == null)
-                serie_data.Chapters = serie_data.GetChapters().ToList();
-
             serie_data.Chapters.RemoveAll(cd => cd.Title == a_chapter.Title);
         }
 
@@ -567,10 +580,6 @@ namespace MangaCrawlerLib.Crawlers
         internal void Debug_RenameChapter(Chapter a_chapter)
         {
             SerieData serie_data = m_series.First(sd => sd.Title == a_chapter.Serie.Title);
-
-            if (serie_data.Chapters == null)
-                serie_data.Chapters = serie_data.GetChapters().ToList();
-
             ChapterData chapter_data = serie_data.Chapters.First(c => c.Title == a_chapter.Title);
             chapter_data.Title += " " + m_random.Next();
         }
@@ -584,10 +593,6 @@ namespace MangaCrawlerLib.Crawlers
         internal void Debug_ChangeChapterURL(Chapter a_chapter)
         {
             SerieData serie_data = m_series.First(sd => sd.Title == a_chapter.Serie.Title);
-
-            if (serie_data.Chapters == null)
-                serie_data.Chapters = serie_data.GetChapters().ToList();
-
             ChapterData chapter_data = serie_data.Chapters.First(c => c.Title == a_chapter.Title);
             chapter_data.URL += " " + m_random.Next();
         }

@@ -97,37 +97,36 @@ namespace MangaCrawlerLib
 
         internal void DownloadAndSavePageImage(PageNamingStrategy a_pns)
         {
+            new DirectoryInfo(Chapter.GetDirectory()).Create();
+
+            FileInfo temp_file = new FileInfo(Path.GetTempFileName());
+
             try
             {
-                new DirectoryInfo(Chapter.GetDirectory()).Create();
-
-                FileInfo temp_file = new FileInfo(Path.GetTempFileName());
-
-                try
+                using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
                 {
+                    MemoryStream ms;
 
-                    using (FileStream file_stream = new FileStream(temp_file.FullName, FileMode.Create))
+                    try
                     {
-                        MemoryStream ms = null;
+                        ms = GetImageStream();
+                    }
+                    catch (Exception ex1)
+                    {
+                        Loggers.MangaCrawler.Error("Exception #1", ex1);
+                        throw;
+                    }
 
+                    try
+                    {
                         try
                         {
-                            ms = GetImageStream();
-                        }
-                        catch (WebException ex)
-                        {
-                            Loggers.MangaCrawler.Fatal("Exception #1", ex);
-                            throw;
-                        }
-
-                        try
-                        {
-                            System.Drawing.Image.FromStream(ms);
+                            System.Drawing.Image.FromStream(ms).Dispose();
                             ms.Position = 0;
                         }
-                        catch (Exception ex)
+                        catch (Exception ex2)
                         {
-                            Loggers.MangaCrawler.Fatal("Exception #2", ex);
+                            Loggers.MangaCrawler.Error("Exception #2", ex2);
                             throw;
                         }
 
@@ -138,38 +137,33 @@ namespace MangaCrawlerLib
                         TomanuExtensions.Utils.Hash.CalculateSHA256(ms, out hash);
                         Hash = hash;
                     }
-
-                    string file_name = Rename(a_pns, Name);
-
-                    ImageFilePath = 
-                        Chapter.GetDirectory() + 
-                        FileUtils.RemoveInvalidFileCharacters(file_name) + 
-                        FileUtils.RemoveInvalidFileCharacters(Path.GetExtension(ImageURL).ToLower());
-
-                    FileInfo image_file = new FileInfo(ImageFilePath);
-
-                    if (image_file.Exists)
-                        image_file.Delete();
-
-                    temp_file.MoveTo(image_file.FullName);
-
-                    State = PageState.Downloaded;
+                    finally
+                    {
+                        ms.Dispose();
+                    }
                 }
-                finally
-                {
-                    if (temp_file.Exists)
-                        if (temp_file.FullName != ImageFilePath)
-                            temp_file.Delete();
-                }
+
+                string file_name = Rename(a_pns, Name);
+
+                ImageFilePath =
+                    Chapter.GetDirectory() +
+                    FileUtils.RemoveInvalidFileCharacters(file_name) +
+                    FileUtils.RemoveInvalidFileCharacters(Path.GetExtension(ImageURL).ToLower());
+
+                FileInfo image_file = new FileInfo(ImageFilePath);
+
+                if (image_file.Exists)
+                    image_file.Delete();
+
+                temp_file.MoveTo(image_file.FullName);
+
+                State = PageState.Downloaded;
             }
-            catch (OperationCanceledException)
+            finally
             {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Loggers.MangaCrawler.Fatal("Exception #3", ex);
-                State = PageState.Error;
+                if (temp_file.Exists)
+                    if (temp_file.FullName != ImageFilePath)
+                        temp_file.Delete();
             }
         }
 
@@ -209,7 +203,7 @@ namespace MangaCrawlerLib
             }
             catch (Exception ex)
             {
-                Loggers.MangaCrawler.Fatal("Exception", ex);
+                Loggers.MangaCrawler.Error("Exception", ex);
                 return true;
             }
         }

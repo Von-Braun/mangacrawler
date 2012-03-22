@@ -11,71 +11,80 @@ namespace MangaCrawlerLib
     /// <param name="series"></param>
     internal abstract class CachedList<T> : IList<T> where T : Entity
     {
+        protected class MergeRule
+        {
+            public Func<T, string> KeySelector;
+            public Action<T, T> Merge;
+        }
+
         protected bool m_loaded_from_xml;
         protected List<T> m_list;
         protected Object m_lock = new Object();
+
+        protected virtual IEnumerable<MergeRule> MergeRules
+        {
+            get
+            {
+                yield break;
+            }
+        }
 
         internal void ReplaceInnerCollection(IEnumerable<T> a_new) 
         {
             EnsureLoaded();
 
-            var copy = m_list.ToList();
+            var list = m_list.ToList();
 
             foreach (var el in m_list.Except(a_new))
-                copy.Remove(el);
+                list.Remove(el);
 
             int index = 0;
             foreach (var el in a_new)
             {
-                if (copy.Count == index)
-                    copy.Insert(index, el);
-                if (copy[index] != el)
-                    copy.Insert(index, el);
+                if (list.Count == index)
+                    list.Insert(index, el);
+                if (list[index] != el)
+                    list.Insert(index, el);
                 index++;
             }
-
-            m_list = copy;
-        }
-
-        internal void ReplaceInnerCollection<K>(IEnumerable<T> a_new, Func<T, K> a_key_selector, bool a_remove)
-        {
-            EnsureLoaded();
-
-            var list = Merge(a_new, m_list, a_key_selector);
-
-            if (a_remove)
-                Remove(list, a_new, a_key_selector);
 
             m_list = list;
         }
 
-        internal static void Remove<K>(IList<T> a_list,
-            IEnumerable<T> a_new, Func<T, K> a_key_selector)
+        internal void ReplaceInnerCollection(IEnumerable<T> a_new, bool a_remove)
         {
-            var dict = a_new.ToDictionary(a_key_selector);
+            EnsureLoaded();
 
-            for (int i = a_list.Count - 1; i >= 0; i--)
+            var copy = m_list.ToList();
+            var new_list = a_new.ToList();
+
+            foreach (var mr in MergeRules)
+                Merge(new_list, copy, mr);
+
+            if (a_remove)
             {
-                K key = a_key_selector(a_list[i]);
-                if (!dict.ContainsKey(key))
-                    a_list.RemoveAt(i);
+                var to_remove = copy.Except(new_list).ToList();
+                new_list.RemoveAll(el => to_remove.Contains(el));
             }
+
+            m_list = new_list;
         }
 
-        internal static List<T> Merge<K>(IEnumerable<T> a_new, IEnumerable<T> a_prev, Func<T, K> a_key_selector)
+        private static void Merge(List<T> a_new, List<T> a_local,
+            MergeRule a_merge_rule)
         {
-            IDictionary<K, T> dict = a_prev.ToDictionary(a_key_selector);
+            IDictionary<string, T> local_dict = a_local.ToDictionary(a_merge_rule.KeySelector);
 
-            var result = a_new.ToList();
-
-            for (int i = 0; i < result.Count; i++)
+            for (int i = 0; i < a_new.Count; i++)
             {
-                K key = a_key_selector(result[i]);
-                if (dict.ContainsKey(key))
-                    result[i] = dict[key];
+                string key = a_merge_rule.KeySelector(a_new[i]);
+                if (local_dict.ContainsKey(key))
+                {
+                    var local_el = local_dict[key];
+                    a_merge_rule.Merge(a_new[i], local_el);
+                    a_new[i] = local_el;
+                }
             }
-
-            return result;
         }
 
         internal bool Filled
@@ -86,7 +95,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal bool LoadedFromXml
+        internal bool IsLoadedFromXml
         {
             get
             {
@@ -138,6 +147,15 @@ namespace MangaCrawlerLib
         public void Clear()
         {
             throw new NotImplementedException();
+        }
+
+        internal void ClearCache()
+        {
+            lock (m_lock)
+            {
+                m_list = null;
+                m_loaded_from_xml = false;
+            }
         }
 
         public bool Contains(T a_item)
@@ -198,7 +216,7 @@ namespace MangaCrawlerLib
             if (list == null)
                 return "Uninitialized";
             else
-                return String.Format("Count: {0}, LoadedFromXml: {1}", list.Count, LoadedFromXml);
+                return String.Format("Count: {0}, LoadedFromXml: {1}", list.Count, IsLoadedFromXml);
         }
 
         protected abstract void EnsureLoaded();
