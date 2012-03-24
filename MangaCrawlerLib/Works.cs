@@ -17,7 +17,6 @@ namespace MangaCrawlerLib
         {
             IEnumerable<Chapter> works = from work in Catalog.LoadWorks()
                                          orderby work.LimiterOrder
-                                         where work.State == ChapterState.Initial
                                          select work;
 
             DownloadManager.Instance.DownloadPages(works);
@@ -37,7 +36,7 @@ namespace MangaCrawlerLib
 
         public void Save()
         {
-            Catalog.SaveWorks(m_works.Where(c => c.IsDownloading));
+            Catalog.SaveWorks(m_works.Where(c => c.IsDownloading).ToList());
         }
 
         public void Remove(Chapter a_work)

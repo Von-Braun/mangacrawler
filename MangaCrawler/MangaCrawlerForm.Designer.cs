@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MangaCrawlerForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.versionPanel = new System.Windows.Forms.Panel();
             this.versionLinkLabel = new System.Windows.Forms.LinkLabel();
@@ -69,12 +69,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.mangaRootDirTextBox = new System.Windows.Forms.TextBox();
             this.worksTabPage = new System.Windows.Forms.TabPage();
+            this.clearWorkButton = new System.Windows.Forms.Button();
             this.openFolderWorksButton = new System.Windows.Forms.Button();
             this.downloadWorkButton = new System.Windows.Forms.Button();
-            this.cancelClearWorkButton = new System.Windows.Forms.Button();
+            this.cancelWorkButton = new System.Windows.Forms.Button();
             this.visitPageWorkButton = new System.Windows.Forms.Button();
             this.viewWorkButton = new System.Windows.Forms.Button();
-            this.goToChaptersWorkButton = new System.Windows.Forms.Button();
+            this.goToSeriesTabButton = new System.Windows.Forms.Button();
             this.worksGridView = new System.Windows.Forms.DataGridView();
             this.Chapter = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -88,6 +89,7 @@
             this.downloadButton = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.seriesPanel = new System.Windows.Forms.Panel();
+            this.checkNowSerieButton = new System.Windows.Forms.Button();
             this.BookmarkSerieButton = new System.Windows.Forms.Button();
             this.seriesSearchTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -95,6 +97,7 @@
             this.seriesURLButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.serversPanel = new System.Windows.Forms.Panel();
+            this.checkNowServerButton = new System.Windows.Forms.Button();
             this.openServerFolderButton = new System.Windows.Forms.Button();
             this.serverURLButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -114,17 +117,17 @@
             this.changeSerieURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeChapterURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.forceBookmarksCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearMemoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadAllFromCatalogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bookmarksTimer = new System.Windows.Forms.Timer(this.components);
-            this.clearMemoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chaptersListBox = new MangaCrawler.ListBoxEx();
             this.seriesListBox = new MangaCrawler.ListBoxEx();
             this.serversListBox = new MangaCrawler.ListBoxEx();
             this.chapterBookmarksListBox = new MangaCrawler.ListBoxEx();
             this.serieBookmarksListBox = new MangaCrawler.ListBoxEx();
-            this.loadAllFromCatalogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versionPanel.SuspendLayout();
             this.bookmarksTabPage.SuspendLayout();
             this.splitBookmarksPanel.SuspendLayout();
@@ -385,16 +388,25 @@
             // 
             // worksTabPage
             // 
+            this.worksTabPage.Controls.Add(this.clearWorkButton);
             this.worksTabPage.Controls.Add(this.openFolderWorksButton);
             this.worksTabPage.Controls.Add(this.downloadWorkButton);
-            this.worksTabPage.Controls.Add(this.cancelClearWorkButton);
+            this.worksTabPage.Controls.Add(this.cancelWorkButton);
             this.worksTabPage.Controls.Add(this.visitPageWorkButton);
             this.worksTabPage.Controls.Add(this.viewWorkButton);
-            this.worksTabPage.Controls.Add(this.goToChaptersWorkButton);
+            this.worksTabPage.Controls.Add(this.goToSeriesTabButton);
             this.worksTabPage.Controls.Add(this.worksGridView);
             resources.ApplyResources(this.worksTabPage, "worksTabPage");
             this.worksTabPage.Name = "worksTabPage";
             this.worksTabPage.UseVisualStyleBackColor = true;
+            // 
+            // clearWorkButton
+            // 
+            resources.ApplyResources(this.clearWorkButton, "clearWorkButton");
+            this.clearWorkButton.Name = "clearWorkButton";
+            this.clearWorkButton.Tag = "Clear finished chapters";
+            this.clearWorkButton.UseVisualStyleBackColor = true;
+            this.clearWorkButton.Click += new System.EventHandler(this.clearWorkButton_Click);
             // 
             // openFolderWorksButton
             // 
@@ -410,12 +422,13 @@
             this.downloadWorkButton.UseVisualStyleBackColor = true;
             this.downloadWorkButton.Click += new System.EventHandler(this.downloadWorkButton_Click);
             // 
-            // cancelClearWorkButton
+            // cancelWorkButton
             // 
-            resources.ApplyResources(this.cancelClearWorkButton, "cancelClearWorkButton");
-            this.cancelClearWorkButton.Name = "cancelClearWorkButton";
-            this.cancelClearWorkButton.UseVisualStyleBackColor = true;
-            this.cancelClearWorkButton.Click += new System.EventHandler(this.cancelClearWorkButton_Click);
+            resources.ApplyResources(this.cancelWorkButton, "cancelWorkButton");
+            this.cancelWorkButton.Name = "cancelWorkButton";
+            this.cancelWorkButton.Tag = "Cancel downloading";
+            this.cancelWorkButton.UseVisualStyleBackColor = true;
+            this.cancelWorkButton.Click += new System.EventHandler(this.cancelWorkButton_Click);
             // 
             // visitPageWorkButton
             // 
@@ -431,49 +444,50 @@
             this.viewWorkButton.UseVisualStyleBackColor = true;
             this.viewWorkButton.Click += new System.EventHandler(this.viewWorkButton_Click);
             // 
-            // goToChaptersWorkButton
+            // goToSeriesTabButton
             // 
-            resources.ApplyResources(this.goToChaptersWorkButton, "goToChaptersWorkButton");
-            this.goToChaptersWorkButton.Name = "goToChaptersWorkButton";
-            this.goToChaptersWorkButton.UseVisualStyleBackColor = true;
-            this.goToChaptersWorkButton.Click += new System.EventHandler(this.goToChaptersWorkButton_Click);
+            resources.ApplyResources(this.goToSeriesTabButton, "goToSeriesTabButton");
+            this.goToSeriesTabButton.Name = "goToSeriesTabButton";
+            this.goToSeriesTabButton.UseVisualStyleBackColor = true;
+            this.goToSeriesTabButton.Click += new System.EventHandler(this.goToSeriesTabButton_Click);
             // 
             // worksGridView
             // 
             this.worksGridView.AllowUserToAddRows = false;
+            this.worksGridView.AllowUserToDeleteRows = false;
             this.worksGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.worksGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.worksGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             resources.ApplyResources(this.worksGridView, "worksGridView");
             this.worksGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.worksGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.worksGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.worksGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.worksGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.worksGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.worksGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Chapter,
             this.Progress});
             this.worksGridView.Name = "worksGridView";
             this.worksGridView.ReadOnly = true;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.worksGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.worksGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.worksGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.worksGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.worksGridView.RowsDefaultCellStyle = dataGridViewCellStyle10;
             this.worksGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.worksGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.worksGridView_KeyDown);
             this.worksGridView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.worksGridView_MouseDown);
@@ -482,8 +496,8 @@
             // 
             this.Chapter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Chapter.DataPropertyName = "Info";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Chapter.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Chapter.DefaultCellStyle = dataGridViewCellStyle8;
             resources.ApplyResources(this.Chapter, "Chapter");
             this.Chapter.Name = "Chapter";
             this.Chapter.ReadOnly = true;
@@ -567,6 +581,7 @@
             // 
             // seriesPanel
             // 
+            this.seriesPanel.Controls.Add(this.checkNowSerieButton);
             this.seriesPanel.Controls.Add(this.BookmarkSerieButton);
             this.seriesPanel.Controls.Add(this.seriesSearchTextBox);
             this.seriesPanel.Controls.Add(this.label6);
@@ -577,6 +592,13 @@
             resources.ApplyResources(this.seriesPanel, "seriesPanel");
             this.seriesPanel.MinimumSize = new System.Drawing.Size(234, 0);
             this.seriesPanel.Name = "seriesPanel";
+            // 
+            // checkNowSerieButton
+            // 
+            resources.ApplyResources(this.checkNowSerieButton, "checkNowSerieButton");
+            this.checkNowSerieButton.Name = "checkNowSerieButton";
+            this.checkNowSerieButton.UseVisualStyleBackColor = true;
+            this.checkNowSerieButton.Click += new System.EventHandler(this.checkNowSerieButton_Click);
             // 
             // BookmarkSerieButton
             // 
@@ -618,11 +640,19 @@
             // serversPanel
             // 
             resources.ApplyResources(this.serversPanel, "serversPanel");
+            this.serversPanel.Controls.Add(this.checkNowServerButton);
             this.serversPanel.Controls.Add(this.openServerFolderButton);
             this.serversPanel.Controls.Add(this.serversListBox);
             this.serversPanel.Controls.Add(this.serverURLButton);
             this.serversPanel.Controls.Add(this.label5);
             this.serversPanel.Name = "serversPanel";
+            // 
+            // checkNowServerButton
+            // 
+            resources.ApplyResources(this.checkNowServerButton, "checkNowServerButton");
+            this.checkNowServerButton.Name = "checkNowServerButton";
+            this.checkNowServerButton.UseVisualStyleBackColor = true;
+            this.checkNowServerButton.Click += new System.EventHandler(this.checkNowServerButton_Click);
             // 
             // openServerFolderButton
             // 
@@ -761,6 +791,18 @@
             resources.ApplyResources(this.forceBookmarksCheckToolStripMenuItem, "forceBookmarksCheckToolStripMenuItem");
             this.forceBookmarksCheckToolStripMenuItem.Click += new System.EventHandler(this.forceBookmarksCheckToolStripMenuItem_Click);
             // 
+            // clearMemoryToolStripMenuItem
+            // 
+            this.clearMemoryToolStripMenuItem.Name = "clearMemoryToolStripMenuItem";
+            resources.ApplyResources(this.clearMemoryToolStripMenuItem, "clearMemoryToolStripMenuItem");
+            this.clearMemoryToolStripMenuItem.Click += new System.EventHandler(this.clearMemoryToolStripMenuItem_Click);
+            // 
+            // loadAllFromCatalogToolStripMenuItem
+            // 
+            this.loadAllFromCatalogToolStripMenuItem.Name = "loadAllFromCatalogToolStripMenuItem";
+            resources.ApplyResources(this.loadAllFromCatalogToolStripMenuItem, "loadAllFromCatalogToolStripMenuItem");
+            this.loadAllFromCatalogToolStripMenuItem.Click += new System.EventHandler(this.loadAllFromCatalogToolStripMenuItem_Click);
+            // 
             // notifyIcon
             // 
             this.notifyIcon.ContextMenuStrip = this.trayContextMenuStrip;
@@ -786,12 +828,6 @@
             // 
             this.bookmarksTimer.Interval = 1000;
             this.bookmarksTimer.Tick += new System.EventHandler(this.bookmarksTimer_Tick);
-            // 
-            // clearMemoryToolStripMenuItem
-            // 
-            this.clearMemoryToolStripMenuItem.Name = "clearMemoryToolStripMenuItem";
-            resources.ApplyResources(this.clearMemoryToolStripMenuItem, "clearMemoryToolStripMenuItem");
-            this.clearMemoryToolStripMenuItem.Click += new System.EventHandler(this.clearMemoryToolStripMenuItem_Click);
             // 
             // chaptersListBox
             // 
@@ -848,12 +884,6 @@
             this.serieBookmarksListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serieBookmarksListBox_DrawItem);
             this.serieBookmarksListBox.SelectedIndexChanged += new System.EventHandler(this.serieBookmarksListBox_SelectedIndexChanged);
             this.serieBookmarksListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
-            // 
-            // loadAllFromCatalogToolStripMenuItem
-            // 
-            this.loadAllFromCatalogToolStripMenuItem.Name = "loadAllFromCatalogToolStripMenuItem";
-            resources.ApplyResources(this.loadAllFromCatalogToolStripMenuItem, "loadAllFromCatalogToolStripMenuItem");
-            this.loadAllFromCatalogToolStripMenuItem.Click += new System.EventHandler(this.loadAllFromCatalogToolStripMenuItem_Click);
             // 
             // MangaCrawlerForm
             // 
@@ -931,10 +961,10 @@
         private System.Windows.Forms.TabPage worksTabPage;
         private System.Windows.Forms.Button openFolderWorksButton;
         private System.Windows.Forms.Button downloadWorkButton;
-        private System.Windows.Forms.Button cancelClearWorkButton;
+        private System.Windows.Forms.Button cancelWorkButton;
         private System.Windows.Forms.Button visitPageWorkButton;
         private System.Windows.Forms.Button viewWorkButton;
-        private System.Windows.Forms.Button goToChaptersWorkButton;
+        private System.Windows.Forms.Button goToSeriesTabButton;
         private System.Windows.Forms.DataGridView worksGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn Chapter;
         private System.Windows.Forms.DataGridViewTextBoxColumn Progress;
@@ -987,6 +1017,9 @@
         private System.Windows.Forms.ToolStripMenuItem forceBookmarksCheckToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearMemoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadAllFromCatalogToolStripMenuItem;
+        private System.Windows.Forms.Button clearWorkButton;
+        private System.Windows.Forms.Button checkNowSerieButton;
+        private System.Windows.Forms.Button checkNowServerButton;
     }
 }
 
