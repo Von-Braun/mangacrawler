@@ -184,6 +184,14 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <Compile Include="MangaCrawlerForm.Commands.cs">
+      <SubType>Form</SubType>
+      <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MangaCrawlerForm.GUI.cs">
+      <SubType>Form</SubType>
+      <DependentUpon>MangaCrawlerForm.cs</DependentUpon>
+    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
