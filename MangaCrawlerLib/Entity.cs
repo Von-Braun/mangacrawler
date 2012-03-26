@@ -17,6 +17,37 @@ namespace MangaCrawlerLib
             ID = a_id;
         }
 
+        public override bool Equals(object a_obj)
+        {
+            if (a_obj == null)
+                return false;
+            Entity entity = a_obj as Entity;
+            if (Object.ReferenceEquals(entity, null))
+                return false;
+            return this == entity;
+        }
+
+        public static bool operator ==(Entity a_left, Entity a_right)
+        {
+            if (Object.ReferenceEquals(a_left, a_right))
+                return true;
+            if (Object.ReferenceEquals(a_left, null))
+                return false;
+            if (Object.ReferenceEquals(a_right, null))
+                return false;
+            return a_left.ID == a_right.ID;
+        }
+
+        public static bool operator !=(Entity a_left, Entity a_right)
+        {
+            return !(a_left == a_right);
+        }
+
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode();
+        }
+
         internal abstract Crawler Crawler { get; }
         public abstract bool IsDownloading { get; }
         public abstract string GetDirectory();

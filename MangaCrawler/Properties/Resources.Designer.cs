@@ -60,12 +60,26 @@ namespace MangaCrawler.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Bookmark {
+            get {
+                object obj = ResourceManager.GetObject("Bookmark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to BOOKMARKED.
         /// </summary>
         internal static string Bookmarked {
             get {
                 return ResourceManager.GetString("Bookmarked", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Cancel {
+            get {
+                object obj = ResourceManager.GetObject("Cancel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -96,12 +110,33 @@ namespace MangaCrawler.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap CheckNow {
+            get {
+                object obj = ResourceManager.GetObject("CheckNow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Delete {
+            get {
+                object obj = ResourceManager.GetObject("Delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t create directory: &apos;{0}&apos;.
         /// </summary>
         internal static string DirError {
             get {
                 return ResourceManager.GetString("DirError", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Download {
+            get {
+                object obj = ResourceManager.GetObject("Download", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -184,12 +219,40 @@ namespace MangaCrawler.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap OpenFolder {
+            get {
+                object obj = ResourceManager.GetObject("OpenFolder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ReadManga {
+            get {
+                object obj = ResourceManager.GetObject("ReadManga", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ShowInSeries {
+            get {
+                object obj = ResourceManager.GetObject("ShowInSeries", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to New chapters in:.
         /// </summary>
         internal static string TrayNotificationNewSeries {
             get {
                 return ResourceManager.GetString("TrayNotificationNewSeries", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap VisitPage {
+            get {
+                object obj = ResourceManager.GetObject("VisitPage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

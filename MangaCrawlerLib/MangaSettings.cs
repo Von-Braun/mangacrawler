@@ -158,5 +158,21 @@ namespace MangaCrawlerLib
                 OnChanged();
             }
         }
+
+        public bool IsMangaRootDirValid
+        {
+            get
+            {
+                try
+                {
+                    new DirectoryInfo(GetMangaRootDir(false));
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
     }
 }

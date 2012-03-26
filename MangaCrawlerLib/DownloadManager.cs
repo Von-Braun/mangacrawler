@@ -118,24 +118,37 @@ namespace MangaCrawlerLib
         {
             lock (m_lock)
             {
-                foreach (var chapter in a_chapters)
+                DownloadPages(a_chapters.FirstOrDefault());
+
+                new Task(() =>
                 {
-                    if (chapter.IsDownloading)
-                        continue;
+                    foreach (var chapter in a_chapters.Skip(1))
+                        DownloadPages(chapter);
+                }).Start();
+            }
+        }
 
-                    Works.Add(chapter);
+        private void DownloadPages(Chapter a_chapter)
+        {
+            lock (m_lock)
+            {
+                if (a_chapter == null)
+                    return;
+                if (a_chapter.IsDownloading)
+                    return;
 
-                    m_downloading.Add(chapter);
-                    chapter.State = ChapterState.Waiting;
-                    chapter.LimiterOrder = Catalog.NextID();
+                Works.Add(a_chapter);
 
-                    Chapter chapter_sync = chapter;
+                m_downloading.Add(a_chapter);
+                a_chapter.State = ChapterState.Waiting;
+                a_chapter.LimiterOrder = Catalog.NextID();
 
-                    new Task(() =>
-                    {
-                        chapter_sync.DownloadPages();
-                    }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
-                }
+                Chapter chapter_sync = a_chapter;
+
+                new Task(() =>
+                {
+                    chapter_sync.DownloadPages();
+                }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
             }
         }
 
@@ -204,6 +217,20 @@ namespace MangaCrawlerLib
         {
             foreach (var server in Servers)
                 server.Debug_LoadAllFromCatalog(ref a_servers, ref a_series, ref a_chapters, ref a_pages);
+        }
+
+        public void BookmarksIgnored(IEnumerable<Chapter> a_chapters, bool a_state)
+        {
+            var chapters_grouped_by_serie = from ch in a_chapters
+                     group ch by ch.Serie;
+
+            foreach (var chapters_group in chapters_grouped_by_serie)
+            {
+                foreach (var chapter in chapters_group)
+                    chapter.BookmarkIgnored = a_state;
+
+                Catalog.Save(chapters_group.First().Serie);
+            }
         }
     }
 }

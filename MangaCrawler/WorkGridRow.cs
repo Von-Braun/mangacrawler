@@ -8,7 +8,7 @@ namespace MangaCrawler
 {
     public class WorkGridRow
     {
-        public Chapter Chapter { get; private set; }
+        public Chapter Chapter { get; set; }
 
         public WorkGridRow(Chapter a_chapter)
         {
