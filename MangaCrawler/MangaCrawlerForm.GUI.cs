@@ -12,6 +12,8 @@ using System.Media;
 using HtmlAgilityPack;
 using System.Threading.Tasks;
 using System.Threading;
+using TomanuExtensions;
+using System.IO;
 
 namespace MangaCrawler
 {
@@ -65,7 +67,7 @@ namespace MangaCrawler
                 }
             }
 
-            public Serie SelectedSerieForBookmarks
+            public Serie SelectedBookmarkedSerie
             {
                 get
                 {
@@ -76,11 +78,12 @@ namespace MangaCrawler
                 }
             }
 
-            public Chapter[] SelectedChaptersForBookmarks
+            public Chapter[] SelectedBookmarkedChapters
             {
                 get
                 {
-                    return Form.chapterBookmarksListBox.SelectedItems.Cast<ChapterBookmarkListItem>().Select(c => c.Chapter).ToArray();
+                    return Form.chapterBookmarksListBox.SelectedItems.Cast<ChapterBookmarkListItem>().Select(
+                        c => c.Chapter).ToArray();
                 }
             }
 
@@ -113,7 +116,173 @@ namespace MangaCrawler
                     UpdateChapterBookmarks();
                 }
 
+                UpdateButtons();
                 UpdateIcons();
+            }
+
+            public void UpdateButtons()
+            {
+                {
+                    bool en = SelectedServer != null;
+
+                    foreach (var item in Form.serversToolStrip.Items.OfType<ToolStripItem>())
+                        item.Enabled = en;
+                    foreach (var item in Form.serversContextMenuStrip.Items.OfType<ToolStripMenuItem>())
+                        item.Enabled = en;
+
+                    if (en)
+                    {
+                        Form.updateNowForSelectedServerToolStripButton.Enabled = 
+                            !SelectedServer.IsDownloading;
+                        Form.updateNowForSelectedServerToolStripMenuItem.Enabled =
+                            Form.updateNowForSelectedServerToolStripButton.Enabled;
+
+                        Form.openFolderForSelectedServerToolStripButton.Enabled =
+                            new DirectoryInfo(SelectedServer.GetDirectory()).Exists;
+                        Form.openFolderForSelectedServerToolStripMenuItem.Enabled =
+                            Form.openFolderForSelectedServerToolStripButton.Enabled;
+                    }
+                }
+
+                {
+                    bool en = SelectedSerie != null;
+
+                    foreach (var item in Form.seriesToolStrip.Items.OfType<ToolStripItem>())
+                        item.Enabled = en;
+                    foreach (var item in Form.seriesContextMenuStrip.Items.OfType<ToolStripMenuItem>())
+                        item.Enabled = en;
+
+                    if (en)
+                    {
+                        Form.bookmarkSelectedSerieToolStripButton.Enabled = 
+                            !SelectedSerie.IsBookmarked && !SelectedSerie.IsDownloading;
+                        Form.bookmarkSerieToolStripMenuItem.Enabled = 
+                            Form.bookmarkSelectedSerieToolStripButton.Enabled;
+
+                        Form.updateNowForSelectedSerieToolStripButton.Enabled = 
+                            !SelectedSerie.IsDownloading;
+                        Form.updateNowForSelectedSerieToolStripMenuItem.Enabled = 
+                            Form.updateNowForSelectedSerieToolStripButton.Enabled;
+
+                        Form.openFolderForSelectedSerieToolStripButton.Enabled =
+                            new DirectoryInfo(SelectedSerie.GetDirectory()).Exists;
+                        Form.openFolderForSelectedSerieToolStripMenuItem.Enabled =
+                            Form.openFolderForSelectedSerieToolStripButton.Enabled;
+                    }
+                }
+
+                {
+                    bool en = SelectedChapters.Any();
+
+                    foreach (var item in Form.chaptersToolStrip.Items.OfType<ToolStripItem>())
+                        item.Enabled = en;
+                    foreach (var item in Form.chaptersContextMenuStrip.Items.OfType<ToolStripMenuItem>())
+                        item.Enabled = en;
+
+                    if (en)
+                    {
+                        Form.openFolderForSelectedChaptersToolStripButton.Enabled =
+                            SelectedChapters.Any(c => new DirectoryInfo(c.GetDirectory()).Exists);
+                        Form.openFolderForSelectedChaptersToolStripMenuItem.Enabled =
+                            Form.openFolderForSelectedChaptersToolStripButton.Enabled;
+
+                        Form.downloadForSelectedChaptersToolStripButton.Enabled =
+                            SelectedChapters.Any(c => !c.IsDownloading);
+                        Form.downloadForSelectedChaptersToolStripMenuItem.Enabled =
+                            Form.downloadForSelectedChaptersToolStripButton.Enabled;
+
+                        Form.readMangaForSelectedChaptersToolStripMenuItem.Enabled =
+                            SelectedChapters.Any(c => c.CanReadFirstPage());
+                        Form.readMangaForSelectedChaptersToolStripButton.Enabled =
+                            Form.readMangaForSelectedChaptersToolStripMenuItem.Enabled;
+                    }
+                }
+
+                {
+                    bool en = SelectedWorks.Any();
+
+                    foreach (var item in Form.worksToolStrip.Items.OfType<ToolStripItem>())
+                        item.Enabled = en;
+                    foreach (var item in Form.worksContextMenuStrip.Items.OfType<ToolStripMenuItem>())
+                        item.Enabled = en;
+
+                    if (en)
+                    {
+                        Form.openFolderForSelectedWorksToolStripButton.Enabled =
+                            SelectedWorks.Any(c => new DirectoryInfo(c.GetDirectory()).Exists);
+                        Form.openFolderForSelectedWorksToolStripMenuItem.Enabled =
+                            Form.openFolderForSelectedWorksToolStripButton.Enabled;
+
+                        Form.downloadForSelectedWorksToolStripButton.Enabled =
+                            SelectedWorks.Any(c => !c.IsDownloading);
+                        Form.downloadForSelectedWorksToolStripMenuItem.Enabled =
+                            Form.downloadForSelectedWorksToolStripButton.Enabled;
+
+                        Form.readMangaForSelectedWorksToolStripMenuItem.Enabled =
+                            SelectedWorks.Any(c => c.CanReadFirstPage());
+                        Form.readMangaForSelectedWorksToolStripButton.Enabled =
+                            Form.readMangaForSelectedWorksToolStripMenuItem.Enabled;
+
+                        Form.deleteForSelectedWorksToolStripButton.Enabled =
+                            SelectedWorks.Any(c => c.State != ChapterState.Cancelling);
+                        Form.deleteForSelectedWorksToolStripMenuItem.Enabled =
+                            Form.deleteForSelectedWorksToolStripButton.Enabled;
+
+                        Form.showInSeriesForSelectedWorksToolStripButton.Enabled =
+                            SelectedWorks.Count() == 1;
+                        Form.showInSeriesForSelectedWorksToolStripMenuItem.Enabled =
+                            Form.showInSeriesForSelectedWorksToolStripButton.Enabled;
+                    }
+                }
+
+                {
+                    bool en = SelectedBookmarkedSerie != null;
+
+                    foreach (var item in Form.bookmarkedSeriesToolStrip.Items.OfType<ToolStripItem>())
+                        item.Enabled = en;
+                    foreach (var item in Form.bookmarkedSeriesContextMenuStrip.Items.OfType<ToolStripMenuItem>())
+                        item.Enabled = en;
+
+                    if (en)
+                    {
+                        Form.openFolderForSelectedBookmarkedSerieToolStripButton.Enabled =
+                             new DirectoryInfo(SelectedBookmarkedSerie.GetDirectory()).Exists;
+                        Form.openFolderForSelectedBookmarkedSerieToolStripMenuItem.Enabled =
+                            Form.openFolderForSelectedBookmarkedSerieToolStripButton.Enabled;
+
+                        Form.updateNowForSelectedBookmarkedSerieToolStripButton.Enabled = 
+                            !SelectedBookmarkedSerie.IsDownloading;
+                        Form.updateNowForSelectedBookmarkedSerieToolStripMenuItem.Enabled =
+                            Form.updateNowForSelectedBookmarkedSerieToolStripButton.Enabled;
+                    }
+                }
+
+                {
+                    bool en = SelectedBookmarkedChapters.Any();
+
+                    foreach (var item in Form.bookmarkedChaptersToolStrip.Items.OfType<ToolStripItem>())
+                        item.Enabled = en;
+                    foreach (var item in Form.bookmarkedChaptersContextMenuStrip.Items.OfType<ToolStripMenuItem>())
+                        item.Enabled = en;
+
+                    if (en)
+                    {
+                        Form.openFolderForSelectedBookmarkedChaptersToolStripButton.Enabled =
+                            SelectedBookmarkedChapters.Any(c => new DirectoryInfo(c.GetDirectory()).Exists);
+                        Form.openFolderForSelectedBookmarkedChaptersToolStripMenuItem.Enabled =
+                            Form.openFolderForSelectedBookmarkedChaptersToolStripButton.Enabled;
+
+                        Form.downloadForSelectedBookmarkedChaptersToolStripButton.Enabled =
+                            SelectedBookmarkedChapters.Any(c => !c.IsDownloading);
+                        Form.downloadForSelectedBookmarkedChaptersToolStripMenuItem.Enabled =
+                            Form.downloadForSelectedBookmarkedChaptersToolStripButton.Enabled;
+
+                        Form.readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Enabled =
+                            SelectedBookmarkedChapters.Any(c => c.CanReadFirstPage());
+                        Form.readMangaForSelectedBookmarkedChaptersToolStripButton.Enabled =
+                            Form.readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Enabled;
+                    }
+                }
             }
 
             private void UpdateOptions()
@@ -143,31 +312,40 @@ namespace MangaCrawler
             {
                 BindingList<WorkGridRow> list = (BindingList<WorkGridRow>)Form.worksGridView.DataSource;
 
-                var works = DownloadManager.Instance.Works.List;
+                Form.worksGridView.SuspendDrawing();
 
-                var add = (from work in works
-                           where !list.Any(w => w.Chapter == work)
-                           select work).ToList();
-
-                var remove = (from work in list
-                              where !works.Any(w => w == work.Chapter)
-                              select work).ToList();
-
-                bool was_empty = list.Count == 0;
-
-                foreach (var el in add)
-                    list.Add(new WorkGridRow(el));
-                foreach (var el in remove)
-                    list.Remove(el);
-
-                if (was_empty)
+                try
                 {
-                    if (Form.worksGridView.Rows.Count != 0)
-                        Debug.Assert(Form.worksGridView.SelectedRows.Count != 0);
-                    Form.worksGridView.ClearSelection();
+                    var works = DownloadManager.Instance.Works.List;
+
+                    var add = (from work in works
+                               where !list.Any(w => w.Chapter == work)
+                               select work).ToList();
+
+                    var remove = (from work in list
+                                  where !works.Any(w => w == work.Chapter)
+                                  select work).ToList();
+
+                    bool was_empty = list.Count == 0;
+
+                    foreach (var el in add)
+                        list.Add(new WorkGridRow(el));
+                    foreach (var el in remove)
+                        list.Remove(el);
+
+                    if (was_empty)
+                    {
+                        if (Form.worksGridView.Rows.Count != 0)
+                            Debug.Assert(Form.worksGridView.SelectedRows.Count != 0);
+                        Form.worksGridView.ClearSelection();
+                    }
+                }
+                finally
+                {
+                    Form.worksGridView.ResumeDrawing();
                 }
 
-                Form.worksGridView.Invalidate();
+                Form.worksGridView.Refresh();
             }
 
             private void UpdateChapters()
@@ -270,18 +448,18 @@ namespace MangaCrawler
             {
                 ChapterBookmarkListItem[] ar = new ChapterBookmarkListItem[0];
 
-                if (SelectedSerieForBookmarks != null)
+                if (SelectedBookmarkedSerie != null)
                 {
-                    ar = (from chapter in SelectedSerieForBookmarks.Chapters
+                    ar = (from chapter in SelectedBookmarkedSerie.Chapters
                           select new ChapterBookmarkListItem(chapter)).ToArray();
                 }
 
                 ListBoxVisualState vs = new ListBoxVisualState(Form.chapterBookmarksListBox);
                 vs.Clear();
-                if (SelectedSerieForBookmarks != null)
+                if (SelectedBookmarkedSerie != null)
                 {
-                    if (Form.m_chapter_bookmarks_visual_states.ContainsKey(SelectedSerieForBookmarks))
-                        vs = Form.m_chapter_bookmarks_visual_states[SelectedSerieForBookmarks];
+                    if (Form.m_chapter_bookmarks_visual_states.ContainsKey(SelectedBookmarkedSerie))
+                        vs = Form.m_chapter_bookmarks_visual_states[SelectedBookmarkedSerie];
                 }
                 vs.ReloadItems(ar);
             }
@@ -436,12 +614,13 @@ namespace MangaCrawler
 
             private void SelectChapter(Chapter a_chapter)
             {
+                Form.chaptersListBox.ClearSelected();
+
                 var cli = Form.chaptersListBox.Items.Cast<ChapterListItem>().FirstOrDefault(c => c.Chapter == a_chapter);
 
                 if (cli == null)
                     return;
 
-                Form.chaptersListBox.ClearSelected();
                 Form.chaptersListBox.SelectedItem = cli;
             }
 

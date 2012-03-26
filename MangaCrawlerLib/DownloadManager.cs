@@ -26,7 +26,6 @@ namespace MangaCrawlerLib
         
         private List<Entity> m_downloading = new List<Entity>();
         private Server[] m_servers;
-        private Object m_lock = new Object();
 
         public static DownloadManager Instance { get; private set; }
 
@@ -56,7 +55,7 @@ namespace MangaCrawlerLib
 
         public bool NeedGUIRefresh(bool a_reset_state)
         {
-            lock (m_lock)
+            lock (m_downloading)
             {
                 bool result = m_downloading.Any();
 
@@ -73,83 +72,84 @@ namespace MangaCrawlerLib
 
         public void DownloadSeries(Server a_server, bool a_force)
         {
-            lock (m_lock)
+            if (a_server == null)
+                return;
+
+            if (!a_server.IsDownloadRequired(a_force))
+                return;
+
+            lock (m_downloading)
             {
-                if (a_server == null)
-                    return;
-
-                if (!a_server.IsDownloadRequired(a_force))
-                    return;
-
                 m_downloading.Add(a_server);
-                a_server.State = ServerState.Waiting;
-                a_server.LimiterOrder = Catalog.NextID();
-
-                new Task(() =>
-                {
-                    a_server.DownloadSeries();
-
-                }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
             }
+
+            a_server.State = ServerState.Waiting;
+            a_server.LimiterOrder = Catalog.NextID();
+
+            new Task(() =>
+            {
+                a_server.DownloadSeries();
+
+            }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
         }
 
         public void DownloadChapters(Serie a_serie, bool a_force)
         {
-            lock (m_lock)
+            if (a_serie == null)
+                return;
+
+            if (!a_serie.IsDownloadRequired(a_force))
+                return;
+
+            lock (m_downloading)
             {
-                if (a_serie == null)
-                    return;
-
-                if (!a_serie.IsDownloadRequired(a_force))
-                    return;
-
                 m_downloading.Add(a_serie);
-                a_serie.State = SerieState.Waiting;
-                a_serie.LimiterOrder = Catalog.NextID();
-
-                new Task(() =>
-                {
-                    a_serie.DownloadChapters();
-                }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
             }
+            a_serie.State = SerieState.Waiting;
+            a_serie.LimiterOrder = Catalog.NextID();
+
+            new Task(() =>
+            {
+                a_serie.DownloadChapters();
+            }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
         }
 
         public void DownloadPages(IEnumerable<Chapter> a_chapters)
         {
-            lock (m_lock)
-            {
-                DownloadPages(a_chapters.FirstOrDefault());
+            if (!a_chapters.Any())
+                return;
 
-                new Task(() =>
-                {
-                    foreach (var chapter in a_chapters.Skip(1))
-                        DownloadPages(chapter);
-                }).Start();
-            }
+            DownloadPages(a_chapters.First());
+
+            new Task(() =>
+            {
+                foreach (var chapter in a_chapters.Skip(1))
+                    DownloadPages(chapter);
+            }).Start();
         }
 
         private void DownloadPages(Chapter a_chapter)
         {
-            lock (m_lock)
+            if (a_chapter.IsDownloading)
+                return;
+
+            Works.Add(a_chapter);
+
+            lock (m_downloading)
             {
-                if (a_chapter == null)
-                    return;
-                if (a_chapter.IsDownloading)
-                    return;
-
-                Works.Add(a_chapter);
-
                 m_downloading.Add(a_chapter);
-                a_chapter.State = ChapterState.Waiting;
-                a_chapter.LimiterOrder = Catalog.NextID();
-
-                Chapter chapter_sync = a_chapter;
-
-                new Task(() =>
-                {
-                    chapter_sync.DownloadPages();
-                }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
             }
+            a_chapter.State = ChapterState.Waiting;
+            a_chapter.LimiterOrder = Catalog.NextID();
+
+            Catalog.SaveChapterPages(a_chapter);
+
+            Chapter chapter_sync = a_chapter;
+
+            new Task(() =>
+            {
+                chapter_sync.DownloadPages();
+            }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
         }
 
         public void ClearCache()
@@ -174,7 +174,6 @@ namespace MangaCrawlerLib
 
         public void Debug_InsertSerie(int a_index, Server a_server)
         {
-
             (a_server.Crawler as TestServerCrawler).Debug_InsertSerie(a_index);
         }
 

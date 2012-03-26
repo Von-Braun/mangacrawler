@@ -140,18 +140,17 @@ namespace MangaCrawler
      * 
      * dodac przycisk check now
      * 
-     * //
+     * dla nowych rozdzialow, visit page ma je oznaczac jako odwiedzone dla wszystkich miejsc z ktorych
+     * mozemy to zrobic
      * 
-     * sprawdzic odpornosc przyciskow i menu na bledy - disable wtedy
-     * context menu i toolstrip - zweryfikowac powiazania
-     * toolstripy lubia znikac - do toolstrip container
-     * ustalic na nowo minimalne rozmiary
-     * menu kontekstowe i toolbar - disable jesli akcja niemozliwa
-     * porobic skrotty klawiszowe (del, enter), 
+     * usuniecie chapteru ktory jest w downloading jako downloaded albo pobierany - test na przyciski - jak to dziala, 
+     * takze usuniecie serii
      * 
-     * zaladowanie works grid wieloma elementami wolne - wsztrzymac odswiezanie gui
+     * usuniecie serii ktora jest w bookmarks, co sie dzieje 
      * 
-     * testy 
+     * ogranicz liczbe otwieranych folderow i obrazkow do 10
+     * 
+     * /////
      * 
      * przetestowac compaktowanie 
      * - dodac jakies inne liki
@@ -168,6 +167,7 @@ namespace MangaCrawler
      * potestowac jak dzialaja zywe serwery
      * testy masowego pobierania cala noc
      * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
+     * w wersji zywej - odiwedzanie stron, typowe scenraiusze na wszelki wypadek
      * 
      */
 
@@ -270,6 +270,12 @@ namespace MangaCrawler
 
             ResizeToolStripImages();
             ResizeContextMenuStripImages();
+
+            // VS designer bug
+            // this post in from 2006, no comment...
+            // http://social.msdn.microsoft.com/Forums/ar/winformsdesigner/thread/6f56b963-df4d-4f26-8dc3-0244d129f07c
+            foreach (var ts in FindAll<ToolStrip>())
+                ts.Visible = true;
 
             GUI.UpdateAll();
         }
@@ -403,6 +409,8 @@ namespace MangaCrawler
             if (GUI.SelectedSerie != null)
                 m_chapters_visual_states[GUI.SelectedSerie] = 
                     new ListBoxVisualState(chaptersListBox);
+
+            GUI.UpdateButtons();
         }
 
         private void seriesSearchTextBox_TextChanged(object sender, EventArgs e)
@@ -566,9 +574,11 @@ namespace MangaCrawler
 
         private void chapterBookmarksListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (GUI.SelectedSerieForBookmarks != null)
-                m_chapter_bookmarks_visual_states[GUI.SelectedSerieForBookmarks] =
+            if (GUI.SelectedBookmarkedSerie != null)
+                m_chapter_bookmarks_visual_states[GUI.SelectedBookmarkedSerie] =
                     new ListBoxVisualState(chapterBookmarksListBox);
+
+            GUI.UpdateButtons();
         }
 
         private void chapterBookmarksListBox_KeyDown(object sender, KeyEventArgs e)
@@ -582,8 +592,8 @@ namespace MangaCrawler
 
         private void chapterBookmarksListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
-            if (GUI.SelectedSerieForBookmarks != null)
-                m_chapter_bookmarks_visual_states[GUI.SelectedSerieForBookmarks] =
+            if (GUI.SelectedBookmarkedSerie != null)
+                m_chapter_bookmarks_visual_states[GUI.SelectedBookmarkedSerie] =
                     new ListBoxVisualState(chapterBookmarksListBox);
         }
 
@@ -735,11 +745,31 @@ namespace MangaCrawler
 
         private void worksGridView_MouseDown(object sender, MouseEventArgs e)
         {
+            var hti = worksGridView.HitTest(e.X, e.Y);
+
+            if (e.Button == MouseButtons.Right)
+            {
+                if (hti.Type == DataGridViewHitTestType.Cell)
+                {
+                    if (!worksGridView.Rows[hti.RowIndex].Selected)
+                    {
+                        worksGridView.ClearSelection();
+                        worksGridView.Rows[hti.RowIndex].Selected = true;
+                    }
+                }
+            }
+
             if (e.Button == MouseButtons.Left)
             {
-                Rectangle r = worksGridView.GetCellDisplayRectangle(0, worksGridView.Rows.Count - 1, true);
-                if (e.Y > r.Bottom)
-                    worksGridView.ClearSelection();
+                if (hti.Type == DataGridViewHitTestType.None)
+                {
+                    if (!Control.ModifierKeys.HasFlag(Keys.Shift) &&
+                        !Control.ModifierKeys.HasFlag(Keys.Control) &&
+                        !Control.ModifierKeys.HasFlag(Keys.Alt))
+                    {
+                        worksGridView.ClearSelection();
+                    }
+                }
             }
         }
 
@@ -1157,6 +1187,46 @@ namespace MangaCrawler
             }
 
             Settings.Instance.SplitterBookmarksDistance = splitterBookmarks.SplitPosition;
+        }
+
+        private void worksGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            GUI.UpdateButtons();
+        }
+
+        private void showInSeriesForSelectedWorksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GUI.ShowInSeriesFromWorks();
+        }
+
+        private void deleteForSelectedWorksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.CancelClearSelectedWorks();
+        }
+
+        private void visitPageForSelectedBookmarkedSerieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedBookmarkedSerie();
+        }
+
+        private void openFolderForSelectedBookmarkedChaptersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedBookmarkedChapters();
+        }
+
+        private void visitPageForSelectedBookmarkedChaptersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPagesForSelectedBookmarkedChapters();
+        }
+
+        private void downloadForSelectedBookmarkedChaptersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedBookmarkedChapters();
+        }
+
+        private void readMangaForSelectedBookmarkedChaptersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.ReadMangaForSelectedBookmarkedChapters();
         }
     }
 }

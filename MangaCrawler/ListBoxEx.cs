@@ -14,6 +14,8 @@ namespace MangaCrawler
     public class ListBoxEx : ListBox
     {
         private bool m_reloading;
+        private Object m_selected_value;
+        private int m_selected_index;
 
         private const int WM_VSCROLL = 0x0115;
         private const int WM_HSCROLL = 0x0114;
@@ -132,6 +134,8 @@ namespace MangaCrawler
 
             BeginUpdate();
             m_reloading = true;
+            m_selected_value = SelectedValue;
+            m_selected_index = SelectedIndex;
 
             try
             {
@@ -145,6 +149,11 @@ namespace MangaCrawler
                 EndUpdate();
                 m_reloading = false;
             }
+
+            if (m_selected_index != SelectedIndex)
+                OnSelectedIndexChanged(EventArgs.Empty);
+            if (m_selected_value != SelectedValue)
+                OnSelectedValueChanged(EventArgs.Empty);
         }
 
         protected override void WndProc(ref Message m)

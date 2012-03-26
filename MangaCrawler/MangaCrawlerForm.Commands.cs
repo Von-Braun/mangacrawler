@@ -17,8 +17,9 @@ namespace MangaCrawler
         private class MangaCrawlerCommands
         {
             public MangaCrawlerGUI GUI;
+            private static int MAX_TO_OPEN = 10;
 
-            private void CheckNowServer(Server a_server)
+            private void UpdateNowServer(Server a_server)
             {
                 DownloadManager.Instance.DownloadSeries(GUI.SelectedServer, true);
                 GUI.UpdateAll();
@@ -26,7 +27,7 @@ namespace MangaCrawler
 
             public void UpdateNowForSelectedServer()
             {
-                CheckNowServer(GUI.SelectedServer);
+                UpdateNowServer(GUI.SelectedServer);
             }
 
             private void OpenFolder(Entity a_entity)
@@ -36,11 +37,9 @@ namespace MangaCrawler
 
             private void OpenFolders(params Entity[] a_entities)
             {
-                var entities = a_entities.Where(e => e != null);
+                bool error = a_entities.Count() > MAX_TO_OPEN;
 
-                bool error = false;
-
-                foreach (var entity in entities)
+                foreach (var entity in a_entities.Take(MAX_TO_OPEN))
                 {
                     try
                     {
@@ -74,15 +73,19 @@ namespace MangaCrawler
 
             private void VisitPages(params Entity[] a_entitites)
             {
-                var entitites = a_entitites.Where(e => e != null);
-
                 bool error = false;
 
-                foreach (var entity in entitites)
+                foreach (var entity in a_entitites)
                 {
                     try
                     {
                         Process.Start(entity.URL);
+
+                        if (entity is Chapter)
+                        {
+                            DownloadManager.Instance.BookmarksIgnored(
+                                new[] { entity as Chapter }, true);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -106,11 +109,6 @@ namespace MangaCrawler
                 UpdateNowSerie(GUI.SelectedSerie);
             }
 
-            private void UpdateNowSerie(Entity entity)
-            {
-                throw new NotImplementedException();
-            }
-
             private void UpdateNowSerie(Serie a_serie)
             {
                 DownloadManager.Instance.DownloadChapters(a_serie, true);
@@ -122,19 +120,8 @@ namespace MangaCrawler
                 BookmarkSerie(GUI.SelectedSerie);
             }
 
-            private void BookmarkSerie(Entity entity)
-            {
-                throw new NotImplementedException();
-            }
-
             private void BookmarkSerie(Serie a_serie)
             {
-                if ((a_serie == null) || a_serie.IsDownloading ||
-                    DownloadManager.Instance.Bookmarks.List.Contains(a_serie))
-                {
-                    return;
-                }
-
                 DownloadManager.Instance.Bookmarks.Add(a_serie);
                 GUI.UpdateAll();
             }
@@ -162,9 +149,6 @@ namespace MangaCrawler
 
             private void DownloadPages(IEnumerable<Chapter> a_chapters)
             {
-                if (a_chapters.Count() == 0)
-                    return;
-
                 if (!Settings.Instance.MangaSettings.IsMangaRootDirValid)
                 {
                     GUI.PulseMangaRootDirTextBox();
@@ -205,26 +189,23 @@ namespace MangaCrawler
 
             private void ReadManga(params Chapter[] a_chapters)
             {
-                bool error = false;
+                var chapters = a_chapters.Where(e => e != null);
 
-                foreach (var chapter in a_chapters)
+                bool error = chapters.Count() > MAX_TO_OPEN;
+
+                foreach (var chapter in chapters.Take(MAX_TO_OPEN))
                 {
-                    if (chapter.Pages.Any())
+                    if (chapter.CanReadFirstPage())
                     {
-                        if (new FileInfo(chapter.Pages.First().ImageFilePath).Exists)
+                        try
                         {
-                            try
-                            {
-                                Process.Start(chapter.Pages.First().ImageFilePath);
-                            }
-                            catch (Exception ex)
-                            {
-                                Loggers.GUI.Error("Exception", ex);
-                                error = true;
-                            }
+                            Process.Start(chapter.Pages.First().ImageFilePath);
                         }
-                        else
+                        catch (Exception ex)
+                        {
+                            Loggers.GUI.Error("Exception", ex);
                             error = true;
+                        }
                     }
                     else
                         error = true;
@@ -301,7 +282,7 @@ namespace MangaCrawler
 
             public void RemoveBookmarkFromBookmarks()
             {
-                RemoveBookmark(GUI.SelectedSerieForBookmarks);
+                RemoveBookmark(GUI.SelectedBookmarkedSerie);
             }
 
             private void RemoveBookmark(Serie a_serie)
@@ -326,47 +307,47 @@ namespace MangaCrawler
 
             public void OpenFolderForSelectedBookmarkSerie()
             {
-                OpenFolder(GUI.SelectedSerieForBookmarks);
+                OpenFolder(GUI.SelectedBookmarkedSerie);
             }
 
             public void VisitPageForSelectedBookmarkedSerie()
             {
-                VisitPage(GUI.SelectedSerieForBookmarks);
+                VisitPage(GUI.SelectedBookmarkedSerie);
             }
 
             public void VisitPagesForSelectedBookmarkedChapters()
             {
-                VisitPages(GUI.SelectedChaptersForBookmarks);
+                VisitPages(GUI.SelectedBookmarkedChapters);
             }
 
             public void DownloadSeriesForSelectedBookmarkSerie()
             {
-                DownloadManager.Instance.DownloadChapters(GUI.SelectedSerieForBookmarks, a_force: false);
+                DownloadManager.Instance.DownloadChapters(GUI.SelectedBookmarkedSerie, a_force: false);
                 GUI.UpdateAll();
             }
 
             public void DownloadPagesForSelectedBookmarkedChapters()
             {
-                DownloadPages(GUI.SelectedChaptersForBookmarks);
+                DownloadPages(GUI.SelectedBookmarkedChapters);
             }
 
             public void VisitBookmarkedPagesForSelectedChapters()
             {
-                VisitPages(GUI.SelectedChaptersForBookmarks);
+                VisitPages(GUI.SelectedBookmarkedChapters);
 
-                DownloadManager.Instance.BookmarksIgnored(GUI.SelectedChaptersForBookmarks, true);
+                DownloadManager.Instance.BookmarksIgnored(GUI.SelectedBookmarkedChapters, true);
 
                 GUI.UpdateAll();
             }
 
             public void OpenFolderForSelectedBookmarkedChapters()
             {
-                OpenFolders(GUI.SelectedChaptersForBookmarks);
+                OpenFolders(GUI.SelectedBookmarkedChapters);
             }
 
             public void ReadMangaForSelectedBookmarkedChapters()
             {
-                ReadManga(GUI.SelectedChaptersForBookmarks);
+                ReadManga(GUI.SelectedBookmarkedChapters);
             }
 
             public void ClearCache()
