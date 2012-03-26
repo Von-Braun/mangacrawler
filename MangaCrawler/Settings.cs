@@ -135,7 +135,7 @@ namespace MangaCrawler
             }
         }
 
-        public int SplitterDistance
+        public int SeriesSplitterDistance
         {
             get
             {

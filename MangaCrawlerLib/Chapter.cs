@@ -54,11 +54,9 @@ namespace MangaCrawlerLib
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Object m_state_lock = new Object();
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool m_bookmark_ignored;
-
         public Serie Serie { get; private set; }
         public string Title { get; internal set; }
+        public bool BookmarkIgnored { get; internal set; }
 
         internal Chapter(Serie a_serie, string a_url, string a_title)
             : this(a_serie, a_url, a_title, Catalog.NextID(), ChapterState.Initial, 0, false)
@@ -69,7 +67,7 @@ namespace MangaCrawlerLib
             ulong a_limiter_order, bool a_bookmark_ignore)
             : base(a_id)
         {
-            m_bookmark_ignored = a_bookmark_ignore;
+            BookmarkIgnored = a_bookmark_ignore;
             m_pages = new PagesCachedList(this);
             LimiterOrder = a_limiter_order;
             Serie = a_serie;
@@ -99,19 +97,6 @@ namespace MangaCrawlerLib
             get
             {
                 return m_pages;
-            }
-        }
-
-        public bool BookmarkIgnored
-        {
-            get
-            {
-                return m_bookmark_ignored;
-            }
-            set
-            {
-                m_bookmark_ignored = value;
-                Catalog.Save(this);
             }
         }
 
@@ -274,7 +259,7 @@ namespace MangaCrawlerLib
                         if (State != ChapterState.Error)
                             CreateCBZ();
 
-                    m_bookmark_ignored = true;
+                    BookmarkIgnored = true;
                 }
                 finally
                 {

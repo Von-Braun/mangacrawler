@@ -19,6 +19,7 @@ using log4net.Config;
 using log4net;
 using System.Runtime.InteropServices;
 using TomanuExtensions;
+using System.Drawing.Drawing2D;
 
 namespace MangaCrawler
 {
@@ -137,15 +138,20 @@ namespace MangaCrawler
      * wiele chapterow z jednego chaptera do sciagania, zamkniecie aplikacji, ponowne uruchomienie, 
      * czy wszystkie sa wznawiane, powinny sie wznawiac w kolejnosci dodania
      * 
-     * /////////////
-     * 
      * dodac przycisk check now
      * 
-     * zlikwidowac przyciski, dodac context menu, porobic skrotty klawiszowe (del, enter), 
+     * //
      * 
-     * dodac warstwe posrednia zawierajaca akcje stojace za eventami - nazwac je komendami i zapakowac w obiekty
+     * sprawdzic odpornosc przyciskow i menu na bledy - disable wtedy
+     * context menu i toolstrip - zweryfikowac powiazania
+     * toolstripy lubia znikac - do toolstrip container
+     * ustalic na nowo minimalne rozmiary
+     * menu kontekstowe i toolbar - disable jesli akcja niemozliwa
+     * porobic skrotty klawiszowe (del, enter), 
      * 
-     * dodanie wielu chapterow wolne
+     * zaladowanie works grid wieloma elementami wolne - wsztrzymac odswiezanie gui
+     * 
+     * testy 
      * 
      * przetestowac compaktowanie 
      * - dodac jakies inne liki
@@ -174,14 +180,6 @@ namespace MangaCrawler
         private Dictionary<Serie, ListBoxVisualState> m_chapter_bookmarks_visual_states =
             new Dictionary<Serie, ListBoxVisualState>();
 
-        private bool m_refresh_once_after_all_done;
-        private bool m_working;
-        private bool m_force_close;
-        private DateTime m_last_bookmark_check = DateTime.Now;
-        private bool m_play_sound_when_downloaded;
-        private bool m_icon_created;
-        private bool m_green_icon;
-
         private static Color BAD_DIR = Color.Red;
 
         [DllImport("user32.dll", SetLastError=true, CharSet=CharSet.Auto)]
@@ -189,8 +187,17 @@ namespace MangaCrawler
 
         private uint WM_TASKBARCREATED;
 
+        private MangaCrawlerCommands Commands;
+        private MangaCrawlerGUI GUI;
+
         public MangaCrawlerForm()
         {
+            Commands = new MangaCrawlerCommands();
+            GUI = new MangaCrawlerGUI();
+            GUI.Form = this;
+            GUI.Commands = Commands;
+            Commands.GUI = GUI;
+
             InitializeComponent();
             Settings.Instance.FormState.Init(this);
         }
@@ -211,7 +218,7 @@ namespace MangaCrawler
                 Settings.Instance.MangaSettings, 
                 Settings.GetSettingsDir());
 
-            m_play_sound_when_downloaded = DownloadManager.Instance.Works.List.Any();
+            GUI.Init();
 
             mangaRootDirTextBox.Text = Settings.Instance.MangaSettings.GetMangaRootDir(false);
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
@@ -236,7 +243,7 @@ namespace MangaCrawler
 
             playSoundWhenDownloadedCheckBox.Checked = Settings.Instance.PlaySoundWhenDownloaded;
 
-            Task.Factory.StartNew(() => CheckNewVersion(), TaskCreationOptions.LongRunning);
+            Task.Factory.StartNew(() => Commands.CheckNewVersion(), TaskCreationOptions.LongRunning);
 
             if (!Loggers.Log())
             {
@@ -254,14 +261,83 @@ namespace MangaCrawler
             worksGridView.AutoGenerateColumns = false;
             worksGridView.DataSource = new BindingList<WorkGridRow>();
 
-            CheckBookmarks(a_force: true);
+            Commands.CheckNowBookmarks();
 
             refreshTimer.Enabled = true;
 
             bookmarksTimer.Interval = (int)Settings.Instance.MangaSettings.CheckTimePeriod.TotalMilliseconds / 10;
             bookmarksTimer.Enabled = true;
 
-            UpdateAll();
+            ResizeToolStripImages();
+            ResizeContextMenuStripImages();
+
+            GUI.UpdateAll();
+        }
+
+        private void ResizeContextMenuStripImages()
+        {
+            foreach (var c in FindAll<Control>())
+            {
+                if (c.ContextMenuStrip == null)
+                    continue;
+
+                foreach (var item in c.ContextMenuStrip.Items.OfType<ToolStripMenuItem>())
+                {
+                    if (item.Image == null)
+                        continue;
+
+                    var image = ResizeImage(item.Image, c.ContextMenuStrip.ImageScalingSize);
+                    item.Image.Dispose();
+                    item.Image = image;
+                }
+            }
+        }
+
+        private void ResizeToolStripImages()
+        {
+            foreach (var toolstrip in FindAll<ToolStrip>())
+            {
+                foreach (var button in toolstrip.Items.OfType<ToolStripButton>())
+                {
+                    if (button.Image == null)
+                        continue;
+
+                    var image = ResizeImage(button.Image, toolstrip.ImageScalingSize);
+                    button.Image.Dispose();
+                    button.Image = image;
+                }
+            }
+        }
+
+        private Bitmap ResizeImage(Image a_image, Size a_size)
+        {
+            Bitmap bmp = new Bitmap(a_size.Width, a_size.Height, a_image.PixelFormat);
+
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.DrawImage(a_image, 0, 0, bmp.Width, bmp.Height);
+            }
+
+            return bmp;
+        }
+
+        private IEnumerable<T> FindAll<T>(Control a_control = null)
+        {
+            List<T> list = new List<T>();
+
+            if (a_control == null)
+                a_control = this;
+
+            foreach (var c in a_control.Controls.OfType<T>())
+                list.Add(c);
+
+            foreach (var c in a_control.Controls.Cast<Control>())
+                list.AddRange(FindAll<T>(c));
+
+            return list;
         }
 
         protected override void WndProc(ref Message a_msg)
@@ -274,8 +350,6 @@ namespace MangaCrawler
 
             base.WndProc(ref a_msg);
         }
-
-        
 
         private void SetupLog4NET()
         {
@@ -315,57 +389,33 @@ namespace MangaCrawler
                 mangaRootDirTextBox.Text = folderBrowserDialog.SelectedPath;
         }
 
-        private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DownloadSeriesForSelectedServer();
-        }
-
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (SelectedServer != null)
-                m_series_visual_states[SelectedServer] = 
+            if (GUI.SelectedServer != null)
+                m_series_visual_states[GUI.SelectedServer] = 
                     new ListBoxVisualState(seriesListBox);
 
-            DownloadChapterForSelectedSerie();
+            Commands.DownloadChapterForSelectedSerie();
         }
 
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (SelectedSerie != null)
-                m_chapters_visual_states[SelectedSerie] = 
+            if (GUI.SelectedSerie != null)
+                m_chapters_visual_states[GUI.SelectedSerie] = 
                     new ListBoxVisualState(chaptersListBox);
         }
 
         private void seriesSearchTextBox_TextChanged(object sender, EventArgs e)
         {
             Settings.Instance.SeriesFilter = seriesSearchTextBox.Text;
-            UpdateSeries();
-        }
-
-        private void downloadButton_Click(object sender, EventArgs e)
-        {
-            DownloadPagesForSelectedChapters();
-        }
-
-        public static bool IsDirectoryPathValid()
-        {
-            try
-            {
-                new DirectoryInfo(Settings.Instance.MangaSettings.GetMangaRootDir(false));
-            }
-            catch
-            {
-                return false;
-            }
-
-            return true;
+            GUI.UpdateSeries();
         }
 
         private void mangaRootDirTextBox_TextChanged(object sender, EventArgs e)
         {
             Settings.Instance.MangaSettings.SetMangaRootDir(mangaRootDirTextBox.Text);
 
-            if (!IsDirectoryPathValid())
+            if (!Settings.Instance.MangaSettings.IsMangaRootDirValid)
                 mangaRootDirTextBox.BackColor = BAD_DIR;
             else
                 mangaRootDirTextBox.BackColor = SystemColors.Window;
@@ -374,43 +424,23 @@ namespace MangaCrawler
         private void chaptersListBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                DownloadPagesForSelectedChapters();
+                Commands.DownloadPagesForSelectedChapters();
 
             if ((e.KeyCode == Keys.A) && (e.Control))
                 chaptersListBox.SelectAll();
         }
 
-        private void serverURLButton_Click(object sender, EventArgs e)
-        {
-            VisitPageForSelectedServer();
-        }
-
-        private void seriesURLButton_Click(object sender, EventArgs e)
-        {
-            VisitPageForSelectedSerie();
-        }
-
-        private void chapterURLButton_Click(object sender, EventArgs e)
-        {
-            VisitPageForSelectedChapters();
-        }
-
-        private void chaptersListBox_DoubleClick(object sender, EventArgs e)
-        {
-            DownloadPagesForSelectedChapters();
-        }
-
         private void seriesListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
-            if (SelectedServer != null)
-                m_series_visual_states[SelectedServer] = 
+            if (GUI.SelectedServer != null)
+                m_series_visual_states[GUI.SelectedServer] = 
                     new ListBoxVisualState(seriesListBox);
         }
 
         private void chaptersListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
-            if (SelectedSerie != null)
-                m_chapters_visual_states[SelectedSerie] = 
+            if (GUI.SelectedSerie != null)
+                m_chapters_visual_states[GUI.SelectedSerie] = 
                     new ListBoxVisualState(chaptersListBox);
         }
 
@@ -425,158 +455,19 @@ namespace MangaCrawler
             Process.Start(Resources.HomePage);
         }
 
-        private void CheckNewVersion()
-        {
-            try
-            {
-                var doc = new HtmlWeb().Load(Resources.HomePage);
-                var node = doc.DocumentNode.SelectSingleNode("//td[@id='ReleaseName']");
-                var name = node.InnerText;
-                var version1 = Double.Parse(
-                    name.Replace("Manga Crawler", "").Trim().Replace(".", ","));
-                
-                var assembly_version = System.Reflection.Assembly.GetAssembly(
-                    typeof(MangaCrawlerForm)).GetName().Version;
-                var version2 = Double.Parse(assembly_version.Major.ToString() + "," + 
-                    assembly_version.Minor.ToString());
-                
-                if (version1 > version2)
-                {
-                    Action action = () => versionLinkLabel.Text = Resources.NewVersion;
-                    Invoke(action);
-
-                    Task.Factory.StartNew(() => PulseNewVersionLinkLabel());
-                }
-            }
-            catch (Exception ex)
-            {
-                Loggers.GUI.Error("Exception", ex);
-            }
-        }
-
-        private void Pulse(Color a_color_org, Color a_color_alter, int a_count, int pulse_time_ms, Action<Color> a_action)
-        {
-            const int SLEEP_TIME = 25;
-            int steps = pulse_time_ms / SLEEP_TIME;
-
-            Func<IEnumerable<Color>> get_colors = () =>
-            {
-                List<Color> result = new List<Color>();
-
-                // limit to byte
-                Func<int, int> limit =
-                    (c) => (c < 0) ? byte.MinValue : (c > 255) ? byte.MaxValue : c;
-
-                // ph=0 return c1 ... ph=255 return c2
-                Func<int, int, int, int> calc =
-                    (c1, c2, ph) => limit(c1 + (c2 - c1) * ph / 255);
-
-                for (int i = 0; i < a_count; i++)
-                {
-                    for (int phase = 0; phase < steps; phase++)
-                    {
-                        // 0 ... steps/2 ... 0
-                        var p = steps / 2 - Math.Abs(phase - steps / 2);
-
-                        // 0 ... pi ... 0
-                        var pp = p * Math.PI / (steps / 2);
-
-                        // 1 ... -1 ... 1
-                        pp = Math.Cos(pp);
-
-                        // 2 .. 0 .. 2
-                        pp = pp + 1;
-
-                        // 0 .. 2 .. 0
-                        pp = 2 - pp;
-
-                        // 0 ... 1 ... 0
-                        pp = pp / 2;
-
-                        // 0 ... 255 ... 0 
-                        p = limit((int)(Math.Round(pp * 255)));
-
-                        var r = calc(a_color_org.R, a_color_alter.R, p);
-                        var g = calc(a_color_org.G, a_color_alter.G, p);
-                        var b = calc(a_color_org.B, a_color_alter.B, p);
-                        result.Add(Color.FromArgb(r, g, b));
-                    }
-                }
-
-                return result;
-            };
-
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    foreach (var color in get_colors())
-                    {
-                        Invoke(a_action, color);
-                        Thread.Sleep(SLEEP_TIME);
-                    }
-                }
-                catch
-                {
-                    Loggers.GUI.Error("Exception");
-                }
-            });
-        }
-
-        private void PulseNewVersionLinkLabel()
-        {
-            Pulse(versionLinkLabel.LinkColor, Color.Red, 12, 700, (c) => versionLinkLabel.LinkColor = c);
-        }
-
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
-            if (DownloadManager.Instance.NeedGUIRefresh(true))
-            {
-                m_refresh_once_after_all_done = false;
-                m_working = DownloadManager.Instance.Works.List.Any();
-            }
-            else if (!m_refresh_once_after_all_done)
-            {
-                m_refresh_once_after_all_done = true;
-            }
-            else
-            {
-                if (m_working)
-                {
-                    m_working = false;
-
-                    if (m_play_sound_when_downloaded)
-                    {
-                        m_play_sound_when_downloaded = false;
-
-                        if (Settings.Instance.PlaySoundWhenDownloaded)
-                            SystemSounds.Beep.Play();
-                    }
-
-                    DownloadManager.Instance.ClearCache();
-                    GC.Collect();
-                }
-
-                return;
-            }
-
-            DownloadManager.Instance.Works.Save();
-            ShowNotificationAboutNewChapters();
-            UpdateIcons();
-
-            UpdateAll();
+            GUI.Refresh();
         }
-
-        
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl.SelectedTab == bookmarksTabPage)
-                splitterBookmarks.SplitPosition = Settings.Instance.SplitterBookmarksDistance;
-            else if (tabControl.SelectedTab == seriesTabPage)
-                splitter.SplitPosition = Settings.Instance.SplitterDistance;
+            if (tabControl.SelectedTab == seriesTabPage)
+                SeriesSplitterAdjust();
+            else if (tabControl.SelectedTab == bookmarksTabPage)
+                BookmarksSplitterAdjust();
 
-            UpdateAll();
+            GUI.UpdateAll();
         }
 
         private void clearLogButton_Click(object sender, EventArgs e)
@@ -611,30 +502,10 @@ namespace MangaCrawler
 
         private void MangaCrawlerForm_Shown(object sender, EventArgs e)
         {
-            splitter.SplitPosition = Settings.Instance.SplitterDistance;
+            seriesSplitter.SplitPosition = Settings.Instance.SeriesSplitterDistance;
 
             if (Catalog.GetCatalogSize() > Settings.Instance.MangaSettings.MaxCatalogSize)
                 new CatalogOptimizeForm().ShowDialog();
-        }
-
-        private void openServerFolderButton_Click(object sender, EventArgs e)
-        {
-            OpenFolderForSelectedServer();
-        }
-
-        private void openSeriesFolderButton_Click(object sender, EventArgs e)
-        {
-            OpenFolderForSelectedSerie();
-        }
-
-        private void viewPagesButton_Click(object sender, EventArgs e)
-        {
-            ViewPagesForSelectedChapters();
-        }
-
-        private void openPagesFolder_Click(object sender, EventArgs e)
-        {
-            OpenFolderForSelectedChapters();
         }
 
         private void pageNamingStrategyComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -653,160 +524,28 @@ namespace MangaCrawler
                 Loggers.GUI.Error("Invalid PageNamingStrategy");
         }
 
-        
-
-        private Chapter[] SelectedWorks
-        {
-            get
-            {
-                var works = worksGridView.Rows.Cast<DataGridViewRow>().Where(r => r.Selected).
-                    Select(r => r.DataBoundItem).Cast<WorkGridRow>().Select(w => w.Chapter).ToArray();
-
-                return works;
-            }
-        }
-
-        private void viewWorkButton_Click(object sender, EventArgs e)
-        {
-            ViewPagesForSelectedWorks();
-        }
-
-        private void visitPageWorkButton_Click(object sender, EventArgs e)
-        {
-            VisitPageForSelectedWorks();
-        }
-
-        private void cancelWorkButton_Click(object sender, EventArgs e)
-        {
-            CancelSelectedWorks();
-        }
-
-        private void openFolderWorksButton_Click(object sender, EventArgs e)
-        {
-            OpenFolderForSelectedWorks();
-        }
-
-        private void goToSeriesTabButton_Click(object sender, EventArgs e)
-        {
-            if (SelectedWorks.Length != 1)
-            {
-                SystemSounds.Asterisk.Play();
-                return;
-            }
-
-            var chapter = SelectedWorks.First();
-
-            tabControl.SelectTab(seriesTabPage);
-
-            serversListBox.SelectedItem = 
-                serversListBox.Items.Cast<ServerListItem>().FirstOrDefault(s => s.Server == chapter.Server);
-
-            if (serversListBox.SelectedItem == null)
-                return;
-
-            seriesListBox.SelectedItem = 
-                seriesListBox.Items.Cast<SerieListItem>().FirstOrDefault(s => s.Serie == chapter.Serie);
-
-            if (seriesListBox.SelectedItem == null)
-                return;
-
-            chaptersListBox.ClearSelected();
-            chaptersListBox.SelectedItem = 
-                chaptersListBox.Items.Cast<ChapterListItem>().FirstOrDefault(c => c.Chapter == chapter);
-        }
-
-        private void downloadWorkButton_Click(object sender, EventArgs e)
-        {
-            DownloadPagesForSelectedWorks();
-        }
-
         private void worksGridView_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
-                CancelClearSelectedWorks();
+                Commands.CancelClearSelectedWorks();
         }
 
-        private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
+        private void splitter_SplitterMoved(object sender, SplitterEventArgs e)
         {
-            if (splitPanel.Width - splitter.SplitPosition < chaptersPanel.MinimumSize.Width)
-                splitter.SplitPosition = splitPanel.Width - chaptersPanel.MinimumSize.Width;
-
-            Settings.Instance.SplitterDistance = splitter.SplitPosition;
+            SeriesSplitterAdjust();
         }
 
         private void MangaCrawlerForm_ResizeEnd(object sender, EventArgs e)
         {
             if (tabControl.SelectedTab == seriesTabPage)
-            {
-                if (chaptersPanel.Bounds.Right > splitPanel.ClientRectangle.Right)
-                    splitter.SplitPosition = splitPanel.Width - chaptersPanel.MinimumSize.Width;
-            }
+                SeriesSplitterAdjust();
             else if (tabControl.SelectedTab == bookmarksTabPage)
-            {
-                if (chapterBookmarksPanel.Bounds.Right > splitBookmarksPanel.ClientRectangle.Right)
-                    splitterBookmarks.SplitPosition = splitBookmarksPanel.Width - chapterBookmarksPanel.MinimumSize.Width;
-            }
+                BookmarksSplitterAdjust();
         }
 
         private void splitterBookmarks_SplitterMoved(object sender, SplitterEventArgs e)
         {
-            if (splitBookmarksPanel.Width - splitterBookmarks.SplitPosition < chapterBookmarksPanel.MinimumSize.Width)
-                splitterBookmarks.SplitPosition = splitBookmarksPanel.Width - chapterBookmarksPanel.MinimumSize.Width;
-
-            Settings.Instance.SplitterBookmarksDistance = splitterBookmarks.SplitPosition;
-        }
-
-        private void BookmarkSerieButton_Click(object sender, EventArgs e)
-        {
-            BookmarkSelectedSerie();
-        }
-
-        private void removeSerieBooksPanel_Click(object sender, EventArgs e)
-        {
-            RemoveSelectedBookmark();
-        }
-
-        private void openSerieFolderBooksButton_Click(object sender, EventArgs e)
-        {
-            var serie = SelectedSerieForBookmark;
-
-            if (serie == null)
-            {
-                if (seriesListBox.Items.Count == 1)
-                    serie = (seriesListBox.Items[0] as SerieBookmarkListItem).Serie;
-            }
-
-            OpenFolder(serie);
-        }
-
-        private void visitSerieBooksButton_Click(object sender, EventArgs e)
-        {
-            VisitPage(SelectedSerieForBookmark);
-        }
-
-        private void downloadChapterBooksButton_Click(object sender, EventArgs e)
-        {
-            DownloadPages(SelectedChaptersForBookmarks);
-        }
-
-        private void visitChapterBooksButton_Click(object sender, EventArgs e)
-        {
-            VisitPages(SelectedChaptersForBookmarks);
-
-            foreach (var chapter in SelectedChaptersForBookmarks)
-                chapter.BookmarkIgnored = true;
-
-            UpdateAll();
-        }
-
-        private void openChapterFolderBooksButton_Click(object sender, EventArgs e)
-        {
-            OpenFolders(SelectedChaptersForBookmarks);
-        }
-
-        private void viewChapterBoksButton_Click(object sender, EventArgs e)
-        {
-            VisitPages(SelectedChaptersForBookmarks);
+            BookmarksSplitterAdjust();
         }
 
         private void serieBookmarksListBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -825,30 +564,17 @@ namespace MangaCrawler
             ((sender as ListBox).Items[e.Index] as ListItem).DrawItem(e);
         }
 
-        private void serieBookmarksListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (SelectedSerieForBookmark != null)
-                DownloadManager.Instance.DownloadChapters(SelectedSerieForBookmark, a_force: false);
-
-            UpdateAll();
-        }
-
-        private void chapterBookmarksListBox_DoubleClick(object sender, EventArgs e)
-        {
-            DownloadPages(SelectedChaptersForBookmarks);
-        }
-
         private void chapterBookmarksListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (SelectedSerieForBookmark != null)
-                m_chapter_bookmarks_visual_states[SelectedSerieForBookmark] =
+            if (GUI.SelectedSerieForBookmarks != null)
+                m_chapter_bookmarks_visual_states[GUI.SelectedSerieForBookmarks] =
                     new ListBoxVisualState(chapterBookmarksListBox);
         }
 
         private void chapterBookmarksListBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                DownloadPages(SelectedChaptersForBookmarks);
+                Commands.DownloadPagesForSelectedBookmarkedChapters();
 
             if ((e.KeyCode == Keys.A) && (e.Control))
                 chapterBookmarksListBox.SelectAll();
@@ -856,200 +582,126 @@ namespace MangaCrawler
 
         private void chapterBookmarksListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
-            if (SelectedSerieForBookmark != null)
-                m_chapter_bookmarks_visual_states[SelectedSerieForBookmark] =
+            if (GUI.SelectedSerieForBookmarks != null)
+                m_chapter_bookmarks_visual_states[GUI.SelectedSerieForBookmarks] =
                     new ListBoxVisualState(chapterBookmarksListBox);
         }
 
         private void serieBookmarksListBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
-                RemoveSelectedBookmark();
+                Commands.RemoveBookmarkFromBookmarks();
         }
 
         private void resetCheckDatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            m_last_bookmark_check = DateTime.MinValue;
+            GUI.LastBookmarkCheck = DateTime.MinValue;
             DownloadManager.Instance.Debug_ResetCheckDate();
         }
 
         private void addSerieFirsttoolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DownloadManager.Instance.Debug_InsertSerie(0, SelectedServer);
+            DownloadManager.Instance.Debug_InsertSerie(0, GUI.SelectedServer);
         }
 
         private void addSerieMiddleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DownloadManager.Instance.Debug_InsertSerie(
-                new Random().Next(1, SelectedServer.Series.Count - 1), SelectedServer);
+                new Random().Next(1, GUI.SelectedServer.Series.Count - 1), GUI.SelectedServer);
         }
 
         private void addSerieLastToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DownloadManager.Instance.Debug_InsertSerie(SelectedServer.Series.Count, SelectedServer);
+            DownloadManager.Instance.Debug_InsertSerie(GUI.SelectedServer.Series.Count, GUI.SelectedServer);
         }
 
         private void removeSerieToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DownloadManager.Instance.Debug_RemoveSerie(SelectedServer, SelectedSerie);
+            DownloadManager.Instance.Debug_RemoveSerie(GUI.SelectedServer, GUI.SelectedSerie);
         }
 
         private void addChapterFirstToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DownloadManager.Instance.Debug_InsertChapter(0, SelectedSerie);
+            DownloadManager.Instance.Debug_InsertChapter(0, GUI.SelectedSerie);
         }
 
         private void addChapterMiddleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DownloadManager.Instance.Debug_InsertChapter(
-                new Random().Next(1, SelectedSerie.Chapters.Count - 1), SelectedSerie);
+                new Random().Next(1, GUI.SelectedSerie.Chapters.Count - 1), GUI.SelectedSerie);
         }
 
         private void addChapterLastToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DownloadManager.Instance.Debug_InsertChapter(SelectedSerie.Chapters.Count, SelectedSerie);
+            DownloadManager.Instance.Debug_InsertChapter(GUI.SelectedSerie.Chapters.Count, GUI.SelectedSerie);
         }
 
         private void removeChapterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (var chapter in SelectedChapters)
+            foreach (var chapter in GUI.SelectedChapters)
                 DownloadManager.Instance.Debug_RemoveChapter(chapter);
         }
 
         private void renameSerieToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DownloadManager.Instance.Debug_RenameSerie(SelectedSerie);
+            DownloadManager.Instance.Debug_RenameSerie(GUI.SelectedSerie);
         }
 
         private void renameChapterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (var chapter in SelectedChapters)
+            foreach (var chapter in GUI.SelectedChapters)
                 DownloadManager.Instance.Debug_RenameChapter(chapter);
         }
 
         private void changeSerieURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DownloadManager.Instance.Debug_ChangeSerieURL(SelectedSerie);
+            DownloadManager.Instance.Debug_ChangeSerieURL(GUI.SelectedSerie);
         }
 
         private void changeChapterURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (var chapter in SelectedChapters)
+            foreach (var chapter in GUI.SelectedChapters)
                 DownloadManager.Instance.Debug_ChangeChapterURL(chapter);
         }
 
         private void minimizeOnCloseCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Instance.MinimizeOnClose = minimizeOnCloseCheckBox.Checked;
-
             showBaloonTipsCheckBox.Enabled = minimizeOnCloseCheckBox.Checked;
         }
 
         private void exitTrayToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            m_force_close = true;
-            Close();
-        }
-
-        private void MinimizeToTray(bool a_minimize)
-        {
-            if (a_minimize)
-            {
-                Hide();
-                notifyIcon.Visible = true;
-
-                if (!m_working)
-                {
-                    DownloadManager.Instance.ClearCache();
-                    GC.Collect();
-                }
-            }
-            else
-            {
-                Show();
-                notifyIcon.Visible = false;
-            }
+            GUI.Close(true);
         }
 
         private void MangaCrawlerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (m_force_close)
-                return;
-
-            if (Settings.Instance.MinimizeOnClose)
-            {
-                MinimizeToTray(true);
-                e.Cancel = true;
-            }
+            e.Cancel = GUI.MinimizeOrClose();
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                MinimizeToTray(false);
-        }
-
-        private void ShowNotificationAboutNewChapters()
-        {
-            if (Visible)
-                return;
-            if (!Settings.Instance.ShowBaloonTips)
-                return;
-
-            var new_chapters = (from serie in DownloadManager.Instance.Bookmarks.GetSeriesWithNewChapters()
-                                orderby new SerieBookmarkListItem(serie).ToString()
-                                select new SerieBookmarkListItem(serie)).ToArray();
-
-            if (!new_chapters.Any())
-                return;
-
-            bool too_much = false;
-
-            if (new_chapters.Length > 5)
-            {
-                too_much = true;
-                new_chapters = new_chapters.Take(4).ToArray();
-            }
-
-            notifyIcon.Visible = true;
-
-            string str = Resources.TrayNotificationNewSeries;
-            str += Environment.NewLine + new_chapters.Skip(1).Aggregate(
-                new_chapters.First().ToString(), (r, b) => r + Environment.NewLine + b.ToString());
-            if (too_much)
-                str += Environment.NewLine + "...";
- 
-            notifyIcon.ShowBalloonTip(5000, Application.ProductName, str, ToolTipIcon.Info);
+                GUI.MinimizeToTray(false);
         }
 
         private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
-            MinimizeToTray(false);
+            GUI.MinimizeToTray(false);
 
             tabControl.SelectedTab = bookmarksTabPage;
 
-            var serie = serieBookmarksListBox.Items.Cast<SerieBookmarkListItem>().FirstOrDefault(
-                sbli => sbli.Serie.GetNewChapters().Any());
+            var serie = DownloadManager.Instance.Bookmarks.List.FirstOrDefault(b => b.GetNewChapters().Any());
 
-            if (serie != null)
-            {
-                serieBookmarksListBox.SelectedItem = serie;
-
-                var chapter = chapterBookmarksListBox.Items.Cast<ChapterBookmarkListItem>().FirstOrDefault(
-                    cbli => !cbli.Chapter.BookmarkIgnored);
-
-                if (chapter != null)
-                {
-                    chapterBookmarksListBox.ClearSelected();
-                    chapterBookmarksListBox.SelectedItem = chapter;
-                }
-            }
+            GUI.SelectBookmarkedSerie(serie);
+            GUI.SelectBookmarkedChapter(serie.GetNewChapters().FirstOrDefault());
         }
 
         private void notifyIcon_BalloonTipClosed(object sender, EventArgs e)
         {
             if (notifyIcon.Visible && Visible)
-                MinimizeToTray(false);
+                GUI.MinimizeToTray(false);
         }
 
         private void showBaloonTipsCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -1059,40 +711,7 @@ namespace MangaCrawler
 
         private void bookmarksTimer_Tick(object sender, EventArgs e)
         {
-            CheckBookmarks(a_force: false);
-        }
-
-        // TODO: jesli wymusilismy sprawdzanie bookmarkow to zaznaczyc nowy chapter jesli jest jakis
-
-        private void checkNowBookmarksButton_Click(object sender, EventArgs e)
-        {
-            CheckBookmarks(a_force: true);
-
-            var chapter = chapterBookmarksListBox.Items.Cast<ChapterBookmarkListItem>().FirstOrDefault(
-                cbli => !cbli.Chapter.BookmarkIgnored);
-
-            if (chapter != null)
-            {
-                chapterBookmarksListBox.ClearSelected();
-                chapterBookmarksListBox.SelectedItem = chapter;
-            }
-        }
-
-        private void CheckBookmarks(bool a_force)
-        {
-            if (!a_force)
-            {
-                if (DateTime.Now - m_last_bookmark_check < Settings.Instance.CheckBookmarksPeriod)
-                    return;
-            }
-
-            m_last_bookmark_check = DateTime.Now;
-
-            foreach (var server in DownloadManager.Instance.Bookmarks.List.Select(s => s.Server).Distinct())
-                DownloadManager.Instance.DownloadSeries(server, true);
-
-            foreach (var serie in DownloadManager.Instance.Bookmarks.List)
-                DownloadManager.Instance.DownloadChapters(serie, true);
+            GUI.RefreshBookmarks();
         }
 
         private void forceBookmarksCheckToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1104,7 +723,7 @@ namespace MangaCrawler
                 Invoke(new Action(() =>
                 {
                     SystemSounds.Exclamation.Play();
-                    CheckBookmarks(a_force: true);
+                    Commands.CheckNowBookmarks();
                 }));
             }).Start();
         }
@@ -1124,12 +743,6 @@ namespace MangaCrawler
             }
         }
 
-        private void clearMemoryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DownloadManager.Instance.ClearCache();
-            GC.Collect();
-        }
-
         private void loadAllFromCatalogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int servers = 0;
@@ -1141,20 +754,409 @@ namespace MangaCrawler
             Loggers.GUI.InfoFormat("servers: {0}, series: {1}, chapters: {2}, pages: {3}", servers, series, chapters, pages);
         }
 
-        private void clearWorkButton_Click(object sender, EventArgs e)
+        private void clearMemoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ClearAllWorks();
+            Commands.ClearCache();
         }
 
-        private void checkNowServerButton_Click(object sender, EventArgs e)
+        private void checkNowForServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CheckNowSelectedServer();
+            Commands.UpdateNowForSelectedServer();
         }
 
-        private void checkNowSerieButton_Click(object sender, EventArgs e)
+        private void visitPageForServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CheckNowForSelectedSerie();
+            Commands.VisitPageForSelectedServer();
+        }
+
+        private void openFolderForServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedServer();
+        }
+
+        private void checkNowForSerieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.UpdateNowForSelectedSerie();
+        }
+
+        private void bookmarkSerieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.BookmarkSelectedSerie();
+        }
+
+        private void openFolderForSerieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedSerie();
+        }
+
+        private void visitPageForSerieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedSerie();
+        }
+
+        private void downloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedChapters();
+        }
+
+        private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedChapters();
+        }
+
+        private void visitPageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedChapters();
+        }
+
+        private void viewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.ReadMangaForSelectedChapters();
+        }
+
+        private void downloadToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedWorks();
+        }
+
+        private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.CancelClearSelectedWorks();
+        }
+
+        private void showInSeriesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GUI.ShowInSeriesFromWorks();
+        }
+
+        private void openFolderToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedWorks();
+        }
+
+        private void visitPageToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedWorks();
+        }
+
+        private void viewToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Commands.ReadMangaForSelectedWorks();
+        }
+
+        private void openFolderForSeriestoolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedServer();
+        }
+
+        private void visitPageForSeriesToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedServer();
+        }
+
+        private void checkNowForSeriesToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.UpdateNowForSelectedServer();
+        }
+
+        private void bookmarkSerietoolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.BookmarkSelectedSerie();
+        }
+
+        private void openFolderForSerieToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedSerie();
+        }
+
+        private void visitPageForSerietoolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedSerie();
+        }
+
+        private void checkNowForSelectedSerieToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.UpdateNowForSelectedSerie();
+        }
+
+        private void downloadPagesForChapersToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedChapters();
+        }
+
+        private void openFolderForChaptersToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedChapters();
+        }
+
+        private void visitPageForChaptersToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedChapters();
+        }
+
+        private void viewPagesForSelectedChapterToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.ReadMangaForSelectedChapters();
+        }
+
+        private void downloadWorkToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedWorks();
+        }
+
+        private void showInSeriesToolStripButton_Click(object sender, EventArgs e)
+        {
+            GUI.ShowInSeriesFromWorks();
+        }
+
+        private void openFolderForWorksToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedWorks();
+        }
+
+        private void worksTabPage_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedWorks();
+        }
+
+        private void viewWorkToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.ReadMangaForSelectedWorks();
+        }
+
+        private void openFolderBookmarkedSerieToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedBookmarkSerie();
+        }
+
+        private void visitPageBookmarkedSerieToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedBookmarkedSerie();
+        }
+
+        private void removeBookmarkToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.RemoveBookmarkFromBookmarks();
+        }
+
+        private void checkNowBookmarkedSerieToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.CheckNowBookmarks();
+        }
+
+        private void downloadBookmarkedChapterToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedBookmarkedChapters();
+        }
+
+        private void visitPageForBookmarkedChaptertoolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.VisitBookmarkedPagesForSelectedChapters();
+        }
+
+        private void openFolderForBookmarkedChapterToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedBookmarkedChapters();
+        }
+
+        private void viewBookmarkedChapterToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.ReadMangaForSelectedBookmarkedChapters();
+        }
+
+        private void visitPageForWorksToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedWorks();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedServer();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedServer();
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            Commands.UpdateNowForSelectedServer();
+        }
+
+        private void toolStripButton8_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedSerie();
+        }
+
+        private void toolStripButton9_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedSerie();
+        }
+
+        private void toolStripButton10_Click(object sender, EventArgs e)
+        {
+            Commands.UpdateNowForSelectedSerie();
+        }
+
+        private void toolStripButton7_Click(object sender, EventArgs e)
+        {
+            Commands.BookmarkSelectedSerie();
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedChapters();
+        }
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedChapters();
+        }
+
+        private void toolStripButton6_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedChapters();
+        }
+
+        private void toolStripButton11_Click(object sender, EventArgs e)
+        {
+            Commands.ReadMangaForSelectedChapters();
+        }
+
+        private void toolStripButton16_Click(object sender, EventArgs e)
+        {
+            Commands.CancelClearSelectedWorks();
+        }
+
+        private void toolStripButton12_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedWorks();
+        }
+
+        private void toolStripButton13_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedWorks();
+        }
+
+        private void toolStripButton14_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedWorks();
+        }
+
+        private void toolStripButton15_Click(object sender, EventArgs e)
+        {
+            Commands.ReadMangaForSelectedWorks();
+        }
+
+        private void toolStripButton18_Click(object sender, EventArgs e)
+        {
+            GUI.ShowInSeriesFromWorks();
+        }
+
+        private void toolStripButton17_Click(object sender, EventArgs e)
+        {
+            Commands.RemoveBookmarkFromBookmarks();
+        }
+
+        private void toolStripButton19_Click(object sender, EventArgs e)
+        {
+            Commands.CheckNowBookmarks();
+        }
+
+        private void checkNowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.CheckNowBookmarks();
+        }
+
+        private void toolStripButton21_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedBookmarkSerie();
+        }
+
+        private void toolStripButton20_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPageForSelectedBookmarkedSerie();
+        }
+
+        private void toolStripButton25_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedBookmarkedChapters();
+        }
+
+        private void toolStripButton24_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPagesForSelectedBookmarkedChapters();
+        }
+
+        private void toolStripButton23_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedBookmarkedChapters();
+        }
+
+        private void toolStripButton22_Click(object sender, EventArgs e)
+        {
+            Commands.ReadMangaForSelectedBookmarkedChapters();
+        }
+
+        private void openFolderToolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedBookmarkedChapters();
+        }
+
+        private void viisitPageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.VisitPagesForSelectedBookmarkedChapters();
+        }
+
+        private void downloadToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedBookmarkedChapters();
+        }
+
+        private void readMangaToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Commands.ReadMangaForSelectedBookmarkedChapters();
+        }
+
+        private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Commands.DownloadSeriesForSelectedServer();
+        }
+
+        private void chaptersListBox_DoubleClick(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedChapters();
+        }
+
+        private void serieBookmarksListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Commands.DownloadSeriesForSelectedBookmarkSerie();
+        }
+
+        private void chapterBookmarksListBox_DoubleClick(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedBookmarkedChapters();
+        }
+
+        public void SeriesSplitterAdjust()
+        {
+            if (splitPanel.Width - seriesSplitter.SplitPosition < chaptersPanel.MinimumSize.Width)
+                seriesSplitter.SplitPosition = splitPanel.Width - chaptersPanel.MinimumSize.Width;
+
+            Settings.Instance.SeriesSplitterDistance = seriesSplitter.SplitPosition;
+        }
+
+        public void BookmarksSplitterAdjust()
+        {
+            if (splitBookmarksPanel.Width - splitterBookmarks.SplitPosition <
+                chapterBookmarksPanel.MinimumSize.Width)
+            {
+                splitterBookmarks.SplitPosition =
+                    splitBookmarksPanel.Width - chapterBookmarksPanel.MinimumSize.Width;
+            }
+
+            Settings.Instance.SplitterBookmarksDistance = splitterBookmarks.SplitPosition;
         }
     }
 }
-

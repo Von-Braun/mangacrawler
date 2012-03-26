@@ -502,9 +502,8 @@ namespace MangaCrawlerLib
         internal static void Save(Chapter a_chapter)
         {
             SaveCatalog();
-            SaveChapterPages(a_chapter);
             SaveSerieChapters(a_chapter.Serie);
-
+            SaveChapterPages(a_chapter);
         }
 
         internal static void Save(Page a_page)
