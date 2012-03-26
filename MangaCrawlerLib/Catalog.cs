@@ -140,7 +140,7 @@ namespace MangaCrawlerLib
                 return GetServers().ToArray();
             }
 
-            Debug.Assert(IDCounter == 0);
+            IDCounter = 0;
             List<Server> servers = GetServers().ToList();
 
             try
@@ -515,7 +515,7 @@ namespace MangaCrawlerLib
 
         private static IEnumerable<FileInfo> GetCatalogFiles()
         {
-            if (!new FileInfo(CatalogDir).Exists)
+            if (!new DirectoryInfo(CatalogDir).Exists)
                 return new FileInfo[] { };
 
             return new DirectoryInfo(CatalogDir).EnumerateFiles("*.xml");
@@ -534,7 +534,7 @@ namespace MangaCrawlerLib
             return (catalog_size < desire_catalog_size) ;
         }
 
-        private static void DeleteOrphans(List<ulong> a_chapters = null)
+        private static void DeleteOrphans(List<ulong> a_chapters, Func<bool> a_cancel)
         {
             Server[] servers = LoadCatalog();
             List<ulong> ids = new List<ulong>();
@@ -544,6 +544,9 @@ namespace MangaCrawlerLib
                 ulong id;
                 if (UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
                     ids.Add(id);
+
+                if (a_cancel())
+                    return;
             }
 
             foreach (Server server in servers)
@@ -559,7 +562,13 @@ namespace MangaCrawlerLib
                         ids.Remove(chapter.ID);
 
                         if (a_chapters != null)
-                            a_chapters.Add(chapter.ID);
+                        {
+                            if (Catalog.LoadCatalogXml(chapter.ID) != null)
+                                a_chapters.Add(chapter.ID);
+                        }
+
+                        if (a_cancel())
+                            return;
                     }
                 }
             }
@@ -572,32 +581,34 @@ namespace MangaCrawlerLib
         {
             if (HasWorks())
                 return;
-            
+
+            if (a_cancel())
+                return;
+
             try
             {
-                List<ulong> ids = new List<ulong>();
-
-                foreach (var file in GetCatalogFiles())
-                {
-                    ulong id;
-                    if (!UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
-                    {
-                        try
-                        {
-                            file.Delete();
-                        }
-                        catch (Exception ex)
-                        {
-                            Loggers.MangaCrawler.Error("Exception", ex);
-                        }
-                    }
-                }
+                // TODO: nie wywalac bookmarkow, zkatalogowac te idki na poczatku
+                // TODO: w trakcie usuwanie sprawdzac ile jszcze do wywalenia
+                // TODO: jakies dziwne zera w serii po kompatkowaniu
 
                 List<ulong> chapters = new List<ulong>();
-                DeleteOrphans(chapters);
-                DeleteChaptersWithoutImages(chapters);
-                DeleteSeriesWithoutChapters();
-                CompactBruteForce(a_max_catalog_size);
+                DeleteOrphans(chapters, a_cancel);
+
+                if (a_cancel())
+                    return;
+
+                DeleteChaptersWithoutImages(chapters, a_cancel);
+
+                if (a_cancel())
+                    return;
+
+                DeleteSeriesWithoutChapters(a_cancel);
+
+                if (a_cancel())
+                    return;
+
+                // TODO: test
+                CompactBruteForce(a_max_catalog_size, a_cancel);
             }
             catch (Exception ex)
             {
@@ -605,7 +616,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        private static void CompactBruteForce(long a_max_catalog_size)
+        private static void CompactBruteForce(long a_max_catalog_size, Func<bool> a_cancel)
         {
             List<ulong> ids = new List<ulong>();
 
@@ -614,6 +625,9 @@ namespace MangaCrawlerLib
                 ulong id;
                 if (UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
                     ids.Add(id);
+
+                if (a_cancel())
+                    return;
             }
 
             for (;;)
@@ -629,11 +643,14 @@ namespace MangaCrawlerLib
 
                 foreach (var id in to_remove)
                     DeleteCatalogFile(id);
-                DeleteOrphans();
+                DeleteOrphans(null, a_cancel);
+
+                if (a_cancel())
+                    return;
             }
         }
 
-        private static void DeleteSeriesWithoutChapters()
+        private static void DeleteSeriesWithoutChapters(Func<bool> a_cancel)
         {
             Server[] servers = LoadCatalog();
             List<ulong> ids = new List<ulong>();
@@ -643,23 +660,30 @@ namespace MangaCrawlerLib
                 ulong id;
                 if (UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
                     ids.Add(id);
+
+                if (a_cancel())
+                    return;
             }
 
             foreach (Server server in servers)
             {
                 foreach (var serie in LoadServerSeries(server))
                 {
+                    if (a_cancel())
+                        return;
+
                     var chapters = LoadSerieChapters(serie);
 
                     bool empty_serie = chapters.All(ch => !ids.Contains(ch.ID));
 
+                    // TODO: czy cos zostaje po tym tescie
                     if (empty_serie)
                         DeleteCatalogFile(serie.ID);
                 }
             }
         }
 
-        private static void DeleteChaptersWithoutImages(List<ulong> a_chapters)
+        private static void DeleteChaptersWithoutImages(List<ulong> a_chapters, Func<bool> a_cancel)
         {
             var oldest = from id in a_chapters
                          orderby new FileInfo(GetCatalogFile(id)).LastWriteTimeUtc
@@ -667,30 +691,46 @@ namespace MangaCrawlerLib
 
             foreach (var old in oldest)
             {
-                var image_files = LoadCatalogXml(old).Element(CHAPTER_PAGES_NODE).Element(PAGES_NODE).
-                    Elements(PAGE_NODE).Select(el => el.Element(PAGE_IMAGEFILEPATH_NODE).Value);
-
-                Func<bool> no_images = () =>
+                try
                 {
-                    foreach (var image in image_files)
+                    var image_files = LoadCatalogXml(old).Element(CHAPTER_PAGES_NODE).Element(PAGES_NODE).
+                        Elements(PAGE_NODE).Select(el => el.Element(PAGE_IMAGEFILEPATH_NODE).Value);
+
+                    Func<bool> no_images = () =>
                     {
-                        try
+                        foreach (var image in image_files)
                         {
-                            if (new FileInfo(image).Exists)
+                            try
+                            {
+                                if (image != "")
+                                {
+                                    if (new FileInfo(image).Exists)
+                                        return false;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Loggers.MangaCrawler.Error("Exception", ex);
+                                return true;
+                            }
+
+                            if (a_cancel())
                                 return false;
                         }
-                        catch (Exception ex)
-                        {
-                            Loggers.MangaCrawler.Error("Exception", ex);
-                            return true;
-                        }
-                    }
 
-                    return true;
-                };
+                        return true;
+                    };
 
-                if (no_images())
+                    if (no_images())
+                        DeleteCatalogFile(old);
+
+                    if (a_cancel())
+                        return;
+                }
+                catch
+                {
                     DeleteCatalogFile(old);
+                }
             }
         }
 

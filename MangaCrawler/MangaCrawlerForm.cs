@@ -512,7 +512,8 @@ namespace MangaCrawler
         {
             seriesSplitter.SplitPosition = Settings.Instance.SeriesSplitterDistance;
 
-            if (Catalog.GetCatalogSize() > Settings.Instance.MangaSettings.MaxCatalogSize)
+            // TODO: 
+            //if (Catalog.GetCatalogSize() > Settings.Instance.MangaSettings.MaxCatalogSize)
                 new CatalogOptimizeForm().ShowDialog();
         }
 

@@ -30,13 +30,12 @@
         {
             this.cancelButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(63, 73);
+            this.cancelButton.Location = new System.Drawing.Point(64, 50);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 0;
@@ -50,17 +49,8 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(177, 20);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Compating cache";
+            this.label1.Text = "Compacting cache";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.Location = new System.Drawing.Point(14, 33);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(177, 23);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "from {0} MB to {1} MB ";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // backgroundWorker
             // 
@@ -72,8 +62,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(205, 113);
-            this.Controls.Add(this.label2);
+            this.ClientSize = new System.Drawing.Size(205, 84);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cancelButton);
             this.Cursor = System.Windows.Forms.Cursors.Default;
@@ -94,7 +83,6 @@
 
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
     }
 }
