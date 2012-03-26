@@ -453,7 +453,7 @@ namespace MangaCrawlerLib
             return Converters.ConvertHexStringToBytes(a_hash);
         }
 
-        private static void SaveChapterPages(Chapter a_chapter)
+        public static void SaveChapterPages(Chapter a_chapter)
         {
             try
             {

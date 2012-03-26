@@ -19,7 +19,7 @@ namespace MangaCrawlerLib
                                          orderby work.LimiterOrder
                                          select work;
 
-            DownloadManager.Instance.DownloadPages(works);
+            DownloadManager.Instance.DownloadPages(works.ToList());
         }
 
         public IEnumerable<Chapter> List

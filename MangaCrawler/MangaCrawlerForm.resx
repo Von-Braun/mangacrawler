@@ -213,28 +213,28 @@
   <metadata name="bookmarkedChaptersContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>689, 56</value>
   </metadata>
-  <data name="openFolderToolStripMenuItem4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
+  <data name="openFolderForSelectedBookmarkedChaptersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
   </data>
-  <data name="openFolderToolStripMenuItem4.Text" xml:space="preserve">
+  <data name="openFolderForSelectedBookmarkedChaptersToolStripMenuItem.Text" xml:space="preserve">
     <value>Open folder</value>
   </data>
-  <data name="viisitPageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
+  <data name="visitPageForSelectedBookmarkedChaptersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
   </data>
-  <data name="viisitPageToolStripMenuItem.Text" xml:space="preserve">
-    <value>Viisit page</value>
+  <data name="visitPageForSelectedBookmarkedChaptersToolStripMenuItem.Text" xml:space="preserve">
+    <value>Visit page</value>
   </data>
-  <data name="downloadToolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
+  <data name="downloadForSelectedBookmarkedChaptersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
   </data>
-  <data name="downloadToolStripMenuItem3.Text" xml:space="preserve">
+  <data name="downloadForSelectedBookmarkedChaptersToolStripMenuItem.Text" xml:space="preserve">
     <value>Download</value>
   </data>
-  <data name="readMangaToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
+  <data name="readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
   </data>
-  <data name="readMangaToolStripMenuItem1.Text" xml:space="preserve">
+  <data name="readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Text" xml:space="preserve">
     <value>Read manga</value>
   </data>
   <data name="bookmarkedChaptersContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
@@ -288,42 +288,6 @@
   <data name="bookmarkedChaptersToolStrip.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="toolStripButton22.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton22.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton22.Text" xml:space="preserve">
-    <value>Read manga</value>
-  </data>
-  <data name="toolStripButton23.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton23.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton23.Text" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="toolStripButton24.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton24.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton24.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="toolStripButton25.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton25.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton25.Text" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
   <data name="bookmarkedChaptersToolStrip.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 13</value>
   </data>
@@ -335,6 +299,9 @@
   </data>
   <data name="bookmarkedChaptersToolStrip.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
+  </data>
+  <data name="bookmarkedChaptersToolStrip.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;bookmarkedChaptersToolStrip.Name" xml:space="preserve">
     <value>bookmarkedChaptersToolStrip</value>
@@ -408,66 +375,9 @@
   <data name="&gt;&gt;chapterBookmarksPanel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="bookmarkedSeriesContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>219, 56</value>
+  <metadata name="bookmarkedSeriesToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 56</value>
   </metadata>
-  <data name="openFolderToolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 22</value>
-  </data>
-  <data name="openFolderToolStripMenuItem2.Text" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="visitPageToolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 22</value>
-  </data>
-  <data name="visitPageToolStripMenuItem2.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="checkNowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 22</value>
-  </data>
-  <data name="checkNowToolStripMenuItem.Text" xml:space="preserve">
-    <value>Check now</value>
-  </data>
-  <data name="rremoveBookmarkToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 22</value>
-  </data>
-  <data name="rremoveBookmarkToolStripMenuItem.Text" xml:space="preserve">
-    <value>Remove</value>
-  </data>
-  <data name="bookmarkedSeriesContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 92</value>
-  </data>
-  <data name="&gt;&gt;bookmarkedSeriesContextMenuStrip.Name" xml:space="preserve">
-    <value>bookmarkedSeriesContextMenuStrip</value>
-  </data>
-  <data name="&gt;&gt;bookmarkedSeriesContextMenuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="serieBookmarksListBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="serieBookmarksListBox.HorizontalScrollbar" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="serieBookmarksListBox.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="serieBookmarksListBox.ItemHeight" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="serieBookmarksListBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 52</value>
-  </data>
-  <data name="serieBookmarksListBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="serieBookmarksListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 203</value>
-  </data>
-  <data name="serieBookmarksListBox.TabIndex" type="System.Int32, mscorlib">
-    <value>37</value>
-  </data>
   <data name="&gt;&gt;serieBookmarksListBox.Name" xml:space="preserve">
     <value>serieBookmarksListBox</value>
   </data>
@@ -480,60 +390,6 @@
   <data name="&gt;&gt;serieBookmarksListBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="bookmarkedSeriesToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 56</value>
-  </metadata>
-  <data name="bookmarkedSeriesToolStrip.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="toolStripButton17.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton17.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton17.Text" xml:space="preserve">
-    <value>Remove</value>
-  </data>
-  <data name="toolStripButton19.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton19.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton19.Text" xml:space="preserve">
-    <value>Check now</value>
-  </data>
-  <data name="toolStripButton20.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton20.Text" xml:space="preserve">
-    <value>toolStripButton20</value>
-  </data>
-  <data name="toolStripButton21.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton21.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton21.Text" xml:space="preserve">
-    <value>toolStripButton21</value>
-  </data>
-  <data name="bookmarkedSeriesToolStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 13</value>
-  </data>
-  <data name="bookmarkedSeriesToolStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="bookmarkedSeriesToolStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 39</value>
-  </data>
-  <data name="bookmarkedSeriesToolStrip.TabIndex" type="System.Int32, mscorlib">
-    <value>47</value>
-  </data>
   <data name="&gt;&gt;bookmarkedSeriesToolStrip.Name" xml:space="preserve">
     <value>bookmarkedSeriesToolStrip</value>
   </data>
@@ -545,24 +401,6 @@
   </data>
   <data name="&gt;&gt;bookmarkedSeriesToolStrip.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="label8.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 13</value>
-  </data>
-  <data name="label8.TabIndex" type="System.Int32, mscorlib">
-    <value>38</value>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>Series</value>
   </data>
   <data name="&gt;&gt;label8.Name" xml:space="preserve">
     <value>label8</value>
@@ -663,116 +501,296 @@
   <data name="&gt;&gt;bookmarksTabPage.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="openFolderToolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+  <data name="readMangaForSelectedBookmarkedChaptersToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="openFolderToolStripMenuItem3.Text" xml:space="preserve">
-    <value>Open folder</value>
+  <data name="readMangaForSelectedBookmarkedChaptersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="visitPageToolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+  <data name="readMangaForSelectedBookmarkedChaptersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
   </data>
-  <data name="visitPageToolStripMenuItem3.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="downloadToolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
-  </data>
-  <data name="downloadToolStripMenuItem2.Text" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="readMangaToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
-  </data>
-  <data name="readMangaToolStripMenuItem.Text" xml:space="preserve">
+  <data name="readMangaForSelectedBookmarkedChaptersToolStripButton.Text" xml:space="preserve">
     <value>Read manga</value>
   </data>
-  <data name="viewBookmarkedChapterToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="downloadForSelectedBookmarkedChaptersToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="downloadForSelectedBookmarkedChaptersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="viewBookmarkedChapterToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="downloadForSelectedBookmarkedChaptersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="viewBookmarkedChapterToolStripButton.Text" xml:space="preserve">
-    <value>Read manga</value>
-  </data>
-  <data name="downloadBookmarkedChapterToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="downloadBookmarkedChapterToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="downloadBookmarkedChapterToolStripButton.Text" xml:space="preserve">
+  <data name="downloadForSelectedBookmarkedChaptersToolStripButton.Text" xml:space="preserve">
     <value>Download</value>
   </data>
-  <data name="visitPageForBookmarkedChaptertoolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="visitPageForSelectedBookmarkedChaptersToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="visitPageForSelectedBookmarkedChaptersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="visitPageForBookmarkedChaptertoolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="visitPageForSelectedBookmarkedChaptersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="visitPageForBookmarkedChaptertoolStripButton.Text" xml:space="preserve">
+  <data name="visitPageForSelectedBookmarkedChaptersToolStripButton.Text" xml:space="preserve">
     <value>Visit page</value>
   </data>
-  <data name="visitPageForBookmarkedChaptertoolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="openFolderForSelectedBookmarkedChaptersToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="openFolderForBookmarkedChapterToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="openFolderForSelectedBookmarkedChaptersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="openFolderForBookmarkedChapterToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="openFolderForSelectedBookmarkedChaptersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="openFolderForBookmarkedChapterToolStripButton.Text" xml:space="preserve">
+  <data name="openFolderForSelectedBookmarkedChaptersToolStripButton.Text" xml:space="preserve">
     <value>Open folder</value>
   </data>
-  <data name="openFolderForBookmarkedChapterToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <metadata name="bookmarkedSeriesContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>219, 56</value>
+  </metadata>
+  <data name="bookmarkedSeriesContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 92</value>
   </data>
-  <data name="removeBookmarkToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="&gt;&gt;bookmarkedSeriesContextMenuStrip.Name" xml:space="preserve">
+    <value>bookmarkedSeriesContextMenuStrip</value>
+  </data>
+  <data name="&gt;&gt;bookmarkedSeriesContextMenuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="serieBookmarksListBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="serieBookmarksListBox.HorizontalScrollbar" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="serieBookmarksListBox.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="serieBookmarksListBox.ItemHeight" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="serieBookmarksListBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 13</value>
+  </data>
+  <data name="serieBookmarksListBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="serieBookmarksListBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>344, 242</value>
+  </data>
+  <data name="serieBookmarksListBox.TabIndex" type="System.Int32, mscorlib">
+    <value>37</value>
+  </data>
+  <data name="&gt;&gt;serieBookmarksListBox.Name" xml:space="preserve">
+    <value>serieBookmarksListBox</value>
+  </data>
+  <data name="&gt;&gt;serieBookmarksListBox.Type" xml:space="preserve">
+    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;serieBookmarksListBox.Parent" xml:space="preserve">
+    <value>serieBookmarksPanel</value>
+  </data>
+  <data name="&gt;&gt;serieBookmarksListBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="openFolderForSelectedBookmarkedSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 22</value>
+  </data>
+  <data name="openFolderForSelectedBookmarkedSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="visitPageForSelectedBookmarkedSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 22</value>
+  </data>
+  <data name="visitPageForSelectedBookmarkedSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Visit page</value>
+  </data>
+  <data name="updateNowForSelectedBookmarkedSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 22</value>
+  </data>
+  <data name="updateNowForSelectedBookmarkedSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Update now</value>
+  </data>
+  <data name="removeForSelectedBookmarkedSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 22</value>
+  </data>
+  <data name="removeForSelectedBookmarkedSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <metadata name="bookmarkedSeriesToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 56</value>
+  </metadata>
+  <data name="bookmarkedSeriesToolStrip.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="bookmarkedSeriesToolStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 13</value>
+  </data>
+  <data name="bookmarkedSeriesToolStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="bookmarkedSeriesToolStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>344, 39</value>
+  </data>
+  <data name="bookmarkedSeriesToolStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>47</value>
+  </data>
+  <data name="bookmarkedSeriesToolStrip.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;bookmarkedSeriesToolStrip.Name" xml:space="preserve">
+    <value>bookmarkedSeriesToolStrip</value>
+  </data>
+  <data name="&gt;&gt;bookmarkedSeriesToolStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bookmarkedSeriesToolStrip.Parent" xml:space="preserve">
+    <value>serieBookmarksPanel</value>
+  </data>
+  <data name="&gt;&gt;bookmarkedSeriesToolStrip.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="removeForSelectedBookmarkedSerieToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="removeForSelectedBookmarkedSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="removeBookmarkToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="removeForSelectedBookmarkedSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="removeBookmarkToolStripButton.Text" xml:space="preserve">
-    <value>Remove bookmark</value>
+  <data name="removeForSelectedBookmarkedSerieToolStripButton.Text" xml:space="preserve">
+    <value>Remove</value>
   </data>
-  <data name="checkNowBookmarkedSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="updateNowForSelectedBookmarkedSerieToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="updateNowForSelectedBookmarkedSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="checkNowBookmarkedSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="updateNowForSelectedBookmarkedSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="checkNowBookmarkedSerieToolStripButton.Text" xml:space="preserve">
+  <data name="updateNowForSelectedBookmarkedSerieToolStripButton.Text" xml:space="preserve">
     <value>Check now</value>
   </data>
-  <data name="checkNowBookmarkedSerieToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="toolStripButton20.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="visitPageBookmarkedSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="toolStripButton20.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="visitPageBookmarkedSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="toolStripButton20.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="visitPageBookmarkedSerieToolStripButton.Text" xml:space="preserve">
-    <value>Visit page</value>
+  <data name="toolStripButton20.Text" xml:space="preserve">
+    <value>toolStripButton20</value>
   </data>
-  <data name="visitPageBookmarkedSerieToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="openFolderForSelectedBookmarkedSerieToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="openFolderBookmarkedSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="openFolderForSelectedBookmarkedSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="openFolderBookmarkedSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="openFolderForSelectedBookmarkedSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="openFolderBookmarkedSerieToolStripButton.Text" xml:space="preserve">
-    <value>Open folder</value>
+  <data name="openFolderForSelectedBookmarkedSerieToolStripButton.Text" xml:space="preserve">
+    <value>toolStripButton21</value>
   </data>
-  <data name="openFolderBookmarkedSerieToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="label8.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>344, 13</value>
+  </data>
+  <data name="label8.TabIndex" type="System.Int32, mscorlib">
+    <value>38</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>Series</value>
+  </data>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
+  </data>
+  <data name="&gt;&gt;label8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
+    <value>serieBookmarksPanel</value>
+  </data>
+  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="openFolderToolStripMenuItem4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 19</value>
+  </data>
+  <data name="viisitPageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 19</value>
+  </data>
+  <data name="downloadToolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 19</value>
+  </data>
+  <data name="readMangaToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 19</value>
+  </data>
+  <data name="&gt;&gt;clearLogButton.Name" xml:space="preserve">
+    <value>clearLogButton</value>
+  </data>
+  <data name="&gt;&gt;clearLogButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;clearLogButton.Parent" xml:space="preserve">
+    <value>logTabPage</value>
+  </data>
+  <data name="&gt;&gt;clearLogButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;logRichTextBox.Name" xml:space="preserve">
+    <value>logRichTextBox</value>
+  </data>
+  <data name="&gt;&gt;logRichTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;logRichTextBox.Parent" xml:space="preserve">
+    <value>logTabPage</value>
+  </data>
+  <data name="&gt;&gt;logRichTextBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="logTabPage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="logTabPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>754, 260</value>
+  </data>
+  <data name="logTabPage.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="logTabPage.Text" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="&gt;&gt;logTabPage.Name" xml:space="preserve">
+    <value>logTabPage</value>
+  </data>
+  <data name="&gt;&gt;logTabPage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;logTabPage.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;logTabPage.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="clearLogButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -831,29 +849,149 @@
   <data name="&gt;&gt;logRichTextBox.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="logTabPage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="&gt;&gt;showBaloonTipsCheckBox.Name" xml:space="preserve">
+    <value>showBaloonTipsCheckBox</value>
   </data>
-  <data name="logTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 260</value>
+  <data name="&gt;&gt;showBaloonTipsCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="logTabPage.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;showBaloonTipsCheckBox.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;showBaloonTipsCheckBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;minimizeOnCloseCheckBox.Name" xml:space="preserve">
+    <value>minimizeOnCloseCheckBox</value>
+  </data>
+  <data name="&gt;&gt;minimizeOnCloseCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;minimizeOnCloseCheckBox.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;minimizeOnCloseCheckBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;playSoundWhenDownloadedCheckBox.Name" xml:space="preserve">
+    <value>playSoundWhenDownloadedCheckBox</value>
+  </data>
+  <data name="&gt;&gt;playSoundWhenDownloadedCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;playSoundWhenDownloadedCheckBox.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;playSoundWhenDownloadedCheckBox.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="logTabPage.Text" xml:space="preserve">
-    <value>Log</value>
+  <data name="&gt;&gt;optionslLabel.Name" xml:space="preserve">
+    <value>optionslLabel</value>
   </data>
-  <data name="&gt;&gt;logTabPage.Name" xml:space="preserve">
-    <value>logTabPage</value>
+  <data name="&gt;&gt;optionslLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;logTabPage.Type" xml:space="preserve">
+  <data name="&gt;&gt;optionslLabel.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;optionslLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;pageNamingStrategyComboBox.Name" xml:space="preserve">
+    <value>pageNamingStrategyComboBox</value>
+  </data>
+  <data name="&gt;&gt;pageNamingStrategyComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pageNamingStrategyComboBox.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;pageNamingStrategyComboBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;cbzCheckBox.Name" xml:space="preserve">
+    <value>cbzCheckBox</value>
+  </data>
+  <data name="&gt;&gt;cbzCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbzCheckBox.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;cbzCheckBox.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;mangaRootDirChooseButton.Name" xml:space="preserve">
+    <value>mangaRootDirChooseButton</value>
+  </data>
+  <data name="&gt;&gt;mangaRootDirChooseButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mangaRootDirChooseButton.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;mangaRootDirChooseButton.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;mangaRootDirTextBox.Name" xml:space="preserve">
+    <value>mangaRootDirTextBox</value>
+  </data>
+  <data name="&gt;&gt;mangaRootDirTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mangaRootDirTextBox.Parent" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;mangaRootDirTextBox.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="optionsTabPage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="optionsTabPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>754, 260</value>
+  </data>
+  <data name="optionsTabPage.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="optionsTabPage.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="&gt;&gt;optionsTabPage.Name" xml:space="preserve">
+    <value>optionsTabPage</value>
+  </data>
+  <data name="&gt;&gt;optionsTabPage.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;logTabPage.Parent" xml:space="preserve">
+  <data name="&gt;&gt;optionsTabPage.Parent" xml:space="preserve">
     <value>tabControl</value>
   </data>
-  <data name="&gt;&gt;logTabPage.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;optionsTabPage.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="showBaloonTipsCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1158,108 +1296,6 @@
   <data name="&gt;&gt;mangaRootDirTextBox.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="optionsTabPage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="optionsTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 260</value>
-  </data>
-  <data name="optionsTabPage.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="optionsTabPage.Text" xml:space="preserve">
-    <value>Options</value>
-  </data>
-  <data name="&gt;&gt;optionsTabPage.Name" xml:space="preserve">
-    <value>optionsTabPage</value>
-  </data>
-  <data name="&gt;&gt;optionsTabPage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;optionsTabPage.Parent" xml:space="preserve">
-    <value>tabControl</value>
-  </data>
-  <data name="&gt;&gt;optionsTabPage.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <metadata name="Chapter.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="Chapter.HeaderText" xml:space="preserve">
-    <value>Info</value>
-  </data>
-  <metadata name="Progress.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="Progress.HeaderText" xml:space="preserve">
-    <value>Progress</value>
-  </data>
-  <data name="Progress.Width" type="System.Int32, mscorlib">
-    <value>150</value>
-  </data>
-  <metadata name="worksContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 131</value>
-  </metadata>
-  <data name="openFolderToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="openFolderToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="visitPageToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="visitPageToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="downloadToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="downloadToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="viewToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="viewToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Read manga</value>
-  </data>
-  <data name="cancelToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="cancelToolStripMenuItem.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="cancelToolStripMenuItem.ToolTipText" xml:space="preserve">
-    <value>Cancel downloading</value>
-  </data>
-  <data name="showInSeriesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="showInSeriesToolStripMenuItem.Text" xml:space="preserve">
-    <value>Show in series</value>
-  </data>
-  <data name="worksContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 136</value>
-  </data>
-  <data name="&gt;&gt;worksContextMenuStrip.Name" xml:space="preserve">
-    <value>worksContextMenuStrip</value>
-  </data>
-  <data name="&gt;&gt;worksContextMenuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="worksGridView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="worksGridView.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 45</value>
-  </data>
-  <data name="worksGridView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 215</value>
-  </data>
-  <data name="worksGridView.TabIndex" type="System.Int32, mscorlib">
-    <value>32</value>
-  </data>
   <data name="&gt;&gt;worksGridView.Name" xml:space="preserve">
     <value>worksGridView</value>
   </data>
@@ -1271,99 +1307,6 @@
   </data>
   <data name="&gt;&gt;worksGridView.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <metadata name="worksToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>200, 131</value>
-  </metadata>
-  <data name="toolStripButton18.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton18.Text" xml:space="preserve">
-    <value>Show in series</value>
-  </data>
-  <data name="toolStripButton16.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton16.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="toolStripButton15.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton15.Text" xml:space="preserve">
-    <value>toolStripButton15</value>
-  </data>
-  <data name="toolStripButton14.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton14.Text" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="toolStripButton13.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton13.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="toolStripButton12.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton12.Text" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="worksToolStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="worksToolStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 39</value>
-  </data>
-  <data name="worksToolStrip.TabIndex" type="System.Int32, mscorlib">
-    <value>41</value>
-  </data>
-  <data name="&gt;&gt;worksToolStrip.Name" xml:space="preserve">
-    <value>worksToolStrip</value>
-  </data>
-  <data name="&gt;&gt;worksToolStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;worksToolStrip.Parent" xml:space="preserve">
-    <value>panel7</value>
-  </data>
-  <data name="&gt;&gt;worksToolStrip.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="panel7.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="panel7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="panel7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="panel7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 45</value>
-  </data>
-  <data name="panel7.TabIndex" type="System.Int32, mscorlib">
-    <value>42</value>
   </data>
   <data name="&gt;&gt;panel7.Name" xml:space="preserve">
     <value>panel7</value>
@@ -1404,74 +1347,350 @@
   <data name="&gt;&gt;worksTabPage.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="showInSeriesToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <metadata name="Chapter.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="Chapter.HeaderText" xml:space="preserve">
+    <value>Info</value>
   </data>
-  <data name="showInSeriesToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
+  <metadata name="Progress.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="Progress.HeaderText" xml:space="preserve">
+    <value>Progress</value>
   </data>
-  <data name="showInSeriesToolStripButton.Text" xml:space="preserve">
-    <value>Show in series</value>
+  <data name="Progress.Width" type="System.Int32, mscorlib">
+    <value>150</value>
   </data>
-  <data name="clearWorksToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <metadata name="worksContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 131</value>
+  </metadata>
+  <data name="worksContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>153, 158</value>
   </data>
-  <data name="clearWorksToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
+  <data name="&gt;&gt;worksContextMenuStrip.Name" xml:space="preserve">
+    <value>worksContextMenuStrip</value>
   </data>
-  <data name="clearWorksToolStripButton.Text" xml:space="preserve">
-    <value>Clear</value>
+  <data name="&gt;&gt;worksContextMenuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="clearWorksToolStripButton.ToolTipText" xml:space="preserve">
-    <value>Clear fnished</value>
+  <data name="worksGridView.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="cancelWorksToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="worksGridView.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 45</value>
   </data>
-  <data name="cancelWorksToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
+  <data name="worksGridView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>754, 215</value>
   </data>
-  <data name="cancelWorksToolStripButton.Text" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="worksGridView.TabIndex" type="System.Int32, mscorlib">
+    <value>32</value>
   </data>
-  <data name="cancelWorksToolStripButton.ToolTipText" xml:space="preserve">
-    <value>Cancel downloading</value>
+  <data name="&gt;&gt;worksGridView.Name" xml:space="preserve">
+    <value>worksGridView</value>
   </data>
-  <data name="viewWorkToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="&gt;&gt;worksGridView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="viewWorkToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
+  <data name="&gt;&gt;worksGridView.Parent" xml:space="preserve">
+    <value>worksTabPage</value>
   </data>
-  <data name="viewWorkToolStripButton.Text" xml:space="preserve">
-    <value>Read manga</value>
+  <data name="&gt;&gt;worksGridView.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="downloadWorkToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="openFolderForSelectedWorksToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
   </data>
-  <data name="downloadWorkToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
+  <data name="openFolderForSelectedWorksToolStripMenuItem.Text" xml:space="preserve">
+    <value>Open folder</value>
   </data>
-  <data name="downloadWorkToolStripButton.Text" xml:space="preserve">
-    <value>Download</value>
+  <data name="visitPageForSelectedWorksToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
   </data>
-  <data name="visitPageForWorksToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="visitPageForWorksToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="visitPageForWorksToolStripButton.Text" xml:space="preserve">
+  <data name="visitPageForSelectedWorksToolStripMenuItem.Text" xml:space="preserve">
     <value>Visit page</value>
   </data>
-  <data name="openFolderForWorksToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="downloadForSelectedWorksToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="downloadForSelectedWorksToolStripMenuItem.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="readMangaForSelectedWorksToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="readMangaForSelectedWorksToolStripMenuItem.Text" xml:space="preserve">
+    <value>Read manga</value>
+  </data>
+  <data name="deleteForSelectedWorksToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="deleteForSelectedWorksToolStripMenuItem.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="showInSeriesForSelectedWorksToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="showInSeriesForSelectedWorksToolStripMenuItem.Text" xml:space="preserve">
+    <value>Show in series</value>
+  </data>
+  <metadata name="worksToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>200, 131</value>
+  </metadata>
+  <data name="&gt;&gt;worksToolStrip.Name" xml:space="preserve">
+    <value>worksToolStrip</value>
+  </data>
+  <data name="&gt;&gt;worksToolStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;worksToolStrip.Parent" xml:space="preserve">
+    <value>panel7</value>
+  </data>
+  <data name="&gt;&gt;worksToolStrip.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panel7.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="panel7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panel7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="panel7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>754, 45</value>
+  </data>
+  <data name="panel7.TabIndex" type="System.Int32, mscorlib">
+    <value>42</value>
+  </data>
+  <data name="&gt;&gt;panel7.Name" xml:space="preserve">
+    <value>panel7</value>
+  </data>
+  <data name="&gt;&gt;panel7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel7.Parent" xml:space="preserve">
+    <value>worksTabPage</value>
+  </data>
+  <data name="&gt;&gt;panel7.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="worksToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>200, 131</value>
+  </metadata>
+  <data name="worksToolStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="worksToolStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>754, 39</value>
+  </data>
+  <data name="worksToolStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>41</value>
+  </data>
+  <data name="worksToolStrip.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;worksToolStrip.Name" xml:space="preserve">
+    <value>worksToolStrip</value>
+  </data>
+  <data name="&gt;&gt;worksToolStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;worksToolStrip.Parent" xml:space="preserve">
+    <value>panel7</value>
+  </data>
+  <data name="&gt;&gt;worksToolStrip.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="showInSeriesForSelectedWorksToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="showInSeriesForSelectedWorksToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="openFolderForWorksToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="showInSeriesForSelectedWorksToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="openFolderForWorksToolStripButton.Text" xml:space="preserve">
+  <data name="showInSeriesForSelectedWorksToolStripButton.Text" xml:space="preserve">
+    <value>Show in series</value>
+  </data>
+  <data name="deleteForSelectedWorksToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="deleteForSelectedWorksToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="deleteForSelectedWorksToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
+  </data>
+  <data name="deleteForSelectedWorksToolStripButton.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="readMangaForSelectedWorksToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="readMangaForSelectedWorksToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="readMangaForSelectedWorksToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
+  </data>
+  <data name="readMangaForSelectedWorksToolStripButton.Text" xml:space="preserve">
+    <value>toolStripButton15</value>
+  </data>
+  <data name="downloadForSelectedWorksToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="downloadForSelectedWorksToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="downloadForSelectedWorksToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
+  </data>
+  <data name="downloadForSelectedWorksToolStripButton.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="toolStripButton13.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="toolStripButton13.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButton13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
+  </data>
+  <data name="toolStripButton13.Text" xml:space="preserve">
+    <value>Visit page</value>
+  </data>
+  <data name="openFolderForSelectedWorksToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="openFolderForSelectedWorksToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="openFolderForSelectedWorksToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
+  </data>
+  <data name="openFolderForSelectedWorksToolStripButton.Text" xml:space="preserve">
     <value>Open folder</value>
+  </data>
+  <data name="&gt;&gt;splitPanel.Name" xml:space="preserve">
+    <value>splitPanel</value>
+  </data>
+  <data name="&gt;&gt;splitPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitPanel.Parent" xml:space="preserve">
+    <value>seriesTabPage</value>
+  </data>
+  <data name="&gt;&gt;splitPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;serversPanel.Name" xml:space="preserve">
+    <value>serversPanel</value>
+  </data>
+  <data name="&gt;&gt;serversPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;serversPanel.Parent" xml:space="preserve">
+    <value>seriesTabPage</value>
+  </data>
+  <data name="&gt;&gt;serversPanel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="seriesTabPage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="seriesTabPage.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="seriesTabPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 5, 0, 0</value>
+  </data>
+  <data name="seriesTabPage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>754, 260</value>
+  </data>
+  <data name="seriesTabPage.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="seriesTabPage.Text" xml:space="preserve">
+    <value>Series</value>
+  </data>
+  <data name="&gt;&gt;seriesTabPage.Name" xml:space="preserve">
+    <value>seriesTabPage</value>
+  </data>
+  <data name="&gt;&gt;seriesTabPage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;seriesTabPage.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;seriesTabPage.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;seriesSplitter.Name" xml:space="preserve">
+    <value>seriesSplitter</value>
+  </data>
+  <data name="&gt;&gt;seriesSplitter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Splitter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;seriesSplitter.Parent" xml:space="preserve">
+    <value>splitPanel</value>
+  </data>
+  <data name="&gt;&gt;seriesSplitter.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;chaptersPanel.Name" xml:space="preserve">
+    <value>chaptersPanel</value>
+  </data>
+  <data name="&gt;&gt;chaptersPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chaptersPanel.Parent" xml:space="preserve">
+    <value>splitPanel</value>
+  </data>
+  <data name="&gt;&gt;chaptersPanel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;seriesPanel.Name" xml:space="preserve">
+    <value>seriesPanel</value>
+  </data>
+  <data name="&gt;&gt;seriesPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;seriesPanel.Parent" xml:space="preserve">
+    <value>splitPanel</value>
+  </data>
+  <data name="&gt;&gt;seriesPanel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="splitPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="splitPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>196, 5</value>
+  </data>
+  <data name="splitPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="splitPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>558, 255</value>
+  </data>
+  <data name="splitPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>39</value>
+  </data>
+  <data name="&gt;&gt;splitPanel.Name" xml:space="preserve">
+    <value>splitPanel</value>
+  </data>
+  <data name="&gt;&gt;splitPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitPanel.Parent" xml:space="preserve">
+    <value>seriesTabPage</value>
+  </data>
+  <data name="&gt;&gt;splitPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="seriesSplitter.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1500,33 +1719,78 @@
   <data name="&gt;&gt;seriesSplitter.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <metadata name="chaptersToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>213, 92</value>
+  </metadata>
+  <data name="&gt;&gt;chaptersListBox.Name" xml:space="preserve">
+    <value>chaptersListBox</value>
+  </data>
+  <data name="&gt;&gt;chaptersListBox.Type" xml:space="preserve">
+    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;chaptersListBox.Parent" xml:space="preserve">
+    <value>chaptersPanel</value>
+  </data>
+  <data name="&gt;&gt;chaptersListBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;chaptersToolStrip.Name" xml:space="preserve">
+    <value>chaptersToolStrip</value>
+  </data>
+  <data name="&gt;&gt;chaptersToolStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chaptersToolStrip.Parent" xml:space="preserve">
+    <value>chaptersPanel</value>
+  </data>
+  <data name="&gt;&gt;chaptersToolStrip.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>chaptersPanel</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="chaptersPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="chaptersPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>258, 0</value>
+  </data>
+  <data name="chaptersPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="chaptersPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 0, 0, 0</value>
+  </data>
+  <data name="chaptersPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>300, 255</value>
+  </data>
+  <data name="chaptersPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;chaptersPanel.Name" xml:space="preserve">
+    <value>chaptersPanel</value>
+  </data>
+  <data name="&gt;&gt;chaptersPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chaptersPanel.Parent" xml:space="preserve">
+    <value>splitPanel</value>
+  </data>
+  <data name="&gt;&gt;chaptersPanel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <metadata name="chaptersContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>16, 92</value>
   </metadata>
-  <data name="openFolderToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
-  </data>
-  <data name="openFolderToolStripMenuItem.Text" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="visitPageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
-  </data>
-  <data name="visitPageToolStripMenuItem.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="downloadToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
-  </data>
-  <data name="downloadToolStripMenuItem.Text" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
-  </data>
-  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
-    <value>Read manga</value>
-  </data>
   <data name="chaptersContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
     <value>141, 92</value>
   </data>
@@ -1572,47 +1836,35 @@
   <data name="&gt;&gt;chaptersListBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="openFolderForSelectedChaptersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
+  </data>
+  <data name="openFolderForSelectedChaptersToolStripMenuItem.Text" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="visitPageForSelectedChaptersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
+  </data>
+  <data name="visitPageForSelectedChaptersToolStripMenuItem.Text" xml:space="preserve">
+    <value>Visit page</value>
+  </data>
+  <data name="downloadForSelectedChaptersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
+  </data>
+  <data name="downloadForSelectedChaptersToolStripMenuItem.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="readMangaForSelectedChaptersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
+  </data>
+  <data name="readMangaForSelectedChaptersToolStripMenuItem.Text" xml:space="preserve">
+    <value>Read manga</value>
+  </data>
   <metadata name="chaptersToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>213, 92</value>
   </metadata>
   <data name="chaptersToolStrip.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>None</value>
-  </data>
-  <data name="toolStripButton11.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton11.Text" xml:space="preserve">
-    <value>Read manga</value>
-  </data>
-  <data name="toolStripButton6.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton6.Text" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="toolStripButton5.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton5.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="toolStripButton4.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton4.Text" xml:space="preserve">
-    <value>Open folder</value>
   </data>
   <data name="chaptersToolStrip.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 13</value>
@@ -1637,6 +1889,54 @@
   </data>
   <data name="&gt;&gt;chaptersToolStrip.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="readMangaForSelectedChaptersToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="readMangaForSelectedChaptersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="readMangaForSelectedChaptersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
+  </data>
+  <data name="readMangaForSelectedChaptersToolStripButton.Text" xml:space="preserve">
+    <value>Read manga</value>
+  </data>
+  <data name="downloadForSelectedChaptersToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="downloadForSelectedChaptersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="downloadForSelectedChaptersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
+  </data>
+  <data name="downloadForSelectedChaptersToolStripButton.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="toolStripButton5.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="toolStripButton5.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripButton5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
+  </data>
+  <data name="toolStripButton5.Text" xml:space="preserve">
+    <value>Visit page</value>
+  </data>
+  <data name="openFolderForSelectedChaptersToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="openFolderForSelectedChaptersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="openFolderForSelectedChaptersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
+  </data>
+  <data name="openFolderForSelectedChaptersToolStripButton.Text" xml:space="preserve">
+    <value>Open folder</value>
   </data>
   <data name="label7.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -1671,63 +1971,90 @@
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="chaptersPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <metadata name="seriesToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>360, 92</value>
+  </metadata>
+  <data name="&gt;&gt;seriesListBox.Name" xml:space="preserve">
+    <value>seriesListBox</value>
   </data>
-  <data name="chaptersPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>258, 0</value>
+  <data name="&gt;&gt;seriesListBox.Type" xml:space="preserve">
+    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="chaptersPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="&gt;&gt;seriesListBox.Parent" xml:space="preserve">
+    <value>seriesPanel</value>
   </data>
-  <data name="chaptersPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>10, 0, 0, 0</value>
+  <data name="&gt;&gt;seriesListBox.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="chaptersPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>300, 255</value>
+  <data name="&gt;&gt;seriesToolStrip.Name" xml:space="preserve">
+    <value>seriesToolStrip</value>
   </data>
-  <data name="chaptersPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="&gt;&gt;seriesToolStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;chaptersPanel.Name" xml:space="preserve">
-    <value>chaptersPanel</value>
+  <data name="&gt;&gt;seriesToolStrip.Parent" xml:space="preserve">
+    <value>seriesPanel</value>
   </data>
-  <data name="&gt;&gt;chaptersPanel.Type" xml:space="preserve">
+  <data name="&gt;&gt;seriesToolStrip.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;chaptersPanel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>seriesPanel</value>
+  </data>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>seriesPanel</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="seriesPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="seriesPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="seriesPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="seriesPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 5, 0</value>
+  </data>
+  <data name="seriesPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>258, 255</value>
+  </data>
+  <data name="seriesPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;seriesPanel.Name" xml:space="preserve">
+    <value>seriesPanel</value>
+  </data>
+  <data name="&gt;&gt;seriesPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;seriesPanel.Parent" xml:space="preserve">
     <value>splitPanel</value>
   </data>
-  <data name="&gt;&gt;chaptersPanel.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;seriesPanel.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="seriesContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>491, 92</value>
   </metadata>
-  <data name="openFolderForSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 22</value>
-  </data>
-  <data name="openFolderForSerieToolStripMenuItem.Text" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="visitPageForSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 22</value>
-  </data>
-  <data name="visitPageForSerieToolStripMenuItem.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="checkNowForSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 22</value>
-  </data>
-  <data name="checkNowForSerieToolStripMenuItem.Text" xml:space="preserve">
-    <value>Update now</value>
-  </data>
-  <data name="bookmarkSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 22</value>
-  </data>
-  <data name="bookmarkSerieToolStripMenuItem.Text" xml:space="preserve">
-    <value>Bookmark serie</value>
-  </data>
   <data name="seriesContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
     <value>156, 92</value>
   </data>
@@ -1773,47 +2100,35 @@
   <data name="&gt;&gt;seriesListBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="openFolderForSelectedSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 22</value>
+  </data>
+  <data name="openFolderForSelectedSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="visitPageForSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 22</value>
+  </data>
+  <data name="visitPageForSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Visit page</value>
+  </data>
+  <data name="updateNowForSelectedSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 22</value>
+  </data>
+  <data name="updateNowForSelectedSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Update now</value>
+  </data>
+  <data name="bookmarkSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>155, 22</value>
+  </data>
+  <data name="bookmarkSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Bookmark serie</value>
+  </data>
   <metadata name="seriesToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>360, 92</value>
   </metadata>
   <data name="seriesToolStrip.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>None</value>
-  </data>
-  <data name="toolStripButton7.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton7.Text" xml:space="preserve">
-    <value>Bookmark serie</value>
-  </data>
-  <data name="toolStripButton10.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton10.Text" xml:space="preserve">
-    <value>Update now</value>
-  </data>
-  <data name="toolStripButton9.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton9.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="toolStripButton8.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton8.Text" xml:space="preserve">
-    <value>Open folder</value>
   </data>
   <data name="seriesToolStrip.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 13</value>
@@ -1839,53 +2154,53 @@
   <data name="&gt;&gt;seriesToolStrip.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="panel3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="bookmarkSelectedSerieToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="seriesSearchTextBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="bookmarkSelectedSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="seriesSearchTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+  <data name="bookmarkSelectedSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
   </data>
-  <data name="seriesSearchTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="bookmarkSelectedSerieToolStripButton.Text" xml:space="preserve">
+    <value>Bookmark serie</value>
   </data>
-  <data name="seriesSearchTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 20</value>
+  <data name="updateNowForSelectedSerieToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="seriesSearchTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>35</value>
+  <data name="updateNowForSelectedSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="&gt;&gt;seriesSearchTextBox.Name" xml:space="preserve">
-    <value>seriesSearchTextBox</value>
+  <data name="updateNowForSelectedSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
   </data>
-  <data name="&gt;&gt;seriesSearchTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="updateNowForSelectedSerieToolStripButton.Text" xml:space="preserve">
+    <value>Update now</value>
   </data>
-  <data name="&gt;&gt;seriesSearchTextBox.Parent" xml:space="preserve">
-    <value>panel3</value>
+  <data name="toolStripButton9.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="&gt;&gt;seriesSearchTextBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="toolStripButton9.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="toolStripButton9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
   </data>
-  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>44, 3</value>
+  <data name="toolStripButton9.Text" xml:space="preserve">
+    <value>Visit page</value>
   </data>
-  <data name="panel3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="openFolderForSelectedSerieToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="panel3.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 0, 0</value>
+  <data name="openFolderForSelectedSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
-  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 22</value>
+  <data name="openFolderForSelectedSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 36</value>
   </data>
-  <data name="panel3.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="openFolderForSelectedSerieToolStripButton.Text" xml:space="preserve">
+    <value>Open folder</value>
   </data>
   <data name="&gt;&gt;panel3.Name" xml:space="preserve">
     <value>panel3</value>
@@ -1897,60 +2212,6 @@
     <value>panel1</value>
   </data>
   <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="panel2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="label6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 22</value>
-  </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>34</value>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>Search:</value>
-  </data>
-  <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>panel2</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 3</value>
-  </data>
-  <data name="panel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 22</value>
-  </data>
-  <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="&gt;&gt;panel2.Name" xml:space="preserve">
@@ -1995,6 +2256,156 @@
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="panel3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;seriesSearchTextBox.Name" xml:space="preserve">
+    <value>seriesSearchTextBox</value>
+  </data>
+  <data name="&gt;&gt;seriesSearchTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;seriesSearchTextBox.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;seriesSearchTextBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>44, 3</value>
+  </data>
+  <data name="panel3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="panel3.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 0</value>
+  </data>
+  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>206, 22</value>
+  </data>
+  <data name="panel3.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;panel3.Name" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;panel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel3.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="seriesSearchTextBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="seriesSearchTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="seriesSearchTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="seriesSearchTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>203, 20</value>
+  </data>
+  <data name="seriesSearchTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="&gt;&gt;seriesSearchTextBox.Name" xml:space="preserve">
+    <value>seriesSearchTextBox</value>
+  </data>
+  <data name="&gt;&gt;seriesSearchTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;seriesSearchTextBox.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;seriesSearchTextBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panel2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 3</value>
+  </data>
+  <data name="panel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 22</value>
+  </data>
+  <data name="panel2.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="label6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 22</value>
+  </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>34</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Search:</value>
+  </data>
+  <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="label4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -2028,87 +2439,9 @@
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="seriesPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="seriesPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="seriesPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="seriesPanel.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 5, 0</value>
-  </data>
-  <data name="seriesPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 255</value>
-  </data>
-  <data name="seriesPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;seriesPanel.Name" xml:space="preserve">
-    <value>seriesPanel</value>
-  </data>
-  <data name="&gt;&gt;seriesPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;seriesPanel.Parent" xml:space="preserve">
-    <value>splitPanel</value>
-  </data>
-  <data name="&gt;&gt;seriesPanel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="splitPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="splitPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>196, 5</value>
-  </data>
-  <data name="splitPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="splitPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>558, 255</value>
-  </data>
-  <data name="splitPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>39</value>
-  </data>
-  <data name="&gt;&gt;splitPanel.Name" xml:space="preserve">
-    <value>splitPanel</value>
-  </data>
-  <data name="&gt;&gt;splitPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitPanel.Parent" xml:space="preserve">
-    <value>seriesTabPage</value>
-  </data>
-  <data name="&gt;&gt;splitPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="serversListBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="serversListBox.HorizontalScrollbar" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="serversListBox.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="serversListBox.ItemHeight" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="serversListBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 52</value>
-  </data>
-  <data name="serversListBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
-  </data>
-  <data name="serversListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 203</value>
-  </data>
-  <data name="serversListBox.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
-  </data>
+  <metadata name="serversToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>676, 91</value>
+  </metadata>
   <data name="&gt;&gt;serversListBox.Name" xml:space="preserve">
     <value>serversListBox</value>
   </data>
@@ -2121,48 +2454,6 @@
   <data name="&gt;&gt;serversListBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="serversToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>676, 91</value>
-  </metadata>
-  <data name="toolStripButton3.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton3.Text" xml:space="preserve">
-    <value>Update now</value>
-  </data>
-  <data name="toolStripButton2.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton2.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="toolStripButton1.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="toolStripButton1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="toolStripButton1.Text" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="serversToolStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 13</value>
-  </data>
-  <data name="serversToolStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="serversToolStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 39</value>
-  </data>
-  <data name="serversToolStrip.TabIndex" type="System.Int32, mscorlib">
-    <value>46</value>
-  </data>
   <data name="&gt;&gt;serversToolStrip.Name" xml:space="preserve">
     <value>serversToolStrip</value>
   </data>
@@ -2174,27 +2465,6 @@
   </data>
   <data name="&gt;&gt;serversToolStrip.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="label5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 13</value>
-  </data>
-  <data name="label5.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Server</value>
   </data>
   <data name="&gt;&gt;label5.Name" xml:space="preserve">
     <value>label5</value>
@@ -2238,167 +2508,167 @@
   <data name="&gt;&gt;serversPanel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="seriesTabPage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <metadata name="serversContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>815, 91</value>
+  </metadata>
+  <data name="serversContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 70</value>
   </data>
-  <data name="seriesTabPage.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="&gt;&gt;serversContextMenuStrip.Name" xml:space="preserve">
+    <value>serversContextMenuStrip</value>
+  </data>
+  <data name="&gt;&gt;serversContextMenuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="serversListBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="serversListBox.HorizontalScrollbar" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="serversListBox.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="serversListBox.ItemHeight" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="serversListBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 52</value>
+  </data>
+  <data name="serversListBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
+  </data>
+  <data name="serversListBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 203</value>
+  </data>
+  <data name="serversListBox.TabIndex" type="System.Int32, mscorlib">
+    <value>28</value>
+  </data>
+  <data name="&gt;&gt;serversListBox.Name" xml:space="preserve">
+    <value>serversListBox</value>
+  </data>
+  <data name="&gt;&gt;serversListBox.Type" xml:space="preserve">
+    <value>MangaCrawler.ListBoxEx, MangaCrawler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;serversListBox.Parent" xml:space="preserve">
+    <value>serversPanel</value>
+  </data>
+  <data name="&gt;&gt;serversListBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="openFolderForSelectedServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 22</value>
+  </data>
+  <data name="openFolderForSelectedServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
+  <data name="visitPageForSelectedServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 22</value>
+  </data>
+  <data name="visitPageForSelectedServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>Visit page</value>
+  </data>
+  <data name="updateNowForSelectedServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 22</value>
+  </data>
+  <data name="updateNowForSelectedServerToolStripMenuItem.Text" xml:space="preserve">
+    <value>Check now</value>
+  </data>
+  <metadata name="serversToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>676, 91</value>
+  </metadata>
+  <data name="serversToolStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 13</value>
+  </data>
+  <data name="serversToolStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="seriesTabPage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 5, 0, 0</value>
+  <data name="serversToolStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 39</value>
   </data>
-  <data name="seriesTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 260</value>
+  <data name="serversToolStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>46</value>
   </data>
-  <data name="seriesTabPage.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;serversToolStrip.Name" xml:space="preserve">
+    <value>serversToolStrip</value>
   </data>
-  <data name="seriesTabPage.Text" xml:space="preserve">
-    <value>Series</value>
+  <data name="&gt;&gt;serversToolStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;seriesTabPage.Name" xml:space="preserve">
-    <value>seriesTabPage</value>
+  <data name="&gt;&gt;serversToolStrip.Parent" xml:space="preserve">
+    <value>serversPanel</value>
   </data>
-  <data name="&gt;&gt;seriesTabPage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;serversToolStrip.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;seriesTabPage.Parent" xml:space="preserve">
-    <value>tabControl</value>
+  <data name="updateNowForSelectedServerToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="&gt;&gt;seriesTabPage.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="viewPagesForSelectedChapterToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="updateNowForSelectedServerToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="viewPagesForSelectedChapterToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="updateNowForSelectedServerToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="viewPagesForSelectedChapterToolStripButton.Text" xml:space="preserve">
-    <value>Read manga</value>
+  <data name="updateNowForSelectedServerToolStripButton.Text" xml:space="preserve">
+    <value>Update now</value>
   </data>
-  <data name="viewPagesForSelectedChapterToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="toolStripButton2.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="downloadPagesForChapersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="toolStripButton2.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="downloadPagesForChapersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="toolStripButton2.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="downloadPagesForChapersToolStripButton.Text" xml:space="preserve">
-    <value>Download</value>
-  </data>
-  <data name="downloadPagesForChapersToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="visitPageForChaptersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="visitPageForChaptersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="visitPageForChaptersToolStripButton.Text" xml:space="preserve">
+  <data name="toolStripButton2.Text" xml:space="preserve">
     <value>Visit page</value>
   </data>
-  <data name="visitPageForChaptersToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="openFolderForSelectedServerToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="openFolderForChaptersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="openFolderForSelectedServerToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="openFolderForChaptersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="openFolderForSelectedServerToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 36</value>
   </data>
-  <data name="openFolderForChaptersToolStripButton.Text" xml:space="preserve">
+  <data name="openFolderForSelectedServerToolStripButton.Text" xml:space="preserve">
     <value>Open folder</value>
   </data>
-  <data name="openFolderForChaptersToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="label5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
-  <data name="bookmarkSerietoolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="bookmarkSerietoolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="bookmarkSerietoolStripButton.Text" xml:space="preserve">
-    <value>Bookmark</value>
+  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
-  <data name="bookmarkSerietoolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 13</value>
   </data>
-  <data name="checkNowForSelectedSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
   </data>
-  <data name="checkNowForSelectedSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Server</value>
   </data>
-  <data name="checkNowForSelectedSerieToolStripButton.Text" xml:space="preserve">
-    <value>Check now</value>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
   </data>
-  <data name="checkNowForSelectedSerieToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="visitPageForSerietoolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>serversPanel</value>
   </data>
-  <data name="visitPageForSerietoolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="visitPageForSerietoolStripButton.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="visitPageForSerietoolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="openFolderForSerieToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="openFolderForSerieToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="openFolderForSerieToolStripButton.Text" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="openFolderForSerieToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="checkNowForSeriesToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="checkNowForSeriesToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="checkNowForSeriesToolStripButton.Text" xml:space="preserve">
-    <value>Check now</value>
-  </data>
-  <data name="checkNowForSeriesToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="visitPageForSeriesToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="visitPageForSeriesToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="visitPageForSeriesToolStripButton.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="visitPageForSeriesToolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="openFolderForSeriestoolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="openFolderForSeriestoolStripButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 36</value>
-  </data>
-  <data name="openFolderForSeriestoolStripButton.Text" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="openFolderForSeriestoolStripButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="tabControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -2427,6 +2697,15 @@
   <metadata name="debugContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>721, 17</value>
   </metadata>
+  <data name="debugContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 356</value>
+  </data>
+  <data name="&gt;&gt;debugContextMenuStrip.Name" xml:space="preserve">
+    <value>debugContextMenuStrip</value>
+  </data>
+  <data name="&gt;&gt;debugContextMenuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="resetCheckDatesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>199, 22</value>
   </data>
@@ -2523,27 +2802,12 @@
   <data name="loadAllFromCatalogToolStripMenuItem.Text" xml:space="preserve">
     <value>Load all from catalog</value>
   </data>
-  <data name="debugContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 356</value>
-  </data>
-  <data name="&gt;&gt;debugContextMenuStrip.Name" xml:space="preserve">
-    <value>debugContextMenuStrip</value>
-  </data>
-  <data name="&gt;&gt;debugContextMenuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <metadata name="notifyIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>436, 19</value>
   </metadata>
   <metadata name="trayContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>542, 19</value>
   </metadata>
-  <data name="exitTrayToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 22</value>
-  </data>
-  <data name="exitTrayToolStripMenuItem.Text" xml:space="preserve">
-    <value>Exit</value>
-  </data>
   <data name="trayContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
     <value>93, 26</value>
   </data>
@@ -2556,39 +2820,15 @@
   <data name="notifyIcon.Text" xml:space="preserve">
     <value>Manga Crawler</value>
   </data>
+  <data name="exitTrayToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 22</value>
+  </data>
+  <data name="exitTrayToolStripMenuItem.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <metadata name="bookmarksTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="serversContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>815, 91</value>
-  </metadata>
-  <data name="openFolderForServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 22</value>
-  </data>
-  <data name="openFolderForServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>Open folder</value>
-  </data>
-  <data name="visitPageForServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 22</value>
-  </data>
-  <data name="visitPageForServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>Visit page</value>
-  </data>
-  <data name="checkNowForServerToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 22</value>
-  </data>
-  <data name="checkNowForServerToolStripMenuItem.Text" xml:space="preserve">
-    <value>Check now</value>
-  </data>
-  <data name="serversContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 70</value>
-  </data>
-  <data name="&gt;&gt;serversContextMenuStrip.Name" xml:space="preserve">
-    <value>serversContextMenuStrip</value>
-  </data>
-  <data name="&gt;&gt;serversContextMenuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>911, 17</value>
   </metadata>
@@ -2625,6 +2865,102 @@
   <data name="&gt;&gt;refreshTimer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;openFolderForSelectedBookmarkedChaptersToolStripMenuItem.Name" xml:space="preserve">
+    <value>openFolderForSelectedBookmarkedChaptersToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;openFolderForSelectedBookmarkedChaptersToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;visitPageForSelectedBookmarkedChaptersToolStripMenuItem.Name" xml:space="preserve">
+    <value>visitPageForSelectedBookmarkedChaptersToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;visitPageForSelectedBookmarkedChaptersToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;downloadForSelectedBookmarkedChaptersToolStripMenuItem.Name" xml:space="preserve">
+    <value>downloadForSelectedBookmarkedChaptersToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;downloadForSelectedBookmarkedChaptersToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Name" xml:space="preserve">
+    <value>readMangaForSelectedBookmarkedChaptersToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;readMangaForSelectedBookmarkedChaptersToolStripButton.Name" xml:space="preserve">
+    <value>readMangaForSelectedBookmarkedChaptersToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;readMangaForSelectedBookmarkedChaptersToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;downloadForSelectedBookmarkedChaptersToolStripButton.Name" xml:space="preserve">
+    <value>downloadForSelectedBookmarkedChaptersToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;downloadForSelectedBookmarkedChaptersToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;visitPageForSelectedBookmarkedChaptersToolStripButton.Name" xml:space="preserve">
+    <value>visitPageForSelectedBookmarkedChaptersToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;visitPageForSelectedBookmarkedChaptersToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;openFolderForSelectedBookmarkedChaptersToolStripButton.Name" xml:space="preserve">
+    <value>openFolderForSelectedBookmarkedChaptersToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;openFolderForSelectedBookmarkedChaptersToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;openFolderForSelectedBookmarkedSerieToolStripMenuItem.Name" xml:space="preserve">
+    <value>openFolderForSelectedBookmarkedSerieToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;openFolderForSelectedBookmarkedSerieToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;visitPageForSelectedBookmarkedSerieToolStripMenuItem.Name" xml:space="preserve">
+    <value>visitPageForSelectedBookmarkedSerieToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;visitPageForSelectedBookmarkedSerieToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;updateNowForSelectedBookmarkedSerieToolStripMenuItem.Name" xml:space="preserve">
+    <value>updateNowForSelectedBookmarkedSerieToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;updateNowForSelectedBookmarkedSerieToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;removeForSelectedBookmarkedSerieToolStripMenuItem.Name" xml:space="preserve">
+    <value>removeForSelectedBookmarkedSerieToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;removeForSelectedBookmarkedSerieToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;removeForSelectedBookmarkedSerieToolStripButton.Name" xml:space="preserve">
+    <value>removeForSelectedBookmarkedSerieToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;removeForSelectedBookmarkedSerieToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;updateNowForSelectedBookmarkedSerieToolStripButton.Name" xml:space="preserve">
+    <value>updateNowForSelectedBookmarkedSerieToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;updateNowForSelectedBookmarkedSerieToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripButton20.Name" xml:space="preserve">
+    <value>toolStripButton20</value>
+  </data>
+  <data name="&gt;&gt;toolStripButton20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;openFolderForSelectedBookmarkedSerieToolStripButton.Name" xml:space="preserve">
+    <value>openFolderForSelectedBookmarkedSerieToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;openFolderForSelectedBookmarkedSerieToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;openFolderToolStripMenuItem4.Name" xml:space="preserve">
     <value>openFolderToolStripMenuItem4</value>
   </data>
@@ -2649,150 +2985,6 @@
   <data name="&gt;&gt;readMangaToolStripMenuItem1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton22.Name" xml:space="preserve">
-    <value>toolStripButton22</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton22.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton23.Name" xml:space="preserve">
-    <value>toolStripButton23</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton23.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton24.Name" xml:space="preserve">
-    <value>toolStripButton24</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton24.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton25.Name" xml:space="preserve">
-    <value>toolStripButton25</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton25.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFolderToolStripMenuItem2.Name" xml:space="preserve">
-    <value>openFolderToolStripMenuItem2</value>
-  </data>
-  <data name="&gt;&gt;openFolderToolStripMenuItem2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;visitPageToolStripMenuItem2.Name" xml:space="preserve">
-    <value>visitPageToolStripMenuItem2</value>
-  </data>
-  <data name="&gt;&gt;visitPageToolStripMenuItem2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkNowToolStripMenuItem.Name" xml:space="preserve">
-    <value>checkNowToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;checkNowToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rremoveBookmarkToolStripMenuItem.Name" xml:space="preserve">
-    <value>rremoveBookmarkToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;rremoveBookmarkToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton17.Name" xml:space="preserve">
-    <value>toolStripButton17</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton17.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton19.Name" xml:space="preserve">
-    <value>toolStripButton19</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton19.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton20.Name" xml:space="preserve">
-    <value>toolStripButton20</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton20.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton21.Name" xml:space="preserve">
-    <value>toolStripButton21</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton21.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFolderToolStripMenuItem3.Name" xml:space="preserve">
-    <value>openFolderToolStripMenuItem3</value>
-  </data>
-  <data name="&gt;&gt;openFolderToolStripMenuItem3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;visitPageToolStripMenuItem3.Name" xml:space="preserve">
-    <value>visitPageToolStripMenuItem3</value>
-  </data>
-  <data name="&gt;&gt;visitPageToolStripMenuItem3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadToolStripMenuItem2.Name" xml:space="preserve">
-    <value>downloadToolStripMenuItem2</value>
-  </data>
-  <data name="&gt;&gt;downloadToolStripMenuItem2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;readMangaToolStripMenuItem.Name" xml:space="preserve">
-    <value>readMangaToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;readMangaToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;viewBookmarkedChapterToolStripButton.Name" xml:space="preserve">
-    <value>viewBookmarkedChapterToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;viewBookmarkedChapterToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadBookmarkedChapterToolStripButton.Name" xml:space="preserve">
-    <value>downloadBookmarkedChapterToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;downloadBookmarkedChapterToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;visitPageForBookmarkedChaptertoolStripButton.Name" xml:space="preserve">
-    <value>visitPageForBookmarkedChaptertoolStripButton</value>
-  </data>
-  <data name="&gt;&gt;visitPageForBookmarkedChaptertoolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFolderForBookmarkedChapterToolStripButton.Name" xml:space="preserve">
-    <value>openFolderForBookmarkedChapterToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;openFolderForBookmarkedChapterToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;removeBookmarkToolStripButton.Name" xml:space="preserve">
-    <value>removeBookmarkToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;removeBookmarkToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkNowBookmarkedSerieToolStripButton.Name" xml:space="preserve">
-    <value>checkNowBookmarkedSerieToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;checkNowBookmarkedSerieToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;visitPageBookmarkedSerieToolStripButton.Name" xml:space="preserve">
-    <value>visitPageBookmarkedSerieToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;visitPageBookmarkedSerieToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFolderBookmarkedSerieToolStripButton.Name" xml:space="preserve">
-    <value>openFolderBookmarkedSerieToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;openFolderBookmarkedSerieToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;Chapter.Name" xml:space="preserve">
     <value>Chapter</value>
   </data>
@@ -2805,64 +2997,64 @@
   <data name="&gt;&gt;Progress.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;openFolderToolStripMenuItem1.Name" xml:space="preserve">
-    <value>openFolderToolStripMenuItem1</value>
+  <data name="&gt;&gt;openFolderForSelectedWorksToolStripMenuItem.Name" xml:space="preserve">
+    <value>openFolderForSelectedWorksToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;openFolderToolStripMenuItem1.Type" xml:space="preserve">
+  <data name="&gt;&gt;openFolderForSelectedWorksToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;visitPageToolStripMenuItem1.Name" xml:space="preserve">
-    <value>visitPageToolStripMenuItem1</value>
+  <data name="&gt;&gt;visitPageForSelectedWorksToolStripMenuItem.Name" xml:space="preserve">
+    <value>visitPageForSelectedWorksToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;visitPageToolStripMenuItem1.Type" xml:space="preserve">
+  <data name="&gt;&gt;visitPageForSelectedWorksToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;downloadToolStripMenuItem1.Name" xml:space="preserve">
-    <value>downloadToolStripMenuItem1</value>
+  <data name="&gt;&gt;downloadForSelectedWorksToolStripMenuItem.Name" xml:space="preserve">
+    <value>downloadForSelectedWorksToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;downloadToolStripMenuItem1.Type" xml:space="preserve">
+  <data name="&gt;&gt;downloadForSelectedWorksToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;viewToolStripMenuItem1.Name" xml:space="preserve">
-    <value>viewToolStripMenuItem1</value>
+  <data name="&gt;&gt;readMangaForSelectedWorksToolStripMenuItem.Name" xml:space="preserve">
+    <value>readMangaForSelectedWorksToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;viewToolStripMenuItem1.Type" xml:space="preserve">
+  <data name="&gt;&gt;readMangaForSelectedWorksToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cancelToolStripMenuItem.Name" xml:space="preserve">
-    <value>cancelToolStripMenuItem</value>
+  <data name="&gt;&gt;deleteForSelectedWorksToolStripMenuItem.Name" xml:space="preserve">
+    <value>deleteForSelectedWorksToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;cancelToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;deleteForSelectedWorksToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;showInSeriesToolStripMenuItem.Name" xml:space="preserve">
-    <value>showInSeriesToolStripMenuItem</value>
+  <data name="&gt;&gt;showInSeriesForSelectedWorksToolStripMenuItem.Name" xml:space="preserve">
+    <value>showInSeriesForSelectedWorksToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;showInSeriesToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;showInSeriesForSelectedWorksToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton18.Name" xml:space="preserve">
-    <value>toolStripButton18</value>
+  <data name="&gt;&gt;showInSeriesForSelectedWorksToolStripButton.Name" xml:space="preserve">
+    <value>showInSeriesForSelectedWorksToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton18.Type" xml:space="preserve">
+  <data name="&gt;&gt;showInSeriesForSelectedWorksToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton16.Name" xml:space="preserve">
-    <value>toolStripButton16</value>
+  <data name="&gt;&gt;deleteForSelectedWorksToolStripButton.Name" xml:space="preserve">
+    <value>deleteForSelectedWorksToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton16.Type" xml:space="preserve">
+  <data name="&gt;&gt;deleteForSelectedWorksToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton15.Name" xml:space="preserve">
-    <value>toolStripButton15</value>
+  <data name="&gt;&gt;readMangaForSelectedWorksToolStripButton.Name" xml:space="preserve">
+    <value>readMangaForSelectedWorksToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton15.Type" xml:space="preserve">
+  <data name="&gt;&gt;readMangaForSelectedWorksToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton14.Name" xml:space="preserve">
-    <value>toolStripButton14</value>
+  <data name="&gt;&gt;downloadForSelectedWorksToolStripButton.Name" xml:space="preserve">
+    <value>downloadForSelectedWorksToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton14.Type" xml:space="preserve">
+  <data name="&gt;&gt;downloadForSelectedWorksToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripButton13.Name" xml:space="preserve">
@@ -2871,88 +3063,46 @@
   <data name="&gt;&gt;toolStripButton13.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton12.Name" xml:space="preserve">
-    <value>toolStripButton12</value>
+  <data name="&gt;&gt;openFolderForSelectedWorksToolStripButton.Name" xml:space="preserve">
+    <value>openFolderForSelectedWorksToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton12.Type" xml:space="preserve">
+  <data name="&gt;&gt;openFolderForSelectedWorksToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;showInSeriesToolStripButton.Name" xml:space="preserve">
-    <value>showInSeriesToolStripButton</value>
+  <data name="&gt;&gt;openFolderForSelectedChaptersToolStripMenuItem.Name" xml:space="preserve">
+    <value>openFolderForSelectedChaptersToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;showInSeriesToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;clearWorksToolStripButton.Name" xml:space="preserve">
-    <value>clearWorksToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;clearWorksToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cancelWorksToolStripButton.Name" xml:space="preserve">
-    <value>cancelWorksToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;cancelWorksToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;viewWorkToolStripButton.Name" xml:space="preserve">
-    <value>viewWorkToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;viewWorkToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadWorkToolStripButton.Name" xml:space="preserve">
-    <value>downloadWorkToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;downloadWorkToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;visitPageForWorksToolStripButton.Name" xml:space="preserve">
-    <value>visitPageForWorksToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;visitPageForWorksToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFolderForWorksToolStripButton.Name" xml:space="preserve">
-    <value>openFolderForWorksToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;openFolderForWorksToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFolderToolStripMenuItem.Name" xml:space="preserve">
-    <value>openFolderToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;openFolderToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;openFolderForSelectedChaptersToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;visitPageToolStripMenuItem.Name" xml:space="preserve">
-    <value>visitPageToolStripMenuItem</value>
+  <data name="&gt;&gt;visitPageForSelectedChaptersToolStripMenuItem.Name" xml:space="preserve">
+    <value>visitPageForSelectedChaptersToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;visitPageToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;visitPageForSelectedChaptersToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;downloadToolStripMenuItem.Name" xml:space="preserve">
-    <value>downloadToolStripMenuItem</value>
+  <data name="&gt;&gt;downloadForSelectedChaptersToolStripMenuItem.Name" xml:space="preserve">
+    <value>downloadForSelectedChaptersToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;downloadToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;downloadForSelectedChaptersToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;viewToolStripMenuItem.Name" xml:space="preserve">
-    <value>viewToolStripMenuItem</value>
+  <data name="&gt;&gt;readMangaForSelectedChaptersToolStripMenuItem.Name" xml:space="preserve">
+    <value>readMangaForSelectedChaptersToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;viewToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;readMangaForSelectedChaptersToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton11.Name" xml:space="preserve">
-    <value>toolStripButton11</value>
+  <data name="&gt;&gt;readMangaForSelectedChaptersToolStripButton.Name" xml:space="preserve">
+    <value>readMangaForSelectedChaptersToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton11.Type" xml:space="preserve">
+  <data name="&gt;&gt;readMangaForSelectedChaptersToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton6.Name" xml:space="preserve">
-    <value>toolStripButton6</value>
+  <data name="&gt;&gt;downloadForSelectedChaptersToolStripButton.Name" xml:space="preserve">
+    <value>downloadForSelectedChaptersToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton6.Type" xml:space="preserve">
+  <data name="&gt;&gt;downloadForSelectedChaptersToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripButton5.Name" xml:space="preserve">
@@ -2961,16 +3111,16 @@
   <data name="&gt;&gt;toolStripButton5.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton4.Name" xml:space="preserve">
-    <value>toolStripButton4</value>
+  <data name="&gt;&gt;openFolderForSelectedChaptersToolStripButton.Name" xml:space="preserve">
+    <value>openFolderForSelectedChaptersToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton4.Type" xml:space="preserve">
+  <data name="&gt;&gt;openFolderForSelectedChaptersToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;openFolderForSerieToolStripMenuItem.Name" xml:space="preserve">
-    <value>openFolderForSerieToolStripMenuItem</value>
+  <data name="&gt;&gt;openFolderForSelectedSerieToolStripMenuItem.Name" xml:space="preserve">
+    <value>openFolderForSelectedSerieToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;openFolderForSerieToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;openFolderForSelectedSerieToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;visitPageForSerieToolStripMenuItem.Name" xml:space="preserve">
@@ -2979,10 +3129,10 @@
   <data name="&gt;&gt;visitPageForSerieToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;checkNowForSerieToolStripMenuItem.Name" xml:space="preserve">
-    <value>checkNowForSerieToolStripMenuItem</value>
+  <data name="&gt;&gt;updateNowForSelectedSerieToolStripMenuItem.Name" xml:space="preserve">
+    <value>updateNowForSelectedSerieToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;checkNowForSerieToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;updateNowForSelectedSerieToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;bookmarkSerieToolStripMenuItem.Name" xml:space="preserve">
@@ -2991,16 +3141,16 @@
   <data name="&gt;&gt;bookmarkSerieToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton7.Name" xml:space="preserve">
-    <value>toolStripButton7</value>
+  <data name="&gt;&gt;bookmarkSelectedSerieToolStripButton.Name" xml:space="preserve">
+    <value>bookmarkSelectedSerieToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton7.Type" xml:space="preserve">
+  <data name="&gt;&gt;bookmarkSelectedSerieToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton10.Name" xml:space="preserve">
-    <value>toolStripButton10</value>
+  <data name="&gt;&gt;updateNowForSelectedSerieToolStripButton.Name" xml:space="preserve">
+    <value>updateNowForSelectedSerieToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton10.Type" xml:space="preserve">
+  <data name="&gt;&gt;updateNowForSelectedSerieToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripButton9.Name" xml:space="preserve">
@@ -3009,16 +3159,34 @@
   <data name="&gt;&gt;toolStripButton9.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton8.Name" xml:space="preserve">
-    <value>toolStripButton8</value>
+  <data name="&gt;&gt;openFolderForSelectedSerieToolStripButton.Name" xml:space="preserve">
+    <value>openFolderForSelectedSerieToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton8.Type" xml:space="preserve">
+  <data name="&gt;&gt;openFolderForSelectedSerieToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton3.Name" xml:space="preserve">
-    <value>toolStripButton3</value>
+  <data name="&gt;&gt;openFolderForSelectedServerToolStripMenuItem.Name" xml:space="preserve">
+    <value>openFolderForSelectedServerToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;toolStripButton3.Type" xml:space="preserve">
+  <data name="&gt;&gt;openFolderForSelectedServerToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;visitPageForSelectedServerToolStripMenuItem.Name" xml:space="preserve">
+    <value>visitPageForSelectedServerToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;visitPageForSelectedServerToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;updateNowForSelectedServerToolStripMenuItem.Name" xml:space="preserve">
+    <value>updateNowForSelectedServerToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;updateNowForSelectedServerToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;updateNowForSelectedServerToolStripButton.Name" xml:space="preserve">
+    <value>updateNowForSelectedServerToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;updateNowForSelectedServerToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripButton2.Name" xml:space="preserve">
@@ -3027,76 +3195,10 @@
   <data name="&gt;&gt;toolStripButton2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolStripButton1.Name" xml:space="preserve">
-    <value>toolStripButton1</value>
+  <data name="&gt;&gt;openFolderForSelectedServerToolStripButton.Name" xml:space="preserve">
+    <value>openFolderForSelectedServerToolStripButton</value>
   </data>
-  <data name="&gt;&gt;toolStripButton1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;viewPagesForSelectedChapterToolStripButton.Name" xml:space="preserve">
-    <value>viewPagesForSelectedChapterToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;viewPagesForSelectedChapterToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadPagesForChapersToolStripButton.Name" xml:space="preserve">
-    <value>downloadPagesForChapersToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;downloadPagesForChapersToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;visitPageForChaptersToolStripButton.Name" xml:space="preserve">
-    <value>visitPageForChaptersToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;visitPageForChaptersToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFolderForChaptersToolStripButton.Name" xml:space="preserve">
-    <value>openFolderForChaptersToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;openFolderForChaptersToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bookmarkSerietoolStripButton.Name" xml:space="preserve">
-    <value>bookmarkSerietoolStripButton</value>
-  </data>
-  <data name="&gt;&gt;bookmarkSerietoolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkNowForSelectedSerieToolStripButton.Name" xml:space="preserve">
-    <value>checkNowForSelectedSerieToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;checkNowForSelectedSerieToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;visitPageForSerietoolStripButton.Name" xml:space="preserve">
-    <value>visitPageForSerietoolStripButton</value>
-  </data>
-  <data name="&gt;&gt;visitPageForSerietoolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFolderForSerieToolStripButton.Name" xml:space="preserve">
-    <value>openFolderForSerieToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;openFolderForSerieToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkNowForSeriesToolStripButton.Name" xml:space="preserve">
-    <value>checkNowForSeriesToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;checkNowForSeriesToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;visitPageForSeriesToolStripButton.Name" xml:space="preserve">
-    <value>visitPageForSeriesToolStripButton</value>
-  </data>
-  <data name="&gt;&gt;visitPageForSeriesToolStripButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFolderForSeriestoolStripButton.Name" xml:space="preserve">
-    <value>openFolderForSeriestoolStripButton</value>
-  </data>
-  <data name="&gt;&gt;openFolderForSeriestoolStripButton.Type" xml:space="preserve">
+  <data name="&gt;&gt;openFolderForSelectedServerToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;resetCheckDatesToolStripMenuItem.Name" xml:space="preserve">
@@ -3212,24 +3314,6 @@
   </data>
   <data name="&gt;&gt;bookmarksTimer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFolderForServerToolStripMenuItem.Name" xml:space="preserve">
-    <value>openFolderForServerToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;openFolderForServerToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;visitPageForServerToolStripMenuItem.Name" xml:space="preserve">
-    <value>visitPageForServerToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;visitPageForServerToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkNowForServerToolStripMenuItem.Name" xml:space="preserve">
-    <value>checkNowForServerToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;checkNowForServerToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolTip.Name" xml:space="preserve">
     <value>toolTip</value>

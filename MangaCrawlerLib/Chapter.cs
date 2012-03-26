@@ -452,5 +452,29 @@ namespace MangaCrawlerLib
             foreach (var page in m_pages)
                 a_pages++;
         }
+
+        public bool CanReadFirstPage()
+        {
+            if (Pages.Any())
+            {
+                if (Pages.First().ImageFilePath != null)
+                {
+                    try
+                    {
+                        if (new FileInfo(Pages.First().ImageFilePath).Exists)
+                            return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Loggers.MangaCrawler.Error(String.Format(
+                            "Exception, chapter: {0} state: {1}", this, State), ex);
+
+                        return false;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }
