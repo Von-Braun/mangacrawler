@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using MangaCrawlerLib;
 using System.Threading;
+using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
@@ -15,6 +16,7 @@ namespace MangaCrawler
     {
         public CatalogOptimizeForm()
         {
+            Icon = Icon.FromHandle(Resources.Manga_Crawler_Orange.GetHicon());
             InitializeComponent();
         }
 
@@ -25,9 +27,6 @@ namespace MangaCrawler
 
         private void CatalogOptimizeForm_Load(object sender, EventArgs e)
         {
-            label2.Text = String.Format(label2.Text, Catalog.GetCatalogSize() / 1024 / 1024,
-                (long)(Settings.Instance.MangaSettings.MaxCatalogSize / 1024 / 1024 * Catalog.COMPACT_RATIO));
-
             backgroundWorker.RunWorkerAsync();
         }
 
