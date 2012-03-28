@@ -149,15 +149,6 @@ namespace MangaCrawlerLib
             throw new NotImplementedException();
         }
 
-        internal void ClearCache()
-        {
-            lock (m_lock)
-            {
-                m_list = null;
-                m_loaded_from_xml = false;
-            }
-        }
-
         public bool Contains(T a_item)
         {
             EnsureLoaded();

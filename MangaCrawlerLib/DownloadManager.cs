@@ -152,12 +152,6 @@ namespace MangaCrawlerLib
             }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
         }
 
-        public void ClearCache()
-        {
-            foreach (var server in Servers)
-                server.ClearCache();
-        }
-
         public IEnumerable<Server> Servers
         {
             get

@@ -19,10 +19,10 @@ namespace MangaCrawler
 {
 	partial class MangaCrawlerForm
 	{
-        private class MangaCrawlerGUI
+        private class MangaCrawlerFormGUI
         {
             public MangaCrawlerForm Form;
-            public MangaCrawlerCommands Commands;
+            public MangaCrawlerFormCommands Commands;
 
             public bool PlaySoundWhenDownloaded;
             public bool RefreshOnceAfterAllDone;
@@ -486,9 +486,6 @@ namespace MangaCrawler
                 {
                     Form.Hide();
                     Form.notifyIcon.Visible = true;
-
-                    if (!Working)
-                        Commands.ClearCache();
                 }
                 else
                 {

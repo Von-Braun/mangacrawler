@@ -249,11 +249,6 @@ namespace MangaCrawlerLib
             }
         }
 
-        internal void ClearCache()
-        {
-            m_series.ClearCache();
-        }
-
         internal void Debug_LoadAllFromCatalog(ref int a_servers, ref int a_series, ref int a_chapters, ref int a_pages)
         {
             m_series.Count.ToString();

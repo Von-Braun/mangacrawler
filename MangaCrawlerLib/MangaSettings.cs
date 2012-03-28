@@ -25,9 +25,6 @@ namespace MangaCrawlerLib
         [YAXNode("CheckTimePeriod")]
         private TimeSpan m_check_time_period = new TimeSpan(hours: 0, minutes: 15, seconds: 0);
 
-        [YAXNode("MaxCatalogSize")]
-        private int m_max_catalog_size = 100 * 1024 * 1024;
-
         [YAXNode("PageNamingStrategy")]
         private PageNamingStrategy m_page_naming_strategy = PageNamingStrategy.DoNotChange;
 
@@ -90,19 +87,6 @@ namespace MangaCrawlerLib
             private set
             {
                 m_check_time_period = value;
-                OnChanged();
-            }
-        }
-
-        public int MaxCatalogSize
-        {
-            get
-            {
-                return m_max_catalog_size;
-            }
-            private set
-            {
-                m_max_catalog_size = value;
                 OnChanged();
             }
         }

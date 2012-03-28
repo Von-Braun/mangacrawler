@@ -10,69 +10,70 @@ using TomanuExtensions.Utils;
 using System.Xml;
 using System.Threading;
 using System.Diagnostics;
+using Ionic.Zlib;
 
 namespace MangaCrawlerLib
 {
     public static class Catalog
     {
-        private static string CATALOG_XML = "catalog.xml";
-        private static string WORKS_XML = "works.xml";
-        private static string BOOKMARKS_XML = "bookmarks.xml";
+        #region Consts
+        private class Files
+        {
+            public static string CATALOG_XML = "catalog.xml";
+            public static string WORKS_XML = "works.xml";
+            public static string BOOKMARKS_XML = "bookmarks.xml";
+        }
 
-        #region XML Nodes
+        private class Nodes
+        {
+            public static string CATALOG_NODE = "Catalog";
 
-        private static string CATALOG_NODE = "Catalog";
+            public static string GLOBAL_ID_COUNTER_NODE = "IDCounter";
 
-        private static string GLOBAL_ID_COUNTER_NODE = "IDCounter";
+            public static string CATALOG_SERVERS_NODE = "Servers";
+            public static string SERVER_NODE = "Server";
+            public static string SERVER_ID_NODE = "ID";
+            public static string SERVER_NAME_NODE = "Name";
+            public static string SERVER_STATE_NODE = "State";
+            public static string SERVER_URL_NODE = "URL";
 
-        private static string CATALOG_SERVERS_NODE = "Servers";
-        private static string SERVER_NODE = "Server";
-        private static string SERVER_ID_NODE = "ID";
-        private static string SERVER_NAME_NODE = "Name";
-        private static string SERVER_STATE_NODE = "State";
-        private static string SERVER_URL_NODE = "URL";
+            public static string SERVER_SERIES_NODE = "ServerSeries";
+            public static string SERIES_NODE = "Series";
+            public static string SERIE_ID_NODE = "ID";
+            public static string SERIE_NODE = "Serie";
+            public static string SERIE_TITLE_NODE = "Title";
+            public static string SERIE_STATE_NODE = "State";
+            public static string SERIE_URL_NODE = "URL";
 
-        private static string SERVER_SERIES_NODE = "ServerSeries";
-        private static string SERIES_NODE = "Series";
-        private static string SERIE_ID_NODE = "ID";
-        private static string SERIE_NODE = "Serie";
-        private static string SERIE_TITLE_NODE = "Title";
-        private static string SERIE_STATE_NODE = "State";
-        private static string SERIE_URL_NODE = "URL";
+            public static string SERIE_CHAPTERS_NODE = "SerieChapters";
+            public static string SERIE_SERVER_ID_NODE = "ServerID";
+            public static string CHAPTERS_NODE = "Chapters";
+            public static string CHAPTER_NODE = "Chapter";
+            public static string CHAPTER_ID_NODE = "ID";
+            public static string CHAPTER_STATE_NODE = "State";
+            public static string CHAPTER_TITLE_NODE = "Title";
+            public static string CHAPTER_LIMITER_ORDER_NODE = "LimiterOrder";
+            public static string CHAPTER_URL_NODE = "URL";
+            public static string CHAPTER_BOOKMARK_IGNORED_NODE = "BookmarkIgnored";
 
-        private static string SERIE_CHAPTERS_NODE = "SerieChapters";
-        private static string SERIE_SERVER_ID_NODE = "ServerID";
-        private static string CHAPTERS_NODE = "Chapters";
-        private static string CHAPTER_NODE = "Chapter";
-        private static string CHAPTER_ID_NODE = "ID";
-        private static string CHAPTER_STATE_NODE = "State";
-        private static string CHAPTER_TITLE_NODE = "Title";
-        private static string CHAPTER_LIMITER_ORDER_NODE = "LimiterOrder";
-        private static string CHAPTER_URL_NODE = "URL";
-        private static string CHAPTER_BOOKMARK_IGNORED_NODE = "BookmarkIgnored";
+            public static string CHAPTER_PAGES_NODE = "ChapterPages";
+            public static string CHAPTER_SERIE_ID_NODE = "SerieID";
+            public static string PAGES_NODE = "Pages";
+            public static string PAGE_NODE = "Page";
+            public static string PAGE_ID_NODE = "ID";
+            public static string PAGE_INDEX_NODE = "Index";
+            public static string PAGE_NAME_NODE = "Name";
+            public static string PAGE_URL_NODE = "URL";
+            public static string PAGE_HASH_NODE = "Hash";
+            public static string PAGE_STATE_NODE = "State";
+            public static string PAGE_IMAGEFILEPATH_NODE = "ImageFilePath";
 
-        private static string CHAPTER_PAGES_NODE = "ChapterPages";
-        private static string CHAPTER_SERIE_ID_NODE = "SerieID";
-        private static string PAGES_NODE = "Pages";
-        private static string PAGE_NODE = "Page";
-        private static string PAGE_ID_NODE = "ID";
-        private static string PAGE_INDEX_NODE = "Index";
-        private static string PAGE_NAME_NODE = "Name";
-        private static string PAGE_URL_NODE = "URL";
-        private static string PAGE_HASH_NODE = "Hash";
-        private static string PAGE_STATE_NODE = "State";
-        private static string PAGE_IMAGEFILEPATH_NODE = "ImageFilePath";
+            public static string WORKS_NODE = "Works";
+            public static string WORK_CHAPTER_ID_NODE = "ChapterID";
 
-        private static string WORKS_NODE = "Works";
-        private static string WORK_CHAPTER_ID_NODE = "ChapterID";
-
-        private static string BOOKMARKS_NODE = "Bookmarks";
-        private static string BOOKMARK_SERIE_ID_NODE = "SerieID";
-
-        #endregion
-
-        public const double COMPACT_RATIO = 0.75;
-        private static Object m_lock = new Object();
+            public static string BOOKMARKS_NODE = "Bookmarks";
+            public static string BOOKMARK_SERIE_ID_NODE = "SerieID";
+        }
 
         #if TEST_SERVERS
         private static string CATALOG_DIR = "Catalog_Test\\";
@@ -80,6 +81,9 @@ namespace MangaCrawlerLib
         private static string CATALOG_DIR = "Catalog\\";
         #endif
 
+        #endregion
+
+        private static Object m_lock = new Object();
         private static ulong IDCounter = 0;
 
         internal static ulong NextID()
@@ -95,7 +99,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return CatalogDir + CATALOG_XML;
+                return CatalogDir + Files.CATALOG_XML;
             }
         }
 
@@ -103,7 +107,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return CatalogDir + WORKS_XML;
+                return CatalogDir + Files.WORKS_XML;
             }
         }
 
@@ -111,7 +115,7 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return CatalogDir + BOOKMARKS_XML;
+                return CatalogDir + Files.BOOKMARKS_XML;
             }
         }
 
@@ -145,17 +149,17 @@ namespace MangaCrawlerLib
 
             try
             {
-                var root = doc.Element(CATALOG_NODE);
+                var root = doc.Element(Nodes.CATALOG_NODE);
 
-                IDCounter = UInt64.Parse(root.Element(GLOBAL_ID_COUNTER_NODE).Value);
+                IDCounter = UInt64.Parse(root.Element(Nodes.GLOBAL_ID_COUNTER_NODE).Value);
 
-                var catalog_servers = (from server in root.Element(CATALOG_SERVERS_NODE).Elements(SERVER_NODE)
+                var catalog_servers = (from server in root.Element(Nodes.CATALOG_SERVERS_NODE).Elements(Nodes.SERVER_NODE)
                                        select new Server(
-                                           server.Element(SERVER_URL_NODE).Value, 
-                                           server.Element(SERVER_NAME_NODE).Value,
-                                           UInt64.Parse(server.Element(SERVER_ID_NODE).Value), 
+                                           server.Element(Nodes.SERVER_URL_NODE).Value,
+                                           server.Element(Nodes.SERVER_NAME_NODE).Value,
+                                           UInt64.Parse(server.Element(Nodes.SERVER_ID_NODE).Value), 
                                            EnumExtensions.Parse<ServerState>(
-                                            server.Element(SERVER_STATE_NODE).Value)
+                                            server.Element(Nodes.SERVER_STATE_NODE).Value)
                                        )).ToList();
 
                 if (!catalog_servers.Select(s => s.ID).Unique())
@@ -209,15 +213,15 @@ namespace MangaCrawlerLib
                     new DirectoryInfo(CatalogDir).Create();
 
                     var xml =
-                        new XElement(CATALOG_NODE,
-                            new XElement(GLOBAL_ID_COUNTER_NODE, IDCounter),
-                            new XElement(CATALOG_SERVERS_NODE, from s in DownloadManager.Instance.Servers
-                                                       select new XElement(SERVER_NODE,
-                                                           new XElement(SERVER_ID_NODE, s.ID),
-                                                           new XElement(SERVER_NAME_NODE, s.Name),
-                                                           new XElement(SERVER_STATE_NODE, s.State),
-                                                           new XElement(SERVER_URL_NODE, s.URL))));
-                    xml.Save(CatalogFile);
+                        new XElement(Nodes.CATALOG_NODE,
+                            new XElement(Nodes.GLOBAL_ID_COUNTER_NODE, IDCounter),
+                            new XElement(Nodes.CATALOG_SERVERS_NODE, from s in DownloadManager.Instance.Servers
+                                                               select new XElement(Nodes.SERVER_NODE,
+                                                           new XElement(Nodes.SERVER_ID_NODE, s.ID),
+                                                           new XElement(Nodes.SERVER_NAME_NODE, s.Name),
+                                                           new XElement(Nodes.SERVER_STATE_NODE, s.State),
+                                                           new XElement(Nodes.SERVER_URL_NODE, s.URL))));
+                    XmlSave(CatalogFile, xml);
                 }
                 catch (Exception ex)
                 {
@@ -255,7 +259,7 @@ namespace MangaCrawlerLib
 
             try
             {
-                return XDocument.Load(GetCatalogFile(a_id));
+                return XmlLoad(GetCatalogFile(a_id));
             }
             catch (Exception ex)
             {
@@ -273,7 +277,7 @@ namespace MangaCrawlerLib
 
             try
             {
-                return XDocument.Load(a_path);
+                return XmlLoad(a_path);
             }
             catch (Exception ex)
             {
@@ -293,16 +297,16 @@ namespace MangaCrawlerLib
 
             try
             {
-                XElement root = xml.Element(SERVER_SERIES_NODE);
+                XElement root = xml.Element(Nodes.SERVER_SERIES_NODE);
 
-                var series = from serie in root.Element(SERIES_NODE).Elements(SERIE_NODE)
+                var series = from serie in root.Element(Nodes.SERIES_NODE).Elements(Nodes.SERIE_NODE)
                              select new
                              {
-                                 ID =  UInt64.Parse(serie.Element(SERIE_ID_NODE).Value),
-                                 Title = serie.Element(SERIE_TITLE_NODE).Value,
-                                 URL = serie.Element(SERIE_URL_NODE).Value,
+                                 ID = UInt64.Parse(serie.Element(Nodes.SERIE_ID_NODE).Value),
+                                 Title = serie.Element(Nodes.SERIE_TITLE_NODE).Value,
+                                 URL = serie.Element(Nodes.SERIE_URL_NODE).Value,
                                  State = EnumExtensions.Parse<SerieState>(
-                                    serie.Element(SERIE_STATE_NODE).Value)
+                                    serie.Element(Nodes.SERIE_STATE_NODE).Value)
                              };
 
                 return (from serie in series
@@ -325,16 +329,16 @@ namespace MangaCrawlerLib
                 {
                     new DirectoryInfo(CatalogDir).Create();
 
-                    var xml = new XElement(SERVER_SERIES_NODE,
-                        new XElement(SERIES_NODE,
+                    var xml = new XElement(Nodes.SERVER_SERIES_NODE,
+                        new XElement(Nodes.SERIES_NODE,
                             from s in a_server.Series
-                            select new XElement(SERIE_NODE,
-                                new XElement(SERIE_ID_NODE, s.ID),
-                                new XElement(SERIE_TITLE_NODE, s.Title),
-                                new XElement(SERIE_STATE_NODE, s.State),
-                                new XElement(SERIE_URL_NODE, s.URL))));
+                            select new XElement(Nodes.SERIE_NODE,
+                                new XElement(Nodes.SERIE_ID_NODE, s.ID),
+                                new XElement(Nodes.SERIE_TITLE_NODE, s.Title),
+                                new XElement(Nodes.SERIE_STATE_NODE, s.State),
+                                new XElement(Nodes.SERIE_URL_NODE, s.URL))));
 
-                    xml.Save(GetCatalogFile(a_server.ID));
+                    XmlSave(GetCatalogFile(a_server.ID), xml);
                 }
             }
             catch (Exception ex)
@@ -352,18 +356,18 @@ namespace MangaCrawlerLib
 
             try
             {
-                XElement root = xml.Element(SERIE_CHAPTERS_NODE);
+                XElement root = xml.Element(Nodes.SERIE_CHAPTERS_NODE);
 
-                var chapters = from chapter in root.Element(CHAPTERS_NODE).Elements(CHAPTER_NODE)
+                var chapters = from chapter in root.Element(Nodes.CHAPTERS_NODE).Elements(Nodes.CHAPTER_NODE)
                                select new
                                {
-                                   ID = UInt64.Parse(chapter.Element(CHAPTER_ID_NODE).Value),
-                                   Title = chapter.Element(CHAPTER_TITLE_NODE).Value,
-                                   LimiterOrder = UInt64.Parse(chapter.Element(CHAPTER_LIMITER_ORDER_NODE).Value), 
-                                   URL = chapter.Element(CHAPTER_URL_NODE).Value,
-                                   BookmarkIgnore = Boolean.Parse(chapter.Element(CHAPTER_BOOKMARK_IGNORED_NODE).Value),
+                                   ID = UInt64.Parse(chapter.Element(Nodes.CHAPTER_ID_NODE).Value),
+                                   Title = chapter.Element(Nodes.CHAPTER_TITLE_NODE).Value,
+                                   LimiterOrder = UInt64.Parse(chapter.Element(Nodes.CHAPTER_LIMITER_ORDER_NODE).Value),
+                                   URL = chapter.Element(Nodes.CHAPTER_URL_NODE).Value,
+                                   BookmarkIgnore = Boolean.Parse(chapter.Element(Nodes.CHAPTER_BOOKMARK_IGNORED_NODE).Value),
                                    State = EnumExtensions.Parse<ChapterState>(
-                                       chapter.Element(CHAPTER_STATE_NODE).Value)
+                                       chapter.Element(Nodes.CHAPTER_STATE_NODE).Value)
                                };
 
                 return (from chapter in chapters
@@ -387,19 +391,19 @@ namespace MangaCrawlerLib
                 {
                     new DirectoryInfo(CatalogDir).Create();
 
-                    var xml = new XElement(SERIE_CHAPTERS_NODE,
-                        new XElement(SERIE_SERVER_ID_NODE, a_serie.Server.ID), 
-                        new XElement(CHAPTERS_NODE, 
+                    var xml = new XElement(Nodes.SERIE_CHAPTERS_NODE,
+                        new XElement(Nodes.SERIE_SERVER_ID_NODE, a_serie.Server.ID),
+                        new XElement(Nodes.CHAPTERS_NODE, 
                             from c in a_serie.Chapters
-                            select new XElement(CHAPTER_NODE,
-                                new XElement(CHAPTER_ID_NODE, c.ID),
-                                new XElement(CHAPTER_TITLE_NODE, c.Title),
-                                new XElement(CHAPTER_LIMITER_ORDER_NODE, c.LimiterOrder),
-                                new XElement(CHAPTER_STATE_NODE, c.State),
-                                new XElement(CHAPTER_BOOKMARK_IGNORED_NODE, c.BookmarkIgnored),
-                                new XElement(CHAPTER_URL_NODE, c.URL))));
+                            select new XElement(Nodes.CHAPTER_NODE,
+                                new XElement(Nodes.CHAPTER_ID_NODE, c.ID),
+                                new XElement(Nodes.CHAPTER_TITLE_NODE, c.Title),
+                                new XElement(Nodes.CHAPTER_LIMITER_ORDER_NODE, c.LimiterOrder),
+                                new XElement(Nodes.CHAPTER_STATE_NODE, c.State),
+                                new XElement(Nodes.CHAPTER_BOOKMARK_IGNORED_NODE, c.BookmarkIgnored),
+                                new XElement(Nodes.CHAPTER_URL_NODE, c.URL))));
 
-                    xml.Save(GetCatalogFile(a_serie.ID));
+                    XmlSave(GetCatalogFile(a_serie.ID), xml);
                 }
             }
             catch (Exception ex)
@@ -417,19 +421,19 @@ namespace MangaCrawlerLib
 
             try
             {
-                XElement root = xml.Element(CHAPTER_PAGES_NODE);
+                XElement root = xml.Element(Nodes.CHAPTER_PAGES_NODE);
 
-                var pages = from page in root.Element(PAGES_NODE).Elements(PAGE_NODE)
+                var pages = from page in root.Element(Nodes.PAGES_NODE).Elements(Nodes.PAGE_NODE)
                             select new
                             {
-                                ID = UInt64.Parse(page.Element(PAGE_ID_NODE).Value),
-                                Name = page.Element(PAGE_NAME_NODE).Value,
-                                Index = page.Element(PAGE_INDEX_NODE).Value.ToInt(),
-                                URL = page.Element(PAGE_URL_NODE).Value,
-                                Hash = ConvertHexStringToBytes(page.Element(PAGE_HASH_NODE).Value),
-                                ImageFilePath = page.Element(PAGE_IMAGEFILEPATH_NODE).Value,
+                                ID = UInt64.Parse(page.Element(Nodes.PAGE_ID_NODE).Value),
+                                Name = page.Element(Nodes.PAGE_NAME_NODE).Value,
+                                Index = page.Element(Nodes.PAGE_INDEX_NODE).Value.ToInt(),
+                                URL = page.Element(Nodes.PAGE_URL_NODE).Value,
+                                Hash = ConvertHexStringToBytes(page.Element(Nodes.PAGE_HASH_NODE).Value),
+                                ImageFilePath = page.Element(Nodes.PAGE_IMAGEFILEPATH_NODE).Value,
                                 State = EnumExtensions.Parse<PageState>(
-                                    page.Element(PAGE_STATE_NODE).Value)
+                                    page.Element(Nodes.PAGE_STATE_NODE).Value)
                             };
 
                 return (from page in pages
@@ -461,21 +465,21 @@ namespace MangaCrawlerLib
                 {
                     new DirectoryInfo(CatalogDir).Create();
 
-                    var xml = new XElement(CHAPTER_PAGES_NODE,
-                        new XElement(CHAPTER_SERIE_ID_NODE, a_chapter.Serie.ID), 
-                        new XElement(PAGES_NODE,
+                    var xml = new XElement(Nodes.CHAPTER_PAGES_NODE,
+                        new XElement(Nodes.CHAPTER_SERIE_ID_NODE, a_chapter.Serie.ID),
+                        new XElement(Nodes.PAGES_NODE,
                             from p in a_chapter.Pages
-                            select new XElement(PAGE_NODE,
-                                new XElement(PAGE_ID_NODE, p.ID),
-                                new XElement(PAGE_NAME_NODE, p.Name),
-                                new XElement(PAGE_INDEX_NODE, p.Index),
-                                new XElement(PAGE_HASH_NODE, 
+                            select new XElement(Nodes.PAGE_NODE,
+                                new XElement(Nodes.PAGE_ID_NODE, p.ID),
+                                new XElement(Nodes.PAGE_NAME_NODE, p.Name),
+                                new XElement(Nodes.PAGE_INDEX_NODE, p.Index),
+                                new XElement(Nodes.PAGE_HASH_NODE, 
                                     (p.Hash != null) ? Converters.ConvertBytesToHexString(p.Hash, true) : ""),
-                                new XElement(PAGE_IMAGEFILEPATH_NODE, p.ImageFilePath),
-                                new XElement(PAGE_STATE_NODE, p.State),
-                                new XElement(PAGE_URL_NODE, p.URL))));
+                                new XElement(Nodes.PAGE_IMAGEFILEPATH_NODE, p.ImageFilePath),
+                                new XElement(Nodes.PAGE_STATE_NODE, p.State),
+                                new XElement(Nodes.PAGE_URL_NODE, p.URL))));
 
-                    xml.Save(GetCatalogFile(a_chapter.ID));
+                    XmlSave(GetCatalogFile(a_chapter.ID), xml);
                 }
             }
             catch (Exception ex)
@@ -513,227 +517,6 @@ namespace MangaCrawlerLib
 
         }
 
-        private static IEnumerable<FileInfo> GetCatalogFiles()
-        {
-            if (!new DirectoryInfo(CatalogDir).Exists)
-                return new FileInfo[] { };
-
-            return new DirectoryInfo(CatalogDir).EnumerateFiles("*.xml");
-        }
-
-        public static long GetCatalogSize()
-        {
-            return GetCatalogFiles().Sum(f => f.Length);
-        }
-
-        private static bool IsCompacted(long a_max_catalog_size)
-        {
-            long desire_catalog_size = (long)(a_max_catalog_size * COMPACT_RATIO);
-            long catalog_size = GetCatalogSize();
-
-            return (catalog_size < desire_catalog_size) ;
-        }
-
-        private static void DeleteOrphans(List<ulong> a_chapters, Func<bool> a_cancel)
-        {
-            Server[] servers = LoadCatalog();
-            List<ulong> ids = new List<ulong>();
-
-            foreach (var file in GetCatalogFiles())
-            {
-                ulong id;
-                if (UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
-                    ids.Add(id);
-
-                if (a_cancel())
-                    return;
-            }
-
-            foreach (Server server in servers)
-            {
-                ids.Remove(server.ID);
-
-                foreach (var serie in LoadServerSeries(server))
-                {
-                    ids.Remove(serie.ID);
-
-                    foreach (var chapter in LoadSerieChapters(serie))
-                    {
-                        ids.Remove(chapter.ID);
-
-                        if (a_chapters != null)
-                        {
-                            if (Catalog.LoadCatalogXml(chapter.ID) != null)
-                                a_chapters.Add(chapter.ID);
-                        }
-
-                        if (a_cancel())
-                            return;
-                    }
-                }
-            }
-
-            foreach (var id in ids)
-                DeleteCatalogFile(id);
-        }
-
-        public static void Compact(long a_max_catalog_size, Func<bool> a_cancel)
-        {
-            if (HasWorks())
-                return;
-
-            if (a_cancel())
-                return;
-
-            try
-            {
-                // TODO: nie wywalac bookmarkow, zkatalogowac te idki na poczatku
-                // TODO: w trakcie usuwanie sprawdzac ile jszcze do wywalenia
-                // TODO: jakies dziwne zera w serii po kompatkowaniu
-
-                List<ulong> chapters = new List<ulong>();
-                DeleteOrphans(chapters, a_cancel);
-
-                if (a_cancel())
-                    return;
-
-                DeleteChaptersWithoutImages(chapters, a_cancel);
-
-                if (a_cancel())
-                    return;
-
-                DeleteSeriesWithoutChapters(a_cancel);
-
-                if (a_cancel())
-                    return;
-
-                // TODO: test
-                CompactBruteForce(a_max_catalog_size, a_cancel);
-            }
-            catch (Exception ex)
-            {
-                Loggers.MangaCrawler.Error("Exception", ex);
-            }
-        }
-
-        private static void CompactBruteForce(long a_max_catalog_size, Func<bool> a_cancel)
-        {
-            List<ulong> ids = new List<ulong>();
-
-            foreach (var file in GetCatalogFiles())
-            {
-                ulong id;
-                if (UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
-                    ids.Add(id);
-
-                if (a_cancel())
-                    return;
-            }
-
-            for (;;)
-            {
-                if (IsCompacted(a_max_catalog_size))
-                    break;
-
-                var oldest = from id in ids
-                             orderby new FileInfo(GetCatalogFile(id)).LastWriteTimeUtc
-                             select id;
-                var to_remove = ids.Take(100).ToList();
-                ids.RemoveRange(to_remove);
-
-                foreach (var id in to_remove)
-                    DeleteCatalogFile(id);
-                DeleteOrphans(null, a_cancel);
-
-                if (a_cancel())
-                    return;
-            }
-        }
-
-        private static void DeleteSeriesWithoutChapters(Func<bool> a_cancel)
-        {
-            Server[] servers = LoadCatalog();
-            List<ulong> ids = new List<ulong>();
-
-            foreach (var file in GetCatalogFiles())
-            {
-                ulong id;
-                if (UInt64.TryParse(Path.GetFileNameWithoutExtension(file.Name), out id))
-                    ids.Add(id);
-
-                if (a_cancel())
-                    return;
-            }
-
-            foreach (Server server in servers)
-            {
-                foreach (var serie in LoadServerSeries(server))
-                {
-                    if (a_cancel())
-                        return;
-
-                    var chapters = LoadSerieChapters(serie);
-
-                    bool empty_serie = chapters.All(ch => !ids.Contains(ch.ID));
-
-                    // TODO: czy cos zostaje po tym tescie
-                    if (empty_serie)
-                        DeleteCatalogFile(serie.ID);
-                }
-            }
-        }
-
-        private static void DeleteChaptersWithoutImages(List<ulong> a_chapters, Func<bool> a_cancel)
-        {
-            var oldest = from id in a_chapters
-                         orderby new FileInfo(GetCatalogFile(id)).LastWriteTimeUtc
-                         select id;
-
-            foreach (var old in oldest)
-            {
-                try
-                {
-                    var image_files = LoadCatalogXml(old).Element(CHAPTER_PAGES_NODE).Element(PAGES_NODE).
-                        Elements(PAGE_NODE).Select(el => el.Element(PAGE_IMAGEFILEPATH_NODE).Value);
-
-                    Func<bool> no_images = () =>
-                    {
-                        foreach (var image in image_files)
-                        {
-                            try
-                            {
-                                if (image != "")
-                                {
-                                    if (new FileInfo(image).Exists)
-                                        return false;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Loggers.MangaCrawler.Error("Exception", ex);
-                                return true;
-                            }
-
-                            if (a_cancel())
-                                return false;
-                        }
-
-                        return true;
-                    };
-
-                    if (no_images())
-                        DeleteCatalogFile(old);
-
-                    if (a_cancel())
-                        return;
-                }
-                catch
-                {
-                    DeleteCatalogFile(old);
-                }
-            }
-        }
-
         internal static List<Chapter> LoadWorks()
         {
             if (!new FileInfo(WorksFile).Exists)
@@ -741,11 +524,11 @@ namespace MangaCrawlerLib
 
             try
             {
-                XElement root = XDocument.Load(WorksFile).Element(WORKS_NODE);
+                XElement root = XmlLoad(WorksFile).Element(Nodes.WORKS_NODE);
 
                 List<Chapter> works = new List<Chapter>();
 
-                foreach (var work in root.Elements(WORK_CHAPTER_ID_NODE))
+                foreach (var work in root.Elements(Nodes.WORK_CHAPTER_ID_NODE))
                 {
                     ulong chapter_id = UInt64.Parse(work.Value);
                     Chapter chapter = LoadChapter(chapter_id);
@@ -766,24 +549,6 @@ namespace MangaCrawlerLib
             }
         }
 
-        private static bool HasWorks()
-        {
-            XDocument doc = LoadXml(WorksFile);
-
-            if (doc == null)
-                return false;
-
-            try
-            {
-                return doc.Element(WORKS_NODE).Elements(WORK_CHAPTER_ID_NODE).Any();
-            }
-            catch (Exception ex)
-            {
-                Loggers.MangaCrawler.Error("Exception", ex);
-                return false;
-            }
-        }
-
         internal static void SaveWorks(IEnumerable<Chapter> a_works)
         {
             try
@@ -792,11 +557,11 @@ namespace MangaCrawlerLib
                 {
                     new DirectoryInfo(CatalogDir).Create();
 
-                    var xml = new XElement(WORKS_NODE,
+                    var xml = new XElement(Nodes.WORKS_NODE,
                         from work in a_works
-                        select new XElement(WORK_CHAPTER_ID_NODE, work.ID));
+                        select new XElement(Nodes.WORK_CHAPTER_ID_NODE, work.ID));
                        
-                    xml.Save(WorksFile);
+                    XmlSave(WorksFile, xml);
                 }
             }
             catch (Exception ex)
@@ -816,7 +581,8 @@ namespace MangaCrawlerLib
 
             try
             {
-                server_id = UInt64.Parse(doc.Element(SERIE_CHAPTERS_NODE).Element(SERIE_SERVER_ID_NODE).Value);
+                server_id = UInt64.Parse(doc.Element(Nodes.SERIE_CHAPTERS_NODE).Element(
+                    Nodes.SERIE_SERVER_ID_NODE).Value);
 
             }
             catch (Exception ex)
@@ -845,7 +611,8 @@ namespace MangaCrawlerLib
 
             try
             {
-                serie_id = UInt64.Parse(doc.Element(CHAPTER_PAGES_NODE).Element(CHAPTER_SERIE_ID_NODE).Value);
+                serie_id = UInt64.Parse(doc.Element(Nodes.CHAPTER_PAGES_NODE).Element(
+                    Nodes.CHAPTER_SERIE_ID_NODE).Value);
 
             }
             catch (Exception ex)
@@ -875,11 +642,11 @@ namespace MangaCrawlerLib
 
             try
             {
-                XElement root = XDocument.Load(BookmarksFile).Element(BOOKMARKS_NODE);
+                XElement root = XmlLoad(BookmarksFile).Element(Nodes.BOOKMARKS_NODE);
 
                 List<Serie> bookmarks = new List<Serie>();
 
-                foreach (var bookmark in root.Elements(BOOKMARK_SERIE_ID_NODE))
+                foreach (var bookmark in root.Elements(Nodes.BOOKMARK_SERIE_ID_NODE))
                 {
                     ulong serie_id = UInt64.Parse(bookmark.Value);
                     Serie serie = LoadSerie(serie_id);
@@ -908,16 +675,39 @@ namespace MangaCrawlerLib
                 {
                     new DirectoryInfo(CatalogDir).Create();
 
-                    var xml = new XElement(BOOKMARKS_NODE,
+                    var xml = new XElement(Nodes.BOOKMARKS_NODE,
                         from serie in DownloadManager.Instance.Bookmarks.List
-                        select new XElement(BOOKMARK_SERIE_ID_NODE, serie.ID));
+                        select new XElement(Nodes.BOOKMARK_SERIE_ID_NODE, serie.ID));
 
-                    xml.Save(BookmarksFile);
+                    XmlSave(BookmarksFile, xml);
                 }
             }
             catch (Exception ex)
             {
                 Loggers.MangaCrawler.Error("Exception", ex);
+            }
+        }
+
+        private static XDocument XmlLoad(string a_file)
+        {
+            using (var fs = new FileStream(a_file, FileMode.Open, FileAccess.Read))
+            {
+                using (var zs = new GZipStream(fs, CompressionMode.Decompress))
+                {
+                    return XDocument.Load(zs);
+                }
+            }
+        }
+
+
+        private static void XmlSave(string a_file, XElement a_xml)
+        {
+            using (var fs = new FileStream(a_file, FileMode.Create, FileAccess.Write))
+            {
+                using (var zs = new GZipStream(fs, CompressionMode.Compress))
+                {
+                    a_xml.Save(zs);
+                }
             }
         }
     }
