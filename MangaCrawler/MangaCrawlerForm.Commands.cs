@@ -12,11 +12,11 @@ using HtmlAgilityPack;
 
 namespace MangaCrawler
 {
-	partial class MangaCrawlerForm
-	{
-        private class MangaCrawlerCommands
+    partial class MangaCrawlerForm
+    {
+        private class MangaCrawlerFormCommands
         {
-            public MangaCrawlerGUI GUI;
+            public MangaCrawlerFormGUI GUI;
             private static int MAX_TO_OPEN = 10;
 
             private void UpdateNowServer(Server a_server)
@@ -350,12 +350,6 @@ namespace MangaCrawler
                 ReadManga(GUI.SelectedBookmarkedChapters);
             }
 
-            public void ClearCache()
-            {
-                DownloadManager.Instance.ClearCache();
-                GC.Collect();
-            }
-
             public void SaveWorks()
             {
                 DownloadManager.Instance.Works.Save();
@@ -385,5 +379,5 @@ namespace MangaCrawler
                 }
             }
         }
-	}
+    }
 }

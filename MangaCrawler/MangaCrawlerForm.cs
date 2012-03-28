@@ -26,15 +26,9 @@ namespace MangaCrawler
     /* TODO:
      * 
      * wbudowany browser
-     * 
      * widok wspolny dla wszystkich serwisow, scalac jakos serie,
-     * gdzie najlepsza jakosc, gdzie duplikaty
-     * 
+     *   gdzie najlepsza jakosc, gdzie duplikaty
      * wpf
-     * 
-     * instalator, x86, x64
-     * deinstalacja powinna usunac katalog
-     * przygotowac nie instalke
      * 
      * nowe serwisy:
      * http://www.mangahere.com/
@@ -150,25 +144,13 @@ namespace MangaCrawler
      * 
      * ogranicz liczbe otwieranych folderow i obrazkow do 10
      * 
-     * /////
-     * 
-     * przetestowac compaktowanie 
-     * - dodac jakies inne liki
-     * - dodac xml o zlych nazwach
-     * - wprowadzac bledy w xmlach
-     * - czy usuwane sa sieroty
-     * - czy usuwane sa chaptery bez imagow (nie ma byc all image)
-     * - czy usuwane sa uste serie
-     * - czy brute force usuwa te najstarsze
-     * - czy brute force nie rusza do akcji jesli nie trzeba
-     * 
      * /////////////////
      * 
      * potestowac jak dzialaja zywe serwery
      * testy masowego pobierania cala noc
      * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
      * w wersji zywej - odiwedzanie stron, typowe scenraiusze na wszelki wypadek
-     * 
+     * uruchomic na x86 
      */
 
     public partial class MangaCrawlerForm : Form
@@ -187,13 +169,13 @@ namespace MangaCrawler
 
         private uint WM_TASKBARCREATED;
 
-        private MangaCrawlerCommands Commands;
-        private MangaCrawlerGUI GUI;
+        private MangaCrawlerFormCommands Commands;
+        private MangaCrawlerFormGUI GUI;
 
         public MangaCrawlerForm()
         {
-            Commands = new MangaCrawlerCommands();
-            GUI = new MangaCrawlerGUI();
+            Commands = new MangaCrawlerFormCommands();
+            GUI = new MangaCrawlerFormGUI();
             GUI.Form = this;
             GUI.Commands = Commands;
             Commands.GUI = GUI;
@@ -207,6 +189,14 @@ namespace MangaCrawler
             Debug.Assert(versionLinkLabel.Text == Resources.HomePage);
 
             WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
+
+            bool isnew;
+            Mutex m = new Mutex(true, "Manga Crawler 5324532532", out isnew);
+            if (!isnew)
+            {
+                Close();
+                return;
+            }
 
             SetupLog4NET();
 
@@ -511,10 +501,6 @@ namespace MangaCrawler
         private void MangaCrawlerForm_Shown(object sender, EventArgs e)
         {
             seriesSplitter.SplitPosition = Settings.Instance.SeriesSplitterDistance;
-
-            // TODO: 
-            //if (Catalog.GetCatalogSize() > Settings.Instance.MangaSettings.MaxCatalogSize)
-                new CatalogOptimizeForm().ShowDialog();
         }
 
         private void pageNamingStrategyComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -783,11 +769,6 @@ namespace MangaCrawler
             DownloadManager.Instance.Debug_LoadAllFromCatalog(ref servers, ref series, ref chapters, ref pages);
 
             Loggers.GUI.InfoFormat("servers: {0}, series: {1}, chapters: {2}, pages: {3}", servers, series, chapters, pages);
-        }
-
-        private void clearMemoryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Commands.ClearCache();
         }
 
         private void checkNowForServerToolStripMenuItem_Click(object sender, EventArgs e)
