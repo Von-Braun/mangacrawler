@@ -20,28 +20,11 @@ using log4net;
 using System.Runtime.InteropServices;
 using TomanuExtensions;
 using System.Drawing.Drawing2D;
+using System.Security.AccessControl;
 
 namespace MangaCrawler
 {
-    /* TODO:
-     * 
-     * wbudowany browser
-     * widok wspolny dla wszystkich serwisow, scalac jakos serie,
-     *   gdzie najlepsza jakosc, gdzie duplikaty
-     * wpf
-     * 
-     * nowe serwisy:
-     * http://www.mangahere.com/
-     * http://www.mangareader.net/alphabetical
-     * http://mangable.com/manga-list/
-     * http://www.readmangaonline.net/
-     * http://www.anymanga.com/directory/all/
-     * http://manga.animea.net/browse.html
-     * http://www.mangamonger.com/
-     * 
-     */
-
-    /*
+    /* 
      * TESTY
      * 
      * usuniecie serii dodanej do bookmark - odswiezenie w series tab  jak i w bookmark tab
@@ -144,13 +127,37 @@ namespace MangaCrawler
      * 
      * ogranicz liczbe otwieranych folderow i obrazkow do 10
      * 
-     * /////////////////
+     * uruchomienie aplikacji jesli jest uruchomiana przywraca ono juz uruchomionej
      * 
-     * potestowac jak dzialaja zywe serwery
-     * testy masowego pobierania cala noc
      * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
-     * w wersji zywej - odiwedzanie stron, typowe scenraiusze na wszelki wypadek
+     * 
+     */
+
+    /* 
+     * TODO:
+     * 
+     * Manga Volume
+     * Otaku Works
+     * Unix Manga
+     * 
+     * testy masowego pobierania cala noc
+     * testy gui, testy typowego dzialania
      * uruchomic na x86 
+     * 
+     * wbudowany browser
+     * widok wspolny dla wszystkich serwisow, scalac jakos serie,
+     *   gdzie najlepsza jakosc, gdzie duplikaty
+     * wpf
+     * 
+     * nowe serwisy:
+     * http://www.mangahere.com/
+     * http://www.mangareader.net/alphabetical
+     * http://mangable.com/manga-list/
+     * http://www.readmangaonline.net/
+     * http://www.anymanga.com/directory/all/
+     * http://manga.animea.net/browse.html
+     * http://www.mangamonger.com/
+     * 
      */
 
     public partial class MangaCrawlerForm : Form
@@ -186,15 +193,9 @@ namespace MangaCrawler
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
-            WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
+            ListenForRestoreEvent();
 
-            bool isnew;
-            Mutex m = new Mutex(true, "Manga Crawler 5324532532", out isnew);
-            if (!isnew)
-            {
-                Close();
-                return;
-            }
+            WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
 
             SetupLog4NET();
 
@@ -240,7 +241,7 @@ namespace MangaCrawler
                 ContextMenuStrip = null;
             }
 
-            //Flicker-free.
+            // Flicker-free.
             typeof(DataGridView).InvokeMember(
                 "DoubleBuffered",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,
@@ -266,6 +267,28 @@ namespace MangaCrawler
                 ts.Visible = true;
 
             GUI.UpdateAll();
+        }
+
+        private void ListenForRestoreEvent()
+        {
+            Thread thread = new Thread(() =>
+            {
+                for (; ; )
+                {
+                    if (Program.RestoreEvent.WaitOne())
+                    {
+                        Invoke(new Action(() =>
+                        {
+                            GUI.MinimizeToTray(false);
+                            Settings.Instance.FormState.RestoreFormState(this);
+                            Activate();
+                        }));
+                    }
+                }
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         private void ResizeContextMenuStripImages()

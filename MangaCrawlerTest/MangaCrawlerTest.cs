@@ -16,8 +16,6 @@ using MangaCrawler;
 
 namespace MangaCrawlerTest
 {
-    // TODO: dodac testowanie na rozmiar pliku, wyglada na to ze moga sie zmieniac hashe bo exif jest modyfikowany ????
-
     [TestClass]
     public class MangaCrawlerTest
     {

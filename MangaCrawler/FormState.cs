@@ -8,41 +8,54 @@ namespace MangaCrawler
 {
     public class FormState
     {
-        [YAXNode]
-        private FormWindowState WindowState = FormWindowState.Normal;
+        [YAXNode("WindowState")]
+        private FormWindowState m_window_state = FormWindowState.Normal;
 
-        [YAXNode]
-        private Rectangle Bounds;
-
-        [YAXNode]
-        private bool Saved = false;
+        [YAXNode("Bounds")]
+        private Rectangle m_bounds = Rectangle.Empty;
 
         public event Action Changed;
   
         public void Init(Form a_form)
         {
             a_form.Load += OnFormLoad;
-            a_form.FormClosing += OnFormClosing;
         }
 
         private void OnFormLoad(object sender, EventArgs e)
         {
             Form form = sender as Form;
-            if (Saved)
-                form.Bounds = Bounds;
-            form.WindowState = WindowState;
+
+            RestoreFormState(form);
+
+            form.FormClosing += OnFormClosing;
+            form.Resize += OnFormResizedOrMoved;
+            form.Move += OnFormResizedOrMoved;
+            form.LocationChanged += OnFormResizedOrMoved;
+        }
+
+        public void RestoreFormState(Form a_form)
+        {
+            if (m_bounds != Rectangle.Empty)
+                a_form.Bounds = m_bounds;
+            a_form.WindowState = m_window_state;
+        }
+
+        private void OnFormResizedOrMoved(object sender, EventArgs e)
+        {
+            SaveFormState(sender as Form);
+        }
+
+        private void SaveFormState(Form a_form)
+        {
+            if (a_form.WindowState == FormWindowState.Normal)
+                m_bounds = a_form.Bounds;
+            if (a_form.WindowState != FormWindowState.Minimized)
+                m_window_state = a_form.WindowState;
         }
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            Form form = sender as Form;
-            WindowState = form.WindowState;
-
-            if (form.WindowState == FormWindowState.Normal)
-            {
-                Bounds = form.Bounds;
-                Saved = true;
-            }
+            SaveFormState(sender as Form);
 
             if (Changed != null)
                 Changed();

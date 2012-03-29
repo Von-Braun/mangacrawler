@@ -29,22 +29,22 @@ namespace MangaCrawler
         private string m_series_filter = "";
 
         [YAXNode("SplitterDistance")]
-        private int m_splitter_distance = 200;
+        private int m_splitter_distance = 0;
 
         [YAXNode("SplitterBookmarksDistance")]
-        private int m_splitter_bookmarks_distance = 300;
+        private int m_splitter_bookmarks_distance = 0;
 
         [YAXNode]
         public FormState FormState = new FormState();
 
         [YAXNode("PlaySoundWhenDownloaded")]
-        private bool m_play_sound_when_downloaded = true;
+        private bool m_play_sound_when_downloaded = false;
 
         [YAXNode("MinimizeOnClose")]
-        private bool m_minimize_on_close;
+        private bool m_minimize_on_close = false;
 
         [YAXNode("ShowBaloonTips")]
-        private bool m_show_baloon_tips;
+        private bool m_show_baloon_tips = false;
 
         [YAXNode("CheckBookmarksPeriod")]
         private TimeSpan m_check_bookmarks_period = new TimeSpan(hours: 0, minutes: 30, seconds: 0);
