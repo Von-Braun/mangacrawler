@@ -12,7 +12,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using TomanuExtensions;
 
-namespace MangaCrawlerLib
+namespace MangaCrawlerLib.Crawlers
 {
     internal class StopTazmoCrawler : Crawler
     {

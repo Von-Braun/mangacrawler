@@ -9,7 +9,7 @@ using HtmlAgilityPack;
 
 namespace MangaCrawlerLib
 {
-    public abstract class Crawler
+    internal abstract class Crawler
     {
         public abstract string Name { get; }
 
@@ -79,21 +79,21 @@ namespace MangaCrawlerLib
                 a_page.Chapter.Token);
         }
 
-        internal virtual HtmlDocument DownloadDocument(string a_url, Action a_started,
+        internal HtmlDocument DownloadDocument(string a_url, Action a_started,
             Action a_aquire, Action a_release)
         {
             return DownloadDocument(a_url, a_started, a_aquire, a_release, CancellationToken.None);
         }
 
-        internal virtual HtmlDocument DownloadDocument(string a_url, Action a_started, 
+        internal HtmlDocument DownloadDocument(string a_url, Action a_started, 
             Action a_aquire, Action a_release, CancellationToken a_token)
         {
             return DownloadWithRetry(() =>
             {
+                a_aquire();
+
                 if (a_started != null)
                     a_started();
-
-                a_aquire();
 
                 try
                 {

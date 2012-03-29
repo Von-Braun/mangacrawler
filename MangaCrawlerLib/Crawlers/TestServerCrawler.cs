@@ -243,8 +243,6 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override void DownloadSeries(Server a_server, Action<int, IEnumerable<Serie>> a_progress_callback)
         {
-            a_server.State = ServerState.Downloading;
-
             Limiter.Aquire(a_server);
             try
             {
@@ -254,6 +252,8 @@ namespace MangaCrawlerLib.Crawlers
             {
                 Limiter.Release(a_server);
             }
+
+            a_server.State = ServerState.Downloading;
 
             if (a_server.Name.Contains("error series none"))
                 throw new Exception();
@@ -344,8 +344,6 @@ namespace MangaCrawlerLib.Crawlers
 
         internal override void DownloadChapters(Serie a_serie, Action<int, IEnumerable<Chapter>> a_progress_callback)
         {
-            a_serie.State = SerieState.Downloading;
-
             Limiter.Aquire(a_serie);
             try
             {
@@ -355,6 +353,8 @@ namespace MangaCrawlerLib.Crawlers
             {
                 Limiter.Release(a_serie);
             }
+
+            a_serie.State = SerieState.Downloading;
 
             Debug.Assert(a_serie.Server.Name == m_name);
 
@@ -452,6 +452,18 @@ namespace MangaCrawlerLib.Crawlers
         {
             a_chapter.Token.ThrowIfCancellationRequested();
 
+            Limiter.Aquire(a_chapter);
+            try
+            {
+                Sleep();
+            }
+            finally
+            {
+                Limiter.Release(a_chapter);
+            }
+
+            a_chapter.Token.ThrowIfCancellationRequested();
+
             a_chapter.State = ChapterState.DownloadingPagesList;
 
             var serie = m_series.First(s => s.Title == a_chapter.Serie.Title);
@@ -464,16 +476,6 @@ namespace MangaCrawlerLib.Crawlers
             var result = from page in pages
                          select new Page(a_chapter, "fake_page_url",
                              pages.IndexOf(page) + 1, page);
-
-            Limiter.Aquire(a_chapter);
-            try
-            {
-                Sleep();
-            }
-            finally
-            {
-                Limiter.Release(a_chapter);
-            }
 
             return result;
         }

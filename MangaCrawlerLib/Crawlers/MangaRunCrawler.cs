@@ -9,7 +9,7 @@ using TomanuExtensions;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
-namespace MangaCrawlerLib 
+namespace MangaCrawlerLib.Crawlers
 {
     internal class MangaRunCrawler : Crawler
     {

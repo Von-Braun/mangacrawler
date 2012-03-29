@@ -183,8 +183,6 @@ namespace MangaCrawlerLib
 
         internal void DownloadPages()
         {
-            m_cancellation_token_source = new CancellationTokenSource();
-
             try
             {
                 Limiter.BeginChapter(this);
@@ -385,12 +383,14 @@ namespace MangaCrawlerLib
                                          (State == ChapterState.Downloaded) ||
                                          (State == ChapterState.Error) ||
                                          (State == ChapterState.Initial));
+                            m_cancellation_token_source = new CancellationTokenSource();
                             break;
                         }
                         case ChapterState.DownloadingPagesList:
                         {
                             Token.ThrowIfCancellationRequested();
-                            Debug.Assert(State == ChapterState.Waiting);
+                            Debug.Assert((State == ChapterState.Waiting) ||
+                                         (State == ChapterState.DownloadingPagesList));
                             break;
                         }
                         case ChapterState.DownloadingPages:

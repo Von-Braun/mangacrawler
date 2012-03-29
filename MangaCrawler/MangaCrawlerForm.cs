@@ -186,8 +186,6 @@ namespace MangaCrawler
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
-            Debug.Assert(versionLinkLabel.Text == Resources.HomePage);
-
             WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
 
             bool isnew;

@@ -11,6 +11,8 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using System.Net;
 using TomanuExtensions.Utils;
+using MangaCrawlerLib.Crawlers;
+using MangaCrawler;
 
 namespace MangaCrawlerTest
 {
@@ -41,10 +43,19 @@ namespace MangaCrawlerTest
             Assert.IsTrue(m_error == false);
         }
 
+        [TestInitialize]
+        public void Setup()
+        {
+            DownloadManager.Create(
+                   new MangaSettings(),
+                   Settings.GetSettingsDir());
+        }
+
         private IEnumerable<Serie> TestServer(Server a_server, int a_count)
         {
             TestContext.WriteLine("Testing server {0}", a_server.Name);
 
+            a_server.State = ServerState.Waiting;
             a_server.DownloadSeries();
             var series = a_server.Series;
 
@@ -75,6 +86,7 @@ namespace MangaCrawlerTest
         {
             TestContext.WriteLine("  Testing serie {0}", a_serie.Title);
 
+            a_serie.State = SerieState.Waiting;
             a_serie.DownloadChapters();
             var chapters = a_serie.Chapters;
 
@@ -125,7 +137,18 @@ namespace MangaCrawlerTest
 
             Crawler.DownloadWithRetry(() => new HtmlWeb().Load(a_chapter.URL));
 
-            a_chapter.DownloadPagesList();
+            a_chapter.State = ChapterState.Waiting;
+
+            Limiter.BeginChapter(a_chapter);
+
+            try
+            {
+                a_chapter.DownloadPagesList();
+            }
+            finally
+            {
+                Limiter.EndChapter(a_chapter);
+            }
 
             var pages = a_chapter.Pages.ToList();
 
@@ -175,24 +198,229 @@ namespace MangaCrawlerTest
 
             TestContext.WriteLine("        Testing page {0}", a_page.Name);
 
-            var stream = a_page.GetImageStream();
-
-            Assert.IsTrue(stream.Length > 0);
-
-            System.Drawing.Image.FromStream(stream);
-            stream.Position = 0;
-
-            if (!a_ongoing)
+            Limiter.BeginChapter(a_page.Chapter);
+            try
             {
-                string hash = Hash.CalculateSHA256(stream, true);
-                if (a_hash != hash)
+                var stream = a_page.GetImageStream();
+
+                Assert.IsTrue(stream.Length > 0);
+
+                System.Drawing.Image.FromStream(stream);
+                stream.Position = 0;
+
+                if (!a_ongoing)
                 {
-                    TestContext.WriteLine("        Hash doestn't match");
-                    TestContext.WriteLine("        Excepcted: >{0}<", a_hash);
-                    TestContext.WriteLine("        Finded: >{0}<", hash);
-                    m_error = true;
+                    string hash = Hash.CalculateSHA256(stream, true);
+                    if (a_hash != hash)
+                    {
+                        TestContext.WriteLine("        Hash doestn't match");
+                        TestContext.WriteLine("        Excepcted: >{0}<", a_hash);
+                        TestContext.WriteLine("        Finded: >{0}<", hash);
+                        m_error = true;
+                    }
                 }
             }
+            finally
+            {
+                Limiter.EndChapter(a_page.Chapter);
+            }
+        }
+
+        [TestMethod]
+        public void UnixMangaTest()
+        {
+            var series = TestServer(DownloadManager.Instance.Servers.First(
+                s => s.Crawler.GetType() == typeof(UnixMangaCrawler)), 1613);
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 503, true);
+
+                var pages = TestChapter("Bleach c Calendar", chapters.Last(), 8);
+
+                TestPage(pages.First(),
+                    "E018B7DF-C64538D1-95A9B6C9-49A8DBE9-18C11E68-C52EDDFB-B800B51A-FA7E354F", "00");
+                TestPage(pages.Last(),
+                    "B8177447-C74F7AA8-0521B396-2B7119F8-E173C00B-27F6B894-C997C530-2566F1E6", "xxxhomeunixxxx");
+
+                pages = TestChapter("Bleach c486", chapters.Skip(2).First(), 19);
+
+                TestPage(pages.First(), "", "", true);
+                TestPage(pages.Last(), "", "", true);
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 80);
+
+                var pages = TestChapter("666Satan-v01-c01a[TW]", chapters.Last(), 25);
+
+                TestPage(pages.First(),
+                    "5E06A425-528A10D1-A3B02CCC-69F21166-5EC8C51D-F4F6601E-59247E93-A46DB54A", "666Satan-01-00");
+                TestPage(pages.Last(),
+                    "6DABC33C-5106B55F-CD3E4C3F-6C4088D6-0BE589FC-FBA4764D-41B27F65-AC88904D", "666Satan-01-24");
+
+                pages = TestChapter("666Satan-76-END-[FH]", chapters.First(), 30);
+
+                TestPage(pages.First(),
+                    "6DC6CCF8-BB831044-DEDBEB18-D83FB748-C10D7698-FDDB65B8-506D7A06-2F455AAB", "01");
+                TestPage(pages.Last(),
+                    "AC9DF68B-C07F380B-DBBCF4EA-4A79C0DB-EF00A7DC-5AF91C46-56E1F179-90EDB30F", "31");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "Kamisama no Tsukurikata"), 17);
+
+                var pages = TestChapter("kamisama 001", chapters.Last(), 30);
+
+                TestPage(pages.First(),
+                    "4EB61381-57D3E2E2-3BCA169A-513A154A-293D39BD-56CF793F-ADD02D7E-A8BDACBC", "0001");
+                TestPage(pages.Last(),
+                    "A95CE474-FBFCFCEE-F98AB70E-C3B341C3-609F8871-7AD9F33C-A0EF7BFB-1BDF5B8D", "0030");
+
+                pages = TestChapter("kamisama 017", chapters.First(), 30);
+
+                TestPage(pages.First(),
+                    "E1D1A575-88D45C6A-8BFEBF16-349CA8BC-FB90D4A4-1AC4F831-EAF1385F-7F55F315", "0001");
+                TestPage(pages.Last(),
+                    "FFC3EBB9-9BDF5759-DE87C6D6-E2634C38-8982EC38-34CF67C6-2336B18D-28F7862E", "0030");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "16 Sai Kissu Complete"), 1);
+
+                var pages = TestChapter("16 Sai Kissu Complete", chapters.First(), 30);
+
+                TestPage(pages.First(),
+                    "83AE7BA3-A1554FA6-0FB46772-FD94DD15-057EAF75-5AF15ED5-A41C1DEF-94FE6F56", "00 _ Nekohana");
+                TestPage(pages.Last(),
+                    "3048567C-DF4072AC-01C71054-734C7736-BB6CD48E-92E1EA56-BB5DD04A-4C1048EC", "16 Sai Kissu c01 030");
+            }
+        }
+
+        private static IEnumerable<T> TakeRandom<T>(IEnumerable<T> a_enum, double a_percent)
+        {
+            List<T> list = a_enum.ToList();
+            Random random = new Random();
+
+            for (int i = 0; i < list.Count * a_percent; i++)
+            {
+                int r = random.Next(list.Count);
+                T el = list[r];
+                list.RemoveAt(r);
+                yield return el;
+            }
+        }
+
+        [TestMethod]
+        public void _RandomTestAll()
+        {
+            Parallel.ForEach(DownloadManager.Instance.Servers,
+                new ParallelOptions()
+                {
+                    MaxDegreeOfParallelism = DownloadManager.Instance.Servers.Count(),
+                    TaskScheduler = Limiter.Scheduler
+                },
+                server =>
+                {
+                    try
+                    {
+                        server.DownloadSeries();
+                    }
+                    catch
+                    {
+                        TestContext.WriteLine("{0} - Exception while downloading series from server",
+                            server);
+                    }
+
+                    if (server.Series.Count == 0)
+                    {
+                        TestContext.WriteLine("{0} - Server have no series", server);
+                    }
+
+                    Parallel.ForEach(TakeRandom(server.Series, 0.1),
+                        new ParallelOptions()
+                        {
+                            MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer,
+                            TaskScheduler = Limiter.Scheduler
+                        },
+                        serie =>
+                        {
+                            try
+                            {
+                                serie.DownloadChapters();
+                            }
+                            catch
+                            {
+                                TestContext.WriteLine(
+                                    "{0} - Exception while downloading chapters from serie", serie);
+                            }
+
+                            if (serie.Chapters.Count == 0)
+                            {
+                                TestContext.WriteLine("{0} - Serie has no chapters", serie);
+                            }
+
+                            Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
+                                new ParallelOptions()
+                                {
+                                    MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer,
+                                    TaskScheduler = Limiter.Scheduler
+                                },
+                                (chapter) =>
+                                {
+                                    try
+                                    {
+                                        chapter.DownloadPagesList();
+                                    }
+                                    catch
+                                    {
+                                        TestContext.WriteLine(
+                                            "{0} - Exception while downloading pages from chapter", chapter);
+                                    }
+
+                                    if (chapter.Pages.Count == 0)
+                                    {
+                                        TestContext.WriteLine("{0} - Chapter have no pages", chapter);
+                                    }
+
+                                    Parallel.ForEach(TakeRandom(chapter.Pages, 0.1),
+                                        new ParallelOptions()
+                                        {
+                                            MaxDegreeOfParallelism = chapter.Crawler.MaxConnectionsPerServer,
+                                            TaskScheduler = Limiter.Scheduler
+                                        },
+                                        (page) =>
+                                        {
+                                            MemoryStream stream = null;
+
+                                            try
+                                            {
+                                                stream = page.GetImageStream();
+                                            }
+                                            catch
+                                            {
+                                                TestContext.WriteLine(
+                                                    "{0} - Exception while downloading image from page", page);
+                                            }
+
+                                            if (stream.Length == 0)
+                                            {
+                                                TestContext.WriteLine(
+                                                    "{0} - Image stream is zero size for page", page);
+                                            }
+
+                                            try
+                                            {
+                                                System.Drawing.Image.FromStream(stream);
+                                            }
+                                            catch
+                                            {
+                                                TestContext.WriteLine(
+                                                    "{0} - Exception while creating image from stream for page", page);
+                                            }
+                                        });
+                                });
+                        });
+                });
         }
 
         [TestMethod]
@@ -242,28 +470,28 @@ namespace MangaCrawlerTest
         public void MangaAccessTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(MangaAccessCrawler)), 4054);
+                s => s.Crawler.GetType() == typeof(MangaAccessCrawler)), 4240);
 
             {
-                var chapters = TestSerie(series.First(s => s.Title == "07-Ghost"), 66);
+                var chapters = TestSerie(series.First(s => s.Title == "090 ~Eko to Issho~"), 59);
 
-                var pages = TestChapter("07-Ghost chapter 77", chapters.First(), 31);
-
-                TestPage(pages.First(), 
-                    "0BB04FF3-C33BBF39-97049314-589C07D2-820CB8D7-16346414-C05326F7-574C3331", "1");
-                TestPage(pages.Last(),
-                    "63982BB5-8F0E233A-C4CA414F-50050B54-442DA223-397E1AEB-01FDA4E9-B19440BC", "31");
-
-                pages = TestChapter("07-Ghost chapter 1", chapters.Last(), 46);
+                var pages = TestChapter("090 ~Eko to Issho~ chapter 59", chapters.First(), 12);
 
                 TestPage(pages.First(),
-                    "CA4F4D23-052C7AA9-196ED72C-E75DE684-F8C5F952-FC46FB35-6D4C9BC3-7BCF44F4", "1");
+                    "C5F62EA7-4EC5CAFB-49592B43-A24C628C-3C45D653-A5040473-C0806A51-6F8ADA85", "1");
                 TestPage(pages.Last(),
-                    "9B9DC441-75C7EBB8-32D37072-19333C96-6CC8A33C-01B7AC94-22DB85C1-0AB772C5", "46");
+                    "0BF825A9-B161DFB4-768B4F36-BE24CD17-0CE9B886-4039ED32-441E09DA-00F6A65E", "12");
+
+                pages = TestChapter("090 ~Eko to Issho~ chapter 1", chapters.Last(), 25);
+
+                TestPage(pages.First(),
+                    "ACDB7B80-C49DF779-698D8AB3-52BFB11A-5FF1A9A9-3A12CC99-0F77943E-4F9C9E19", "1");
+                TestPage(pages.Last(),
+                    "AD4A2B5C-FB398235-9860705E-B1CBB811-7E3990C7-E9F9D7A5-31ADF68A-1A10B0D4", "25");
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Title == "Fairy Tail"), 272, true);
+                var chapters = TestSerie(series.First(s => s.Title == "Fairy Tail"), 277, true);
 
                 var pages = TestChapter("Fairy Tail chapter 271", chapters.First(), 0, true);
 
@@ -633,200 +861,44 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
-        public void UnixMangaTest()
+        public void MangaHereTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(UnixMangaCrawler)), 1613);
+                s => s.Crawler.GetType() == typeof(MangaHere)), 8356);
 
             {
-                var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 499, true);
+                var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 76);
 
-                var pages = TestChapter("Bleach c Calendar", chapters.Last(), 8);
+                var pages = TestChapter("666 Satan 1", chapters.Last(), 80);
 
                 TestPage(pages.First(),
-                    "E018B7DF-C64538D1-95A9B6C9-49A8DBE9-18C11E68-C52EDDFB-B800B51A-FA7E354F", "00");
+                    "F32A16E3-40787969-1321CF99-60E56266-5C193674-8567D887-9D07160E-618BB267", "1");
                 TestPage(pages.Last(),
-                    "B8177447-C74F7AA8-0521B396-2B7119F8-E173C00B-27F6B894-C997C530-2566F1E6", "xxxhomeunixxxx");
+                    "80ED3880-3AEA69C9-8F6ED876-14EF1B8D-B47C7779-8842C9F5-C1A8721A-9B962CFC", "80");
 
-                pages = TestChapter("Bleach c482", chapters.Skip(2).First(), 19);
+                pages = TestChapter("666 Satan 76", chapters.First(), 51);
+
+                TestPage(pages.First(),
+                    "E5104CE4-20487A8B-F661495F-F78C3650-86A123BD-112C766D-FBC1089A-ADDEC52C", "1");
+                TestPage(pages.Last(),
+                    "E4B30831-9ED853CD-C2E4A0D5-1AEFE087-427D3C55-CC6FAEB2-98DD20BE-802438F4", "51");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "Fairy Tail"), 287, true);
+
+                var pages = TestChapter("Fairy Tail 1", chapters.Last(), 74);
+
+                TestPage(pages.First(),
+                    "F78B1798-A2FC4CCD-A6773D62-D9803D04-D2B54352-AD25D299-174F97C3-D956F41E", "1");
+                TestPage(pages.Last(),
+                    "7CC1FA04-490266B7-BC68BC1A-BAD34324-D8CA551F-D3204F46-C4DC052A-D0EDEB8C", "74");
+
+                pages = TestChapter("", chapters.First(), 0, true);
 
                 TestPage(pages.First(), "", "", true);
                 TestPage(pages.Last(), "", "", true);
             }
-
-            {
-                var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 80);
-
-                var pages = TestChapter("666Satan-v01-c01a[TW]", chapters.Last(), 25);
-
-                TestPage(pages.First(),
-                    "5E06A425-528A10D1-A3B02CCC-69F21166-5EC8C51D-F4F6601E-59247E93-A46DB54A", "666Satan-01-00");
-                TestPage(pages.Last(),
-                    "6DABC33C-5106B55F-CD3E4C3F-6C4088D6-0BE589FC-FBA4764D-41B27F65-AC88904D", "666Satan-01-24");
-
-                pages = TestChapter("666Satan-76-END-[FH]", chapters.First(), 30);
-
-                TestPage(pages.First(),
-                    "6DC6CCF8-BB831044-DEDBEB18-D83FB748-C10D7698-FDDB65B8-506D7A06-2F455AAB", "01");
-                TestPage(pages.Last(),
-                    "AC9DF68B-C07F380B-DBBCF4EA-4A79C0DB-EF00A7DC-5AF91C46-56E1F179-90EDB30F", "31");
-            }
-
-            {
-                var chapters = TestSerie(series.First(s => s.Title == "Kamisama no Tsukurikata"), 17);
-
-                var pages = TestChapter("kamisama 001", chapters.Last(), 30);
-
-                TestPage(pages.First(),
-                    "4EB61381-57D3E2E2-3BCA169A-513A154A-293D39BD-56CF793F-ADD02D7E-A8BDACBC", "0001");
-                TestPage(pages.Last(),
-                    "A95CE474-FBFCFCEE-F98AB70E-C3B341C3-609F8871-7AD9F33C-A0EF7BFB-1BDF5B8D", "0030");
-
-                pages = TestChapter("kamisama 017", chapters.First(), 30);
-
-                TestPage(pages.First(),
-                    "E1D1A575-88D45C6A-8BFEBF16-349CA8BC-FB90D4A4-1AC4F831-EAF1385F-7F55F315", "0001");
-                TestPage(pages.Last(),
-                    "FFC3EBB9-9BDF5759-DE87C6D6-E2634C38-8982EC38-34CF67C6-2336B18D-28F7862E", "0030");
-            }
-
-            {
-                var chapters = TestSerie(series.First(s => s.Title == "16 Sai Kissu Complete"), 1);
-
-                var pages = TestChapter("16 Sai Kissu Complete", chapters.First(), 30);
-
-                TestPage(pages.First(),
-                    "83AE7BA3-A1554FA6-0FB46772-FD94DD15-057EAF75-5AF15ED5-A41C1DEF-94FE6F56", "00 _ Nekohana");
-                TestPage(pages.Last(),
-                    "3048567C-DF4072AC-01C71054-734C7736-BB6CD48E-92E1EA56-BB5DD04A-4C1048EC", "16 Sai Kissu c01 030");
-            }
-        }
-
-        private static IEnumerable<T> TakeRandom<T>(IEnumerable<T> a_enum, double a_percent)
-        {
-            List<T> list = a_enum.ToList();
-            Random random = new Random();
-
-            for (int i = 0; i < list.Count * a_percent; i++)
-            {
-                int r = random.Next(list.Count);
-                T el = list[r];
-                list.RemoveAt(r);
-                yield return el;
-            }
-        }
-
-        [TestMethod]
-        public void _RandomTestAll()
-        {
-            Parallel.ForEach(DownloadManager.Instance.Servers,
-                new ParallelOptions()
-                {
-                    MaxDegreeOfParallelism = DownloadManager.Instance.Servers.Count(),
-                    TaskScheduler = Limiter.Scheduler
-                },
-                server => 
-            {
-                try
-                {
-                    server.DownloadSeries();
-                }
-                catch
-                {
-                    TestContext.WriteLine("{0} - Exception while downloading series from server", 
-                        server);
-                }
-
-                if (server.Series.Count == 0)
-                {
-                    TestContext.WriteLine("{0} - Server have no series", server);
-                }
-
-                Parallel.ForEach(TakeRandom(server.Series, 0.1),
-                    new ParallelOptions()
-                    {
-                        MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer,
-                        TaskScheduler = Limiter.Scheduler
-                    },
-                    serie =>
-                {
-                    try
-                    {
-                        serie.DownloadChapters();
-                    }
-                    catch
-                    {
-                        TestContext.WriteLine(
-                            "{0} - Exception while downloading chapters from serie", serie);
-                    }
-
-                    if (serie.Chapters.Count == 0)
-                    {
-                        TestContext.WriteLine("{0} - Serie has no chapters", serie);
-                    }
-
-                    Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
-                        new ParallelOptions()
-                        {
-                            MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer,
-                            TaskScheduler = Limiter.Scheduler
-                        },
-                        (chapter) => 
-                    {
-                        try
-                        {
-                            chapter.DownloadPagesList();
-                        }
-                        catch
-                        {
-                            TestContext.WriteLine(
-                                "{0} - Exception while downloading pages from chapter", chapter);
-                        }
-
-                        if (chapter.Pages.Count == 0)
-                        {
-                            TestContext.WriteLine("{0} - Chapter have no pages", chapter);
-                        }
-
-                        Parallel.ForEach(TakeRandom(chapter.Pages, 0.1), 
-                            new ParallelOptions()
-                            {
-                                MaxDegreeOfParallelism = chapter.Crawler.MaxConnectionsPerServer,
-                                TaskScheduler = Limiter.Scheduler
-                            }, 
-                            (page) =>
-                        {
-                            MemoryStream stream = null;
-
-                            try
-                            {
-                                stream = page.GetImageStream();
-                            }
-                            catch
-                            {
-                                TestContext.WriteLine(
-                                    "{0} - Exception while downloading image from page", page);
-                            }
-
-                            if (stream.Length == 0)
-                            {
-                                TestContext.WriteLine(
-                                    "{0} - Image stream is zero size for page", page);
-                            }
-
-                            try
-                            {
-                                System.Drawing.Image.FromStream(stream);
-                            }
-                            catch
-                            {
-                                TestContext.WriteLine(
-                                    "{0} - Exception while creating image from stream for page", page);
-                            }
-                        });
-                    });
-                });
-            });
         }
     }
 }

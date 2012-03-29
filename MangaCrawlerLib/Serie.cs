@@ -209,7 +209,8 @@ namespace MangaCrawlerLib
                     }
                     case SerieState.Downloading:
                     {
-                        Debug.Assert(State == SerieState.Waiting);
+                        Debug.Assert((State == SerieState.Waiting) ||
+                                     (State == SerieState.Downloading));
                         DownloadProgress = 0;
                         break;
                     }
