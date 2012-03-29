@@ -11,7 +11,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using TomanuExtensions;
 
-namespace MangaCrawlerLib
+namespace MangaCrawlerLib.Crawlers
 {
     internal class AnimeSourceCrawler : Crawler
     {

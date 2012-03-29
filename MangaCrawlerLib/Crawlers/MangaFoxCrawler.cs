@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using TomanuExtensions;
 
-namespace MangaCrawlerLib
+namespace MangaCrawlerLib.Crawlers
 {
     internal class MangaFoxCrawler : Crawler
     {

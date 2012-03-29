@@ -7,7 +7,7 @@ using System.Threading;
 using TomanuExtensions;
 using System.Diagnostics;
 
-namespace MangaCrawlerLib
+namespace MangaCrawlerLib.Crawlers
 {
     internal class SpectrumNexusCrawler : Crawler
     {

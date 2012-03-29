@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
 
-namespace MangaCrawlerLib
+namespace MangaCrawlerLib.Crawlers
 {
     internal class OtakuWorksCrawler : Crawler
     {

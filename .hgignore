@@ -14,3 +14,4 @@ log4net/obj
 log4net/bin
 MangaCrawler.sln.docstates.suo
 Installer/Manga Crawler*.exe
+TestResults

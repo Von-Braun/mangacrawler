@@ -6,7 +6,7 @@ using HtmlAgilityPack;
 using System.Threading;
 using TomanuExtensions;
 
-namespace MangaCrawlerLib
+namespace MangaCrawlerLib.Crawlers
 {
     internal class MangaAccessCrawler : Crawler
     {
