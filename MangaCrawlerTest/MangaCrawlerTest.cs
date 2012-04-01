@@ -208,7 +208,7 @@ namespace MangaCrawlerTest
 
                 if (!a_ongoing)
                 {
-                    string hash = Hash.CalculateSHA256(stream, true);
+                    string hash = Hash.CalculateSHA256(stream);
                     if (a_hash != hash)
                     {
                         TestContext.WriteLine("        Hash doestn't match");
