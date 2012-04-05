@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib
 {
@@ -11,23 +12,9 @@ namespace MangaCrawlerLib
     /// <param name="series"></param>
     internal abstract class CachedList<T> : IList<T> where T : Entity
     {
-        protected class MergeRule
-        {
-            public Func<T, string> KeySelector;
-            public Action<T, T> Merge;
-        }
-
         protected bool m_loaded_from_xml;
         protected List<T> m_list;
         protected Object m_lock = new Object();
-
-        protected virtual IEnumerable<MergeRule> MergeRules
-        {
-            get
-            {
-                yield break;
-            }
-        }
 
         internal void ReplaceInnerCollection(IEnumerable<T> a_new) 
         {
@@ -51,15 +38,14 @@ namespace MangaCrawlerLib
             m_list = list;
         }
 
-        internal void ReplaceInnerCollection(IEnumerable<T> a_new, bool a_remove)
+        internal void ReplaceInnerCollection(IEnumerable<T> a_new, bool a_remove, Func<T, string> a_key_selector)
         {
             EnsureLoaded();
 
             var copy = m_list.ToList();
             var new_list = a_new.ToList();
 
-            foreach (var mr in MergeRules)
-                Merge(new_list, copy, mr);
+            Merge(new_list, copy, a_key_selector);
 
             if (a_remove)
             {
@@ -71,19 +57,17 @@ namespace MangaCrawlerLib
         }
 
         private static void Merge(List<T> a_new, List<T> a_local,
-            MergeRule a_merge_rule)
+            Func<T, string> a_key_selector)
         {
-            IDictionary<string, T> local_dict = a_local.ToDictionary(a_merge_rule.KeySelector);
+            var dups = a_local.Select(a_key_selector).ExceptExact(
+                a_local.Select(a_key_selector).Distinct());
+            IDictionary<string, T> local_dict = a_local.ToDictionary(a_key_selector);
 
             for (int i = 0; i < a_new.Count; i++)
             {
-                string key = a_merge_rule.KeySelector(a_new[i]);
+                string key = a_key_selector(a_new[i]);
                 if (local_dict.ContainsKey(key))
-                {
-                    var local_el = local_dict[key];
-                    a_merge_rule.Merge(a_new[i], local_el);
-                    a_new[i] = local_el;
-                }
+                    a_new[i] = local_dict[key];
             }
         }
 

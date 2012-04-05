@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib.Crawlers
 {
@@ -51,8 +52,6 @@ namespace MangaCrawlerLib.Crawlers
             {
                 try
                 {
-                    page = number + 1 - page;
-
                     HtmlDocument page_doc = DownloadDocument(a_server, 
                         "http://www.otakuworks.com/manga/" + page);
 
@@ -62,13 +61,16 @@ namespace MangaCrawlerLib.Crawlers
 
                     int index = 0;
 
-                    foreach (var serie in page_series)
+                    lock (series)
                     {
-                        Tuple<int, int, string, string> s =
-                            new Tuple<int, int, string, string>(page, index++, serie.InnerText,
-                                                                serie.GetAttributeValue("href", ""));
-
-                        series.Add(s);
+                        foreach (var serie in page_series)
+                        {
+                            Tuple<int, int, string, string> s =
+                                new Tuple<int, int, string, string>(page, index++, serie.InnerText,
+                                                                    serie.GetAttributeValue("href", ""));
+                            if (!series.Any(ss => ss.Item3.Trim().ToLower() == s.Item3.Trim().ToLower()))
+                                series.Add(s);  
+                        }
                     }
 
                     Interlocked.Increment(ref series_progress);

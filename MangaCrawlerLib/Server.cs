@@ -38,31 +38,6 @@ namespace MangaCrawlerLib
                         m_loaded_from_xml = true;
                 }
             }
-
-            protected override IEnumerable<MergeRule> MergeRules
-            {
-                get
-                {
-                    yield return new MergeRule()
-                    {
-                        KeySelector = s => s.Title,
-                        Merge = (src, dest) =>
-                        {
-                            dest.Title = src.Title;
-                            dest.URL = src.URL;
-                        }
-                    };
-                    yield return new MergeRule()
-                    {
-                        KeySelector = s => s.URL,
-                        Merge = (src, dest) =>
-                        {
-                            dest.Title = src.Title;
-                            dest.URL = src.URL;
-                        }
-                    };
-                }
-            }
         }
         #endregion
 
@@ -136,9 +111,9 @@ namespace MangaCrawlerLib
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
                     if (!m_series.IsLoadedFromXml)
-                        m_series.ReplaceInnerCollection(result, false);
+                        m_series.ReplaceInnerCollection(result, false, s => s.Title);
                     else if (progress == 100)
-                        m_series.ReplaceInnerCollection(result, true);
+                        m_series.ReplaceInnerCollection(result, true, s => s.Title);
                     DownloadProgress = progress;
                 });
 
@@ -211,13 +186,13 @@ namespace MangaCrawlerLib
                         Debug.Assert((State == ServerState.Initial) ||
                                      (State == ServerState.Error) || 
                                      (State == ServerState.Downloaded));
+                        DownloadProgress = 0;
                         break;
                     }
                     case ServerState.Downloading:
                     {
                         Debug.Assert((State == ServerState.Waiting) ||
                                      (State == ServerState.Downloading));
-                        DownloadProgress = 0;
                         break;
                     }
                     case ServerState.Downloaded:
