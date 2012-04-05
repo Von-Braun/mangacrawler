@@ -103,7 +103,7 @@ namespace MangaCrawlerLib
                     if (web.StatusCode == HttpStatusCode.NotFound)
                     {
                         Loggers.MangaCrawler.InfoFormat(
-                            "ConnectionsLimiter.DownloadDocument - series - page was not found, url: {0}",
+                            "Series - page was not found, url: {0}",
                             a_url);
 
                         return null;

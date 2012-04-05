@@ -127,7 +127,10 @@ namespace MangaCrawlerLib.Crawlers
             var license = doc.DocumentNode.SelectSingleNode("//div[@id='LicenseWarning']");
 
             if (license != null)
+            {
+                a_progress_callback(100, new Chapter[0]);
                 return;
+            }
 
             do
             {

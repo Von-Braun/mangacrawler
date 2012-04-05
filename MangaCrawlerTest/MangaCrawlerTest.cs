@@ -13,6 +13,7 @@ using System.Net;
 using TomanuExtensions.Utils;
 using MangaCrawlerLib.Crawlers;
 using MangaCrawler;
+using TomanuExtensions;
 
 namespace MangaCrawlerTest
 {
@@ -47,6 +48,25 @@ namespace MangaCrawlerTest
             DownloadManager.Create(
                    new MangaSettings(),
                    Settings.GetSettingsDir());
+        }
+
+        private static string FormatHash(string a_hash)
+        {
+            List<string> ar = new List<string>();
+            while (a_hash != "")
+            {
+                ar.Add(a_hash.Left(2));
+                a_hash = a_hash.RemoveFromLeft(2);
+            }
+
+            for (int i = 0; i < ar.Count / 4; i++)
+            {
+                if (i != 0)
+                    a_hash += "-";
+                a_hash += ar[i * 4] + ar[i * 4 + 1] + ar[i * 4 + 2] + ar[i * 4 + 3];
+            }
+
+            return a_hash;
         }
 
         private IEnumerable<Serie> TestServer(Server a_server, int a_count)
@@ -209,6 +229,8 @@ namespace MangaCrawlerTest
                 if (!a_ongoing)
                 {
                     string hash = Hash.CalculateSHA256(stream);
+                    hash = FormatHash(hash);
+
                     if (a_hash != hash)
                     {
                         TestContext.WriteLine("        Hash doestn't match");
@@ -688,7 +710,7 @@ namespace MangaCrawlerTest
         public void OtakuWorksTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(OtakuWorksCrawler)), 6702);
+                s => s.Crawler.GetType() == typeof(OtakuWorksCrawler)), 6712);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "Ai Kora"), 92);
@@ -714,19 +736,19 @@ namespace MangaCrawlerTest
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 259, true);
+                var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 17, true);
 
                 var pages = TestChapter("", chapters.First(), 0, true);
 
                 TestPage(pages.First(), "", "", true);
                 TestPage(pages.Last(), "", "", true);
 
-                pages = TestChapter("Chapter #001-007", chapters.Last(), 187);
+                pages = TestChapter("Chapter #470", chapters.Last(), 23);
 
                 TestPage(pages.First(),
-                    "8D78D814-791583E2-19F0FC41-460F600B-982ABBF0-6278B2A9-3D6D5112-ADB86FA6", "1");
+                    "89DC0389-667203B1-3923788E-C758931A-8D876123-468CDCE2-B2D5EA25-D4B9D530", "1");
                 TestPage(pages.Last(),
-                    "6FD444E5-354E6D3F-120CF0AD-B9468CBF-D9D02BFB-D4DA860B-56EE5DAD-7FB794CE", "187");
+                    "91FA4FB9-CFC01346-70C37F18-074AA4F8-CF9B41AC-55AFE15B-F0642B7D-56B75909", "23");
             }
         }
 
