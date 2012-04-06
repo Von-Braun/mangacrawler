@@ -457,7 +457,7 @@ namespace MangaCrawlerLib
         {
             if (Pages.Any())
             {
-                if (Pages.First().ImageFilePath != null)
+                if (!String.IsNullOrWhiteSpace(Pages.First().ImageFilePath))
                 {
                     try
                     {

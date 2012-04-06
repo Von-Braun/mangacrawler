@@ -71,10 +71,10 @@ namespace MangaCrawler
             {
                 get
                 {
-                    if (Form.serieBookmarksListBox.SelectedItem == null)
+                    if (Form.bookmarkedSeriesListBox.SelectedItem == null)
                         return null;
                     else
-                        return (Form.serieBookmarksListBox.SelectedItem as SerieBookmarkListItem).Serie;
+                        return (Form.bookmarkedSeriesListBox.SelectedItem as SerieBookmarkListItem).Serie;
                 }
             }
 
@@ -82,7 +82,7 @@ namespace MangaCrawler
             {
                 get
                 {
-                    return Form.chapterBookmarksListBox.SelectedItems.Cast<ChapterBookmarkListItem>().Select(
+                    return Form.bookmarkedchaptersListBox.SelectedItems.Cast<ChapterBookmarkListItem>().Select(
                         c => c.Chapter).ToArray();
                 }
             }
@@ -100,17 +100,17 @@ namespace MangaCrawler
 
             public void UpdateAll()
             {
-                if (Form.tabControl.SelectedTab == Form.optionsTabPage)
+                if (Form.FrontTab == Tabs.Options)
                     UpdateOptions();
-                else if (Form.tabControl.SelectedTab == Form.worksTabPage)
+                else if (Form.FrontTab == Tabs.Works)
                     UpdateWorksTab();
-                if (Form.tabControl.SelectedTab == Form.seriesTabPage)
+                else if (Form.FrontTab == Tabs.Series)
                 {
                     UpdateServers();
                     UpdateSeries();
                     UpdateChapters();
                 }
-                else if (Form.tabControl.SelectedTab == Form.bookmarksTabPage)
+                else if (Form.FrontTab == Tabs.Bookmarks)
                 {
                     UpdateSerieBookmarks();
                     UpdateChapterBookmarks();
@@ -138,7 +138,7 @@ namespace MangaCrawler
                             Form.updateNowForSelectedServerToolStripButton.Enabled;
 
                         Form.openFolderForSelectedServerToolStripButton.Enabled =
-                            new DirectoryInfo(SelectedServer.GetDirectory()).Exists;
+                            SelectedServer.IsDirectoryExists();
                         Form.openFolderForSelectedServerToolStripMenuItem.Enabled =
                             Form.openFolderForSelectedServerToolStripButton.Enabled;
                     }
@@ -165,7 +165,7 @@ namespace MangaCrawler
                             Form.updateNowForSelectedSerieToolStripButton.Enabled;
 
                         Form.openFolderForSelectedSerieToolStripButton.Enabled =
-                            new DirectoryInfo(SelectedSerie.GetDirectory()).Exists;
+                            SelectedSerie.IsDirectoryExists();
                         Form.openFolderForSelectedSerieToolStripMenuItem.Enabled =
                             Form.openFolderForSelectedSerieToolStripButton.Enabled;
                     }
@@ -182,7 +182,7 @@ namespace MangaCrawler
                     if (en)
                     {
                         Form.openFolderForSelectedChaptersToolStripButton.Enabled =
-                            SelectedChapters.Any(c => new DirectoryInfo(c.GetDirectory()).Exists);
+                            SelectedChapters.Any(c => c.IsDirectoryExists());
                         Form.openFolderForSelectedChaptersToolStripMenuItem.Enabled =
                             Form.openFolderForSelectedChaptersToolStripButton.Enabled;
 
@@ -209,7 +209,7 @@ namespace MangaCrawler
                     if (en)
                     {
                         Form.openFolderForSelectedWorksToolStripButton.Enabled =
-                            SelectedWorks.Any(c => new DirectoryInfo(c.GetDirectory()).Exists);
+                            SelectedWorks.Any(c => c.IsDirectoryExists());
                         Form.openFolderForSelectedWorksToolStripMenuItem.Enabled =
                             Form.openFolderForSelectedWorksToolStripButton.Enabled;
 
@@ -246,7 +246,7 @@ namespace MangaCrawler
                     if (en)
                     {
                         Form.openFolderForSelectedBookmarkedSerieToolStripButton.Enabled =
-                             new DirectoryInfo(SelectedBookmarkedSerie.GetDirectory()).Exists;
+                             SelectedBookmarkedSerie.IsDirectoryExists();
                         Form.openFolderForSelectedBookmarkedSerieToolStripMenuItem.Enabled =
                             Form.openFolderForSelectedBookmarkedSerieToolStripButton.Enabled;
 
@@ -268,7 +268,7 @@ namespace MangaCrawler
                     if (en)
                     {
                         Form.openFolderForSelectedBookmarkedChaptersToolStripButton.Enabled =
-                            SelectedBookmarkedChapters.Any(c => new DirectoryInfo(c.GetDirectory()).Exists);
+                            SelectedBookmarkedChapters.Any(c => c.IsDirectoryExists());
                         Form.openFolderForSelectedBookmarkedChaptersToolStripMenuItem.Enabled =
                             Form.openFolderForSelectedBookmarkedChaptersToolStripButton.Enabled;
 
@@ -289,7 +289,7 @@ namespace MangaCrawler
             {
                 bool show = DownloadManager.Instance.Works.List.All(w => !w.IsDownloading);
 
-                foreach (var control in Form.optionsTabPage.Controls.Cast<Control>())
+                foreach (var control in Form.optionsTabPanel.Controls.Cast<Control>())
                 {
                     if (control == Form.optionslLabel)
                     {
@@ -441,7 +441,7 @@ namespace MangaCrawler
                                  orderby new SerieBookmarkListItem(bookmark).ToString()
                                  select new SerieBookmarkListItem(bookmark)).ToList();
 
-                new ListBoxVisualState(Form.serieBookmarksListBox).ReloadItems(bookmarks);
+                new ListBoxVisualState(Form.bookmarkedSeriesListBox).ReloadItems(bookmarks);
             }
 
             private void UpdateChapterBookmarks()
@@ -454,7 +454,7 @@ namespace MangaCrawler
                           select new ChapterBookmarkListItem(chapter)).ToArray();
                 }
 
-                ListBoxVisualState vs = new ListBoxVisualState(Form.chapterBookmarksListBox);
+                ListBoxVisualState vs = new ListBoxVisualState(Form.bookmarkedchaptersListBox);
                 vs.Clear();
                 if (SelectedBookmarkedSerie != null)
                 {
@@ -467,7 +467,7 @@ namespace MangaCrawler
             public void PulseMangaRootDirTextBox()
             {
                 SystemSounds.Asterisk.Play();
-                Form.tabControl.SelectedTab = Form.optionsTabPage;
+                Form.FrontTab = Tabs.Options;
                 Color c1 = Form.mangaRootDirTextBox.BackColor;
                 Color c2 = (c1 == BAD_DIR) ? SystemColors.Window : BAD_DIR;
                 Pulse(c1, c2, 4, 500, (c) => Form.mangaRootDirTextBox.BackColor = c);
@@ -623,21 +623,21 @@ namespace MangaCrawler
 
             public void SelectBookmarkedSerie(Serie a_serie)
             {
-                Form.serieBookmarksListBox.SelectedItem =
-                    Form.serieBookmarksListBox.Items.Cast<SerieBookmarkListItem>().FirstOrDefault(
+                Form.bookmarkedSeriesListBox.SelectedItem =
+                    Form.bookmarkedSeriesListBox.Items.Cast<SerieBookmarkListItem>().FirstOrDefault(
                         sbli => sbli.Serie == a_serie);
             }
 
             public void SelectBookmarkedChapter(Chapter a_chapter)
             {
-                var bli = Form.chapterBookmarksListBox.Items.Cast<ChapterBookmarkListItem>().FirstOrDefault(
+                var bli = Form.bookmarkedchaptersListBox.Items.Cast<ChapterBookmarkListItem>().FirstOrDefault(
                     cbli => cbli.Chapter == a_chapter);
 
                 if (bli == null)
                     return;
 
-                Form.chapterBookmarksListBox.ClearSelected();
-                Form.chapterBookmarksListBox.SelectedItem = bli;
+                Form.bookmarkedchaptersListBox.ClearSelected();
+                Form.bookmarkedchaptersListBox.SelectedItem = bli;
             }
 
             public void ShowInSeriesFromWorks()
@@ -650,7 +650,7 @@ namespace MangaCrawler
 
                 var chapter = SelectedWorks.First();
 
-                Form.tabControl.SelectTab(Form.seriesTabPage);
+                Form.FrontTab = Tabs.Series;
 
                 SelectServer(chapter.Server);
                 SelectSerie(chapter.Serie);
