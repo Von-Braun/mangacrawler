@@ -28,11 +28,11 @@ namespace MangaCrawler
         [YAXNode("SeriesFilter")]
         private string m_series_filter = "";
 
-        [YAXNode("SplitterDistance")]
-        private int m_splitter_distance = 0;
+        [YAXNode("SeriesSplitterDistance")]
+        private int m_series_splitter_distance = 0;
 
-        [YAXNode("SplitterBookmarksDistance")]
-        private int m_splitter_bookmarks_distance = 0;
+        [YAXNode("BookmarksSplitterDistance")]
+        private int m_bookmarks_splitter_distance = 0;
 
         [YAXNode]
         public FormState FormState = new FormState();
@@ -139,24 +139,24 @@ namespace MangaCrawler
         {
             get
             {
-                return m_splitter_distance;
+                return m_series_splitter_distance;
             }
             set
             {
-                m_splitter_distance = value;
+                m_series_splitter_distance = value;
                 Save();
             }
         }
 
-        public int SplitterBookmarksDistance
+        public int BookmarksSplitterDistance
         {
             get
             {
-                return m_splitter_bookmarks_distance;
+                return m_bookmarks_splitter_distance;
             }
             set
             {
-                m_splitter_bookmarks_distance = value;
+                m_bookmarks_splitter_distance = value;
                 Save();
             }
         }

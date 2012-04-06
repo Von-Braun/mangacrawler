@@ -131,14 +131,11 @@ namespace MangaCrawler
      * 
      * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
      * 
+     * dzialanie tab order
      */
 
     /* 
      * TODO:
-     * 
-     * Manga Volume
-     * Otaku Works
-     * Unix Manga
      * 
      * testy masowego pobierania cala noc
      * testy gui, testy typowego dzialania
@@ -168,6 +165,10 @@ namespace MangaCrawler
             new Dictionary<Serie, ListBoxVisualState>();
         private Dictionary<Serie, ListBoxVisualState> m_chapter_bookmarks_visual_states =
             new Dictionary<Serie, ListBoxVisualState>();
+        private Dictionary<Tabs, Control> m_focus = new Dictionary<Tabs, Control>();
+
+        private Tabs m_front_panel;
+        private bool m_resizing = true;
 
         private static Color BAD_DIR = Color.Red;
 
@@ -178,6 +179,15 @@ namespace MangaCrawler
 
         private MangaCrawlerFormCommands Commands;
         private MangaCrawlerFormGUI GUI;
+
+        public enum Tabs
+        {
+            Series,
+            Works,
+            Bookmarks,
+            Options,
+            Log
+        }
 
         public MangaCrawlerForm()
         {
@@ -209,6 +219,25 @@ namespace MangaCrawler
 
             GUI.Init();
 
+            MovePanelFromTabControl(seriesTabPanel);
+            MovePanelFromTabControl(worksTabPanel);
+            MovePanelFromTabControl(bookmarksTabPanel);
+            MovePanelFromTabControl(optionsTabPanel);
+            MovePanelFromTabControl(logTabPanel);
+            tabControl.Hide();
+
+            seriesListBox.Focus();
+            m_focus[Tabs.Series] = seriesListBox;
+            m_focus[Tabs.Works] = worksGridView;
+            m_focus[Tabs.Bookmarks] = bookmarkedSeriesListBox;
+            m_focus[Tabs.Options] = mangaRootDirChooseButton;
+            m_focus[Tabs.Log] = logRichTextBox;
+
+            FrontTab = Tabs.Log;
+            FrontTab = Tabs.Series;
+
+            versionLinkLabel.TabStop = false;
+
             mangaRootDirTextBox.Text = Settings.Instance.MangaSettings.GetMangaRootDir(false);
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
             cbzCheckBox.Checked = Settings.Instance.MangaSettings.UseCBZ;
@@ -236,7 +265,7 @@ namespace MangaCrawler
 
             if (!Loggers.Log())
             {
-                tabControl.TabPages.Remove(logTabPage);
+                logTabLabel.Hide();
                 LogManager.Shutdown();
                 ContextMenuStrip = null;
             }
@@ -267,6 +296,20 @@ namespace MangaCrawler
                 ts.Visible = true;
 
             GUI.UpdateAll();
+        }
+
+        private void MovePanelFromTabControl(Panel a_panel)
+        {
+            int MARGIN_LEFT_RIGHT = 8;
+            int MARGIN_BOTTOM = 8;
+            int MARGIN_TOP = 30;
+
+            a_panel.Parent = this;
+            a_panel.Anchor = tabControl.Anchor;
+            a_panel.Width = ClientSize.Width - 2 * MARGIN_LEFT_RIGHT;
+            a_panel.Left = MARGIN_LEFT_RIGHT;
+            a_panel.Top = MARGIN_TOP;
+            a_panel.Height = ClientSize.Height - MARGIN_TOP - MARGIN_BOTTOM;
         }
 
         private void ListenForRestoreEvent()
@@ -399,6 +442,117 @@ namespace MangaCrawler
             rba.ActivateOptions();
         }
 
+        public Tabs FrontTab
+        {
+            get
+            {
+                return m_front_panel;
+            }
+            set
+            {
+                if (FrontTab == value)
+                    return;
+
+                m_focus[m_front_panel] = ActiveControl;
+
+                m_front_panel = value;
+
+                GetTabPanel(FrontTab).Show();
+                GetTabPanel(FrontTab).Focus();
+
+                Control control;
+                if (m_focus.TryGetValue(FrontTab, out control))
+                {
+                    if (control != null)
+                        control.Focus();
+                }
+
+                foreach (var tab in Enum.GetValues(typeof(Tabs)).Cast<Tabs>())
+                {
+                    if (tab == FrontTab)
+                        continue;
+
+                    GetTabPanel(tab).Hide();
+                }
+
+                GUI.UpdateAll();
+
+                foreach (var tab in Enum.GetValues(typeof(Tabs)).Cast<Tabs>())
+                    DeactivateTabLabel(GetTabLabeL(tab));
+
+                ActivateTabLabel(GetTabLabeL(FrontTab));
+            }
+        }
+
+        private void ActivateTabLabel(Label a_link_label)
+        {
+            a_link_label.ForeColor = Color.Red;
+        }
+
+        private void DeactivateTabLabel(Label a_link_label)
+        {
+            a_link_label.ForeColor = Color.Blue;
+        }
+
+        private Label GetTabLabeL(Tabs a_tab)
+        {
+            if (a_tab == Tabs.Series)
+                return seriesTabLabel;
+            else if (a_tab == Tabs.Works)
+                return worksTabLabel;
+            else if (a_tab == Tabs.Bookmarks)
+                return bookmarksTabLabel;
+            else if (a_tab == Tabs.Options)
+                return optionsTabLabel;
+            else if (a_tab == Tabs.Log)
+                return logTabLabel;
+            else
+            {
+                Debug.Fail("");
+                return seriesTabLabel;
+            }
+        }
+
+        public Panel GetTabPanel(Tabs a_tab)
+        {
+            if (a_tab == Tabs.Series)
+                return seriesTabPanel;
+            else if (a_tab == Tabs.Works)
+                return worksTabPanel;
+            else if (a_tab == Tabs.Bookmarks)
+                return bookmarksTabPanel;
+            else if (a_tab == Tabs.Options)
+                return optionsTabPanel;
+            else if (a_tab == Tabs.Log)
+                return logTabPanel;
+            {
+                Debug.Fail("");
+                return seriesTabPanel;
+            }
+        }
+
+        public void SeriesSplitterAdjust()
+        {
+            if (splitPanel.Width - seriesSplitter.SplitPosition < chaptersPanel.MinimumSize.Width)
+                seriesSplitter.SplitPosition = splitPanel.Width - chaptersPanel.MinimumSize.Width;
+
+            if (!m_resizing)
+                Settings.Instance.SeriesSplitterDistance = seriesSplitter.SplitPosition;
+        }
+
+        public void BookmarksSplitterAdjust()
+        {
+            if (bookmarksTabPanel.Width - bookmarksSplitter.SplitPosition <
+                chapterBookmarksPanel.MinimumSize.Width)
+            {
+                bookmarksSplitter.SplitPosition =
+                    bookmarksTabPanel.Width - chapterBookmarksPanel.MinimumSize.Width;
+            }
+
+            if (!m_resizing)
+                Settings.Instance.BookmarksSplitterDistance = bookmarksSplitter.SplitPosition;
+        }
+
         private void mangaRootDirChooseButton_Click(object sender, EventArgs e)
         {
             folderBrowserDialog.SelectedPath = mangaRootDirTextBox.Text;
@@ -479,16 +633,6 @@ namespace MangaCrawler
             GUI.Refresh();
         }
 
-        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControl.SelectedTab == seriesTabPage)
-                SeriesSplitterAdjust();
-            else if (tabControl.SelectedTab == bookmarksTabPage)
-                BookmarksSplitterAdjust();
-
-            GUI.UpdateAll();
-        }
-
         private void clearLogButton_Click(object sender, EventArgs e)
         {
             logRichTextBox.Clear();
@@ -522,6 +666,8 @@ namespace MangaCrawler
         private void MangaCrawlerForm_Shown(object sender, EventArgs e)
         {
             seriesSplitter.SplitPosition = Settings.Instance.SeriesSplitterDistance;
+            bookmarksSplitter.SplitPosition = Settings.Instance.BookmarksSplitterDistance;
+            m_resizing = false;
         }
 
         private void pageNamingStrategyComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -553,10 +699,8 @@ namespace MangaCrawler
 
         private void MangaCrawlerForm_ResizeEnd(object sender, EventArgs e)
         {
-            if (tabControl.SelectedTab == seriesTabPage)
-                SeriesSplitterAdjust();
-            else if (tabControl.SelectedTab == bookmarksTabPage)
-                BookmarksSplitterAdjust();
+            SeriesSplitterAdjust();
+            BookmarksSplitterAdjust();
         }
 
         private void splitterBookmarks_SplitterMoved(object sender, SplitterEventArgs e)
@@ -584,7 +728,7 @@ namespace MangaCrawler
         {
             if (GUI.SelectedBookmarkedSerie != null)
                 m_chapter_bookmarks_visual_states[GUI.SelectedBookmarkedSerie] =
-                    new ListBoxVisualState(chapterBookmarksListBox);
+                    new ListBoxVisualState(bookmarkedchaptersListBox);
 
             GUI.UpdateButtons();
         }
@@ -595,14 +739,14 @@ namespace MangaCrawler
                 Commands.DownloadPagesForSelectedBookmarkedChapters();
 
             if ((e.KeyCode == Keys.A) && (e.Control))
-                chapterBookmarksListBox.SelectAll();
+                bookmarkedchaptersListBox.SelectAll();
         }
 
         private void chapterBookmarksListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (GUI.SelectedBookmarkedSerie != null)
                 m_chapter_bookmarks_visual_states[GUI.SelectedBookmarkedSerie] =
-                    new ListBoxVisualState(chapterBookmarksListBox);
+                    new ListBoxVisualState(bookmarkedchaptersListBox);
         }
 
         private void serieBookmarksListBox_KeyDown(object sender, KeyEventArgs e)
@@ -708,7 +852,7 @@ namespace MangaCrawler
         {
             GUI.MinimizeToTray(false);
 
-            tabControl.SelectedTab = bookmarksTabPage;
+            FrontTab = Tabs.Bookmarks;
 
             var serie = DownloadManager.Instance.Bookmarks.List.FirstOrDefault(b => b.GetNewChapters().Any());
 
@@ -1172,26 +1316,6 @@ namespace MangaCrawler
             Commands.DownloadPagesForSelectedBookmarkedChapters();
         }
 
-        public void SeriesSplitterAdjust()
-        {
-            if (splitPanel.Width - seriesSplitter.SplitPosition < chaptersPanel.MinimumSize.Width)
-                seriesSplitter.SplitPosition = splitPanel.Width - chaptersPanel.MinimumSize.Width;
-
-            Settings.Instance.SeriesSplitterDistance = seriesSplitter.SplitPosition;
-        }
-
-        public void BookmarksSplitterAdjust()
-        {
-            if (splitBookmarksPanel.Width - splitterBookmarks.SplitPosition <
-                chapterBookmarksPanel.MinimumSize.Width)
-            {
-                splitterBookmarks.SplitPosition =
-                    splitBookmarksPanel.Width - chapterBookmarksPanel.MinimumSize.Width;
-            }
-
-            Settings.Instance.SplitterBookmarksDistance = splitterBookmarks.SplitPosition;
-        }
-
         private void worksGridView_SelectionChanged(object sender, EventArgs e)
         {
             GUI.UpdateButtons();
@@ -1230,6 +1354,53 @@ namespace MangaCrawler
         private void readMangaForSelectedBookmarkedChaptersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Commands.ReadMangaForSelectedBookmarkedChapters();
+        }
+
+        private void seriesTabLabel_Click(object sender, EventArgs e)
+        {
+            FrontTab = Tabs.Series;
+        }
+
+        private void worksTabLabel_Click(object sender, EventArgs e)
+        {
+            FrontTab = Tabs.Works;
+        }
+
+        private void bookmarksTabLabel_Click(object sender, EventArgs e)
+        {
+            FrontTab = Tabs.Bookmarks;
+        }
+
+        private void optionsTabLabel_Click(object sender, EventArgs e)
+        {
+            FrontTab = Tabs.Options;
+        }
+
+        private void logTabLabel_Click(object sender, EventArgs e)
+        {
+            FrontTab = Tabs.Log;
+        }
+
+        private void tabLabel_MouseEnter(object sender, EventArgs e)
+        {
+            foreach (var tab in Enum.GetValues(typeof(Tabs)).Cast<Tabs>())
+                DeactivateTabLabel(GetTabLabeL(tab));
+
+            ActivateTabLabel(sender as Label);
+        }
+
+        private void tabLabel_MouseLeave(object sender, EventArgs e)
+        {
+            foreach (var tab in Enum.GetValues(typeof(Tabs)).Cast<Tabs>())
+                DeactivateTabLabel(GetTabLabeL(tab));
+
+            ActivateTabLabel(GetTabLabeL(FrontTab));
+        }
+
+        private void MangaCrawlerForm_Resize(object sender, EventArgs e)
+        {
+            SeriesSplitterAdjust();
+            BookmarksSplitterAdjust();
         }
     }
 }

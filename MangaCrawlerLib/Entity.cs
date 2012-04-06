@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TomanuExtensions;
+using System.IO;
 
 namespace MangaCrawlerLib
 {
@@ -46,6 +47,18 @@ namespace MangaCrawlerLib
         public override int GetHashCode()
         {
             return ID.GetHashCode();
+        }
+
+        public bool IsDirectoryExists()
+        {
+            try
+            {
+                return new DirectoryInfo(GetDirectory()).Exists;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         internal abstract Crawler Crawler { get; }
