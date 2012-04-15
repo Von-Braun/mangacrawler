@@ -281,12 +281,19 @@ namespace MangaCrawler
                             SelectedBookmarkedChapters.Any(c => c.CanReadFirstPage());
                         Form.readMangaForSelectedBookmarkedChaptersToolStripButton.Enabled =
                             Form.readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Enabled;
+
+                        Form.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Enabled =
+                            SelectedBookmarkedChapters.Any(c => !c.BookmarkIgnored);
+                        Form.ignoreNewForSelectedBookmarkedChaptersToolStripButton.Enabled =
+                            Form.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Enabled;
                     }
                 }
             }
 
             private void UpdateOptions()
             {
+                Form.autostartCheckBox.Checked = Autostart.Enabled;
+
                 bool show = DownloadManager.Instance.Works.List.All(w => !w.IsDownloading);
 
                 foreach (var control in Form.optionsTabPanel.Controls.Cast<Control>())

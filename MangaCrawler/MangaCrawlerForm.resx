@@ -196,7 +196,7 @@
     <value>0, 0, 0, 100</value>
   </data>
   <data name="bookmarksSplitter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 233</value>
+    <value>6, 280</value>
   </data>
   <data name="bookmarksSplitter.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -276,8 +276,14 @@
   <data name="readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Text" xml:space="preserve">
     <value>Read manga</value>
   </data>
+  <data name="ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
+  </data>
+  <data name="ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Text" xml:space="preserve">
+    <value>Ignore new</value>
+  </data>
   <data name="bookmarkedChaptersContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>141, 92</value>
+    <value>141, 114</value>
   </data>
   <data name="&gt;&gt;bookmarkedChaptersContextMenuStrip.Name" xml:space="preserve">
     <value>bookmarkedChaptersContextMenuStrip</value>
@@ -298,13 +304,13 @@
     <value>17</value>
   </data>
   <data name="bookmarkedchaptersListBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 27</value>
+    <value>10, 0</value>
   </data>
   <data name="bookmarkedchaptersListBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 0, 0, 0</value>
   </data>
   <data name="bookmarkedchaptersListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>395, 206</value>
+    <value>395, 280</value>
   </data>
   <data name="bookmarkedchaptersListBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -324,6 +330,21 @@
   <metadata name="bookmarkedChaptersToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>471, 56</value>
   </metadata>
+  <data name="ignoreNewForSelectedBookmarkedChaptersToolStripButton.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="ignoreNewForSelectedBookmarkedChaptersToolStripButton.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="ignoreNewForSelectedBookmarkedChaptersToolStripButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 24</value>
+  </data>
+  <data name="ignoreNewForSelectedBookmarkedChaptersToolStripButton.Text" xml:space="preserve">
+    <value>Ignore new</value>
+  </data>
+  <data name="ignoreNewForSelectedBookmarkedChaptersToolStripButton.ToolTipText" xml:space="preserve">
+    <value>Ignore new</value>
+  </data>
   <data name="readMangaForSelectedBookmarkedChaptersToolStripButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -384,6 +405,9 @@
   <data name="bookmarkedChaptersToolStrip.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
   </data>
+  <data name="bookmarkedChaptersToolStrip.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;bookmarkedChaptersToolStrip.Name" xml:space="preserve">
     <value>bookmarkedChaptersToolStrip</value>
   </data>
@@ -409,7 +433,7 @@
     <value>10, 0, 0, 0</value>
   </data>
   <data name="chapterBookmarksPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>405, 233</value>
+    <value>405, 280</value>
   </data>
   <data name="chapterBookmarksPanel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -517,7 +541,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="bookmarkedSeriesListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 206</value>
+    <value>344, 253</value>
   </data>
   <data name="bookmarkedSeriesListBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -622,7 +646,7 @@
     <value>0, 0, 5, 0</value>
   </data>
   <data name="serieBookmarksPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>349, 233</value>
+    <value>349, 280</value>
   </data>
   <data name="serieBookmarksPanel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -646,7 +670,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="bookmarksTabPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 233</value>
+    <value>754, 280</value>
   </data>
   <data name="bookmarksTabPanel.TabIndex" type="System.Int32, mscorlib">
     <value>41</value>
@@ -673,7 +697,7 @@
     <value>0, 5, 0, 0</value>
   </data>
   <data name="bookmarksTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 238</value>
+    <value>754, 285</value>
   </data>
   <data name="bookmarksTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -790,7 +814,7 @@
     <value>4, 22</value>
   </data>
   <data name="logTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 238</value>
+    <value>754, 285</value>
   </data>
   <data name="logTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -809,6 +833,36 @@
   </data>
   <data name="&gt;&gt;logTabPage.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="autostartCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="autostartCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="autostartCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 253</value>
+  </data>
+  <data name="autostartCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 17</value>
+  </data>
+  <data name="autostartCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>46</value>
+  </data>
+  <data name="autostartCheckBox.Text" xml:space="preserve">
+    <value>Start on login</value>
+  </data>
+  <data name="&gt;&gt;autostartCheckBox.Name" xml:space="preserve">
+    <value>autostartCheckBox</value>
+  </data>
+  <data name="&gt;&gt;autostartCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;autostartCheckBox.Parent" xml:space="preserve">
+    <value>optionsTabPanel</value>
+  </data>
+  <data name="&gt;&gt;autostartCheckBox.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="showBaloonTipsCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -838,7 +892,7 @@
     <value>optionsTabPanel</value>
   </data>
   <data name="&gt;&gt;showBaloonTipsCheckBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="minimizeOnCloseCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -868,7 +922,7 @@
     <value>optionsTabPanel</value>
   </data>
   <data name="&gt;&gt;minimizeOnCloseCheckBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="mangaRootDirChooseButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -898,7 +952,7 @@
     <value>optionsTabPanel</value>
   </data>
   <data name="&gt;&gt;mangaRootDirChooseButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="playSoundWhenDownloadedCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -928,7 +982,7 @@
     <value>optionsTabPanel</value>
   </data>
   <data name="&gt;&gt;playSoundWhenDownloadedCheckBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="cbzCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -958,7 +1012,7 @@
     <value>optionsTabPanel</value>
   </data>
   <data name="&gt;&gt;cbzCheckBox.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="optionslLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -991,7 +1045,7 @@
     <value>optionsTabPanel</value>
   </data>
   <data name="&gt;&gt;optionslLabel.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1021,7 +1075,7 @@
     <value>optionsTabPanel</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="pageNamingStrategyComboBox.Items" xml:space="preserve">
     <value>Do not change</value>
@@ -1057,7 +1111,7 @@
     <value>optionsTabPanel</value>
   </data>
   <data name="&gt;&gt;pageNamingStrategyComboBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="mangaRootDirTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1081,7 +1135,7 @@
     <value>optionsTabPanel</value>
   </data>
   <data name="&gt;&gt;mangaRootDirTextBox.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1111,7 +1165,7 @@
     <value>optionsTabPanel</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="optionsTabPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1120,7 +1174,7 @@
     <value>0, 0</value>
   </data>
   <data name="optionsTabPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 238</value>
+    <value>754, 285</value>
   </data>
   <data name="optionsTabPanel.TabIndex" type="System.Int32, mscorlib">
     <value>49</value>
@@ -1141,7 +1195,7 @@
     <value>4, 22</value>
   </data>
   <data name="optionsTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 238</value>
+    <value>754, 285</value>
   </data>
   <data name="optionsTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1231,7 +1285,7 @@
     <value>0, 27</value>
   </data>
   <data name="worksGridView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 206</value>
+    <value>754, 253</value>
   </data>
   <data name="worksGridView.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1396,7 +1450,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="worksTabPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 233</value>
+    <value>754, 280</value>
   </data>
   <data name="worksTabPanel.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -1423,7 +1477,7 @@
     <value>0, 5, 0, 0</value>
   </data>
   <data name="worksTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 238</value>
+    <value>754, 285</value>
   </data>
   <data name="worksTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1531,7 +1585,7 @@
     <value>0, 3, 0, 0</value>
   </data>
   <data name="serversListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 206</value>
+    <value>209, 253</value>
   </data>
   <data name="serversListBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1621,7 +1675,7 @@
     <value>0, 0, 3, 0</value>
   </data>
   <data name="serversPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>212, 233</value>
+    <value>212, 280</value>
   </data>
   <data name="serversPanel.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -1654,7 +1708,7 @@
     <value>0, 100, 0, 0</value>
   </data>
   <data name="seriesSplitter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 233</value>
+    <value>6, 280</value>
   </data>
   <data name="seriesSplitter.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
@@ -1762,7 +1816,7 @@
     <value>0, 3, 0, 0</value>
   </data>
   <data name="chaptersListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>274, 206</value>
+    <value>274, 253</value>
   </data>
   <data name="chaptersListBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1870,7 +1924,7 @@
     <value>10, 0, 0, 0</value>
   </data>
   <data name="chaptersPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>284, 233</value>
+    <value>284, 280</value>
   </data>
   <data name="chaptersPanel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1978,7 +2032,7 @@
     <value>0, 3, 0, 5</value>
   </data>
   <data name="seriesListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 180</value>
+    <value>250, 227</value>
   </data>
   <data name="seriesListBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2203,7 +2257,7 @@
     <value>Bottom</value>
   </data>
   <data name="searchPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 207</value>
+    <value>3, 254</value>
   </data>
   <data name="searchPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2242,7 +2296,7 @@
     <value>3, 0, 5, 0</value>
   </data>
   <data name="seriesPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 233</value>
+    <value>258, 280</value>
   </data>
   <data name="seriesPanel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2266,7 +2320,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="splitPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>542, 233</value>
+    <value>542, 280</value>
   </data>
   <data name="splitPanel.TabIndex" type="System.Int32, mscorlib">
     <value>39</value>
@@ -2293,7 +2347,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="seriesTabPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 233</value>
+    <value>754, 280</value>
   </data>
   <data name="seriesTabPanel.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
@@ -2320,7 +2374,7 @@
     <value>0, 5, 0, 0</value>
   </data>
   <data name="seriesTabPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>754, 238</value>
+    <value>754, 285</value>
   </data>
   <data name="seriesTabPage.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2347,7 +2401,7 @@
     <value>13, 34</value>
   </data>
   <data name="tabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>762, 264</value>
+    <value>762, 311</value>
   </data>
   <data name="tabControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2502,9 +2556,6 @@
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>911, 17</value>
   </metadata>
-  <data name="seriesTabLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="seriesTabLabel.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt, style=Bold</value>
   </data>
@@ -2521,7 +2572,7 @@
     <value>3, 0, 3, 0</value>
   </data>
   <data name="seriesTabLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 16</value>
+    <value>59, 25</value>
   </data>
   <data name="seriesTabLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2541,9 +2592,6 @@
   <data name="&gt;&gt;seriesTabLabel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="worksTabLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="worksTabLabel.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt, style=Bold</value>
   </data>
@@ -2560,7 +2608,7 @@
     <value>3, 0, 3, 0</value>
   </data>
   <data name="worksTabLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 16</value>
+    <value>104, 25</value>
   </data>
   <data name="worksTabLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2580,9 +2628,6 @@
   <data name="&gt;&gt;worksTabLabel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="bookmarksTabLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="bookmarksTabLabel.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt, style=Bold</value>
   </data>
@@ -2599,7 +2644,7 @@
     <value>3, 0, 3, 0</value>
   </data>
   <data name="bookmarksTabLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 16</value>
+    <value>92, 25</value>
   </data>
   <data name="bookmarksTabLabel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2619,9 +2664,6 @@
   <data name="&gt;&gt;bookmarksTabLabel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="optionsTabLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="optionsTabLabel.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt, style=Bold</value>
   </data>
@@ -2638,7 +2680,7 @@
     <value>3, 0, 3, 0</value>
   </data>
   <data name="optionsTabLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 16</value>
+    <value>67, 25</value>
   </data>
   <data name="optionsTabLabel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2658,9 +2700,6 @@
   <data name="&gt;&gt;optionsTabLabel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="logTabLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="logTabLabel.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 9.75pt, style=Bold</value>
   </data>
@@ -2677,7 +2716,7 @@
     <value>3, 0, 3, 0</value>
   </data>
   <data name="logTabLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 16</value>
+    <value>40, 25</value>
   </data>
   <data name="logTabLabel.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -2737,7 +2776,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>784, 314</value>
+    <value>784, 361</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>800, 350</value>
@@ -2783,6 +2822,18 @@
   </data>
   <data name="&gt;&gt;readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Name" xml:space="preserve">
+    <value>ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ignoreNewForSelectedBookmarkedChaptersToolStripButton.Name" xml:space="preserve">
+    <value>ignoreNewForSelectedBookmarkedChaptersToolStripButton</value>
+  </data>
+  <data name="&gt;&gt;ignoreNewForSelectedBookmarkedChaptersToolStripButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;readMangaForSelectedBookmarkedChaptersToolStripButton.Name" xml:space="preserve">
     <value>readMangaForSelectedBookmarkedChaptersToolStripButton</value>

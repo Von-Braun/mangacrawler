@@ -96,6 +96,8 @@ namespace MangaCrawler
 
                 if (error)
                     SystemSounds.Asterisk.Play();
+
+                GUI.UpdateAll();
             }
 
             public void DownloadSeriesForSelectedServer()
@@ -377,6 +379,17 @@ namespace MangaCrawler
                 {
                     Loggers.GUI.Error("Exception", ex);
                 }
+            }
+
+            public void IgnoreForSelectedBookmarkedChapters()
+            {
+                IgnoreNew(GUI.SelectedBookmarkedChapters);
+            }
+
+            private void IgnoreNew(IEnumerable<Chapter> a_chapters)
+            {
+                DownloadManager.Instance.BookmarksIgnored(a_chapters, true);
+                GUI.UpdateAll();
             }
         }
     }

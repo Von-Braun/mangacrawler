@@ -49,7 +49,9 @@
             this.visitPageForSelectedBookmarkedChaptersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.downloadForSelectedBookmarkedChaptersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.readMangaForSelectedBookmarkedChaptersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bookmarkedChaptersToolStrip = new System.Windows.Forms.ToolStrip();
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.readMangaForSelectedBookmarkedChaptersToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.downloadForSelectedBookmarkedChaptersToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.visitPageForSelectedBookmarkedChaptersToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -76,6 +78,7 @@
             this.logRichTextBox = new System.Windows.Forms.RichTextBox();
             this.optionsTabPage = new System.Windows.Forms.TabPage();
             this.optionsTabPanel = new System.Windows.Forms.Panel();
+            this.autostartCheckBox = new System.Windows.Forms.CheckBox();
             this.showBaloonTipsCheckBox = new System.Windows.Forms.CheckBox();
             this.minimizeOnCloseCheckBox = new System.Windows.Forms.CheckBox();
             this.mangaRootDirChooseButton = new System.Windows.Forms.Button();
@@ -284,7 +287,8 @@
             this.openFolderForSelectedBookmarkedChaptersToolStripMenuItem,
             this.visitPageForSelectedBookmarkedChaptersToolStripMenuItem,
             this.downloadForSelectedBookmarkedChaptersToolStripMenuItem,
-            this.readMangaForSelectedBookmarkedChaptersToolStripMenuItem});
+            this.readMangaForSelectedBookmarkedChaptersToolStripMenuItem,
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem});
             this.bookmarkedChaptersContextMenuStrip.Name = "bookmarkedChaptersContextMenuStrip";
             resources.ApplyResources(this.bookmarkedChaptersContextMenuStrip, "bookmarkedChaptersContextMenuStrip");
             // 
@@ -316,6 +320,13 @@
             resources.ApplyResources(this.readMangaForSelectedBookmarkedChaptersToolStripMenuItem, "readMangaForSelectedBookmarkedChaptersToolStripMenuItem");
             this.readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Click += new System.EventHandler(this.readMangaForSelectedBookmarkedChaptersToolStripMenuItem_Click);
             // 
+            // ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem
+            // 
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.Cancel;
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Name = "ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem";
+            resources.ApplyResources(this.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem, "ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem");
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Click += new System.EventHandler(this.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem_Click);
+            // 
             // bookmarkedChaptersToolStrip
             // 
             this.bookmarkedChaptersToolStrip.BackColor = System.Drawing.SystemColors.Window;
@@ -323,6 +334,7 @@
             this.bookmarkedChaptersToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.bookmarkedChaptersToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.bookmarkedChaptersToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripButton,
             this.readMangaForSelectedBookmarkedChaptersToolStripButton,
             this.downloadForSelectedBookmarkedChaptersToolStripButton,
             this.visitPageForSelectedBookmarkedChaptersToolStripButton,
@@ -332,6 +344,15 @@
             this.bookmarkedChaptersToolStrip.Name = "bookmarkedChaptersToolStrip";
             this.bookmarkedChaptersToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.bookmarkedChaptersToolStrip.Stretch = true;
+            // 
+            // ignoreNewForSelectedBookmarkedChaptersToolStripButton
+            // 
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.ignoreNewForSelectedBookmarkedChaptersToolStripButton, "ignoreNewForSelectedBookmarkedChaptersToolStripButton");
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripButton.Image = global::MangaCrawler.Properties.Resources.Cancel;
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripButton.Name = "ignoreNewForSelectedBookmarkedChaptersToolStripButton";
+            this.ignoreNewForSelectedBookmarkedChaptersToolStripButton.Click += new System.EventHandler(this.ignoreNewForSelectedBookmarkedChaptersToolStripButton_Click);
             // 
             // readMangaForSelectedBookmarkedChaptersToolStripButton
             // 
@@ -525,6 +546,7 @@
             // 
             // optionsTabPanel
             // 
+            this.optionsTabPanel.Controls.Add(this.autostartCheckBox);
             this.optionsTabPanel.Controls.Add(this.showBaloonTipsCheckBox);
             this.optionsTabPanel.Controls.Add(this.minimizeOnCloseCheckBox);
             this.optionsTabPanel.Controls.Add(this.mangaRootDirChooseButton);
@@ -537,6 +559,13 @@
             this.optionsTabPanel.Controls.Add(this.label2);
             resources.ApplyResources(this.optionsTabPanel, "optionsTabPanel");
             this.optionsTabPanel.Name = "optionsTabPanel";
+            // 
+            // autostartCheckBox
+            // 
+            resources.ApplyResources(this.autostartCheckBox, "autostartCheckBox");
+            this.autostartCheckBox.Name = "autostartCheckBox";
+            this.autostartCheckBox.UseVisualStyleBackColor = true;
+            this.autostartCheckBox.CheckedChanged += new System.EventHandler(this.autostartCheckBox_CheckedChanged);
             // 
             // showBaloonTipsCheckBox
             // 
@@ -1340,8 +1369,8 @@
             // 
             // seriesTabLabel
             // 
-            resources.ApplyResources(this.seriesTabLabel, "seriesTabLabel");
             this.seriesTabLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            resources.ApplyResources(this.seriesTabLabel, "seriesTabLabel");
             this.seriesTabLabel.ForeColor = System.Drawing.Color.Blue;
             this.seriesTabLabel.Name = "seriesTabLabel";
             this.seriesTabLabel.Click += new System.EventHandler(this.seriesTabLabel_Click);
@@ -1350,9 +1379,9 @@
             // 
             // worksTabLabel
             // 
-            resources.ApplyResources(this.worksTabLabel, "worksTabLabel");
             this.worksTabLabel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.worksTabLabel.ForeColor = System.Drawing.Color.Blue;
+            resources.ApplyResources(this.worksTabLabel, "worksTabLabel");
+            this.worksTabLabel.ForeColor = System.Drawing.Color.LightSteelBlue;
             this.worksTabLabel.Name = "worksTabLabel";
             this.worksTabLabel.Click += new System.EventHandler(this.worksTabLabel_Click);
             this.worksTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
@@ -1360,9 +1389,9 @@
             // 
             // bookmarksTabLabel
             // 
-            resources.ApplyResources(this.bookmarksTabLabel, "bookmarksTabLabel");
             this.bookmarksTabLabel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.bookmarksTabLabel.ForeColor = System.Drawing.Color.Blue;
+            resources.ApplyResources(this.bookmarksTabLabel, "bookmarksTabLabel");
+            this.bookmarksTabLabel.ForeColor = System.Drawing.Color.LightSteelBlue;
             this.bookmarksTabLabel.Name = "bookmarksTabLabel";
             this.bookmarksTabLabel.Click += new System.EventHandler(this.bookmarksTabLabel_Click);
             this.bookmarksTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
@@ -1370,9 +1399,9 @@
             // 
             // optionsTabLabel
             // 
-            resources.ApplyResources(this.optionsTabLabel, "optionsTabLabel");
             this.optionsTabLabel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.optionsTabLabel.ForeColor = System.Drawing.Color.Blue;
+            resources.ApplyResources(this.optionsTabLabel, "optionsTabLabel");
+            this.optionsTabLabel.ForeColor = System.Drawing.Color.LightSteelBlue;
             this.optionsTabLabel.Name = "optionsTabLabel";
             this.optionsTabLabel.Click += new System.EventHandler(this.optionsTabLabel_Click);
             this.optionsTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
@@ -1380,9 +1409,9 @@
             // 
             // logTabLabel
             // 
-            resources.ApplyResources(this.logTabLabel, "logTabLabel");
             this.logTabLabel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.logTabLabel.ForeColor = System.Drawing.Color.Blue;
+            resources.ApplyResources(this.logTabLabel, "logTabLabel");
+            this.logTabLabel.ForeColor = System.Drawing.Color.LightSteelBlue;
             this.logTabLabel.Name = "logTabLabel";
             this.logTabLabel.Click += new System.EventHandler(this.logTabLabel_Click);
             this.logTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
@@ -1516,7 +1545,6 @@
             this.debugContextMenuStrip.ResumeLayout(false);
             this.trayContextMenuStrip.ResumeLayout(false);
             this.flowLayoutPanel.ResumeLayout(false);
-            this.flowLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1671,6 +1699,9 @@
         private System.Windows.Forms.Label bookmarksTabLabel;
         private System.Windows.Forms.Label optionsTabLabel;
         private System.Windows.Forms.Label logTabLabel;
+        private System.Windows.Forms.CheckBox autostartCheckBox;
+        private System.Windows.Forms.ToolStripButton ignoreNewForSelectedBookmarkedChaptersToolStripButton;
+        private System.Windows.Forms.ToolStripMenuItem ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem;
     }
 }
 

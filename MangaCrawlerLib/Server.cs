@@ -111,9 +111,15 @@ namespace MangaCrawlerLib
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
                     if (!m_series.IsLoadedFromXml)
+                    {
+                        result = EliminateDoubles(result);
                         m_series.ReplaceInnerCollection(result, false, s => s.Title);
+                    }
                     else if (progress == 100)
+                    {
+                        result = EliminateDoubles(result);
                         m_series.ReplaceInnerCollection(result, true, s => s.Title);
+                    }
                     DownloadProgress = progress;
                 });
 
@@ -132,6 +138,42 @@ namespace MangaCrawlerLib
 
             Catalog.Save(this);
             m_check_date_time = DateTime.Now;
+        }
+
+        private static IEnumerable<Serie> EliminateDoubles(IEnumerable<Serie> a_series)
+        {
+            a_series = a_series.ToList();
+
+            var doubles = 
+                a_series.Select(s => s.Title).ExceptExact(a_series.Select(s => s.Title).Distinct()).ToArray();
+
+            var same_name_same_url = from serie in a_series
+                                     where doubles.Contains(serie.Title)
+                                     group serie by new { serie.Title, serie.URL } into gr
+                                     from s in gr.Skip(1)
+                                     select s;
+
+            a_series = 
+                a_series.Except(same_name_same_url.ToList()).ToList();
+
+            doubles = a_series.Select(s => s.Title).ExceptExact(a_series.Select(s => s.Title).Distinct()).ToArray();
+
+            var same_name_diff_url = from serie in a_series
+                                     where doubles.Contains(serie.Title)
+                                     group serie by serie.Title;
+
+            foreach (var gr in same_name_diff_url)
+            {
+                int index = 1;
+
+                foreach (var serie in gr)
+                {
+                    serie.Title += String.Format(" ({0})", index);
+                    index++;
+                }
+            }
+
+            return a_series;
         }
 
         public override string ToString()

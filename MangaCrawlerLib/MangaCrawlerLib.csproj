@@ -81,6 +81,7 @@
     <Compile Include="Bookmarks.cs" />
     <Compile Include="CachedList.cs" />
     <Compile Include="Catalog.cs" />
+    <Compile Include="Crawlers\MangaReader.cs" />
     <Compile Include="Crawlers\CrawlerList.cs" />
     <Compile Include="Crawlers\MangaHere.cs" />
     <Compile Include="Crawlers\TestServerCrawler.cs" />

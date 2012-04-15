@@ -31,13 +31,13 @@ namespace MangaCrawler
                 {
                     case ChapterState.Error:
                     {
-                        a_args.Graphics.DrawString(Resources.Error, font,
+                        a_args.Graphics.DrawString(AlsoNew() + Resources.Error, font,
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
                     }
                     case ChapterState.Cancelled:
                     {
-                        a_args.Graphics.DrawString(Resources.Cancelled, font,
+                        a_args.Graphics.DrawString(AlsoNew() + Resources.Cancelled, font,
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
                     }
@@ -95,6 +95,14 @@ namespace MangaCrawler
             };
 
             DrawItem(a_args, draw_tip);
+        }
+
+        private string AlsoNew()
+        {
+            if (Chapter.BookmarkIgnored)
+                return "";
+            else
+                return Resources.New + ", ";
         }
 
         public override ulong ID
