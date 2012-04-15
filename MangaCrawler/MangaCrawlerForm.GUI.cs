@@ -26,7 +26,7 @@ namespace MangaCrawler
 
             public bool PlaySoundWhenDownloaded;
             public bool RefreshOnceAfterAllDone;
-            public bool Working;
+            public bool Downloading;
             public bool ForceClose;
             public bool IconCreated;
             public DateTime LastBookmarkCheck = DateTime.Now;
@@ -34,7 +34,7 @@ namespace MangaCrawler
 
             public void Init()
             {
-                PlaySoundWhenDownloaded = DownloadManager.Instance.Works.List.Any();
+                PlaySoundWhenDownloaded = DownloadManager.Instance.Downloadings.List.Any();
             }
 
             public Server SelectedServer
@@ -87,14 +87,14 @@ namespace MangaCrawler
                 }
             }
 
-            public Chapter[] SelectedWorks
+            public Chapter[] SelectedDownloadings
             {
                 get
                 {
-                    var works = Form.worksGridView.Rows.Cast<DataGridViewRow>().Where(r => r.Selected).
-                        Select(r => r.DataBoundItem).Cast<WorkGridRow>().Select(w => w.Chapter).ToArray();
+                    var downloadings = Form.downloadingsGridView.Rows.Cast<DataGridViewRow>().Where(r => r.Selected).
+                        Select(r => r.DataBoundItem).Cast<DownloadingGridRow>().Select(w => w.Chapter).ToArray();
 
-                    return works;
+                    return downloadings;
                 }
             }
 
@@ -102,8 +102,8 @@ namespace MangaCrawler
             {
                 if (Form.FrontTab == Tabs.Options)
                     UpdateOptions();
-                else if (Form.FrontTab == Tabs.Works)
-                    UpdateWorksTab();
+                else if (Form.FrontTab == Tabs.Downloadings)
+                    UpdateDownloadingsTab();
                 else if (Form.FrontTab == Tabs.Series)
                 {
                     UpdateServers();
@@ -199,39 +199,39 @@ namespace MangaCrawler
                 }
 
                 {
-                    bool en = SelectedWorks.Any();
+                    bool en = SelectedDownloadings.Any();
 
-                    foreach (var item in Form.worksToolStrip.Items.OfType<ToolStripItem>())
+                    foreach (var item in Form.downloadingsToolStrip.Items.OfType<ToolStripItem>())
                         item.Enabled = en;
-                    foreach (var item in Form.worksContextMenuStrip.Items.OfType<ToolStripMenuItem>())
+                    foreach (var item in Form.downloadingsContextMenuStrip.Items.OfType<ToolStripMenuItem>())
                         item.Enabled = en;
 
                     if (en)
                     {
-                        Form.openFolderForSelectedWorksToolStripButton.Enabled =
-                            SelectedWorks.Any(c => c.IsDirectoryExists());
-                        Form.openFolderForSelectedWorksToolStripMenuItem.Enabled =
-                            Form.openFolderForSelectedWorksToolStripButton.Enabled;
+                        Form.openFolderForSelectedDownloadingsToolStripButton.Enabled =
+                            SelectedDownloadings.Any(c => c.IsDirectoryExists());
+                        Form.openFolderForSelectedDownloadingsToolStripMenuItem.Enabled =
+                            Form.openFolderForSelectedDownloadingsToolStripButton.Enabled;
 
-                        Form.downloadForSelectedWorksToolStripButton.Enabled =
-                            SelectedWorks.Any(c => !c.IsDownloading);
-                        Form.downloadForSelectedWorksToolStripMenuItem.Enabled =
-                            Form.downloadForSelectedWorksToolStripButton.Enabled;
+                        Form.downloadForSelectedDownloadingsToolStripButton.Enabled =
+                            SelectedDownloadings.Any(c => !c.IsDownloading);
+                        Form.downloadForSelectedDownloadingsToolStripMenuItem.Enabled =
+                            Form.downloadForSelectedDownloadingsToolStripButton.Enabled;
 
-                        Form.readMangaForSelectedWorksToolStripMenuItem.Enabled =
-                            SelectedWorks.Any(c => c.CanReadFirstPage());
-                        Form.readMangaForSelectedWorksToolStripButton.Enabled =
-                            Form.readMangaForSelectedWorksToolStripMenuItem.Enabled;
+                        Form.readMangaForSelectedDownloadingsToolStripMenuItem.Enabled =
+                            SelectedDownloadings.Any(c => c.CanReadFirstPage());
+                        Form.readMangaForSelectedDownloadingsToolStripButton.Enabled =
+                            Form.readMangaForSelectedDownloadingsToolStripMenuItem.Enabled;
 
-                        Form.deleteForSelectedWorksToolStripButton.Enabled =
-                            SelectedWorks.Any(c => c.State != ChapterState.Cancelling);
-                        Form.deleteForSelectedWorksToolStripMenuItem.Enabled =
-                            Form.deleteForSelectedWorksToolStripButton.Enabled;
+                        Form.deleteForSelectedDownloadingsToolStripButton.Enabled =
+                            SelectedDownloadings.Any(c => c.State != ChapterState.Cancelling);
+                        Form.deleteForSelectedDownloadingsToolStripMenuItem.Enabled =
+                            Form.deleteForSelectedDownloadingsToolStripButton.Enabled;
 
-                        Form.showInSeriesForSelectedWorksToolStripButton.Enabled =
-                            SelectedWorks.Count() == 1;
-                        Form.showInSeriesForSelectedWorksToolStripMenuItem.Enabled =
-                            Form.showInSeriesForSelectedWorksToolStripButton.Enabled;
+                        Form.showInSeriesForSelectedDownloadingsToolStripButton.Enabled =
+                            SelectedDownloadings.Count() == 1;
+                        Form.showInSeriesForSelectedDownloadingsToolStripMenuItem.Enabled =
+                            Form.showInSeriesForSelectedDownloadingsToolStripButton.Enabled;
                     }
                 }
 
@@ -294,7 +294,7 @@ namespace MangaCrawler
             {
                 Form.autostartCheckBox.Checked = Autostart.Enabled;
 
-                bool show = DownloadManager.Instance.Works.List.All(w => !w.IsDownloading);
+                bool show = DownloadManager.Instance.Downloadings.List.All(w => !w.IsDownloading);
 
                 foreach (var control in Form.optionsTabPanel.Controls.Cast<Control>())
                 {
@@ -315,52 +315,52 @@ namespace MangaCrawler
                 }
             }
 
-            private void UpdateWorksTab()
+            private void UpdateDownloadingsTab()
             {
-                BindingList<WorkGridRow> list = (BindingList<WorkGridRow>)Form.worksGridView.DataSource;
+                BindingList<DownloadingGridRow> list = (BindingList<DownloadingGridRow>)Form.downloadingsGridView.DataSource;
 
-                Form.worksGridView.SuspendDrawing();
+                Form.downloadingsGridView.SuspendDrawing();
 
                 int selected_row = -1;
-                if (Form.worksGridView.SelectedRows.Count == 1)
-                    selected_row = Form.worksGridView.SelectedRows[0].Index;
+                if (Form.downloadingsGridView.SelectedRows.Count == 1)
+                    selected_row = Form.downloadingsGridView.SelectedRows[0].Index;
 
                 try
                 {
-                    var works = DownloadManager.Instance.Works.List;
+                    var downloadings = DownloadManager.Instance.Downloadings.List;
 
-                    var add = (from work in works
-                               where !list.Any(w => w.Chapter == work)
-                               select work).ToList();
+                    var add = (from chapter in downloadings
+                               where !list.Any(w => w.Chapter == chapter)
+                               select chapter).ToList();
 
-                    var remove = (from work in list
-                                  where !works.Any(w => w == work.Chapter)
-                                  select work).ToList();
+                    var remove = (from chapter in list
+                                  where !downloadings.Any(w => w == chapter.Chapter)
+                                  select chapter).ToList();
 
                     bool was_empty = list.Count == 0;
 
                     foreach (var el in add)
-                        list.Add(new WorkGridRow(el));
+                        list.Add(new DownloadingGridRow(el));
                     foreach (var el in remove)
                         list.Remove(el);
 
                     if (was_empty)
                     {
-                        if (Form.worksGridView.Rows.Count != 0)
-                            Debug.Assert(Form.worksGridView.SelectedRows.Count != 0);
-                        Form.worksGridView.ClearSelection();
+                        if (Form.downloadingsGridView.Rows.Count != 0)
+                            Debug.Assert(Form.downloadingsGridView.SelectedRows.Count != 0);
+                        Form.downloadingsGridView.ClearSelection();
                     }
 
-                    if (selected_row >= Form.worksGridView.Rows.Count)
-                        if (Form.worksGridView.Rows.Count > 0)
-                            Form.worksGridView.Rows[Form.worksGridView.Rows.Count - 1].Selected = true;
+                    if (selected_row >= Form.downloadingsGridView.Rows.Count)
+                        if (Form.downloadingsGridView.Rows.Count > 0)
+                            Form.downloadingsGridView.Rows[Form.downloadingsGridView.Rows.Count - 1].Selected = true;
                 }
                 finally
                 {
-                    Form.worksGridView.ResumeDrawing();
+                    Form.downloadingsGridView.ResumeDrawing();
                 }
 
-                Form.worksGridView.Refresh();
+                Form.downloadingsGridView.Refresh();
             }
 
             private void UpdateChapters()
@@ -655,15 +655,15 @@ namespace MangaCrawler
                 Form.bookmarkedchaptersListBox.SelectedItem = bli;
             }
 
-            public void ShowInSeriesFromWorks()
+            public void ShowInSeriesFromDownloadings()
             {
-                if (SelectedWorks.Length != 1)
+                if (SelectedDownloadings.Length != 1)
                 {
                     SystemSounds.Asterisk.Play();
                     return;
                 }
 
-                var chapter = SelectedWorks.First();
+                var chapter = SelectedDownloadings.First();
 
                 Form.FrontTab = Tabs.Series;
 
@@ -677,7 +677,7 @@ namespace MangaCrawler
                 if (DownloadManager.Instance.NeedGUIRefresh(true))
                 {
                     RefreshOnceAfterAllDone = false;
-                    Working = DownloadManager.Instance.Works.List.Any();
+                    Downloading = DownloadManager.Instance.Downloadings.List.Any();
                 }
                 else if (!RefreshOnceAfterAllDone)
                 {
@@ -685,7 +685,7 @@ namespace MangaCrawler
                 }
                 else
                 {
-                    if (Working)
+                    if (Downloading)
                     {
                         if (PlaySoundWhenDownloaded)
                         {
@@ -695,12 +695,12 @@ namespace MangaCrawler
                     }
 
                     PlaySoundWhenDownloaded = false;
-                    Working = false;
+                    Downloading = false;
 
                     return;
                 }
 
-                Commands.SaveWorks();
+                Commands.SaveDownloadings();
                 ShowNotificationAboutNewChapters();
                 UpdateAll();
             }

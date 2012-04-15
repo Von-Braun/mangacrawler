@@ -20,7 +20,7 @@ namespace MangaCrawlerLib
         private class Files
         {
             public static string CATALOG_XML = "catalog.xml";
-            public static string WORKS_XML = "works.xml";
+            public static string DOWNLOADINGS_XML = "downloadings.xml";
             public static string BOOKMARKS_XML = "bookmarks.xml";
         }
 
@@ -68,8 +68,8 @@ namespace MangaCrawlerLib
             public static string PAGE_STATE_NODE = "State";
             public static string PAGE_IMAGEFILEPATH_NODE = "ImageFilePath";
 
-            public static string WORKS_NODE = "Works";
-            public static string WORK_CHAPTER_ID_NODE = "ChapterID";
+            public static string DOWNLOADINGS_NODE = "Downloadings";
+            public static string DOWNLOADING_CHAPTER_ID_NODE = "ChapterID";
 
             public static string BOOKMARKS_NODE = "Bookmarks";
             public static string BOOKMARK_SERIE_ID_NODE = "SerieID";
@@ -103,11 +103,11 @@ namespace MangaCrawlerLib
             }
         }
 
-        private static string WorksFile
+        private static string DownloadingsFile
         {
             get
             {
-                return CatalogDir + Files.WORKS_XML;
+                return CatalogDir + Files.DOWNLOADINGS_XML;
             }
         }
 
@@ -519,39 +519,39 @@ namespace MangaCrawlerLib
 
         }
 
-        internal static List<Chapter> LoadWorks()
+        internal static List<Chapter> LoadDownloadings()
         {
-            if (!new FileInfo(WorksFile).Exists)
+            if (!new FileInfo(DownloadingsFile).Exists)
                 return new List<Chapter>();
 
             try
             {
-                XElement root = XmlLoad(WorksFile).Element(Nodes.WORKS_NODE);
+                XElement root = XmlLoad(DownloadingsFile).Element(Nodes.DOWNLOADINGS_NODE);
 
-                List<Chapter> works = new List<Chapter>();
+                List<Chapter> downloadings = new List<Chapter>();
 
-                foreach (var work in root.Elements(Nodes.WORK_CHAPTER_ID_NODE))
+                foreach (var chapter in root.Elements(Nodes.DOWNLOADING_CHAPTER_ID_NODE))
                 {
-                    ulong chapter_id = UInt64.Parse(work.Value);
-                    Chapter chapter = LoadChapter(chapter_id);
+                    ulong chapter_id = UInt64.Parse(chapter.Value);
+                    Chapter ch = LoadChapter(chapter_id);
 
-                    if (chapter == null)
+                    if (ch == null)
                         continue;
 
-                    works.Add(chapter);
+                    downloadings.Add(ch);
                 }
 
-                return works;
+                return downloadings;
             }
             catch (Exception ex)
             {
                 Loggers.MangaCrawler.Error("Exception", ex);
-                DeleteFile(WorksFile);
+                DeleteFile(DownloadingsFile);
                 return new List<Chapter>();
             }
         }
 
-        internal static void SaveWorks(IEnumerable<Chapter> a_works)
+        internal static void SaveDownloading(IEnumerable<Chapter> a_chapters)
         {
             try
             {
@@ -559,11 +559,11 @@ namespace MangaCrawlerLib
                 {
                     new DirectoryInfo(CatalogDir).Create();
 
-                    var xml = new XElement(Nodes.WORKS_NODE,
-                        from work in a_works
-                        select new XElement(Nodes.WORK_CHAPTER_ID_NODE, work.ID));
+                    var xml = new XElement(Nodes.DOWNLOADINGS_NODE,
+                        from chapter in a_chapters
+                        select new XElement(Nodes.DOWNLOADING_CHAPTER_ID_NODE, chapter.ID));
                        
-                    XmlSave(WorksFile, xml);
+                    XmlSave(DownloadingsFile, xml);
                 }
             }
             catch (Exception ex)

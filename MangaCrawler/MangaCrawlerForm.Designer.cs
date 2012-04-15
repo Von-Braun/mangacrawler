@@ -89,26 +89,26 @@
             this.pageNamingStrategyComboBox = new System.Windows.Forms.ComboBox();
             this.mangaRootDirTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.worksTabPage = new System.Windows.Forms.TabPage();
-            this.worksTabPanel = new System.Windows.Forms.Panel();
-            this.worksGridView = new System.Windows.Forms.DataGridView();
+            this.downloadingsTabPage = new System.Windows.Forms.TabPage();
+            this.downloadingsTabPanel = new System.Windows.Forms.Panel();
+            this.downloadingsGridView = new System.Windows.Forms.DataGridView();
             this.Chapter = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Progress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.worksContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.openFolderForSelectedWorksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.visitPageForSelectedWorksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.downloadForSelectedWorksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.readMangaForSelectedWorksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteForSelectedWorksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showInSeriesForSelectedWorksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.downloadingsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openFolderForSelectedDownloadingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.visitPageForSelectedDownloadsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.downloadForSelectedDownloadingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.readMangaForSelectedDownloadingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteForSelectedDownloadingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showInSeriesForSelectedDownloadingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label9 = new System.Windows.Forms.Label();
-            this.worksToolStrip = new System.Windows.Forms.ToolStrip();
-            this.showInSeriesForSelectedWorksToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.deleteForSelectedWorksToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.readMangaForSelectedWorksToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.downloadForSelectedWorksToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.downloadingsToolStrip = new System.Windows.Forms.ToolStrip();
+            this.showInSeriesForSelectedDownloadingsToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.deleteForSelectedDownloadingsToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.readMangaForSelectedDownloadingsToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.downloadForSelectedDownloadingsToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton13 = new System.Windows.Forms.ToolStripButton();
-            this.openFolderForSelectedWorksToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.openFolderForSelectedDownloadingsToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.seriesTabPage = new System.Windows.Forms.TabPage();
             this.seriesTabPanel = new System.Windows.Forms.Panel();
             this.serversPanel = new System.Windows.Forms.Panel();
@@ -177,7 +177,7 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.seriesTabLabel = new System.Windows.Forms.Label();
-            this.worksTabLabel = new System.Windows.Forms.Label();
+            this.downloadingsTabLabel = new System.Windows.Forms.Label();
             this.bookmarksTabLabel = new System.Windows.Forms.Label();
             this.optionsTabLabel = new System.Windows.Forms.Label();
             this.logTabLabel = new System.Windows.Forms.Label();
@@ -199,11 +199,11 @@
             this.logTabPanel.SuspendLayout();
             this.optionsTabPage.SuspendLayout();
             this.optionsTabPanel.SuspendLayout();
-            this.worksTabPage.SuspendLayout();
-            this.worksTabPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.worksGridView)).BeginInit();
-            this.worksContextMenuStrip.SuspendLayout();
-            this.worksToolStrip.SuspendLayout();
+            this.downloadingsTabPage.SuspendLayout();
+            this.downloadingsTabPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.downloadingsGridView)).BeginInit();
+            this.downloadingsContextMenuStrip.SuspendLayout();
+            this.downloadingsToolStrip.SuspendLayout();
             this.seriesTabPage.SuspendLayout();
             this.seriesTabPanel.SuspendLayout();
             this.serversPanel.SuspendLayout();
@@ -640,32 +640,32 @@
             // 
             // worksTabPage
             // 
-            this.worksTabPage.Controls.Add(this.worksTabPanel);
-            resources.ApplyResources(this.worksTabPage, "worksTabPage");
-            this.worksTabPage.Name = "worksTabPage";
-            this.worksTabPage.UseVisualStyleBackColor = true;
-            this.worksTabPage.Click += new System.EventHandler(this.worksTabPage_Click);
+            this.downloadingsTabPage.Controls.Add(this.downloadingsTabPanel);
+            resources.ApplyResources(this.downloadingsTabPage, "worksTabPage");
+            this.downloadingsTabPage.Name = "worksTabPage";
+            this.downloadingsTabPage.UseVisualStyleBackColor = true;
+            this.downloadingsTabPage.Click += new System.EventHandler(this.downloadingsTabPage_Click);
             // 
             // worksTabPanel
             // 
-            this.worksTabPanel.Controls.Add(this.worksGridView);
-            this.worksTabPanel.Controls.Add(this.label9);
-            this.worksTabPanel.Controls.Add(this.worksToolStrip);
-            resources.ApplyResources(this.worksTabPanel, "worksTabPanel");
-            this.worksTabPanel.Name = "worksTabPanel";
+            this.downloadingsTabPanel.Controls.Add(this.downloadingsGridView);
+            this.downloadingsTabPanel.Controls.Add(this.label9);
+            this.downloadingsTabPanel.Controls.Add(this.downloadingsToolStrip);
+            resources.ApplyResources(this.downloadingsTabPanel, "worksTabPanel");
+            this.downloadingsTabPanel.Name = "worksTabPanel";
             // 
             // worksGridView
             // 
-            this.worksGridView.AllowUserToAddRows = false;
-            this.worksGridView.AllowUserToDeleteRows = false;
-            this.worksGridView.AllowUserToResizeRows = false;
+            this.downloadingsGridView.AllowUserToAddRows = false;
+            this.downloadingsGridView.AllowUserToDeleteRows = false;
+            this.downloadingsGridView.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.worksGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.worksGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.worksGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.worksGridView.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.worksGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.downloadingsGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.downloadingsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.downloadingsGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.downloadingsGridView.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.downloadingsGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -673,15 +673,15 @@
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.worksGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.worksGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.worksGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.downloadingsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.downloadingsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.downloadingsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Chapter,
             this.Progress});
-            this.worksGridView.ContextMenuStrip = this.worksContextMenuStrip;
-            resources.ApplyResources(this.worksGridView, "worksGridView");
-            this.worksGridView.Name = "worksGridView";
-            this.worksGridView.ReadOnly = true;
+            this.downloadingsGridView.ContextMenuStrip = this.downloadingsContextMenuStrip;
+            resources.ApplyResources(this.downloadingsGridView, "worksGridView");
+            this.downloadingsGridView.Name = "worksGridView";
+            this.downloadingsGridView.ReadOnly = true;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -689,14 +689,14 @@
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.worksGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.worksGridView.RowHeadersVisible = false;
+            this.downloadingsGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.downloadingsGridView.RowHeadersVisible = false;
             dataGridViewCellStyle5.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.worksGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
-            this.worksGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.worksGridView.SelectionChanged += new System.EventHandler(this.worksGridView_SelectionChanged);
-            this.worksGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.worksGridView_KeyDown);
-            this.worksGridView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.worksGridView_MouseDown);
+            this.downloadingsGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            this.downloadingsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.downloadingsGridView.SelectionChanged += new System.EventHandler(this.downloadingsGridView_SelectionChanged);
+            this.downloadingsGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.downloadingsGridView_KeyDown);
+            this.downloadingsGridView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.downloadingsGridView_MouseDown);
             // 
             // Chapter
             // 
@@ -718,57 +718,57 @@
             // 
             // worksContextMenuStrip
             // 
-            this.worksContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openFolderForSelectedWorksToolStripMenuItem,
-            this.visitPageForSelectedWorksToolStripMenuItem,
-            this.downloadForSelectedWorksToolStripMenuItem,
-            this.readMangaForSelectedWorksToolStripMenuItem,
-            this.deleteForSelectedWorksToolStripMenuItem,
-            this.showInSeriesForSelectedWorksToolStripMenuItem});
-            this.worksContextMenuStrip.Name = "worksContextMenuStrip";
-            resources.ApplyResources(this.worksContextMenuStrip, "worksContextMenuStrip");
+            this.downloadingsContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openFolderForSelectedDownloadingsToolStripMenuItem,
+            this.visitPageForSelectedDownloadsToolStripMenuItem,
+            this.downloadForSelectedDownloadingsToolStripMenuItem,
+            this.readMangaForSelectedDownloadingsToolStripMenuItem,
+            this.deleteForSelectedDownloadingsToolStripMenuItem,
+            this.showInSeriesForSelectedDownloadingsToolStripMenuItem});
+            this.downloadingsContextMenuStrip.Name = "worksContextMenuStrip";
+            resources.ApplyResources(this.downloadingsContextMenuStrip, "worksContextMenuStrip");
             // 
             // openFolderForSelectedWorksToolStripMenuItem
             // 
-            this.openFolderForSelectedWorksToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.OpenFolder;
-            this.openFolderForSelectedWorksToolStripMenuItem.Name = "openFolderForSelectedWorksToolStripMenuItem";
-            resources.ApplyResources(this.openFolderForSelectedWorksToolStripMenuItem, "openFolderForSelectedWorksToolStripMenuItem");
-            this.openFolderForSelectedWorksToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem1_Click);
+            this.openFolderForSelectedDownloadingsToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.OpenFolder;
+            this.openFolderForSelectedDownloadingsToolStripMenuItem.Name = "openFolderForSelectedWorksToolStripMenuItem";
+            resources.ApplyResources(this.openFolderForSelectedDownloadingsToolStripMenuItem, "openFolderForSelectedWorksToolStripMenuItem");
+            this.openFolderForSelectedDownloadingsToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem1_Click);
             // 
             // visitPageForSelectedWorksToolStripMenuItem
             // 
-            this.visitPageForSelectedWorksToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.VisitPage;
-            this.visitPageForSelectedWorksToolStripMenuItem.Name = "visitPageForSelectedWorksToolStripMenuItem";
-            resources.ApplyResources(this.visitPageForSelectedWorksToolStripMenuItem, "visitPageForSelectedWorksToolStripMenuItem");
-            this.visitPageForSelectedWorksToolStripMenuItem.Click += new System.EventHandler(this.visitPageToolStripMenuItem1_Click);
+            this.visitPageForSelectedDownloadsToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.VisitPage;
+            this.visitPageForSelectedDownloadsToolStripMenuItem.Name = "visitPageForSelectedWorksToolStripMenuItem";
+            resources.ApplyResources(this.visitPageForSelectedDownloadsToolStripMenuItem, "visitPageForSelectedWorksToolStripMenuItem");
+            this.visitPageForSelectedDownloadsToolStripMenuItem.Click += new System.EventHandler(this.visitPageToolStripMenuItem1_Click);
             // 
             // downloadForSelectedWorksToolStripMenuItem
             // 
-            this.downloadForSelectedWorksToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.Download;
-            this.downloadForSelectedWorksToolStripMenuItem.Name = "downloadForSelectedWorksToolStripMenuItem";
-            resources.ApplyResources(this.downloadForSelectedWorksToolStripMenuItem, "downloadForSelectedWorksToolStripMenuItem");
-            this.downloadForSelectedWorksToolStripMenuItem.Click += new System.EventHandler(this.downloadToolStripMenuItem1_Click);
+            this.downloadForSelectedDownloadingsToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.Download;
+            this.downloadForSelectedDownloadingsToolStripMenuItem.Name = "downloadForSelectedWorksToolStripMenuItem";
+            resources.ApplyResources(this.downloadForSelectedDownloadingsToolStripMenuItem, "downloadForSelectedWorksToolStripMenuItem");
+            this.downloadForSelectedDownloadingsToolStripMenuItem.Click += new System.EventHandler(this.downloadToolStripMenuItem1_Click);
             // 
             // readMangaForSelectedWorksToolStripMenuItem
             // 
-            this.readMangaForSelectedWorksToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.ReadManga;
-            this.readMangaForSelectedWorksToolStripMenuItem.Name = "readMangaForSelectedWorksToolStripMenuItem";
-            resources.ApplyResources(this.readMangaForSelectedWorksToolStripMenuItem, "readMangaForSelectedWorksToolStripMenuItem");
-            this.readMangaForSelectedWorksToolStripMenuItem.Click += new System.EventHandler(this.viewToolStripMenuItem1_Click);
+            this.readMangaForSelectedDownloadingsToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.ReadManga;
+            this.readMangaForSelectedDownloadingsToolStripMenuItem.Name = "readMangaForSelectedWorksToolStripMenuItem";
+            resources.ApplyResources(this.readMangaForSelectedDownloadingsToolStripMenuItem, "readMangaForSelectedWorksToolStripMenuItem");
+            this.readMangaForSelectedDownloadingsToolStripMenuItem.Click += new System.EventHandler(this.viewToolStripMenuItem1_Click);
             // 
             // deleteForSelectedWorksToolStripMenuItem
             // 
-            this.deleteForSelectedWorksToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.Delete;
-            this.deleteForSelectedWorksToolStripMenuItem.Name = "deleteForSelectedWorksToolStripMenuItem";
-            resources.ApplyResources(this.deleteForSelectedWorksToolStripMenuItem, "deleteForSelectedWorksToolStripMenuItem");
-            this.deleteForSelectedWorksToolStripMenuItem.Click += new System.EventHandler(this.deleteForSelectedWorksToolStripMenuItem_Click);
+            this.deleteForSelectedDownloadingsToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.Delete;
+            this.deleteForSelectedDownloadingsToolStripMenuItem.Name = "deleteForSelectedWorksToolStripMenuItem";
+            resources.ApplyResources(this.deleteForSelectedDownloadingsToolStripMenuItem, "deleteForSelectedWorksToolStripMenuItem");
+            this.deleteForSelectedDownloadingsToolStripMenuItem.Click += new System.EventHandler(this.deleteForSelectedDownloadingsToolStripMenuItem_Click);
             // 
             // showInSeriesForSelectedWorksToolStripMenuItem
             // 
-            this.showInSeriesForSelectedWorksToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.ShowInSeries;
-            this.showInSeriesForSelectedWorksToolStripMenuItem.Name = "showInSeriesForSelectedWorksToolStripMenuItem";
-            resources.ApplyResources(this.showInSeriesForSelectedWorksToolStripMenuItem, "showInSeriesForSelectedWorksToolStripMenuItem");
-            this.showInSeriesForSelectedWorksToolStripMenuItem.Click += new System.EventHandler(this.showInSeriesForSelectedWorksToolStripMenuItem_Click);
+            this.showInSeriesForSelectedDownloadingsToolStripMenuItem.Image = global::MangaCrawler.Properties.Resources.ShowInSeries;
+            this.showInSeriesForSelectedDownloadingsToolStripMenuItem.Name = "showInSeriesForSelectedWorksToolStripMenuItem";
+            resources.ApplyResources(this.showInSeriesForSelectedDownloadingsToolStripMenuItem, "showInSeriesForSelectedWorksToolStripMenuItem");
+            this.showInSeriesForSelectedDownloadingsToolStripMenuItem.Click += new System.EventHandler(this.showInSeriesForSelectedDownloadingsToolStripMenuItem_Click);
             // 
             // label9
             // 
@@ -777,57 +777,57 @@
             // 
             // worksToolStrip
             // 
-            this.worksToolStrip.BackColor = System.Drawing.SystemColors.Window;
-            resources.ApplyResources(this.worksToolStrip, "worksToolStrip");
-            this.worksToolStrip.GripMargin = new System.Windows.Forms.Padding(0);
-            this.worksToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.worksToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.worksToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showInSeriesForSelectedWorksToolStripButton,
-            this.deleteForSelectedWorksToolStripButton,
-            this.readMangaForSelectedWorksToolStripButton,
-            this.downloadForSelectedWorksToolStripButton,
+            this.downloadingsToolStrip.BackColor = System.Drawing.SystemColors.Window;
+            resources.ApplyResources(this.downloadingsToolStrip, "worksToolStrip");
+            this.downloadingsToolStrip.GripMargin = new System.Windows.Forms.Padding(0);
+            this.downloadingsToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.downloadingsToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.downloadingsToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showInSeriesForSelectedDownloadingsToolStripButton,
+            this.deleteForSelectedDownloadingsToolStripButton,
+            this.readMangaForSelectedDownloadingsToolStripButton,
+            this.downloadForSelectedDownloadingsToolStripButton,
             this.toolStripButton13,
-            this.openFolderForSelectedWorksToolStripButton});
-            this.worksToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.worksToolStrip.Name = "worksToolStrip";
-            this.worksToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.openFolderForSelectedDownloadingsToolStripButton});
+            this.downloadingsToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.downloadingsToolStrip.Name = "worksToolStrip";
+            this.downloadingsToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             // 
             // showInSeriesForSelectedWorksToolStripButton
             // 
-            this.showInSeriesForSelectedWorksToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.showInSeriesForSelectedWorksToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.showInSeriesForSelectedWorksToolStripButton, "showInSeriesForSelectedWorksToolStripButton");
-            this.showInSeriesForSelectedWorksToolStripButton.Image = global::MangaCrawler.Properties.Resources.ShowInSeries;
-            this.showInSeriesForSelectedWorksToolStripButton.Name = "showInSeriesForSelectedWorksToolStripButton";
-            this.showInSeriesForSelectedWorksToolStripButton.Click += new System.EventHandler(this.toolStripButton18_Click);
+            this.showInSeriesForSelectedDownloadingsToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.showInSeriesForSelectedDownloadingsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.showInSeriesForSelectedDownloadingsToolStripButton, "showInSeriesForSelectedWorksToolStripButton");
+            this.showInSeriesForSelectedDownloadingsToolStripButton.Image = global::MangaCrawler.Properties.Resources.ShowInSeries;
+            this.showInSeriesForSelectedDownloadingsToolStripButton.Name = "showInSeriesForSelectedWorksToolStripButton";
+            this.showInSeriesForSelectedDownloadingsToolStripButton.Click += new System.EventHandler(this.toolStripButton18_Click);
             // 
             // deleteForSelectedWorksToolStripButton
             // 
-            this.deleteForSelectedWorksToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.deleteForSelectedWorksToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.deleteForSelectedWorksToolStripButton, "deleteForSelectedWorksToolStripButton");
-            this.deleteForSelectedWorksToolStripButton.Image = global::MangaCrawler.Properties.Resources.Delete;
-            this.deleteForSelectedWorksToolStripButton.Name = "deleteForSelectedWorksToolStripButton";
-            this.deleteForSelectedWorksToolStripButton.Click += new System.EventHandler(this.toolStripButton16_Click);
+            this.deleteForSelectedDownloadingsToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.deleteForSelectedDownloadingsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.deleteForSelectedDownloadingsToolStripButton, "deleteForSelectedWorksToolStripButton");
+            this.deleteForSelectedDownloadingsToolStripButton.Image = global::MangaCrawler.Properties.Resources.Delete;
+            this.deleteForSelectedDownloadingsToolStripButton.Name = "deleteForSelectedWorksToolStripButton";
+            this.deleteForSelectedDownloadingsToolStripButton.Click += new System.EventHandler(this.toolStripButton16_Click);
             // 
             // readMangaForSelectedWorksToolStripButton
             // 
-            this.readMangaForSelectedWorksToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.readMangaForSelectedWorksToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.readMangaForSelectedWorksToolStripButton, "readMangaForSelectedWorksToolStripButton");
-            this.readMangaForSelectedWorksToolStripButton.Image = global::MangaCrawler.Properties.Resources.ReadManga;
-            this.readMangaForSelectedWorksToolStripButton.Name = "readMangaForSelectedWorksToolStripButton";
-            this.readMangaForSelectedWorksToolStripButton.Click += new System.EventHandler(this.toolStripButton15_Click);
+            this.readMangaForSelectedDownloadingsToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.readMangaForSelectedDownloadingsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.readMangaForSelectedDownloadingsToolStripButton, "readMangaForSelectedWorksToolStripButton");
+            this.readMangaForSelectedDownloadingsToolStripButton.Image = global::MangaCrawler.Properties.Resources.ReadManga;
+            this.readMangaForSelectedDownloadingsToolStripButton.Name = "readMangaForSelectedWorksToolStripButton";
+            this.readMangaForSelectedDownloadingsToolStripButton.Click += new System.EventHandler(this.toolStripButton15_Click);
             // 
             // downloadForSelectedWorksToolStripButton
             // 
-            this.downloadForSelectedWorksToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.downloadForSelectedWorksToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.downloadForSelectedWorksToolStripButton, "downloadForSelectedWorksToolStripButton");
-            this.downloadForSelectedWorksToolStripButton.Image = global::MangaCrawler.Properties.Resources.Download;
-            this.downloadForSelectedWorksToolStripButton.Name = "downloadForSelectedWorksToolStripButton";
-            this.downloadForSelectedWorksToolStripButton.Click += new System.EventHandler(this.toolStripButton14_Click);
+            this.downloadForSelectedDownloadingsToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.downloadForSelectedDownloadingsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.downloadForSelectedDownloadingsToolStripButton, "downloadForSelectedWorksToolStripButton");
+            this.downloadForSelectedDownloadingsToolStripButton.Image = global::MangaCrawler.Properties.Resources.Download;
+            this.downloadForSelectedDownloadingsToolStripButton.Name = "downloadForSelectedWorksToolStripButton";
+            this.downloadForSelectedDownloadingsToolStripButton.Click += new System.EventHandler(this.toolStripButton14_Click);
             // 
             // toolStripButton13
             // 
@@ -840,12 +840,12 @@
             // 
             // openFolderForSelectedWorksToolStripButton
             // 
-            this.openFolderForSelectedWorksToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.openFolderForSelectedWorksToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.openFolderForSelectedWorksToolStripButton, "openFolderForSelectedWorksToolStripButton");
-            this.openFolderForSelectedWorksToolStripButton.Image = global::MangaCrawler.Properties.Resources.OpenFolder;
-            this.openFolderForSelectedWorksToolStripButton.Name = "openFolderForSelectedWorksToolStripButton";
-            this.openFolderForSelectedWorksToolStripButton.Click += new System.EventHandler(this.toolStripButton12_Click);
+            this.openFolderForSelectedDownloadingsToolStripButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.openFolderForSelectedDownloadingsToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.openFolderForSelectedDownloadingsToolStripButton, "openFolderForSelectedWorksToolStripButton");
+            this.openFolderForSelectedDownloadingsToolStripButton.Image = global::MangaCrawler.Properties.Resources.OpenFolder;
+            this.openFolderForSelectedDownloadingsToolStripButton.Name = "openFolderForSelectedWorksToolStripButton";
+            this.openFolderForSelectedDownloadingsToolStripButton.Click += new System.EventHandler(this.toolStripButton12_Click);
             // 
             // seriesTabPage
             // 
@@ -1207,7 +1207,7 @@
             // 
             resources.ApplyResources(this.tabControl, "tabControl");
             this.tabControl.Controls.Add(this.seriesTabPage);
-            this.tabControl.Controls.Add(this.worksTabPage);
+            this.tabControl.Controls.Add(this.downloadingsTabPage);
             this.tabControl.Controls.Add(this.bookmarksTabPage);
             this.tabControl.Controls.Add(this.optionsTabPage);
             this.tabControl.Controls.Add(this.logTabPage);
@@ -1360,7 +1360,7 @@
             // flowLayoutPanel
             // 
             this.flowLayoutPanel.Controls.Add(this.seriesTabLabel);
-            this.flowLayoutPanel.Controls.Add(this.worksTabLabel);
+            this.flowLayoutPanel.Controls.Add(this.downloadingsTabLabel);
             this.flowLayoutPanel.Controls.Add(this.bookmarksTabLabel);
             this.flowLayoutPanel.Controls.Add(this.optionsTabLabel);
             this.flowLayoutPanel.Controls.Add(this.logTabLabel);
@@ -1379,13 +1379,13 @@
             // 
             // worksTabLabel
             // 
-            this.worksTabLabel.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.worksTabLabel, "worksTabLabel");
-            this.worksTabLabel.ForeColor = System.Drawing.Color.LightSteelBlue;
-            this.worksTabLabel.Name = "worksTabLabel";
-            this.worksTabLabel.Click += new System.EventHandler(this.worksTabLabel_Click);
-            this.worksTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
-            this.worksTabLabel.MouseLeave += new System.EventHandler(this.tabLabel_MouseLeave);
+            this.downloadingsTabLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            resources.ApplyResources(this.downloadingsTabLabel, "worksTabLabel");
+            this.downloadingsTabLabel.ForeColor = System.Drawing.Color.LightSteelBlue;
+            this.downloadingsTabLabel.Name = "worksTabLabel";
+            this.downloadingsTabLabel.Click += new System.EventHandler(this.downloadingsTabLabel_Click);
+            this.downloadingsTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
+            this.downloadingsTabLabel.MouseLeave += new System.EventHandler(this.tabLabel_MouseLeave);
             // 
             // bookmarksTabLabel
             // 
@@ -1511,13 +1511,13 @@
             this.optionsTabPage.ResumeLayout(false);
             this.optionsTabPanel.ResumeLayout(false);
             this.optionsTabPanel.PerformLayout();
-            this.worksTabPage.ResumeLayout(false);
-            this.worksTabPanel.ResumeLayout(false);
-            this.worksTabPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.worksGridView)).EndInit();
-            this.worksContextMenuStrip.ResumeLayout(false);
-            this.worksToolStrip.ResumeLayout(false);
-            this.worksToolStrip.PerformLayout();
+            this.downloadingsTabPage.ResumeLayout(false);
+            this.downloadingsTabPanel.ResumeLayout(false);
+            this.downloadingsTabPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.downloadingsGridView)).EndInit();
+            this.downloadingsContextMenuStrip.ResumeLayout(false);
+            this.downloadingsToolStrip.ResumeLayout(false);
+            this.downloadingsToolStrip.PerformLayout();
             this.seriesTabPage.ResumeLayout(false);
             this.seriesTabPanel.ResumeLayout(false);
             this.serversPanel.ResumeLayout(false);
@@ -1566,8 +1566,8 @@
         private System.Windows.Forms.Button clearLogButton;
         private System.Windows.Forms.RichTextBox logRichTextBox;
         private System.Windows.Forms.TabPage optionsTabPage;
-        private System.Windows.Forms.TabPage worksTabPage;
-        private System.Windows.Forms.DataGridView worksGridView;
+        private System.Windows.Forms.TabPage downloadingsTabPage;
+        private System.Windows.Forms.DataGridView downloadingsGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn Chapter;
         private System.Windows.Forms.DataGridViewTextBoxColumn Progress;
         private System.Windows.Forms.TabPage seriesTabPage;
@@ -1617,18 +1617,18 @@
         private System.Windows.Forms.ToolStripMenuItem openFolderForSelectedChaptersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem visitPageForSelectedChaptersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem readMangaForSelectedChaptersToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip worksContextMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem downloadForSelectedWorksToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteForSelectedWorksToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showInSeriesForSelectedWorksToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openFolderForSelectedWorksToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem visitPageForSelectedWorksToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem readMangaForSelectedWorksToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip downloadingsContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem downloadForSelectedDownloadingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteForSelectedDownloadingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showInSeriesForSelectedDownloadingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openFolderForSelectedDownloadingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem visitPageForSelectedDownloadsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem readMangaForSelectedDownloadingsToolStripMenuItem;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ToolStrip serversToolStrip;
         private System.Windows.Forms.ToolStrip seriesToolStrip;
         private System.Windows.Forms.ToolStrip chaptersToolStrip;
-        private System.Windows.Forms.ToolStrip worksToolStrip;
+        private System.Windows.Forms.ToolStrip downloadingsToolStrip;
         private System.Windows.Forms.ToolStrip bookmarkedSeriesToolStrip;
         private System.Windows.Forms.ToolStrip bookmarkedChaptersToolStrip;
         private System.Windows.Forms.Panel searchPanel;
@@ -1647,12 +1647,12 @@
         private System.Windows.Forms.ToolStripButton downloadForSelectedChaptersToolStripButton;
         private System.Windows.Forms.ToolStripButton toolStripButton5;
         private System.Windows.Forms.ToolStripButton openFolderForSelectedChaptersToolStripButton;
-        private System.Windows.Forms.ToolStripButton showInSeriesForSelectedWorksToolStripButton;
-        private System.Windows.Forms.ToolStripButton deleteForSelectedWorksToolStripButton;
-        private System.Windows.Forms.ToolStripButton readMangaForSelectedWorksToolStripButton;
-        private System.Windows.Forms.ToolStripButton downloadForSelectedWorksToolStripButton;
+        private System.Windows.Forms.ToolStripButton showInSeriesForSelectedDownloadingsToolStripButton;
+        private System.Windows.Forms.ToolStripButton deleteForSelectedDownloadingsToolStripButton;
+        private System.Windows.Forms.ToolStripButton readMangaForSelectedDownloadingsToolStripButton;
+        private System.Windows.Forms.ToolStripButton downloadForSelectedDownloadingsToolStripButton;
         private System.Windows.Forms.ToolStripButton toolStripButton13;
-        private System.Windows.Forms.ToolStripButton openFolderForSelectedWorksToolStripButton;
+        private System.Windows.Forms.ToolStripButton openFolderForSelectedDownloadingsToolStripButton;
         private System.Windows.Forms.ToolStripButton removeForSelectedBookmarkedSerieToolStripButton;
         private System.Windows.Forms.ToolStripButton updateNowForSelectedBookmarkedSerieToolStripButton;
         private System.Windows.Forms.ToolStripButton toolStripButton20;
@@ -1680,7 +1680,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Panel seriesTabPanel;
-        private System.Windows.Forms.Panel worksTabPanel;
+        private System.Windows.Forms.Panel downloadingsTabPanel;
         private System.Windows.Forms.Panel optionsTabPanel;
         private System.Windows.Forms.CheckBox showBaloonTipsCheckBox;
         private System.Windows.Forms.CheckBox minimizeOnCloseCheckBox;
@@ -1695,7 +1695,7 @@
         private System.Windows.Forms.Panel logTabPanel;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
         private System.Windows.Forms.Label seriesTabLabel;
-        private System.Windows.Forms.Label worksTabLabel;
+        private System.Windows.Forms.Label downloadingsTabLabel;
         private System.Windows.Forms.Label bookmarksTabLabel;
         private System.Windows.Forms.Label optionsTabLabel;
         private System.Windows.Forms.Label logTabLabel;

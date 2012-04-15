@@ -146,28 +146,28 @@
 serie: {1}
 chapter: {2}</value>
   </data>
-  <data name="WorkProgressCancelled" xml:space="preserve">
+  <data name="DownloadingProgressCancelled" xml:space="preserve">
     <value>Cancelled</value>
   </data>
-  <data name="WorkProgressCancelling" xml:space="preserve">
+  <data name="DownloadingProgressCancelling" xml:space="preserve">
     <value>Cancelling</value>
   </data>
-  <data name="WorkProgressDownloaded" xml:space="preserve">
+  <data name="DownloadingProgressDownloaded" xml:space="preserve">
     <value>Downloaded</value>
   </data>
-  <data name="WorkProgressError" xml:space="preserve">
+  <data name="DownloadingProgressError" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="WorkProgressWaiting" xml:space="preserve">
+  <data name="DownloadingProgressWaiting" xml:space="preserve">
     <value>Waiting</value>
   </data>
-  <data name="WorkProgressZipping" xml:space="preserve">
+  <data name="DownloadingProgressZipping" xml:space="preserve">
     <value>Zipping</value>
   </data>
   <data name="Downloading" xml:space="preserve">
     <value>DOWNLOADING</value>
   </data>
-  <data name="WorkProgressDownloading" xml:space="preserve">
+  <data name="DownloadingProgressDownloading" xml:space="preserve">
     <value>Downloading</value>
   </data>
   <data name="Checking" xml:space="preserve">

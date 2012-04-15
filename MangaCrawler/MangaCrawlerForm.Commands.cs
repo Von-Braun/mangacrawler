@@ -217,69 +217,69 @@ namespace MangaCrawler
                     SystemSounds.Asterisk.Play();
             }
 
-            public void CancelClearSelectedWorks()
+            public void CancelClearSelectedDownloadings()
             {
-                CancelWorks(GUI.SelectedWorks);
-                ClearWorks(GUI.SelectedWorks);
+                CancelDownloadings(GUI.SelectedDownloadings);
+                ClearDownloadings(GUI.SelectedDownloadings);
             }
 
-            private void CancelWorks(Chapter[] a_works)
+            private void CancelDownloadings(Chapter[] a_downloadings)
             {
-                foreach (var work in a_works)
+                foreach (var chapter in a_downloadings)
                 {
-                    if (work == null)
+                    if (chapter == null)
                         continue;
 
-                    if (work.IsDownloading)
-                        work.CancelWork();
+                    if (chapter.IsDownloading)
+                        chapter.CancelDownloading();
                 }
 
                 GUI.UpdateAll();
             }
 
-            private void ClearWorks(Chapter[] a_works)
+            private void ClearDownloadings(Chapter[] a_downloadings)
             {
-                foreach (var work in a_works)
+                foreach (var chapter in a_downloadings)
                 {
-                    if (work == null)
+                    if (chapter == null)
                         continue;
 
-                    if (!work.IsDownloading)
-                        DownloadManager.Instance.Works.Remove(work);
+                    if (!chapter.IsDownloading)
+                        DownloadManager.Instance.Downloadings.Remove(chapter);
                 }
 
                 GUI.UpdateAll();
             }
 
-            public void DownloadPagesForSelectedWorks()
+            public void DownloadPagesForSelectedDownloadings()
             {
-                DownloadPages(GUI.SelectedWorks);
+                DownloadPages(GUI.SelectedDownloadings);
             }
 
-            public void CancelSelectedWorks()
+            public void CancelSelectedDownloadings()
             {
-                CancelWorks(GUI.SelectedWorks);
+                CancelDownloadings(GUI.SelectedDownloadings);
             }
 
-            public void ClearAllWorks()
+            public void ClearAllDownloadings()
             {
-                ClearWorks(DownloadManager.Instance.Works.List.Where(
+                ClearDownloadings(DownloadManager.Instance.Downloadings.List.Where(
                     c => !c.IsDownloading).ToArray());
             }
 
-            public void OpenFolderForSelectedWorks()
+            public void OpenFolderForSelectedDownloadings()
             {
-                OpenFolders(GUI.SelectedWorks);
+                OpenFolders(GUI.SelectedDownloadings);
             }
 
-            public void VisitPageForSelectedWorks()
+            public void VisitPageForSelectedDownloadings()
             {
-                VisitPages(GUI.SelectedWorks);
+                VisitPages(GUI.SelectedDownloadings);
             }
 
-            public void ReadMangaForSelectedWorks()
+            public void ReadMangaForSelectedDownloadings()
             {
-                ReadManga(GUI.SelectedWorks);
+                ReadManga(GUI.SelectedDownloadings);
             }
 
             public void RemoveBookmarkFromBookmarks()
@@ -352,9 +352,9 @@ namespace MangaCrawler
                 ReadManga(GUI.SelectedBookmarkedChapters);
             }
 
-            public void SaveWorks()
+            public void SaveDownloadings()
             {
-                DownloadManager.Instance.Works.Save();
+                DownloadManager.Instance.Downloadings.Save();
             }
 
             public void CheckNewVersion()

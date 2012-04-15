@@ -6,11 +6,11 @@ using MangaCrawlerLib;
 
 namespace MangaCrawler
 {
-    public class WorkGridRow
+    public class DownloadingGridRow
     {
         public Chapter Chapter { get; set; }
 
-        public WorkGridRow(Chapter a_chapter)
+        public DownloadingGridRow(Chapter a_chapter)
         {
             Chapter = a_chapter;
         }
@@ -27,19 +27,19 @@ namespace MangaCrawler
                 switch (Chapter.State)
                 {
                     case ChapterState.Error:
-                        return MangaCrawler.Properties.Resources.WorkProgressError;
+                        return MangaCrawler.Properties.Resources.DownloadingProgressError;
                     case ChapterState.Cancelled:
-                        return MangaCrawler.Properties.Resources.WorkProgressCancelled;
+                        return MangaCrawler.Properties.Resources.DownloadingProgressCancelled;
                     case ChapterState.Waiting:
-                        return MangaCrawler.Properties.Resources.WorkProgressWaiting;
+                        return MangaCrawler.Properties.Resources.DownloadingProgressWaiting;
                     case ChapterState.Cancelling:
-                        return MangaCrawler.Properties.Resources.WorkProgressCancelling;
+                        return MangaCrawler.Properties.Resources.DownloadingProgressCancelling;
                     case ChapterState.Downloaded:
-                        return MangaCrawler.Properties.Resources.WorkProgressDownloaded;
+                        return MangaCrawler.Properties.Resources.DownloadingProgressDownloaded;
                     case ChapterState.Zipping:
-                        return MangaCrawler.Properties.Resources.WorkProgressZipping;
+                        return MangaCrawler.Properties.Resources.DownloadingProgressZipping;
                     case ChapterState.DownloadingPagesList:
-                        return MangaCrawler.Properties.Resources.WorkProgressDownloading;
+                        return MangaCrawler.Properties.Resources.DownloadingProgressDownloading;
                     case ChapterState.DownloadingPages:
                         return String.Format("{0}/{1}", Chapter.PagesDownloaded, Chapter.Pages.Count);
                     default: throw new NotImplementedException();
