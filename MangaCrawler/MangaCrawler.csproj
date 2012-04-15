@@ -142,6 +142,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Autostart.cs" />
     <Compile Include="MangaCrawlerForm.Commands.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -137,13 +137,17 @@ namespace MangaCrawler
      * 
      * skasowanie elementu w downloading przelacza na nastepne zaznaczenie, szczegolnie ostatni, to samo tyczy sie listy 
      * ulubionych
+     * 
+     * czy dziala autostart, czy po uruchomieniu w autostart jest zminimalizowana
+     * 
+     * w bookmarked elementy error, cancelled pokazuja takze new
+     * 
+     * dodanie nowego serwera nie moze niszczyc katalogu, chwilowo nie ma na to zabezpieczen tylko ostrzezenie
      */
 
     /* 
      * TODO:
 
-     * dodac przyciski do przelaczania stanow, new, ok, none - jeden przycisk najlepiej
-     * 
      * testy masowego pobierania cala noc
      * testy gui, testy typowego dzialania
      * uruchomic na x86 
@@ -154,14 +158,14 @@ namespace MangaCrawler
      * wpf
      * 
      * nowe serwisy:
-     * http://www.mangahere.com/
-     * http://www.mangareader.net/alphabetical
+     * 
+     * 6m http://manga.animea.net/browse.html
+     * 5m http://mangastream.com
+     * 
+     * http://www.anymanga.com/directory/all/
      * http://mangable.com/manga-list/
      * http://www.readmangaonline.net/
-     * http://www.anymanga.com/directory/all/
-     * http://manga.animea.net/browse.html
      * http://www.mangamonger.com/
-     * 
      */
 
     public partial class MangaCrawlerForm : Form
@@ -187,6 +191,9 @@ namespace MangaCrawler
         private MangaCrawlerFormCommands Commands;
         private MangaCrawlerFormGUI GUI;
 
+        private Color ActiveLabelColor;
+        private Color InactiveLabelColor;
+
         public enum Tabs
         {
             Series,
@@ -210,11 +217,14 @@ namespace MangaCrawler
 
         private void MangaShareCrawlerForm_Load(object sender, EventArgs e)
         {
+            SetupLog4NET();
+
+            ActiveLabelColor = seriesTabLabel.ForeColor;
+            InactiveLabelColor = worksTabLabel.ForeColor;
+
             ListenForRestoreEvent();
 
             WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
-
-            SetupLog4NET();
 
             Text = String.Format("{0} {1}.{2}", Text,
                 Assembly.GetAssembly(GetType()).GetName().Version.Major, 
@@ -485,23 +495,23 @@ namespace MangaCrawler
                 GUI.UpdateAll();
 
                 foreach (var tab in Enum.GetValues(typeof(Tabs)).Cast<Tabs>())
-                    DeactivateTabLabel(GetTabLabeL(tab));
+                    DeactivateTabLabel(GetTabLabel(tab));
 
-                ActivateTabLabel(GetTabLabeL(FrontTab));
+                ActivateTabLabel(GetTabLabel(FrontTab));
             }
         }
 
         private void ActivateTabLabel(Label a_link_label)
         {
-            a_link_label.ForeColor = Color.Red;
+            a_link_label.ForeColor = ActiveLabelColor;
         }
 
         private void DeactivateTabLabel(Label a_link_label)
         {
-            a_link_label.ForeColor = Color.Blue;
+            a_link_label.ForeColor = InactiveLabelColor;
         }
 
-        private Label GetTabLabeL(Tabs a_tab)
+        private Label GetTabLabel(Tabs a_tab)
         {
             if (a_tab == Tabs.Series)
                 return seriesTabLabel;
@@ -681,6 +691,9 @@ namespace MangaCrawler
             seriesSplitter.SplitPosition = Settings.Instance.SeriesSplitterDistance;
             bookmarksSplitter.SplitPosition = Settings.Instance.BookmarksSplitterDistance;
             m_resizing = false;
+
+            if (Environment.GetCommandLineArgs().Contains(Autostart.MINIMIZE_ARGUMENT))
+                GUI.MinimizeToTray(true);
         }
 
         private void pageNamingStrategyComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -1396,18 +1409,13 @@ namespace MangaCrawler
 
         private void tabLabel_MouseEnter(object sender, EventArgs e)
         {
-            foreach (var tab in Enum.GetValues(typeof(Tabs)).Cast<Tabs>())
-                DeactivateTabLabel(GetTabLabeL(tab));
-
             ActivateTabLabel(sender as Label);
         }
 
         private void tabLabel_MouseLeave(object sender, EventArgs e)
         {
-            foreach (var tab in Enum.GetValues(typeof(Tabs)).Cast<Tabs>())
-                DeactivateTabLabel(GetTabLabeL(tab));
-
-            ActivateTabLabel(GetTabLabeL(FrontTab));
+            if (sender != GetTabLabel(FrontTab))
+                DeactivateTabLabel(sender as Label);
         }
 
         private void MangaCrawlerForm_Resize(object sender, EventArgs e)
@@ -1428,6 +1436,24 @@ namespace MangaCrawler
             Rectangle r = bookmarksSplitter.ClientRectangle;
             r = new Rectangle(r.Left, r.Top, r.Width, bookmarkedChaptersToolStrip.Height);
             e.Graphics.FillRectangle(new SolidBrush(splitPanel.BackColor), r);
+        }
+
+        private void autostartCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (autostartCheckBox.Checked)
+                Autostart.Enable();
+            else
+                Autostart.Disable();
+        }
+
+        private void ignoreNewForSelectedBookmarkedChaptersToolStripButton_Click(object sender, EventArgs e)
+        {
+            Commands.IgnoreForSelectedBookmarkedChapters();
+        }
+
+        private void ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.IgnoreForSelectedBookmarkedChapters();
         }
     }
 }

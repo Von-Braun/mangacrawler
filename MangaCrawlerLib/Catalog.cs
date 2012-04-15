@@ -178,6 +178,8 @@ namespace MangaCrawlerLib
                     if (cs == null)
                         continue;
 
+                    Debug.Assert(cs.Name == servers[i].Name);
+
                     servers[i] = new Server(servers[i].URL, servers[i].Name, servers[i].ID, cs.State);
                 }
 
