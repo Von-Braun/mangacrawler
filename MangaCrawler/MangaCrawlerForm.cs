@@ -134,15 +134,15 @@ namespace MangaCrawler
      * dzialanie tab order
      * 
      * minimalizacja, maksymalizacja, przywrocenie - na wszystkich kartach, zwlaszcza tych co maja splitter
+     * 
+     * skasowanie elementu w downloading przelacza na nastepne zaznaczenie, szczegolnie ostatni, to samo tyczy sie listy 
+     * ulubionych
      */
 
     /* 
      * TODO:
 
-     * data ostatniego odswiezania przerzywa ponowne uruchomienia
-     * 
-     * downloading po restarcie nie zachowuje porzadku, sa dodawane losowo - wyscig ?
-     * dodac opcje na uruchom zminimalizowane razem z systememe
+     * dodac przyciski do przelaczania stanow, new, ok, none - jeden przycisk najlepiej
      * 
      * testy masowego pobierania cala noc
      * testy gui, testy typowego dzialania
@@ -1414,6 +1414,20 @@ namespace MangaCrawler
         {
             SeriesSplitterAdjust();
             BookmarksSplitterAdjust();
+        }
+
+        private void seriesSplitter_Paint(object sender, PaintEventArgs e)
+        {
+            Rectangle r = seriesSplitter.ClientRectangle;
+            r = new Rectangle(r.Left, r.Top, r.Width, chaptersToolStrip.Height);
+            e.Graphics.FillRectangle(new SolidBrush(splitPanel.BackColor), r);
+        }
+
+        private void bookmarksSplitter_Paint(object sender, PaintEventArgs e)
+        {
+            Rectangle r = bookmarksSplitter.ClientRectangle;
+            r = new Rectangle(r.Left, r.Top, r.Width, bookmarkedChaptersToolStrip.Height);
+            e.Graphics.FillRectangle(new SolidBrush(splitPanel.BackColor), r);
         }
     }
 }

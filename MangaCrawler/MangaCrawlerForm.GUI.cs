@@ -314,6 +314,10 @@ namespace MangaCrawler
 
                 Form.worksGridView.SuspendDrawing();
 
+                int selected_row = -1;
+                if (Form.worksGridView.SelectedRows.Count == 1)
+                    selected_row = Form.worksGridView.SelectedRows[0].Index;
+
                 try
                 {
                     var works = DownloadManager.Instance.Works.List;
@@ -339,6 +343,10 @@ namespace MangaCrawler
                             Debug.Assert(Form.worksGridView.SelectedRows.Count != 0);
                         Form.worksGridView.ClearSelection();
                     }
+
+                    if (selected_row >= Form.worksGridView.Rows.Count)
+                        if (Form.worksGridView.Rows.Count > 0)
+                            Form.worksGridView.Rows[Form.worksGridView.Rows.Count - 1].Selected = true;
                 }
                 finally
                 {
