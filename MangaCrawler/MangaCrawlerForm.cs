@@ -132,10 +132,19 @@ namespace MangaCrawler
      * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
      * 
      * dzialanie tab order
+     * 
+     * minimalizacja, maksymalizacja, przywrocenie - na wszystkich kartach, zwlaszcza tych co maja splitter
      */
 
     /* 
      * TODO:
+
+     * odswiezanie powoduje nieprzyjemne mruganie list
+     * 
+     * data ostatniego odswiezania przerzywa ponowne uruchomienia
+     * 
+     * downloading po restarcie nie zachowuje porzadku, sa dodawane losowo - wyscig ?
+     * dodac opcje na uruchom zminimalizowane razem z systememe
      * 
      * testy masowego pobierania cala noc
      * testy gui, testy typowego dzialania
@@ -533,6 +542,9 @@ namespace MangaCrawler
 
         public void SeriesSplitterAdjust()
         {
+            if (WindowState == FormWindowState.Minimized)
+                return;
+
             if (splitPanel.Width - seriesSplitter.SplitPosition < chaptersPanel.MinimumSize.Width)
                 seriesSplitter.SplitPosition = splitPanel.Width - chaptersPanel.MinimumSize.Width;
 
@@ -542,6 +554,9 @@ namespace MangaCrawler
 
         public void BookmarksSplitterAdjust()
         {
+            if (WindowState == FormWindowState.Minimized)
+                return;
+
             if (bookmarksTabPanel.Width - bookmarksSplitter.SplitPosition <
                 chapterBookmarksPanel.MinimumSize.Width)
             {
