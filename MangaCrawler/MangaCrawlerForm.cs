@@ -139,8 +139,6 @@ namespace MangaCrawler
     /* 
      * TODO:
 
-     * odswiezanie powoduje nieprzyjemne mruganie list
-     * 
      * data ostatniego odswiezania przerzywa ponowne uruchomienia
      * 
      * downloading po restarcie nie zachowuje porzadku, sa dodawane losowo - wyscig ?

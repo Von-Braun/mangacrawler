@@ -51,8 +51,6 @@ namespace MangaCrawler
                 bounds.Width - left, bounds.Height);
 
             a_draw_tip(bounds, font);
-
-            e.DrawFocusRectangle();
         }
 
         public abstract void DrawItem(DrawItemEventArgs a_args);
