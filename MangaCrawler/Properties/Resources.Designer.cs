@@ -170,6 +170,69 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancelled.
+        /// </summary>
+        internal static string DownloadingProgressCancelled {
+            get {
+                return ResourceManager.GetString("DownloadingProgressCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancelling.
+        /// </summary>
+        internal static string DownloadingProgressCancelling {
+            get {
+                return ResourceManager.GetString("DownloadingProgressCancelling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloaded.
+        /// </summary>
+        internal static string DownloadingProgressDownloaded {
+            get {
+                return ResourceManager.GetString("DownloadingProgressDownloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading.
+        /// </summary>
+        internal static string DownloadingProgressDownloading {
+            get {
+                return ResourceManager.GetString("DownloadingProgressDownloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string DownloadingProgressError {
+            get {
+                return ResourceManager.GetString("DownloadingProgressError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting.
+        /// </summary>
+        internal static string DownloadingProgressWaiting {
+            get {
+                return ResourceManager.GetString("DownloadingProgressWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zipping.
+        /// </summary>
+        internal static string DownloadingProgressZipping {
+            get {
+                return ResourceManager.GetString("DownloadingProgressZipping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ERROR.
         /// </summary>
         internal static string Error {
@@ -262,69 +325,6 @@ namespace MangaCrawler.Properties {
         internal static string Waiting {
             get {
                 return ResourceManager.GetString("Waiting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cancelled.
-        /// </summary>
-        internal static string WorkProgressCancelled {
-            get {
-                return ResourceManager.GetString("WorkProgressCancelled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cancelling.
-        /// </summary>
-        internal static string WorkProgressCancelling {
-            get {
-                return ResourceManager.GetString("WorkProgressCancelling", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Downloaded.
-        /// </summary>
-        internal static string WorkProgressDownloaded {
-            get {
-                return ResourceManager.GetString("WorkProgressDownloaded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Downloading.
-        /// </summary>
-        internal static string WorkProgressDownloading {
-            get {
-                return ResourceManager.GetString("WorkProgressDownloading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error.
-        /// </summary>
-        internal static string WorkProgressError {
-            get {
-                return ResourceManager.GetString("WorkProgressError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Waiting.
-        /// </summary>
-        internal static string WorkProgressWaiting {
-            get {
-                return ResourceManager.GetString("WorkProgressWaiting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Zipping.
-        /// </summary>
-        internal static string WorkProgressZipping {
-            get {
-                return ResourceManager.GetString("WorkProgressZipping", resourceCulture);
             }
         }
         

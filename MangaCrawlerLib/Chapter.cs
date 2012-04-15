@@ -141,7 +141,7 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Serie, Title);
         }
 
-        public void CancelWork()
+        public void CancelDownloading()
         {
             if (State == ChapterState.Cancelling)
                 return;

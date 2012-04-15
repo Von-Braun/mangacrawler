@@ -22,7 +22,7 @@ namespace MangaCrawlerLib
         public string SettingsDir { get; private set; }
         public MangaSettings MangaSettings { get; private set; }
         public Bookmarks Bookmarks { get; private set; }
-        public Works Works { get; private set; }
+        public Downloading Downloadings { get; private set; }
         
         private List<Entity> m_downloading = new List<Entity>();
         private Server[] m_servers;
@@ -40,7 +40,7 @@ namespace MangaCrawlerLib
             m_servers = Catalog.LoadCatalog();
 
             Bookmarks.Load();
-            Works.Load();
+            Downloadings.Load();
         }
 
         private  DownloadManager(MangaSettings a_manga_settings, string a_settings_dir)
@@ -48,7 +48,7 @@ namespace MangaCrawlerLib
             SettingsDir = a_settings_dir;
             MangaSettings = a_manga_settings;
             Bookmarks = new Bookmarks();
-            Works = new Works();
+            Downloadings = new Downloading();
 
             HtmlWeb.UserAgent_Actual = a_manga_settings.UserAgent;
         }
@@ -133,7 +133,7 @@ namespace MangaCrawlerLib
             if (a_chapter.IsDownloading)
                 return;
 
-            Works.Add(a_chapter);
+            Downloadings.Add(a_chapter);
 
             lock (m_downloading)
             {

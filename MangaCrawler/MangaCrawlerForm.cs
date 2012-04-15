@@ -197,7 +197,7 @@ namespace MangaCrawler
         public enum Tabs
         {
             Series,
-            Works,
+            Downloadings,
             Bookmarks,
             Options,
             Log
@@ -220,7 +220,7 @@ namespace MangaCrawler
             SetupLog4NET();
 
             ActiveLabelColor = seriesTabLabel.ForeColor;
-            InactiveLabelColor = worksTabLabel.ForeColor;
+            InactiveLabelColor = downloadingsTabLabel.ForeColor;
 
             ListenForRestoreEvent();
 
@@ -237,7 +237,7 @@ namespace MangaCrawler
             GUI.Init();
 
             MovePanelFromTabControl(seriesTabPanel);
-            MovePanelFromTabControl(worksTabPanel);
+            MovePanelFromTabControl(downloadingsTabPanel);
             MovePanelFromTabControl(bookmarksTabPanel);
             MovePanelFromTabControl(optionsTabPanel);
             MovePanelFromTabControl(logTabPanel);
@@ -245,7 +245,7 @@ namespace MangaCrawler
 
             seriesListBox.Focus();
             m_focus[Tabs.Series] = seriesListBox;
-            m_focus[Tabs.Works] = worksGridView;
+            m_focus[Tabs.Downloadings] = downloadingsGridView;
             m_focus[Tabs.Bookmarks] = bookmarkedSeriesListBox;
             m_focus[Tabs.Options] = mangaRootDirChooseButton;
             m_focus[Tabs.Log] = logRichTextBox;
@@ -291,10 +291,10 @@ namespace MangaCrawler
             typeof(DataGridView).InvokeMember(
                 "DoubleBuffered",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,
-                null, worksGridView, new object[] { true });
+                null, downloadingsGridView, new object[] { true });
 
-            worksGridView.AutoGenerateColumns = false;
-            worksGridView.DataSource = new BindingList<WorkGridRow>();
+            downloadingsGridView.AutoGenerateColumns = false;
+            downloadingsGridView.DataSource = new BindingList<DownloadingGridRow>();
 
             Commands.CheckNowBookmarks();
 
@@ -515,8 +515,8 @@ namespace MangaCrawler
         {
             if (a_tab == Tabs.Series)
                 return seriesTabLabel;
-            else if (a_tab == Tabs.Works)
-                return worksTabLabel;
+            else if (a_tab == Tabs.Downloadings)
+                return downloadingsTabLabel;
             else if (a_tab == Tabs.Bookmarks)
                 return bookmarksTabLabel;
             else if (a_tab == Tabs.Options)
@@ -534,8 +534,8 @@ namespace MangaCrawler
         {
             if (a_tab == Tabs.Series)
                 return seriesTabPanel;
-            else if (a_tab == Tabs.Works)
-                return worksTabPanel;
+            else if (a_tab == Tabs.Downloadings)
+                return downloadingsTabPanel;
             else if (a_tab == Tabs.Bookmarks)
                 return bookmarksTabPanel;
             else if (a_tab == Tabs.Options)
@@ -712,10 +712,10 @@ namespace MangaCrawler
                 Loggers.GUI.Error("Invalid PageNamingStrategy");
         }
 
-        private void worksGridView_KeyDown(object sender, KeyEventArgs e)
+        private void downloadingsGridView_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
-                Commands.CancelClearSelectedWorks();
+                Commands.CancelClearSelectedDownloadings();
         }
 
         private void splitter_SplitterMoved(object sender, SplitterEventArgs e)
@@ -921,18 +921,18 @@ namespace MangaCrawler
             Settings.Instance.PlaySoundWhenDownloaded = playSoundWhenDownloadedCheckBox.Checked;
         }
 
-        private void worksGridView_MouseDown(object sender, MouseEventArgs e)
+        private void downloadingsGridView_MouseDown(object sender, MouseEventArgs e)
         {
-            var hti = worksGridView.HitTest(e.X, e.Y);
+            var hti = downloadingsGridView.HitTest(e.X, e.Y);
 
             if (e.Button == MouseButtons.Right)
             {
                 if (hti.Type == DataGridViewHitTestType.Cell)
                 {
-                    if (!worksGridView.Rows[hti.RowIndex].Selected)
+                    if (!downloadingsGridView.Rows[hti.RowIndex].Selected)
                     {
-                        worksGridView.ClearSelection();
-                        worksGridView.Rows[hti.RowIndex].Selected = true;
+                        downloadingsGridView.ClearSelection();
+                        downloadingsGridView.Rows[hti.RowIndex].Selected = true;
                     }
                 }
             }
@@ -945,7 +945,7 @@ namespace MangaCrawler
                         !Control.ModifierKeys.HasFlag(Keys.Control) &&
                         !Control.ModifierKeys.HasFlag(Keys.Alt))
                     {
-                        worksGridView.ClearSelection();
+                        downloadingsGridView.ClearSelection();
                     }
                 }
             }
@@ -1019,32 +1019,32 @@ namespace MangaCrawler
 
         private void downloadToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Commands.DownloadPagesForSelectedWorks();
+            Commands.DownloadPagesForSelectedDownloadings();
         }
 
         private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Commands.CancelClearSelectedWorks();
+            Commands.CancelClearSelectedDownloadings();
         }
 
         private void showInSeriesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GUI.ShowInSeriesFromWorks();
+            GUI.ShowInSeriesFromDownloadings();
         }
 
         private void openFolderToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Commands.OpenFolderForSelectedWorks();
+            Commands.OpenFolderForSelectedDownloadings();
         }
 
         private void visitPageToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Commands.VisitPageForSelectedWorks();
+            Commands.VisitPageForSelectedDownloadings();
         }
 
         private void viewToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Commands.ReadMangaForSelectedWorks();
+            Commands.ReadMangaForSelectedDownloadings();
         }
 
         private void openFolderForSeriestoolStripButton_Click(object sender, EventArgs e)
@@ -1102,29 +1102,29 @@ namespace MangaCrawler
             Commands.ReadMangaForSelectedChapters();
         }
 
-        private void downloadWorkToolStripButton_Click(object sender, EventArgs e)
+        private void downloadDownloadingToolStripButton_Click(object sender, EventArgs e)
         {
-            Commands.DownloadPagesForSelectedWorks();
+            Commands.DownloadPagesForSelectedDownloadings();
         }
 
         private void showInSeriesToolStripButton_Click(object sender, EventArgs e)
         {
-            GUI.ShowInSeriesFromWorks();
+            GUI.ShowInSeriesFromDownloadings();
         }
 
-        private void openFolderForWorksToolStripButton_Click(object sender, EventArgs e)
+        private void openFolderForDownloadingsToolStripButton_Click(object sender, EventArgs e)
         {
-            Commands.OpenFolderForSelectedWorks();
+            Commands.OpenFolderForSelectedDownloadings();
         }
 
-        private void worksTabPage_Click(object sender, EventArgs e)
+        private void downloadingsTabPage_Click(object sender, EventArgs e)
         {
-            Commands.VisitPageForSelectedWorks();
+            Commands.VisitPageForSelectedDownloadings();
         }
 
-        private void viewWorkToolStripButton_Click(object sender, EventArgs e)
+        private void viewDownloadingToolStripButton_Click(object sender, EventArgs e)
         {
-            Commands.ReadMangaForSelectedWorks();
+            Commands.ReadMangaForSelectedDownloadings();
         }
 
         private void openFolderBookmarkedSerieToolStripButton_Click(object sender, EventArgs e)
@@ -1167,9 +1167,9 @@ namespace MangaCrawler
             Commands.ReadMangaForSelectedBookmarkedChapters();
         }
 
-        private void visitPageForWorksToolStripButton_Click(object sender, EventArgs e)
+        private void visitPageForDownloadingsToolStripButton_Click(object sender, EventArgs e)
         {
-            Commands.VisitPageForSelectedWorks();
+            Commands.VisitPageForSelectedDownloadings();
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -1229,32 +1229,32 @@ namespace MangaCrawler
 
         private void toolStripButton16_Click(object sender, EventArgs e)
         {
-            Commands.CancelClearSelectedWorks();
+            Commands.CancelClearSelectedDownloadings();
         }
 
         private void toolStripButton12_Click(object sender, EventArgs e)
         {
-            Commands.OpenFolderForSelectedWorks();
+            Commands.OpenFolderForSelectedDownloadings();
         }
 
         private void toolStripButton13_Click(object sender, EventArgs e)
         {
-            Commands.VisitPageForSelectedWorks();
+            Commands.VisitPageForSelectedDownloadings();
         }
 
         private void toolStripButton14_Click(object sender, EventArgs e)
         {
-            Commands.DownloadPagesForSelectedWorks();
+            Commands.DownloadPagesForSelectedDownloadings();
         }
 
         private void toolStripButton15_Click(object sender, EventArgs e)
         {
-            Commands.ReadMangaForSelectedWorks();
+            Commands.ReadMangaForSelectedDownloadings();
         }
 
         private void toolStripButton18_Click(object sender, EventArgs e)
         {
-            GUI.ShowInSeriesFromWorks();
+            GUI.ShowInSeriesFromDownloadings();
         }
 
         private void toolStripButton17_Click(object sender, EventArgs e)
@@ -1342,19 +1342,19 @@ namespace MangaCrawler
             Commands.DownloadPagesForSelectedBookmarkedChapters();
         }
 
-        private void worksGridView_SelectionChanged(object sender, EventArgs e)
+        private void downloadingsGridView_SelectionChanged(object sender, EventArgs e)
         {
             GUI.UpdateButtons();
         }
 
-        private void showInSeriesForSelectedWorksToolStripMenuItem_Click(object sender, EventArgs e)
+        private void showInSeriesForSelectedDownloadingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GUI.ShowInSeriesFromWorks();
+            GUI.ShowInSeriesFromDownloadings();
         }
 
-        private void deleteForSelectedWorksToolStripMenuItem_Click(object sender, EventArgs e)
+        private void deleteForSelectedDownloadingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Commands.CancelClearSelectedWorks();
+            Commands.CancelClearSelectedDownloadings();
         }
 
         private void visitPageForSelectedBookmarkedSerieToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1387,9 +1387,9 @@ namespace MangaCrawler
             FrontTab = Tabs.Series;
         }
 
-        private void worksTabLabel_Click(object sender, EventArgs e)
+        private void downloadingsTabLabel_Click(object sender, EventArgs e)
         {
-            FrontTab = Tabs.Works;
+            FrontTab = Tabs.Downloadings;
         }
 
         private void bookmarksTabLabel_Click(object sender, EventArgs e)
