@@ -232,6 +232,7 @@
             // 
             resources.ApplyResources(this.versionLinkLabel, "versionLinkLabel");
             this.versionLinkLabel.Name = "versionLinkLabel";
+            this.versionLinkLabel.TabStop = true;
             this.versionLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.versionLinkLabel_LinkClicked);
             // 
             // refreshTimer
@@ -254,13 +255,14 @@
             this.bookmarksTabPanel.Controls.Add(this.serieBookmarksPanel);
             this.bookmarksTabPanel.Name = "bookmarksTabPanel";
             // 
-            // splitterBookmarks
+            // bookmarksSplitter
             // 
             this.bookmarksSplitter.BackColor = System.Drawing.SystemColors.Menu;
-            resources.ApplyResources(this.bookmarksSplitter, "splitterBookmarks");
-            this.bookmarksSplitter.Name = "splitterBookmarks";
+            resources.ApplyResources(this.bookmarksSplitter, "bookmarksSplitter");
+            this.bookmarksSplitter.Name = "bookmarksSplitter";
             this.bookmarksSplitter.TabStop = false;
             this.bookmarksSplitter.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitterBookmarks_SplitterMoved);
+            this.bookmarksSplitter.Paint += new System.Windows.Forms.PaintEventHandler(this.bookmarksSplitter_Paint);
             // 
             // chapterBookmarksPanel
             // 
@@ -931,6 +933,7 @@
             this.seriesSplitter.Name = "seriesSplitter";
             this.seriesSplitter.TabStop = false;
             this.seriesSplitter.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitter_SplitterMoved);
+            this.seriesSplitter.Paint += new System.Windows.Forms.PaintEventHandler(this.seriesSplitter_Paint);
             // 
             // chaptersPanel
             // 
@@ -1421,13 +1424,13 @@
             this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
             this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
             // 
-            // chapterBookmarksListBox
+            // bookmarkedchaptersListBox
             // 
             this.bookmarkedchaptersListBox.ContextMenuStrip = this.bookmarkedChaptersContextMenuStrip;
-            resources.ApplyResources(this.bookmarkedchaptersListBox, "chapterBookmarksListBox");
+            resources.ApplyResources(this.bookmarkedchaptersListBox, "bookmarkedchaptersListBox");
             this.bookmarkedchaptersListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.bookmarkedchaptersListBox.FormattingEnabled = true;
-            this.bookmarkedchaptersListBox.Name = "chapterBookmarksListBox";
+            this.bookmarkedchaptersListBox.Name = "bookmarkedchaptersListBox";
             this.bookmarkedchaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.bookmarkedchaptersListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chapterBookmarksListBox_VerticalScroll);
             this.bookmarkedchaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chapterBookmarksListBox_DrawItem);
@@ -1435,13 +1438,13 @@
             this.bookmarkedchaptersListBox.DoubleClick += new System.EventHandler(this.chapterBookmarksListBox_DoubleClick);
             this.bookmarkedchaptersListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chapterBookmarksListBox_KeyDown);
             // 
-            // serieBookmarksListBox
+            // bookmarkedSeriesListBox
             // 
             this.bookmarkedSeriesListBox.ContextMenuStrip = this.bookmarkedSeriesContextMenuStrip;
-            resources.ApplyResources(this.bookmarkedSeriesListBox, "serieBookmarksListBox");
+            resources.ApplyResources(this.bookmarkedSeriesListBox, "bookmarkedSeriesListBox");
             this.bookmarkedSeriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.bookmarkedSeriesListBox.FormattingEnabled = true;
-            this.bookmarkedSeriesListBox.Name = "serieBookmarksListBox";
+            this.bookmarkedSeriesListBox.Name = "bookmarkedSeriesListBox";
             this.bookmarkedSeriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serieBookmarksListBox_DrawItem);
             this.bookmarkedSeriesListBox.SelectedIndexChanged += new System.EventHandler(this.serieBookmarksListBox_SelectedIndexChanged);
             this.bookmarkedSeriesListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
