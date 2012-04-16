@@ -152,6 +152,8 @@ namespace MangaCrawler
     /* 
      * TODO:
      * 
+     * wolne, przejechanie sie po wielu seriach mangafox
+     * 
      * dodac do testowych serwerow takie ktore generuja podwojne nazwy i urle, tlyko podwojne nazwy
      * 
      * testy masowego pobierania cala noc

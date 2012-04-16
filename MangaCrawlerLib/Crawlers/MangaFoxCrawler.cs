@@ -45,6 +45,16 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
+            var warnings = doc.DocumentNode.SelectNodes("//div[@class='warning']");
+            if (warnings != null)
+            {
+                if (warnings.Any(n => n.InnerHtml.Contains("has been licensed, it is not available in")))
+                {
+                    a_progress_callback(100, new Chapter[0]);
+                    return;
+                }
+            }
+
             var ch1 = doc.DocumentNode.SelectNodes("//ul[@class='chlist']/li/div/h3/a");
             var ch2 = doc.DocumentNode.SelectNodes("//ul[@class='chlist']/li/div/h4/a");
 

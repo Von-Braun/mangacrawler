@@ -62,7 +62,7 @@ namespace MangaCrawlerLib
             : base(a_id)
         {
             m_chapters = new ChaptersCachedList(this);
-            URL = HttpUtility.HtmlDecode(a_url);
+            URL = HtmlDecode(a_url);
             Server = a_server;
             m_state = a_state;
 
@@ -75,7 +75,8 @@ namespace MangaCrawlerLib
             a_title = a_title.Replace("\t", " ");
             while (a_title.IndexOf("  ") != -1)
                 a_title = a_title.Replace("  ", " ");
-            Title = HttpUtility.HtmlDecode(a_title);
+
+            Title = HtmlDecode(a_title);
         }
 
         public IList<Chapter> Chapters
@@ -111,9 +112,15 @@ namespace MangaCrawlerLib
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
                     if (!m_chapters.IsLoadedFromXml)
+                    {
+                        result = EliminateDoubles(result);
                         m_chapters.ReplaceInnerCollection(result, false, c => c.Title, null);
+                    }
                     else if (progress == 100)
+                    {
+                        result = EliminateDoubles(result);
                         m_chapters.ReplaceInnerCollection(result, true, c => c.Title, merge);
+                    }
                     DownloadProgress = progress; 
                 });
 
@@ -147,6 +154,42 @@ namespace MangaCrawlerLib
         public override string ToString()
         {
             return String.Format("{0} - {1}", Server.Name, Title);
+        }
+
+        private static IEnumerable<Chapter> EliminateDoubles(IEnumerable<Chapter> a_series)
+        {
+            a_series = a_series.ToList();
+
+            var doubles =
+                a_series.Select(s => s.Title).ExceptExact(a_series.Select(s => s.Title).Distinct()).ToArray();
+
+            var same_name_same_url = from serie in a_series
+                                     where doubles.Contains(serie.Title)
+                                     group serie by new { serie.Title, serie.URL } into gr
+                                     from s in gr.Skip(1)
+                                     select s;
+
+            a_series =
+                a_series.Except(same_name_same_url.ToList()).ToList();
+
+            doubles = a_series.Select(s => s.Title).ExceptExact(a_series.Select(s => s.Title).Distinct()).ToArray();
+
+            var same_name_diff_url = from serie in a_series
+                                     where doubles.Contains(serie.Title)
+                                     group serie by serie.Title;
+
+            foreach (var gr in same_name_diff_url)
+            {
+                int index = 1;
+
+                foreach (var serie in gr)
+                {
+                    serie.Title += String.Format(" ({0})", index);
+                    index++;
+                }
+            }
+
+            return a_series;
         }
 
         public bool IsDownloadRequired(bool a_force)

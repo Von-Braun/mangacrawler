@@ -112,19 +112,31 @@ namespace MangaCrawlerTest
 
             if (!a_ongoing)
             {
-                TestContext.WriteLine("  Chapters, expected {0}, finded: {1}", a_count,
-                    chapters.Count());
-
                 if (chapters.Count() != a_count)
+                {
+                    TestContext.WriteLine("  ERROR Chapters, expected {0}, finded: {1}", a_count,
+                        chapters.Count());
                     m_error = true;
+                }
+                else
+                {
+                    TestContext.WriteLine("  Chapters, expected {0}, finded: {1}", a_count,
+                        chapters.Count());
+                }
             }
             else
             {
-                TestContext.WriteLine("  Chapters (ongoing), expected {0}, finded: {1}", 
-                    a_count, chapters.Count());
-
                 if (chapters.Count() < a_count)
+                {
+                    TestContext.WriteLine("  ERROR Chapters (ongoing), expected {0}, finded: {1}",
+                        a_count, chapters.Count());
                     m_error = true;
+                }
+                else
+                {
+                    TestContext.WriteLine("  Chapters (ongoing), expected {0}, finded: {1}",
+                        a_count, chapters.Count());
+                }
             }
 
             Assert.IsTrue(a_serie.Chapters.All(s => s.Title.Trim() == s.Title));
@@ -145,7 +157,7 @@ namespace MangaCrawlerTest
             {
                 if (a_title != a_chapter.Title)
                 {
-                    TestContext.WriteLine("      Bad chapter title");
+                    TestContext.WriteLine("      ERROR Bad chapter title");
                     TestContext.WriteLine("      Excepcted: >{0}<", a_title);
                     TestContext.WriteLine("      Finded:    >{0}<", a_chapter.Title);
 
@@ -172,11 +184,17 @@ namespace MangaCrawlerTest
 
             if (!a_ongoing)
             {
-                TestContext.WriteLine("    Pages, expected {0}, finded: {1}", 
-                    a_count, pages.Count());
-
                 if (pages.Count() != a_count)
+                {
+                    TestContext.WriteLine("    ERROR Pages, expected {0}, finded: {1}",
+                        a_count, pages.Count());
                     m_error = true;
+                }
+                else
+                {
+                    TestContext.WriteLine("    Pages, expected {0}, finded: {1}",
+                    a_count, pages.Count());
+                }
             }
             else
             {
@@ -201,7 +219,7 @@ namespace MangaCrawlerTest
 
                 if (a_page.Name != a_name)
                 {
-                    TestContext.WriteLine("          Bad page name");
+                    TestContext.WriteLine("          ERROR Bad page name");
                     TestContext.WriteLine("          Excepcted: >{0}<", a_name);
                     TestContext.WriteLine("          Finded: >{0}<", a_page.Name);
 
@@ -233,7 +251,7 @@ namespace MangaCrawlerTest
 
                     if (a_hash != hash)
                     {
-                        TestContext.WriteLine("        Hash doestn't match");
+                        TestContext.WriteLine("        ERROR Hash doestn't match");
                         TestContext.WriteLine("        Excepcted: >{0}<", a_hash);
                         TestContext.WriteLine("        Finded: >{0}<", hash);
                         m_error = true;
@@ -243,90 +261,6 @@ namespace MangaCrawlerTest
             finally
             {
                 Limiter.EndChapter(a_page.Chapter);
-            }
-        }
-
-        [TestMethod]
-        public void UnixMangaTest()
-        {
-            var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(UnixMangaCrawler)), 1613);
-
-            {
-                var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 503, true);
-
-                var pages = TestChapter("Bleach c Calendar", chapters.Last(), 8);
-
-                TestPage(pages.First(),
-                    "E018B7DF-C64538D1-95A9B6C9-49A8DBE9-18C11E68-C52EDDFB-B800B51A-FA7E354F", "00");
-                TestPage(pages.Last(),
-                    "B8177447-C74F7AA8-0521B396-2B7119F8-E173C00B-27F6B894-C997C530-2566F1E6", "xxxhomeunixxxx");
-
-                pages = TestChapter("Bleach c486", chapters.Skip(2).First(), 19);
-
-                TestPage(pages.First(), "", "", true);
-                TestPage(pages.Last(), "", "", true);
-            }
-
-            {
-                var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 80);
-
-                var pages = TestChapter("666Satan-v01-c01a[TW]", chapters.Last(), 25);
-
-                TestPage(pages.First(),
-                    "5E06A425-528A10D1-A3B02CCC-69F21166-5EC8C51D-F4F6601E-59247E93-A46DB54A", "666Satan-01-00");
-                TestPage(pages.Last(),
-                    "6DABC33C-5106B55F-CD3E4C3F-6C4088D6-0BE589FC-FBA4764D-41B27F65-AC88904D", "666Satan-01-24");
-
-                pages = TestChapter("666Satan-76-END-[FH]", chapters.First(), 30);
-
-                TestPage(pages.First(),
-                    "6DC6CCF8-BB831044-DEDBEB18-D83FB748-C10D7698-FDDB65B8-506D7A06-2F455AAB", "01");
-                TestPage(pages.Last(),
-                    "AC9DF68B-C07F380B-DBBCF4EA-4A79C0DB-EF00A7DC-5AF91C46-56E1F179-90EDB30F", "31");
-            }
-
-            {
-                var chapters = TestSerie(series.First(s => s.Title == "Kamisama no Tsukurikata"), 17);
-
-                var pages = TestChapter("kamisama 001", chapters.Last(), 30);
-
-                TestPage(pages.First(),
-                    "4EB61381-57D3E2E2-3BCA169A-513A154A-293D39BD-56CF793F-ADD02D7E-A8BDACBC", "0001");
-                TestPage(pages.Last(),
-                    "A95CE474-FBFCFCEE-F98AB70E-C3B341C3-609F8871-7AD9F33C-A0EF7BFB-1BDF5B8D", "0030");
-
-                pages = TestChapter("kamisama 017", chapters.First(), 30);
-
-                TestPage(pages.First(),
-                    "E1D1A575-88D45C6A-8BFEBF16-349CA8BC-FB90D4A4-1AC4F831-EAF1385F-7F55F315", "0001");
-                TestPage(pages.Last(),
-                    "FFC3EBB9-9BDF5759-DE87C6D6-E2634C38-8982EC38-34CF67C6-2336B18D-28F7862E", "0030");
-            }
-
-            {
-                var chapters = TestSerie(series.First(s => s.Title == "16 Sai Kissu Complete"), 1);
-
-                var pages = TestChapter("16 Sai Kissu Complete", chapters.First(), 30);
-
-                TestPage(pages.First(),
-                    "83AE7BA3-A1554FA6-0FB46772-FD94DD15-057EAF75-5AF15ED5-A41C1DEF-94FE6F56", "00 _ Nekohana");
-                TestPage(pages.Last(),
-                    "3048567C-DF4072AC-01C71054-734C7736-BB6CD48E-92E1EA56-BB5DD04A-4C1048EC", "16 Sai Kissu c01 030");
-            }
-        }
-
-        private static IEnumerable<T> TakeRandom<T>(IEnumerable<T> a_enum, double a_percent)
-        {
-            List<T> list = a_enum.ToList();
-            Random random = new Random();
-
-            for (int i = 0; i < list.Count * a_percent; i++)
-            {
-                int r = random.Next(list.Count);
-                T el = list[r];
-                list.RemoveAt(r);
-                yield return el;
             }
         }
 
@@ -443,6 +377,90 @@ namespace MangaCrawlerTest
                 });
         }
 
+        private static IEnumerable<T> TakeRandom<T>(IEnumerable<T> a_enum, double a_percent)
+        {
+            List<T> list = a_enum.ToList();
+            Random random = new Random();
+
+            for (int i = 0; i < list.Count * a_percent; i++)
+            {
+                int r = random.Next(list.Count);
+                T el = list[r];
+                list.RemoveAt(r);
+                yield return el;
+            }
+        }
+
+        [TestMethod]
+        public void UnixMangaTest()
+        {
+            var series = TestServer(DownloadManager.Instance.Servers.First(
+                s => s.Crawler.GetType() == typeof(UnixMangaCrawler)), 1613);
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 505, true);
+
+                var pages = TestChapter("Bleach c Calendar", chapters.Last(), 8);
+
+                TestPage(pages.First(),
+                    "E018B7DF-C64538D1-95A9B6C9-49A8DBE9-18C11E68-C52EDDFB-B800B51A-FA7E354F", "00");
+                TestPage(pages.Last(),
+                    "B8177447-C74F7AA8-0521B396-2B7119F8-E173C00B-27F6B894-C997C530-2566F1E6", "xxxhomeunixxxx");
+
+                pages = TestChapter("", chapters.Skip(2).First(), 0, true);
+
+                TestPage(pages.First(), "", "", true);
+                TestPage(pages.Last(), "", "", true);
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 80);
+
+                var pages = TestChapter("666Satan-v01-c01a[TW]", chapters.Last(), 25);
+
+                TestPage(pages.First(),
+                    "5E06A425-528A10D1-A3B02CCC-69F21166-5EC8C51D-F4F6601E-59247E93-A46DB54A", "666Satan-01-00");
+                TestPage(pages.Last(),
+                    "6DABC33C-5106B55F-CD3E4C3F-6C4088D6-0BE589FC-FBA4764D-41B27F65-AC88904D", "666Satan-01-24");
+
+                pages = TestChapter("666Satan-76-END-[FH]", chapters.First(), 30);
+
+                TestPage(pages.First(),
+                    "6DC6CCF8-BB831044-DEDBEB18-D83FB748-C10D7698-FDDB65B8-506D7A06-2F455AAB", "01");
+                TestPage(pages.Last(),
+                    "AC9DF68B-C07F380B-DBBCF4EA-4A79C0DB-EF00A7DC-5AF91C46-56E1F179-90EDB30F", "31");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "Kamisama no Tsukurikata"), 17);
+
+                var pages = TestChapter("kamisama 001", chapters.Last(), 30);
+
+                TestPage(pages.First(),
+                    "4EB61381-57D3E2E2-3BCA169A-513A154A-293D39BD-56CF793F-ADD02D7E-A8BDACBC", "0001");
+                TestPage(pages.Last(),
+                    "A95CE474-FBFCFCEE-F98AB70E-C3B341C3-609F8871-7AD9F33C-A0EF7BFB-1BDF5B8D", "0030");
+
+                pages = TestChapter("kamisama 017", chapters.First(), 30);
+
+                TestPage(pages.First(),
+                    "E1D1A575-88D45C6A-8BFEBF16-349CA8BC-FB90D4A4-1AC4F831-EAF1385F-7F55F315", "0001");
+                TestPage(pages.Last(),
+                    "FFC3EBB9-9BDF5759-DE87C6D6-E2634C38-8982EC38-34CF67C6-2336B18D-28F7862E", "0030");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "16 Sai Kissu Complete"), 1);
+
+                var pages = TestChapter("16 Sai Kissu Complete", chapters.First(), 30);
+
+                TestPage(pages.First(),
+                    "83AE7BA3-A1554FA6-0FB46772-FD94DD15-057EAF75-5AF15ED5-A41C1DEF-94FE6F56", "00 _ Nekohana");
+                TestPage(pages.Last(),
+                    "3048567C-DF4072AC-01C71054-734C7736-BB6CD48E-92E1EA56-BB5DD04A-4C1048EC", "16 Sai Kissu c01 030");
+            }
+        }
+
         [TestMethod]
         public void AnimeSourceTest()
         {
@@ -531,35 +549,35 @@ namespace MangaCrawlerTest
         public void MangaFoxTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(MangaFoxCrawler)), 8961);
+                s => s.Crawler.GetType() == typeof(MangaFoxCrawler)), 9167);
             
             {
-                var chapters = TestSerie(series.First(s => s.Title == ".hack//G.U.+"), 26);
-                
-                var pages = TestChapter(".hack//G.U.+ 1", chapters.Last(), 68);
-            
-                TestPage(pages.First(),
-                    "B9A430BB-6B5AA874-047CC3AF-FFCD408A-5F51204A-F12E2E31-BE055615-B51E9E82", "1");
-                TestPage(pages.Last(),
-                    "A08602B0-41A27AAD-D870271E-F8AD256A-68D2C903-3C775B39-DF207BB2-95D1C137", "68");
+                var chapters = TestSerie(series.First(s => s.Title == "10, 20, and 30"), 79);
 
-                pages = TestChapter(".hack//G.U.+ 26", chapters.First(), 33);
+                var pages = TestChapter("10, 20, and 30 1", chapters.Last(), 17);
             
                 TestPage(pages.First(),
-                    "C72F3665-DB886AD8-018D7DA5-ADA0CE86-78E41820-DA68487A-07889638-6704026B", "1");
+                    "D9FFCBE8-1072AD51-1E0AA6F6-BE5CCFDD-7CF584AD-E8221713-C49AA2F4-AEA62DC0", "1");
                 TestPage(pages.Last(),
-                    "B706A9A5-0198C7AD-6A18E4F8-9CF771A2-97E195F3-017D473D-68EBC9C9-308DB705", "33");
+                    "1CB42BA2-0B8F29DF-98435B81-9C072CDA-BAF7AE44-486B60E8-92265042-929FE0CE", "17");
+
+                pages = TestChapter("10, 20, and 30 78", chapters.First(), 14);
+            
+                TestPage(pages.First(),
+                    "2BCC333B-6850F08E-CFF72D4C-E8FDACB8-E79D2D3A-FDCE387D-24CC936B-1660CAD6", "1");
+                TestPage(pages.Last(),
+                    "95383B54-35E02D1D-DF94CA10-8455F7F0-63789ABC-5C3282E2-67BEB278-2BFEC769", "14");
             }
             
             {
-                var chapters = TestSerie(series.First(s => s.Title == "(G) Edition"), 9, true);
+                var chapters = TestSerie(series.First(s => s.Title == "1/2 Prince"), 9, true);
 
-                var pages = TestChapter("(G) Edition 1", chapters.Last(), 17);
+                var pages = TestChapter("1/2 Prince 1", chapters.Last(), 73);
             
                 TestPage(pages.First(),
-                    "0D5F0D20-2C4F785A-257D462C-9E84E429-972ACF39-DC6F3BCD-7CAC14F9-6092495E", "1");
+                    "8209C173-CED82809-1B4DBB32-BE7487AE-CEA8F7C3-1FA4A608-BDBFA73B-1DF3FA00", "1");
                 TestPage(pages.Last(),
-                    "49D383E3-432985FF-2EE91FC9-E4E53C48-3737FA32-488494B7-61794E67-49F79ECA", "17");
+                    "924EA537-2BFAE86B-EFE6B628-1B3B3236-4C14D399-54517F07-C121DD08-E7365305", "73");
             
                 pages = TestChapter("", chapters.First(), 0, true);
 
@@ -797,7 +815,7 @@ namespace MangaCrawlerTest
         public void SpectrumNexusTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(SpectrumNexusCrawler)), 114);
+                s => s.Crawler.GetType() == typeof(SpectrumNexusCrawler)), 121);
 
             {
                 var chapters = TestSerie(series.First(

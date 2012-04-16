@@ -36,7 +36,7 @@ namespace MangaCrawlerLib
             m_state = a_state;
 
             Chapter = a_chapter;
-            URL = HttpUtility.HtmlDecode(a_url);
+            URL = HtmlDecode(a_url);
             Index = a_index;
 
             if (State == PageState.Downloading)
@@ -50,7 +50,7 @@ namespace MangaCrawlerLib
                 a_name = a_name.Replace("\t", " ");
                 while (a_name.IndexOf("  ") != -1)
                     a_name = a_name.Replace("  ", " ");
-                a_name = HttpUtility.HtmlDecode(a_name);
+                a_name = HtmlDecode(a_name);
                 Name = FileUtils.RemoveInvalidFileCharacters(a_name);
             }
             else
@@ -90,7 +90,7 @@ namespace MangaCrawlerLib
         internal MemoryStream GetImageStream()
         {
             if (ImageURL == null)
-                ImageURL = HttpUtility.HtmlDecode(Crawler.GetImageURL(this));
+                ImageURL = HtmlDecode(Crawler.GetImageURL(this));
 
             return Crawler.GetImageStream(this);  
         }

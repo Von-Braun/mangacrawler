@@ -70,7 +70,8 @@ namespace MangaCrawlerLib
         {
             var dups = a_local.Select(a_key_selector).ExceptExact(
                 a_local.Select(a_key_selector).Distinct());
-            IDictionary<string, T> local_dict = a_local.ToDictionary(a_key_selector);
+
+            Dictionary<string, T> local_dict = a_local.ToDictionary(a_key_selector);
 
             for (int i = 0; i < a_new.Count; i++)
             {

@@ -19,9 +19,9 @@ namespace MangaCrawlerLib
         #region Consts
         private class Files
         {
-            public static string CATALOG_XML = "catalog.xml";
-            public static string DOWNLOADINGS_XML = "downloadings.xml";
-            public static string BOOKMARKS_XML = "bookmarks.xml";
+            public static string CATALOG_XML = "catalog.xml.zip";
+            public static string DOWNLOADINGS_XML = "downloadings.xml.zip";
+            public static string BOOKMARKS_XML = "bookmarks.xml.zip";
         }
 
         private class Nodes
@@ -234,7 +234,7 @@ namespace MangaCrawlerLib
 
         private static string GetCatalogFile(ulong a_id)
         {
-            return CatalogDir + a_id.ToString() + ".xml";
+            return CatalogDir + a_id.ToString() + ".xml.zip";
         }
 
         private static void DeleteCatalogFile(ulong a_id)

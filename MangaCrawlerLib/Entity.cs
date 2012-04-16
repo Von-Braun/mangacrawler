@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TomanuExtensions;
 using System.IO;
+using System.Web;
 
 namespace MangaCrawlerLib
 {
@@ -58,6 +59,19 @@ namespace MangaCrawlerLib
             catch
             {
                 return false;
+            }
+        }
+
+        public static string HtmlDecode(string a_str)
+        {
+            for (; ; )
+            {
+                string str = HttpUtility.HtmlDecode(a_str);
+
+                if (a_str == str)
+                    return str;
+
+                a_str = str;
             }
         }
 
