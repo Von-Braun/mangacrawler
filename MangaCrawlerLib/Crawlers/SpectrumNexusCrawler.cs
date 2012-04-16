@@ -64,16 +64,19 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
-            var n1 = doc.DocumentNode.SelectNodes("//b");
-            var n2 = n1.Where(n => n.InnerText.StartsWith("Current Status")).First();
+            var nodes = doc.DocumentNode.SelectNodes("//b");
+            var node = nodes.Where(n => n.InnerText.StartsWith("Current Status")).First();
 
-            var n3 = n2.NextSibling;
-            while (n3.Name != "b")
-                n3 = n3.NextSibling;
-            while (n3.Name != "a")
-                n3 = n3.NextSibling;
+            for (;;)
+            {
+                if (node.Name == "a")
+                    if (node.GetAttributeValue("href", "").Contains("thespectrum.net"))
+                        break;
 
-            var href = n3.GetAttributeValue("href", "");
+                node = node.NextSibling;
+            }
+
+            var href = node.GetAttributeValue("href", "");
 
             doc = DownloadDocument(a_serie, href);
 

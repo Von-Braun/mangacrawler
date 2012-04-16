@@ -71,7 +71,7 @@ namespace MangaCrawlerLib
             m_pages = new PagesCachedList(this);
             LimiterOrder = a_limiter_order;
             Serie = a_serie;
-            URL = HttpUtility.HtmlDecode(a_url);
+            URL = HtmlDecode(a_url);
             m_state = a_state;
 
             if (m_state == ChapterState.Cancelling)
@@ -89,7 +89,7 @@ namespace MangaCrawlerLib
             a_title = a_title.Replace("\t", " ");
             while (a_title.IndexOf("  ") != -1)
                 a_title = a_title.Replace("  ", " ");
-            Title = HttpUtility.HtmlDecode(a_title);
+            Title = HtmlDecode(a_title);
         }
 
         public IList<Page> Pages
