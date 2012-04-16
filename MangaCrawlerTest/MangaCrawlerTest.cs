@@ -843,7 +843,7 @@ namespace MangaCrawlerTest
         public void StopTazmoTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(StopTazmoCrawler)), 2793);
+                s => s.Crawler.GetType() == typeof(StopTazmoCrawler)), 2785);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 78);
@@ -913,6 +913,47 @@ namespace MangaCrawlerTest
                     "F78B1798-A2FC4CCD-A6773D62-D9803D04-D2B54352-AD25D299-174F97C3-D956F41E", "1");
                 TestPage(pages.Last(),
                     "7CC1FA04-490266B7-BC68BC1A-BAD34324-D8CA551F-D3204F46-C4DC052A-D0EDEB8C", "74");
+
+                pages = TestChapter("", chapters.First(), 0, true);
+
+                TestPage(pages.First(), "", "", true);
+                TestPage(pages.Last(), "", "", true);
+            }
+        }
+
+        [TestMethod]
+        public void MangaReaderTest()
+        {
+            var series = TestServer(DownloadManager.Instance.Servers.First(
+                s => s.Crawler.GetType() == typeof(MangaReader)), 2714);
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "37 Degrees Kiss"), 5);
+
+                var pages = TestChapter("37 Degrees Kiss 1", chapters.Last(), 50);
+
+                TestPage(pages.First(),
+                    "15717C24-557CF677-1571FAA8-37C38700-CCC1C9FA-1772E7BB-F51D2A1B-B865D2CE", "1");
+                TestPage(pages.Last(),
+                    "FCEF02CC-2890D38A-A036FE5D-8FE39F3F-1301A272-3E14B6A0-0456AC60-237FEAFD", "50");
+
+                pages = TestChapter("37 Degrees Kiss 5", chapters.First(), 14);
+
+                TestPage(pages.First(),
+                    "37A7B694-EA71C1B1-7B610A55-A947F2CB-499FF22F-55FE3588-802EDE46-78EAF86B", "1");
+                TestPage(pages.Last(),
+                    "BDBCD9BD-D3D8F9FA-D3E86FCC-D7CFC4BB-A802B0E6-B835E1C0-2C9930B3-03A538B1", "14");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "Fairy Tail"), 279, true);
+
+                var pages = TestChapter("Fairy Tail 1", chapters.Last(), 80);
+
+                TestPage(pages.First(),
+                    "D5C09018-E4705F6C-54790423-037DBECF-5829E10B-49A0A64D-DC14E43C-8B2201E2", "1");
+                TestPage(pages.Last(),
+                    "60D44E6A-862FA83A-2A81E448-C47CCC95-91FD7BB8-55365D75-518C4C1A-C69ECDE9", "80");
 
                 pages = TestChapter("", chapters.First(), 0, true);
 

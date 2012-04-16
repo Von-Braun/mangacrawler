@@ -24,7 +24,10 @@ namespace MangaCrawlerLib.Crawlers
                 "//div[@class='series_alpha']//ul[@class='series_alpha']/li/a");
 
             var result = from serie in series
-                         select new Serie(a_server, serie.GetAttributeValue("href", ""), serie.InnerText);
+                         select new Serie(
+                             a_server, 
+                             "http://www.mangareader.net" + serie.GetAttributeValue("href", ""), 
+                             serie.InnerText);
 
             a_progress_callback(100, result);
         }
@@ -33,10 +36,13 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
-            var chapters = doc.DocumentNode.SelectNodes("//table[@class='listing']/tr/td/a");
+            var chapters = doc.DocumentNode.SelectNodes("//table[@id='listing']/tr/td/a").Reverse().ToList();
 
             var result = from chapter in chapters
-                         select new Chapter(a_serie, chapter.GetAttributeValue("href", ""), chapter.InnerText);
+                         select new Chapter(
+                             a_serie, 
+                             "http://www.mangareader.net" + chapter.GetAttributeValue("href", ""), 
+                             chapter.InnerText);
 
             a_progress_callback(100, result);
         }
@@ -45,11 +51,14 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_chapter);
 
-            var pages = doc.DocumentNode.SelectNodes("//div[@class='selectpage']/select/option");
+            var pages = doc.DocumentNode.SelectNodes("//div[@id='selectpage']/select/option");
 
             return from page in pages
-                   select new Page(a_chapter, page.GetAttributeValue("value", ""), pages.IndexOf(page) + 1,
-                                   page.NextSibling.InnerText);
+                   select new Page(
+                       a_chapter, 
+                       "http://www.mangareader.net" + page.GetAttributeValue("value", ""), 
+                       pages.IndexOf(page) + 1,
+                       page.NextSibling.InnerText);
         }
 
         public override string GetServerURL()

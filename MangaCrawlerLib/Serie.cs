@@ -103,12 +103,17 @@ namespace MangaCrawlerLib
         {
             try
             {
+                Merge<Chapter> merge = (catc, newc) =>
+                {
+                    catc.URL = newc.URL;
+                };
+
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
                     if (!m_chapters.IsLoadedFromXml)
-                        m_chapters.ReplaceInnerCollection(result, false, c => c.Title);
+                        m_chapters.ReplaceInnerCollection(result, false, c => c.Title, null);
                     else if (progress == 100)
-                        m_chapters.ReplaceInnerCollection(result, true, c => c.Title);
+                        m_chapters.ReplaceInnerCollection(result, true, c => c.Title, merge);
                     DownloadProgress = progress; 
                 });
 

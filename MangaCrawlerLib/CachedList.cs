@@ -7,6 +7,14 @@ using TomanuExtensions;
 namespace MangaCrawlerLib
 {
     /// <summary>
+    /// Update a_catalog with a_new.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="a_catalog"></param>
+    /// <param name="a_new"></param>
+    public delegate void Merge<T>(T a_catalog, T a_new);
+
+    /// <summary>
     /// Thread-safe, copy on write semantic.
     /// </summary>
     /// <param name="series"></param>
@@ -38,14 +46,15 @@ namespace MangaCrawlerLib
             m_list = list;
         }
 
-        internal void ReplaceInnerCollection(IEnumerable<T> a_new, bool a_remove, Func<T, string> a_key_selector)
+        internal void ReplaceInnerCollection(IEnumerable<T> a_new, bool a_remove, Func<T, string> a_key_selector, 
+            Merge<T> a_merge)
         {
             EnsureLoaded();
 
             var copy = m_list.ToList();
             var new_list = a_new.ToList();
 
-            Merge(new_list, copy, a_key_selector);
+            Merge(new_list, copy, a_key_selector, a_merge);
 
             if (a_remove)
             {
@@ -57,7 +66,7 @@ namespace MangaCrawlerLib
         }
 
         private static void Merge(List<T> a_new, List<T> a_local,
-            Func<T, string> a_key_selector)
+            Func<T, string> a_key_selector, Merge<T> a_merge)
         {
             var dups = a_local.Select(a_key_selector).ExceptExact(
                 a_local.Select(a_key_selector).Distinct());
@@ -67,7 +76,11 @@ namespace MangaCrawlerLib
             {
                 string key = a_key_selector(a_new[i]);
                 if (local_dict.ContainsKey(key))
+                {
+                    if (a_merge != null)
+                        a_merge(local_dict[key], a_new[i]);
                     a_new[i] = local_dict[key];
+                }
             }
         }
 
