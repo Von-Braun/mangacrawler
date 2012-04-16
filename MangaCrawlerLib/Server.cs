@@ -110,15 +110,20 @@ namespace MangaCrawlerLib
             {
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
+                    Merge<Serie> merge = (cats, news) =>
+                    {
+                        cats.URL = news.URL;
+                    };
+
                     if (!m_series.IsLoadedFromXml)
                     {
                         result = EliminateDoubles(result);
-                        m_series.ReplaceInnerCollection(result, false, s => s.Title);
+                        m_series.ReplaceInnerCollection(result, false, s => s.Title, null);
                     }
                     else if (progress == 100)
                     {
                         result = EliminateDoubles(result);
-                        m_series.ReplaceInnerCollection(result, true, s => s.Title);
+                        m_series.ReplaceInnerCollection(result, true, s => s.Title, merge);
                     }
                     DownloadProgress = progress;
                 });

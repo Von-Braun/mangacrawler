@@ -143,11 +143,17 @@ namespace MangaCrawler
      * w bookmarked elementy error, cancelled pokazuja takze new
      * 
      * dodanie nowego serwera nie moze niszczyc katalogu, chwilowo nie ma na to zabezpieczen tylko ostrzezenie
+     * 
+     * przetestowac obluge podwojnych nazw i urli, tylko podwojnych nazw - specjalne testowe serwery
+     * 
+     * utrwalanie danych w katalogu, a zmiana adresu url, odswiezenie informacji w katalogu
      */
 
     /* 
      * TODO:
-
+     * 
+     * dodac do testowych serwerow takie ktore generuja podwojne nazwy i urle, tlyko podwojne nazwy
+     * 
      * testy masowego pobierania cala noc
      * testy gui, testy typowego dzialania
      * uruchomic na x86 
