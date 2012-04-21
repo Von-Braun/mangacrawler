@@ -142,9 +142,9 @@
     <value>CANCELLED</value>
   </data>
   <data name="DownloadingChapterInfo" xml:space="preserve">
-    <value>server: {0}
-serie: {1}
-chapter: {2}</value>
+    <value>serie: {1}
+chapter: {2}
+server: {0}</value>
   </data>
   <data name="DownloadingProgressCancelled" xml:space="preserve">
     <value>Cancelled</value>
@@ -198,9 +198,6 @@ chapter: {2}</value>
   <data name="Delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Download" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\Download.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Manga_Crawler_Green" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Manga_Crawler_Green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -218,5 +215,8 @@ chapter: {2}</value>
   </data>
   <data name="VisitPage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\VisitPage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Download" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Download.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

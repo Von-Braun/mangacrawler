@@ -86,6 +86,7 @@ namespace MangaCrawler
                         a_args.Graphics.DrawString(
                             String.Format("({0}%)", Serie.DownloadProgress),
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
+
                         break;
                     }
                     case SerieState.Initial:

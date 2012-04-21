@@ -147,18 +147,20 @@ namespace MangaCrawler
      * przetestowac obluge podwojnych nazw i urli, tylko podwojnych nazw - specjalne testowe serwery
      * 
      * utrwalanie danych w katalogu, a zmiana adresu url, odswiezenie informacji w katalogu
+     * 
+     * czy dziala na x86
+     * 
+     * podwojne klikniecie w element pobieranych pobiera go na nowo
+     * 
+     * upewnic sie ze blad w trakcie pobierania dowolnego entity pokaze blad dopiero po zakonczeniu pobierania, a nie 
+     * ze pokaze sie blad, a pobieranie bedzie trwac
      */
 
     /* 
      * TODO:
      * 
-     * wolne, przejechanie sie po wielu seriach mangafox
-     * 
-     * dodac do testowych serwerow takie ktore generuja podwojne nazwy i urle, tlyko podwojne nazwy
-     * 
      * testy masowego pobierania cala noc
-     * testy gui, testy typowego dzialania
-     * uruchomic na x86 
+     * testowanie
      * 
      * wbudowany browser
      * widok wspolny dla wszystkich serwisow, scalac jakos serie,
@@ -327,7 +329,7 @@ namespace MangaCrawler
         {
             int MARGIN_LEFT_RIGHT = 8;
             int MARGIN_BOTTOM = 8;
-            int MARGIN_TOP = 30;
+            int MARGIN_TOP = 40;
 
             a_panel.Parent = this;
             a_panel.Anchor = tabControl.Anchor;
@@ -593,7 +595,7 @@ namespace MangaCrawler
 
         private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (GUI.SelectedServer != null)
+          if (GUI.SelectedServer != null)
                 m_series_visual_states[GUI.SelectedServer] = 
                     new ListBoxVisualState(seriesListBox);
 
@@ -1462,6 +1464,11 @@ namespace MangaCrawler
         private void ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Commands.IgnoreForSelectedBookmarkedChapters();
+        }
+
+        private void downloadingsGridView_DoubleClick(object sender, EventArgs e)
+        {
+            Commands.DownloadPagesForSelectedDownloadings();
         }
     }
 }
