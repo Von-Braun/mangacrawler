@@ -159,9 +159,9 @@ namespace MangaCrawler.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to server: {0}
-        ///serie: {1}
-        ///chapter: {2}.
+        ///   Looks up a localized string similar to serie: {1}
+        ///chapter: {2}
+        ///server: {0}.
         /// </summary>
         internal static string DownloadingChapterInfo {
             get {

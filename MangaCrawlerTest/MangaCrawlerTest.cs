@@ -277,6 +277,7 @@ namespace MangaCrawlerTest
                 {
                     try
                     {
+                        server.State = ServerState.Waiting;
                         server.DownloadSeries();
                     }
                     catch
@@ -300,6 +301,7 @@ namespace MangaCrawlerTest
                         {
                             try
                             {
+                                serie.State = SerieState.Waiting;
                                 serie.DownloadChapters();
                             }
                             catch
@@ -323,7 +325,18 @@ namespace MangaCrawlerTest
                                 {
                                     try
                                     {
-                                        chapter.DownloadPagesList();
+                                        chapter.State = ChapterState.Waiting;
+
+                                        Limiter.BeginChapter(chapter);
+
+                                        try
+                                        {
+                                            chapter.DownloadPagesList();
+                                        }
+                                        finally
+                                        {
+                                            Limiter.EndChapter(chapter);
+                                        }
                                     }
                                     catch
                                     {

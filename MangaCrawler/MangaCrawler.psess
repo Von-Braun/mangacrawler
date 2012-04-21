@@ -41,7 +41,7 @@
       </PdhCounters>
     </PdhSettings>
   </Options>
-  <ExcludeSmallFuncs>false</ExcludeSmallFuncs>
+  <ExcludeSmallFuncs>true</ExcludeSmallFuncs>
   <JScriptProfilingEnabled>false</JScriptProfilingEnabled>
   <PreinstrumentEvent>
     <InstrEventProgram />
@@ -87,11 +87,6 @@
       <ProjName>MangaCrawler</ProjName>
     </ProjBinary>
   </Binaries>
-  <Reports>
-    <Report>
-      <Path>D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler120315.vsp</Path>
-    </Report>
-  </Reports>
   <Launches>
     <ProjBinary>
       <Path>:PB:{C75DBED1-3FF0-4762-BE86-3865C27FD618}|MangaCrawler\MangaCrawler.csproj</Path>

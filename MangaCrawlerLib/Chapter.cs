@@ -193,6 +193,7 @@ namespace MangaCrawlerLib
 
                     var names = Pages.Select(p => p.Name);
                     var sorted_names = Pages.Select(p => p.Name).OrderBy(n => n, new NaturalOrderStringComparer());
+                    bool error = false;
 
                     PageNamingStrategy pns = DownloadManager.Instance.MangaSettings.PageNamingStrategy;
                     if (pns == PageNamingStrategy.IndexToPreserveOrder)
@@ -238,7 +239,7 @@ namespace MangaCrawlerLib
                                     "Exception #1, chapter: {0} state: {1}",
                                     this, State), ex2);
 
-                                State = ChapterState.Error;
+                                error = true;
                             }
                         }
                     );
@@ -249,7 +250,8 @@ namespace MangaCrawlerLib
                         State = ChapterState.Error;
                     else if (Pages.Any(p => p.State != PageState.Downloaded))
                         State = ChapterState.Error;
-                    
+                    else if (error)
+                        State = ChapterState.Error;
 
                     Catalog.Save(this);
 
