@@ -31,13 +31,6 @@ namespace MangaCrawler
             }
         }
 
-        private void DrawCount(Graphics a_graphics, Rectangle a_rect, Font a_font)
-        {
-            a_graphics.DrawString(
-                Serie.Chapters.Count.ToString(),
-                a_font, Brushes.Green, a_rect, StringFormat.GenericDefault);
-        }
-
         public override void DrawItem(DrawItemEventArgs a_args)
         {
             if (a_args.Index == -1)
@@ -71,7 +64,10 @@ namespace MangaCrawler
                         else
                         {
                             if (Serie.Chapters.Count != 0)
-                                DrawCount(a_args.Graphics, rect, font);
+                            {
+                                a_args.Graphics.DrawString(Serie.Chapters.Count.ToString(),
+                                    font, Brushes.Green, rect, StringFormat.GenericDefault);
+                            }
                         }
                         break;
                     }

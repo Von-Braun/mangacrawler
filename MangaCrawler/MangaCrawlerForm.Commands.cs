@@ -125,6 +125,7 @@ namespace MangaCrawler
             private void BookmarkSerie(Serie a_serie)
             {
                 DownloadManager.Instance.Bookmarks.Add(a_serie);
+                DownloadChaptersForSerie(a_serie);
                 GUI.UpdateAll();
             }
 
@@ -140,7 +141,12 @@ namespace MangaCrawler
 
             public void DownloadChapterForSelectedSerie()
             {
-                DownloadManager.Instance.DownloadChapters(GUI.SelectedSerie, a_force: false);
+                DownloadChaptersForSerie(GUI.SelectedSerie);
+            }
+
+            public void DownloadChaptersForSerie(Serie a_serie)
+            {
+                DownloadManager.Instance.DownloadChapters(a_serie, a_force: false);
                 GUI.UpdateAll();
             }
 

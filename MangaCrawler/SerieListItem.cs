@@ -31,17 +31,6 @@ namespace MangaCrawler
             }
         }
 
-        private void DrawCount(Graphics a_graphics, Rectangle a_rect, Font a_font)
-        {
-            string str = Serie.Chapters.Count.ToString();
-
-            if (Serie.IsBookmarked)
-                str = Resources.Bookmarked;
-
-            a_graphics.DrawString(str, 
-                a_font, Brushes.Green, a_rect, StringFormat.GenericDefault);
-        }
-
         public override void DrawItem(DrawItemEventArgs a_args)
         {
             if (a_args.Index == -1)
@@ -59,7 +48,14 @@ namespace MangaCrawler
 
                     case SerieState.Downloaded:
 
-                        DrawCount(a_args.Graphics, rect, font);
+                        string str = Serie.Chapters.Count.ToString();
+
+                        if (Serie.IsBookmarked)
+                            str = Resources.Bookmarked;
+
+                        a_args.Graphics.DrawString(str,
+                            font, Brushes.Green, rect, StringFormat.GenericDefault);
+
                         break;
 
                     case SerieState.Waiting:
