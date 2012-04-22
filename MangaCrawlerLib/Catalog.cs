@@ -35,6 +35,7 @@ namespace MangaCrawlerLib
             public static string SERVER_ID_NODE = "ID";
             public static string SERVER_NAME_NODE = "Name";
             public static string SERVER_STATE_NODE = "State";
+            public static string SERVER_SERIES_DOWNLOADED_FIRST_TIME_NODE = "SeriesDownloadedFirstTime";
             public static string SERVER_URL_NODE = "URL";
 
             public static string SERVER_SERIES_NODE = "ServerSeries";
@@ -43,6 +44,7 @@ namespace MangaCrawlerLib
             public static string SERIE_NODE = "Serie";
             public static string SERIE_TITLE_NODE = "Title";
             public static string SERIE_STATE_NODE = "State";
+            public static string SERIE_CHAPTERS_DOWNLOADED_FIRST_TIME_NODE = "ChaptersDownloadedFirstTime";
             public static string SERIE_URL_NODE = "URL";
 
             public static string SERIE_CHAPTERS_NODE = "SerieChapters";
@@ -54,7 +56,7 @@ namespace MangaCrawlerLib
             public static string CHAPTER_TITLE_NODE = "Title";
             public static string CHAPTER_LIMITER_ORDER_NODE = "LimiterOrder";
             public static string CHAPTER_URL_NODE = "URL";
-            public static string CHAPTER_BOOKMARK_IGNORED_NODE = "BookmarkIgnored";
+            public static string CHAPTER_BOOKMARK_NEW_NODE = "BookmarkNew";
 
             public static string CHAPTER_PAGES_NODE = "ChapterPages";
             public static string CHAPTER_SERIE_ID_NODE = "SerieID";
@@ -159,7 +161,9 @@ namespace MangaCrawlerLib
                                            server.Element(Nodes.SERVER_NAME_NODE).Value,
                                            UInt64.Parse(server.Element(Nodes.SERVER_ID_NODE).Value), 
                                            EnumExtensions.Parse<ServerState>(
-                                            server.Element(Nodes.SERVER_STATE_NODE).Value)
+                                               server.Element(Nodes.SERVER_STATE_NODE).Value),
+                                           Boolean.Parse(server.Element(
+                                               Nodes.SERVER_SERIES_DOWNLOADED_FIRST_TIME_NODE).Value)
                                        )).ToList();
 
                 if (!catalog_servers.Select(s => s.ID).Unique())
@@ -180,7 +184,8 @@ namespace MangaCrawlerLib
 
                     Debug.Assert(cs.Name == servers[i].Name);
 
-                    servers[i] = new Server(servers[i].URL, servers[i].Name, servers[i].ID, cs.State);
+                    servers[i] = new Server(servers[i].URL, servers[i].Name, servers[i].ID, cs.State, 
+                        cs.SeriesDownloadedFirstTime);
                 }
 
                 return servers.ToArray();
@@ -222,6 +227,8 @@ namespace MangaCrawlerLib
                                                            new XElement(Nodes.SERVER_ID_NODE, s.ID),
                                                            new XElement(Nodes.SERVER_NAME_NODE, s.Name),
                                                            new XElement(Nodes.SERVER_STATE_NODE, s.State),
+                                                           new XElement(Nodes.SERVER_SERIES_DOWNLOADED_FIRST_TIME_NODE, 
+                                                               s.SeriesDownloadedFirstTime),
                                                            new XElement(Nodes.SERVER_URL_NODE, s.URL))));
                     XmlSave(CatalogFile, xml);
                 }
@@ -308,11 +315,14 @@ namespace MangaCrawlerLib
                                  Title = serie.Element(Nodes.SERIE_TITLE_NODE).Value,
                                  URL = serie.Element(Nodes.SERIE_URL_NODE).Value,
                                  State = EnumExtensions.Parse<SerieState>(
-                                    serie.Element(Nodes.SERIE_STATE_NODE).Value)
+                                    serie.Element(Nodes.SERIE_STATE_NODE).Value),
+                                 ChaptersDownloadedFirstTime = Boolean.Parse(
+                                    serie.Element(Nodes.SERIE_CHAPTERS_DOWNLOADED_FIRST_TIME_NODE).Value)
                              };
 
                 return (from serie in series
-                        select new Serie(a_server, serie.URL, serie.Title, serie.ID, serie.State)).ToList();
+                        select new Serie(a_server, serie.URL, serie.Title, serie.ID, serie.State, 
+                            serie.ChaptersDownloadedFirstTime)).ToList();
             }
             catch (Exception ex)
             {
@@ -338,6 +348,8 @@ namespace MangaCrawlerLib
                                 new XElement(Nodes.SERIE_ID_NODE, s.ID),
                                 new XElement(Nodes.SERIE_TITLE_NODE, s.Title),
                                 new XElement(Nodes.SERIE_STATE_NODE, s.State),
+                                new XElement(Nodes.SERIE_CHAPTERS_DOWNLOADED_FIRST_TIME_NODE, 
+                                    s.ChaptersDownloadedFirstTime),
                                 new XElement(Nodes.SERIE_URL_NODE, s.URL))));
 
                     XmlSave(GetCatalogFile(a_server.ID), xml);
@@ -367,7 +379,7 @@ namespace MangaCrawlerLib
                                    Title = chapter.Element(Nodes.CHAPTER_TITLE_NODE).Value,
                                    LimiterOrder = UInt64.Parse(chapter.Element(Nodes.CHAPTER_LIMITER_ORDER_NODE).Value),
                                    URL = chapter.Element(Nodes.CHAPTER_URL_NODE).Value,
-                                   BookmarkIgnore = Boolean.Parse(chapter.Element(Nodes.CHAPTER_BOOKMARK_IGNORED_NODE).Value),
+                                   BookmarkIgnore = Boolean.Parse(chapter.Element(Nodes.CHAPTER_BOOKMARK_NEW_NODE).Value),
                                    State = EnumExtensions.Parse<ChapterState>(
                                        chapter.Element(Nodes.CHAPTER_STATE_NODE).Value)
                                };
@@ -402,7 +414,7 @@ namespace MangaCrawlerLib
                                 new XElement(Nodes.CHAPTER_TITLE_NODE, c.Title),
                                 new XElement(Nodes.CHAPTER_LIMITER_ORDER_NODE, c.LimiterOrder),
                                 new XElement(Nodes.CHAPTER_STATE_NODE, c.State),
-                                new XElement(Nodes.CHAPTER_BOOKMARK_IGNORED_NODE, c.BookmarkIgnored),
+                                new XElement(Nodes.CHAPTER_BOOKMARK_NEW_NODE, c.BookmarkNew),
                                 new XElement(Nodes.CHAPTER_URL_NODE, c.URL))));
 
                     XmlSave(GetCatalogFile(a_serie.ID), xml);

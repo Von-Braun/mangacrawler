@@ -84,7 +84,7 @@ namespace MangaCrawler
                         if (entity is Chapter)
                         {
                             DownloadManager.Instance.BookmarksIgnored(
-                                new[] { entity as Chapter }, true);
+                                new[] { entity as Chapter });
                         }
                     }
                     catch (Exception ex)
@@ -337,7 +337,7 @@ namespace MangaCrawler
             {
                 VisitPages(GUI.SelectedBookmarkedChapters);
 
-                DownloadManager.Instance.BookmarksIgnored(GUI.SelectedBookmarkedChapters, true);
+                DownloadManager.Instance.BookmarksIgnored(GUI.SelectedBookmarkedChapters);
 
                 GUI.UpdateAll();
             }
@@ -388,8 +388,21 @@ namespace MangaCrawler
 
             private void IgnoreNew(IEnumerable<Chapter> a_chapters)
             {
-                DownloadManager.Instance.BookmarksIgnored(a_chapters, true);
+                DownloadManager.Instance.BookmarksIgnored(a_chapters);
                 GUI.UpdateAll();
+            }
+
+            public void UpdateAutostart()
+            {
+                if (Settings.Instance.MinimizeOnClose)
+                {
+                    if (Settings.Instance.Autostart)
+                        Autostart.Enable();
+                    else
+                        Autostart.Disable();
+                }
+                else
+                    Autostart.Disable();
             }
         }
     }

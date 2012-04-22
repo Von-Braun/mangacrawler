@@ -235,6 +235,7 @@ namespace MangaCrawlerTest
             TestContext.WriteLine("        Testing page {0}", a_page.Name);
 
             Limiter.BeginChapter(a_page.Chapter);
+
             try
             {
                 var stream = a_page.GetImageStream();
@@ -264,9 +265,43 @@ namespace MangaCrawlerTest
             }
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(24 * 60 * 60 * 1000)]
         public void _RandomTestAll()
         {
+            Dictionary<Server, int> serie_chapters = new Dictionary<Server, int>();
+            Dictionary<Server, int> chapter_pageslist = new Dictionary<Server, int>();
+            Dictionary<Server, int> chapter_images = new Dictionary<Server, int>();
+            DateTime last_report = DateTime.Now;
+            TimeSpan report_delta = new TimeSpan(0, 15, 0);
+            int errors = 0;
+            int warnings = 0;
+
+            foreach (var server in DownloadManager.Instance.Servers)
+            {
+                serie_chapters[server] = 0;
+                chapter_pageslist[server] = 0;
+                chapter_images[server] = 0;
+            }
+
+            Action report = () =>
+            {
+                if (DateTime.Now - last_report < report_delta)
+                    return;
+                last_report = DateTime.Now;
+
+                TestContext.WriteLine("");
+                TestContext.WriteLine("Report ({0}):", DateTime.Now);
+
+                foreach (var server in DownloadManager.Instance.Servers)
+                {
+                    TestContext.WriteLine("Server: {0}, Serie chapters: {1}, Chapters pages list: {2}, Chapter images: {3}",
+                        server.Name, serie_chapters[server], chapter_pageslist[server], chapter_images[server]);
+                }
+
+                TestContext.WriteLine("Errors: {0}, Warnings: {1}", errors, warnings);
+                TestContext.WriteLine("");
+            };
+            
             Parallel.ForEach(DownloadManager.Instance.Servers,
                 new ParallelOptions()
                 {
@@ -282,13 +317,15 @@ namespace MangaCrawlerTest
                     }
                     catch
                     {
-                        TestContext.WriteLine("{0} - Exception while downloading series from server",
+                        TestContext.WriteLine("ERROR - {0} - Exception while downloading series from server",
                             server);
+                        errors++;
                     }
 
                     if (server.Series.Count == 0)
                     {
-                        TestContext.WriteLine("{0} - Server have no series", server);
+                        TestContext.WriteLine("WARN - {0} - Server have no series", server);
+                        warnings++;
                     }
 
                     Parallel.ForEach(TakeRandom(server.Series, 0.1),
@@ -303,16 +340,19 @@ namespace MangaCrawlerTest
                             {
                                 serie.State = SerieState.Waiting;
                                 serie.DownloadChapters();
+                                serie_chapters[server]++;
                             }
                             catch
                             {
                                 TestContext.WriteLine(
-                                    "{0} - Exception while downloading chapters from serie", serie);
+                                    "ERROR - {0} - Exception while downloading chapters from serie", serie);
+                                errors++;
                             }
 
                             if (serie.Chapters.Count == 0)
                             {
-                                TestContext.WriteLine("{0} - Serie has no chapters", serie);
+                                TestContext.WriteLine("WARN - {0} - Serie has no chapters", serie);
+                                warnings++;
                             }
 
                             Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
@@ -337,16 +377,20 @@ namespace MangaCrawlerTest
                                         {
                                             Limiter.EndChapter(chapter);
                                         }
+
+                                        chapter_pageslist[server]++;
                                     }
                                     catch
                                     {
                                         TestContext.WriteLine(
-                                            "{0} - Exception while downloading pages from chapter", chapter);
+                                            "ERROR - {0} - Exception while downloading pages from chapter", chapter);
+                                        errors++;
                                     }
 
                                     if (chapter.Pages.Count == 0)
                                     {
-                                        TestContext.WriteLine("{0} - Chapter have no pages", chapter);
+                                        TestContext.WriteLine("Warn - {0} - Chapter have no pages", chapter);
+                                        warnings++;
                                     }
 
                                     Parallel.ForEach(TakeRandom(chapter.Pages, 0.1),
@@ -357,33 +401,48 @@ namespace MangaCrawlerTest
                                         },
                                         (page) =>
                                         {
-                                            MemoryStream stream = null;
+                                            Limiter.BeginChapter(chapter);
 
                                             try
                                             {
-                                                stream = page.GetImageStream();
+                                                MemoryStream stream = null;
+
+                                                try
+                                                {
+                                                    stream = page.GetImageStream();
+                                                }
+                                                catch
+                                                {
+                                                    TestContext.WriteLine(
+                                                        "ERROR - {0} - Exception while downloading image from page", page);
+                                                    errors++;
+                                                }
+
+                                                if (stream.Length == 0)
+                                                {
+                                                    TestContext.WriteLine(
+                                                        "ERROR - {0} - Image stream is zero size for page", page);
+                                                    errors++;
+                                                }
+
+                                                try
+                                                {
+                                                    System.Drawing.Image.FromStream(stream);
+                                                }
+                                                catch
+                                                {
+                                                    TestContext.WriteLine(
+                                                        "ERROR - {0} - Exception while creating image from stream for page", page);
+                                                    errors++;
+                                                }
                                             }
-                                            catch
+                                            finally
                                             {
-                                                TestContext.WriteLine(
-                                                    "{0} - Exception while downloading image from page", page);
+                                                Limiter.EndChapter(chapter);
                                             }
 
-                                            if (stream.Length == 0)
-                                            {
-                                                TestContext.WriteLine(
-                                                    "{0} - Image stream is zero size for page", page);
-                                            }
-
-                                            try
-                                            {
-                                                System.Drawing.Image.FromStream(stream);
-                                            }
-                                            catch
-                                            {
-                                                TestContext.WriteLine(
-                                                    "{0} - Exception while creating image from stream for page", page);
-                                            }
+                                            chapter_images[server]++;
+                                            report();
                                         });
                                 });
                         });

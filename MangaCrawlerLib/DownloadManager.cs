@@ -206,13 +206,7 @@ namespace MangaCrawlerLib
             (a_chapter.Crawler as TestServerCrawler).Debug_ChangeChapterURL(a_chapter);
         }
 
-        public void Debug_LoadAllFromCatalog(ref int a_servers, ref int a_series, ref int a_chapters, ref int a_pages)
-        {
-            foreach (var server in Servers)
-                server.Debug_LoadAllFromCatalog(ref a_servers, ref a_series, ref a_chapters, ref a_pages);
-        }
-
-        public void BookmarksIgnored(IEnumerable<Chapter> a_chapters, bool a_state)
+        public void BookmarksIgnored(IEnumerable<Chapter> a_chapters)
         {
             var chapters_grouped_by_serie = from ch in a_chapters
                      group ch by ch.Serie;
@@ -220,7 +214,7 @@ namespace MangaCrawlerLib
             foreach (var chapters_group in chapters_grouped_by_serie)
             {
                 foreach (var chapter in chapters_group)
-                    chapter.BookmarkIgnored = a_state;
+                    chapter.BookmarkNew = false;
 
                 Catalog.Save(chapters_group.First().Serie);
             }

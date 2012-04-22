@@ -46,6 +46,9 @@ namespace MangaCrawler
         [YAXNode("ShowBaloonTips")]
         private bool m_show_baloon_tips = false;
 
+        [YAXNode("Autostart")]
+        private bool m_autostart = false;
+
         [YAXNode("CheckBookmarksPeriod")]
         private TimeSpan m_check_bookmarks_period = new TimeSpan(hours: 0, minutes: 30, seconds: 0);
 
@@ -183,6 +186,19 @@ namespace MangaCrawler
             set
             {
                 m_show_baloon_tips = value;
+                Save();
+            }
+        }
+
+        public bool Autostart
+        {
+            get
+            {
+                return m_autostart;
+            }
+            set
+            {
+                m_autostart = value;
                 Save();
             }
         }

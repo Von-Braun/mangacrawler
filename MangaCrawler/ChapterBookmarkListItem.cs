@@ -80,7 +80,7 @@ namespace MangaCrawler
                     }
                     case ChapterState.Initial:
                     {
-                        if (!Chapter.BookmarkIgnored)
+                        if (Chapter.BookmarkNew)
                         {
                             a_args.Graphics.DrawString(Resources.New, font,
                                 Brushes.Red, rect, StringFormat.GenericDefault);
@@ -99,7 +99,7 @@ namespace MangaCrawler
 
         private string AlsoNew()
         {
-            if (Chapter.BookmarkIgnored)
+            if (!Chapter.BookmarkNew)
                 return "";
             else
                 return Resources.New + ", ";

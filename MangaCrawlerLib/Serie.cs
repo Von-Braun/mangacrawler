@@ -32,9 +32,6 @@ namespace MangaCrawlerLib
                         return;
 
                     m_list = Catalog.LoadSerieChapters(m_serie);
-
-                    if (m_list.Count != 0)
-                        m_loaded_from_xml = true;
                 }
             }
         }
@@ -52,19 +49,22 @@ namespace MangaCrawlerLib
         public Server Server { get; protected set; }
         public string Title { get; internal set; }
         public int DownloadProgress { get; protected set; }
+        protected internal bool ChaptersDownloadedFirstTime { get; protected set; }
 
         internal Serie(Server a_server, string a_url, string a_title)
-            : this(a_server, a_url, a_title, Catalog.NextID(), SerieState.Initial)
+            : this(a_server, a_url, a_title, Catalog.NextID(), SerieState.Initial, false)
         {
         }
 
-        internal Serie(Server a_server, string a_url, string a_title, ulong a_id, SerieState a_state)
+        internal Serie(Server a_server, string a_url, string a_title, ulong a_id, SerieState a_state, 
+            bool a_chapters_downloaded_first_time)
             : base(a_id)
         {
             m_chapters = new ChaptersCachedList(this);
             URL = HtmlDecode(a_url);
             Server = a_server;
             m_state = a_state;
+            ChaptersDownloadedFirstTime = a_chapters_downloaded_first_time;
 
             if (m_state == SerieState.Downloading)
                 m_state = SerieState.Initial;
@@ -111,8 +111,9 @@ namespace MangaCrawlerLib
 
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
-                    if (!m_chapters.IsLoadedFromXml)
+                    if (!ChaptersDownloadedFirstTime)
                     {
+                        result.ForEach(ch => ch.BookmarkNew = false);
                         result = EliminateDoubles(result);
                         m_chapters.ReplaceInnerCollection(result, false, c => c.Title, null);
                     }
@@ -147,6 +148,7 @@ namespace MangaCrawlerLib
                 }
             }
 
+            ChaptersDownloadedFirstTime = true;
             Catalog.Save(this);
             m_check_date_time = DateTime.Now;
         }
@@ -290,16 +292,8 @@ namespace MangaCrawlerLib
         public IEnumerable<Chapter> GetNewChapters()
         {
             return (from chapter in Chapters
-                    where !chapter.BookmarkIgnored
+                    where chapter.BookmarkNew
                     select chapter).ToList();
-        }
-
-        internal void Debug_LoadAllFromCatalog(ref int a_servers, ref int a_series, ref int a_chapters, ref int a_pages)
-        {
-            a_series++;
-            m_chapters.Count.ToString(); 
-            foreach (var chapter in m_chapters)
-                chapter.Debug_LoadAllFromCatalog(ref a_servers, ref a_series, ref a_chapters, ref a_pages);
         }
     }
 }

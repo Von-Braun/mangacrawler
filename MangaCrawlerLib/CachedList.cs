@@ -20,7 +20,6 @@ namespace MangaCrawlerLib
     /// <param name="series"></param>
     internal abstract class CachedList<T> : IList<T> where T : Entity
     {
-        protected bool m_loaded_from_xml;
         protected List<T> m_list;
         protected Object m_lock = new Object();
 
@@ -90,19 +89,6 @@ namespace MangaCrawlerLib
             get
             {
                 return (m_list != null);
-            }
-        }
-
-        internal bool IsLoadedFromXml
-        {
-            get
-            {
-                EnsureLoaded();
-
-                lock (m_lock)
-                {
-                    return m_loaded_from_xml;
-                }
             }
         }
 
@@ -205,7 +191,7 @@ namespace MangaCrawlerLib
             if (list == null)
                 return "Uninitialized";
             else
-                return String.Format("Count: {0}, LoadedFromXml: {1}", list.Count, IsLoadedFromXml);
+                return String.Format("Count: {0}", list.Count);
         }
 
         protected abstract void EnsureLoaded();

@@ -33,9 +33,6 @@ namespace MangaCrawlerLib
                         return;
 
                     m_list = Catalog.LoadServerSeries(m_server);
-
-                    if (m_list.Count != 0)
-                        m_loaded_from_xml = true;
                 }
             }
         }
@@ -52,19 +49,22 @@ namespace MangaCrawlerLib
 
         public int DownloadProgress { get; private set; }
         public string Name { get; private set; }
+        protected internal bool SeriesDownloadedFirstTime { get; protected set; }
 
         internal Server(string a_url, string a_name)
-            : this(a_url, a_name, Catalog.NextID(), ServerState.Initial)
+            : this(a_url, a_name, Catalog.NextID(), ServerState.Initial, false)
         {
         }
 
-        internal Server(string a_url, string a_name, ulong a_id, ServerState a_state)
+        internal Server(string a_url, string a_name, ulong a_id, ServerState a_state, 
+            bool a_series_downloaded_first_time)
             : base(a_id)
         {
             m_series = new SeriesCachedList(this);
             URL = a_url;
             Name = a_name;
             m_state = a_state;
+            SeriesDownloadedFirstTime = a_series_downloaded_first_time;
 
             if (m_state == ServerState.Downloading)
                 m_state = ServerState.Initial;
@@ -115,7 +115,7 @@ namespace MangaCrawlerLib
                         cats.URL = news.URL;
                     };
 
-                    if (!m_series.IsLoadedFromXml)
+                    if (!SeriesDownloadedFirstTime)
                     {
                         result = EliminateDoubles(result);
                         m_series.ReplaceInnerCollection(result, false, s => s.Title, null);
@@ -141,6 +141,7 @@ namespace MangaCrawlerLib
                 State = ServerState.Error;
             }
 
+            SeriesDownloadedFirstTime = true;
             Catalog.Save(this);
             m_check_date_time = DateTime.Now;
         }
@@ -270,15 +271,6 @@ namespace MangaCrawlerLib
                 return (State == ServerState.Downloading) ||
                        (State == ServerState.Waiting);
             }
-        }
-
-        internal void Debug_LoadAllFromCatalog(ref int a_servers, ref int a_series, ref int a_chapters, ref int a_pages)
-        {
-            m_series.Count.ToString();
-            if (m_series.IsLoadedFromXml)
-                a_servers++;
-            foreach (var serie in m_series)
-                serie.Debug_LoadAllFromCatalog(ref a_servers, ref a_series, ref a_chapters, ref a_pages);
         }
     }
 }
