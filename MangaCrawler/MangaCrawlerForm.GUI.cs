@@ -154,8 +154,8 @@ namespace MangaCrawler
 
                     if (en)
                     {
-                        Form.bookmarkSelectedSerieToolStripButton.Enabled = 
-                            !SelectedSerie.IsBookmarked && !SelectedSerie.IsDownloading;
+                        Form.bookmarkSelectedSerieToolStripButton.Enabled =
+                            !SelectedSerie.IsBookmarked;
                         Form.bookmarkSerieToolStripMenuItem.Enabled = 
                             Form.bookmarkSelectedSerieToolStripButton.Enabled;
 
@@ -283,7 +283,7 @@ namespace MangaCrawler
                             Form.readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Enabled;
 
                         Form.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Enabled =
-                            SelectedBookmarkedChapters.Any(c => !c.BookmarkIgnored);
+                            SelectedBookmarkedChapters.Any(c => c.BookmarkNew);
                         Form.ignoreNewForSelectedBookmarkedChaptersToolStripButton.Enabled =
                             Form.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Enabled;
                     }
@@ -292,27 +292,12 @@ namespace MangaCrawler
 
             private void UpdateOptions()
             {
-                Form.autostartCheckBox.Checked = Autostart.Enabled;
+                bool downloading = DownloadManager.Instance.Downloadings.List.Any(w => w.IsDownloading);
 
-                bool show = DownloadManager.Instance.Downloadings.List.All(w => !w.IsDownloading);
-
-                foreach (var control in Form.optionsTabPanel.Controls.Cast<Control>())
-                {
-                    if (control == Form.optionslLabel)
-                    {
-                        if (show)
-                            control.Hide();
-                        else
-                            control.Show();
-                    }
-                    else
-                    {
-                        if (show)
-                            control.Show();
-                        else
-                            control.Hide();
-                    }
-                }
+                Form.label2.Enabled = !downloading;
+                Form.mangaRootDirTextBox.Enabled = !downloading;
+                Form.mangaRootDirChooseButton.Enabled = !downloading;
+                Form.optionslLabel.Visible = downloading;
             }
 
             private void UpdateDownloadingsTab()

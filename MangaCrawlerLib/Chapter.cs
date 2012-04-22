@@ -34,9 +34,6 @@ namespace MangaCrawlerLib
                         return;
 
                     m_list = Catalog.LoadChapterPages(m_chapter);
-
-                    if (m_list.Count != 0)
-                        m_loaded_from_xml = true;
                 }
             }
         }
@@ -56,18 +53,18 @@ namespace MangaCrawlerLib
 
         public Serie Serie { get; private set; }
         public string Title { get; internal set; }
-        public bool BookmarkIgnored { get; internal set; }
+        public bool BookmarkNew { get; internal set; }
 
         internal Chapter(Serie a_serie, string a_url, string a_title)
-            : this(a_serie, a_url, a_title, Catalog.NextID(), ChapterState.Initial, 0, false)
+            : this(a_serie, a_url, a_title, Catalog.NextID(), ChapterState.Initial, 0, true)
         {
         }
 
         internal Chapter(Serie a_serie, string a_url, string a_title, ulong a_id, ChapterState a_state,
-            ulong a_limiter_order, bool a_bookmark_ignore)
+            ulong a_limiter_order, bool a_bookmark_new)
             : base(a_id)
         {
-            BookmarkIgnored = a_bookmark_ignore;
+            BookmarkNew = a_bookmark_new;
             m_pages = new PagesCachedList(this);
             LimiterOrder = a_limiter_order;
             Serie = a_serie;
@@ -259,7 +256,7 @@ namespace MangaCrawlerLib
                         if (State != ChapterState.Error)
                             CreateCBZ();
 
-                    BookmarkIgnored = true;
+                    BookmarkNew = false;
                 }
                 finally
                 {
@@ -445,14 +442,6 @@ namespace MangaCrawlerLib
                     m_state = value;
                 }
             }
-        }
-
-        internal void Debug_LoadAllFromCatalog(ref int a_servers, ref int a_series, ref int a_chapters, ref int a_pages)
-        {
-            a_chapters++;
-            m_pages.Count.ToString();
-            foreach (var page in m_pages)
-                a_pages++;
         }
 
         public bool CanReadFirstPage()

@@ -37,7 +37,7 @@ namespace MangaCrawlerLib
             copy.Add(a_serie);
             m_bookmarks = copy;
 
-            DownloadManager.Instance.BookmarksIgnored(a_serie.Chapters, true);
+            DownloadManager.Instance.BookmarksIgnored(a_serie.Chapters);
 
             Save();
         }

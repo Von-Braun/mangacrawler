@@ -154,11 +154,30 @@ namespace MangaCrawler
      * 
      * upewnic sie ze blad w trakcie pobierania dowolnego entity pokaze blad dopiero po zakonczeniu pobierania, a nie 
      * ze pokaze sie blad, a pobieranie bedzie trwac
+     * 
+     * pobranie serii, chapterow, przerwanie w trakcie, ponownie po uurchomieniu powinno wznowic ich pobieranie od 
+     * poczatku, nic nie powinno sie zapamietac, w przypadku bledow powinno sie zapamietac
+     * 
+     * dodanie do bookmark w trakcie pobierania nie dodaje pobieranych chapterow, jesli jest to pobieranie pierwszy
+     * raz, jesli jest to odswiezanie pojawi sie jako new, jesli cos doda sie do chapterow po kliknieciu
+     * 
+     * autostart dziala tylko jesli jest wlaczona minimalizacja do traya, jego zaznaczenie jest przechowywane w opcjach 
+     * i jest niezalezne od ustawienia w rejestrach. Aczkolwiek na starcie sprawdzane jest prawidlowe powiazanie 
+     * autostartu w rejestrze z tym w opcjach. 
+     * 
+     * podczas pobierania nie mozemy zmienic folderu docelowego, wszystko jest disable i jest czerwony label z info.
+     * 
      */
 
     /* 
      * TODO:
      * 
+     * multiselekt prawie wszedzie
+     * problem z przelaczaniem sie zaznaczenia i automatycznym rozpoczynaniem pobierania
+     * problem z bookmarkami i automatycznym sprawdzaniem nowych, powinien sprawdzac tylko jak jest 
+     *   niekatywny, zminimalizowany? zostawic jak jest, ale w opsie podac co sie dzieje zmiast procentow 
+     *   pokazac, czekam, a dalej, sprawdzam nowe rozdzialy, czy cos takiego, zachowanie identyczne dla 
+     *   downloading
      * testy masowego pobierania cala noc
      * testowanie
      * 
@@ -265,13 +284,21 @@ namespace MangaCrawler
 
             versionLinkLabel.TabStop = false;
 
+            if (Settings.Instance.MinimizeOnClose)
+            {
+                if (Settings.Instance.Autostart != Autostart.Enabled)
+                    Settings.Instance.Autostart = Autostart.Enabled;
+            }
+            else
+                Autostart.Disable();
+
             mangaRootDirTextBox.Text = Settings.Instance.MangaSettings.GetMangaRootDir(false);
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
             cbzCheckBox.Checked = Settings.Instance.MangaSettings.UseCBZ;
-            minimizeOnCloseCheckBox.Checked = Settings.Instance.MinimizeOnClose;
-            if (!minimizeOnCloseCheckBox.Checked)
-                showBaloonTipsCheckBox.Enabled = false;
+            minimizeOnCloseCheckBox.Checked = !Settings.Instance.MinimizeOnClose;
+            minimizeOnCloseCheckBox.Checked = !Settings.Instance.MinimizeOnClose;
             showBaloonTipsCheckBox.Checked = Settings.Instance.ShowBaloonTips;
+            autostartCheckBox.Checked = Settings.Instance.Autostart;
 
             if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.DoNotChange)
                 pageNamingStrategyComboBox.SelectedIndex = 0;
@@ -866,6 +893,8 @@ namespace MangaCrawler
         {
             Settings.Instance.MinimizeOnClose = minimizeOnCloseCheckBox.Checked;
             showBaloonTipsCheckBox.Enabled = minimizeOnCloseCheckBox.Checked;
+            autostartCheckBox.Enabled = minimizeOnCloseCheckBox.Checked;
+            Commands.UpdateAutostart();
         }
 
         private void exitTrayToolStripMenuItem_Click(object sender, EventArgs e)
@@ -912,20 +941,6 @@ namespace MangaCrawler
             GUI.RefreshBookmarks();
         }
 
-        private void forceBookmarksCheckToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new Task(() => 
-            {
-                Thread.Sleep(5000);
-
-                Invoke(new Action(() =>
-                {
-                    SystemSounds.Exclamation.Play();
-                    Commands.CheckNowBookmarks();
-                }));
-            }).Start();
-        }
-
         private void playSoundWhenDownloadedCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Instance.PlaySoundWhenDownloaded = playSoundWhenDownloadedCheckBox.Checked;
@@ -959,17 +974,6 @@ namespace MangaCrawler
                     }
                 }
             }
-        }
-
-        private void loadAllFromCatalogToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            int servers = 0;
-            int series = 0;
-            int chapters = 0;
-            int pages = 0;
-            DownloadManager.Instance.Debug_LoadAllFromCatalog(ref servers, ref series, ref chapters, ref pages);
-
-            Loggers.GUI.InfoFormat("servers: {0}, series: {1}, chapters: {2}, pages: {3}", servers, series, chapters, pages);
         }
 
         private void checkNowForServerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1450,10 +1454,8 @@ namespace MangaCrawler
 
         private void autostartCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (autostartCheckBox.Checked)
-                Autostart.Enable();
-            else
-                Autostart.Disable();
+            Settings.Instance.Autostart = autostartCheckBox.Checked;
+            Commands.UpdateAutostart();
         }
 
         private void ignoreNewForSelectedBookmarkedChaptersToolStripButton_Click(object sender, EventArgs e)

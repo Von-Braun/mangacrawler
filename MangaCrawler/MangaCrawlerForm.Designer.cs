@@ -44,7 +44,6 @@
             this.bookmarksSplitter = new System.Windows.Forms.Splitter();
             this.chapterBookmarksPanel = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
-            this.bookmarkedchaptersListBox = new MangaCrawler.ListBoxEx();
             this.bookmarkedChaptersContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openFolderForSelectedBookmarkedChaptersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visitPageForSelectedBookmarkedChaptersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,7 +58,6 @@
             this.openFolderForSelectedBookmarkedChaptersToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.serieBookmarksPanel = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
-            this.bookmarkedSeriesListBox = new MangaCrawler.ListBoxEx();
             this.bookmarkedSeriesContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openFolderForSelectedBookmarkedSerieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visitPageForSelectedBookmarkedSerieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,7 +84,6 @@
             this.mangaRootDirChooseButton = new System.Windows.Forms.Button();
             this.playSoundWhenDownloadedCheckBox = new System.Windows.Forms.CheckBox();
             this.cbzCheckBox = new System.Windows.Forms.CheckBox();
-            this.optionslLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pageNamingStrategyComboBox = new System.Windows.Forms.ComboBox();
             this.mangaRootDirTextBox = new System.Windows.Forms.TextBox();
@@ -115,7 +112,6 @@
             this.seriesTabPanel = new System.Windows.Forms.Panel();
             this.serversPanel = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
-            this.serversListBox = new MangaCrawler.ListBoxEx();
             this.serversContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openFolderForSelectedServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visitPageForSelectedServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -128,7 +124,6 @@
             this.seriesSplitter = new System.Windows.Forms.Splitter();
             this.chaptersPanel = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
-            this.chaptersListBox = new MangaCrawler.ListBoxEx();
             this.chaptersContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openFolderForSelectedChaptersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visitPageForSelectedChaptersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -141,7 +136,6 @@
             this.openFolderForSelectedChaptersToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.seriesPanel = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
-            this.seriesListBox = new MangaCrawler.ListBoxEx();
             this.seriesContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openFolderForSelectedSerieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visitPageForSerieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -172,9 +166,6 @@
             this.renameChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeSerieURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeChapterURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.forceBookmarksCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clearMemoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadAllFromCatalogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -186,6 +177,12 @@
             this.bookmarksTabLabel = new System.Windows.Forms.Label();
             this.optionsTabLabel = new System.Windows.Forms.Label();
             this.logTabLabel = new System.Windows.Forms.Label();
+            this.optionslLabel = new System.Windows.Forms.Label();
+            this.serversListBox = new MangaCrawler.ListBoxEx();
+            this.chaptersListBox = new MangaCrawler.ListBoxEx();
+            this.seriesListBox = new MangaCrawler.ListBoxEx();
+            this.bookmarkedchaptersListBox = new MangaCrawler.ListBoxEx();
+            this.bookmarkedSeriesListBox = new MangaCrawler.ListBoxEx();
             this.versionPanel.SuspendLayout();
             this.bookmarksTabPage.SuspendLayout();
             this.bookmarksTabPanel.SuspendLayout();
@@ -281,20 +278,6 @@
             // 
             resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
-            // 
-            // bookmarkedchaptersListBox
-            // 
-            this.bookmarkedchaptersListBox.ContextMenuStrip = this.bookmarkedChaptersContextMenuStrip;
-            resources.ApplyResources(this.bookmarkedchaptersListBox, "bookmarkedchaptersListBox");
-            this.bookmarkedchaptersListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.bookmarkedchaptersListBox.FormattingEnabled = true;
-            this.bookmarkedchaptersListBox.Name = "bookmarkedchaptersListBox";
-            this.bookmarkedchaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.bookmarkedchaptersListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chapterBookmarksListBox_VerticalScroll);
-            this.bookmarkedchaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chapterBookmarksListBox_DrawItem);
-            this.bookmarkedchaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chapterBookmarksListBox_SelectedIndexChanged);
-            this.bookmarkedchaptersListBox.DoubleClick += new System.EventHandler(this.chapterBookmarksListBox_DoubleClick);
-            this.bookmarkedchaptersListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chapterBookmarksListBox_KeyDown);
             // 
             // bookmarkedChaptersContextMenuStrip
             // 
@@ -416,17 +399,6 @@
             // 
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
-            // 
-            // bookmarkedSeriesListBox
-            // 
-            this.bookmarkedSeriesListBox.ContextMenuStrip = this.bookmarkedSeriesContextMenuStrip;
-            resources.ApplyResources(this.bookmarkedSeriesListBox, "bookmarkedSeriesListBox");
-            this.bookmarkedSeriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.bookmarkedSeriesListBox.FormattingEnabled = true;
-            this.bookmarkedSeriesListBox.Name = "bookmarkedSeriesListBox";
-            this.bookmarkedSeriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serieBookmarksListBox_DrawItem);
-            this.bookmarkedSeriesListBox.SelectedIndexChanged += new System.EventHandler(this.serieBookmarksListBox_SelectedIndexChanged);
-            this.bookmarkedSeriesListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
             // 
             // bookmarkedSeriesContextMenuStrip
             // 
@@ -625,12 +597,6 @@
             this.cbzCheckBox.Name = "cbzCheckBox";
             this.cbzCheckBox.UseVisualStyleBackColor = true;
             this.cbzCheckBox.Click += new System.EventHandler(this.cbzCheckBox_CheckedChanged);
-            // 
-            // optionslLabel
-            // 
-            resources.ApplyResources(this.optionslLabel, "optionslLabel");
-            this.optionslLabel.ForeColor = System.Drawing.Color.Red;
-            this.optionslLabel.Name = "optionslLabel";
             // 
             // label1
             // 
@@ -897,17 +863,6 @@
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
             // 
-            // serversListBox
-            // 
-            this.serversListBox.ContextMenuStrip = this.serversContextMenuStrip;
-            resources.ApplyResources(this.serversListBox, "serversListBox");
-            this.serversListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.serversListBox.FormattingEnabled = true;
-            this.serversListBox.Name = "serversListBox";
-            this.serversListBox.Sorted = true;
-            this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);
-            this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
-            // 
             // serversContextMenuStrip
             // 
             this.serversContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1012,20 +967,6 @@
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
-            // chaptersListBox
-            // 
-            this.chaptersListBox.ContextMenuStrip = this.chaptersContextMenuStrip;
-            resources.ApplyResources(this.chaptersListBox, "chaptersListBox");
-            this.chaptersListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.chaptersListBox.FormattingEnabled = true;
-            this.chaptersListBox.Name = "chaptersListBox";
-            this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.chaptersListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
-            this.chaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chaptersListBox_DrawItem);
-            this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
-            this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
-            this.chaptersListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chaptersListBox_KeyDown);
-            // 
             // chaptersContextMenuStrip
             // 
             this.chaptersContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1128,17 +1069,6 @@
             // 
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            // 
-            // seriesListBox
-            // 
-            this.seriesListBox.ContextMenuStrip = this.seriesContextMenuStrip;
-            resources.ApplyResources(this.seriesListBox, "seriesListBox");
-            this.seriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.seriesListBox.FormattingEnabled = true;
-            this.seriesListBox.Name = "seriesListBox";
-            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
-            this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
-            this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
             // 
             // seriesContextMenuStrip
             // 
@@ -1286,10 +1216,7 @@
             this.renameSerieToolStripMenuItem,
             this.renameChapterToolStripMenuItem,
             this.changeSerieURLToolStripMenuItem,
-            this.changeChapterURLToolStripMenuItem,
-            this.forceBookmarksCheckToolStripMenuItem,
-            this.clearMemoryToolStripMenuItem,
-            this.loadAllFromCatalogToolStripMenuItem});
+            this.changeChapterURLToolStripMenuItem});
             this.debugContextMenuStrip.Name = "debugContextMenuStrip";
             resources.ApplyResources(this.debugContextMenuStrip, "debugContextMenuStrip");
             // 
@@ -1370,23 +1297,6 @@
             this.changeChapterURLToolStripMenuItem.Name = "changeChapterURLToolStripMenuItem";
             resources.ApplyResources(this.changeChapterURLToolStripMenuItem, "changeChapterURLToolStripMenuItem");
             this.changeChapterURLToolStripMenuItem.Click += new System.EventHandler(this.changeChapterURLToolStripMenuItem_Click);
-            // 
-            // forceBookmarksCheckToolStripMenuItem
-            // 
-            this.forceBookmarksCheckToolStripMenuItem.Name = "forceBookmarksCheckToolStripMenuItem";
-            resources.ApplyResources(this.forceBookmarksCheckToolStripMenuItem, "forceBookmarksCheckToolStripMenuItem");
-            this.forceBookmarksCheckToolStripMenuItem.Click += new System.EventHandler(this.forceBookmarksCheckToolStripMenuItem_Click);
-            // 
-            // clearMemoryToolStripMenuItem
-            // 
-            this.clearMemoryToolStripMenuItem.Name = "clearMemoryToolStripMenuItem";
-            resources.ApplyResources(this.clearMemoryToolStripMenuItem, "clearMemoryToolStripMenuItem");
-            // 
-            // loadAllFromCatalogToolStripMenuItem
-            // 
-            this.loadAllFromCatalogToolStripMenuItem.Name = "loadAllFromCatalogToolStripMenuItem";
-            resources.ApplyResources(this.loadAllFromCatalogToolStripMenuItem, "loadAllFromCatalogToolStripMenuItem");
-            this.loadAllFromCatalogToolStripMenuItem.Click += new System.EventHandler(this.loadAllFromCatalogToolStripMenuItem_Click);
             // 
             // notifyIcon
             // 
@@ -1474,6 +1384,73 @@
             this.logTabLabel.Click += new System.EventHandler(this.logTabLabel_Click);
             this.logTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
             this.logTabLabel.MouseLeave += new System.EventHandler(this.tabLabel_MouseLeave);
+            // 
+            // optionslLabel
+            // 
+            resources.ApplyResources(this.optionslLabel, "optionslLabel");
+            this.optionslLabel.ForeColor = System.Drawing.Color.Red;
+            this.optionslLabel.Name = "optionslLabel";
+            // 
+            // serversListBox
+            // 
+            this.serversListBox.ContextMenuStrip = this.serversContextMenuStrip;
+            resources.ApplyResources(this.serversListBox, "serversListBox");
+            this.serversListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.serversListBox.FormattingEnabled = true;
+            this.serversListBox.Name = "serversListBox";
+            this.serversListBox.Sorted = true;
+            this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);
+            this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
+            // 
+            // chaptersListBox
+            // 
+            this.chaptersListBox.ContextMenuStrip = this.chaptersContextMenuStrip;
+            resources.ApplyResources(this.chaptersListBox, "chaptersListBox");
+            this.chaptersListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.chaptersListBox.FormattingEnabled = true;
+            this.chaptersListBox.Name = "chaptersListBox";
+            this.chaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.chaptersListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chaptersListBox_VerticalScroll);
+            this.chaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chaptersListBox_DrawItem);
+            this.chaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chaptersListBox_SelectedIndexChanged);
+            this.chaptersListBox.DoubleClick += new System.EventHandler(this.chaptersListBox_DoubleClick);
+            this.chaptersListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chaptersListBox_KeyDown);
+            // 
+            // seriesListBox
+            // 
+            this.seriesListBox.ContextMenuStrip = this.seriesContextMenuStrip;
+            resources.ApplyResources(this.seriesListBox, "seriesListBox");
+            this.seriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.seriesListBox.FormattingEnabled = true;
+            this.seriesListBox.Name = "seriesListBox";
+            this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
+            this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
+            this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
+            // 
+            // bookmarkedchaptersListBox
+            // 
+            this.bookmarkedchaptersListBox.ContextMenuStrip = this.bookmarkedChaptersContextMenuStrip;
+            resources.ApplyResources(this.bookmarkedchaptersListBox, "bookmarkedchaptersListBox");
+            this.bookmarkedchaptersListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.bookmarkedchaptersListBox.FormattingEnabled = true;
+            this.bookmarkedchaptersListBox.Name = "bookmarkedchaptersListBox";
+            this.bookmarkedchaptersListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.bookmarkedchaptersListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.chapterBookmarksListBox_VerticalScroll);
+            this.bookmarkedchaptersListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.chapterBookmarksListBox_DrawItem);
+            this.bookmarkedchaptersListBox.SelectedIndexChanged += new System.EventHandler(this.chapterBookmarksListBox_SelectedIndexChanged);
+            this.bookmarkedchaptersListBox.DoubleClick += new System.EventHandler(this.chapterBookmarksListBox_DoubleClick);
+            this.bookmarkedchaptersListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chapterBookmarksListBox_KeyDown);
+            // 
+            // bookmarkedSeriesListBox
+            // 
+            this.bookmarkedSeriesListBox.ContextMenuStrip = this.bookmarkedSeriesContextMenuStrip;
+            resources.ApplyResources(this.bookmarkedSeriesListBox, "bookmarkedSeriesListBox");
+            this.bookmarkedSeriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.bookmarkedSeriesListBox.FormattingEnabled = true;
+            this.bookmarkedSeriesListBox.Name = "bookmarkedSeriesListBox";
+            this.bookmarkedSeriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serieBookmarksListBox_DrawItem);
+            this.bookmarkedSeriesListBox.SelectedIndexChanged += new System.EventHandler(this.serieBookmarksListBox_SelectedIndexChanged);
+            this.bookmarkedSeriesListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
             // 
             // MangaCrawlerForm
             // 
@@ -1598,9 +1575,6 @@
         private System.Windows.Forms.ContextMenuStrip trayContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem exitTrayToolStripMenuItem;
         private System.Windows.Forms.Timer bookmarksTimer;
-        private System.Windows.Forms.ToolStripMenuItem forceBookmarksCheckToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearMemoryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadAllFromCatalogToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip serversContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem openFolderForSelectedServerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem visitPageForSelectedServerToolStripMenuItem;
@@ -1685,7 +1659,6 @@
         private System.Windows.Forms.Button mangaRootDirChooseButton;
         private System.Windows.Forms.CheckBox playSoundWhenDownloadedCheckBox;
         private System.Windows.Forms.CheckBox cbzCheckBox;
-        private System.Windows.Forms.Label optionslLabel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox pageNamingStrategyComboBox;
         private System.Windows.Forms.TextBox mangaRootDirTextBox;
@@ -1700,6 +1673,7 @@
         private System.Windows.Forms.CheckBox autostartCheckBox;
         private System.Windows.Forms.ToolStripButton ignoreNewForSelectedBookmarkedChaptersToolStripButton;
         private System.Windows.Forms.ToolStripMenuItem ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem;
+        private System.Windows.Forms.Label optionslLabel;
     }
 }
 
