@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MangaCrawlerForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.versionPanel = new System.Windows.Forms.Panel();
             this.versionLinkLabel = new System.Windows.Forms.LinkLabel();
@@ -84,6 +84,7 @@
             this.mangaRootDirChooseButton = new System.Windows.Forms.Button();
             this.playSoundWhenDownloadedCheckBox = new System.Windows.Forms.CheckBox();
             this.cbzCheckBox = new System.Windows.Forms.CheckBox();
+            this.optionslLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pageNamingStrategyComboBox = new System.Windows.Forms.ComboBox();
             this.mangaRootDirTextBox = new System.Windows.Forms.TextBox();
@@ -177,7 +178,6 @@
             this.bookmarksTabLabel = new System.Windows.Forms.Label();
             this.optionsTabLabel = new System.Windows.Forms.Label();
             this.logTabLabel = new System.Windows.Forms.Label();
-            this.optionslLabel = new System.Windows.Forms.Label();
             this.serversListBox = new MangaCrawler.ListBoxEx();
             this.chaptersListBox = new MangaCrawler.ListBoxEx();
             this.seriesListBox = new MangaCrawler.ListBoxEx();
@@ -598,6 +598,12 @@
             this.cbzCheckBox.UseVisualStyleBackColor = true;
             this.cbzCheckBox.Click += new System.EventHandler(this.cbzCheckBox_CheckedChanged);
             // 
+            // optionslLabel
+            // 
+            resources.ApplyResources(this.optionslLabel, "optionslLabel");
+            this.optionslLabel.ForeColor = System.Drawing.Color.Red;
+            this.optionslLabel.Name = "optionslLabel";
+            // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
@@ -649,21 +655,21 @@
             this.downloadingsGridView.AllowUserToAddRows = false;
             this.downloadingsGridView.AllowUserToDeleteRows = false;
             this.downloadingsGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.downloadingsGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.downloadingsGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             this.downloadingsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.downloadingsGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.downloadingsGridView.BackgroundColor = System.Drawing.SystemColors.Window;
             this.downloadingsGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.downloadingsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.downloadingsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.downloadingsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.downloadingsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Chapter,
@@ -672,17 +678,17 @@
             resources.ApplyResources(this.downloadingsGridView, "downloadingsGridView");
             this.downloadingsGridView.Name = "downloadingsGridView";
             this.downloadingsGridView.ReadOnly = true;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.downloadingsGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.downloadingsGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.downloadingsGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.downloadingsGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.downloadingsGridView.RowsDefaultCellStyle = dataGridViewCellStyle10;
             this.downloadingsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.downloadingsGridView.SelectionChanged += new System.EventHandler(this.downloadingsGridView_SelectionChanged);
             this.downloadingsGridView.DoubleClick += new System.EventHandler(this.downloadingsGridView_DoubleClick);
@@ -693,8 +699,8 @@
             // 
             this.Chapter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Chapter.DataPropertyName = "Info";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Chapter.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Chapter.DefaultCellStyle = dataGridViewCellStyle8;
             resources.ApplyResources(this.Chapter, "Chapter");
             this.Chapter.Name = "Chapter";
             this.Chapter.ReadOnly = true;
@@ -1385,12 +1391,6 @@
             this.logTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
             this.logTabLabel.MouseLeave += new System.EventHandler(this.tabLabel_MouseLeave);
             // 
-            // optionslLabel
-            // 
-            resources.ApplyResources(this.optionslLabel, "optionslLabel");
-            this.optionslLabel.ForeColor = System.Drawing.Color.Red;
-            this.optionslLabel.Name = "optionslLabel";
-            // 
             // serversListBox
             // 
             this.serversListBox.ContextMenuStrip = this.serversContextMenuStrip;
@@ -1399,8 +1399,10 @@
             this.serversListBox.FormattingEnabled = true;
             this.serversListBox.Name = "serversListBox";
             this.serversListBox.Sorted = true;
+            this.serversListBox.Click += new System.EventHandler(this.serversListBox_Click);
             this.serversListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serversListBox_DrawItem);
             this.serversListBox.SelectedIndexChanged += new System.EventHandler(this.serversListBox_SelectedIndexChanged);
+            this.serversListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serversListBox_KeyDown);
             // 
             // chaptersListBox
             // 
@@ -1424,8 +1426,10 @@
             this.seriesListBox.FormattingEnabled = true;
             this.seriesListBox.Name = "seriesListBox";
             this.seriesListBox.VerticalScroll += new MangaCrawler.ListBoxEx.ListBoxScrollDelegate(this.seriesListBox_VerticalScroll);
+            this.seriesListBox.Click += new System.EventHandler(this.seriesListBox_Click);
             this.seriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.seriesListBox_DrawItem);
             this.seriesListBox.SelectedIndexChanged += new System.EventHandler(this.seriesListBox_SelectedIndexChanged);
+            this.seriesListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.seriesListBox_KeyDown);
             // 
             // bookmarkedchaptersListBox
             // 
@@ -1448,8 +1452,9 @@
             this.bookmarkedSeriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.bookmarkedSeriesListBox.FormattingEnabled = true;
             this.bookmarkedSeriesListBox.Name = "bookmarkedSeriesListBox";
+            this.bookmarkedSeriesListBox.Click += new System.EventHandler(this.bookmarkedSeriesListBox_Click);
             this.bookmarkedSeriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serieBookmarksListBox_DrawItem);
-            this.bookmarkedSeriesListBox.SelectedIndexChanged += new System.EventHandler(this.serieBookmarksListBox_SelectedIndexChanged);
+            this.bookmarkedSeriesListBox.SelectedIndexChanged += new System.EventHandler(this.bookmarkedSeriesListBox_SelectedIndexChanged);
             this.bookmarkedSeriesListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
             // 
             // MangaCrawlerForm

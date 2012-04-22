@@ -167,13 +167,13 @@ namespace MangaCrawler
      * 
      * podczas pobierania nie mozemy zmienic folderu docelowego, wszystko jest disable i jest czerwony label z info.
      * 
+     * zmiana zannaczenie nie wywoluje pobierania, takze podczas filtrowania, dopiero klikniecie lub nacisniecie enter 
+     * wywoluje pobieranie, proba dodania do bookmark serii nie pobranej powinno wymusic jej pobranie
      */
 
     /* 
      * TODO:
      * 
-     * multiselekt prawie wszedzie
-     * problem z przelaczaniem sie zaznaczenia i automatycznym rozpoczynaniem pobierania
      * problem z bookmarkami i automatycznym sprawdzaniem nowych, powinien sprawdzac tylko jak jest 
      *   niekatywny, zminimalizowany? zostawic jak jest, ale w opsie podac co sie dzieje zmiast procentow 
      *   pokazac, czekam, a dalej, sprawdzam nowe rozdzialy, czy cos takiego, zachowanie identyczne dla 
@@ -181,6 +181,7 @@ namespace MangaCrawler
      * testy masowego pobierania cala noc
      * testowanie
      * 
+     * multiselekcja
      * wbudowany browser
      * widok wspolny dla wszystkich serwisow, scalac jakos serie,
      *   gdzie najlepsza jakosc, gdzie duplikaty
@@ -295,10 +296,11 @@ namespace MangaCrawler
             mangaRootDirTextBox.Text = Settings.Instance.MangaSettings.GetMangaRootDir(false);
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
             cbzCheckBox.Checked = Settings.Instance.MangaSettings.UseCBZ;
-            minimizeOnCloseCheckBox.Checked = !Settings.Instance.MinimizeOnClose;
-            minimizeOnCloseCheckBox.Checked = !Settings.Instance.MinimizeOnClose;
+            minimizeOnCloseCheckBox.Checked = Settings.Instance.MinimizeOnClose;
             showBaloonTipsCheckBox.Checked = Settings.Instance.ShowBaloonTips;
             autostartCheckBox.Checked = Settings.Instance.Autostart;
+            showBaloonTipsCheckBox.Enabled = minimizeOnCloseCheckBox.Checked;
+            autostartCheckBox.Enabled = minimizeOnCloseCheckBox.Checked;
 
             if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.DoNotChange)
                 pageNamingStrategyComboBox.SelectedIndex = 0;
@@ -620,15 +622,6 @@ namespace MangaCrawler
                 mangaRootDirTextBox.Text = folderBrowserDialog.SelectedPath;
         }
 
-        private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-          if (GUI.SelectedServer != null)
-                m_series_visual_states[GUI.SelectedServer] = 
-                    new ListBoxVisualState(seriesListBox);
-
-            Commands.DownloadChapterForSelectedSerie();
-        }
-
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (GUI.SelectedSerie != null)
@@ -816,6 +809,8 @@ namespace MangaCrawler
         {
             if (e.KeyCode == Keys.Delete)
                 Commands.RemoveBookmarkFromBookmarks();
+            if (e.KeyCode == Keys.Enter)
+                Commands.DownloadSeriesForSelectedBookmarkSerie();
         }
 
         private void resetCheckDatesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1336,11 +1331,6 @@ namespace MangaCrawler
             Commands.ReadMangaForSelectedBookmarkedChapters();
         }
 
-        private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Commands.DownloadSeriesForSelectedServer();
-        }
-
         private void chaptersListBox_DoubleClick(object sender, EventArgs e)
         {
             Commands.DownloadPagesForSelectedChapters();
@@ -1471,6 +1461,52 @@ namespace MangaCrawler
         private void downloadingsGridView_DoubleClick(object sender, EventArgs e)
         {
             Commands.DownloadPagesForSelectedDownloadings();
+        }
+
+        private void serversListBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                Commands.DownloadSeriesForSelectedServer();
+        }
+
+        private void seriesListBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                Commands.DownloadChapterForSelectedSerie();
+        }
+
+        private void seriesListBox_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadChapterForSelectedSerie();
+        }
+
+        private void seriesListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (GUI.SelectedServer != null)
+                m_series_visual_states[GUI.SelectedServer] =
+                    new ListBoxVisualState(seriesListBox);
+
+            GUI.UpdateButtons();
+        }
+
+        private void serversListBox_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadSeriesForSelectedServer();
+        }
+
+        private void bookmarkedSeriesListBox_Click(object sender, EventArgs e)
+        {
+            Commands.DownloadSeriesForSelectedBookmarkSerie();
+        }
+
+        private void serversListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GUI.UpdateButtons();
+        }
+
+        private void bookmarkedSeriesListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GUI.UpdateButtons();
         }
     }
 }
