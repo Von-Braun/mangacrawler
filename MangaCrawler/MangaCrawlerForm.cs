@@ -174,10 +174,6 @@ namespace MangaCrawler
     /* 
      * TODO:
      * 
-     * problem z bookmarkami i automatycznym sprawdzaniem nowych, powinien sprawdzac tylko jak jest 
-     *   niekatywny, zminimalizowany? zostawic jak jest, ale w opsie podac co sie dzieje zmiast procentow 
-     *   pokazac, czekam, a dalej, sprawdzam nowe rozdzialy, czy cos takiego, zachowanie identyczne dla 
-     *   downloading
      * testy masowego pobierania cala noc
      * testowanie
      * 
