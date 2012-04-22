@@ -974,7 +974,7 @@ namespace MangaCrawlerTest
         public void MangaHereTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(MangaHere)), 8356);
+                s => s.Crawler.GetType() == typeof(MangaHereCrawler)), 8356);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 76);
@@ -1015,7 +1015,7 @@ namespace MangaCrawlerTest
         public void MangaReaderTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(MangaReader)), 2714);
+                s => s.Crawler.GetType() == typeof(MangaReaderCrawler)), 2714);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "37 Degrees Kiss"), 5);
@@ -1049,6 +1049,69 @@ namespace MangaCrawlerTest
 
                 TestPage(pages.First(), "", "", true);
                 TestPage(pages.Last(), "", "", true);
+            }
+        }
+
+        [TestMethod]
+        public void AnimeaTest()
+        {
+            var series = TestServer(DownloadManager.Instance.Servers.First(
+                s => s.Crawler.GetType() == typeof(AnimeaCrawler)), 7959);
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "-6mm no Taboo"), 4);
+
+                var pages = TestChapter("-6mm no Taboo 38", chapters.First(), 31);
+
+                TestPage(pages.First(),
+                    "C85DECD7-FB7E99A5-AE613101-96FB60E4-670B7298-E7BA3C6E-D853162C-2167D1F0", "1");
+                TestPage(pages.Last(),
+                    "BDD5FC59-82057103-7A06E79F-7C47B6CC-21ABD4F6-6BB3C970-47037114-21ED316B", "31");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "√P"), 1);
+
+                var pages = TestChapter("√P 1", chapters.First(), 25);
+
+                TestPage(pages.First(),
+                    "0E2088E6-41A12467-28D2473B-FB72C34E-23235DE1-E5EB75AD-F0CA5161-6E677A7D", "1");
+                TestPage(pages.Last(),
+                    "D3060C38-24E5409B-4C97A24B-8232A7DD-9BCC2ADB-3963E414-1B0A29B3-664D849B", "25");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "+Anima"), 59);
+
+                var pages = TestChapter("+Anima 56", chapters.First(), 19);
+
+                TestPage(pages.First(),
+                    "AFF2DF3B-6842FC1E-71D05E9F-1ED19037-68C51CDC-0AA3C008-7282AB4F-E950DADB", "1");
+                TestPage(pages.Last(),
+                    "ABB146F9-0A0475C7-6D92F11E-3DF69083-F7151EA5-B72C24F6-DF924C6D-BA35C0C9", "19");
+
+                pages = TestChapter("+Anima 1", chapters.Last(), 51);
+
+                TestPage(pages.First(),
+                    "37E357A3-85B174C5-E5AF885F-CA280D45-3030D460-19DB58AD-82D2E79B-9E770145", "1");
+                TestPage(pages.Last(),
+                    "3A136277-C9E71628-FE0E4856-3C92D470-5045766F-BD202EEB-A122C17C-0A07C543", "51");
+            }
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "Fairy Tail"), 284, true);
+
+                var pages = TestChapter("", chapters.First(), 0, true);
+
+                TestPage(pages.First(), "", "", true);
+                TestPage(pages.Last(), "", "", true);
+
+                pages = TestChapter("Fairy Tail Special 1", chapters.Last(), 23);
+
+                TestPage(pages.First(),
+                    "1C885D26-C2799A5F-D26CFE75-1A8B33F5-E5D34A47-94A08A5F-2BBFB968-C133B208", "1");
+                TestPage(pages.Last(),
+                    "2A633A43-3953AA4B-2D1F8F7E-2B8B0EFE-1FA2ABDF-074F7B79-D7EED609-7C13628D", "23");
             }
         }
     }

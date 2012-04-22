@@ -713,7 +713,6 @@ namespace MangaCrawlerLib
             }
         }
 
-
         private static void XmlSave(string a_file, XElement a_xml)
         {
             using (var fs = new FileStream(a_file, FileMode.Create, FileAccess.Write))

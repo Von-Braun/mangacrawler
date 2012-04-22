@@ -6,7 +6,7 @@ using HtmlAgilityPack;
 
 namespace MangaCrawlerLib.Crawlers
 {
-    internal class MangaReader : Crawler
+    internal class MangaReaderCrawler : Crawler
     {
         public override string Name
         {

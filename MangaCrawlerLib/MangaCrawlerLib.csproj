@@ -216,9 +216,10 @@
     <Compile Include="Bookmarks.cs" />
     <Compile Include="CachedList.cs" />
     <Compile Include="Catalog.cs" />
-    <Compile Include="Crawlers\MangaReader.cs" />
+    <Compile Include="Crawlers\AnimeaCrawler.cs" />
+    <Compile Include="Crawlers\MangaReaderCrawler.cs" />
     <Compile Include="Crawlers\CrawlerList.cs" />
-    <Compile Include="Crawlers\MangaHere.cs" />
+    <Compile Include="Crawlers\MangaHereCrawler.cs" />
     <Compile Include="Crawlers\TestServerCrawler.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Limiter.cs" />
