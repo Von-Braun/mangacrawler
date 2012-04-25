@@ -50,7 +50,7 @@ namespace MangaCrawler
         private bool m_autostart = false;
 
         [YAXNode("CheckBookmarksPeriod")]
-        private TimeSpan m_check_bookmarks_period = new TimeSpan(hours: 0, minutes: 30, seconds: 0);
+        private TimeSpan m_check_bookmarks_period = new TimeSpan(hours: 0, minutes: 60, seconds: 0);
 
         private static Settings s_instance;
 

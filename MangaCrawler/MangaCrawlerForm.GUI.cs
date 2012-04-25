@@ -27,16 +27,16 @@ namespace MangaCrawler
             public bool PlaySoundWhenDownloaded;
             public DateTime LastBookmarkCheck = DateTime.Now;
 
-            private bool RefreshOnceAfterAllDone;
-            private bool Downloading;
-            private bool ForceClose;
-            private bool IconCreated;
-            private bool GreenIcon;
-            private bool RefreshButtonsOnce;
+            private bool m_refresh_once_after_all_done;
+            private bool m_downloading;
+            private bool m_force_close;
+            private bool m_icon_created;
+            private bool m_green_icon;
+            private bool m_notification_about_new_chapters_showed;
 
             public void Init()
             {
-                PlaySoundWhenDownloaded = DownloadManager.Instance.Downloadings.List.Any();
+                PlaySoundWhenDownloaded = DownloadManager.Instance.Downloadings.List.Any(ch => ch.IsDownloading);
             }
 
             public Server SelectedServer
@@ -296,10 +296,12 @@ namespace MangaCrawler
             {
                 bool downloading = DownloadManager.Instance.Downloadings.List.Any(w => w.IsDownloading);
 
-                Form.label2.Enabled = !downloading;
                 Form.mangaRootDirTextBox.Enabled = !downloading;
                 Form.mangaRootDirChooseButton.Enabled = !downloading;
-                Form.optionslLabel.Visible = downloading;
+                Form.optionslLabel1.Visible = downloading;
+
+                Form.optionslLabel2.Visible = downloading;
+                Form.pageNamingStrategyComboBox.Enabled = !downloading;
             }
 
             private void UpdateDownloadingsTab()
@@ -404,22 +406,22 @@ namespace MangaCrawler
             {
                 bool need_green = DownloadManager.Instance.Bookmarks.GetSeriesWithNewChapters().Any();
 
-                if (IconCreated)
+                if (m_icon_created)
                 {
                     if (need_green)
                     {
-                        if (GreenIcon)
+                        if (m_green_icon)
                             return;
                     }
                     if (!need_green)
                     {
-                        if (!GreenIcon)
+                        if (!m_green_icon)
                             return;
                     }
                 }
 
-                IconCreated = true;
-                GreenIcon = need_green;
+                m_icon_created = true;
+                m_green_icon = need_green;
 
                 Icon old1 = Form.Icon;
                 Icon old2 = Form.notifyIcon.Icon;
@@ -580,6 +582,10 @@ namespace MangaCrawler
                 if (!new_chapters.Any())
                     return;
 
+                if (!m_notification_about_new_chapters_showed)
+                    return;
+                m_notification_about_new_chapters_showed = false;
+
                 bool too_much = false;
 
                 if (new_chapters.Length > 5)
@@ -614,13 +620,8 @@ namespace MangaCrawler
             private void SelectChapter(Chapter a_chapter)
             {
                 Form.chaptersListBox.ClearSelected();
-
-                var cli = Form.chaptersListBox.Items.Cast<ChapterListItem>().FirstOrDefault(c => c.Chapter == a_chapter);
-
-                if (cli == null)
-                    return;
-
-                Form.chaptersListBox.SelectedItem = cli;
+                Form.chaptersListBox.SelectedItem = 
+                    Form.chaptersListBox.Items.Cast<ChapterListItem>().FirstOrDefault(c => c.Chapter == a_chapter);
             }
 
             public void SelectBookmarkedSerie(Serie a_serie)
@@ -632,14 +633,10 @@ namespace MangaCrawler
 
             public void SelectBookmarkedChapter(Chapter a_chapter)
             {
-                var bli = Form.bookmarkedchaptersListBox.Items.Cast<ChapterBookmarkListItem>().FirstOrDefault(
-                    cbli => cbli.Chapter == a_chapter);
-
-                if (bli == null)
-                    return;
-
                 Form.bookmarkedchaptersListBox.ClearSelected();
-                Form.bookmarkedchaptersListBox.SelectedItem = bli;
+                Form.bookmarkedchaptersListBox.SelectedItem = 
+                    Form.bookmarkedchaptersListBox.Items.Cast<ChapterBookmarkListItem>().FirstOrDefault(
+                        cbli => cbli.Chapter == a_chapter);
             }
 
             public void ShowInSeriesFromDownloadings()
@@ -664,19 +661,18 @@ namespace MangaCrawler
 
             public void Refresh()
             {
-                if (RefreshButtonsOnce || DownloadManager.Instance.NeedGUIRefresh(true))
+                if (DownloadManager.Instance.NeedGUIRefresh(true))
                 {
-                    RefreshButtonsOnce = false;
-                    RefreshOnceAfterAllDone = false;
-                    Downloading = DownloadManager.Instance.Downloadings.List.Any();
+                    m_refresh_once_after_all_done = false;
+                    m_downloading = DownloadManager.Instance.Downloadings.List.Any(ch => ch.IsDownloading);
                 }
-                else if (!RefreshOnceAfterAllDone)
+                else if (!m_refresh_once_after_all_done)
                 {
-                    RefreshOnceAfterAllDone = true;
+                    m_refresh_once_after_all_done = true;
                 }
                 else
                 {
-                    if (Downloading)
+                    if (m_downloading)
                     {
                         if (PlaySoundWhenDownloaded)
                         {
@@ -686,7 +682,7 @@ namespace MangaCrawler
                     }
 
                     PlaySoundWhenDownloaded = false;
-                    Downloading = false;
+                    m_downloading = false;
 
                     return;
                 }
@@ -698,7 +694,7 @@ namespace MangaCrawler
 
             public void Close(bool a_force_close)
             {
-                ForceClose = a_force_close;
+                m_force_close = a_force_close;
                 Form.Close();
             }
 
@@ -710,11 +706,12 @@ namespace MangaCrawler
                 LastBookmarkCheck = DateTime.Now;
 
                 Commands.CheckNowBookmarks();
+                m_notification_about_new_chapters_showed = true;
             }
 
             public bool MinimizeOrClose()
             {
-                if (!ForceClose && Settings.Instance.MinimizeOnClose)
+                if (!m_force_close && Settings.Instance.MinimizeOnClose)
                 {
                     MinimizeToTray(true);
                     return true;

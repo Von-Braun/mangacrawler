@@ -50,17 +50,16 @@ namespace MangaCrawler
      * 
      * podczas pobierania nacisniecie dodatkowych chaptertow w tej samej serii zalacza je w waiting od razu wszystkie
      * 
-     * //
-     * 
      * zaznaczanie z shiftem i ctrl prztestowac, zwlaszcza podczas pobierania
      * 
      * dodanie nowego chapteru powinno spowodowac pojawienie sie nowego rozdzialu w bookmarks
      * 
-     * dodanie nowego chapteru w minimalizacji powinno pokazac tooltip
+     * dodanie nowego chapteru w minimalizacji powinno pokazac tooltip, sprawdzic to szczegolnie jesli w tle cos 
+     * pobieramy, zarowno chaptery jak i np serie, zamkniecie baloona nie powinno go ponownie otworzyc
+     * przetestowac jak to dziala w przypadku wiekszej niz 4 ilosci nowych serii
      * 
      * klikniecie w tooltip powinno pokazac zkladke bookmarks, serie i nowy rozdzial, 
-     *   kiedy cos tam jest wybrane powinno zniknac
-     *   
+     * 
      * pojawienie sie czegos nowego niezaleznie od stanu minimalizajci zakladki, a takze znikniecie tego 
      * powinno zmieniac ikone 
      * 
@@ -71,17 +70,15 @@ namespace MangaCrawler
      * 
      * usuwanie wpisow z downloading: deleted - automatycznie, error, 
      *   downloaded - na rzadanie albo podczas nastepnego uruchomienia, 
-     *   downloading - mozna klika tak dlugo jak wejdzie w stan deleting, pozniej dzwiek
      *   
-     * wpisy na itemach z listboxach - deleted- trwale zostaje, 
-     * downloaded - trwale zostaje, error - trwale zostaje, wszystkie ingi znikaja
+     * wpisy na itemach z listboxach - cancelled - trwale zostaje, 
+     * ok - trwale zostaje, error - trwale zostaje, wszystkie ingi znikaja
      * 
-     * priorytety - zalaczyc do pobierania serie - wiele na raz, rozdzialy z jednej serii - wiele na raz, 
+     * priorytety - zalaczyc do pobierania serie - wiele na raz, rozdzialy z jednej serii - 4 na raz, 
      * chaptery dla kazdego serwera - w kolejnosci dodania pojedynczo, dla kazdego chapteru wiele stron na raz, 
      * serie, chaptery maja pierwszenstwo nad stronami, pobieranie chapterow wstrzymuje pobierania serii
      * 
      * ponowic pobranie anulowane rozdzialu
-     * 
      * masowe anulowanie rozdzialow z dwoch serwerow, ich ponowne zalaczenie do pobierania
      * 
      * przetestowanie timera na sprawdzanie bookmarka, przetestowanie czasu zanim ponownie sprawdzimy juz pobrane
@@ -92,11 +89,12 @@ namespace MangaCrawler
      * 
      * przetestowanie pamietania i dzialania opcji
      * 
-     * dodanie ponownie tego samego pobierania nie wstawia nowego work, pozycja work nie zmienia sie
+     * dodanie ponownie tego samego pobierania nie wstawia nowego work, pozycja work nie zmienia sie, 
+     * takze po skonczeniu pobierania
      * 
      * jesli cbz juz istnieje powinien zostac nadpisany
-     * 
-     * dzwiek o zakonczeniu pobierania takze jesli pobieramy od startu
+     * xx
+     * dzwiek o zakonczeniu pobierania takze jesli pobieramy od startu, takze jesli w tle pobieraja sie serie serwera np.
      * 
      * zaznaczenie elementu w chapte, przejscie na inna serie, zaznaczenie innego indeksu, przejscie spowrotem - w chapter 
      * powinien byc tylko jeden chapter
@@ -178,6 +176,7 @@ namespace MangaCrawler
      * autostartu w rejestrze z tym w opcjach. 
      * 
      * podczas pobierania nie mozemy zmienic folderu docelowego, wszystko jest disable i jest czerwony label z info.
+     * takze strategii zmiany nazw
      * 
      * zmiana zannaczenie nie wywoluje pobierania, takze podczas filtrowania, dopiero klikniecie lub nacisniecie enter 
      * wywoluje pobieranie, proba dodania do bookmark serii nie pobranej powinno wymusic jej pobranie
@@ -189,7 +188,8 @@ namespace MangaCrawler
      * testy masowego pobierania cala noc
      * testowanie
      * 
-     * multiselekcja
+     * multiselekcja wszedzie
+     * multiselekcja nie dziala dobrze podczas downloading, kiedy odswiezamy ciagle listbox
      * wbudowany browser
      * widok wspolny dla wszystkich serwisow, scalac jakos serie,
      *   gdzie najlepsza jakosc, gdzie duplikaty
@@ -344,9 +344,6 @@ namespace MangaCrawler
             Commands.CheckNowBookmarks();
 
             refreshTimer.Enabled = true;
-
-            bookmarksTimer.Interval = (int)Settings.Instance.MangaSettings.CheckTimePeriod.TotalMilliseconds / 10;
-            bookmarksTimer.Enabled = true;
 
             ResizeToolStripImages();
             ResizeContextMenuStripImages();
@@ -631,7 +628,7 @@ namespace MangaCrawler
         private void chaptersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (GUI.SelectedSerie != null)
-                m_chapters_visual_states[GUI.SelectedSerie] = 
+                m_chapters_visual_states[GUI.SelectedSerie] =
                     new ListBoxVisualState(chaptersListBox);
 
             GUI.UpdateButtons();
@@ -665,14 +662,14 @@ namespace MangaCrawler
         private void seriesListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (GUI.SelectedServer != null)
-                m_series_visual_states[GUI.SelectedServer] = 
+                m_series_visual_states[GUI.SelectedServer] =
                     new ListBoxVisualState(seriesListBox);
         }
 
         private void chaptersListBox_VerticalScroll(object a_sender, bool a_tracking)
         {
             if (GUI.SelectedSerie != null)
-                m_chapters_visual_states[GUI.SelectedSerie] = 
+                m_chapters_visual_states[GUI.SelectedSerie] =
                     new ListBoxVisualState(chaptersListBox);
         }
 
@@ -690,6 +687,7 @@ namespace MangaCrawler
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
             GUI.Refresh();
+            GUI.RefreshBookmarks();
         }
 
         private void clearLogButton_Click(object sender, EventArgs e)
@@ -923,7 +921,9 @@ namespace MangaCrawler
             var serie = DownloadManager.Instance.Bookmarks.List.FirstOrDefault(b => b.GetNewChapters().Any());
 
             GUI.SelectBookmarkedSerie(serie);
+            GUI.UpdateAll();
             GUI.SelectBookmarkedChapter(serie.GetNewChapters().FirstOrDefault());
+            GUI.UpdateAll();
         }
 
         private void notifyIcon_BalloonTipClosed(object sender, EventArgs e)
@@ -935,11 +935,6 @@ namespace MangaCrawler
         private void showBaloonTipsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Instance.ShowBaloonTips = showBaloonTipsCheckBox.Checked;
-        }
-
-        private void bookmarksTimer_Tick(object sender, EventArgs e)
-        {
-            GUI.RefreshBookmarks();
         }
 
         private void playSoundWhenDownloadedCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -1533,6 +1528,13 @@ namespace MangaCrawler
         private void removeForSelectedBookmarkedSerieToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Commands.RemoveBookmarkFromBookmarks();
+        }
+
+        private void checkBookmarksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GUI.LastBookmarkCheck = DateTime.Now - 
+                Settings.Instance.CheckBookmarksPeriod + new TimeSpan(0, 0, 5);
+            GUI.RefreshBookmarks();
         }
     }
 }

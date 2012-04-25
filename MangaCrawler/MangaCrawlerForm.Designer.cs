@@ -84,7 +84,7 @@
             this.mangaRootDirChooseButton = new System.Windows.Forms.Button();
             this.playSoundWhenDownloadedCheckBox = new System.Windows.Forms.CheckBox();
             this.cbzCheckBox = new System.Windows.Forms.CheckBox();
-            this.optionslLabel = new System.Windows.Forms.Label();
+            this.optionslLabel1 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pageNamingStrategyComboBox = new System.Windows.Forms.ComboBox();
             this.mangaRootDirTextBox = new System.Windows.Forms.TextBox();
@@ -167,10 +167,10 @@
             this.renameChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeSerieURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeChapterURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBookmarksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bookmarksTimer = new System.Windows.Forms.Timer(this.components);
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.seriesTabLabel = new System.Windows.Forms.Label();
@@ -178,6 +178,7 @@
             this.bookmarksTabLabel = new System.Windows.Forms.Label();
             this.optionsTabLabel = new System.Windows.Forms.Label();
             this.logTabLabel = new System.Windows.Forms.Label();
+            this.optionslLabel2 = new System.Windows.Forms.Label();
             this.serversListBox = new MangaCrawler.ListBoxEx();
             this.chaptersListBox = new MangaCrawler.ListBoxEx();
             this.seriesListBox = new MangaCrawler.ListBoxEx();
@@ -545,13 +546,14 @@
             // 
             // optionsTabPanel
             // 
+            this.optionsTabPanel.Controls.Add(this.optionslLabel2);
             this.optionsTabPanel.Controls.Add(this.autostartCheckBox);
             this.optionsTabPanel.Controls.Add(this.showBaloonTipsCheckBox);
             this.optionsTabPanel.Controls.Add(this.minimizeOnCloseCheckBox);
             this.optionsTabPanel.Controls.Add(this.mangaRootDirChooseButton);
             this.optionsTabPanel.Controls.Add(this.playSoundWhenDownloadedCheckBox);
             this.optionsTabPanel.Controls.Add(this.cbzCheckBox);
-            this.optionsTabPanel.Controls.Add(this.optionslLabel);
+            this.optionsTabPanel.Controls.Add(this.optionslLabel1);
             this.optionsTabPanel.Controls.Add(this.label1);
             this.optionsTabPanel.Controls.Add(this.pageNamingStrategyComboBox);
             this.optionsTabPanel.Controls.Add(this.mangaRootDirTextBox);
@@ -601,11 +603,11 @@
             this.cbzCheckBox.UseVisualStyleBackColor = true;
             this.cbzCheckBox.Click += new System.EventHandler(this.cbzCheckBox_CheckedChanged);
             // 
-            // optionslLabel
+            // optionslLabel1
             // 
-            resources.ApplyResources(this.optionslLabel, "optionslLabel");
-            this.optionslLabel.ForeColor = System.Drawing.Color.Red;
-            this.optionslLabel.Name = "optionslLabel";
+            resources.ApplyResources(this.optionslLabel1, "optionslLabel1");
+            this.optionslLabel1.ForeColor = System.Drawing.Color.Red;
+            this.optionslLabel1.Name = "optionslLabel1";
             // 
             // label1
             // 
@@ -1225,7 +1227,8 @@
             this.renameSerieToolStripMenuItem,
             this.renameChapterToolStripMenuItem,
             this.changeSerieURLToolStripMenuItem,
-            this.changeChapterURLToolStripMenuItem});
+            this.changeChapterURLToolStripMenuItem,
+            this.checkBookmarksToolStripMenuItem});
             this.debugContextMenuStrip.Name = "debugContextMenuStrip";
             resources.ApplyResources(this.debugContextMenuStrip, "debugContextMenuStrip");
             // 
@@ -1307,6 +1310,12 @@
             resources.ApplyResources(this.changeChapterURLToolStripMenuItem, "changeChapterURLToolStripMenuItem");
             this.changeChapterURLToolStripMenuItem.Click += new System.EventHandler(this.changeChapterURLToolStripMenuItem_Click);
             // 
+            // checkBookmarksToolStripMenuItem
+            // 
+            this.checkBookmarksToolStripMenuItem.Name = "checkBookmarksToolStripMenuItem";
+            resources.ApplyResources(this.checkBookmarksToolStripMenuItem, "checkBookmarksToolStripMenuItem");
+            this.checkBookmarksToolStripMenuItem.Click += new System.EventHandler(this.checkBookmarksToolStripMenuItem_Click);
+            // 
             // notifyIcon
             // 
             this.notifyIcon.ContextMenuStrip = this.trayContextMenuStrip;
@@ -1327,11 +1336,6 @@
             this.exitTrayToolStripMenuItem.Name = "exitTrayToolStripMenuItem";
             resources.ApplyResources(this.exitTrayToolStripMenuItem, "exitTrayToolStripMenuItem");
             this.exitTrayToolStripMenuItem.Click += new System.EventHandler(this.exitTrayToolStripMenuItem_Click);
-            // 
-            // bookmarksTimer
-            // 
-            this.bookmarksTimer.Interval = 1000;
-            this.bookmarksTimer.Tick += new System.EventHandler(this.bookmarksTimer_Tick);
             // 
             // flowLayoutPanel
             // 
@@ -1393,6 +1397,12 @@
             this.logTabLabel.Click += new System.EventHandler(this.logTabLabel_Click);
             this.logTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
             this.logTabLabel.MouseLeave += new System.EventHandler(this.tabLabel_MouseLeave);
+            // 
+            // optionslLabel2
+            // 
+            resources.ApplyResources(this.optionslLabel2, "optionslLabel2");
+            this.optionslLabel2.ForeColor = System.Drawing.Color.Red;
+            this.optionslLabel2.Name = "optionslLabel2";
             // 
             // serversListBox
             // 
@@ -1583,7 +1593,6 @@
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ContextMenuStrip trayContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem exitTrayToolStripMenuItem;
-        private System.Windows.Forms.Timer bookmarksTimer;
         private System.Windows.Forms.ContextMenuStrip serversContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem openFolderForSelectedServerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem visitPageForSelectedServerToolStripMenuItem;
@@ -1682,7 +1691,9 @@
         private System.Windows.Forms.CheckBox autostartCheckBox;
         private System.Windows.Forms.ToolStripButton ignoreNewForSelectedBookmarkedChaptersToolStripButton;
         private System.Windows.Forms.ToolStripMenuItem ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem;
-        private System.Windows.Forms.Label optionslLabel;
+        private System.Windows.Forms.Label optionslLabel1;
+        private System.Windows.Forms.ToolStripMenuItem checkBookmarksToolStripMenuItem;
+        private System.Windows.Forms.Label optionslLabel2;
     }
 }
 

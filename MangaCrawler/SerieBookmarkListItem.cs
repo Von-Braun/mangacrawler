@@ -63,11 +63,8 @@ namespace MangaCrawler
                         }
                         else
                         {
-                            if (Serie.Chapters.Count != 0)
-                            {
-                                a_args.Graphics.DrawString(Serie.Chapters.Count.ToString(),
-                                    font, Brushes.Green, rect, StringFormat.GenericDefault);
-                            }
+                            a_args.Graphics.DrawString(Serie.Chapters.Count.ToString(),
+                                font, Brushes.Green, rect, StringFormat.GenericDefault);
                         }
                         break;
                     }
