@@ -25,12 +25,14 @@ namespace MangaCrawler
             public MangaCrawlerFormCommands Commands;
 
             public bool PlaySoundWhenDownloaded;
-            public bool RefreshOnceAfterAllDone;
-            public bool Downloading;
-            public bool ForceClose;
-            public bool IconCreated;
             public DateTime LastBookmarkCheck = DateTime.Now;
-            public bool GreenIcon;
+
+            private bool RefreshOnceAfterAllDone;
+            private bool Downloading;
+            private bool ForceClose;
+            private bool IconCreated;
+            private bool GreenIcon;
+            private bool RefreshButtonsOnce;
 
             public void Init()
             {
@@ -653,14 +655,18 @@ namespace MangaCrawler
                 Form.FrontTab = Tabs.Series;
 
                 SelectServer(chapter.Server);
+                UpdateAll();
                 SelectSerie(chapter.Serie);
+                UpdateAll();
                 SelectChapter(chapter);
+                UpdateAll();
             }
 
             public void Refresh()
             {
-                if (DownloadManager.Instance.NeedGUIRefresh(true))
+                if (RefreshButtonsOnce || DownloadManager.Instance.NeedGUIRefresh(true))
                 {
+                    RefreshButtonsOnce = false;
                     RefreshOnceAfterAllDone = false;
                     Downloading = DownloadManager.Instance.Downloadings.List.Any();
                 }

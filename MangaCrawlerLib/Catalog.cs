@@ -77,7 +77,7 @@ namespace MangaCrawlerLib
             public static string BOOKMARK_SERIE_ID_NODE = "SerieID";
         }
 
-        #if TEST_SERVERS
+        #if LOCAL_SERVERS
         private static string CATALOG_DIR = "Catalog_Test\\";
         #else
         private static string CATALOG_DIR = "Catalog\\";
