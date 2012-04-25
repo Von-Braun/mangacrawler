@@ -27,20 +27,32 @@ namespace MangaCrawler
     /* 
      * TESTY
      * 
-     * usuniecie serii dodanej do bookmark - odswiezenie w series tab  jak i w bookmark tab
-     *   w series tab po zmianie serwera powinna zniknac, w bookmarks powina zniknac po okresowym sprawdzeniu 
-     *   dostepnosci nowych chapterow, podobnie w zakladce serie tab jesli nie przeklikamy serwerow powinna zniknac 
-     *   po okresowym sprawdzeniu bookmarks
+     * dodanie do bookmarked serii - seria powinna pojawic sie w bookmarked, w series tab powinna 
+     * byc oznaczona jako bookmarked
+     *   
+     * usuniecie serii z bookmark - seria powinna zniknac z bookmarked, w series tab powinna 
+     * byc nie oznaczona jako bookmarked
+     *   
+     * klikniecie w label pokazuje strone projektu
      *   
      * usuniecie rozdzialu z bookmark serii ktory jest nowy powinno zdjac znacznik new
      * 
-     * dodawanie do bookmark serii ma nie dzialac podczas pobierania serii.
-     * 
      * usuniecie z bookmark zachowuje zaznaczenie w liscie
      * 
-     * dodanie do bookmark dwa razy tego samego to blad
+     * prawidlowe disablowanie opcji, ktre pozwala nam nie sprawdzac wielu bledow
+     * przetestowac na kazdy button i kazde menu
      * 
-     * download (oba przyciski) juz pobieranych rzeczy to blad
+     * sprawdzic dzialanie kazdego przycisku
+     * 
+     * kasowanie, zmiana nazwy foledru, obrazkow wyłacza odpowiednie buttony, robione jest to onactivate, 
+     * sprawdzic jak kod radzi sobie z obluga wyjatkow gdyby komus sie jednak udalo nacisnac przycisk, pozatym
+     * przyciski te sa takze updatetowane w przypadku napotkania bledu podczas ich nacisniecia
+     * 
+     * podczas pobierania nacisniecie dodatkowych chaptertow w tej samej serii zalacza je w waiting od razu wszystkie
+     * 
+     * //
+     * 
+     * zaznaczanie z shiftem i ctrl prztestowac, zwlaszcza podczas pobierania
      * 
      * dodanie nowego chapteru powinno spowodowac pojawienie sie nowego rozdzialu w bookmarks
      * 
@@ -185,9 +197,7 @@ namespace MangaCrawler
      * 
      * nowe serwisy:
      * 
-     * 6m http://manga.animea.net/browse.html
-     * 5m http://mangastream.com
-     * 
+     * http://mangastream.com
      * http://www.anymanga.com/directory/all/
      * http://mangable.com/manga-list/
      * http://www.readmangaonline.net/
@@ -1503,6 +1513,26 @@ namespace MangaCrawler
         private void bookmarkedSeriesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             GUI.UpdateButtons();
+        }
+
+        private void MangaCrawlerForm_Activated(object sender, EventArgs e)
+        {
+            GUI.UpdateButtons();
+        }
+
+        private void openFolderForSelectedBookmarkedSerieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.OpenFolderForSelectedBookmarkSerie();
+        }
+
+        private void updateNowForSelectedBookmarkedSerieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.CheckNowBookmarks();
+        }
+
+        private void removeForSelectedBookmarkedSerieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Commands.RemoveBookmarkFromBookmarks();
         }
     }
 }

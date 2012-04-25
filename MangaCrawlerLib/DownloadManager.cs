@@ -116,40 +116,35 @@ namespace MangaCrawlerLib
 
         public void DownloadPages(IEnumerable<Chapter> a_chapters)
         {
+            a_chapters = a_chapters.Where(ch => !ch.IsDownloading).ToList();
+
             if (!a_chapters.Any())
                 return;
 
-            DownloadPages(a_chapters.First());
-
-            new Task(() =>
+            foreach (var chapter in a_chapters)
             {
-                foreach (var chapter in a_chapters.Skip(1))
-                    DownloadPages(chapter);
-            }).Start();
-        }
-
-        private void DownloadPages(Chapter a_chapter)
-        {
-            if (a_chapter.IsDownloading)
-                return;
-
-            Downloadings.Add(a_chapter);
-
-            lock (m_downloading)
-            {
-                m_downloading.Add(a_chapter);
+                chapter.State = ChapterState.Waiting;
+                lock (m_downloading)
+                {
+                    m_downloading.Add(chapter);
+                }
+                Downloadings.Add(chapter);
+                chapter.LimiterOrder = Catalog.NextID();
+                Catalog.SaveChapterPages(chapter);
             }
-            a_chapter.State = ChapterState.Waiting;
-            a_chapter.LimiterOrder = Catalog.NextID();
-
-            Catalog.SaveChapterPages(a_chapter);
-
-            Chapter chapter_sync = a_chapter;
 
             new Task(() =>
             {
-                chapter_sync.DownloadPages();
-            }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
+                foreach (var chapter in a_chapters)
+                {
+                    Chapter chapter_sync = chapter;
+
+                    new Task(() =>
+                    {
+                        chapter_sync.DownloadPages();
+                    }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
+                }
+            }).Start();
         }
 
         public IEnumerable<Server> Servers

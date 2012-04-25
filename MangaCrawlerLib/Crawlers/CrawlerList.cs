@@ -12,7 +12,7 @@ namespace MangaCrawlerLib.Crawlers
 
         static CrawlerList()
         {
-            #if TEST_SERVERS
+            #if LOCAL_SERVERS
             AddCrawlers(GetTestCrawlers());
             #else
             AddCrawlers(GetRealCrawlers());

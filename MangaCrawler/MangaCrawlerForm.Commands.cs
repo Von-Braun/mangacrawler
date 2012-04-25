@@ -43,6 +43,12 @@ namespace MangaCrawler
                 {
                     try
                     {
+                        if (!Directory.Exists(entity.GetDirectory()))
+                        {
+                            error = true;
+                            continue;
+                        }
+
                         Process.Start(entity.GetDirectory());
                     }
                     catch (Exception ex)
@@ -53,7 +59,10 @@ namespace MangaCrawler
                 }
 
                 if (error)
+                {
                     SystemSounds.Asterisk.Play();
+                    GUI.UpdateButtons();
+                }
             }
 
             public void OpenFolderForSelectedServer()
@@ -220,7 +229,10 @@ namespace MangaCrawler
                 }
 
                 if (error)
+                {
                     SystemSounds.Asterisk.Play();
+                    GUI.UpdateButtons();
+                }
             }
 
             public void CancelClearSelectedDownloadings()

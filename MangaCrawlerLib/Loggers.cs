@@ -16,7 +16,7 @@ namespace MangaCrawlerLib
         {
             #if DEBUG
             return true;
-            #elif TEST_SERVERS
+            #elif LOCAL_SERVERS
             return true;
             #else
             return false;

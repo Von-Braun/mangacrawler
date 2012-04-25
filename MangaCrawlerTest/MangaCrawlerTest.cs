@@ -272,7 +272,7 @@ namespace MangaCrawlerTest
             Dictionary<Server, int> chapter_pageslist = new Dictionary<Server, int>();
             Dictionary<Server, int> chapter_images = new Dictionary<Server, int>();
             DateTime last_report = DateTime.Now;
-            TimeSpan report_delta = new TimeSpan(0, 15, 0);
+            TimeSpan report_delta = new TimeSpan(0, 1, 0);
             int errors = 0;
             int warnings = 0;
 
@@ -310,22 +310,19 @@ namespace MangaCrawlerTest
                 },
                 server =>
                 {
-                    try
+                    server.State = ServerState.Waiting;
+                    server.DownloadSeries();
+                   
+                    if (server.State == ServerState.Error)
                     {
-                        server.State = ServerState.Waiting;
-                        server.DownloadSeries();
+                        TestContext.WriteLine("ERROR - {0} - Error while downloading series from server",
+                            server.Name);
+                        Assert.Fail();
                     }
-                    catch
+                    else if (server.Series.Count == 0)
                     {
-                        TestContext.WriteLine("ERROR - {0} - Exception while downloading series from server",
-                            server);
-                        errors++;
-                    }
-
-                    if (server.Series.Count == 0)
-                    {
-                        TestContext.WriteLine("WARN - {0} - Server have no series", server);
-                        warnings++;
+                        TestContext.WriteLine("ERROR - {0} - Server have no series", server.Name);
+                        Assert.Fail();
                     }
 
                     Parallel.ForEach(TakeRandom(server.Series, 0.1),
@@ -336,20 +333,17 @@ namespace MangaCrawlerTest
                         },
                         serie =>
                         {
-                            try
-                            {
-                                serie.State = SerieState.Waiting;
-                                serie.DownloadChapters();
-                                serie_chapters[server]++;
-                            }
-                            catch
+                            serie.State = SerieState.Waiting;
+                            serie.DownloadChapters();
+                            serie_chapters[server]++;
+                            
+                            if (serie.State == SerieState.Error)
                             {
                                 TestContext.WriteLine(
-                                    "ERROR - {0} - Exception while downloading chapters from serie", serie);
+                                    "ERROR - {0} - Error while downloading chapters from serie", serie);
                                 errors++;
                             }
-
-                            if (serie.Chapters.Count == 0)
+                            else if (serie.Chapters.Count == 0)
                             {
                                 TestContext.WriteLine("WARN - {0} - Serie has no chapters", serie);
                                 warnings++;
@@ -379,18 +373,18 @@ namespace MangaCrawlerTest
                                         }
 
                                         chapter_pageslist[server]++;
+
+                                        if (chapter.Pages.Count == 0)
+                                        {
+                                            TestContext.WriteLine("Warn - {0} - Chapter have no pages", chapter);
+                                            warnings++;
+                                        }
                                     }
                                     catch
                                     {
                                         TestContext.WriteLine(
                                             "ERROR - {0} - Exception while downloading pages from chapter", chapter);
                                         errors++;
-                                    }
-
-                                    if (chapter.Pages.Count == 0)
-                                    {
-                                        TestContext.WriteLine("Warn - {0} - Chapter have no pages", chapter);
-                                        warnings++;
                                     }
 
                                     Parallel.ForEach(TakeRandom(chapter.Pages, 0.1),
