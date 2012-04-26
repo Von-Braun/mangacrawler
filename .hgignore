@@ -15,3 +15,7 @@ log4net/bin
 MangaCrawler.sln.docstates.suo
 Installer/Manga Crawler*.exe
 TestResults
+TomanuExtensionsLib/bin
+TomanuExtensionsLib/obj
+yaxlib/bin/Debug
+yaxlib/obj
