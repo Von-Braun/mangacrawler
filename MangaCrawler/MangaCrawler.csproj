@@ -230,11 +230,11 @@
       <Project>{AC139952-261A-4463-B6FA-AEBC25283A66}</Project>
       <Name>SQLite.NET</Name>
     </ProjectReference>
-    <ProjectReference Include="..\yaxlib\TomanuExtensions\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
+    <ProjectReference Include="..\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
       <Project>{4653B49E-D5A5-43B7-8CED-160E7BC09917}</Project>
       <Name>TomanuExtensionsLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\yaxlib\YAXLib\YAXLib.csproj">
+    <ProjectReference Include="..\yaxlib\YAXLib.csproj">
       <Project>{F1C4D174-C948-4D18-A125-F6855EF55683}</Project>
       <Name>YAXLib</Name>
     </ProjectReference>

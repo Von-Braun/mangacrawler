@@ -1,0 +1,28 @@
+syntax: glob
+MangaCrawler/bin
+MangaCrawler/obj
+MangaCrawlerLib/bin
+MangaCrawlerLib/obj
+MangaCrawlerTest/bin
+MangaCrawlerTest/obj
+NHibernate/bin
+NHibernate/obj
+SQLite.Interop/Debug_x64
+SQLite.NET/obj
+SQLite.NET/bin
+Iesi Collections/obj
+HtmlAgilityPack/bin
+DotNetZip/bin
+DotNetZip/obj
+Iesi Collections/bin
+HtmlAgilityPack/obj
+MangaCrawler.opensdf
+MangaCrawler.sdf
+MangaCrawler.sln.docstates.suo
+MangaCrawler.suo
+TomanuExtensionsLib/obj
+yaxlib/bin
+yaxlib/obj
+TomanuExtensionsLib/bin
+log4net/bin
+log4net/obj
