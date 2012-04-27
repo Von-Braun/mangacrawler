@@ -64,11 +64,20 @@ namespace MangaCrawlerLib.Crawlers
             if (ch2 != null)
                 chapters.AddRange(ch2);
 
-            var result = from chapter in chapters
-                         select new Chapter(a_serie, chapter.GetAttributeValue("href", ""), 
-                             chapter.InnerText);
+            var result = (from chapter in chapters
+                          select new Chapter(a_serie, chapter.GetAttributeValue("href", ""),
+                              chapter.InnerText)).ToList();
 
             a_progress_callback(100, result);
+
+            if (result.Count == 0)
+            {
+                if (!doc.DocumentNode.SelectSingleNode("//div[@id='chapters']/div[@class='clear']").
+                    InnerText.Contains("No Manga Chapter"))
+                {
+                    throw new Exception("Serie has no chapters");
+                }
+            }
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)

@@ -41,12 +41,24 @@ namespace MangaCrawlerLib.Crawlers
             var chapters = doc.DocumentNode.SelectNodes(
                 "/html/body/div/div[2]/table/tr/td[2]/div[3]/div/div[@class='episode c_h2b' or @class='episode c_h2']/div/a");
 
-            var result = from chapter in chapters
-                         select new Chapter(a_serie, 
-                                            "http://manga-access.com" + chapter.GetAttributeValue("href", ""), 
-                                            chapter.InnerText);
+            if (chapters == null)
+            {
+                string url = doc.DocumentNode.SelectSingleNode(
+                    "/html/body/div/div[2]/table/tr/td[2]/div[3]/div/div[5]/table/tr/td[2]/a").GetAttributeValue("href", "");
+                doc = DownloadDocument(a_serie, a_serie.URL + url);
+                chapters = doc.DocumentNode.SelectNodes(
+                    "/html/body/div/div[2]/table/tr/td[2]/div[3]/div/div[@class='episode c_h2b' or @class='episode c_h2']/div/a");
+            }
+
+            var result = (from chapter in chapters
+                          select new Chapter(a_serie,
+                                             "http://manga-access.com" + chapter.GetAttributeValue("href", ""),
+                                             chapter.InnerText)).ToList();
 
             a_progress_callback(100, result);
+
+            if (result.Count == 0)
+                throw new Exception("Serie has no chapters");
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)

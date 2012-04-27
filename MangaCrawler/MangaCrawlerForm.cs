@@ -185,6 +185,9 @@ namespace MangaCrawler
     /* 
      * TODO:
      * 
+     * pojawia sie na raty podczas uruchamiania, wypelnia tylko jeden serwer, albo przy maksymalizacja 
+     * zamraza sie niezmaksymalizowane listboxy
+     * 
      * testy masowego pobierania cala noc
      * testowanie
      * 

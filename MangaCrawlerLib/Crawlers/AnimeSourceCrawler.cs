@@ -49,12 +49,15 @@ namespace MangaCrawlerLib.Crawlers
             var chapters = doc.DocumentNode.SelectNodes(
                 "/html/body/center/table/tr/td/table[5]/tr/td/table/tr/td/table/tr/td/blockquote/a");
 
-            var result = from chapter in chapters.Skip(1)
-                         select new Chapter(a_serie, 
-                                                "http://www.anime-source.com/banzai/" + chapter.GetAttributeValue("href", ""), 
-                                                chapter.InnerText);
+            var result = (from chapter in chapters.Skip(1)
+                          select new Chapter(a_serie,
+                                                 "http://www.anime-source.com/banzai/" + chapter.GetAttributeValue("href", ""),
+                                                 chapter.InnerText)).Reverse().ToList();
 
-            a_progress_callback(100, result.Reverse());
+            a_progress_callback(100, result);
+
+            if (result.Count == 0)
+                throw new Exception("Serie has no chapters");
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)

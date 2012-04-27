@@ -26,7 +26,6 @@ namespace MangaCrawlerLib.Crawlers
 
             var series = doc.DocumentNode.SelectNodes("//div[@class='mangaJump']/select").Elements().ToList();
 
-
             for (int i = series.Count - 1; i >= 0; i--)
             {
                 if (series[i].NodeType != HtmlNodeType.Text)
@@ -74,6 +73,12 @@ namespace MangaCrawlerLib.Crawlers
                         break;
 
                 node = node.NextSibling;
+
+                if (node.InnerText.Contains("Sorry! Series removed as requested"))
+                {
+                    a_progress_callback(100, new Chapter[0]);
+                    return;
+                }
             }
 
             var href = node.GetAttributeValue("href", "");
@@ -82,13 +87,16 @@ namespace MangaCrawlerLib.Crawlers
 
             var chapters = doc.DocumentNode.SelectNodes("//select[@name='ch']/option");
 
-            var result = from chapter in chapters
-                         select new Chapter(
-                             a_serie,
-                             href + "?ch=" + chapter.GetAttributeValue("value", "").Replace(" ", "+") + "&page=1",
-                             chapter.NextSibling.InnerText);
+            var result = (from chapter in chapters
+                          select new Chapter(
+                              a_serie,
+                              href + "?ch=" + chapter.GetAttributeValue("value", "").Replace(" ", "+") + "&page=1",
+                              chapter.NextSibling.InnerText)).Reverse().ToList();
 
-            a_progress_callback(100, result.Reverse());
+            a_progress_callback(100, result);
+
+            if (result.Count == 0)
+                throw new Exception("Serie has no chapters");
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)

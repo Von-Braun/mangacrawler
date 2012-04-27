@@ -48,13 +48,16 @@ namespace MangaCrawlerLib.Crawlers
             var chapters = doc.DocumentNode.SelectNodes(
                 "/html/body/div/div[3]/div/table/tbody/tr");
 
-            var result = from chapter in chapters.Skip(1)
+            var result = (from chapter in chapters.Skip(1)
                             select new Chapter(a_serie,
                                 chapter.SelectSingleNode("td[3]/a").GetAttributeValue("href", ""),
                                 Path.GetFileNameWithoutExtension(chapter.SelectSingleNode("td[1]").
-                                InnerText));
+                                InnerText))).Reverse().ToList();
 
-            a_progress_callback(100, result.Reverse());
+            a_progress_callback(100, result);
+
+            if (result.Count == 0)
+                throw new Exception("Serie has no chapters");
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)
