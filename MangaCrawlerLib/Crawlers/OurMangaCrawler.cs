@@ -36,6 +36,12 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
+            if (doc == null)
+            {
+                a_progress_callback(100, new Chapter[0]);
+                return;
+            }
+
             var chapters = doc.DocumentNode.SelectNodes("//div[@id='manga_nareo']/div").Skip(1);
 
             var chs = (from ch in chapters
@@ -50,13 +56,19 @@ namespace MangaCrawlerLib.Crawlers
             }
 
             a_progress_callback(100, result);
+
+            if (result.Count == 0)
+            {
+                if (!doc.DocumentNode.SelectSingleNode("//div[@id='manage_browse']/p").InnerText.Contains("Total Chapters: 0"))
+                    throw new Exception("Serie has no chapters");
+            }
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)
         {
             HtmlDocument doc = DownloadDocument(a_chapter);
 
-            var url = doc.DocumentNode.SelectSingleNode("//div[@id='Summary']/p[2]/a[2]");
+            var url = doc.DocumentNode.SelectSingleNode("//div[@id='Summary']/p[last()]/a[2]");
 
             doc = DownloadDocument(a_chapter, url.GetAttributeValue("href", ""));
 

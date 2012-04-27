@@ -105,9 +105,12 @@ namespace MangaCrawlerLib.Crawlers
 
             List<string> pages = new List<string>();
             pages.Add(a_serie.URL);
-            var pages_list = doc.DocumentNode.SelectNodes("/html/body/div[2]/a").SkipLast();
-            foreach (var page in pages_list)
-                pages.Add(GetServerURL() + page.GetAttributeValue("href", ""));
+            var pages_list = doc.DocumentNode.SelectNodes("/html/body/div[2]/a");
+            if (pages_list != null)
+            {
+                foreach (var page in pages_list.SkipLast())
+                    pages.Add(GetServerURL() + page.GetAttributeValue("href", ""));
+            }
 
             ConcurrentBag<Tuple<int, int, string, string>> chapters =
                 new ConcurrentBag<Tuple<int, int, string, string>>();
@@ -179,7 +182,10 @@ namespace MangaCrawlerLib.Crawlers
                     }
                 });
 
-            update(100);          
+            update(100);
+
+            if (chapters.Count == 0)
+                throw new Exception("Serie has no chapters");
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)

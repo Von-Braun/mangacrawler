@@ -92,18 +92,16 @@ namespace MangaCrawlerLib.Crawlers
 
             var page_chapters = doc.DocumentNode.SelectNodes("//div[@id='filelist']/div[@class='sbox3']/a");
 
-            if (page_chapters != null)
-            {
-                var result = from chapter in page_chapters
-                                select new Chapter(
-                                    a_serie, 
-                                    "http://www.otakuworks.com" + chapter.GetAttributeValue("href", ""), 
-                                    chapter.InnerText);
+            var result = (from chapter in page_chapters
+                          select new Chapter(
+                              a_serie,
+                              "http://www.otakuworks.com" + chapter.GetAttributeValue("href", ""),
+                              chapter.InnerText)).ToList();
 
-                a_progress_callback(100, result);
-            }
-            else
-                a_progress_callback(100, new List<Chapter>());
+             a_progress_callback(100, result);
+
+             if (result.Count == 0)
+                 throw new Exception("Serie has no chapters");
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)

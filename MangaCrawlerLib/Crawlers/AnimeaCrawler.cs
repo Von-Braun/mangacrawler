@@ -94,19 +94,28 @@ namespace MangaCrawlerLib.Crawlers
 
             if (chapters == null)
             {
+                if (doc.DocumentNode.SelectSingleNode("//ul[@class='chapters_list']/li[@class='notice']").InnerText.Contains("No chapters found"))
+                {
+                    a_progress_callback(100, new Chapter[0]);
+                    return;
+                }
+                
                 var skip_link = doc.DocumentNode.SelectSingleNode("//li[@class='notice']/strong/a");
                 doc = DownloadDocument(a_serie, a_serie.URL + 
                     skip_link.GetAttributeValue("href", ""));
                 chapters = doc.DocumentNode.SelectNodes("//ul[@class='chapters_list']/li/a");
             }
 
-            var result = from chapter in chapters
-                         select new Chapter(
-                             a_serie,
-                             "http://manga.animea.net" + chapter.GetAttributeValue("href", ""), 
-                             chapter.InnerText);
+            var result = (from chapter in chapters
+                          select new Chapter(
+                              a_serie,
+                              "http://manga.animea.net" + chapter.GetAttributeValue("href", ""), 
+                              chapter.InnerText)).ToList();
 
             a_progress_callback(100, result);
+
+            if (result.Count == 0)
+                throw new Exception("Serie has no chapters");
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)

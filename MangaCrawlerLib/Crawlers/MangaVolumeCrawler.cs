@@ -167,14 +167,14 @@ namespace MangaCrawlerLib.Crawlers
 
             pages = pages.Distinct().ToList();
 
-            ConcurrentBag<Tuple<int, int, string, string>> series =
+            ConcurrentBag<Tuple<int, int, string, string>> chapters =
                 new ConcurrentBag<Tuple<int, int, string, string>>();
 
             int chapters_progress = 0;
 
             Action<int> update = (progress) =>
             {
-                var result = from serie in series
+                var result = from serie in chapters
                                 orderby serie.Item1, serie.Item2
                                 select new Chapter(a_serie, serie.Item4, serie.Item3);
 
@@ -210,7 +210,7 @@ namespace MangaCrawlerLib.Crawlers
                             new Tuple<int, int, string, string>(page, index++, serie.InnerText,
                                 "http://www.mangavolume.com" + serie.GetAttributeValue("href", ""));
 
-                        series.Add(s);
+                        chapters.Add(s);
                     }
 
                     Interlocked.Increment(ref chapters_progress);
