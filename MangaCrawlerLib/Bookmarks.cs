@@ -37,11 +37,14 @@ namespace MangaCrawlerLib
             copy.Add(a_serie);
             m_bookmarks = copy;
 
-            DownloadManager.Instance.BookmarksIgnored(a_serie.Chapters);
+            DownloadManager.Instance.BookmarksVisited(a_serie.Chapters);
 
             Save();
         }
 
+        /// <summary>
+        /// Thread safe.
+        /// </summary>
         public IEnumerable<Serie> List
         {
             get

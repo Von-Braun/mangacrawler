@@ -36,9 +36,15 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
-            var chapters = doc.DocumentNode.SelectNodes("//table[@id='listing']/tr/td/a").Reverse().ToList();
+            var chapters = doc.DocumentNode.SelectNodes("//table[@id='listing']/tr/td/a");
 
-            var result = (from chapter in chapters
+            if (chapters == null)
+            {
+                a_progress_callback(100, new Chapter[0]);
+                return;
+            }
+
+            var result = (from chapter in chapters.Reverse()
                           select new Chapter(
                               a_serie,
                               "http://www.mangareader.net" + chapter.GetAttributeValue("href", ""),

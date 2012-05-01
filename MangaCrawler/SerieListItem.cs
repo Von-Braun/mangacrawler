@@ -41,13 +41,18 @@ namespace MangaCrawler
                 switch (Serie.State)
                 {
                     case SerieState.Error:
+                    {
+                        string str = Resources.Error;
 
-                        a_args.Graphics.DrawString(Resources.Error, font,
+                        if (Serie.IsBookmarked)
+                            str = Resources.Bookmarked + ", " + str;
+
+                        a_args.Graphics.DrawString(str, font,
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
-
+                    }
                     case SerieState.Downloaded:
-
+                    {
                         string str = Serie.Chapters.Count.ToString();
 
                         if (Serie.IsBookmarked)
@@ -57,27 +62,28 @@ namespace MangaCrawler
                             font, Brushes.Green, rect, StringFormat.GenericDefault);
 
                         break;
-
+                    }
                     case SerieState.Waiting:
-
+                    {
                         a_args.Graphics.DrawString(Resources.Waiting, font,
                             Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
-
+                    }
                     case SerieState.Downloading:
-
+                    {
                         a_args.Graphics.DrawString(
                             String.Format("({0}%)", Serie.DownloadProgress),
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
-
+                    }
                     case SerieState.Initial:
-
+                    {
                         break;
-
-                    default: 
-                         
-                         throw new NotImplementedException();
+                    }
+                    default:
+                    {
+                        throw new NotImplementedException();
+                    }
                 }
             };
 

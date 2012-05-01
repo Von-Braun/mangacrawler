@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows.Forms;
 using MangaCrawler.Properties;
 using HtmlAgilityPack;
+using System.Text.RegularExpressions;
 
 namespace MangaCrawler
 {
@@ -92,7 +93,7 @@ namespace MangaCrawler
 
                         if (entity is Chapter)
                         {
-                            DownloadManager.Instance.BookmarksIgnored(
+                            DownloadManager.Instance.BookmarksVisited(
                                 new[] { entity as Chapter });
                         }
                     }
@@ -185,7 +186,6 @@ namespace MangaCrawler
                 }
 
                 DownloadManager.Instance.DownloadPages(a_chapters);
-                GUI.PlaySoundWhenDownloaded = true;
                 GUI.UpdateAll();
             }
 
@@ -355,7 +355,7 @@ namespace MangaCrawler
             {
                 VisitPages(GUI.SelectedBookmarkedChapters);
 
-                DownloadManager.Instance.BookmarksIgnored(GUI.SelectedBookmarkedChapters);
+                DownloadManager.Instance.BookmarksVisited(GUI.SelectedBookmarkedChapters);
 
                 GUI.UpdateAll();
             }
@@ -380,17 +380,18 @@ namespace MangaCrawler
                 try
                 {
                     var doc = new HtmlWeb().Load(Resources.HomePage);
-                    var node = doc.DocumentNode.SelectSingleNode("//td[@id='ReleaseName']");
-                    var name = node.InnerText;
-                    var version1 = Double.Parse(
-                        name.Replace("Manga Crawler", "").Trim().Replace(".", ","));
+                    var match = Regex.Match(doc.DocumentNode.InnerText, "Manga Crawler \\d+\\.\\d+");
+                    var avail_str = match.Value.Replace("Manga Crawler ", "").Replace(".", ",");
+                    var avail = Double.Parse(avail_str);
 
-                    var assembly_version = System.Reflection.Assembly.GetAssembly(
+                    var actual_str = System.Reflection.Assembly.GetAssembly(
                         typeof(MangaCrawlerForm)).GetName().Version;
-                    var version2 = Double.Parse(assembly_version.Major.ToString() + "," +
-                        assembly_version.Minor.ToString());
+                    var actual = Double.Parse(actual_str.Major.ToString() + "," +
+                        actual_str.Minor.ToString());
 
-                    if (version1 > version2)
+                    actual += 0.00001;
+
+                    if (avail > actual)
                         GUI.InformAboutNewVersion();
                 }
                 catch (Exception ex)
@@ -406,7 +407,7 @@ namespace MangaCrawler
 
             private void IgnoreNew(IEnumerable<Chapter> a_chapters)
             {
-                DownloadManager.Instance.BookmarksIgnored(a_chapters);
+                DownloadManager.Instance.BookmarksVisited(a_chapters);
                 GUI.UpdateAll();
             }
 

@@ -1,212 +1,24 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using MangaCrawlerLib;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Reflection;
-using MangaCrawlerLib;
 using System.Threading.Tasks;
+using log4net;
 using System.ComponentModel;
-using System.IO;
-using MangaCrawler.Properties;
-using System.Diagnostics;
-using System.Media;
-using HtmlAgilityPack;
 using System.Threading;
+using System.Drawing.Drawing2D;
 using log4net.Core;
 using log4net.Layout;
 using log4net.Config;
-using log4net;
-using System.Runtime.InteropServices;
-using TomanuExtensions;
-using System.Drawing.Drawing2D;
-using System.Security.AccessControl;
+using System.Diagnostics;
+using MangaCrawler.Properties;
 
 namespace MangaCrawler
 {
-    /* 
-     * TESTY
-     * 
-     * dodanie do bookmarked serii - seria powinna pojawic sie w bookmarked, w series tab powinna 
-     * byc oznaczona jako bookmarked
-     *   
-     * usuniecie serii z bookmark - seria powinna zniknac z bookmarked, w series tab powinna 
-     * byc nie oznaczona jako bookmarked
-     *   
-     * klikniecie w label pokazuje strone projektu
-     *   
-     * usuniecie rozdzialu z bookmark serii ktory jest nowy powinno zdjac znacznik new
-     * 
-     * usuniecie z bookmark zachowuje zaznaczenie w liscie
-     * 
-     * prawidlowe disablowanie opcji, ktre pozwala nam nie sprawdzac wielu bledow
-     * przetestowac na kazdy button i kazde menu
-     * 
-     * sprawdzic dzialanie kazdego przycisku
-     * 
-     * kasowanie, zmiana nazwy foledru, obrazkow wyłacza odpowiednie buttony, robione jest to onactivate, 
-     * sprawdzic jak kod radzi sobie z obluga wyjatkow gdyby komus sie jednak udalo nacisnac przycisk, pozatym
-     * przyciski te sa takze updatetowane w przypadku napotkania bledu podczas ich nacisniecia
-     * 
-     * podczas pobierania nacisniecie dodatkowych chaptertow w tej samej serii zalacza je w waiting od razu wszystkie
-     * 
-     * zaznaczanie z shiftem i ctrl prztestowac, zwlaszcza podczas pobierania
-     * 
-     * dodanie nowego chapteru powinno spowodowac pojawienie sie nowego rozdzialu w bookmarks
-     * 
-     * dodanie nowego chapteru w minimalizacji powinno pokazac tooltip, sprawdzic to szczegolnie jesli w tle cos 
-     * pobieramy, zarowno chaptery jak i np serie, zamkniecie baloona nie powinno go ponownie otworzyc
-     * przetestowac jak to dziala w przypadku wiekszej niz 4 ilosci nowych serii
-     * 
-     * klikniecie w tooltip powinno pokazac zkladke bookmarks, serie i nowy rozdzial, 
-     * 
-     * pojawienie sie czegos nowego niezaleznie od stanu minimalizajci zakladki, a takze znikniecie tego 
-     * powinno zmieniac ikone 
-     * 
-     * przetestowac elementy puste i elementy generujace bledy przy probie dostepu, sprobowac je dodac do 
-     * bookmarks i odswiezyc
-     * 
-     * zamkniecie na downloading powinno wznowic pobieranie chapteru od poczatku
-     * 
-     * usuwanie wpisow z downloading: deleted - automatycznie, error, 
-     *   downloaded - na rzadanie albo podczas nastepnego uruchomienia, 
-     *   
-     * wpisy na itemach z listboxach - cancelled - trwale zostaje, 
-     * ok - trwale zostaje, error - trwale zostaje, wszystkie ingi znikaja
-     * 
-     * priorytety - zalaczyc do pobierania serie - wiele na raz, rozdzialy z jednej serii - 4 na raz, 
-     * chaptery dla kazdego serwera - w kolejnosci dodania pojedynczo, dla kazdego chapteru wiele stron na raz, 
-     * serie, chaptery maja pierwszenstwo nad stronami, pobieranie chapterow wstrzymuje pobierania serii
-     * 
-     * ponowic pobranie anulowane rozdzialu
-     * masowe anulowanie rozdzialow z dwoch serwerow, ich ponowne zalaczenie do pobierania
-     * 
-     * przetestowanie timera na sprawdzanie bookmarka, przetestowanie czasu zanim ponownie sprawdzimy juz pobrane
-     * 
-     * testy na manga dir ze i bez slasha na koncu
-     * 
-     * przetestowac detekcje nowej wersji
-     * 
-     * przetestowanie pamietania i dzialania opcji
-     * 
-     * dodanie ponownie tego samego pobierania nie wstawia nowego work, pozycja work nie zmienia sie, 
-     * takze po skonczeniu pobierania
-     * 
-     * jesli cbz juz istnieje powinien zostac nadpisany
-     * xx
-     * dzwiek o zakonczeniu pobierania takze jesli pobieramy od startu, takze jesli w tle pobieraja sie serie serwera np.
-     * 
-     * zaznaczenie elementu w chapte, przejscie na inna serie, zaznaczenie innego indeksu, przejscie spowrotem - w chapter 
-     * powinien byc tylko jeden chapter
-     * 
-     * usuwanie nieistniejacej zdalnie rzeczy, a zaznaczenie, w bookmark co sie dzieje jesli jednoczesnie jest bookmark, 
-     * czy bookmark.xml sie czysci, co jesli zaznaczenie to ostatni item, 
-     * 
-     * upewnic sie ze uzywane w gui enumeracje sa stale, utrwalane w momencie pobrania, tak by nic nie zmienialo sie 
-     * podczas enumeracji, jesli jakies zmiany wprowadza watki pobierajace, dotyczy chapterow dla ktorych jest multiselekcja
-     * 
-     * przetestowac dzialanie wszystkich przyciskow dla selekcji i multiselekcj, brak wybrania, 
-     *   juz zostalo zrobione (dodane, uruchomione)
-     *   
-     * menu debug nie dziala i nie ma logowania w release
-     * 
-     * zmiana nazwy, zmiana url - nie tracimy powiazania, zmiana obu - trudno
-     * 
-     * klikniecie prawym przyciskiem w liste zaznacza element przed pojawieniem sie menu kontekstowego
-     * 
-     * brak dostepu do katalogu - nie mozna utworzyc katalogu, nie mozna zapisac pliku w katalogu, nie mozna 
-     * zapisac cbz, nie mozna podmienic pliku image, nie mozna podmienic pliku cbz
-     * 
-     * ktos klika w element ktory nie istnieje, pojawia sie error, albo jest on w trakcie sciagania, w tym 
-     * czasie nastepuje jego odswiezenie i znika on z listy
-     * 
-     * zalaczenie do pobierania mnostwa chapterow, serii, itp zobaczyc czy nie bledow pamieciowych
-     * 
-     * wiele chapterow z jednego chaptera do sciagania, zamkniecie aplikacji, ponowne uruchomienie, 
-     * czy wszystkie sa wznawiane, powinny sie wznawiac w kolejnosci dodania
-     * 
-     * dodac przycisk check now
-     * 
-     * dla nowych rozdzialow, visit page ma je oznaczac jako odwiedzone dla wszystkich miejsc z ktorych
-     * mozemy to zrobic
-     * 
-     * usuniecie chapteru ktory jest w downloading jako downloaded albo pobierany - test na przyciski - jak to dziala, 
-     * takze usuniecie serii
-     * 
-     * usuniecie serii ktora jest w bookmarks, co sie dzieje 
-     * 
-     * ogranicz liczbe otwieranych folderow i obrazkow do 10
-     * 
-     * uruchomienie aplikacji jesli jest uruchomiana przywraca ono juz uruchomionej
-     * 
-     * uruchomienie aplikacji na czysto - sprawdzanie czy wszystk sie dobrze laduje
-     * 
-     * dzialanie tab order
-     * 
-     * minimalizacja, maksymalizacja, przywrocenie - na wszystkich kartach, zwlaszcza tych co maja splitter
-     * 
-     * skasowanie elementu w downloading przelacza na nastepne zaznaczenie, szczegolnie ostatni, to samo tyczy sie listy 
-     * ulubionych
-     * 
-     * czy dziala autostart, czy po uruchomieniu w autostart jest zminimalizowana
-     * 
-     * w bookmarked elementy error, cancelled pokazuja takze new
-     * 
-     * dodanie nowego serwera nie moze niszczyc katalogu, chwilowo nie ma na to zabezpieczen tylko ostrzezenie
-     * 
-     * przetestowac obluge podwojnych nazw i urli, tylko podwojnych nazw - specjalne testowe serwery
-     * 
-     * utrwalanie danych w katalogu, a zmiana adresu url, odswiezenie informacji w katalogu
-     * 
-     * czy dziala na x86
-     * 
-     * podwojne klikniecie w element pobieranych pobiera go na nowo
-     * 
-     * upewnic sie ze blad w trakcie pobierania dowolnego entity pokaze blad dopiero po zakonczeniu pobierania, a nie 
-     * ze pokaze sie blad, a pobieranie bedzie trwac
-     * 
-     * pobranie serii, chapterow, przerwanie w trakcie, ponownie po uurchomieniu powinno wznowic ich pobieranie od 
-     * poczatku, nic nie powinno sie zapamietac, w przypadku bledow powinno sie zapamietac
-     * 
-     * dodanie do bookmark w trakcie pobierania nie dodaje pobieranych chapterow, jesli jest to pobieranie pierwszy
-     * raz, jesli jest to odswiezanie pojawi sie jako new, jesli cos doda sie do chapterow po kliknieciu
-     * 
-     * autostart dziala tylko jesli jest wlaczona minimalizacja do traya, jego zaznaczenie jest przechowywane w opcjach 
-     * i jest niezalezne od ustawienia w rejestrach. Aczkolwiek na starcie sprawdzane jest prawidlowe powiazanie 
-     * autostartu w rejestrze z tym w opcjach. 
-     * 
-     * podczas pobierania nie mozemy zmienic folderu docelowego, wszystko jest disable i jest czerwony label z info.
-     * takze strategii zmiany nazw
-     * 
-     * zmiana zannaczenie nie wywoluje pobierania, takze podczas filtrowania, dopiero klikniecie lub nacisniecie enter 
-     * wywoluje pobieranie, proba dodania do bookmark serii nie pobranej powinno wymusic jej pobranie
-     */
-
-    /* 
-     * TODO:
-     * 
-     * pojawia sie na raty podczas uruchamiania, wypelnia tylko jeden serwer, albo przy maksymalizacja 
-     * zamraza sie niezmaksymalizowane listboxy
-     * 
-     * testy masowego pobierania cala noc
-     * testowanie
-     * 
-     * multiselekcja wszedzie
-     * multiselekcja nie dziala dobrze podczas downloading, kiedy odswiezamy ciagle listbox
-     * wbudowany browser
-     * widok wspolny dla wszystkich serwisow, scalac jakos serie,
-     *   gdzie najlepsza jakosc, gdzie duplikaty
-     * wpf
-     * 
-     * nowe serwisy:
-     * 
-     * http://mangastream.com
-     * http://www.anymanga.com/directory/all/
-     * http://mangable.com/manga-list/
-     * http://www.readmangaonline.net/
-     * http://www.mangamonger.com/
-     */
-
     public partial class MangaCrawlerForm : Form
     {
         private Dictionary<Server, ListBoxVisualState> m_series_visual_states =
@@ -272,8 +84,6 @@ namespace MangaCrawler
             DownloadManager.Create(
                 Settings.Instance.MangaSettings, 
                 Settings.GetSettingsDir());
-
-            GUI.Init();
 
             MovePanelFromTabControl(seriesTabPanel);
             MovePanelFromTabControl(downloadingsTabPanel);
@@ -346,8 +156,6 @@ namespace MangaCrawler
 
             Commands.CheckNowBookmarks();
 
-            refreshTimer.Enabled = true;
-
             ResizeToolStripImages();
             ResizeContextMenuStripImages();
 
@@ -357,7 +165,8 @@ namespace MangaCrawler
             foreach (var ts in FindAll<ToolStrip>())
                 ts.Visible = true;
 
-            GUI.UpdateAll();
+            refreshTimer.Enabled = true;
+            refreshTimer_Tick(this, EventArgs.Empty);
         }
 
         private void MovePanelFromTabControl(Panel a_panel)
@@ -640,6 +449,7 @@ namespace MangaCrawler
         private void seriesSearchTextBox_TextChanged(object sender, EventArgs e)
         {
             Settings.Instance.SeriesFilter = seriesSearchTextBox.Text;
+            seriesListBox.SelectedItem = null;
             GUI.UpdateSeries();
         }
 
@@ -1538,6 +1348,36 @@ namespace MangaCrawler
             GUI.LastBookmarkCheck = DateTime.Now - 
                 Settings.Instance.CheckBookmarksPeriod + new TimeSpan(0, 0, 5);
             GUI.RefreshBookmarks();
+        }
+
+        private void duplicateSerieNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DownloadManager.Instance.Debug_DuplicateSerieName(GUI.SelectedSerie);
+        }
+
+        private void duplicateChapterNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DownloadManager.Instance.Debug_DuplicateChapterName(GUI.SelectedChapters.First());
+        }
+
+        private void duplicateSerieUrlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DownloadManager.Instance.Debug_DuplicateSerieURL(GUI.SelectedSerie);
+        }
+
+        private void duplicateChapterUrlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DownloadManager.Instance.Debug_DuplicateChapterURL(GUI.SelectedChapters.First());
+        }
+
+        private void makeSerieErrorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DownloadManager.Instance.Debug_MakeSerieError(GUI.SelectedSerie);
+        }
+
+        private void makeChapterErrorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DownloadManager.Instance.Debug_MakeChapterError(GUI.SelectedChapters.First());
         }
     }
 }

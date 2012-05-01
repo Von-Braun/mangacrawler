@@ -441,10 +441,10 @@ namespace MangaCrawlerLib.Crawlers
             }
             else
             {
+                a_progress_callback(100, toreport);
+
                 if (gen_exc)
                     throw new Exception();
-
-                a_progress_callback(100, toreport);
             }
         }
 
@@ -579,24 +579,82 @@ namespace MangaCrawlerLib.Crawlers
             serie_data.Title += " " + m_random.Next();
         }
 
-        internal void Debug_RenameChapter(Chapter a_chapter)
+        public void Debug_RenameChapter(Chapter a_chapter)
         {
             SerieData serie_data = m_series.First(sd => sd.Title == a_chapter.Serie.Title);
             ChapterData chapter_data = serie_data.Chapters.First(c => c.Title == a_chapter.Title);
             chapter_data.Title += " " + m_random.Next();
         }
 
-        internal void Debug_ChangeSerieURL(Serie a_serie)
+        public void Debug_ChangeSerieURL(Serie a_serie)
         {
             SerieData serie_data = m_series.First(sd => sd.Title == a_serie.Title);
             serie_data.URL += " " + m_random.Next();
         }
 
-        internal void Debug_ChangeChapterURL(Chapter a_chapter)
+        public void Debug_ChangeChapterURL(Chapter a_chapter)
         {
             SerieData serie_data = m_series.First(sd => sd.Title == a_chapter.Serie.Title);
             ChapterData chapter_data = serie_data.Chapters.First(c => c.Title == a_chapter.Title);
             chapter_data.URL += " " + m_random.Next();
+        }
+
+        public void Debug_DuplicateSerieName(Serie a_serie)
+        {
+            var sd = new SerieData();
+            sd.Seed = m_random.Next();
+            sd.Title = a_serie.Title;
+            sd.URL = ">>> duplicated name serie " + a_serie.URL;
+
+            var serie = m_series.First(s => s.Title == a_serie.Title);
+            m_series.Insert(m_series.IndexOf(serie) + 1, sd);
+        }
+
+        public void Debug_DuplicateChapterName(Chapter a_chapter)
+        {
+            SerieData serie_data = m_series.First(sd => sd.Title == a_chapter.Serie.Title);
+
+            var cd = new ChapterData();
+            cd.Seed = m_random.Next();
+            cd.Title = a_chapter.Title;
+            cd.URL = ">>> duplicated name chapter " + a_chapter.URL;
+
+            var chapter = serie_data.Chapters.First(s => s.Title == a_chapter.Title);
+            serie_data.Chapters.Insert(serie_data.Chapters.IndexOf(chapter) + 1, cd);
+        }
+
+        internal void Debug_DuplicateSerieURL(Serie a_serie)
+        {
+            var sd = new SerieData();
+            sd.Seed = m_random.Next();
+            sd.Title = ">>> duplicated name serie " + a_serie.Title;
+            sd.URL = a_serie.URL;
+
+            var serie = m_series.First(s => s.Title == a_serie.Title);
+            m_series.Insert(m_series.IndexOf(serie) + 1, sd);
+        }
+
+        internal void Debug_DuplicateChapterURL(Chapter a_chapter)
+        {
+            SerieData serie_data = m_series.First(sd => sd.Title == a_chapter.Serie.Title);
+
+            var cd = new ChapterData();
+            cd.Seed = m_random.Next();
+            cd.Title = ">>> duplicated name chapter " + a_chapter.Title;
+            cd.URL = a_chapter.URL;
+
+            var chapter = serie_data.Chapters.First(s => s.Title == a_chapter.Title);
+            serie_data.Chapters.Insert(serie_data.Chapters.IndexOf(chapter) + 1, cd);
+        }
+
+        internal void Debug_MakeSerieError(Serie a_serie)
+        {
+            a_serie.State = SerieState.Error;
+        }
+
+        internal void Debug_MakeChapterError(Chapter a_chapter)
+        {
+            a_chapter.State = ChapterState.Error;
         }
     }
 }

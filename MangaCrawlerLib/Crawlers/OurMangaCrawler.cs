@@ -59,8 +59,11 @@ namespace MangaCrawlerLib.Crawlers
 
             if (result.Count == 0)
             {
-                if (!doc.DocumentNode.SelectSingleNode("//div[@id='manage_browse']/p").InnerText.Contains("Total Chapters: 0"))
+                if (!doc.DocumentNode.SelectSingleNode("//div[@id='manage_browse']/p").
+                    InnerText.Contains("Total Chapters: 0"))
+                {
                     throw new Exception("Serie has no chapters");
+                }
             }
         }
 

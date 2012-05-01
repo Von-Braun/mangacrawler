@@ -147,6 +147,9 @@ namespace MangaCrawlerLib
             }).Start();
         }
 
+        /// <summary>
+        /// Thread safe - immutable.
+        /// </summary>
         public IEnumerable<Server> Servers
         {
             get
@@ -201,7 +204,7 @@ namespace MangaCrawlerLib
             (a_chapter.Crawler as TestServerCrawler).Debug_ChangeChapterURL(a_chapter);
         }
 
-        public void BookmarksIgnored(IEnumerable<Chapter> a_chapters)
+        public void BookmarksVisited(IEnumerable<Chapter> a_chapters)
         {
             var chapters_grouped_by_serie = from ch in a_chapters
                      group ch by ch.Serie;
@@ -209,10 +212,40 @@ namespace MangaCrawlerLib
             foreach (var chapters_group in chapters_grouped_by_serie)
             {
                 foreach (var chapter in chapters_group)
-                    chapter.BookmarkNew = false;
+                    chapter.Visited = true;
 
                 Catalog.Save(chapters_group.First().Serie);
             }
+        }
+
+        public void Debug_DuplicateSerieName(Serie a_serie)
+        {
+            (a_serie.Crawler as TestServerCrawler).Debug_DuplicateSerieName(a_serie);
+        }
+
+        public void Debug_DuplicateChapterName(Chapter a_chapter)
+        {
+            (a_chapter.Crawler as TestServerCrawler).Debug_DuplicateChapterName(a_chapter);
+        }
+
+        public void Debug_DuplicateSerieURL(Serie a_serie)
+        {
+            (a_serie.Crawler as TestServerCrawler).Debug_DuplicateSerieURL(a_serie);
+        }
+
+        public void Debug_DuplicateChapterURL(Chapter a_chapter)
+        {
+            (a_chapter.Crawler as TestServerCrawler).Debug_DuplicateChapterURL(a_chapter);
+        }
+
+        public void Debug_MakeSerieError(Serie a_serie)
+        {
+            (a_serie.Crawler as TestServerCrawler).Debug_MakeSerieError(a_serie);
+        }
+
+        public void Debug_MakeChapterError(Chapter a_chapter)
+        {
+            (a_chapter.Crawler as TestServerCrawler).Debug_MakeChapterError(a_chapter);
         }
     }
 }

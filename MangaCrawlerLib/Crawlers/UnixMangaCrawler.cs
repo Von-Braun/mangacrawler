@@ -175,7 +175,8 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_page);
 
-            string script = doc.DocumentNode.SelectSingleNode("/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
+            string script = doc.DocumentNode.SelectSingleNode(
+                "/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
 
             Regex regex1 = new Regex("([Ss][Rr][Cc])=\".*\"");
             Match m1 = regex1.Match(script);

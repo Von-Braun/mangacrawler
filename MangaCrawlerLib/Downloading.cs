@@ -22,6 +22,9 @@ namespace MangaCrawlerLib
             DownloadManager.Instance.DownloadPages(downloading.ToList());
         }
 
+        /// <summary>
+        /// Thread safe.
+        /// </summary>
         public IEnumerable<Chapter> List
         {
             get

@@ -207,7 +207,7 @@ namespace MangaCrawlerLib.Crawlers
             Parallel.For(0, pages.Count,
                 new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = MaxConnectionsPerServer,
+                    MaxDegreeOfParallelism = 1,///MaxConnectionsPerServer,
                     TaskScheduler = Limiter.Scheduler
                 },
                 (page, state) =>
@@ -258,9 +258,12 @@ namespace MangaCrawlerLib.Crawlers
                 });
 
 
-            return from serie in result
+            var list = (from serie in result
                    orderby serie.Item1, serie.Item2
-                   select new Page(a_chapter, serie.Item4, result.IndexOf(serie) + 1, serie.Item3);
+                   select serie).ToList();
+
+            return from serie in list
+                   select new Page(a_chapter, serie.Item4, list.IndexOf(serie) + 1, serie.Item3);
         }
 
         internal override string GetImageURL(Page a_page)

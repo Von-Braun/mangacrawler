@@ -295,7 +295,7 @@ namespace MangaCrawlerTest
             Dictionary<Server, int> chapter_pageslist = new Dictionary<Server, int>();
             Dictionary<Server, int> chapter_images = new Dictionary<Server, int>();
             DateTime last_report = DateTime.Now;
-            TimeSpan report_delta = new TimeSpan(0, 1, 0);
+            TimeSpan report_delta = new TimeSpan(0, 15, 0);
             int errors = 0;
             int warnings = 0;
 

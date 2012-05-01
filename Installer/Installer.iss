@@ -38,7 +38,7 @@ Source: "D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\bin\Release
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\MangaCrawler.exe"
-Name: "{group}\{cm:UninstallProgram,MyProgram}"; Filename: "{uninstallexe}"
+Name: "{group}\{cm:UninstallProgram,{#AppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#AppName}"; Filename: "{app}\MangaCrawler.exe"; Tasks: desktopicon
 
 [Run]
@@ -97,7 +97,7 @@ var
   Page: TWizardPage;
   StaticText1, StaticText2, StaticText3, StaticText4, StaticText5: TNewStaticText;
 begin
-  if not NETInstalled then
+  if NETInstalled then
     Exit;
     
   Page := CreateCustomPage(wpWelcome, 'NET Framework 4.0 not installed', 'Please install first NET Framework 4.0');
@@ -170,7 +170,7 @@ begin
       begin
         if MsgBox('Remove cached data and settings ?', mbInformation, MB_YESNO) = IDYES then
         begin
-          DelTree(ExpandConstant('{userappdata}') + '\MangaCrawler\Catalog\*.xml', False, True, False);
+          DelTree(ExpandConstant('{userappdata}') + '\MangaCrawler\Catalog\*.xml.zip', False, True, False);
           DeleteFile(ExpandConstant('{userappdata}') + '\MangaCrawler\settings.xml');;
           RemoveDir(ExpandConstant('{userappdata}') + '\MangaCrawler\Catalog');
           RemoveDir(ExpandConstant('{userappdata}' + '\MangaCrawler'));

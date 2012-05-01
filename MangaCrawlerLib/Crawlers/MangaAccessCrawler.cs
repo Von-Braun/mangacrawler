@@ -69,7 +69,8 @@ namespace MangaCrawlerLib.Crawlers
 
             return from page in pages
                    select new Page(a_chapter, 
-                                   "http://manga-access.com" + page.GetAttributeValue("value", ""), pages.IndexOf(page) + 1,
+                                   "http://manga-access.com" + page.GetAttributeValue("value", ""), 
+                                   pages.IndexOf(page) + 1,
                                    page.NextSibling.InnerText);
         }
 

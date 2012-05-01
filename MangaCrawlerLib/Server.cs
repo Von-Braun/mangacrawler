@@ -85,6 +85,9 @@ namespace MangaCrawlerLib
             }
         }
 
+        /// <summary>
+        /// Thread safe.
+        /// </summary>
         public IList<Serie> Series 
         {
             get
