@@ -1,0 +1,20 @@
+test na wykrywanie nowej wersji
+
+zmiana nazwy nie tracimy powiazania, tak samo teraz nie tracimy go dla zmiany url
+lepsza obluga dwoch elementow o takich samych urlach ale roznych nazwach, powinien to byc najlepiej 
+  jeden obiekt wskazywany przez dwa inne - czy to w ogole ma sens, to moze byc bardzo skomplikowane pod 
+  wzgledem kodu i errogenne, nie erogenne, to nic podniecajego.
+multiselekcja wszedzie
+multiselekcja nie dziala dobrze podczas downloading, kiedy odswiezamy ciagle listbox
+wbudowany browser
+widok wspolny dla wszystkich serwisow, scalac jakos serie,
+  gdzie najlepsza jakosc, gdzie duplikaty
+wpf
+
+nowe serwisy:
+
+http://mangastream.com
+http://www.anymanga.com/directory/all/
+http://mangable.com/manga-list/
+http://www.readmangaonline.net/
+http://www.mangamonger.com/

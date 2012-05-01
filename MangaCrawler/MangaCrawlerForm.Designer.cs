@@ -78,6 +78,7 @@
             this.logRichTextBox = new System.Windows.Forms.RichTextBox();
             this.optionsTabPage = new System.Windows.Forms.TabPage();
             this.optionsTabPanel = new System.Windows.Forms.Panel();
+            this.optionslLabel2 = new System.Windows.Forms.Label();
             this.autostartCheckBox = new System.Windows.Forms.CheckBox();
             this.showBaloonTipsCheckBox = new System.Windows.Forms.CheckBox();
             this.minimizeOnCloseCheckBox = new System.Windows.Forms.CheckBox();
@@ -154,20 +155,27 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.debugContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.checkBookmarksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetCheckDatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.addSerieFirsttoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addSerieMiddleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addSerieLastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeSerieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renameSerieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeSerieURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.duplicateSerieNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.duplicateSerieUrlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.addChapterFirstToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addChapterMiddleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addChapterLastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.renameSerieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.renameChapterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeSerieURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeChapterURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkBookmarksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.duplicateChapterNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.duplicateChapterUrlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addNewChapterMakeSerieErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -178,12 +186,12 @@
             this.bookmarksTabLabel = new System.Windows.Forms.Label();
             this.optionsTabLabel = new System.Windows.Forms.Label();
             this.logTabLabel = new System.Windows.Forms.Label();
-            this.optionslLabel2 = new System.Windows.Forms.Label();
             this.serversListBox = new MangaCrawler.ListBoxEx();
             this.chaptersListBox = new MangaCrawler.ListBoxEx();
             this.seriesListBox = new MangaCrawler.ListBoxEx();
             this.bookmarkedchaptersListBox = new MangaCrawler.ListBoxEx();
             this.bookmarkedSeriesListBox = new MangaCrawler.ListBoxEx();
+            this.makeChapterErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versionPanel.SuspendLayout();
             this.bookmarksTabPage.SuspendLayout();
             this.bookmarksTabPanel.SuspendLayout();
@@ -560,6 +568,12 @@
             this.optionsTabPanel.Controls.Add(this.label2);
             resources.ApplyResources(this.optionsTabPanel, "optionsTabPanel");
             this.optionsTabPanel.Name = "optionsTabPanel";
+            // 
+            // optionslLabel2
+            // 
+            resources.ApplyResources(this.optionslLabel2, "optionslLabel2");
+            this.optionslLabel2.ForeColor = System.Drawing.Color.Red;
+            this.optionslLabel2.Name = "optionslLabel2";
             // 
             // autostartCheckBox
             // 
@@ -1215,28 +1229,47 @@
             // debugContextMenuStrip
             // 
             this.debugContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkBookmarksToolStripMenuItem,
             this.resetCheckDatesToolStripMenuItem,
+            this.toolStripMenuItem2,
             this.addSerieFirsttoolStripMenuItem,
             this.addSerieMiddleToolStripMenuItem,
             this.addSerieLastToolStripMenuItem,
             this.removeSerieToolStripMenuItem,
+            this.renameSerieToolStripMenuItem,
+            this.changeSerieURLToolStripMenuItem,
+            this.duplicateSerieNameToolStripMenuItem,
+            this.duplicateSerieUrlToolStripMenuItem,
+            this.addNewChapterMakeSerieErrorToolStripMenuItem,
+            this.toolStripMenuItem1,
             this.addChapterFirstToolStripMenuItem,
             this.addChapterMiddleToolStripMenuItem,
             this.addChapterLastToolStripMenuItem,
             this.removeChapterToolStripMenuItem,
-            this.renameSerieToolStripMenuItem,
             this.renameChapterToolStripMenuItem,
-            this.changeSerieURLToolStripMenuItem,
             this.changeChapterURLToolStripMenuItem,
-            this.checkBookmarksToolStripMenuItem});
+            this.duplicateChapterNameToolStripMenuItem,
+            this.duplicateChapterUrlToolStripMenuItem,
+            this.makeChapterErrorToolStripMenuItem});
             this.debugContextMenuStrip.Name = "debugContextMenuStrip";
             resources.ApplyResources(this.debugContextMenuStrip, "debugContextMenuStrip");
+            // 
+            // checkBookmarksToolStripMenuItem
+            // 
+            this.checkBookmarksToolStripMenuItem.Name = "checkBookmarksToolStripMenuItem";
+            resources.ApplyResources(this.checkBookmarksToolStripMenuItem, "checkBookmarksToolStripMenuItem");
+            this.checkBookmarksToolStripMenuItem.Click += new System.EventHandler(this.checkBookmarksToolStripMenuItem_Click);
             // 
             // resetCheckDatesToolStripMenuItem
             // 
             this.resetCheckDatesToolStripMenuItem.Name = "resetCheckDatesToolStripMenuItem";
             resources.ApplyResources(this.resetCheckDatesToolStripMenuItem, "resetCheckDatesToolStripMenuItem");
             this.resetCheckDatesToolStripMenuItem.Click += new System.EventHandler(this.resetCheckDatesToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            resources.ApplyResources(this.toolStripMenuItem2, "toolStripMenuItem2");
             // 
             // addSerieFirsttoolStripMenuItem
             // 
@@ -1262,6 +1295,35 @@
             resources.ApplyResources(this.removeSerieToolStripMenuItem, "removeSerieToolStripMenuItem");
             this.removeSerieToolStripMenuItem.Click += new System.EventHandler(this.removeSerieToolStripMenuItem_Click);
             // 
+            // renameSerieToolStripMenuItem
+            // 
+            this.renameSerieToolStripMenuItem.Name = "renameSerieToolStripMenuItem";
+            resources.ApplyResources(this.renameSerieToolStripMenuItem, "renameSerieToolStripMenuItem");
+            this.renameSerieToolStripMenuItem.Click += new System.EventHandler(this.renameSerieToolStripMenuItem_Click);
+            // 
+            // changeSerieURLToolStripMenuItem
+            // 
+            this.changeSerieURLToolStripMenuItem.Name = "changeSerieURLToolStripMenuItem";
+            resources.ApplyResources(this.changeSerieURLToolStripMenuItem, "changeSerieURLToolStripMenuItem");
+            this.changeSerieURLToolStripMenuItem.Click += new System.EventHandler(this.changeSerieURLToolStripMenuItem_Click);
+            // 
+            // duplicateSerieNameToolStripMenuItem
+            // 
+            this.duplicateSerieNameToolStripMenuItem.Name = "duplicateSerieNameToolStripMenuItem";
+            resources.ApplyResources(this.duplicateSerieNameToolStripMenuItem, "duplicateSerieNameToolStripMenuItem");
+            this.duplicateSerieNameToolStripMenuItem.Click += new System.EventHandler(this.duplicateSerieNameToolStripMenuItem_Click);
+            // 
+            // duplicateSerieUrlToolStripMenuItem
+            // 
+            this.duplicateSerieUrlToolStripMenuItem.Name = "duplicateSerieUrlToolStripMenuItem";
+            resources.ApplyResources(this.duplicateSerieUrlToolStripMenuItem, "duplicateSerieUrlToolStripMenuItem");
+            this.duplicateSerieUrlToolStripMenuItem.Click += new System.EventHandler(this.duplicateSerieUrlToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
+            // 
             // addChapterFirstToolStripMenuItem
             // 
             this.addChapterFirstToolStripMenuItem.Name = "addChapterFirstToolStripMenuItem";
@@ -1286,23 +1348,11 @@
             resources.ApplyResources(this.removeChapterToolStripMenuItem, "removeChapterToolStripMenuItem");
             this.removeChapterToolStripMenuItem.Click += new System.EventHandler(this.removeChapterToolStripMenuItem_Click);
             // 
-            // renameSerieToolStripMenuItem
-            // 
-            this.renameSerieToolStripMenuItem.Name = "renameSerieToolStripMenuItem";
-            resources.ApplyResources(this.renameSerieToolStripMenuItem, "renameSerieToolStripMenuItem");
-            this.renameSerieToolStripMenuItem.Click += new System.EventHandler(this.renameSerieToolStripMenuItem_Click);
-            // 
             // renameChapterToolStripMenuItem
             // 
             this.renameChapterToolStripMenuItem.Name = "renameChapterToolStripMenuItem";
             resources.ApplyResources(this.renameChapterToolStripMenuItem, "renameChapterToolStripMenuItem");
             this.renameChapterToolStripMenuItem.Click += new System.EventHandler(this.renameChapterToolStripMenuItem_Click);
-            // 
-            // changeSerieURLToolStripMenuItem
-            // 
-            this.changeSerieURLToolStripMenuItem.Name = "changeSerieURLToolStripMenuItem";
-            resources.ApplyResources(this.changeSerieURLToolStripMenuItem, "changeSerieURLToolStripMenuItem");
-            this.changeSerieURLToolStripMenuItem.Click += new System.EventHandler(this.changeSerieURLToolStripMenuItem_Click);
             // 
             // changeChapterURLToolStripMenuItem
             // 
@@ -1310,11 +1360,23 @@
             resources.ApplyResources(this.changeChapterURLToolStripMenuItem, "changeChapterURLToolStripMenuItem");
             this.changeChapterURLToolStripMenuItem.Click += new System.EventHandler(this.changeChapterURLToolStripMenuItem_Click);
             // 
-            // checkBookmarksToolStripMenuItem
+            // duplicateChapterNameToolStripMenuItem
             // 
-            this.checkBookmarksToolStripMenuItem.Name = "checkBookmarksToolStripMenuItem";
-            resources.ApplyResources(this.checkBookmarksToolStripMenuItem, "checkBookmarksToolStripMenuItem");
-            this.checkBookmarksToolStripMenuItem.Click += new System.EventHandler(this.checkBookmarksToolStripMenuItem_Click);
+            this.duplicateChapterNameToolStripMenuItem.Name = "duplicateChapterNameToolStripMenuItem";
+            resources.ApplyResources(this.duplicateChapterNameToolStripMenuItem, "duplicateChapterNameToolStripMenuItem");
+            this.duplicateChapterNameToolStripMenuItem.Click += new System.EventHandler(this.duplicateChapterNameToolStripMenuItem_Click);
+            // 
+            // duplicateChapterUrlToolStripMenuItem
+            // 
+            this.duplicateChapterUrlToolStripMenuItem.Name = "duplicateChapterUrlToolStripMenuItem";
+            resources.ApplyResources(this.duplicateChapterUrlToolStripMenuItem, "duplicateChapterUrlToolStripMenuItem");
+            this.duplicateChapterUrlToolStripMenuItem.Click += new System.EventHandler(this.duplicateChapterUrlToolStripMenuItem_Click);
+            // 
+            // addNewChapterMakeSerieErrorToolStripMenuItem
+            // 
+            this.addNewChapterMakeSerieErrorToolStripMenuItem.Name = "addNewChapterMakeSerieErrorToolStripMenuItem";
+            resources.ApplyResources(this.addNewChapterMakeSerieErrorToolStripMenuItem, "addNewChapterMakeSerieErrorToolStripMenuItem");
+            this.addNewChapterMakeSerieErrorToolStripMenuItem.Click += new System.EventHandler(this.makeSerieErrorToolStripMenuItem_Click);
             // 
             // notifyIcon
             // 
@@ -1398,12 +1460,6 @@
             this.logTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
             this.logTabLabel.MouseLeave += new System.EventHandler(this.tabLabel_MouseLeave);
             // 
-            // optionslLabel2
-            // 
-            resources.ApplyResources(this.optionslLabel2, "optionslLabel2");
-            this.optionslLabel2.ForeColor = System.Drawing.Color.Red;
-            this.optionslLabel2.Name = "optionslLabel2";
-            // 
             // serversListBox
             // 
             this.serversListBox.ContextMenuStrip = this.serversContextMenuStrip;
@@ -1469,6 +1525,12 @@
             this.bookmarkedSeriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serieBookmarksListBox_DrawItem);
             this.bookmarkedSeriesListBox.SelectedIndexChanged += new System.EventHandler(this.bookmarkedSeriesListBox_SelectedIndexChanged);
             this.bookmarkedSeriesListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
+            // 
+            // makeChapterErrorToolStripMenuItem
+            // 
+            this.makeChapterErrorToolStripMenuItem.Name = "makeChapterErrorToolStripMenuItem";
+            resources.ApplyResources(this.makeChapterErrorToolStripMenuItem, "makeChapterErrorToolStripMenuItem");
+            this.makeChapterErrorToolStripMenuItem.Click += new System.EventHandler(this.makeChapterErrorToolStripMenuItem_Click);
             // 
             // MangaCrawlerForm
             // 
@@ -1694,6 +1756,14 @@
         private System.Windows.Forms.Label optionslLabel1;
         private System.Windows.Forms.ToolStripMenuItem checkBookmarksToolStripMenuItem;
         private System.Windows.Forms.Label optionslLabel2;
+        private System.Windows.Forms.ToolStripMenuItem duplicateSerieNameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem duplicateChapterNameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem duplicateSerieUrlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem duplicateChapterUrlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addNewChapterMakeSerieErrorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem makeChapterErrorToolStripMenuItem;
     }
 }
 

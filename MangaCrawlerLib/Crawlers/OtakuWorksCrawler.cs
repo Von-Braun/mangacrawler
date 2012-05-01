@@ -90,9 +90,19 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
-            var page_chapters = doc.DocumentNode.SelectNodes("//div[@id='filelist']/div[@class='sbox3']/a");
+            var chapters = doc.DocumentNode.SelectNodes("//div[@id='filelist']/div[@class='sbox3']/a");
 
-            var result = (from chapter in page_chapters
+            if (chapters == null)
+            {
+                if (doc.DocumentNode.SelectSingleNode("//div[@id='filelist']/div[@class='sbox8b']").
+                    InnerText.Contains("has been licensed and if any releases were"))
+                {
+                    a_progress_callback(100, new Chapter[0]);
+                    return;
+                }
+            }
+
+            var result = (from chapter in chapters
                           select new Chapter(
                               a_serie,
                               "http://www.otakuworks.com" + chapter.GetAttributeValue("href", ""),

@@ -24,20 +24,14 @@ namespace MangaCrawler
             public MangaCrawlerForm Form;
             public MangaCrawlerFormCommands Commands;
 
-            public bool PlaySoundWhenDownloaded;
             public DateTime LastBookmarkCheck = DateTime.Now;
 
             private bool m_refresh_once_after_all_done;
-            private bool m_downloading;
+            private bool m_downloading_chapters;
             private bool m_force_close;
             private bool m_icon_created;
             private bool m_green_icon;
             private bool m_notification_about_new_chapters_showed;
-
-            public void Init()
-            {
-                PlaySoundWhenDownloaded = DownloadManager.Instance.Downloadings.List.Any(ch => ch.IsDownloading);
-            }
 
             public Server SelectedServer
             {
@@ -285,7 +279,7 @@ namespace MangaCrawler
                             Form.readMangaForSelectedBookmarkedChaptersToolStripMenuItem.Enabled;
 
                         Form.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Enabled =
-                            SelectedBookmarkedChapters.Any(c => c.BookmarkNew);
+                            SelectedBookmarkedChapters.Any(c => !c.Visited);
                         Form.ignoreNewForSelectedBookmarkedChaptersToolStripButton.Enabled =
                             Form.ignoreNewForSelectedBookmarkedChaptersToolStripMenuItem.Enabled;
                     }
@@ -661,31 +655,24 @@ namespace MangaCrawler
 
             public void Refresh()
             {
+                if (DownloadManager.Instance.Downloadings.List.Any(ch => ch.IsDownloading))
+                {
+                    m_downloading_chapters = true;
+                }
+                else if (m_downloading_chapters)
+                {
+                    m_downloading_chapters = false;
+
+                    if (Settings.Instance.PlaySoundWhenDownloaded)
+                        SystemSounds.Beep.Play();
+                }
+
                 if (DownloadManager.Instance.NeedGUIRefresh(true))
-                {
                     m_refresh_once_after_all_done = false;
-                    m_downloading = DownloadManager.Instance.Downloadings.List.Any(ch => ch.IsDownloading);
-                }
                 else if (!m_refresh_once_after_all_done)
-                {
                     m_refresh_once_after_all_done = true;
-                }
                 else
-                {
-                    if (m_downloading)
-                    {
-                        if (PlaySoundWhenDownloaded)
-                        {
-                            if (Settings.Instance.PlaySoundWhenDownloaded)
-                                SystemSounds.Beep.Play();
-                        }
-                    }
-
-                    PlaySoundWhenDownloaded = false;
-                    m_downloading = false;
-
                     return;
-                }
 
                 Commands.SaveDownloadings();
                 ShowNotificationAboutNewChapters();

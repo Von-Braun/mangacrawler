@@ -60,8 +60,11 @@ namespace MangaCrawlerLib.Crawlers
             var pages = doc.DocumentNode.SelectNodes("/html/body/section/div[2]/span/select/option");
 
             return from page in pages
-                   select new Page(a_chapter, page.GetAttributeValue("value", ""), pages.IndexOf(page) + 1,
-                                   page.NextSibling.InnerText);
+                   select new Page(
+                       a_chapter, 
+                       page.GetAttributeValue("value", ""), 
+                       pages.IndexOf(page) + 1,
+                       page.NextSibling.InnerText);
         }
 
         public override string GetServerURL()

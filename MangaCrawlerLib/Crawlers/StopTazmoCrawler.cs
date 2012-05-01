@@ -71,7 +71,7 @@ namespace MangaCrawlerLib.Crawlers
             {
                 string img_url = images[i].Groups[1].Value;
                 string name = Path.GetFileNameWithoutExtension(img_url);
-                yield return new Page(a_chapter, img_url, i, name);
+                yield return new Page(a_chapter, img_url, i + 1, name);
             }
         }
 

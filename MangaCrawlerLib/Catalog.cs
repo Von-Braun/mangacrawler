@@ -56,7 +56,7 @@ namespace MangaCrawlerLib
             public static string CHAPTER_TITLE_NODE = "Title";
             public static string CHAPTER_LIMITER_ORDER_NODE = "LimiterOrder";
             public static string CHAPTER_URL_NODE = "URL";
-            public static string CHAPTER_BOOKMARK_NEW_NODE = "BookmarkNew";
+            public static string CHAPTER_VISITED_NODE = "Visited";
 
             public static string CHAPTER_PAGES_NODE = "ChapterPages";
             public static string CHAPTER_SERIE_ID_NODE = "SerieID";
@@ -379,14 +379,14 @@ namespace MangaCrawlerLib
                                    Title = chapter.Element(Nodes.CHAPTER_TITLE_NODE).Value,
                                    LimiterOrder = UInt64.Parse(chapter.Element(Nodes.CHAPTER_LIMITER_ORDER_NODE).Value),
                                    URL = chapter.Element(Nodes.CHAPTER_URL_NODE).Value,
-                                   BookmarkIgnore = Boolean.Parse(chapter.Element(Nodes.CHAPTER_BOOKMARK_NEW_NODE).Value),
+                                   Visited = Boolean.Parse(chapter.Element(Nodes.CHAPTER_VISITED_NODE).Value),
                                    State = EnumExtensions.Parse<ChapterState>(
                                        chapter.Element(Nodes.CHAPTER_STATE_NODE).Value)
                                };
 
                 return (from chapter in chapters
                         select new Chapter(a_serie, chapter.URL, chapter.Title,
-                            chapter.ID, chapter.State, chapter.LimiterOrder, chapter.BookmarkIgnore)).ToList();
+                            chapter.ID, chapter.State, chapter.LimiterOrder, chapter.Visited)).ToList();
             }
             catch (Exception ex)
             {
@@ -414,7 +414,7 @@ namespace MangaCrawlerLib
                                 new XElement(Nodes.CHAPTER_TITLE_NODE, c.Title),
                                 new XElement(Nodes.CHAPTER_LIMITER_ORDER_NODE, c.LimiterOrder),
                                 new XElement(Nodes.CHAPTER_STATE_NODE, c.State),
-                                new XElement(Nodes.CHAPTER_BOOKMARK_NEW_NODE, c.BookmarkNew),
+                                new XElement(Nodes.CHAPTER_VISITED_NODE, c.Visited),
                                 new XElement(Nodes.CHAPTER_URL_NODE, c.URL))));
 
                     XmlSave(GetCatalogFile(a_serie.ID), xml);

@@ -42,16 +42,8 @@ namespace MangaCrawler
                 {
                     case SerieState.Error:
                     {
-                        if (Serie.GetNewChapters().Any())
-                        {
-                            a_args.Graphics.DrawString(Resources.New, font,
-                                Brushes.Red, rect, StringFormat.GenericDefault);
-                        }
-                        else
-                        {
-                            a_args.Graphics.DrawString(Resources.Error, font,
-                                Brushes.Red, rect, StringFormat.GenericDefault);
-                        }
+                        a_args.Graphics.DrawString(AlsoNew() + Resources.Error, font,
+                            Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
                     }
                     case SerieState.Downloaded:
@@ -86,13 +78,22 @@ namespace MangaCrawler
                     {
                         break;
                     }
-                    default: 
-                         
-                         throw new NotImplementedException();
+                    default:
+                    {
+                        throw new NotImplementedException();
+                    }
                 }
             };
 
             DrawItem(a_args, draw_tip);
+        }
+
+        private string AlsoNew()
+        {
+            if (Serie.GetNewChapters().Any())
+                return Resources.New + ", ";
+            else
+                return "";
         }
     }
 }

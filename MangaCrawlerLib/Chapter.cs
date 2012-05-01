@@ -53,18 +53,18 @@ namespace MangaCrawlerLib
 
         public Serie Serie { get; private set; }
         public string Title { get; internal set; }
-        public bool BookmarkNew { get; internal set; }
+        public bool Visited { get; internal set; }
 
         internal Chapter(Serie a_serie, string a_url, string a_title)
-            : this(a_serie, a_url, a_title, Catalog.NextID(), ChapterState.Initial, 0, true)
+            : this(a_serie, a_url, a_title, Catalog.NextID(), ChapterState.Initial, 0, false)
         {
         }
 
         internal Chapter(Serie a_serie, string a_url, string a_title, ulong a_id, ChapterState a_state,
-            ulong a_limiter_order, bool a_bookmark_new)
+            ulong a_limiter_order, bool a_visited)
             : base(a_id)
         {
-            BookmarkNew = a_bookmark_new;
+            Visited = a_visited;
             m_pages = new PagesCachedList(this);
             LimiterOrder = a_limiter_order;
             Serie = a_serie;
@@ -89,6 +89,9 @@ namespace MangaCrawlerLib
             Title = HtmlDecode(a_title);
         }
 
+        /// <summary>
+        /// Thread safe.
+        /// </summary>
         public IList<Page> Pages
         {
             get
@@ -173,7 +176,11 @@ namespace MangaCrawlerLib
             State = ChapterState.DownloadingPages;
 
             foreach (var page in Pages)
+            {
                 page.State = PageState.Waiting;
+
+                Debug.Assert(page.Index == Pages.IndexOf(page) + 1);
+            }
 
             Catalog.Save(this);
         }
@@ -256,7 +263,7 @@ namespace MangaCrawlerLib
                         if (State != ChapterState.Error)
                             CreateCBZ();
 
-                    BookmarkNew = false;
+                    Visited = true;
                 }
                 finally
                 {

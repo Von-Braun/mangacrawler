@@ -48,38 +48,39 @@ namespace MangaCrawler
                 switch (Server.State)
                 {
                     case ServerState.Error:
-
+                    {
                         a_args.Graphics.DrawString(Resources.Error, font,
                             Brushes.Red, rect, StringFormat.GenericDefault);
                         break;
-
+                    }
                     case ServerState.Downloaded:
-
+                    {
                         DrawCount(a_args.Graphics, rect, font);
                         break;
-
+                    }
                     case ServerState.Waiting:
-
+                    {
                         a_args.Graphics.DrawString(Resources.Waiting, font,
                             Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
-
+                    }
                     case ServerState.Downloading:
-
+                    {
                         a_args.Graphics.DrawString(
                             String.Format("({0}%)", Server.DownloadProgress),
                             font, Brushes.Blue, rect, StringFormat.GenericDefault);
                         break;
-
+                    }
                     case ServerState.Initial:
-
+                    {
                         if (Server.Series.Count != 0)
                             DrawCount(a_args.Graphics, rect, font);
                         break;
-
-                    default: 
-                          
-                          throw new NotImplementedException();
+                    }
+                    default:
+                    {
+                        throw new NotImplementedException();
+                    }
                 }
             };
 

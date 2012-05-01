@@ -175,7 +175,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;versionPanel.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>2</value>
   </data>
   <metadata name="refreshTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>423, 17</value>
@@ -2645,7 +2645,7 @@
     <value>28, 28</value>
   </data>
   <data name="toolStripButton20.Text" xml:space="preserve">
-    <value>toolStripButton20</value>
+    <value>Visit page</value>
   </data>
   <data name="openFolderForSelectedBookmarkedSerieToolStripButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2657,7 +2657,10 @@
     <value>28, 28</value>
   </data>
   <data name="openFolderForSelectedBookmarkedSerieToolStripButton.Text" xml:space="preserve">
-    <value>toolStripButton21</value>
+    <value>Open folder</value>
+  </data>
+  <data name="openFolderForSelectedBookmarkedSerieToolStripButton.ToolTipText" xml:space="preserve">
+    <value>Open folder</value>
   </data>
   <data name="bookmarkedSeriesToolStrip.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -4497,7 +4500,7 @@
     <value>28, 28</value>
   </data>
   <data name="readMangaForSelectedDownloadingsToolStripButton.Text" xml:space="preserve">
-    <value>toolStripButton15</value>
+    <value>Read manga</value>
   </data>
   <data name="downloadForSelectedDownloadingsToolStripButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -8617,97 +8620,139 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tabControl.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>4</value>
   </data>
   <metadata name="debugContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 56</value>
   </metadata>
+  <data name="checkBookmarksToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="checkBookmarksToolStripMenuItem.Text" xml:space="preserve">
+    <value>Check bookmarks</value>
+  </data>
   <data name="resetCheckDatesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="resetCheckDatesToolStripMenuItem.Text" xml:space="preserve">
     <value>Reset check dates</value>
   </data>
+  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 6</value>
+  </data>
   <data name="addSerieFirsttoolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="addSerieFirsttoolStripMenuItem.Text" xml:space="preserve">
     <value>Add serie first</value>
   </data>
   <data name="addSerieMiddleToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="addSerieMiddleToolStripMenuItem.Text" xml:space="preserve">
     <value>Add serie middle</value>
   </data>
   <data name="addSerieLastToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="addSerieLastToolStripMenuItem.Text" xml:space="preserve">
     <value>Add serie last</value>
   </data>
   <data name="removeSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="removeSerieToolStripMenuItem.Text" xml:space="preserve">
     <value>Remove serie</value>
   </data>
+  <data name="renameSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="renameSerieToolStripMenuItem.Text" xml:space="preserve">
+    <value>Rename serie</value>
+  </data>
+  <data name="changeSerieURLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="changeSerieURLToolStripMenuItem.Text" xml:space="preserve">
+    <value>Change serie url</value>
+  </data>
+  <data name="duplicateSerieNameToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="duplicateSerieNameToolStripMenuItem.Text" xml:space="preserve">
+    <value>Duplicate serie name</value>
+  </data>
+  <data name="duplicateSerieUrlToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="duplicateSerieUrlToolStripMenuItem.Text" xml:space="preserve">
+    <value>Duplicate serie url</value>
+  </data>
+  <data name="addNewChapterMakeSerieErrorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="addNewChapterMakeSerieErrorToolStripMenuItem.Text" xml:space="preserve">
+    <value>Make serie error</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 6</value>
+  </data>
   <data name="addChapterFirstToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="addChapterFirstToolStripMenuItem.Text" xml:space="preserve">
     <value>Add chapter first</value>
   </data>
   <data name="addChapterMiddleToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="addChapterMiddleToolStripMenuItem.Text" xml:space="preserve">
     <value>Add chapter middle</value>
   </data>
   <data name="addChapterLastToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="addChapterLastToolStripMenuItem.Text" xml:space="preserve">
     <value>Add chapter last</value>
   </data>
   <data name="removeChapterToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="removeChapterToolStripMenuItem.Text" xml:space="preserve">
     <value>Remove chapter</value>
   </data>
-  <data name="renameSerieToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
-  </data>
-  <data name="renameSerieToolStripMenuItem.Text" xml:space="preserve">
-    <value>Rename serie</value>
-  </data>
   <data name="renameChapterToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="renameChapterToolStripMenuItem.Text" xml:space="preserve">
     <value>Rename chapter</value>
   </data>
-  <data name="changeSerieURLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
-  </data>
-  <data name="changeSerieURLToolStripMenuItem.Text" xml:space="preserve">
-    <value>Change serie url</value>
-  </data>
   <data name="changeChapterURLToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+    <value>200, 22</value>
   </data>
   <data name="changeChapterURLToolStripMenuItem.Text" xml:space="preserve">
     <value>Change chapter url</value>
   </data>
-  <data name="checkBookmarksToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+  <data name="duplicateChapterNameToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
   </data>
-  <data name="checkBookmarksToolStripMenuItem.Text" xml:space="preserve">
-    <value>Check bookmarks</value>
+  <data name="duplicateChapterNameToolStripMenuItem.Text" xml:space="preserve">
+    <value>Duplicate chapter name</value>
+  </data>
+  <data name="duplicateChapterUrlToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="duplicateChapterUrlToolStripMenuItem.Text" xml:space="preserve">
+    <value>Duplicate chapter url</value>
+  </data>
+  <data name="makeChapterErrorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 22</value>
+  </data>
+  <data name="makeChapterErrorToolStripMenuItem.Text" xml:space="preserve">
+    <value>Make chapter error</value>
   </data>
   <data name="debugContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 312</value>
+    <value>201, 478</value>
   </data>
   <data name="&gt;&gt;debugContextMenuStrip.Name" xml:space="preserve">
     <value>debugContextMenuStrip</value>
@@ -8965,13 +9010,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;flowLayoutPanel.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>179</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
@@ -9351,11 +9393,23 @@
   <data name="&gt;&gt;openFolderForSelectedSerieToolStripButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;checkBookmarksToolStripMenuItem.Name" xml:space="preserve">
+    <value>checkBookmarksToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;checkBookmarksToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;resetCheckDatesToolStripMenuItem.Name" xml:space="preserve">
     <value>resetCheckDatesToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;resetCheckDatesToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem2.Name" xml:space="preserve">
+    <value>toolStripMenuItem2</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;addSerieFirsttoolStripMenuItem.Name" xml:space="preserve">
     <value>addSerieFirsttoolStripMenuItem</value>
@@ -9381,6 +9435,36 @@
   <data name="&gt;&gt;removeSerieToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;renameSerieToolStripMenuItem.Name" xml:space="preserve">
+    <value>renameSerieToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;renameSerieToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;changeSerieURLToolStripMenuItem.Name" xml:space="preserve">
+    <value>changeSerieURLToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;changeSerieURLToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;duplicateSerieNameToolStripMenuItem.Name" xml:space="preserve">
+    <value>duplicateSerieNameToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;duplicateSerieNameToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;duplicateSerieUrlToolStripMenuItem.Name" xml:space="preserve">
+    <value>duplicateSerieUrlToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;duplicateSerieUrlToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
+    <value>toolStripMenuItem1</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;addChapterFirstToolStripMenuItem.Name" xml:space="preserve">
     <value>addChapterFirstToolStripMenuItem</value>
   </data>
@@ -9405,22 +9489,10 @@
   <data name="&gt;&gt;removeChapterToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;renameSerieToolStripMenuItem.Name" xml:space="preserve">
-    <value>renameSerieToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;renameSerieToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;renameChapterToolStripMenuItem.Name" xml:space="preserve">
     <value>renameChapterToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;renameChapterToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;changeSerieURLToolStripMenuItem.Name" xml:space="preserve">
-    <value>changeSerieURLToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;changeSerieURLToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;changeChapterURLToolStripMenuItem.Name" xml:space="preserve">
@@ -9429,10 +9501,22 @@
   <data name="&gt;&gt;changeChapterURLToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;checkBookmarksToolStripMenuItem.Name" xml:space="preserve">
-    <value>checkBookmarksToolStripMenuItem</value>
+  <data name="&gt;&gt;duplicateChapterNameToolStripMenuItem.Name" xml:space="preserve">
+    <value>duplicateChapterNameToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;checkBookmarksToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;duplicateChapterNameToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;duplicateChapterUrlToolStripMenuItem.Name" xml:space="preserve">
+    <value>duplicateChapterUrlToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;duplicateChapterUrlToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;addNewChapterMakeSerieErrorToolStripMenuItem.Name" xml:space="preserve">
+    <value>addNewChapterMakeSerieErrorToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;addNewChapterMakeSerieErrorToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;notifyIcon.Name" xml:space="preserve">
@@ -9452,6 +9536,12 @@
   </data>
   <data name="&gt;&gt;toolTip.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;makeChapterErrorToolStripMenuItem.Name" xml:space="preserve">
+    <value>makeChapterErrorToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;makeChapterErrorToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MangaCrawlerForm</value>

@@ -79,6 +79,9 @@ namespace MangaCrawlerLib
             Title = HtmlDecode(a_title);
         }
 
+        /// <summary>
+        /// Thread safe.
+        /// </summary>
         public IList<Chapter> Chapters
         {
             get
@@ -113,7 +116,7 @@ namespace MangaCrawlerLib
                 {
                     if (!ChaptersDownloadedFirstTime)
                     {
-                        result.ForEach(ch => ch.BookmarkNew = false);
+                        result.ForEach(ch => ch.Visited = true);
                         result = EliminateDoubles(result);
                         m_chapters.ReplaceInnerCollection(result, false, c => c.Title, null);
                     }
@@ -292,7 +295,7 @@ namespace MangaCrawlerLib
         public IEnumerable<Chapter> GetNewChapters()
         {
             return (from chapter in Chapters
-                    where chapter.BookmarkNew
+                    where !chapter.Visited
                     select chapter).ToList();
         }
     }
