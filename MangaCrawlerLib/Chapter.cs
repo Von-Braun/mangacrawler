@@ -229,7 +229,7 @@ namespace MangaCrawlerLib
                         {
                             try
                             {
-                                page.DownloadAndSavePageImage(pns);
+                                page.DownloadAndSavePageImage(pns, Pages.Count);
 
                                 Catalog.Save(this);
                             }
@@ -345,6 +345,19 @@ namespace MangaCrawlerLib
                     }
 
                     zip.Save(zip_file);
+                }
+
+                if (DownloadManager.Instance.MangaSettings.DeleteDirWithImagesWhenCBZ)
+                {
+                    foreach (var page in Pages)
+                    {
+                        if (!String.IsNullOrWhiteSpace(page.ImageFilePath))
+                            if (File.Exists(page.ImageFilePath))
+                                File.Delete(page.ImageFilePath);
+                    }
+
+                    if (!Directory.EnumerateFiles(GetDirectory()).Any())
+                        Directory.Delete(GetDirectory());
                 }
             }
             catch (Exception ex)

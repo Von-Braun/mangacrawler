@@ -95,7 +95,7 @@ namespace MangaCrawlerLib
             return Crawler.GetImageStream(this);  
         }
 
-        internal void DownloadAndSavePageImage(PageNamingStrategy a_pns)
+        internal void DownloadAndSavePageImage(PageNamingStrategy a_pns, int a_pages)
         {
             new DirectoryInfo(Chapter.GetDirectory()).Create();
 
@@ -143,7 +143,7 @@ namespace MangaCrawlerLib
                     }
                 }
 
-                string file_name = Rename(a_pns, Name);
+                string file_name = Rename(a_pns, Name, a_pages);
 
                 ImageFilePath =
                     Chapter.GetDirectory() +
@@ -167,15 +167,19 @@ namespace MangaCrawlerLib
             }
         }
 
-        private string Rename(PageNamingStrategy a_pns, string a_name)
+        private string Rename(PageNamingStrategy a_pns, string a_name, int a_pages)
         {
             Debug.Assert((a_pns != PageNamingStrategy.IndexToPreserveOrder) || 
                          (a_pns != PageNamingStrategy.PrefixToPreserverOrder));
 
+            string index = Index.ToString();
+            if (DownloadManager.Instance.MangaSettings.PadPageNamesWithZeros)
+                index = index.PadLeft(a_pages.ToString().Length, '0');
+
             if (a_pns == PageNamingStrategy.AlwaysUseIndex)
-                return Index.ToString();
+                return index;
             else if (a_pns == PageNamingStrategy.AlwaysUsePrefix)
-                return String.Format("{0} - {1}", Index, Name);
+                return String.Format("{0} - {1}", index, Name);
             else
                 return a_name;
         }
@@ -234,7 +238,6 @@ namespace MangaCrawlerLib
                         Debug.Assert(State == PageState.Downloading);
                         break;
                     }
-                    
                     case PageState.Waiting:
                     {
                         Debug.Assert((State == PageState.Downloaded) ||
@@ -242,7 +245,6 @@ namespace MangaCrawlerLib
                                      (State == PageState.Error));
                         break;
                     }
-
                     default:
                     {
                         throw new InvalidOperationException(String.Format("Unknown state: {0}", value));

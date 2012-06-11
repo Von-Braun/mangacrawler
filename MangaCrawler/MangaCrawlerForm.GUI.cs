@@ -296,6 +296,10 @@ namespace MangaCrawler
 
                 Form.optionslLabel2.Visible = downloading;
                 Form.pageNamingStrategyComboBox.Enabled = !downloading;
+                Form.padImageNamesWithZerosCheckBox.Enabled = !downloading;
+
+                if (Settings.Instance.MangaSettings.PageNamingStrategy == PageNamingStrategy.DoNotChange)
+                    Form.padImageNamesWithZerosCheckBox.Enabled = false;
             }
 
             private void UpdateDownloadingsTab()
