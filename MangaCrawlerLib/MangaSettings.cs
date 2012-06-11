@@ -20,13 +20,19 @@ namespace MangaCrawlerLib
             Path.DirectorySeparatorChar + Application.ProductName;
 
         [YAXNode("UseCBZ")]
-        private bool m_use_cbs = false;
+        private bool m_use_cbz = false;
+
+        [YAXNode("DeleteDirWithImagesWhenCBZ", Default = false)]
+        private bool m_delete_dir_with_images_when_cbz = false;
 
         [YAXNode("CheckTimePeriod")]
         private TimeSpan m_check_time_period = new TimeSpan(hours: 0, minutes: 15, seconds: 0);
 
         [YAXNode("PageNamingStrategy")]
         private PageNamingStrategy m_page_naming_strategy = PageNamingStrategy.DoNotChange;
+
+        [YAXNode("PadPageNamesWithZeros", Default = false)]
+        private bool m_pad_page_names_with_zeros;
 
         // Sync with MangaCrawler/app.config
         [YAXNode("MaximumConnections")]
@@ -69,11 +75,24 @@ namespace MangaCrawlerLib
         {
             get
             {
-                return m_use_cbs;
+                return m_use_cbz;
             }
             set
             {
-                m_use_cbs = value;
+                m_use_cbz = value;
+                OnChanged();
+            }
+        }
+
+        public bool DeleteDirWithImagesWhenCBZ
+        {
+            get
+            {
+                return m_delete_dir_with_images_when_cbz;
+            }
+            set
+            {
+                m_delete_dir_with_images_when_cbz = value;
                 OnChanged();
             }
         }
@@ -100,6 +119,19 @@ namespace MangaCrawlerLib
             set
             {
                 m_page_naming_strategy = value;
+                OnChanged();
+            }
+        }
+
+        public bool PadPageNamesWithZeros
+        {
+            get
+            {
+                return m_pad_page_names_with_zeros;
+            }
+            set
+            {
+                m_pad_page_names_with_zeros = value;
                 OnChanged();
             }
         }

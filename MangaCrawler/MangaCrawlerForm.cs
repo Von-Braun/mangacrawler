@@ -115,6 +115,9 @@ namespace MangaCrawler
             mangaRootDirTextBox.Text = Settings.Instance.MangaSettings.GetMangaRootDir(false);
             seriesSearchTextBox.Text = Settings.Instance.SeriesFilter;
             cbzCheckBox.Checked = Settings.Instance.MangaSettings.UseCBZ;
+            padImageNamesWithZerosCheckBox.Checked = Settings.Instance.MangaSettings.PadPageNamesWithZeros;
+            deleteDirWithImagesWhenCBZCheckBox.Checked = Settings.Instance.MangaSettings.DeleteDirWithImagesWhenCBZ;
+            deleteDirWithImagesWhenCBZCheckBox.Enabled = Settings.Instance.MangaSettings.UseCBZ;
             minimizeOnCloseCheckBox.Checked = Settings.Instance.MinimizeOnClose;
             showBaloonTipsCheckBox.Checked = Settings.Instance.ShowBaloonTips;
             autostartCheckBox.Checked = Settings.Instance.Autostart;
@@ -489,6 +492,7 @@ namespace MangaCrawler
         private void cbzCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Instance.MangaSettings.UseCBZ = cbzCheckBox.Checked;
+            deleteDirWithImagesWhenCBZCheckBox.Enabled = Settings.Instance.MangaSettings.UseCBZ;
         }
 
         private void versionLinkLabel_LinkClicked(object sender, 
@@ -557,6 +561,9 @@ namespace MangaCrawler
                 Settings.Instance.MangaSettings.PageNamingStrategy = PageNamingStrategy.AlwaysUseIndex;
             else
                 Loggers.GUI.Error("Invalid PageNamingStrategy");
+            
+            padImageNamesWithZerosCheckBox.Enabled = 
+                (Settings.Instance.MangaSettings.PageNamingStrategy != PageNamingStrategy.DoNotChange);
         }
 
         private void downloadingsGridView_KeyDown(object sender, KeyEventArgs e)
@@ -1378,6 +1385,18 @@ namespace MangaCrawler
         private void makeChapterErrorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DownloadManager.Instance.Debug_MakeChapterError(GUI.SelectedChapters.First());
+        }
+
+        private void deleteDirWithImagesWhenCBZCheckBox_Click(object sender, EventArgs e)
+        {
+            Settings.Instance.MangaSettings.DeleteDirWithImagesWhenCBZ = 
+                deleteDirWithImagesWhenCBZCheckBox.Checked;
+        }
+
+        private void padImageNamesWithZerosCheckBox_Click(object sender, EventArgs e)
+        {
+            Settings.Instance.MangaSettings.PadPageNamesWithZeros =
+                padImageNamesWithZerosCheckBox.Checked;
         }
     }
 }

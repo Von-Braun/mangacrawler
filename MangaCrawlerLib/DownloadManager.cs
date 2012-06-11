@@ -43,7 +43,7 @@ namespace MangaCrawlerLib
             Downloadings.Load();
         }
 
-        private  DownloadManager(MangaSettings a_manga_settings, string a_settings_dir)
+        private DownloadManager(MangaSettings a_manga_settings, string a_settings_dir)
         {
             SettingsDir = a_settings_dir;
             MangaSettings = a_manga_settings;

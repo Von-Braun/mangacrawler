@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MangaCrawlerForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.versionPanel = new System.Windows.Forms.Panel();
             this.versionLinkLabel = new System.Windows.Forms.LinkLabel();
@@ -78,6 +78,7 @@
             this.logRichTextBox = new System.Windows.Forms.RichTextBox();
             this.optionsTabPage = new System.Windows.Forms.TabPage();
             this.optionsTabPanel = new System.Windows.Forms.Panel();
+            this.deleteDirWithImagesWhenCBZCheckBox = new System.Windows.Forms.CheckBox();
             this.optionslLabel2 = new System.Windows.Forms.Label();
             this.autostartCheckBox = new System.Windows.Forms.CheckBox();
             this.showBaloonTipsCheckBox = new System.Windows.Forms.CheckBox();
@@ -166,6 +167,7 @@
             this.changeSerieURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateSerieNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateSerieUrlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addNewChapterMakeSerieErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.addChapterFirstToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addChapterMiddleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -175,7 +177,7 @@
             this.changeChapterURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateChapterNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateChapterUrlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addNewChapterMakeSerieErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.makeChapterErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitTrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -186,12 +188,12 @@
             this.bookmarksTabLabel = new System.Windows.Forms.Label();
             this.optionsTabLabel = new System.Windows.Forms.Label();
             this.logTabLabel = new System.Windows.Forms.Label();
+            this.padImageNamesWithZerosCheckBox = new System.Windows.Forms.CheckBox();
             this.serversListBox = new MangaCrawler.ListBoxEx();
             this.chaptersListBox = new MangaCrawler.ListBoxEx();
             this.seriesListBox = new MangaCrawler.ListBoxEx();
             this.bookmarkedchaptersListBox = new MangaCrawler.ListBoxEx();
             this.bookmarkedSeriesListBox = new MangaCrawler.ListBoxEx();
-            this.makeChapterErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versionPanel.SuspendLayout();
             this.bookmarksTabPage.SuspendLayout();
             this.bookmarksTabPanel.SuspendLayout();
@@ -554,6 +556,8 @@
             // 
             // optionsTabPanel
             // 
+            this.optionsTabPanel.Controls.Add(this.padImageNamesWithZerosCheckBox);
+            this.optionsTabPanel.Controls.Add(this.deleteDirWithImagesWhenCBZCheckBox);
             this.optionsTabPanel.Controls.Add(this.optionslLabel2);
             this.optionsTabPanel.Controls.Add(this.autostartCheckBox);
             this.optionsTabPanel.Controls.Add(this.showBaloonTipsCheckBox);
@@ -568,6 +572,13 @@
             this.optionsTabPanel.Controls.Add(this.label2);
             resources.ApplyResources(this.optionsTabPanel, "optionsTabPanel");
             this.optionsTabPanel.Name = "optionsTabPanel";
+            // 
+            // deleteDirWithImagesWhenCBZCheckBox
+            // 
+            resources.ApplyResources(this.deleteDirWithImagesWhenCBZCheckBox, "deleteDirWithImagesWhenCBZCheckBox");
+            this.deleteDirWithImagesWhenCBZCheckBox.Name = "deleteDirWithImagesWhenCBZCheckBox";
+            this.deleteDirWithImagesWhenCBZCheckBox.UseVisualStyleBackColor = true;
+            this.deleteDirWithImagesWhenCBZCheckBox.Click += new System.EventHandler(this.deleteDirWithImagesWhenCBZCheckBox_Click);
             // 
             // optionslLabel2
             // 
@@ -674,21 +685,21 @@
             this.downloadingsGridView.AllowUserToAddRows = false;
             this.downloadingsGridView.AllowUserToDeleteRows = false;
             this.downloadingsGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.downloadingsGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.downloadingsGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             this.downloadingsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.downloadingsGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.downloadingsGridView.BackgroundColor = System.Drawing.SystemColors.Window;
             this.downloadingsGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.downloadingsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.downloadingsGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.downloadingsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.downloadingsGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Chapter,
@@ -697,17 +708,17 @@
             resources.ApplyResources(this.downloadingsGridView, "downloadingsGridView");
             this.downloadingsGridView.Name = "downloadingsGridView";
             this.downloadingsGridView.ReadOnly = true;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.downloadingsGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.downloadingsGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.downloadingsGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.downloadingsGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.downloadingsGridView.RowsDefaultCellStyle = dataGridViewCellStyle10;
             this.downloadingsGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.downloadingsGridView.SelectionChanged += new System.EventHandler(this.downloadingsGridView_SelectionChanged);
             this.downloadingsGridView.DoubleClick += new System.EventHandler(this.downloadingsGridView_DoubleClick);
@@ -718,8 +729,8 @@
             // 
             this.Chapter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Chapter.DataPropertyName = "Info";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Chapter.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Chapter.DefaultCellStyle = dataGridViewCellStyle8;
             resources.ApplyResources(this.Chapter, "Chapter");
             this.Chapter.Name = "Chapter";
             this.Chapter.ReadOnly = true;
@@ -1319,6 +1330,12 @@
             resources.ApplyResources(this.duplicateSerieUrlToolStripMenuItem, "duplicateSerieUrlToolStripMenuItem");
             this.duplicateSerieUrlToolStripMenuItem.Click += new System.EventHandler(this.duplicateSerieUrlToolStripMenuItem_Click);
             // 
+            // addNewChapterMakeSerieErrorToolStripMenuItem
+            // 
+            this.addNewChapterMakeSerieErrorToolStripMenuItem.Name = "addNewChapterMakeSerieErrorToolStripMenuItem";
+            resources.ApplyResources(this.addNewChapterMakeSerieErrorToolStripMenuItem, "addNewChapterMakeSerieErrorToolStripMenuItem");
+            this.addNewChapterMakeSerieErrorToolStripMenuItem.Click += new System.EventHandler(this.makeSerieErrorToolStripMenuItem_Click);
+            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -1372,11 +1389,11 @@
             resources.ApplyResources(this.duplicateChapterUrlToolStripMenuItem, "duplicateChapterUrlToolStripMenuItem");
             this.duplicateChapterUrlToolStripMenuItem.Click += new System.EventHandler(this.duplicateChapterUrlToolStripMenuItem_Click);
             // 
-            // addNewChapterMakeSerieErrorToolStripMenuItem
+            // makeChapterErrorToolStripMenuItem
             // 
-            this.addNewChapterMakeSerieErrorToolStripMenuItem.Name = "addNewChapterMakeSerieErrorToolStripMenuItem";
-            resources.ApplyResources(this.addNewChapterMakeSerieErrorToolStripMenuItem, "addNewChapterMakeSerieErrorToolStripMenuItem");
-            this.addNewChapterMakeSerieErrorToolStripMenuItem.Click += new System.EventHandler(this.makeSerieErrorToolStripMenuItem_Click);
+            this.makeChapterErrorToolStripMenuItem.Name = "makeChapterErrorToolStripMenuItem";
+            resources.ApplyResources(this.makeChapterErrorToolStripMenuItem, "makeChapterErrorToolStripMenuItem");
+            this.makeChapterErrorToolStripMenuItem.Click += new System.EventHandler(this.makeChapterErrorToolStripMenuItem_Click);
             // 
             // notifyIcon
             // 
@@ -1460,6 +1477,13 @@
             this.logTabLabel.MouseEnter += new System.EventHandler(this.tabLabel_MouseEnter);
             this.logTabLabel.MouseLeave += new System.EventHandler(this.tabLabel_MouseLeave);
             // 
+            // padImageNamesWithZerosCheckBox
+            // 
+            resources.ApplyResources(this.padImageNamesWithZerosCheckBox, "padImageNamesWithZerosCheckBox");
+            this.padImageNamesWithZerosCheckBox.Name = "padImageNamesWithZerosCheckBox";
+            this.padImageNamesWithZerosCheckBox.UseVisualStyleBackColor = true;
+            this.padImageNamesWithZerosCheckBox.Click += new System.EventHandler(this.padImageNamesWithZerosCheckBox_Click);
+            // 
             // serversListBox
             // 
             this.serversListBox.ContextMenuStrip = this.serversContextMenuStrip;
@@ -1517,20 +1541,14 @@
             // bookmarkedSeriesListBox
             // 
             this.bookmarkedSeriesListBox.ContextMenuStrip = this.bookmarkedSeriesContextMenuStrip;
-            resources.ApplyResources(this.bookmarkedSeriesListBox, "bookmarkedSeriesListBox");
             this.bookmarkedSeriesListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.bookmarkedSeriesListBox.FormattingEnabled = true;
+            resources.ApplyResources(this.bookmarkedSeriesListBox, "bookmarkedSeriesListBox");
             this.bookmarkedSeriesListBox.Name = "bookmarkedSeriesListBox";
             this.bookmarkedSeriesListBox.Click += new System.EventHandler(this.bookmarkedSeriesListBox_Click);
             this.bookmarkedSeriesListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.serieBookmarksListBox_DrawItem);
             this.bookmarkedSeriesListBox.SelectedIndexChanged += new System.EventHandler(this.bookmarkedSeriesListBox_SelectedIndexChanged);
             this.bookmarkedSeriesListBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.serieBookmarksListBox_KeyDown);
-            // 
-            // makeChapterErrorToolStripMenuItem
-            // 
-            this.makeChapterErrorToolStripMenuItem.Name = "makeChapterErrorToolStripMenuItem";
-            resources.ApplyResources(this.makeChapterErrorToolStripMenuItem, "makeChapterErrorToolStripMenuItem");
-            this.makeChapterErrorToolStripMenuItem.Click += new System.EventHandler(this.makeChapterErrorToolStripMenuItem_Click);
             // 
             // MangaCrawlerForm
             // 
@@ -1764,6 +1782,8 @@
         private System.Windows.Forms.ToolStripMenuItem duplicateChapterUrlToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewChapterMakeSerieErrorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem makeChapterErrorToolStripMenuItem;
+        private System.Windows.Forms.CheckBox deleteDirWithImagesWhenCBZCheckBox;
+        private System.Windows.Forms.CheckBox padImageNamesWithZerosCheckBox;
     }
 }
 
