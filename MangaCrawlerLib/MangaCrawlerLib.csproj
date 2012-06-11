@@ -220,6 +220,7 @@
     <Compile Include="Crawlers\MangaReaderCrawler.cs" />
     <Compile Include="Crawlers\CrawlerList.cs" />
     <Compile Include="Crawlers\MangaHereCrawler.cs" />
+    <Compile Include="Crawlers\MangaStreamCrawler.cs" />
     <Compile Include="Crawlers\TestServerCrawler.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Limiter.cs" />
