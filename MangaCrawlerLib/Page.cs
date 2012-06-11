@@ -95,7 +95,7 @@ namespace MangaCrawlerLib
             return Crawler.GetImageStream(this);  
         }
 
-        internal void DownloadAndSavePageImage(PageNamingStrategy a_pns, int a_pages)
+        internal void DownloadAndSavePageImage(PageNamingStrategy a_pns)
         {
             new DirectoryInfo(Chapter.GetDirectory()).Create();
 
@@ -143,7 +143,7 @@ namespace MangaCrawlerLib
                     }
                 }
 
-                string file_name = Rename(a_pns, Name, a_pages);
+                string file_name = Rename(a_pns, Name);
 
                 ImageFilePath =
                     Chapter.GetDirectory() +
@@ -167,14 +167,14 @@ namespace MangaCrawlerLib
             }
         }
 
-        private string Rename(PageNamingStrategy a_pns, string a_name, int a_pages)
+        private string Rename(PageNamingStrategy a_pns, string a_name)
         {
             Debug.Assert((a_pns != PageNamingStrategy.IndexToPreserveOrder) || 
                          (a_pns != PageNamingStrategy.PrefixToPreserverOrder));
 
             string index = Index.ToString();
             if (DownloadManager.Instance.MangaSettings.PadPageNamesWithZeros)
-                index = index.PadLeft(a_pages.ToString().Length, '0');
+                index = index.PadLeft(Chapter.Pages.Count.ToString().Length, '0');
 
             if (a_pns == PageNamingStrategy.AlwaysUseIndex)
                 return index;
