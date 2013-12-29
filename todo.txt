@@ -1,3 +1,5 @@
+sprawdzic czy sa nowsze wersje bibliotek, czy jest jakas nowa do html dom
+
 test na wykrywanie nowej wersji
 
 zmiana nazwy nie tracimy powiazania, tak samo teraz nie tracimy go dla zmiany url
@@ -18,3 +20,5 @@ http://www.anymanga.com/directory/all/
 http://mangable.com/manga-list/
 http://www.readmangaonline.net/
 http://www.mangamonger.com/
+
+instalator - 4.5.1
