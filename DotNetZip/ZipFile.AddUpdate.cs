@@ -1,7 +1,7 @@
 // ZipFile.AddUpdate.cs
 // ------------------------------------------------------------------
 //
-// Copyright (c) 2009 Dino Chiesa.
+// Copyright (c) 2009-2011 Dino Chiesa.
 // All rights reserved.
 //
 // This code module is part of DotNetZip, a zipfile class library.
@@ -15,7 +15,7 @@
 // ------------------------------------------------------------------
 //
 // last saved (in emacs):
-// Time-stamp: <2010-February-24 23:33:16>
+// Time-stamp: <2011-August-01 16:42:07>
 //
 // ------------------------------------------------------------------
 //
@@ -55,8 +55,8 @@ namespace Ionic.Zip
         /// </para>
         ///
         /// <para>
-        ///   The directory name used for the file within the archive is the same as the
-        ///   directory name (potentially a relative path) specified in the
+        ///   The directory name used for the file within the archive is the same
+        ///   as the directory name (potentially a relative path) specified in the
         ///   <paramref name="fileOrDirectoryName"/>.
         /// </para>
         ///
@@ -110,8 +110,8 @@ namespace Ionic.Zip
         /// </para>
         ///
         /// <para>
-        ///   Encryption will be used on the file data if the <c>Password</c> has been set on
-        ///   the <c>ZipFile</c> object, prior to calling this method.
+        ///   Encryption will be used on the file data if the <c>Password</c> has
+        ///   been set on the <c>ZipFile</c> object, prior to calling this method.
         /// </para>
         ///
         /// <para>
@@ -425,6 +425,9 @@ namespace Ionic.Zip
         /// <seealso cref="Ionic.Zip.ZipFile.RemoveSelectedEntries(String)" />
         public void RemoveEntries(System.Collections.Generic.ICollection<ZipEntry> entriesToRemove)
         {
+            if (entriesToRemove == null)
+                throw new ArgumentNullException("entriesToRemove");
+
             foreach (ZipEntry e in entriesToRemove)
             {
                 this.RemoveEntry(e);
@@ -437,15 +440,18 @@ namespace Ionic.Zip
         /// </summary>
         ///
         /// <param name="entriesToRemove">
-        ///   A collection of strings that refer to names of entries to be removed from
-        ///   the <c>ZipFile</c>.  For example, you can pass in an array or a List of Strings
-        ///   that provide the names of entries to be removed.
+        ///   A collection of strings that refer to names of entries to be removed
+        ///   from the <c>ZipFile</c>.  For example, you can pass in an array or a
+        ///   List of Strings that provide the names of entries to be removed.
         /// </param>
         ///
         /// <seealso cref="Ionic.Zip.ZipFile.SelectEntries(String)" />
         /// <seealso cref="Ionic.Zip.ZipFile.RemoveSelectedEntries(String)" />
         public void RemoveEntries(System.Collections.Generic.ICollection<String> entriesToRemove)
         {
+            if (entriesToRemove == null)
+                throw new ArgumentNullException("entriesToRemove");
+
             foreach (String e in entriesToRemove)
             {
                 this.RemoveEntry(e);
@@ -652,11 +658,16 @@ namespace Ionic.Zip
                              bool preserveDirHierarchy,
                              String directoryPathInArchive)
         {
+            if (fileNames == null)
+                throw new ArgumentNullException("fileNames");
+
+            _addOperationCanceled = false;
             OnAddStarted();
             if (preserveDirHierarchy)
             {
                 foreach (var f in fileNames)
                 {
+                    if (_addOperationCanceled) break;
                     if (directoryPathInArchive != null)
                     {
                         //string s = SharedUtilities.NormalizePath(Path.Combine(directoryPathInArchive, Path.GetDirectoryName(f)));
@@ -670,10 +681,13 @@ namespace Ionic.Zip
             else
             {
                 foreach (var f in fileNames)
+                {
+                    if (_addOperationCanceled) break;
                     this.AddFile(f, directoryPathInArchive);
-
+                }
             }
-            OnAddCompleted();
+            if (!_addOperationCanceled)
+                OnAddCompleted();
         }
 
 
@@ -718,6 +732,9 @@ namespace Ionic.Zip
         /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
         public void UpdateFiles(System.Collections.Generic.IEnumerable<String> fileNames, String directoryPathInArchive)
         {
+            if (fileNames == null)
+                throw new ArgumentNullException("fileNames");
+
             OnAddStarted();
             foreach (var f in fileNames)
                 this.UpdateFile(f, directoryPathInArchive);
@@ -937,8 +954,8 @@ namespace Ionic.Zip
         /// <seealso cref="Ionic.Zip.ZipFile.UpdateItem(string,string)"/>
         ///
         /// <param name="directoryName">
-        ///   The path to the directory to be added to the zip archive, or updated in the
-        ///   zip archive.
+        ///   The path to the directory to be added to the zip archive, or updated
+        ///   in the zip archive.
         /// </param>
         ///
         /// <param name="directoryPathInArchive">
@@ -990,7 +1007,9 @@ namespace Ionic.Zip
         /// <seealso cref="Ionic.Zip.ZipFile.UpdateFile(string)"/>
         /// <seealso cref="Ionic.Zip.ZipFile.UpdateDirectory(string)"/>
         ///
-        /// <param name="itemName">the path to the file or directory to be added or updated.</param>
+        /// <param name="itemName">
+        ///  the path to the file or directory to be added or updated.
+        /// </param>
         public void UpdateItem(string itemName)
         {
             UpdateItem(itemName, null);
@@ -1032,7 +1051,9 @@ namespace Ionic.Zip
         /// <seealso cref="Ionic.Zip.ZipFile.UpdateFile(string, string)"/>
         /// <seealso cref="Ionic.Zip.ZipFile.UpdateDirectory(string, string)"/>
         ///
-        /// <param name="itemName">The path for the File or Directory to be added or updated.</param>
+        /// <param name="itemName">
+        ///   The path for the File or Directory to be added or updated.
+        /// </param>
         /// <param name="directoryPathInArchive">
         ///   Specifies a directory path to use to override any path in the
         ///   <c>itemName</c>.  This path may, or may not, correspond to a real
@@ -1067,7 +1088,7 @@ namespace Ionic.Zip
         ///   directory path within the archive.  There is no need for a file by the
         ///   given name to exist in the filesystem; the name is used within the zip
         ///   archive only. The content for the entry is encoded using the default text
-        ///   encoding (<see cref="System.Text.Encoding.Default"/>).
+        ///   encoding for the machine, or on Silverlight, using UTF-8.
         /// </remarks>
         ///
         /// <param name="content">
@@ -1110,7 +1131,11 @@ namespace Ionic.Zip
         /// </example>
         public ZipEntry AddEntry(string entryName, string content)
         {
+#if SILVERLIGHT
+            return AddEntry(entryName, content, System.Text.Encoding.UTF8);
+#else
             return AddEntry(entryName, content, System.Text.Encoding.Default);
+#endif
         }
 
 
@@ -1130,19 +1155,15 @@ namespace Ionic.Zip
         /// </para>
         ///
         /// <para>
-        ///   The content for the entry, a string value, is encoded using the given text
-        ///   encoding. No Byte-order-mark (BOM) is emitted into the file.
+        ///   The content for the entry, a string value, is encoded using the given
+        ///   text encoding. A BOM (byte-order-mark) is emitted into the file, if the
+        ///   Encoding parameter is set for that.
         /// </para>
         ///
         /// <para>
-        ///   If you wish to create within a zip file a file entry with Unicode-encoded
-        ///   content that includes a byte-order-mark, you can convert your string to a
-        ///   byte array using the appropriate <see
-        ///   cref="System.Text.Encoding.GetBytes(String)">System.Text.Encoding.GetBytes()</see>
-        ///   method, then prepend to that byte array the output of <see
-        ///   cref="System.Text.Encoding.GetPreamble()">System.Text.Encoding.GetPreamble()</see>,
-        ///   and use the <see cref="AddEntry(string,byte[])"/> method, to add the
-        ///   entry.
+        ///   Most Encoding classes support a constructor that accepts a boolean,
+        ///   indicating whether to emit a BOM or not. For example see <see
+        ///   cref="System.Text.UTF8Encoding(bool)"/>.
         /// </para>
         ///
         /// </remarks>
@@ -1165,9 +1186,13 @@ namespace Ionic.Zip
         ///
         public ZipEntry AddEntry(string entryName, string content, System.Text.Encoding encoding)
         {
+            // cannot employ a using clause here.  We need the stream to
+            // persist after exit from this method.
             var ms = new MemoryStream();
-            var sw = new StreamWriter(ms, encoding);
 
+            // cannot use a using clause here; StreamWriter takes
+            // ownership of the stream and Disposes it before we are ready.
+            var sw = new StreamWriter(ms, encoding);
             sw.Write(content);
             sw.Flush();
 
@@ -1175,20 +1200,29 @@ namespace Ionic.Zip
             ms.Seek(0, SeekOrigin.Begin);
 
             return AddEntry(entryName, ms);
+
+            // must not dispose the MemoryStream - it will be used later.
         }
 
 
         /// <summary>
-        ///   Create an entry in the <c>ZipFile</c> using the given <c>Stream</c> as input.
-        ///   The entry will have the given filename.
+        ///   Create an entry in the <c>ZipFile</c> using the given <c>Stream</c>
+        ///   as input.  The entry will have the given filename.
         /// </summary>
         ///
         /// <remarks>
         ///
         /// <para>
-        ///   The application can provide an open, readable stream; in this case it will
-        ///   be read during the call to <see cref="ZipFile.Save()"/> or one of its
-        ///   overloads.
+        ///   The application should provide an open, readable stream; in this case it
+        ///   will be read during the call to <see cref="ZipFile.Save()"/> or one of
+        ///   its overloads.
+        /// </para>
+        ///
+        /// <para>
+        ///   The passed stream will be read from its current position. If
+        ///   necessary, callers should set the position in the stream before
+        ///   calling AddEntry(). This might be appropriate when using this method
+        ///   with a MemoryStream, for example.
         /// </para>
         ///
         /// <para>
@@ -1248,7 +1282,9 @@ namespace Ionic.Zip
         ///   The name, including any path, which is shown in the zip file for the added
         ///   entry.
         /// </param>
-        /// <param name="stream">The input stream from which to grab content for the file</param>
+        /// <param name="stream">
+        ///   The input stream from which to grab content for the file
+        /// </param>
         /// <returns>The <c>ZipEntry</c> added.</returns>
         public ZipEntry AddEntry(string entryName, Stream stream)
         {
@@ -1266,10 +1302,10 @@ namespace Ionic.Zip
         ///
         /// <remarks>
         /// <para>
-        ///   When the application needs to write the zip entry data, use this method to
-        ///   add the ZipEntry.  For example, in the case that the application wishes to
-        ///   write the XML representation of a DataSet into a ZipEntry, the application
-        ///   can use this method to do so.
+        ///   When the application needs to write the zip entry data, use this
+        ///   method to add the ZipEntry. For example, in the case that the
+        ///   application wishes to write the XML representation of a DataSet into
+        ///   a ZipEntry, the application can use this method to do so.
         /// </para>
         ///
         /// <para>
@@ -1282,13 +1318,68 @@ namespace Ionic.Zip
         /// </para>
         ///
         /// <para>
-        ///   NB: With PKZip encryption, it's necessary to compute the CRC before
-        ///   compressing or encrypting the data.  Therefore, when using PKZip
-        ///   encryption with a WriteDelegate, the WriteDelegate will be called twice:
-        ///   once to compute the CRC, and the second time to (potentially) compress and
-        ///   encrypt. For each call of the delegate, your application must stream the
-        ///   same entry data in its entirety. If your application writes different data
-        ///   during the second call, it will result in a corrupt zip file.
+        ///   About progress events: When using the WriteDelegate, DotNetZip does
+        ///   not issue any SaveProgress events with <c>EventType</c> = <see
+        ///   cref="ZipProgressEventType.Saving_EntryBytesRead">
+        ///   Saving_EntryBytesRead</see>. (This is because it is the
+        ///   application's code that runs in WriteDelegate - there's no way for
+        ///   DotNetZip to know when to issue a EntryBytesRead event.)
+        ///   Applications that want to update a progress bar or similar status
+        ///   indicator should do so from within the WriteDelegate
+        ///   itself. DotNetZip will issue the other SaveProgress events,
+        ///   including <see cref="ZipProgressEventType.Saving_Started">
+        ///   Saving_Started</see>,
+        ///   <see cref="ZipProgressEventType.Saving_BeforeWriteEntry">
+        ///   Saving_BeforeWriteEntry</see>, and <see
+        ///   cref="ZipProgressEventType.Saving_AfterWriteEntry">
+        ///   Saving_AfterWriteEntry</see>.
+        /// </para>
+        ///
+        /// <para>
+        ///   Note: When you use PKZip encryption, it's normally necessary to
+        ///   compute the CRC of the content to be encrypted, before compressing or
+        ///   encrypting it. Therefore, when using PKZip encryption with a
+        ///   WriteDelegate, the WriteDelegate CAN BE called twice: once to compute
+        ///   the CRC, and the second time to potentially compress and
+        ///   encrypt. Surprising, but true. This is because PKWARE specified that
+        ///   the encryption initialization data depends on the CRC.
+        ///   If this happens, for each call of the delegate, your
+        ///   application must stream the same entry data in its entirety. If your
+        ///   application writes different data during the second call, it will
+        ///   result in a corrupt zip file.
+        /// </para>
+        ///
+        /// <para>
+        ///   The double-read behavior happens with all types of entries, not only
+        ///   those that use WriteDelegate. It happens if you add an entry from a
+        ///   filesystem file, or using a string, or a stream, or an opener/closer
+        ///   pair. But in those cases, DotNetZip takes care of reading twice; in
+        ///   the case of the WriteDelegate, the application code gets invoked
+        ///   twice. Be aware.
+        /// </para>
+        ///
+        /// <para>
+        ///   As you can imagine, this can cause performance problems for large
+        ///   streams, and it can lead to correctness problems when you use a
+        ///   <c>WriteDelegate</c>. This is a pretty big pitfall.  There are two
+        ///   ways to avoid it.  First, and most preferred: don't use PKZIP
+        ///   encryption.  If you use the WinZip AES encryption, this problem
+        ///   doesn't occur, because the encryption protocol doesn't require the CRC
+        ///   up front. Second: if you do choose to use PKZIP encryption, write out
+        ///   to a non-seekable stream (like standard output, or the
+        ///   Response.OutputStream in an ASP.NET application).  In this case,
+        ///   DotNetZip will use an alternative encryption protocol that does not
+        ///   rely on the CRC of the content.  This also implies setting bit 3 in
+        ///   the zip entry, which still presents problems for some zip tools.
+        /// </para>
+        ///
+        /// <para>
+        ///   In the future I may modify DotNetZip to *always* use bit 3 when PKZIP
+        ///   encryption is in use.  This seems like a win overall, but there will
+        ///   be some work involved.  If you feel strongly about it, visit the
+        ///   DotNetZip forums and vote up <see
+        ///   href="http://dotnetzip.codeplex.com/workitem/13686">the Workitem
+        ///   tracking this issue</see>.
         /// </para>
         ///
         /// </remarks>
@@ -1395,14 +1486,16 @@ namespace Ionic.Zip
 
 
         /// <summary>
-        ///   Add an entry, for which the application will provide a stream, just-in-time.
+        ///   Add an entry, for which the application will provide a stream,
+        ///   just-in-time.
         /// </summary>
         ///
         /// <remarks>
         /// <para>
-        ///   In cases where the application wishes to open the stream that holds the content for
-        ///   the ZipEntry, on a just-in-time basis, the application can use this method and
-        ///   provide delegates to open and close the stream.
+        ///   In cases where the application wishes to open the stream that holds
+        ///   the content for the ZipEntry, on a just-in-time basis, the application
+        ///   can use this method and provide delegates to open and close the
+        ///   stream.
         /// </para>
         ///
         /// <para>
@@ -1418,9 +1511,10 @@ namespace Ionic.Zip
         ///
         /// <example>
         ///
-        ///   This example uses anonymous methods in C# to open and close
-        ///   the source stream for the content for a zip entry.  In a real application, the
-        ///   logic for the OpenDelegate would probably be more involved.
+        ///   This example uses anonymous methods in C# to open and close the
+        ///   source stream for the content for a zip entry.  In a real
+        ///   application, the logic for the OpenDelegate would probably be more
+        ///   involved.
         ///
         /// <code lang="C#">
         /// using(Ionic.Zip.ZipFile zip = new Ionic.Zip.ZipFile())
@@ -1475,8 +1569,12 @@ namespace Ionic.Zip
         /// </example>
         ///
         /// <param name="entryName">the name of the entry to add</param>
-        /// <param name="opener">the delegate that will be invoked to open the stream</param>
-        /// <param name="closer">the delegate that will be invoked to close the stream</param>
+        /// <param name="opener">
+        ///  the delegate that will be invoked to open the stream
+        /// </param>
+        /// <param name="closer">
+        ///  the delegate that will be invoked to close the stream
+        /// </param>
         /// <returns>the ZipEntry added</returns>
         ///
         public ZipEntry AddEntry(string entryName, OpenDelegate opener, CloseDelegate closer)
@@ -1493,15 +1591,17 @@ namespace Ionic.Zip
         {
             // stamp all the props onto the entry
             ze._container = new ZipContainer(this);
-            ze.CompressionLevel = CompressionLevel;
-            ze.ExtractExistingFile = ExtractExistingFile;
+            ze.CompressionMethod = this.CompressionMethod;
+            ze.CompressionLevel = this.CompressionLevel;
+            ze.ExtractExistingFile = this.ExtractExistingFile;
             ze.ZipErrorAction = this.ZipErrorAction;
-            ze.SetCompression = SetCompression;
-            ze.ProvisionalAlternateEncoding = ProvisionalAlternateEncoding;
-            ze.Password = _Password;
-            ze.Encryption = Encryption;
-            ze.EmitTimesInWindowsFormatWhenSaving = _emitNtfsTimes;
-            ze.EmitTimesInUnixFormatWhenSaving = _emitUnixTimes;
+            ze.SetCompression = this.SetCompression;
+            ze.AlternateEncoding = this.AlternateEncoding;
+            ze.AlternateEncodingUsage = this.AlternateEncodingUsage;
+            ze.Password = this._Password;
+            ze.Encryption = this.Encryption;
+            ze.EmitTimesInWindowsFormatWhenSaving = this._emitNtfsTimes;
+            ze.EmitTimesInUnixFormatWhenSaving = this._emitUnixTimes;
             //string key = DictionaryKeyForEntry(ze);
             InternalAddEntry(ze.FileName,ze);
             AfterAddEntry(ze);
@@ -1512,17 +1612,20 @@ namespace Ionic.Zip
 
 
         /// <summary>
-        ///   Updates the given entry in the <c>ZipFile</c>, using the given string as
-        ///   input.
+        ///   Updates the given entry in the <c>ZipFile</c>, using the given
+        ///   string as content for the <c>ZipEntry</c>.
         /// </summary>
         ///
         /// <remarks>
         ///
         /// <para>
-        ///   Calling this method is equivalent to removing the <c>ZipEntry</c> for the
-        ///   given file name and directory path, if it exists, and then calling <see
-        ///   cref="AddEntry(String,String)" />.  See the documentation for that
-        ///   method for further explanation.
+        ///   Calling this method is equivalent to removing the <c>ZipEntry</c> for
+        ///   the given file name and directory path, if it exists, and then calling
+        ///   <see cref="AddEntry(String,String)" />.  See the documentation for
+        ///   that method for further explanation. The string content is encoded
+        ///   using the default encoding for the machine, or on Silverlight, using
+        ///   UTF-8. This encoding is distinct from the encoding used for the
+        ///   filename itself.  See <see cref="AlternateEncoding"/>.
         /// </para>
         ///
         /// </remarks>
@@ -1539,7 +1642,11 @@ namespace Ionic.Zip
         ///
         public ZipEntry UpdateEntry(string entryName, string content)
         {
+#if SILVERLIGHT
+            return UpdateEntry(entryName, content, System.Text.Encoding.UTF8);
+#else
             return UpdateEntry(entryName, content, System.Text.Encoding.Default);
+#endif
         }
 
 
@@ -1566,25 +1673,76 @@ namespace Ionic.Zip
         /// <param name="encoding">
         ///   The text encoding to use when encoding the string. Be aware: This is
         ///   distinct from the text encoding used to encode the filename. See <see
-        ///   cref="ProvisionalAlternateEncoding" />.
+        ///   cref="AlternateEncoding" />.
         /// </param>
         ///
         /// <returns>The <c>ZipEntry</c> added.</returns>
         ///
         public ZipEntry UpdateEntry(string entryName, string content, System.Text.Encoding encoding)
         {
-            string directoryPathInArchive = null;
-            if (entryName.IndexOf('\\') != -1)
-            {
-                directoryPathInArchive = Path.GetDirectoryName(entryName);
-                entryName = Path.GetFileName(entryName);
-            }
-            string key = ZipEntry.NameInArchive(entryName, directoryPathInArchive);
-
-            if (this[key] != null)
-                this.RemoveEntry(key);
-
+            RemoveEntryForUpdate(entryName);
             return AddEntry(entryName, content, encoding);
+        }
+
+
+
+        /// <summary>
+        ///   Updates the given entry in the <c>ZipFile</c>, using the given delegate
+        ///   as the source for content for the <c>ZipEntry</c>.
+        /// </summary>
+        ///
+        /// <remarks>
+        ///   Calling this method is equivalent to removing the <c>ZipEntry</c> for the
+        ///   given file name and directory path, if it exists, and then calling <see
+        ///   cref="AddEntry(String,WriteDelegate)" />.  See the
+        ///   documentation for that method for further explanation.
+        /// </remarks>
+        ///
+        /// <param name="entryName">
+        ///   The name, including any path, to use within the archive for the entry.
+        /// </param>
+        ///
+        /// <param name="writer">the delegate which will write the entry content.</param>
+        ///
+        /// <returns>The <c>ZipEntry</c> added.</returns>
+        ///
+        public ZipEntry UpdateEntry(string entryName, WriteDelegate writer)
+        {
+            RemoveEntryForUpdate(entryName);
+            return AddEntry(entryName, writer);
+        }
+
+
+
+        /// <summary>
+        ///   Updates the given entry in the <c>ZipFile</c>, using the given delegates
+        ///   to open and close the stream that provides the content for the <c>ZipEntry</c>.
+        /// </summary>
+        ///
+        /// <remarks>
+        ///   Calling this method is equivalent to removing the <c>ZipEntry</c> for the
+        ///   given file name and directory path, if it exists, and then calling <see
+        ///   cref="AddEntry(String,OpenDelegate, CloseDelegate)" />.  See the
+        ///   documentation for that method for further explanation.
+        /// </remarks>
+        ///
+        /// <param name="entryName">
+        ///   The name, including any path, to use within the archive for the entry.
+        /// </param>
+        ///
+        /// <param name="opener">
+        ///  the delegate that will be invoked to open the stream
+        /// </param>
+        /// <param name="closer">
+        ///  the delegate that will be invoked to close the stream
+        /// </param>
+        ///
+        /// <returns>The <c>ZipEntry</c> added or updated.</returns>
+        ///
+        public ZipEntry UpdateEntry(string entryName, OpenDelegate opener, CloseDelegate closer)
+        {
+            RemoveEntryForUpdate(entryName);
+            return AddEntry(entryName, opener, closer);
         }
 
 
@@ -1629,27 +1787,34 @@ namespace Ionic.Zip
         /// <returns>The <c>ZipEntry</c> added.</returns>
         public ZipEntry UpdateEntry(string entryName, Stream stream)
         {
+            RemoveEntryForUpdate(entryName);
+            return AddEntry(entryName, stream);
+        }
+
+
+        private void RemoveEntryForUpdate(string entryName)
+        {
+            if (String.IsNullOrEmpty(entryName))
+                throw new ArgumentNullException("entryName");
+
             string directoryPathInArchive = null;
             if (entryName.IndexOf('\\') != -1)
             {
                 directoryPathInArchive = Path.GetDirectoryName(entryName);
                 entryName = Path.GetFileName(entryName);
             }
-            string key = ZipEntry.NameInArchive(entryName, directoryPathInArchive);
-
+            var key = ZipEntry.NameInArchive(entryName, directoryPathInArchive);
             if (this[key] != null)
                 this.RemoveEntry(key);
-
-            return AddEntry(entryName, stream);
         }
 
 
 
 
         /// <summary>
-        /// Add an entry into the zip archive using the given filename and directory
-        /// path within the archive, and the given content for the file. No file is
-        /// created in the filesystem.
+        ///   Add an entry into the zip archive using the given filename and
+        ///   directory path within the archive, and the given content for the
+        ///   file. No file is created in the filesystem.
         /// </summary>
         ///
         /// <param name="byteContent">The data to use for the entry.</param>
@@ -1668,15 +1833,15 @@ namespace Ionic.Zip
 
 
         /// <summary>
-        /// Updates the given entry in the <c>ZipFile</c>, using the given byte array as
-        /// content for the entry.
+        ///   Updates the given entry in the <c>ZipFile</c>, using the given byte
+        ///   array as content for the entry.
         /// </summary>
         ///
         /// <remarks>
-        /// Calling this method is equivalent to removing the <c>ZipEntry</c> for the
-        /// given filename and directory path, if it exists, and then calling <see
-        /// cref="AddEntry(String,byte[])" />.
-        /// See the documentation for that method for further explanation.
+        ///   Calling this method is equivalent to removing the <c>ZipEntry</c>
+        ///   for the given filename and directory path, if it exists, and then
+        ///   calling <see cref="AddEntry(String,byte[])" />.  See the
+        ///   documentation for that method for further explanation.
         /// </remarks>
         ///
         /// <param name="entryName">
@@ -1689,16 +1854,7 @@ namespace Ionic.Zip
         ///
         public ZipEntry UpdateEntry(string entryName, byte[] byteContent)
         {
-            string directoryPathInArchive = null;
-            if (entryName.IndexOf('\\') != -1)
-            {
-                directoryPathInArchive = Path.GetDirectoryName(entryName);
-                entryName = Path.GetFileName(entryName);
-            }
-            var key = ZipEntry.NameInArchive(entryName, directoryPathInArchive);
-            if (this[key] != null)
-                this.RemoveEntry(key);
-
+            RemoveEntryForUpdate(entryName);
             return AddEntry(entryName, byteContent);
         }
 
@@ -1858,10 +2014,12 @@ namespace Ionic.Zip
         /// <returns>The <c>ZipEntry</c> added.</returns>
         public ZipEntry AddDirectoryByName(string directoryNameInArchive)
         {
-            ZipEntry dir = ZipEntry.CreateFromNothing(directoryNameInArchive);    // workitem 9073
+            // workitem 9073
+            ZipEntry dir = ZipEntry.CreateFromNothing(directoryNameInArchive);
             dir._container = new ZipContainer(this);
             dir.MarkAsDirectory();
-            dir.ProvisionalAlternateEncoding = this.ProvisionalAlternateEncoding;  // workitem 8984
+            dir.AlternateEncoding = this.AlternateEncoding;  // workitem 8984
+            dir.AlternateEncodingUsage = this.AlternateEncodingUsage;
             dir.SetEntryTimes(DateTime.Now,DateTime.Now,DateTime.Now);
             dir.EmitTimesInWindowsFormatWhenSaving = _emitNtfsTimes;
             dir.EmitTimesInUnixFormatWhenSaving = _emitUnixTimes;
@@ -1902,11 +2060,20 @@ namespace Ionic.Zip
                                                   bool recurse,
                                                   int level)
         {
-            if (Verbose) StatusMessageTextWriter.WriteLine("{0} {1}...",
-                                                           (action == AddOrUpdateAction.AddOnly) ? "adding" : "Adding or updating", directoryName);
+            if (Verbose)
+                StatusMessageTextWriter.WriteLine("{0} {1}...",
+                                                  (action == AddOrUpdateAction.AddOnly) ? "adding" : "Adding or updating",
+                                                  directoryName);
 
             if (level == 0)
+            {
+                _addOperationCanceled = false;
                 OnAddStarted();
+            }
+
+            // workitem 13371
+            if (_addOperationCanceled)
+                return null;
 
             string dirForEntries = rootDirectoryPathInArchive;
             ZipEntry baseDir = null;
@@ -1926,7 +2093,8 @@ namespace Ionic.Zip
             {
                 baseDir = ZipEntry.CreateFromFile(directoryName, dirForEntries);
                 baseDir._container = new ZipContainer(this);
-                baseDir.ProvisionalAlternateEncoding = this.ProvisionalAlternateEncoding;  // workitem 6410
+                baseDir.AlternateEncoding = this.AlternateEncoding;  // workitem 6410
+                baseDir.AlternateEncodingUsage = this.AlternateEncodingUsage;
                 baseDir.MarkAsDirectory();
                 baseDir.EmitTimesInWindowsFormatWhenSaving = _emitNtfsTimes;
                 baseDir.EmitTimesInUnixFormatWhenSaving = _emitUnixTimes;
@@ -1941,32 +2109,46 @@ namespace Ionic.Zip
                 dirForEntries = baseDir.FileName;
             }
 
-            String[] filenames = Directory.GetFiles(directoryName);
-
-            if (recurse)
+            if (!_addOperationCanceled)
             {
-                // add the files:
-                foreach (String filename in filenames)
-                {
-                    if (action == AddOrUpdateAction.AddOnly)
-                        AddFile(filename, dirForEntries);
-                    else
-                        UpdateFile(filename, dirForEntries);
-                }
 
-                // add the subdirectories:
-                String[] dirnames = Directory.GetDirectories(directoryName);
-                foreach (String dir in dirnames)
+                String[] filenames = Directory.GetFiles(directoryName);
+
+                if (recurse)
                 {
-                    // workitem 8617: Optionally traverse reparse points
-#if NETCF
-                    FileAttributes fileAttrs = (FileAttributes) NetCfFile.GetAttributes(dir);
+                    // add the files:
+                    foreach (String filename in filenames)
+                    {
+                        if (_addOperationCanceled) break;
+                        if (action == AddOrUpdateAction.AddOnly)
+                            AddFile(filename, dirForEntries);
+                        else
+                            UpdateFile(filename, dirForEntries);
+                    }
+
+                    if (!_addOperationCanceled)
+                    {
+                        // add the subdirectories:
+                        String[] dirnames = Directory.GetDirectories(directoryName);
+                        foreach (String dir in dirnames)
+                        {
+                            // workitem 8617: Optionally traverse reparse points
+#if SILVERLIGHT
+#elif NETCF
+                            FileAttributes fileAttrs = (FileAttributes) NetCfFile.GetAttributes(dir);
 #else
-                    FileAttributes fileAttrs = System.IO.File.GetAttributes(dir);
+                            FileAttributes fileAttrs = System.IO.File.GetAttributes(dir);
 #endif
-                    if (this.AddDirectoryWillTraverseReparsePoints ||
-                        ((fileAttrs & FileAttributes.ReparsePoint) == 0))
-                        AddOrUpdateDirectoryImpl(dir, rootDirectoryPathInArchive, action, recurse, level + 1);
+                            if (this.AddDirectoryWillTraverseReparsePoints
+#if !SILVERLIGHT
+                                || ((fileAttrs & FileAttributes.ReparsePoint) == 0)
+#endif
+                                )
+                                AddOrUpdateDirectoryImpl(dir, rootDirectoryPathInArchive, action, recurse, level + 1);
+
+                        }
+
+                    }
                 }
             }
 

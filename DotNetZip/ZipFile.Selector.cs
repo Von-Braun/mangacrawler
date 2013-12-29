@@ -1,7 +1,7 @@
 // ZipFile.Selector.cs
 // ------------------------------------------------------------------
 //
-// Copyright (c) 2009 Dino Chiesa and Microsoft Corporation.
+// Copyright (c) 2009-2010 Dino Chiesa.
 // All rights reserved.
 //
 // This code module is part of DotNetZip, a zipfile class library.
@@ -15,18 +15,19 @@
 // ------------------------------------------------------------------
 //
 // last saved (in emacs):
-// Time-stamp: <2010-February-24 23:31:31>
+// Time-stamp: <2011-August-06 09:35:58>
 //
 // ------------------------------------------------------------------
 //
-// This module defines methods in the ZipFile class associated to the FileFilter capability -
-// selecting files to add into the archive, or selecting entries to retrieve from the archive
-// based on criteria including the filename, size, date, or attributes.  It is something like
-// a "poor man's LINQ".  I included it into DotNetZip because not everyone has .NET 3.5 yet.
-// When using DotNetZip on .NET 3.5, the LINQ query/selection will be superior.
+// This module defines methods in the ZipFile class associated to the FileFilter
+// capability - selecting files to add into the archive, or selecting entries to
+// retrieve from the archive based on criteria including the filename, size, date, or
+// attributes.  It is something like a "poor man's LINQ".  I included it into DotNetZip
+// because not everyone has .NET 3.5 yet.  When using DotNetZip on .NET 3.5, the LINQ
+// query/selection will be superior.
 //
-// These methods are segregated into a different module to facilitate easy exclusion for those
-// people who wish to have a smaller library without this function.
+// These methods are segregated into a different module to facilitate easy exclusion for
+// those people who wish to have a smaller library without this function.
 //
 // ------------------------------------------------------------------
 
@@ -41,15 +42,14 @@ namespace Ionic.Zip
     partial class ZipFile
     {
         /// <summary>
-        /// Adds to the ZipFile a set of files from the disk that conform to the
-        /// specified criteria.
+        ///   Adds to the ZipFile a set of files from the current working directory on
+        ///   disk, that conform to the specified criteria.
         /// </summary>
         ///
         /// <remarks>
         /// <para>
         ///   This method selects files from the the current working directory matching
-        ///   the specified criteria, and adds them to the ZipFile.  The selection does
-        ///   not recurse into subdirectories.
+        ///   the specified criteria, and adds them to the ZipFile.
         /// </para>
         ///
         /// <para>
@@ -61,40 +61,57 @@ namespace Ionic.Zip
         /// </para>
         ///
         /// <para>
-        ///   Supported nouns include "name" for the filename; "atime", "mtime", and
-        ///   "ctime" for last access time, last modfied time, and created time of the
-        ///   file, respectively; "attributes" for the file attributes; and "size" for
-        ///   the file length (uncompressed).  The "attributes" and "name" nouns both
-        ///   support = and != as operators.  The "size", "atime", "mtime", and "ctime"
-        ///   nouns support = and !=, and &gt;, &gt;=, &lt;, &lt;= as well. The times
-        ///   are taken to be expressed in "local time".
+        ///   Supported nouns include "name" (or "filename") for the filename; "atime",
+        ///   "mtime", and "ctime" for last access time, last modfied time, and created
+        ///   time of the file, respectively; "attributes" (or "attrs") for the file
+        ///   attributes; "size" (or "length") for the file length (uncompressed), and
+        ///   "type" for the type of object, either a file or a directory.  The
+        ///   "attributes", "name" and "type" nouns both support = and != as operators.
+        ///   The "size", "atime", "mtime", and "ctime" nouns support = and !=, and
+        ///   &gt;, &gt;=, &lt;, &lt;= as well. The times are taken to be expressed in
+        ///   local time.
         /// </para>
         ///
         /// <para>
-        ///   Specify values for the file attributes as a string with one or more of the
-        ///   characters H,R,S,A in any order, implying Hidden, ReadOnly, System, and
-        ///   Archive, respectively.  To specify a time, use YYYY-MM-DD-HH:mm:ss as the
-        ///   format.  If you omit the HH:mm:ss portion, it is assumed to be 00:00:00
-        ///   (midnight). The value for a size criterion is expressed in integer
-        ///   quantities of bytes, kilobytes (use k or kb after the number), megabytes
-        ///   (m or mb), or gigabytes (g or gb).  The value for a name is a pattern to
-        ///   match against the filename, potentially including wildcards.  The pattern
-        ///   follows CMD.exe glob rules: * implies one or more of any character (not
-        ///   including dot), while ? implies one character (not including dot).  If the
-        ///   name pattern contains any slashes, it is matched to the entire filename,
-        ///   including the path; otherwise, it is matched against only the filename
-        ///   without the path.  This means a pattern of "*\*.*" matches all files one
-        ///   directory level deep, while a pattern of "*.*" matches all files in all
-        ///   directories.
+        /// Specify values for the file attributes as a string with one or more of the
+        /// characters H,R,S,A,I,L in any order, implying file attributes of Hidden,
+        /// ReadOnly, System, Archive, NotContextIndexed, and ReparsePoint (symbolic
+        /// link) respectively.
         /// </para>
         ///
         /// <para>
-        ///   To specify a name pattern that includes spaces, use single quotes around
-        ///   the pattern.  A pattern of "'* *.*'" will match all files that have spaces
-        ///   in the filename.  The full criteria string for that would be "name = '*
-        ///   *.*'" .
+        /// To specify a time, use YYYY-MM-DD-HH:mm:ss or YYYY/MM/DD-HH:mm:ss as the
+        /// format.  If you omit the HH:mm:ss portion, it is assumed to be 00:00:00
+        /// (midnight).
         /// </para>
         ///
+        /// <para>
+        /// The value for a size criterion is expressed in integer quantities of bytes,
+        /// kilobytes (use k or kb after the number), megabytes (m or mb), or gigabytes
+        /// (g or gb).
+        /// </para>
+        ///
+        /// <para>
+        /// The value for a name is a pattern to match against the filename, potentially
+        /// including wildcards.  The pattern follows CMD.exe glob rules: * implies one
+        /// or more of any character, while ?  implies one character.  If the name
+        /// pattern contains any slashes, it is matched to the entire filename,
+        /// including the path; otherwise, it is matched against only the filename
+        /// without the path.  This means a pattern of "*\*.*" matches all files one
+        /// directory level deep, while a pattern of "*.*" matches all files in all
+        /// directories.
+        /// </para>
+        ///
+        /// <para>
+        /// To specify a name pattern that includes spaces, use single quotes around the
+        /// pattern.  A pattern of "'* *.*'" will match all files that have spaces in
+        /// the filename.  The full criteria string for that would be "name = '* *.*'" .
+        /// </para>
+        ///
+        /// <para>
+        /// The value for a type criterion is either F (implying a file) or D (implying
+        /// a directory).
+        /// </para>
         ///
         /// <para>
         /// Some examples:
@@ -148,33 +165,39 @@ namespace Ionic.Zip
         ///     </description>
         ///   </item>
         ///
+        ///   <item>
+        ///     <term>type = D</term>
+        ///     <description>all directories in the filesystem. </description>
+        ///   </item>
+        ///
         /// </list>
         ///
         /// <para>
-        /// You can combine criteria with the conjunctions AND or OR. Using a string like "name
-        /// = *.txt AND size &gt;= 100k" for the selectionCriteria retrieves entries whose names
-        /// end in  .txt, and whose uncompressed size is greater than or equal to
-        /// 100 kilobytes.
+        /// You can combine criteria with the conjunctions AND or OR. Using a string
+        /// like "name = *.txt AND size &gt;= 100k" for the selectionCriteria retrieves
+        /// entries whose names end in .txt, and whose uncompressed size is greater than
+        /// or equal to 100 kilobytes.
         /// </para>
         ///
         /// <para>
-        /// For more complex combinations of criteria, you can use parenthesis to group clauses
-        /// in the boolean logic.  Without parenthesis, the precedence of the criterion atoms is
-        /// determined by order of appearance.  Unlike the C# language, the AND conjunction does
-        /// not take precendence over the logical OR.  This is important only in strings that
-        /// contain 3 or more criterion atoms.  In other words, "name = *.txt and size &gt; 1000
-        /// or attributes = H" implies "((name = *.txt AND size &gt; 1000) OR attributes = H)"
-        /// while "attributes = H OR name = *.txt and size &gt; 1000" evaluates to "((attributes
-        /// = H OR name = *.txt) AND size &gt; 1000)".  When in doubt, use parenthesis.
+        /// For more complex combinations of criteria, you can use parenthesis to group
+        /// clauses in the boolean logic.  Without parenthesis, the precedence of the
+        /// criterion atoms is determined by order of appearance.  Unlike the C#
+        /// language, the AND conjunction does not take precendence over the logical OR.
+        /// This is important only in strings that contain 3 or more criterion atoms.
+        /// In other words, "name = *.txt and size &gt; 1000 or attributes = H" implies
+        /// "((name = *.txt AND size &gt; 1000) OR attributes = H)" while "attributes =
+        /// H OR name = *.txt and size &gt; 1000" evaluates to "((attributes = H OR name
+        /// = *.txt) AND size &gt; 1000)".  When in doubt, use parenthesis.
         /// </para>
         ///
         /// <para>
-        /// Using time properties requires some extra care. If you want to retrieve all entries
-        /// that were last updated on 2009 February 14, specify a time range like so:"mtime
-        /// &gt;= 2009-02-14 AND mtime &lt; 2009-02-15".  Read this to say: all files updated
-        /// after 12:00am on February 14th, until 12:00am on February 15th.  You can use the
-        /// same bracketing approach to specify any time period - a year, a month, a week, and
-        /// so on.
+        /// Using time properties requires some extra care. If you want to retrieve all
+        /// entries that were last updated on 2009 February 14, specify a time range
+        /// like so:"mtime &gt;= 2009-02-14 AND mtime &lt; 2009-02-15".  Read this to
+        /// say: all files updated after 12:00am on February 14th, until 12:00am on
+        /// February 15th.  You can use the same bracketing approach to specify any time
+        /// period - a year, a month, a week, and so on.
         /// </para>
         ///
         /// <para>
@@ -184,14 +207,21 @@ namespace Ionic.Zip
         /// </para>
         ///
         /// <para>
-        /// There is no logic in this method that insures that the file inclusion criteria are
-        /// internally consistent.  For example, it's possible to specify criteria that says
-        /// the file must have a size of less than 100 bytes, as well as a size that is
-        /// greater than 1000 bytes. Obviously no file will ever satisfy such criteria, but
-        /// this method does not detect such logical inconsistencies. The caller is
-        /// responsible for insuring the criteria are sensible.
+        /// There is no logic in this method that insures that the file inclusion
+        /// criteria are internally consistent.  For example, it's possible to specify
+        /// criteria that says the file must have a size of less than 100 bytes, as well
+        /// as a size that is greater than 1000 bytes. Obviously no file will ever
+        /// satisfy such criteria, but this method does not detect such logical
+        /// inconsistencies. The caller is responsible for insuring the criteria are
+        /// sensible.
         /// </para>
         ///
+        /// <para>
+        ///   Using this method, the file selection does not recurse into
+        ///   subdirectories, and the full path of the selected files is included in the
+        ///   entries added into the zip archive.  If you don't like these behaviors,
+        ///   see the other overloads of this method.
+        /// </para>
         /// </remarks>
         ///
         /// <example>
@@ -220,26 +250,38 @@ namespace Ionic.Zip
         }
 
         /// <summary>
-        /// Adds to the ZipFile a set of files from the disk that conform to the specified criteria.
+        ///   Adds to the ZipFile a set of files from the disk that conform to the
+        ///   specified criteria, optionally recursing into subdirectories.
         /// </summary>
         ///
         /// <remarks>
         /// <para>
-        /// This method selects files from the the current working directory matching the specified
-        /// criteria, and adds them to the ZipFile.  If <c>recurseDirectories</c> is true, files are also
-        /// selected from subdirectories, and the directory structure in the filesystem is reproduced
-        /// in the zip archive, rooted at the directory specified by <c>directoryOnDisk</c>.
+        ///   This method selects files from the the current working directory matching
+        ///   the specified criteria, and adds them to the ZipFile.  If
+        ///   <c>recurseDirectories</c> is true, files are also selected from
+        ///   subdirectories, and the directory structure in the filesystem is
+        ///   reproduced in the zip archive, rooted at the current working directory.
         /// </para>
         ///
         /// <para>
-        /// For details on the syntax for the selectionCriteria parameter, see <see
-        /// cref="AddSelectedFiles(String)"/>.
+        ///   Using this method, the full path of the selected files is included in the
+        ///   entries added into the zip archive.  If you don't want this behavior, use
+        ///   one of the overloads of this method that allows the specification of a
+        ///   <c>directoryInArchive</c>.
         /// </para>
+        ///
+        /// <para>
+        ///   For details on the syntax for the selectionCriteria parameter, see <see
+        ///   cref="AddSelectedFiles(String)"/>.
+        /// </para>
+        ///
         /// </remarks>
         ///
         /// <example>
-        /// This example zips up all *.xml files in the current working directory, or any
-        /// subdirectory, that are larger than 1mb.
+        ///
+        ///   This example zips up all *.xml files in the current working directory, or any
+        ///   subdirectory, that are larger than 1mb.
+        ///
         /// <code>
         /// using (ZipFile zip = new ZipFile())
         /// {
@@ -260,7 +302,7 @@ namespace Ionic.Zip
         /// <param name="selectionCriteria">The criteria for file selection</param>
         ///
         /// <param name="recurseDirectories">
-        /// If true, the file selection will recurse into subdirectories.
+        ///   If true, the file selection will recurse into subdirectories.
         /// </param>
         public void AddSelectedFiles(String selectionCriteria, bool recurseDirectories)
         {
@@ -268,18 +310,35 @@ namespace Ionic.Zip
         }
 
         /// <summary>
-        /// Adds to the ZipFile a set of files from the disk that conform to the specified criteria.
+        ///   Adds to the ZipFile a set of files from a specified directory in the
+        ///   filesystem, that conform to the specified criteria.
         /// </summary>
         ///
         /// <remarks>
-        /// This method selects files from the the specified disk directory matching the specified
-        /// criteria, and adds them to the ZipFile.  The search does not recurse into
-        /// subdirectores.  For details on the syntax for the selectionCriteria parameter, see <see
-        /// cref="AddSelectedFiles(String)"/>.
+        /// <para>
+        ///   This method selects files that conform to the specified criteria, from the
+        ///   the specified directory on disk, and adds them to the ZipFile.  The search
+        ///   does not recurse into subdirectores.
+        /// </para>
+        ///
+        /// <para>
+        ///   Using this method, the full filesystem path of the files on disk is
+        ///   reproduced on the entries added to the zip file.  If you don't want this
+        ///   behavior, use one of the other overloads of this method.
+        /// </para>
+        ///
+        /// <para>
+        ///   For details on the syntax for the selectionCriteria parameter, see <see
+        ///   cref="AddSelectedFiles(String)"/>.
+        /// </para>
+        ///
         /// </remarks>
         ///
         /// <example>
-        /// This example zips up all *.xml files larger than 1mb in the directory given by "d:\rawdata".
+        ///
+        ///   This example zips up all *.xml files larger than 1mb in the directory
+        ///   given by "d:\rawdata".
+        ///
         /// <code>
         /// using (ZipFile zip = new ZipFile())
         /// {
@@ -288,6 +347,7 @@ namespace Ionic.Zip
         ///     zip.Save(PathToZipArchive);
         /// }
         /// </code>
+        ///
         /// <code lang="VB">
         /// Using zip As ZipFile = New ZipFile()
         ///     ' Use a compound expression in the selectionCriteria string.
@@ -309,21 +369,37 @@ namespace Ionic.Zip
 
 
         /// <summary>
-        /// Adds to the ZipFile a set of files from the disk that conform to the specified criteria.
+        ///   Adds to the ZipFile a set of files from the specified directory on disk,
+        ///   that conform to the specified criteria.
         /// </summary>
         ///
         /// <remarks>
-        /// This method selects files from the the specified disk directory matching the specified
-        /// selection criteria, and adds them to the ZipFile.  If <c>recurseDirectories</c> is true,
-        /// files are also selected from subdirectories, and the directory structure in the
-        /// filesystem is reproduced in the zip archive, rooted at the directory specified by
-        /// <c>directoryOnDisk</c>. For details on the syntax for the selectionCriteria parameter,
-        /// see <see cref="AddSelectedFiles(String)"/>.
+        ///
+        /// <para>
+        ///   This method selects files from the the specified disk directory matching
+        ///   the specified selection criteria, and adds them to the ZipFile.  If
+        ///   <c>recurseDirectories</c> is true, files are also selected from
+        ///   subdirectories.
+        /// </para>
+        ///
+        /// <para>
+        ///   The full directory structure in the filesystem is reproduced on the
+        ///   entries added to the zip archive.  If you don't want this behavior, use
+        ///   one of the overloads of this method that allows the specification of a
+        ///   <c>directoryInArchive</c>.
+        /// </para>
+        ///
+        /// <para>
+        ///   For details on the syntax for the selectionCriteria parameter, see <see
+        ///   cref="AddSelectedFiles(String)"/>.
+        /// </para>
         /// </remarks>
         ///
         /// <example>
-        /// This example zips up all *.csv files in the "files" directory, or any subdirectory, that
-        /// have been saved since 2009 February 14th.
+        ///
+        ///   This example zips up all *.csv files in the "files" directory, or any
+        ///   subdirectory, that have been saved since 2009 February 14th.
+        ///
         /// <code>
         /// using (ZipFile zip = new ZipFile())
         /// {
@@ -341,14 +417,26 @@ namespace Ionic.Zip
         /// </code>
         /// </example>
         ///
+        /// <example>
+        ///   This example zips up all files in the current working
+        ///   directory, and all its child directories, except those in
+        ///   the <c>excludethis</c> subdirectory.
+        /// <code lang="VB">
+        /// Using Zip As ZipFile = New ZipFile(zipfile)
+        ///   Zip.AddSelectedFfiles("name != 'excludethis\*.*'", datapath, True)
+        ///   Zip.Save()
+        /// End Using
+        /// </code>
+        /// </example>
+        ///
         /// <param name="selectionCriteria">The criteria for file selection</param>
         ///
         /// <param name="directoryOnDisk">
-        /// The name of the directory on the disk from which to select files.
+        ///   The filesystem path from which to select files.
         /// </param>
         ///
         /// <param name="recurseDirectories">
-        /// If true, the file selection will recurse into subdirectories.
+        ///   If true, the file selection will recurse into subdirectories.
         /// </param>
         public void AddSelectedFiles(String selectionCriteria, String directoryOnDisk, bool recurseDirectories)
         {
@@ -357,23 +445,30 @@ namespace Ionic.Zip
 
 
         /// <summary>
-        /// Adds to the ZipFile a selection of files from the disk that conform to the
-        /// specified criteria.
+        ///   Adds to the ZipFile a selection of files from the specified directory on
+        ///   disk, that conform to the specified criteria, and using a specified root
+        ///   path for entries added to the zip archive.
         /// </summary>
         ///
         /// <remarks>
-        /// This method selects files from the specified disk directory matching the specified
-        /// selection criteria, and adds those files to the ZipFile, using the specified directory
-        /// path in the archive.  The search does not recurse into subdirectories.  For details on
-        /// the syntax for the selectionCriteria parameter, see <see
-        /// cref="AddSelectedFiles(String)" />.
+        /// <para>
+        ///   This method selects files from the specified disk directory matching the
+        ///   specified selection criteria, and adds those files to the ZipFile, using
+        ///   the specified directory path in the archive.  The search does not recurse
+        ///   into subdirectories.  For details on the syntax for the selectionCriteria
+        ///   parameter, see <see cref="AddSelectedFiles(String)" />.
+        /// </para>
+        ///
         /// </remarks>
         ///
         /// <example>
-        /// This example zips up all *.psd files in the "photos" directory that have been saved
-        /// since 2009 February 14th, and puts them all in a zip file, using the directory name of
-        /// "content" in the zip archive itself. When the zip archive is unzipped, the folder
-        /// containing the .psd files will be named "content".
+        ///
+        ///   This example zips up all *.psd files in the "photos" directory that have
+        ///   been saved since 2009 February 14th, and puts them all in a zip file,
+        ///   using the directory name of "content" in the zip archive itself. When the
+        ///   zip archive is unzipped, the folder containing the .psd files will be
+        ///   named "content".
+        ///
         /// <code>
         /// using (ZipFile zip = new ZipFile())
         /// {
@@ -390,18 +485,23 @@ namespace Ionic.Zip
         /// </code>
         /// </example>
         ///
-        /// <param name="selectionCriteria">The criteria for selection of files to Add</param>
+        /// <param name="selectionCriteria">
+        ///   The criteria for selection of files to add to the <c>ZipFile</c>.
+        /// </param>
         ///
         /// <param name="directoryOnDisk">
-        /// The name of the directory on the disk from which to select files.
+        ///   The path to the directory in the filesystem from which to select files.
         /// </param>
         ///
         /// <param name="directoryPathInArchive">
-        /// Specifies a directory path to use to override any path in the FileName.  This path may,
-        /// or may not, correspond to a real directory in the current filesystem.  If the files
-        /// within the zip are later extracted, this is the path used for the extracted file.
-        /// Passing null (nothing in VB) will use the path on the FileName, if any.  Passing the
-        /// empty string ("") will insert the item at the root path within the archive.
+        ///   Specifies a directory path to use to in place of the
+        ///   <c>directoryOnDisk</c>.  This path may, or may not, correspond to a real
+        ///   directory in the current filesystem.  If the files within the zip are
+        ///   later extracted, this is the path used for the extracted file.  Passing
+        ///   null (nothing in VB) will use the path on the file name, if any; in other
+        ///   words it would use <c>directoryOnDisk</c>, plus any subdirectory.  Passing
+        ///   the empty string ("") will insert the item at the root path within the
+        ///   archive.
         /// </param>
         public void AddSelectedFiles(String selectionCriteria,
                                      String directoryOnDisk,
@@ -411,22 +511,28 @@ namespace Ionic.Zip
         }
 
         /// <summary>
-        /// Adds to the ZipFile a selection of files from the disk that conform to the specified criteria.
+        ///   Adds to the ZipFile a selection of files from the specified directory on
+        ///   disk, that conform to the specified criteria, optionally recursing through
+        ///   subdirectories, and using a specified root path for entries added to the
+        ///   zip archive.
         /// </summary>
         ///
         /// <remarks>
-        /// This method selects files from the specified disk directory that match the specified
-        /// selection criteria, and adds those files to the ZipFile, using the specified directory
-        /// path in the archive. If <c>recurseDirectories</c> is true, files are also selected from
-        /// subdirectories, and the directory structure in the filesystem is reproduced in the zip
-        /// archive, rooted at the directory specified by <c>directoryOnDisk</c>.  For details on the
-        /// syntax for the selectionCriteria parameter, see <see
-        /// cref="AddSelectedFiles(String)" />.
+        ///   This method selects files from the specified disk directory that match the
+        ///   specified selection criteria, and adds those files to the ZipFile, using
+        ///   the specified directory path in the archive. If <c>recurseDirectories</c>
+        ///   is true, files are also selected from subdirectories, and the directory
+        ///   structure in the filesystem is reproduced in the zip archive, rooted at
+        ///   the directory specified by <c>directoryOnDisk</c>.  For details on the
+        ///   syntax for the selectionCriteria parameter, see <see
+        ///   cref="AddSelectedFiles(String)" />.
         /// </remarks>
         ///
         /// <example>
-        /// This example zips up all files that are NOT *.pst files, in the current working
-        /// directory and any subdirectories.
+        ///
+        ///   This example zips up all files that are NOT *.pst files, in the current
+        ///   working directory and any subdirectories.
+        ///
         /// <code>
         /// using (ZipFile zip = new ZipFile())
         /// {
@@ -442,22 +548,28 @@ namespace Ionic.Zip
         /// </code>
         /// </example>
         ///
-        /// <param name="selectionCriteria">The criteria for selection of files to Add</param>
+        /// <param name="selectionCriteria">
+        ///   The criteria for selection of files to add to the <c>ZipFile</c>.
+        /// </param>
         ///
         /// <param name="directoryOnDisk">
-        /// The name of the directory on the disk from which to select files.
+        ///   The path to the directory in the filesystem from which to select files.
         /// </param>
         ///
         /// <param name="directoryPathInArchive">
-        /// Specifies a directory path to use to override any path in the FileName.  This path may,
-        /// or may not, correspond to a real directory in the current filesystem.  If the files
-        /// within the zip are later extracted, this is the path used for the extracted file.
-        /// Passing null (nothing in VB) will use the path on the FileName, if any.  Passing the
-        /// empty string ("") will insert the item at the root path within the archive.
+        ///   Specifies a directory path to use to in place of the
+        ///   <c>directoryOnDisk</c>.  This path may, or may not, correspond to a real
+        ///   directory in the current filesystem.  If the files within the zip are
+        ///   later extracted, this is the path used for the extracted file.  Passing
+        ///   null (nothing in VB) will use the path on the file name, if any; in other
+        ///   words it would use <c>directoryOnDisk</c>, plus any subdirectory.  Passing
+        ///   the empty string ("") will insert the item at the root path within the
+        ///   archive.
         /// </param>
         ///
         /// <param name="recurseDirectories">
-        /// If true, the method also scans subdirectories for files matching the criteria.
+        ///   If true, the method also scans subdirectories for files matching the
+        ///   criteria.
         /// </param>
         public void AddSelectedFiles(String selectionCriteria,
                                      String directoryOnDisk,
@@ -472,37 +584,42 @@ namespace Ionic.Zip
         }
 
         /// <summary>
-        /// Updates the ZipFile with a selection of files from the disk that conform to
-        /// the specified criteria.
+        ///   Updates the ZipFile with a selection of files from the disk that conform
+        ///   to the specified criteria.
         /// </summary>
         ///
         /// <remarks>
-        /// This method selects files from the specified disk directory that match the
-        /// specified selection criteria, and Updates the <c>ZipFile</c> with those
-        /// files, using the specified directory path in the archive. If
-        /// <c>recurseDirectories</c> is true, files are also selected from
-        /// subdirectories, and the directory structure in the filesystem is reproduced
-        /// in the zip archive, rooted at the directory specified by
-        /// <c>directoryOnDisk</c>.  For details on the syntax for the selectionCriteria
-        /// parameter, see <see cref="AddSelectedFiles(String)" />.
+        ///   This method selects files from the specified disk directory that match the
+        ///   specified selection criteria, and Updates the <c>ZipFile</c> with those
+        ///   files, using the specified directory path in the archive. If
+        ///   <c>recurseDirectories</c> is true, files are also selected from
+        ///   subdirectories, and the directory structure in the filesystem is
+        ///   reproduced in the zip archive, rooted at the directory specified by
+        ///   <c>directoryOnDisk</c>.  For details on the syntax for the
+        ///   selectionCriteria parameter, see <see cref="AddSelectedFiles(String)" />.
         /// </remarks>
         ///
-        /// <param name="selectionCriteria">The criteria for selection of files to Add</param>
+        /// <param name="selectionCriteria">
+        ///   The criteria for selection of files to add to the <c>ZipFile</c>.
+        /// </param>
         ///
         /// <param name="directoryOnDisk">
-        /// The name of the directory on the disk from which to select files.
+        ///   The path to the directory in the filesystem from which to select files.
         /// </param>
         ///
         /// <param name="directoryPathInArchive">
-        /// Specifies a directory path to use to override any path in the FileName.  This path may,
-        /// or may not, correspond to a real directory in the current filesystem.  If the files
-        /// within the zip are later extracted, this is the path used for the extracted file.
-        /// Passing null (nothing in VB) will use the path on the FileName, if any.  Passing the
-        /// empty string ("") will insert the item at the root path within the archive.
+        ///   Specifies a directory path to use to in place of the
+        ///   <c>directoryOnDisk</c>. This path may, or may not, correspond to a
+        ///   real directory in the current filesystem. If the files within the zip
+        ///   are later extracted, this is the path used for the extracted file.
+        ///   Passing null (nothing in VB) will use the path on the file name, if
+        ///   any; in other words it would use <c>directoryOnDisk</c>, plus any
+        ///   subdirectory.  Passing the empty string ("") will insert the item at
+        ///   the root path within the archive.
         /// </param>
         ///
         /// <param name="recurseDirectories">
-        /// If true, the method also scans subdirectories for files matching the criteria.
+        ///   If true, the method also scans subdirectories for files matching the criteria.
         /// </param>
         ///
         /// <seealso cref="AddSelectedFiles(String, String, String, bool)" />
@@ -518,9 +635,16 @@ namespace Ionic.Zip
                                       true);
         }
 
+
+        private string EnsureendInSlash(string s)
+        {
+            if (s.EndsWith("\\")) return s;
+            return s + "\\";
+        }
+
         private void _AddOrUpdateSelectedFiles(String selectionCriteria,
-                                     String directoryOnDisk,
-                                     String directoryPathInArchive,
+                                               String directoryOnDisk,
+                                               String directoryPathInArchive,
                                                bool recurseDirectories,
                                                bool wantUpdate)
         {
@@ -547,13 +671,15 @@ namespace Ionic.Zip
             OnAddStarted();
 
             AddOrUpdateAction action = (wantUpdate) ? AddOrUpdateAction.AddOrUpdate : AddOrUpdateAction.AddOnly;
-            string d2 = directoryOnDisk.ToLower();
             foreach (var item in itemsToAdd)
             {
                 // workitem 10153
                 string dirInArchive = (directoryPathInArchive == null)
                     ? null
-                    : Path.GetDirectoryName(item).ToLower().Replace(d2, directoryPathInArchive);
+                    // workitem 12260
+                    : ReplaceLeadingDirectory(Path.GetDirectoryName(item),
+                                              directoryOnDisk,
+                                              directoryPathInArchive);
 
                 if (File.Exists(item))
                 {
@@ -573,6 +699,45 @@ namespace Ionic.Zip
         }
 
 
+        // workitem 12260
+        private static string ReplaceLeadingDirectory(string original,
+                                                      string pattern,
+                                                      string replacement)
+        {
+            string upperString = original.ToUpper();
+            string upperPattern = pattern.ToUpper();
+            int p1 = upperString.IndexOf(upperPattern);
+            if (p1 != 0) return original;
+            return replacement + original.Substring(upperPattern.Length);
+        }
+
+#if NOT
+        private static string ReplaceEx(string original,
+                                                      string pattern,
+                                                      string replacement)
+        {
+            int count, position0, position1;
+            count = position0 = position1 = 0;
+            string upperString = original.ToUpper();
+            string upperPattern = pattern.ToUpper();
+            int inc = (original.Length/pattern.Length) *
+                (replacement.Length-pattern.Length);
+            char [] chars = new char[original.Length + Math.Max(0, inc)];
+            while( (position1 = upperString.IndexOf(upperPattern,
+                                                    position0)) != -1 )
+            {
+                for ( int i=position0 ; i < position1 ; ++i )
+                    chars[count++] = original[i];
+                for ( int i=0 ; i < replacement.Length ; ++i )
+                    chars[count++] = replacement[i];
+                position0 = position1+pattern.Length;
+            }
+            if ( position0 == 0 ) return original;
+            for ( int i=position0 ; i < original.Length ; ++i )
+                chars[count++] = original[i];
+            return new string(chars, 0, count);
+        }
+#endif
 
         /// <summary>
         /// Retrieve entries from the zipfile by specified criteria.
@@ -1129,7 +1294,6 @@ namespace Ionic
     }
 
 
-
     internal partial class TypeCriterion : SelectionCriterion
     {
         internal override bool Evaluate(Ionic.Zip.ZipEntry entry)
@@ -1144,6 +1308,7 @@ namespace Ionic
         }
     }
 
+#if !SILVERLIGHT
     internal partial class AttributesCriterion : SelectionCriterion
     {
         internal override bool Evaluate(Ionic.Zip.ZipEntry entry)
@@ -1152,7 +1317,7 @@ namespace Ionic
             return _Evaluate(fileAttrs);
         }
     }
-
+#endif
 
     internal partial class CompoundCriterion : SelectionCriterion
     {
@@ -1217,6 +1382,9 @@ namespace Ionic
         /// <returns>a collection of ZipEntry objects that conform to the criteria.</returns>
         public ICollection<Ionic.Zip.ZipEntry> SelectEntries(Ionic.Zip.ZipFile zip)
         {
+            if (zip == null)
+                throw new ArgumentNullException("zip");
+
             var list = new List<Ionic.Zip.ZipEntry>();
 
             foreach (Ionic.Zip.ZipEntry e in zip)
@@ -1269,14 +1437,17 @@ namespace Ionic
         /// <returns>a collection of ZipEntry objects that conform to the criteria.</returns>
         public ICollection<Ionic.Zip.ZipEntry> SelectEntries(Ionic.Zip.ZipFile zip, string directoryPathInArchive)
         {
+            if (zip == null)
+                throw new ArgumentNullException("zip");
+
             var list = new List<Ionic.Zip.ZipEntry>();
             // workitem 8559
-            string slashSwapped = (directoryPathInArchive==null) ? null : directoryPathInArchive.Replace("/","\\");
+            string slashSwapped = (directoryPathInArchive == null) ? null : directoryPathInArchive.Replace("/", "\\");
             // workitem 9174
             if (slashSwapped != null)
             {
                 while (slashSwapped.EndsWith("\\"))
-                    slashSwapped= slashSwapped.Substring(0, slashSwapped.Length-1);
+                    slashSwapped = slashSwapped.Substring(0, slashSwapped.Length - 1);
             }
             foreach (Ionic.Zip.ZipEntry e in zip)
             {
