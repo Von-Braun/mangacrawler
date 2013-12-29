@@ -1,33 +1,47 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+// HtmlAgilityPack V1.0 - Simon Mourier <simon underscore mourier at hotmail dot com>
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("HtmlAgilityPack")]
-[assembly: AssemblyDescription("")]
+#if DEBUG
+
+[assembly: AssemblyTitle("Html Agility Pack - Debug")] //Description
+#else // release
+#if TRACE
+[assembly: AssemblyTitle("Html Agility Pack - ReleaseTrace")] //Description
+#else
+[assembly: AssemblyTitle("Html Agility Pack - Release")] //Description
+#endif
+#endif
+
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("HtmlAgilityPack")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2012")]
+[assembly: AssemblyCompany("Simon Mourier")]
+[assembly: AssemblyProduct("Html Agility Pack")]
+[assembly:
+    AssemblyCopyright(
+        "Copyright (C) 2003-20012 Simon Mourier <simon underscore mourier at hotmail dot com> All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3212c3b8-34f0-4e23-8ca9-4f6da919ac2e")]
-
-// Version information for an assembly consists of the following four values:
+[assembly: ComVisible(true)]
+[assembly: Guid("643622ea-d2aa-4572-a2b2-6202b7fcd83f")]
+[assembly: AssemblyVersion("1.4.5.0")]
+#if !PocketPC
+[assembly: AssemblyFileVersion("1.4.5.0")]
+[assembly: AssemblyInformationalVersion("1.4.5.0")]
+#if !SILVERLIGHT
+[assembly: AllowPartiallyTrustedCallers]
+#endif
+[assembly: AssemblyDelaySign(false)]
+#endif
+// 
+// Welcome to the HTML Agility Pack!
+// As you may have noticed, there is no HtmlAgilityPack file provided.
+// You need to build one using SN.EXE utility provided with the .NET Framework
 //
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
+// The command to use is something like:
+//      SN.EXE -k HtmlAgilityPack.snk
 //
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+// Simon.
+//
+
+[assembly: AssemblyKeyName("")]

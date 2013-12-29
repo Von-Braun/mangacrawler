@@ -2,14 +2,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace HtmlAgilityPack
 {
     /// <summary>
     /// Represents a combined list and collection of HTML nodes.
     /// </summary>
-    [DebuggerDisplay("Count: {_items.Count}")]
     public class HtmlNodeCollection : IList<HtmlNode>
     {
         #region Fields
@@ -43,11 +41,9 @@ namespace HtmlAgilityPack
             {
                 int index = GetNodeIndex(node);
                 if (index == -1)
-                {
                     throw new ArgumentOutOfRangeException("node",
                                                           "Node \"" + node.CloneNode(false).OuterHtml +
                                                           "\" was not found in the collection");
-                }
                 return index;
             }
         }
@@ -63,7 +59,7 @@ namespace HtmlAgilityPack
             {
                 nodeName = nodeName.ToLower();
                 for (int i = 0; i < _items.Count; i++)
-                    if (_items[i].Equals(nodeName))
+                    if (_items[i].Name.Equals(nodeName))
                         return _items[i];
 
                 return null;
@@ -180,37 +176,29 @@ namespace HtmlAgilityPack
             HtmlNode next = null;
             HtmlNode prev = null;
 
-            if (index > 0)
-            {
+            if (index > 0)            
                 prev = _items[index - 1];
-            }
-
+            
             if (index < _items.Count)
-            {
                 next = _items[index];
-            }
 
             _items.Insert(index, node);
 
             if (prev != null)
             {
                 if (node == prev)
-                {
                     throw new InvalidProgramException("Unexpected error.");
-                }
+                
                 prev._nextnode = node;
             }
 
             if (next != null)
-            {
                 next._prevnode = node;
-            }
 
             node._prevnode = prev;
             if (next == node)
-            {
                 throw new InvalidProgramException("Unexpected error.");
-            }
+            
             node._nextnode = next;
             node._parentnode = _parentnode;
         }
@@ -238,30 +226,22 @@ namespace HtmlAgilityPack
             HtmlNode oldnode = _items[index];
 
             if (index > 0)
-            {
                 prev = _items[index - 1];
-            }
 
             if (index < (_items.Count - 1))
-            {
                 next = _items[index + 1];
-            }
 
             _items.RemoveAt(index);
 
             if (prev != null)
             {
                 if (next == prev)
-                {
                     throw new InvalidProgramException("Unexpected error.");
-                }
                 prev._nextnode = next;
             }
 
             if (next != null)
-            {
                 next._prevnode = prev;
-            }
 
             oldnode._prevnode = null;
             oldnode._nextnode = null;
@@ -284,12 +264,10 @@ namespace HtmlAgilityPack
             {
                 if (node.Name.ToLower().Contains(name))
                     return node;
-                if (node.HasChildNodes)
-                {
-                    HtmlNode returnNode = FindFirst(node.ChildNodes, name);
-                    if (returnNode != null)
-                        return returnNode;
-                }
+                if (!node.HasChildNodes) continue;
+                HtmlNode returnNode = FindFirst(node.ChildNodes, name);
+                if (returnNode != null)
+                    return returnNode;
             }
             return null;
         }
@@ -302,22 +280,17 @@ namespace HtmlAgilityPack
         {
             HtmlNode last = null;
             if (_items.Count > 0)
-            {
                 last = _items[_items.Count - 1];
-            }
-
+            
             _items.Add(node);
             node._prevnode = last;
             node._nextnode = null;
             node._parentnode = _parentnode;
-            if (last != null)
-            {
-                if (last == node)
-                {
-                    throw new InvalidProgramException("Unexpected error.");
-                }
-                last._nextnode = node;
-            }
+            if (last == null) return;
+            if (last == node)
+                throw new InvalidProgramException("Unexpected error.");
+            
+            last._nextnode = node;
         }
 
         /// <summary>
@@ -337,13 +310,10 @@ namespace HtmlAgilityPack
         /// <returns></returns>
         public int GetNodeIndex(HtmlNode node)
         {
+            // TODO: should we rewrite this? what would be the key of a node?
             for (int i = 0; i < _items.Count; i++)
-            {
-                if (node == (_items[i]))
-                {
+                if (node == _items[i])
                     return i;
-                }
-            }
             return -1;
         }
 
@@ -355,23 +325,18 @@ namespace HtmlAgilityPack
         {
             HtmlNode first = null;
             if (_items.Count > 0)
-            {
                 first = _items[0];
-            }
 
             _items.Insert(0, node);
 
             if (node == first)
-            {
                 throw new InvalidProgramException("Unexpected error.");
-            }
             node._nextnode = first;
             node._prevnode = null;
             node._parentnode = _parentnode;
+
             if (first != null)
-            {
                 first._prevnode = node;
-            }
         }
 
         /// <summary>
@@ -397,37 +362,27 @@ namespace HtmlAgilityPack
             HtmlNode oldnode = _items[index];
 
             if (index > 0)
-            {
                 prev = _items[index - 1];
-            }
 
             if (index < (_items.Count - 1))
-            {
                 next = _items[index + 1];
-            }
 
             _items[index] = node;
 
             if (prev != null)
             {
                 if (node == prev)
-                {
                     throw new InvalidProgramException("Unexpected error.");
-                }
                 prev._nextnode = node;
             }
 
             if (next != null)
-            {
                 next._prevnode = node;
-            }
 
             node._prevnode = prev;
 
             if (next == node)
-            {
                 throw new InvalidProgramException("Unexpected error.");
-            }
 
             node._nextnode = next;
             node._parentnode = _parentnode;
