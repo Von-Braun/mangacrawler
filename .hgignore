@@ -1,22 +1,32 @@
 syntax: glob
+
 DotNetZip/bin
 DotNetZip/obj
+
 HtmlAgilityPack/bin
 HtmlAgilityPack/obj
-MangaCrawler.suo
+
 MangaCrawler/bin
 MangaCrawler/obj
+
 MangaCrawlerLib/bin
 MangaCrawlerLib/obj
+
 MangaCrawlerTest/bin
 MangaCrawlerTest/obj
+
 log4net/obj
 log4net/bin
-MangaCrawler.sln.docstates.suo
-Installer/Manga Crawler*.exe
-TestResults
+
 TomanuExtensionsLib/bin
 TomanuExtensionsLib/obj
-yaxlib/bin/Debug
+
+yaxlib/bin
 yaxlib/obj
+
+Installer/Manga Crawler*.exe
+
+TestResults
+
 MangaCrawler.v12.suo
+*.csproj.user
