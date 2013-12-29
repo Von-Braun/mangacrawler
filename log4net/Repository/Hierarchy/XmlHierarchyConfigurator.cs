@@ -180,7 +180,7 @@ namespace log4net.Repository.Hierarchy
 					} 
 					else if (currentElement.LocalName == CATEGORY_TAG)
 					{
-						// xTODO: deprecated use of category
+						// TODO: deprecated use of category
 						ParseLogger(currentElement);
 					} 
 					else if (currentElement.LocalName == ROOT_TAG)
@@ -345,7 +345,7 @@ namespace log4net.Repository.Hierarchy
 					optionHandler.ActivateOptions();
 				}
 
-				LogLog.Debug(declaringType, "reated Appender [" + appenderName + "]");	
+				LogLog.Debug(declaringType, "Created Appender [" + appenderName + "]");	
 				return appender;
 			}
 			catch (Exception ex) 
@@ -634,7 +634,11 @@ namespace log4net.Repository.Hierarchy
 					try
 					{
 						// Expand environment variables in the string.
-						propertyValue = OptionConverter.SubstituteVariables(propertyValue, Environment.GetEnvironmentVariables());
+					    IDictionary environmentVariables = Environment.GetEnvironmentVariables();
+					    if (HasCaseInsensitiveEnvironment) {
+						environmentVariables = CreateCaseInsensitiveWrapper(environmentVariables);
+					    }
+						propertyValue = OptionConverter.SubstituteVariables(propertyValue, environmentVariables);
 					}
 					catch(System.Security.SecurityException)
 					{
@@ -892,7 +896,7 @@ namespace log4net.Repository.Hierarchy
 		/// </returns>
 		protected object ConvertStringTo(Type type, string value)
 		{
-			// xHack to allow use of Level in property
+			// Hack to allow use of Level in property
 			if (typeof(Level) == type)
 			{
 				// Property wants a level
@@ -1023,6 +1027,38 @@ namespace log4net.Repository.Hierarchy
 
 		#endregion Protected Instance Methods
 
+#if !NETCF
+		private bool HasCaseInsensitiveEnvironment
+	        {
+		    get
+		    {
+#if NET_1_0 || NET_1_1 || CLI_1_0
+			// actually there is no guarantee, but we don't know better
+			return true;
+#elif MONO_1_0
+			// see above
+			return false;
+#else
+			PlatformID platform = Environment.OSVersion.Platform;
+			return platform != PlatformID.Unix && platform != PlatformID.MacOSX;
+#endif
+		    }
+		}
+
+	        private IDictionary CreateCaseInsensitiveWrapper(IDictionary dict)
+	        {
+		    if (dict == null)
+		    {
+			return dict;
+		    }
+		    Hashtable hash = SystemInfo.CreateCaseInsensitiveHashtable();
+		    foreach (DictionaryEntry entry in dict) {
+			hash[entry.Key] = entry.Value;
+		    }
+		    return hash;
+		}
+#endif
+
 		#region Private Constants
 
 		// String constants used while parsing the XML data
@@ -1032,9 +1068,9 @@ namespace log4net.Repository.Hierarchy
 		private const string APPENDER_REF_TAG 			= "appender-ref";  
 		private const string PARAM_TAG					= "param";
 
-		// xTODO: Deprecate use of category tags
+		// TODO: Deprecate use of category tags
 		private const string CATEGORY_TAG				= "category";
-		// xTODO: Deprecate use of priority tag
+		// TODO: Deprecate use of priority tag
 		private const string PRIORITY_TAG				= "priority";
 
 		private const string LOGGER_TAG					= "logger";

@@ -804,10 +804,10 @@ namespace log4net.Config
 		/// </para>
 		/// <para>
 		/// For more information on how to configure log4net using
-		/// a separate configuration file, see <see cref="Configure(FileInfo)"/>.
+		/// a separate configuration file, see <see cref="M:Configure(FileInfo)"/>.
 		/// </para>
 		/// </remarks>
-		/// <seealso cref="Configure(FileInfo)"/>
+		/// <seealso cref="M:Configure(FileInfo)"/>
 		static public ICollection ConfigureAndWatch(FileInfo configFile)
 		{
             ArrayList configurationMessages = new ArrayList();
@@ -843,10 +843,10 @@ namespace log4net.Config
         /// </para>
         /// <para>
         /// For more information on how to configure log4net using
-        /// a separate configuration file, see <see cref="Configure(FileInfo)"/>.
+        /// a separate configuration file, see <see cref="M:Configure(FileInfo)"/>.
         /// </para>
         /// </remarks>
-        /// <seealso cref="Configure(FileInfo)"/>
+        /// <seealso cref="M:Configure(FileInfo)"/>
         static public ICollection ConfigureAndWatch(ILoggerRepository repository, FileInfo configFile)
         {
             ArrayList configurationMessages = new ArrayList();
@@ -880,18 +880,18 @@ namespace log4net.Config
                     {
                         // support multiple repositories each having their own watcher
                         ConfigureAndWatchHandler handler =
-                            (ConfigureAndWatchHandler)m_repositoryName2ConfigAndWatchHandler[repository.Name];
+							(ConfigureAndWatchHandler)m_repositoryName2ConfigAndWatchHandler[configFile.FullName];
 
                         if (handler != null)
                         {
-                            m_repositoryName2ConfigAndWatchHandler.Remove(repository.Name);
+							m_repositoryName2ConfigAndWatchHandler.Remove(configFile.FullName);
                             handler.Dispose();
                         }
 
                         // Create and start a watch handler that will reload the
                         // configuration whenever the config file is modified.
                         handler = new ConfigureAndWatchHandler(repository, configFile);
-                        m_repositoryName2ConfigAndWatchHandler[repository.Name] = handler;
+						m_repositoryName2ConfigAndWatchHandler[configFile.FullName] = handler;
                     }
 				}
 				catch(Exception ex)
