@@ -2,7 +2,7 @@
 //
 // ------------------------------------------------------------------
 //
-// Copyright (c) 2009-2010 Dino Chiesa.
+// Copyright (c) 2009 Dino Chiesa.
 // All rights reserved.
 //
 // This code module is part of DotNetZip, a zipfile class library.
@@ -16,7 +16,7 @@
 // ------------------------------------------------------------------
 //
 // last saved (in emacs):
-// Time-stamp: <2010-February-11 17:56:48>
+// Time-stamp: <2011-July-28 06:34:30>
 //
 // ------------------------------------------------------------------
 //
@@ -30,6 +30,7 @@
 //  - Password
 //  - CodecBufferSize
 //  - CompressionLevel
+//  - CompressionMethod
 //  - EnableZip64 (UseZip64WhenSaving)
 //  - IgnoreCase (!CaseSensitiveRetrieval)
 //
@@ -55,31 +56,41 @@ namespace Ionic.Zip
     ///
     /// <remarks>
     /// <para>
-    ///   This class provides an alternative programming model to the one enabled by the
-    ///   <see cref="ZipFile"/> class. Use this when creating zip files, as an
-    ///   alternative to the <see cref="ZipFile"/> class, when you would like to use a
-    ///   Stream class to write the zip file.
+    ///   This class writes zip files, as defined in the <see
+    ///   href="http://www.pkware.com/documents/casestudies/APPNOTE.TXT">specification
+    ///   for zip files described by PKWare</see>.  The compression for this
+    ///   implementation is provided by a managed-code version of Zlib, included with
+    ///   DotNetZip in the classes in the Ionic.Zlib namespace.
     /// </para>
     ///
     /// <para>
-    ///   Some designs require a writable stream for output.  This stream can be used to
-    ///   produce a zip file, as it is written.
+    ///   This class provides an alternative programming model to the one enabled by the
+    ///   <see cref="ZipFile"/> class. Use this when creating zip files, as an
+    ///   alternative to the <see cref="ZipFile"/> class, when you would like to use a
+    ///   <c>Stream</c> type to write the zip file.
     /// </para>
     ///
     /// <para>
     ///   Both the <c>ZipOutputStream</c> class and the <c>ZipFile</c> class can be used
     ///   to create zip files. Both of them support many of the common zip features,
-    ///   including Unicode, different compression levels, and ZIP64.  For example, when
-    ///   creating a zip file via calls to the <c>PutNextEntry()</c> and <c>Write()</c>
-    ///   methods on the <c>ZipOutputStream</c> class, the caller is responsible for
-    ///   opening the file, reading the bytes from the file, writing those bytes into
-    ///   the <c>ZipOutputStream</c>, setting the attributes on the <c>ZipEntry</c>, and
-    ///   setting the created, last modified, and last accessed timestamps on the zip
-    ///   entry. All of these things are done automatically by a call to <see
-    ///   cref="ZipFile.AddFile(string,string)">ZipFile.AddFile()</see>.  For this
-    ///   reason, the <c>ZipOutputStream</c> is generally recommended for when your
-    ///   application wants to emit the arbitrary data, not necessarily data from a
-    ///   filesystem file, directly into a zip file.
+    ///   including Unicode, different compression levels, and ZIP64.   They provide
+    ///   very similar performance when creating zip files.
+    /// </para>
+    ///
+    /// <para>
+    ///   The <c>ZipFile</c> class is generally easier to use than
+    ///   <c>ZipOutputStream</c> and should be considered a higher-level interface.  For
+    ///   example, when creating a zip file via calls to the <c>PutNextEntry()</c> and
+    ///   <c>Write()</c> methods on the <c>ZipOutputStream</c> class, the caller is
+    ///   responsible for opening the file, reading the bytes from the file, writing
+    ///   those bytes into the <c>ZipOutputStream</c>, setting the attributes on the
+    ///   <c>ZipEntry</c>, and setting the created, last modified, and last accessed
+    ///   timestamps on the zip entry. All of these things are done automatically by a
+    ///   call to <see cref="ZipFile.AddFile(string,string)">ZipFile.AddFile()</see>.
+    ///   For this reason, the <c>ZipOutputStream</c> is generally recommended for use
+    ///   only when your application emits arbitrary data, not necessarily data from a
+    ///   filesystem file, directly into a zip file, and does so using a <c>Stream</c>
+    ///   metaphor.
     /// </para>
     ///
     /// <para>
@@ -104,6 +115,28 @@ namespace Ionic.Zip
     ///   </item>
     /// </list>
     ///
+    /// <para>
+    ///   Be aware that the <c>ZipOutputStream</c> class implements the <see
+    ///   cref="System.IDisposable"/> interface.  In order for
+    ///   <c>ZipOutputStream</c> to produce a valid zip file, you use use it within
+    ///   a using clause (<c>Using</c> in VB), or call the <c>Dispose()</c> method
+    ///   explicitly.  See the examples for how to employ a using clause.
+    /// </para>
+    ///
+    /// <para>
+    ///   Also, a note regarding compression performance: On the desktop .NET
+    ///   Framework, DotNetZip can use a multi-threaded compression implementation
+    ///   that provides significant speed increases on large files, over 300k or so,
+    ///   at the cost of increased memory use at runtime.  (The output of the
+    ///   compression is almost exactly the same size).  But, the multi-threaded
+    ///   approach incurs a performance hit on smaller files. There's no way for the
+    ///   ZipOutputStream to know whether parallel compression will be beneficial,
+    ///   because the ZipOutputStream does not know how much data you will write
+    ///   through the stream.  You may wish to set the <see
+    ///   cref="ParallelDeflateThreshold"/> property to zero, if you are compressing
+    ///   large files through <c>ZipOutputStream</c>.  This will cause parallel
+    ///   compression to be used, always.
+    /// </para>
     /// </remarks>
     public class ZipOutputStream : Stream
     {
@@ -118,19 +151,6 @@ namespace Ionic.Zip
         ///   zip file, based on the <see cref="System.IO.Stream"/> class.
         /// </para>
         ///
-        /// <para>
-        ///   On the desktop .NET Framework, DotNetZip can use a multi-threaded
-        ///   compression implementation that provides significant speed increases on
-        ///   large files, over 300k or so, at the cost of increased memory use at
-        ///   runtime.  (The output of the compression is almost exactly the same size).
-        ///   But, the multi-threaded approach incurs a performance hit on smaller
-        ///   files. There's no way for the ZipOutputStream to know whether parallel
-        ///   compression will be beneficial, because the ZipOutputStream does not know
-        ///   how much data you will write through the stream.  you may wish to set the
-        ///   <see cref="ParallelDeflateThreshold"/> property to zero, if you are
-        ///   compressing large files through <c>ZipOutputStream</c>.  This will cause
-        ///   parallel compression to be used, always.
-        /// </para>
         /// </remarks>
         ///
         /// <param name="stream">
@@ -294,8 +314,7 @@ namespace Ionic.Zip
         public ZipOutputStream(String fileName)
         {
             Stream stream = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
-            _Init(stream, false);
-            _name = fileName;
+            _Init(stream, false, fileName);
         }
 
 
@@ -319,25 +338,25 @@ namespace Ionic.Zip
         /// </param>
         public ZipOutputStream(Stream stream, bool leaveOpen)
         {
-            _Init(stream, leaveOpen);
+            _Init(stream, leaveOpen, null);
         }
 
-        private void _Init(Stream stream, bool leaveOpen)
+        private void _Init(Stream stream, bool leaveOpen, string name)
         {
             // workitem 9307
             _outputStream = stream.CanRead ? stream : new CountingStream(stream);
             CompressionLevel = Ionic.Zlib.CompressionLevel.Default;
+            CompressionMethod = Ionic.Zip.CompressionMethod.Deflate;
             _encryption = EncryptionAlgorithm.None;
             _entriesWritten = new Dictionary<String, ZipEntry>(StringComparer.Ordinal);
             _zip64 = Zip64Option.Never;
             _leaveUnderlyingStreamOpen = leaveOpen;
             Strategy = Ionic.Zlib.CompressionStrategy.Default;
-            _name = "unknown";
+            _name = name ?? "(stream)";
 #if !NETCF
             ParallelDeflateThreshold = -1L;
 #endif
         }
-
 
 
         /// <summary>Provides a string representation of the instance.</summary>
@@ -567,6 +586,15 @@ namespace Ionic.Zip
             set;
         }
 
+        /// <summary>
+        ///   The compression method used on each entry added to the ZipOutputStream.
+        /// </summary>
+        public Ionic.Zip.CompressionMethod CompressionMethod
+        {
+            get;
+            set;
+        }
+
 
         /// <summary>
         ///   A comment attached to the zip archive.
@@ -587,13 +615,22 @@ namespace Ionic.Zip
         /// </para>
         ///
         /// <para>
-        ///   The zip specification does not describe how to encode the comment string
-        ///   in a code page other than IBM437. Therefore, for "compliant" zip tools and
-        ///   libraries, comments will use IBM437. However, there are situations where
-        ///   you want an encoded Comment, for example using code page 950 "Big-5
-        ///   Chinese".  DotNetZip will encode the comment in the code page specified by
-        ///   <see cref="ProvisionalAlternateEncoding"/>, at the time of the call to
-        ///   <c>Close()</c> or <c>Dispose</c>.
+        ///   The specification does not describe how to indicate the encoding used
+        ///   on a comment string. Many "compliant" zip tools and libraries use
+        ///   IBM437 as the code page for comments; DotNetZip, too, follows that
+        ///   practice.  On the other hand, there are situations where you want a
+        ///   Comment to be encoded with something else, for example using code page
+        ///   950 "Big-5 Chinese". To fill that need, DotNetZip will encode the
+        ///   comment following the same procedure it follows for encoding
+        ///   filenames: (a) if <see cref="AlternateEncodingUsage"/> is
+        ///   <c>Never</c>, it uses the default encoding (IBM437). (b) if <see
+        ///   cref="AlternateEncodingUsage"/> is <c>Always</c>, it always uses the
+        ///   alternate encoding (<see cref="AlternateEncoding"/>). (c) if <see
+        ///   cref="AlternateEncodingUsage"/> is <c>AsNecessary</c>, it uses the
+        ///   alternate encoding only if the default encoding is not sufficient for
+        ///   encoding the comment - in other words if decoding the result does not
+        ///   produce the original string.  This decision is taken at the time of
+        ///   the call to <c>ZipFile.Save()</c>.
         /// </para>
         ///
         /// </remarks>
@@ -814,16 +851,27 @@ namespace Ionic.Zip
         /// </para>
         /// </remarks>
         /// <seealso cref="ProvisionalAlternateEncoding"/>
+        [Obsolete("Beginning with v1.9.1.6 of DotNetZip, this property is obsolete. It will be removed in a future version of the library. Use AlternateEncoding and AlternateEncodingUsage instead.")]
         public bool UseUnicodeAsNecessary
         {
             get
             {
-                return _provisionalAlternateEncoding == System.Text.Encoding.GetEncoding("UTF-8");
+                return (_alternateEncoding == System.Text.Encoding.UTF8) &&
+                    (AlternateEncodingUsage == ZipOption.AsNecessary);
             }
             set
             {
-                _provisionalAlternateEncoding = (value) ? System.Text.Encoding.GetEncoding("UTF-8") :
-                    Ionic.Zip.ZipFile.DefaultEncoding;
+                if (value)
+                {
+                    _alternateEncoding = System.Text.Encoding.UTF8;
+                    _alternateEncodingUsage = ZipOption.AsNecessary;
+
+                }
+                else
+                {
+                    _alternateEncoding = Ionic.Zip.ZipOutputStream.DefaultEncoding;
+                    _alternateEncodingUsage = ZipOption.Never;
+                }
             }
         }
 
@@ -871,13 +919,13 @@ namespace Ionic.Zip
         ///
         /// <para>
         ///   When creating a zip archive using this library, it is possible to change
-        ///   the value of <c>ProvisionalAlternateEncoding</c> between each
-        ///   entry you add, and between adding entries and the call to
-        ///   <c>Close()</c>. Don't do this. It will likely result in a zipfile that is
-        ///   not readable.  For best interoperability, either leave
-        ///   <c>ProvisionalAlternateEncoding</c> alone, or specify it only once,
-        ///   before adding any entries to the <c>ZipOutputStream</c> instance.  There is one
-        ///   exception to this recommendation, described later.
+        ///   the value of <c>ProvisionalAlternateEncoding</c> between each entry you
+        ///   add, and between adding entries and the call to <c>Close()</c>. Don't do
+        ///   this. It will likely result in a zipfile that is not readable.  For best
+        ///   interoperability, either leave <c>ProvisionalAlternateEncoding</c>
+        ///   alone, or specify it only once, before adding any entries to the
+        ///   <c>ZipOutputStream</c> instance.  There is one exception to this
+        ///   recommendation, described later.
         /// </para>
         ///
         /// <para>
@@ -909,18 +957,73 @@ namespace Ionic.Zip
         ///   <c>ProvisionalAlternateEncoding</c> to IBM437 before calling <c>Close()</c>.
         /// </para>
         /// </remarks>
+        [Obsolete("use AlternateEncoding and AlternateEncodingUsage instead.")]
         public System.Text.Encoding ProvisionalAlternateEncoding
         {
             get
             {
-                return _provisionalAlternateEncoding;
+                if (_alternateEncodingUsage == ZipOption.AsNecessary)
+                    return _alternateEncoding;
+                return null;
             }
             set
             {
-                _provisionalAlternateEncoding = value;
+                _alternateEncoding = value;
+                _alternateEncodingUsage = ZipOption.AsNecessary;
             }
         }
 
+        /// <summary>
+        ///   A Text Encoding to use when encoding the filenames and comments for
+        ///   all the ZipEntry items, during a ZipFile.Save() operation.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     Whether the encoding specified here is used during the save depends
+        ///     on <see cref="AlternateEncodingUsage"/>.
+        ///   </para>
+        /// </remarks>
+        public System.Text.Encoding AlternateEncoding
+        {
+            get
+            {
+                return _alternateEncoding;
+            }
+            set
+            {
+                _alternateEncoding = value;
+            }
+        }
+
+        /// <summary>
+        ///   A flag that tells if and when this instance should apply
+        ///   AlternateEncoding to encode the filenames and comments associated to
+        ///   of ZipEntry objects contained within this instance.
+        /// </summary>
+        public ZipOption AlternateEncodingUsage
+        {
+            get
+            {
+                return _alternateEncodingUsage;
+            }
+            set
+            {
+                _alternateEncodingUsage = value;
+            }
+        }
+
+        /// <summary>
+        /// The default text encoding used in zip archives.  It is numeric 437, also
+        /// known as IBM437.
+        /// </summary>
+        /// <seealso cref="Ionic.Zip.ZipFile.ProvisionalAlternateEncoding"/>
+        public static System.Text.Encoding DefaultEncoding
+        {
+            get
+            {
+                return System.Text.Encoding.GetEncoding("IBM437");
+            }
+        }
 
 
 #if !NETCF
@@ -931,10 +1034,10 @@ namespace Ionic.Zip
         /// <remarks>
         ///
         ///   <para>
-        ///     DotNetZip will use multiple threads to compress any ZipEntry,
-        ///     if the entry is larger than the given size.  Zero means "always
-        ///     use parallel deflate", while -1 means "never use parallel
-        ///     deflate".
+        ///     DotNetZip will use multiple threads to compress any ZipEntry, when
+        ///     the <c>CompressionMethod</c> is Deflate, and if the entry is
+        ///     larger than the given size.  Zero means "always use parallel
+        ///     deflate", while -1 means "never use parallel deflate".
         ///   </para>
         ///
         ///   <para>
@@ -987,12 +1090,105 @@ namespace Ionic.Zip
             set
             {
                 if ((value != 0) && (value != -1) && (value < 64 * 1024))
-                    throw new ArgumentException();
+                    throw new ArgumentOutOfRangeException("value must be greater than 64k, or 0, or -1");
                 _ParallelDeflateThreshold = value;
             }
             get
             {
                 return _ParallelDeflateThreshold;
+            }
+        }
+
+
+        /// <summary>
+        ///   The maximum number of buffer pairs to use when performing
+        ///   parallel compression.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// <para>
+        ///   This property sets an upper limit on the number of memory
+        ///   buffer pairs to create when performing parallel
+        ///   compression.  The implementation of the parallel
+        ///   compression stream allocates multiple buffers to
+        ///   facilitate parallel compression.  As each buffer fills up,
+        ///   the stream uses <see
+        ///   cref="System.Threading.ThreadPool.QueueUserWorkItem(WaitCallback)">
+        ///   ThreadPool.QueueUserWorkItem()</see> to compress those
+        ///   buffers in a background threadpool thread. After a buffer
+        ///   is compressed, it is re-ordered and written to the output
+        ///   stream.
+        /// </para>
+        ///
+        /// <para>
+        ///   A higher number of buffer pairs enables a higher degree of
+        ///   parallelism, which tends to increase the speed of compression on
+        ///   multi-cpu computers.  On the other hand, a higher number of buffer
+        ///   pairs also implies a larger memory consumption, more active worker
+        ///   threads, and a higher cpu utilization for any compression. This
+        ///   property enables the application to limit its memory consumption and
+        ///   CPU utilization behavior depending on requirements.
+        /// </para>
+        ///
+        /// <para>
+        ///   For each compression "task" that occurs in parallel, there are 2
+        ///   buffers allocated: one for input and one for output.  This property
+        ///   sets a limit for the number of pairs.  The total amount of storage
+        ///   space allocated for buffering will then be (N*S*2), where N is the
+        ///   number of buffer pairs, S is the size of each buffer (<see
+        ///   cref="CodecBufferSize"/>).  By default, DotNetZip allocates 4 buffer
+        ///   pairs per CPU core, so if your machine has 4 cores, and you retain
+        ///   the default buffer size of 128k, then the
+        ///   ParallelDeflateOutputStream will use 4 * 4 * 2 * 128kb of buffer
+        ///   memory in total, or 4mb, in blocks of 128kb.  If you then set this
+        ///   property to 8, then the number will be 8 * 2 * 128kb of buffer
+        ///   memory, or 2mb.
+        /// </para>
+        ///
+        /// <para>
+        ///   CPU utilization will also go up with additional buffers, because a
+        ///   larger number of buffer pairs allows a larger number of background
+        ///   threads to compress in parallel. If you find that parallel
+        ///   compression is consuming too much memory or CPU, you can adjust this
+        ///   value downward.
+        /// </para>
+        ///
+        /// <para>
+        ///   The default value is 16. Different values may deliver better or
+        ///   worse results, depending on your priorities and the dynamic
+        ///   performance characteristics of your storage and compute resources.
+        /// </para>
+        ///
+        /// <para>
+        ///   This property is not the number of buffer pairs to use; it is an
+        ///   upper limit. An illustration: Suppose you have an application that
+        ///   uses the default value of this property (which is 16), and it runs
+        ///   on a machine with 2 CPU cores. In that case, DotNetZip will allocate
+        ///   4 buffer pairs per CPU core, for a total of 8 pairs.  The upper
+        ///   limit specified by this property has no effect.
+        /// </para>
+        ///
+        /// <para>
+        ///   The application can set this value at any time, but it is
+        ///   effective only if set before calling
+        ///   <c>ZipOutputStream.Write()</c> for the first time.
+        /// </para>
+        /// </remarks>
+        ///
+        /// <seealso cref="ParallelDeflateThreshold"/>
+        ///
+        public int ParallelDeflateMaxBufferPairs
+        {
+            get
+            {
+                return _maxBufferPairs;
+            }
+            set
+            {
+                if (value < 4)
+                    throw new ArgumentOutOfRangeException("ParallelDeflateMaxBufferPairs",
+                                                "Value must be 4 or greater.");
+                _maxBufferPairs = value;
             }
         }
 #endif
@@ -1064,6 +1260,12 @@ namespace Ionic.Zip
                 throw new System.InvalidOperationException("The stream has been closed.");
             }
 
+            if (buffer==null)
+            {
+                _exceptionPending = true;
+                throw new System.ArgumentNullException("buffer");
+            }
+
             if (_currentEntry == null)
             {
                 _exceptionPending = true;
@@ -1079,7 +1281,8 @@ namespace Ionic.Zip
             if (_needToWriteEntryHeader)
                 _InitiateCurrentEntry(false);
 
-            _entryOutputStream.Write(buffer, offset, count);
+            if (count != 0)
+                _entryOutputStream.Write(buffer, offset, count);
         }
 
 
@@ -1166,6 +1369,9 @@ namespace Ionic.Zip
         ///
         public ZipEntry PutNextEntry(String entryName)
         {
+            if (String.IsNullOrEmpty(entryName))
+                throw new ArgumentNullException("entryName");
+
             if (_disposed)
             {
                 _exceptionPending = true;
@@ -1177,9 +1383,13 @@ namespace Ionic.Zip
             _currentEntry._container = new ZipContainer(this);
             _currentEntry._BitField |= 0x0008;  // workitem 8932
             _currentEntry.SetEntryTimes(DateTime.Now, DateTime.Now, DateTime.Now);
-            _currentEntry.CompressionLevel = CompressionLevel;
-            _currentEntry.Encryption = Encryption;
-            _currentEntry.Password = _password;
+            _currentEntry.CompressionLevel = this.CompressionLevel;
+            _currentEntry.CompressionMethod = this.CompressionMethod;
+            _currentEntry.Password = _password; // workitem 13909
+            _currentEntry.Encryption = this.Encryption;
+            // workitem 12634
+            _currentEntry.AlternateEncoding = this.AlternateEncoding;
+            _currentEntry.AlternateEncodingUsage = this.AlternateEncodingUsage;
 
             if (entryName.EndsWith("/"))  _currentEntry.MarkAsDirectory();
 
@@ -1249,7 +1459,10 @@ namespace Ionic.Zip
 
                 _currentEntry.FinishOutputStream(_outputStream, _outputCounter, _encryptor, _deflater, _entryOutputStream);
                 _currentEntry.PostProcessOutput(_outputStream);
-                _anyEntriesUsedZip64 |= _currentEntry.OutputUsedZip64.Value;
+                // workitem 12964
+                if (_currentEntry.OutputUsedZip64!=null)
+                    _anyEntriesUsedZip64 |= _currentEntry.OutputUsedZip64.Value;
+
                 // reset all the streams
                 _outputCounter = null; _encryptor = _deflater = null; _entryOutputStream = null;
             }
@@ -1274,19 +1487,14 @@ namespace Ionic.Zip
         ///
         /// </remarks>
         ///
-        /// <param name="notCalledFromFinalizer">set this to true, always.</param>
-        protected override void Dispose(bool notCalledFromFinalizer)
+        /// <param name="disposing">set this to true, always.</param>
+        protected override void Dispose(bool disposing)
         {
             if (_disposed) return;
 
-            if (notCalledFromFinalizer)
+            if (disposing) // not called from finalizer
             {
-                // When ZipOutputStream is used within a using clause, and an exception is
-                // thrown within the scope of the using, Close()/Dispose() is invoked implicitly
-                // before processing the initial exception.  In that case, _exceptionPending
-                // is true, and we don't want to try to write anything.  It can cause
-                // additional exceptions that mask the original one.  Eventually the
-                // original exception will be propagated to the application.
+                // handle pending exceptions
                 if (!_exceptionPending)
                 {
                     _FinishCurrentEntry();
@@ -1295,7 +1503,7 @@ namespace Ionic.Zip
                                                                                      1, // _numberOfSegmentsForMostRecentSave,
                                                                                      _zip64,
                                                                                      Comment,
-                                                                                     ProvisionalAlternateEncoding);
+                                                                                     new ZipContainer(this));
                     Stream wrappedStream = null;
                     CountingStream cs = _outputStream as CountingStream;
                     if (cs != null)
@@ -1405,22 +1613,40 @@ namespace Ionic.Zip
         internal Zip64Option _zip64;
         private Dictionary<String, ZipEntry> _entriesWritten;
         private int _entryCount;
-        private System.Text.Encoding _provisionalAlternateEncoding;
+        private ZipOption _alternateEncodingUsage = ZipOption.Never;
+        private System.Text.Encoding _alternateEncoding
+            = System.Text.Encoding.GetEncoding("IBM437"); // default = IBM437
+
         private bool _leaveUnderlyingStreamOpen;
         private bool _disposed;
-        private bool _exceptionPending;
+        private bool _exceptionPending; // **see note below
         private bool _anyEntriesUsedZip64, _directoryNeededZip64;
         private CountingStream _outputCounter;
         private Stream _encryptor;
         private Stream _deflater;
-        private Ionic.Zlib.CrcCalculatorStream _entryOutputStream;
+        private Ionic.Crc.CrcCalculatorStream _entryOutputStream;
         private bool _needToWriteEntryHeader;
         private string _name;
         private bool _DontIgnoreCase;
 #if !NETCF
         internal Ionic.Zlib.ParallelDeflateOutputStream ParallelDeflater;
         private long _ParallelDeflateThreshold;
+        private int _maxBufferPairs = 16;
 #endif
+
+        // **Note regarding exceptions:
+
+        // When ZipOutputStream is employed within a using clause, which
+        // is the typical scenario, and an exception is thrown within
+        // the scope of the using, Close()/Dispose() is invoked
+        // implicitly before processing the initial exception.  In that
+        // case, _exceptionPending is true, and we don't want to try to
+        // write anything in the Close/Dispose logic.  Doing so can
+        // cause additional exceptions that mask the original one. So,
+        // the _exceptionPending flag is used to track that, and to
+        // allow the original exception to be propagated to the
+        // application without extra "noise."
+
     }
 
 
@@ -1453,6 +1679,7 @@ namespace Ionic.Zip
             get
             {
                 if (_zf != null) return _zf.Name;
+                if (_zis != null) throw new NotSupportedException();
                 return _zos.Name;
             }
         }
@@ -1462,6 +1689,7 @@ namespace Ionic.Zip
             get
             {
                 if (_zf != null) return _zf._Password;
+                if (_zis != null) return _zis._Password;
                 return _zos._password;
             }
         }
@@ -1471,6 +1699,7 @@ namespace Ionic.Zip
             get
             {
                 if (_zf != null) return _zf._zip64;
+                if (_zis != null) throw new NotSupportedException();
                 return _zos._zip64;
             }
         }
@@ -1480,6 +1709,7 @@ namespace Ionic.Zip
             get
             {
                 if (_zf != null) return _zf.BufferSize;
+                if (_zis != null) throw new NotSupportedException();
                 return 0;
             }
         }
@@ -1490,12 +1720,13 @@ namespace Ionic.Zip
             get
             {
                 if (_zf != null) return _zf.ParallelDeflater;
+                if (_zis != null) return null;
                 return _zos.ParallelDeflater;
             }
             set
             {
                 if (_zf != null) _zf.ParallelDeflater = value;
-                else _zos.ParallelDeflater = value;
+                else if (_zos != null) _zos.ParallelDeflater = value;
             }
         }
 
@@ -1507,6 +1738,14 @@ namespace Ionic.Zip
                 return _zos.ParallelDeflateThreshold;
             }
         }
+        public int ParallelDeflateMaxBufferPairs
+        {
+            get
+            {
+                if (_zf != null) return _zf.ParallelDeflateMaxBufferPairs;
+                return _zos.ParallelDeflateMaxBufferPairs;
+            }
+        }
 #endif
 
         public int CodecBufferSize
@@ -1514,6 +1753,7 @@ namespace Ionic.Zip
             get
             {
                 if (_zf != null) return _zf.CodecBufferSize;
+                if (_zis != null) return _zis.CodecBufferSize;
                 return _zos.CodecBufferSize;
             }
         }
@@ -1536,12 +1776,31 @@ namespace Ionic.Zip
             }
         }
 
-        public System.Text.Encoding ProvisionalAlternateEncoding
+        public System.Text.Encoding AlternateEncoding
         {
             get
             {
-                if (_zf != null) return _zf.ProvisionalAlternateEncoding;
-                return _zis.ProvisionalAlternateEncoding;
+                if (_zf != null) return _zf.AlternateEncoding;
+                if (_zos!=null) return _zos.AlternateEncoding;
+                return null;
+            }
+        }
+        public System.Text.Encoding DefaultEncoding
+        {
+            get
+            {
+                if (_zf != null) return ZipFile.DefaultEncoding;
+                if (_zos!=null) return ZipOutputStream.DefaultEncoding;
+                return null;
+            }
+        }
+        public ZipOption AlternateEncodingUsage
+        {
+            get
+            {
+                if (_zf != null) return _zf.AlternateEncodingUsage;
+                if (_zos!=null) return _zos.AlternateEncodingUsage;
+                return ZipOption.Never; // n/a
             }
         }
 
