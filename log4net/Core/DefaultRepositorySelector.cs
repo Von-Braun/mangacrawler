@@ -151,7 +151,7 @@ namespace log4net.Core
 		/// does not exist a <see cref="LogException"/> is thrown.
 		/// </para>
 		/// <para>
-		/// Use <see cref="CreateRepository(string, Type)"/> to create a repository.
+		/// Use <see cref="M:CreateRepository(string, Type)"/> to create a repository.
 		/// </para>
 		/// </remarks>
 		/// <exception cref="ArgumentNullException"><paramref name="repositoryName"/> is <see langword="null" />.</exception>
@@ -184,7 +184,7 @@ namespace log4net.Core
 		/// <remarks>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the repository
-		/// specified such that a call to <see cref="GetRepository(Assembly)"/> with the
+		/// specified such that a call to <see cref="M:GetRepository(Assembly)"/> with the
 		/// same assembly specified will return the same repository instance.
 		/// </para>
 		/// <para>
@@ -227,7 +227,7 @@ namespace log4net.Core
 		/// <remarks>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the repository
-		/// specified such that a call to <see cref="GetRepository(Assembly)"/> with the
+		/// specified such that a call to <see cref="M:GetRepository(Assembly)"/> with the
 		/// same assembly specified will return the same repository instance.
 		/// </para>
 		/// <para>
@@ -347,7 +347,7 @@ namespace log4net.Core
 		/// <remarks>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the repository
-		/// specified such that a call to <see cref="GetRepository(string)"/> with the
+		/// specified such that a call to <see cref="M:GetRepository(string)"/> with the
 		/// same repository specified will return the same repository instance.
 		/// </para>
 		/// </remarks>
@@ -433,8 +433,8 @@ namespace log4net.Core
 		/// <returns><c>true</c> if the repository exists</returns>
 		/// <remarks>
 		/// <para>
-		/// Test if a named repository exists. Use <see cref="CreateRepository(string, Type)"/>
-		/// to create a new repository and <see cref="GetRepository(string)"/> to retrieve 
+		/// Test if a named repository exists. Use <see cref="M:CreateRepository(string, Type)"/>
+		/// to create a new repository and <see cref="M:GetRepository(string)"/> to retrieve 
 		/// a repository.
 		/// </para>
 		/// </remarks>
@@ -564,7 +564,6 @@ namespace log4net.Core
 		/// <param name="repositoryName">in/out param to hold the repository name to use for the assembly, caller should set this to the default value before calling.</param>
 		/// <param name="repositoryType">in/out param to hold the type of the repository to create for the assembly, caller should set this to the default value before calling.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="assembly" /> is <see langword="null" />.</exception>
-        [System.Diagnostics.DebuggerNonUserCode]
 		private void GetInfoForAssembly(Assembly assembly, ref string repositoryName, ref Type repositoryType)
 		{
 			if (assembly == null)
@@ -769,7 +768,7 @@ namespace log4net.Core
 
 						try
 						{
-							// xTODO: Support other types of configurator
+							// TODO: Support other types of configurator
 							XmlConfigurator.Configure(repository, repositoryConfigUri);
 						}
 						catch (Exception ex)

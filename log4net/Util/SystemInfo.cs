@@ -263,13 +263,19 @@ namespace log4net.Util
 						// Lookup the host name
 						s_hostName = System.Net.Dns.GetHostName();
 					}
-					catch(System.Net.Sockets.SocketException)
+					catch (System.Net.Sockets.SocketException)
 					{
+						LogLog.Debug(declaringType, "Socket exception occurred while getting the dns hostname. Error Ignored.");
 					}
-					catch(System.Security.SecurityException)
+					catch (System.Security.SecurityException)
 					{
 						// We may get a security exception looking up the hostname
 						// You must have Unrestricted DnsPermission to access resource
+						LogLog.Debug(declaringType, "Security exception occurred while getting the dns hostname. Error Ignored.");
+					}
+					catch (Exception ex)
+					{
+						LogLog.Debug(declaringType, "Some other exception occurred while getting the dns hostname. Error Ignored.", ex);
 					}
 
 					// Get the NETBIOS machine name of the current machine
@@ -295,6 +301,7 @@ namespace log4net.Util
 					if (s_hostName == null || s_hostName.Length == 0)
 					{
 						s_hostName = s_notAvailableText;
+						LogLog.Debug(declaringType, "Could not determine the hostname. Error Ignored. Empty host name will be used");
 					}
 				}
 				return s_hostName;
@@ -437,7 +444,6 @@ namespace log4net.Util
 		/// where the assembly was loaded from.
 		/// </para>
 		/// </remarks>
-        [System.Diagnostics.DebuggerNonUserCode]
 		public static string AssemblyLocationInfo(Assembly myAssembly)
 		{
 #if NETCF
@@ -451,12 +457,44 @@ namespace log4net.Util
 			{
 				try
 				{
-					// This call requires FileIOPermission for access to the path
-					// if we don't have permission then we just ignore it and
-					// carry on.
-					return myAssembly.Location;
+#if NET_4_0
+					if (myAssembly.IsDynamic)
+					{
+						return "Dynamic Assembly";
+					}
+#else
+					if (myAssembly is System.Reflection.Emit.AssemblyBuilder)
+					{
+						return "Dynamic Assembly";
+					}
+					else if(myAssembly.GetType().FullName == "System.Reflection.Emit.InternalAssemblyBuilder")
+					{
+						return "Dynamic Assembly";
+					}
+#endif
+					else
+					{
+						// This call requires FileIOPermission for access to the path
+						// if we don't have permission then we just ignore it and
+						// carry on.
+						return myAssembly.Location;
+					}
 				}
-				catch(System.Security.SecurityException)
+				catch (NotSupportedException)
+				{
+					// The location information may be unavailable for dynamic assemblies and a NotSupportedException
+					// is thrown in those cases. See: http://msdn.microsoft.com/de-de/library/system.reflection.assembly.location.aspx
+					return "Dynamic Assembly";
+				}
+				catch (TargetInvocationException ex)
+				{
+					return "Location Detect Failed (" + ex.Message + ")";
+				}
+				catch (ArgumentException ex)
+				{
+					return "Location Detect Failed (" + ex.Message + ")";
+				}
+				catch (System.Security.SecurityException)
 				{
 					return "Location Permission Denied";
 				}
@@ -515,7 +553,7 @@ namespace log4net.Util
 			}
 			return name.Trim();
 
-			// xTODO: Do we need to unescape the assembly name string? 
+			// TODO: Do we need to unescape the assembly name string? 
 			// Doc says '\' is an escape char but has this already been 
 			// done by the string loader?
 		}
@@ -567,7 +605,7 @@ namespace log4net.Util
 		/// <para>
 		/// If the type name is fully qualified, i.e. if contains an assembly name in 
 		/// the type name, the type will be loaded from the system using 
-		/// <see cref="Type.GetType(string,bool)"/>.
+		/// <see cref="M:Type.GetType(string,bool)"/>.
 		/// </para>
 		/// <para>
 		/// If the type name is not fully qualified, it will be loaded from the assembly
@@ -591,7 +629,7 @@ namespace log4net.Util
 		/// <para>
 		/// If the type name is fully qualified, i.e. if contains an assembly name in 
 		/// the type name, the type will be loaded from the system using 
-		/// <see cref="Type.GetType(string,bool)"/>.
+		/// <see cref="M:Type.GetType(string,bool)"/>.
 		/// </para>
 		/// <para>
 		/// If the type name is not fully qualified it will be loaded from the
@@ -616,7 +654,7 @@ namespace log4net.Util
 		/// <para>
 		/// If the type name is fully qualified, i.e. if contains an assembly name in 
 		/// the type name, the type will be loaded from the system using 
-		/// <see cref="Type.GetType(string,bool)"/>.
+		/// <see cref="M:Type.GetType(string,bool)"/>.
 		/// </para>
 		/// <para>
 		/// If the type name is not fully qualified it will be loaded from the specified
