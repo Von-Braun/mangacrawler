@@ -8,13 +8,13 @@ using TomanuExtensions;
 
 namespace MangaCrawlerLib.Crawlers
 {
-    internal class MangaAccessCrawler : Crawler
+    internal class StarkanaCrawler : Crawler
     {
         public override string Name
         {
             get 
             {
-                return "Manga Access";
+                return "Starkana";
             }
         }
 
@@ -28,7 +28,7 @@ namespace MangaCrawlerLib.Crawlers
 
             var result = from serie in series
                          select new Serie(a_server,
-                                              "http://manga-access.com" + serie.GetAttributeValue("href", ""),
+                                              "http://starkana.com/" + serie.GetAttributeValue("href", ""),
                                               serie.InnerText);
 
             a_progress_callback(100, result);
@@ -52,7 +52,7 @@ namespace MangaCrawlerLib.Crawlers
 
             var result = (from chapter in chapters
                           select new Chapter(a_serie,
-                                             "http://manga-access.com" + chapter.GetAttributeValue("href", ""),
+                                             "http://starkana.com/" + chapter.GetAttributeValue("href", ""),
                                              chapter.InnerText)).ToList();
 
             a_progress_callback(100, result);
@@ -68,8 +68,8 @@ namespace MangaCrawlerLib.Crawlers
             var pages = doc.DocumentNode.SelectNodes("//select[@id='page_switch']/option");
 
             return from page in pages
-                   select new Page(a_chapter, 
-                                   "http://manga-access.com" + page.GetAttributeValue("value", ""), 
+                   select new Page(a_chapter,
+                                   "http://starkana.com/" + page.GetAttributeValue("value", ""), 
                                    pages.IndexOf(page) + 1,
                                    page.NextSibling.InnerText);
         }
@@ -85,7 +85,7 @@ namespace MangaCrawlerLib.Crawlers
 
         public override string GetServerURL()
         {
-            return "http://www.manga-access.com/manga/list";
+            return "http://starkana.com//manga/list";
         }
     }
 }

@@ -240,7 +240,7 @@
     <Compile Include="Crawlers\AnimeSourceCrawler.cs" />
     <Compile Include="Chapter.cs" />
     <Compile Include="Crawler.cs" />
-    <Compile Include="Crawlers\MangaAccessCrawler.cs" />
+    <Compile Include="Crawlers\StarkanaCrawler.cs" />
     <Compile Include="DownloadManager.cs" />
     <Compile Include="Crawlers\MangaFoxCrawler.cs" />
     <Compile Include="Crawlers\MangaRunCrawler.cs" />
