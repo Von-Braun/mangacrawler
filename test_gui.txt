@@ -1,5 +1,7 @@
 pamietanie wszystkich opcji zapisywanych w pliku ustawien
 
+sprawdzic czy da sie uruchomic tylko jedna kopie aplikacji
+
 dodanie do bookmarked serii - seria powinna pojawic sie w bookmarked, w series tab powinna 
 byc oznaczona jako bookmarked
   
