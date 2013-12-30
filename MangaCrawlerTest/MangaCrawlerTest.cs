@@ -833,47 +833,6 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
-        public void StopTazmoTest()
-        {
-            var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(StopTazmoCrawler)), 2785);
-
-            {
-                var chapters = TestSerie(series.First(s => s.Title == "666 Satan"), 78);
-
-                var pages = TestChapter("666satan_076", chapters.First(), 51);
-
-                TestPage(pages.First(),
-                    "6DC6CCF8-BB831044-DEDBEB18-D83FB748-C10D7698-FDDB65B8-506D7A06-2F455AAB", "01");
-                TestPage(pages.Last(),
-                    "0D8475C4-E5D98687-C4DA831B-0D8F7003-6DF7F2EE-3747FC41-1E56B602-AF65CE0A", "Credits");
-
-                pages = TestChapter("666satan_001a", chapters.Last(), 25);
-
-                TestPage(pages.First(),
-                    "4C1EBC9E-132DC56A-56B47BD6-C567DE7A-9354C577-D2C7E01E-18B7209B-CFDC1D43", "666Satan-01-00");
-                TestPage(pages.Last(),
-                    "C7BBA2D4-579AD7C0-38DE23A8-E7BDC94A-0D1480F3-50D22B2F-F759BF7B-E684F834", "666Satan-01-24");
-            }
-
-            {
-                var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 475, true);
-
-                var pages = TestChapter("", chapters.First(), 0, true);
-
-                TestPage(pages.First(), "", "", true);
-                TestPage(pages.Last(), "", "", true);
-
-                pages = TestChapter("bleach_001", chapters.Last(), 57);
-
-                TestPage(pages.First(),
-                    "8D78D814-791583E2-19F0FC41-460F600B-982ABBF0-6278B2A9-3D6D5112-ADB86FA6", "Bleach-01-01-00");
-                TestPage(pages.Last(),
-                    "E9B3C85A-C85A9F3B-FB3653FD-599AB0A8-D2B58283-DD48A599-AE5CB86F-2DFDA740", "bleach_flap_01");
-            }
-        }
-
-        [TestMethod]
         public void MangaHereTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
