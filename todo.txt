@@ -26,3 +26,4 @@ instalator - 4.5.1
 instalator - instlacja nowej wersji na starej
 uruchomienie nowej wersji na starej
 edycja strony tytulowej - odswiezenie listy stron i ich adresow
+code coverage
