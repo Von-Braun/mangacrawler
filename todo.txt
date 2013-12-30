@@ -22,3 +22,5 @@ http://www.readmangaonline.net/
 http://www.mangamonger.com/
 
 instalator - 4.5.1
+instalator - instlacja nowej wersji na starej
+uruchomienie nowej wersji na starej

@@ -279,10 +279,6 @@
       <Project>{4653B49E-D5A5-43B7-8CED-160E7BC09917}</Project>
       <Name>TomanuExtensionsLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\yaxlib\YAXLib.csproj">
-      <Project>{F1C4D174-C948-4D18-A125-F6855EF55683}</Project>
-      <Name>YAXLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

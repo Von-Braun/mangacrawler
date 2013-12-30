@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using YAXLib;
 using System.Reflection;
 using System.IO;
 using System.Drawing;
@@ -19,46 +18,48 @@ namespace MangaCrawler
 
         private static string VERSION = "1.2";
 
-        [YAXAttributeForClass]
         private string Version;
 
-        [YAXNode]
         public MangaSettings MangaSettings { get; private set; }
 
-        [YAXNode("SeriesFilter")]
         private string m_series_filter = "";
 
-        [YAXNode("SeriesSplitterDistance")]
         private int m_series_splitter_distance = 0;
 
-        [YAXNode("BookmarksSplitterDistance")]
         private int m_bookmarks_splitter_distance = 0;
 
-        [YAXNode]
         public FormState FormState = new FormState();
 
-        [YAXNode("PlaySoundWhenDownloaded")]
         private bool m_play_sound_when_downloaded = false;
 
-        [YAXNode("MinimizeOnClose")]
         private bool m_minimize_on_close = false;
 
-        [YAXNode("ShowBaloonTips")]
         private bool m_show_baloon_tips = false;
 
-        [YAXNode("Autostart")]
         private bool m_autostart = false;
 
-        [YAXNode("CheckBookmarksPeriod")]
         private TimeSpan m_check_bookmarks_period = new TimeSpan(hours: 0, minutes: 60, seconds: 0);
 
         private static Settings s_instance;
+
+        private static string XML_SETTINGS = "Settings";
+        private static string XML_VERSION = "Version";
+        private static string XML_SERIESFILTER = "SeriesFilter";
+        private static string XML_SERIESSPLITTERDISTANCE = "SeriesSplitterDistance";
+        private static string XML_BOOKMARKSSPLITTERDISTANCE = "BookmarksSplitterDistance";
+        private static string XML_FORMSTATE = "FormState";
+        private static string XML_PLAYSOUNDWHENDOWNLOADED = "PlaySoundWhenDownloaded";
+        private static string XML_MINIMIZEONCLOSE = "MinimizeOnClose";
+        private static string XML_SHOWBALOONTIPS = "ShowBaloonTips";
+        private static string XML_AUTOSTART = "Autostart";
+        private static string XML_CHECKBOOKMARKSPERIOD = "CheckBookmarksPeriod";
+        private static string XML_MANGASETTINGS = "MangaSettings";
 
         static Settings()
         {
             try
             {
-                s_instance = YAXSerializer.LoadFromFile<Settings>(SettingsFile);
+                s_instance = Load(SettingsFile);
 
                 if (s_instance == null)
                     s_instance = new Settings();
@@ -67,6 +68,34 @@ namespace MangaCrawler
             {
                 s_instance = new Settings();
             }
+        }
+
+        private static Settings Load(string a_settings_file)
+        {
+            var root = XDocument.Load(a_settings_file).Root;
+
+            if (root.Name != XML_SETTINGS)
+                throw new Exception();
+
+            Settings settings = new Settings() 
+            {
+                Version = root.Attribute(XML_VERSION).Value,
+                SeriesFilter = root.Element(XML_SERIESFILTER).Value,
+                SeriesSplitterDistance = Int32.Parse(root.Element(XML_SERIESSPLITTERDISTANCE).Value),
+                BookmarksSplitterDistance = Int32.Parse(root.Element(XML_BOOKMARKSSPLITTERDISTANCE).Value),
+                FormState = FormState.Load(root.Element(XML_FORMSTATE)),
+                PlaySoundWhenDownloaded = Boolean.Parse(root.Element(XML_PLAYSOUNDWHENDOWNLOADED).Value),
+                MinimizeOnClose = Boolean.Parse(root.Element(XML_MINIMIZEONCLOSE).Value),
+                ShowBaloonTips = Boolean.Parse(root.Element(XML_SHOWBALOONTIPS).Value),
+                Autostart = Boolean.Parse(root.Element(XML_AUTOSTART).Value),
+                CheckBookmarksPeriod = TimeSpan.Parse(root.Element(XML_CHECKBOOKMARKSPERIOD).Value),
+                MangaSettings = MangaSettings.Load(root.Element(XML_MANGASETTINGS))
+            };
+
+            settings.FormState.Changed += () => settings.Save();
+            settings.MangaSettings.Changed += () => settings.Save();
+
+            return settings;
         }
 
         private static string SettingsFile
@@ -86,7 +115,21 @@ namespace MangaCrawler
         public void Save()
         {
             Directory.CreateDirectory(GetSettingsDir());
-            YAXSerializer.SaveToFile<Settings>(SettingsFile, this);
+
+            XElement root = new XElement(XML_SETTINGS, 
+                new XAttribute(XML_VERSION, Version), 
+                new XElement(XML_SERIESFILTER, SeriesFilter), 
+                new XElement(XML_SERIESSPLITTERDISTANCE, SeriesSplitterDistance), 
+                new XElement(XML_BOOKMARKSSPLITTERDISTANCE, BookmarksSplitterDistance),
+                FormState.GetAsXml(), 
+                new XElement(XML_PLAYSOUNDWHENDOWNLOADED, PlaySoundWhenDownloaded), 
+                new XElement(XML_MINIMIZEONCLOSE, MinimizeOnClose), 
+                new XElement(XML_SHOWBALOONTIPS, ShowBaloonTips), 
+                new XElement(XML_AUTOSTART, Autostart), 
+                new XElement(XML_CHECKBOOKMARKSPERIOD, CheckBookmarksPeriod.ToString("hh\\:mm\\:ss")), 
+                MangaSettings.GetAsXml());
+
+            root.Save(SettingsFile);
         }
 
         public static Settings Instance 
@@ -103,13 +146,6 @@ namespace MangaCrawler
             MangaSettings = new MangaSettings();
             MangaSettings.Changed += () => Save();
             Version = VERSION;
-        }
-
-        [YAXOnDeserialized]
-        private void OnDeserialized()
-        {
-            FormState.Changed += () => Save();
-            MangaSettings.Changed += () => Save();
         }
 
         public bool PlaySoundWhenDownloaded
