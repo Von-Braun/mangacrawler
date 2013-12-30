@@ -5,6 +5,7 @@ using MangaCrawlerLib;
 using log4net.Appender;
 using System.Threading;
 using System.Security.AccessControl;
+using System.Diagnostics;
 
 namespace MangaCrawler
 {
@@ -36,12 +37,14 @@ namespace MangaCrawler
             RestoreEvent = null;
             try
             {
+#if RELEASE
                 RestoreEvent = AutoResetEvent.OpenExisting(EVENT_NAME);
                 RestoreEvent.Set();
                 return false;
             }
             catch (WaitHandleCannotBeOpenedException)
             {
+#endif
                 string user = Environment.UserDomainName + "\\" + Environment.UserName;
                 EventWaitHandleSecurity evh_sec = new EventWaitHandleSecurity();
 
