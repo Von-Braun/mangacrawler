@@ -33,7 +33,7 @@ namespace MangaCrawlerLib
 
         private int m_maximum_connections_per_server = 4;
 
-        private string m_user_agent = "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:10.0) Gecko/20100101 Firefox/10.0";
+        private string m_user_agent = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0";
 
         public event Action Changed;
 
