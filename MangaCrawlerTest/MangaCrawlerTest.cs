@@ -608,10 +608,10 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
-        public void MangaAccessTest()
+        public void StarkanaTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
-                s => s.Crawler.GetType() == typeof(MangaAccessCrawler)), 4240);
+                s => s.Crawler.GetType() == typeof(StarkanaCrawler)), 4240);
 
             {
                 var chapters = TestSerie(series.First(s => s.Title == "090 ~Eko to Issho~"), 59);
