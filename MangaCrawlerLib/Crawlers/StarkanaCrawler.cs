@@ -24,12 +24,13 @@ namespace MangaCrawlerLib.Crawlers
             HtmlDocument doc = DownloadDocument(a_server);
 
             var series = doc.DocumentNode.SelectNodes(
-                "/html/body/div/div[2]/table/tr/td[2]/div[3]/div/div[@class='c_h2b' or @class='c_h2']/a");
+                "//div[@id='inner_page']/div[@class='c_h2b' or @class='c_h2']/a");
+
 
             var result = from serie in series
-                         select new Serie(a_server,
-                                              "http://starkana.com/" + serie.GetAttributeValue("href", ""),
-                                              serie.InnerText);
+                         select new Serie(a_server, 
+                                          "http://starkana.com" + serie.GetAttributeValue("href", ""),
+                                          serie.InnerText);
 
             a_progress_callback(100, result);
         }
@@ -39,20 +40,11 @@ namespace MangaCrawlerLib.Crawlers
             HtmlDocument doc = DownloadDocument(a_serie);
 
             var chapters = doc.DocumentNode.SelectNodes(
-                "/html/body/div/div[2]/table/tr/td[2]/div[3]/div/div[@class='episode c_h2b' or @class='episode c_h2']/div/a");
-
-            if (chapters == null)
-            {
-                string url = doc.DocumentNode.SelectSingleNode(
-                    "/html/body/div/div[2]/table/tr/td[2]/div[3]/div/div[5]/table/tr/td[2]/a").GetAttributeValue("href", "");
-                doc = DownloadDocument(a_serie, a_serie.URL + url);
-                chapters = doc.DocumentNode.SelectNodes(
-                    "/html/body/div/div[2]/table/tr/td[2]/div[3]/div/div[@class='episode c_h2b' or @class='episode c_h2']/div/a");
-            }
+                "//div/div/a[@class='download-link']");
 
             var result = (from chapter in chapters
                           select new Chapter(a_serie,
-                                             "http://starkana.com/" + chapter.GetAttributeValue("href", ""),
+                                             "http://starkana.com" + chapter.GetAttributeValue("href", ""),
                                              chapter.InnerText)).ToList();
 
             a_progress_callback(100, result);
@@ -69,7 +61,7 @@ namespace MangaCrawlerLib.Crawlers
 
             return from page in pages
                    select new Page(a_chapter,
-                                   "http://starkana.com/" + page.GetAttributeValue("value", ""), 
+                                   "http://starkana.com" + page.GetAttributeValue("value", ""), 
                                    pages.IndexOf(page) + 1,
                                    page.NextSibling.InnerText);
         }
@@ -85,7 +77,7 @@ namespace MangaCrawlerLib.Crawlers
 
         public override string GetServerURL()
         {
-            return "http://starkana.com//manga/list";
+            return "http://www.starkana.com/manga/list";
         }
     }
 }
