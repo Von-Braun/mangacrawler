@@ -335,7 +335,8 @@ namespace MangaCrawlerLib
             {
                 using (ZipFile zip = new ZipFile())
                 {
-                    zip.UseUnicodeAsNecessary = true;
+                    zip.AlternateEncodingUsage = ZipOption.AsNecessary;
+                    zip.AlternateEncoding = Encoding.UTF8;
 
                     foreach (var page in Pages)
                     {
