@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Configuration;
 using System.Windows.Forms;
-using YAXLib;
 using System.Drawing;
+using System.Xml.Linq;
+using TomanuExtensions;
 
 namespace MangaCrawler
 {
     public class FormState
     {
-        [YAXNode("WindowState")]
         private FormWindowState m_window_state = FormWindowState.Normal;
 
-        [YAXNode("Bounds")]
         private Rectangle m_bounds = Rectangle.Empty;
 
         public event Action Changed;
+
+        private static string XML_FORMSTATE = "FormState";
+        private static string XML_WINDOWSTATE = "WindowState";
+        private static string XML_BOUNDS = "Bounds";
   
         public void Init(Form a_form)
         {
@@ -59,6 +62,26 @@ namespace MangaCrawler
 
             if (Changed != null)
                 Changed();
+        }
+
+        internal static FormState Load(XElement a_node)
+        {
+            if (a_node.Name != XML_FORMSTATE)
+                throw new Exception();
+
+            return new FormState()
+            {
+                m_window_state = (FormWindowState)Enum.Parse(
+                    typeof(FormWindowState), a_node.Element(XML_WINDOWSTATE).Value), 
+                m_bounds = RectangleExtensions.FromXml(a_node.Element(XML_BOUNDS))
+            };
+        }
+
+        internal XElement GetAsXml()
+        {
+            return new XElement(XML_FORMSTATE,
+                new XElement(XML_WINDOWSTATE, m_window_state), 
+                m_bounds.GetAsXml(XML_BOUNDS));
         }
     }
 }
