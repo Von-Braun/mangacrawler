@@ -124,7 +124,7 @@ namespace MangaCrawlerLib.Crawlers
 
         public override string GetServerURL()
         {
-            return "http://www.mangafox.com/manga/";
+            return "http://mangafox.me//manga/";
         }
     }
 }

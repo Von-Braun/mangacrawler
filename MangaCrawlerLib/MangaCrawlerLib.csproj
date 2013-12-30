@@ -243,11 +243,8 @@
     <Compile Include="Crawlers\StarkanaCrawler.cs" />
     <Compile Include="DownloadManager.cs" />
     <Compile Include="Crawlers\MangaFoxCrawler.cs" />
-    <Compile Include="Crawlers\MangaRunCrawler.cs" />
     <Compile Include="Crawlers\MangaShareCrawler.cs" />
     <Compile Include="Crawlers\MangaVolumeCrawler.cs" />
-    <Compile Include="Crawlers\OtakuWorksCrawler.cs" />
-    <Compile Include="Crawlers\OurMangaCrawler.cs" />
     <Compile Include="NaturalOrderStringComparer.cs" />
     <Compile Include="PageNamingStrategy.cs" />
     <Compile Include="MangaSettings.cs" />
@@ -258,7 +255,6 @@
     <Compile Include="Serie.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Crawlers\SpectrumNexusCrawler.cs" />
-    <Compile Include="Crawlers\StopTazmoCrawler.cs" />
     <Compile Include="Crawlers\UnixMangaCrawler.cs" />
     <Compile Include="Downloading.cs" />
   </ItemGroup>

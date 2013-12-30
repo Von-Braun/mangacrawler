@@ -15,6 +15,9 @@ wpf
 
 nowe serwisy:
 
+http://www.readmanga.eu/
+http://www.tenmanga.com/
+http://kissmanga.com/
 http://mangastream.com
 http://www.anymanga.com/directory/all/
 http://mangable.com/manga-list/
@@ -24,4 +27,4 @@ http://www.mangamonger.com/
 instalator - 4.5.1
 instalator - instlacja nowej wersji na starej
 uruchomienie nowej wersji na starej
-edycja strony tytulowej
+edycja strony tytulowej - odswiezenie listy stron i ich adresow
