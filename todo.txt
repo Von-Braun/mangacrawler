@@ -1,4 +1,5 @@
 test na wykrywanie nowej wersji
+manga stream test
 
 zmiana nazwy nie tracimy powiazania, tak samo teraz nie tracimy go dla zmiany url
 lepsza obluga dwoch elementow o takich samych urlach ale roznych nazwach, powinien to byc najlepiej 
