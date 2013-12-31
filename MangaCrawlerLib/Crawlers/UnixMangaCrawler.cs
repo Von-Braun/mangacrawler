@@ -36,7 +36,7 @@ namespace MangaCrawlerLib.Crawlers
             HtmlDocument doc = DownloadDocument(a_server);
 
             var series = doc.DocumentNode.SelectNodes(
-                "/html/body/center/div/div[2]/div/div[2]/table/tr/td/a");
+                "//div/div/table/tr/td/a");
 
             var result = from serie in series
                          select new Serie(
@@ -126,10 +126,10 @@ namespace MangaCrawlerLib.Crawlers
             if (doc.DocumentNode.InnerText.Contains("500 - Internal server error"))
                 return result;
 
-            var pages = doc.DocumentNode.SelectNodes(
+            var chapter = doc.DocumentNode.SelectNodes(
                 "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
 
-            if (pages != null)
+            if (chapter != null)
             {
                 result.Add(new Chapter(a_serie, a_chapter_or_volume.GetAttributeValue(
                     "href", ""), a_chapter_or_volume.InnerText));
@@ -137,8 +137,7 @@ namespace MangaCrawlerLib.Crawlers
             else
             {
                 var chapters_or_volumes = doc.DocumentNode.SelectNodes(
-                        "/html/body/center/div/div[2]/div/div[2]/table/tr/td/a").
-                            Skip(3).Reverse().Skip(1).Reverse().ToList();
+                    "//tr[@class='snF snEven' or @class='snF snOdd']/td/a").Skip(1).ToList();
                 if (chapters_or_volumes[0].InnerText.ToLower() == "thumbs.jpg")
                     chapters_or_volumes.RemoveAt(0);
 
@@ -174,15 +173,8 @@ namespace MangaCrawlerLib.Crawlers
         internal override string GetImageURL(Page a_page)
         {
             HtmlDocument doc = DownloadDocument(a_page);
-
-            string script = doc.DocumentNode.SelectSingleNode(
-                "/html/body/div/table/tr[2]/td/div[2]/table/tr/td/center/script").InnerText;
-
-            Regex regex1 = new Regex("([Ss][Rr][Cc])=\".*\"");
-            Match m1 = regex1.Match(script);
-            string str = m1.Value.RemoveFromLeft(5).RemoveFromRight(1);
-
-            return str;
+            string script = doc.DocumentNode.SelectSingleNode("//div[@id='contentRH']/div[4]/script").InnerText;
+            return Regex.Match(script, ".*SRC=\"(.*)\".*").Groups[1].Value;
         }
 
         public override string GetServerURL()

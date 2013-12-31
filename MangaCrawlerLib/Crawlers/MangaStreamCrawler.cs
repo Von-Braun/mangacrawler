@@ -7,7 +7,6 @@ using TomanuExtensions;
 
 namespace MangaCrawlerLib.Crawlers
 {
-    // TODO: czas na przerobienie katalogu by byl gotowy na nowe cralwerly 
     internal class MangaStreamCrawler : Crawler
     {
         public override string Name
