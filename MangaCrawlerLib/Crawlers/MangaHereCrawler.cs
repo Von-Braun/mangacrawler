@@ -57,7 +57,7 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_chapter);
 
-            var pages = doc.DocumentNode.SelectNodes("/html/body/section/div[2]/span/select/option");
+            var pages = doc.DocumentNode.SelectNodes("//section[@class='readpage_top']/div[3]/span/select/option");
 
             return from page in pages
                    select new Page(
