@@ -1,5 +1,3 @@
-test na wykrywanie nowej wersji
-manga stream test
 czemu podczas ladowania pojawia sie najpierw pierwszy serwer
 
 zmiana nazwy nie tracimy powiazania, tak samo teraz nie tracimy go dla zmiany url
