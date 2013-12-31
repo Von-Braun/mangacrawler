@@ -17,8 +17,8 @@ using System.IO;
 
 namespace MangaCrawler
 {
-	partial class MangaCrawlerForm
-	{
+    partial class MangaCrawlerForm
+    {
         private class MangaCrawlerFormGUI
         {
             public MangaCrawlerForm Form;
@@ -711,5 +711,5 @@ namespace MangaCrawler
                 return false;
             }
         }
-	}
+    }
 }

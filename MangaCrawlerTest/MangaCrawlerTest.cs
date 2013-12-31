@@ -744,6 +744,31 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
+        public void MangaStreamTest()
+        {
+            var series = TestServer(DownloadManager.Instance.Servers.First(
+                s => s.Crawler.GetType() == typeof(MangaStreamCrawler)), 33);
+
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "Fairy Tail"), 9);
+
+                var pages = TestChapter("365 - Fairy in the Jail", chapters.First(), 38);
+
+                TestPage(pages.First(),
+                    "87C57CBA-8DC3F7C5-40EED408-58AF7493-6FC9018D-1F0D9C40-7930D24D-F61B8525", "1");
+                TestPage(pages.Last(),
+                    "4FA2BEF1-3B161EC5-A6A5BB15-E60F97DF-A07A3B33-4C90C4A3-2E9EE299-47BDCC62", "38");
+
+                pages = TestChapter("Special - The Fairy's Punishment Game", chapters.Last(), 28);
+
+                TestPage(pages.First(),
+                    "F4606D9C-DBC3EA2A-665F9FF2-7175E58F-29164759-9E1CBF8C-502856C8-A1E96050", "1");
+                TestPage(pages.Last(),
+                    "844B0F93-28235BB9-9663E6DB-238C7EE9-0F622603-23A32CCF-5D39497B-91E8DEC9", "28");
+            }
+        }
+
+        [TestMethod]
         public void MangaVolumeTest()
         {
             var series = TestServer(DownloadManager.Instance.Servers.First(
