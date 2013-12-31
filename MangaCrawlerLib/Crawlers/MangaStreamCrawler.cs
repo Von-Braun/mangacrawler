@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
+using TomanuExtensions;
 
 namespace MangaCrawlerLib.Crawlers
 {
@@ -22,13 +23,12 @@ namespace MangaCrawlerLib.Crawlers
             HtmlDocument doc = DownloadDocument(a_server);
 
             var series = doc.DocumentNode.SelectNodes(
-                "//div[@id='contentwrap-inner']//strong[@style='font-size:14px;']");
+                "//table[@class='table table-striped']/tr/td/strong/a");
 
             var result = from serie in series
-                         select new Serie(
-                             a_server,
-                             GetServerURL(),
-                             serie.InnerText);
+                         select new Serie(a_server,
+                                         serie.GetAttributeValue("href", ""),
+                                         serie.InnerText);
 
             a_progress_callback(100, result);
         }
@@ -37,37 +37,13 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
-            var chapters = doc.DocumentNode.SelectNodes("//div[@id='contentwrap-inner']//tr/td/strong|//div[@id='contentwrap-inner']//tr/td/a");
+            var chapters = doc.DocumentNode.SelectNodes(
+                "//table[@class='table table-striped']/tr/td/a");
 
-            if (chapters == null)
-            {
-                a_progress_callback(100, new Chapter[0]);
-                return;
-            }
-
-            var pos = -1;
-            List<Chapter> result = new List<Chapter>();
-
-            foreach (HtmlNode chapter in chapters)
-            {
-                // find the manga
-                if (chapter.InnerText == a_serie.Title)
-                {
-                    // found it, next 'a' items are the chapters
-                    pos = chapters.IndexOf(chapter);
-                }
-                if (pos != -1 && chapter.Name != "strong")
-                {
-                    result.Add(new Chapter(
-                                    a_serie,
-                                    "http://www.mangastream.com" + chapter.GetAttributeValue("href", ""),
-                                    chapter.InnerText));
-                }
-                if (chapter.Name == "strong" && chapter.InnerText != a_serie.Title)
-                {
-                    pos = -1;
-                }
-            }
+            var result = (from chapter in chapters
+                          select new Chapter(a_serie,
+                                             chapter.GetAttributeValue("href", ""),
+                                             chapter.InnerText)).ToList();
             
             a_progress_callback(100, result);
 
@@ -79,35 +55,33 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_chapter);
 
-            var pages = doc.DocumentNode.SelectNodes("//div[@id='controls']/a");
+            var pages = doc.DocumentNode.SelectNodes(
+                "//div[@class='controls']/div[2]/ul/li/a");
 
             List<Page> result = new List<Page>();
 
-            foreach (HtmlNode page in pages)
-            {
-                if (!page.InnerText.Contains("Prev") && !page.InnerText.Contains("Next"))
-                {
-                    result.Add(new Page(
-                       a_chapter,
-                       "http://www.mangastream.com" + page.GetAttributeValue("href", ""),
-                       pages.IndexOf(page) + 1,
-                       page.InnerText));
-                }
-            }
+            string link = pages.First().GetAttributeValue("href", "");
+            link = link.Remove(link.LastIndexOf("/") + 1);
+
+            int first_page = Int32.Parse(pages.First().GetAttributeValue("href", "").Split("/").Last());
+            int last_page = Int32.Parse(pages.Last().GetAttributeValue("href", "").Split("/").Last());
+
+            for (int i = first_page; i <= last_page; i++)
+                result.Add(new Page(a_chapter, link + i.ToString(), i, i.ToString()));
 
             return result;
-        }
-
-        public override string GetServerURL()
-        {
-            return "http://mangastream.com/manga";
         }
 
         internal override string GetImageURL(Page a_page)
         {
             HtmlDocument doc = DownloadDocument(a_page);
-            var image = doc.DocumentNode.SelectSingleNode("//img[@id='p']");
+            var image = doc.DocumentNode.SelectSingleNode("//img[@id='manga-page']");
             return image.GetAttributeValue("src", "");
+        }
+
+        public override string GetServerURL()
+        {
+            return "http://mangastream.com/manga";
         }
     }
 }
