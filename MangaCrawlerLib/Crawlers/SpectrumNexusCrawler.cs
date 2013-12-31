@@ -110,30 +110,17 @@ namespace MangaCrawlerLib.Crawlers
             {
                 index++;
 
-                Page pi = new Page(a_chapter, a_chapter.URL + "&page=" + 
-                    page.GetAttributeValue("value", ""), 
-                    index, page.NextSibling.InnerText);
-
-                yield return pi;
+                yield return new Page(a_chapter, 
+                                      a_chapter.URL + "&page=" + page.GetAttributeValue("value", ""),
+                                      index, page.NextSibling.InnerText);
             }
         }
 
         internal override string GetImageURL(Page a_page)
         {
             HtmlDocument doc = DownloadDocument(a_page);
-
             var img = doc.DocumentNode.SelectSingleNode("//div[@class='imgContainer']/a/img");
-
-            if (a_page.URL.ToLower().Contains("view.thespectrum.net"))
-            {
-                return "http://view.thespectrum.net/" + img.GetAttributeValue("src", "").
-                    RemoveFromLeft(1);
-            }
-            else
-            {
-                return "http://view.mangamonger.com/" + img.GetAttributeValue("src", "").
-                    RemoveFromLeft(1);
-            }
+            return img.GetAttributeValue("src", "");
         }
 
         public override string GetServerURL()
