@@ -946,14 +946,14 @@ namespace MangaCrawlerTest
                 s => s.Crawler.GetType() == typeof(AnimeaCrawler)), 7959);
 
             {
-                var chapters = TestSerie(series.First(s => s.Title == "-6mm no Taboo"), 4);
+                var chapters = TestSerie(series.First(s => s.Title == "-6mm no Taboo"), 5);
 
-                var pages = TestChapter("-6mm no Taboo 38", chapters.First(), 31);
+                var pages = TestChapter("-6mm no Taboo 6", chapters.First(), 41);
 
                 TestPage(pages.First(),
-                    "C85DECD7-FB7E99A5-AE613101-96FB60E4-670B7298-E7BA3C6E-D853162C-2167D1F0", "1");
+                    "68148F55-ED14DF5B-0623AFDA-2C5A33C9-3A54D1D7-81A4A68A-ADDDC97B-9FE8359F", "1");
                 TestPage(pages.Last(),
-                    "BDD5FC59-82057103-7A06E79F-7C47B6CC-21ABD4F6-6BB3C970-47037114-21ED316B", "31");
+                    "6E088ED0-0119F8DC-6A8D2A40-A7C0CEA2-A76F3D2F-251F5902-96349761-CD54BAFC", "41");
             }
 
             {
@@ -962,9 +962,9 @@ namespace MangaCrawlerTest
                 var pages = TestChapter("√P 1", chapters.First(), 25);
 
                 TestPage(pages.First(),
-                    "0E2088E6-41A12467-28D2473B-FB72C34E-23235DE1-E5EB75AD-F0CA5161-6E677A7D", "1");
+                    "BFB70C59-C8873C4C-062E38C7-F5DD7CE8-A3092598-8A5D9832-6C702833-A897D1D5", "1");
                 TestPage(pages.Last(),
-                    "D3060C38-24E5409B-4C97A24B-8232A7DD-9BCC2ADB-3963E414-1B0A29B3-664D849B", "25");
+                    "1C37C381-BE8312C7-A488CAFD-A6073622-C8BDCE67-7BD2DE04-B50F67EC-9F880D2A", "25");
             }
 
             {
@@ -973,32 +973,31 @@ namespace MangaCrawlerTest
                 var pages = TestChapter("+Anima 56", chapters.First(), 19);
 
                 TestPage(pages.First(),
-                    "AFF2DF3B-6842FC1E-71D05E9F-1ED19037-68C51CDC-0AA3C008-7282AB4F-E950DADB", "1");
+                    "639A3D2D-AD0967DD-28A8F27A-549D7A21-3F21D5FC-3EA21CBD-9EFB7C21-A6C0C7BD", "1");
                 TestPage(pages.Last(),
-                    "ABB146F9-0A0475C7-6D92F11E-3DF69083-F7151EA5-B72C24F6-DF924C6D-BA35C0C9", "19");
+                    "FAC59BD0-B3FEA16B-FC601370-DF55CB33-50066387-7962D1D7-8443B9A8-2F484A03", "19");
 
                 pages = TestChapter("+Anima 1", chapters.Last(), 51);
 
                 TestPage(pages.First(),
-                    "37E357A3-85B174C5-E5AF885F-CA280D45-3030D460-19DB58AD-82D2E79B-9E770145", "1");
+                    "80BED428-82336AFF-A125D114-78E0A0F9-CD683866-59ADAC28-211C440D-83432F78", "1");
                 TestPage(pages.Last(),
-                    "3A136277-C9E71628-FE0E4856-3C92D470-5045766F-BD202EEB-A122C17C-0A07C543", "51");
+                    "53DB141A-D2D77053-1903E430-7E578168-644D86EA-5B5AE6D9-112AC077-26EFCDF3", "51");
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Title == "Fairy Tail"), 284, true);
+                var chapters = TestSerie(series.First(s => s.Title == "Fairy Tail"), 0, true);
+            }
 
-                var pages = TestChapter("", chapters.First(), 0, true);
+            {
+                var chapters = TestSerie(series.First(s => s.Title == "Detective Conan"), 874, true);
 
-                TestPage(pages.First(), "", "", true);
-                TestPage(pages.Last(), "", "", true);
-
-                pages = TestChapter("Fairy Tail Special 1", chapters.Last(), 23);
+                var pages = TestChapter("Detective Conan 880", chapters.First(), 16);
 
                 TestPage(pages.First(),
-                    "1C885D26-C2799A5F-D26CFE75-1A8B33F5-E5D34A47-94A08A5F-2BBFB968-C133B208", "1");
+                    "2DB009E4-3BCD97A0-60C0F0F4-2DF5EA30-527733BB-6D3BED7D-DEB02AE6-8C0E6444", "1");
                 TestPage(pages.Last(),
-                    "2A633A43-3953AA4B-2D1F8F7E-2B8B0EFE-1FA2ABDF-074F7B79-D7EED609-7C13628D", "23");
+                    "0715989A-4E8FC141-02E9BA18-163A4B88-B672D893-2547D39E-3C6513BF-AFA66008", "16");
             }
         }
     }
