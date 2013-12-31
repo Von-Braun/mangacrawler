@@ -26,8 +26,8 @@ namespace MangaCrawlerLib.Crawlers
 
             var result = from serie in series
                          select new Serie(a_server,
-                                         serie.GetAttributeValue("href", ""),
-                                         serie.InnerText);
+                                          serie.GetAttributeValue("href", ""),
+                                          serie.InnerText);
 
             a_progress_callback(100, result);
         }
