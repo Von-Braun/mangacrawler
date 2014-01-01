@@ -203,6 +203,8 @@ namespace MangaCrawlerTest
             foreach (var xml in xmls)
             {
                 var std = ServerTestData.Load(xml);
+                std.Download();
+
                 DeleteErrors(Path.GetFileNameWithoutExtension(xml));
 
                 var pages = from serie in std.Series
@@ -211,11 +213,7 @@ namespace MangaCrawlerTest
                             select page;
 
                 foreach (var page in pages)
-                {
-                    page.ChapterTestData.SerieTestData.ServerTestData.Download();
-
                     all_used_pages.Add(page.FileName);
-                }
             }
 
             var unused_images = all_images.Except(all_used_pages);
@@ -223,7 +221,7 @@ namespace MangaCrawlerTest
             foreach (var ui in unused_images)
             {
                 TestContext.WriteLine("Deleting: {0}", ui);
-                //File.Delete(ui);
+                File.Delete(ui);
             }
 
             Assert.IsTrue(!unused_images.Any());
