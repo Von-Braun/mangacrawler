@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServerTestData>
+  <Name>Animea</Name>
+  <SerieCount>7959</SerieCount>
+  <Series>
+    <SerieTestData>
+      <Title>-6mm no Taboo</Title>
+      <ChapterCount>5</ChapterCount>
+      <Chapters>
+        <ChapterTestData>
+          <Title>-6mm no Taboo 6</Title>
+          <PageCount>41</PageCount>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>68148F55-ED14DF5B-0623AFDA-2C5A33C9-3A54D1D7-81A4A68A-ADDDC97B-9FE8359F</Hash>
+              <PageIndex>1</PageIndex>
+            </PageTestData>
+            <PageTestData>
+              <Name>41</Name>
+              <Hash>6E088ED0-0119F8DC-6A8D2A40-A7C0CEA2-A76F3D2F-251F5902-96349761-CD54BAFC</Hash>
+              <PageIndex>41</PageIndex>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>√P</Title>
+      <ChapterCount>1</ChapterCount>
+      <Chapters>
+        <ChapterTestData>
+          <Title>√P 1</Title>
+          <PageCount>25</PageCount>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>BFB70C59-C8873C4C-062E38C7-F5DD7CE8-A3092598-8A5D9832-6C702833-A897D1D5</Hash>
+              <PageIndex>1</PageIndex>
+            </PageTestData>
+            <PageTestData>
+              <Name>25</Name>
+              <Hash>1C37C381-BE8312C7-A488CAFD-A6073622-C8BDCE67-7BD2DE04-B50F67EC-9F880D2A</Hash>
+              <PageIndex>25</PageIndex>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>+Anima</Title>
+      <ChapterCount>59</ChapterCount>
+      <Chapters>
+        <ChapterTestData>
+          <Title>+Anima 56</Title>
+          <PageCount>19</PageCount>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>639A3D2D-AD0967DD-28A8F27A-549D7A21-3F21D5FC-3EA21CBD-9EFB7C21-A6C0C7BD</Hash>
+              <PageIndex>1</PageIndex>
+            </PageTestData>
+            <PageTestData>
+              <Name>19</Name>
+              <Hash>FAC59BD0-B3FEA16B-FC601370-DF55CB33-50066387-7962D1D7-8443B9A8-2F484A03</Hash>
+              <PageIndex>19</PageIndex>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>+Anima 1</Title>
+          <PageCount>51</PageCount>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>80BED428-82336AFF-A125D114-78E0A0F9-CD683866-59ADAC28-211C440D-83432F78</Hash>
+              <PageIndex>1</PageIndex>
+            </PageTestData>
+            <PageTestData>
+              <Name>51</Name>
+              <Hash>53DB141A-D2D77053-1903E430-7E578168-644D86EA-5B5AE6D9-112AC077-26EFCDF3</Hash>
+              <PageIndex>51</PageIndex>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Fairy Tail</Title>
+      <ChapterCount>0</ChapterCount>
+      <Chapters />
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Detective Conan</Title>
+      <ChapterCount>874</ChapterCount>
+      <Chapters>
+        <ChapterTestData>
+          <Title>Detective Conan 880</Title>
+          <PageCount>16</PageCount>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>2DB009E4-3BCD97A0-60C0F0F4-2DF5EA30-527733BB-6D3BED7D-DEB02AE6-8C0E6444</Hash>
+              <PageIndex>1</PageIndex>
+            </PageTestData>
+            <PageTestData>
+              <Name>16</Name>
+              <Hash>0715989A-4E8FC141-02E9BA18-163A4B88-B672D893-2547D39E-3C6513BF-AFA66008</Hash>
+              <PageIndex>16</PageIndex>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+  </Series>
+</ServerTestData>

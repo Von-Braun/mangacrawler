@@ -23,6 +23,9 @@ namespace MangaCrawlerTest
     {
         private TestContext m_test_context_instance;
 
+        // TODO: 
+        private ServerTestData m_server_test_data;
+
         public TestContext TestContext
         {
             get
@@ -41,7 +44,10 @@ namespace MangaCrawlerTest
         [TestCleanup]
         public void CheckError()
         {
-            Assert.IsTrue(m_error == false);
+            //Assert.IsTrue(m_error == false); // TODO: 
+
+            Helpers.DeleteTestData(m_server_test_data.Name);
+            Helpers.GenerateInfo(m_server_test_data, false);
         }
 
         [TestInitialize]
@@ -50,29 +56,15 @@ namespace MangaCrawlerTest
             DownloadManager.Create(
                    new MangaSettings(),
                    Settings.GetSettingsDir());
-        }
 
-        private static string FormatHash(string a_hash)
-        {
-            List<string> ar = new List<string>();
-            while (a_hash != "")
-            {
-                ar.Add(a_hash.Left(2));
-                a_hash = a_hash.RemoveFromLeft(2);
-            }
-
-            for (int i = 0; i < ar.Count / 4; i++)
-            {
-                if (i != 0)
-                    a_hash += "-";
-                a_hash += ar[i * 4] + ar[i * 4 + 1] + ar[i * 4 + 2] + ar[i * 4 + 3];
-            }
-
-            return a_hash;
+            m_server_test_data = new ServerTestData();
         }
 
         private IEnumerable<Serie> TestServer(Server a_server, int a_count)
         {
+            m_server_test_data.Name = a_server.Name;
+            m_server_test_data.SerieCount = a_count;
+
             TestContext.WriteLine("Testing server {0}", a_server.Name);
 
             a_server.State = ServerState.Waiting;
@@ -104,6 +96,12 @@ namespace MangaCrawlerTest
         private IEnumerable<Chapter> TestSerie(Serie a_serie, int a_count, 
             bool a_ongoing = false)
         {
+            m_server_test_data.AddSeries(new SerieTestData()
+            {
+                ChapterCount = a_count, 
+                Title = a_serie.Title
+            });
+
             TestContext.WriteLine("  Testing serie {0}", a_serie.Title);
 
             a_serie.State = SerieState.Waiting;
@@ -150,6 +148,12 @@ namespace MangaCrawlerTest
         private List<Page> TestChapter(string a_title, Chapter a_chapter, int a_count, 
             bool a_ongoing = false)
         {
+            m_server_test_data.Series.First(el => el.Title == a_chapter.Serie.Title).AddChapter(new ChapterTestData()
+            {
+                PageCount = a_count,
+                Title = a_title
+            });
+
             if (a_ongoing)
                 Assert.IsTrue(a_count == 0);
 
@@ -211,6 +215,14 @@ namespace MangaCrawlerTest
 
         private void TestPage(Page a_page, string a_hash, string a_name, bool a_ongoing = false)
         {
+            m_server_test_data.Series.First(el => el.Title == a_page.Chapter.Serie.Title).Chapters.First(
+                el => el.Title == a_page.Chapter.Title).AddPage(new PageTestData()
+            {
+                Hash = a_hash, 
+                Name = a_name,
+                PageIndex = a_page.Index
+            });
+
             Assert.IsTrue(a_hash != null);
 
             if (a_ongoing)
@@ -250,7 +262,6 @@ namespace MangaCrawlerTest
                 if (!a_ongoing)
                 {
                     string hash = Hash.CalculateSHA256(stream);
-                    hash = FormatHash(hash);
 
                     if (a_hash != hash)
                     {
@@ -289,7 +300,7 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod, Timeout(24 * 60 * 60 * 1000)]
-        public void _RandomTestAll()
+        public void RandomTestAll()
         {
             Dictionary<Server, int> serie_chapters = new Dictionary<Server, int>();
             Dictionary<Server, int> chapter_pageslist = new Dictionary<Server, int>();
@@ -1000,5 +1011,16 @@ namespace MangaCrawlerTest
                     "0715989A-4E8FC141-02E9BA18-163A4B88-B672D893-2547D39E-3C6513BF-AFA66008", "16");
             }
         }
+
+        [TestMethod]
+        public void TestXmls()
+        {
+            Helpers.DeleteDownloaded();
+            var from_xml = Helpers.LoadTestDataList();
+            var downloaded = Helpers.LoadTestDataList();
+            Helpers.Download(downloaded);
+            Assert.IsTrue(Helpers.Compare(from_xml, downloaded));
+        }
+
     }
 }
