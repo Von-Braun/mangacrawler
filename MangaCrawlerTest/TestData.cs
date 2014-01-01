@@ -52,9 +52,8 @@ namespace MangaCrawlerTest
                                     ChapterTestData.SerieTestData.ServerTestData.Name,
                                     ChapterTestData.SerieTestData.Title,
                                     ChapterTestData.Title,
-                                    // TODO: generacja na nowo beda inne nazwy
-                                    Name,
-                                    Path.GetFileNameWithoutExtension(ImageURL) + Page.Crawler.GetImageURLExtension(ImageURL));
+                                    Index,
+                                    Page.Crawler.GetImageURLExtension(ImageURL));
                 file_name = TomanuExtensions.Utils.FileUtils.RemoveInvalidFileCharacters(file_name);
                 file_name = Path.Combine(TestXmls.GetTestDataDir(), file_name);
 
@@ -70,11 +69,11 @@ namespace MangaCrawlerTest
         {
             PageTestData ptd = new PageTestData();
 
+            ptd.Index = Int32.Parse(a_node.Element("Index").Value);
             ptd.Name = a_node.Element("Name").Value;
             ptd.Hash = a_node.Element("Hash").Value;
             ptd.URL = a_node.Element("URL").Value;
             ptd.ImageURL = a_node.Element("ImageURL").Value;
-            ptd.Index = Int32.Parse(a_node.Element("Index").Value);
 
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Name));
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Hash));
@@ -88,11 +87,11 @@ namespace MangaCrawlerTest
         public XElement GetAsXml()
         {
             return new XElement("PageTestData",
+                new XElement("Index", Index), 
                 new XElement("Name", Name),
                 new XElement("Hash", Hash),
                 new XElement("URL", URL),
-                new XElement("ImageURL", ImageURL),
-                new XElement("Index", Index));
+                new XElement("ImageURL", ImageURL));
         }
 
         public void Download(ChapterTestData a_chapter_test_data)
@@ -180,7 +179,7 @@ namespace MangaCrawlerTest
             return new XElement("ChapterTestData", 
                 new XElement("Title", Title), 
                 new XElement("PageCount", PageCount),
-                new XElement("Index", Index),
+                new XElement("Index", Index), 
                 new XElement("URL", URL), 
                 new XElement("Pages", 
                     from page in Pages
@@ -195,7 +194,7 @@ namespace MangaCrawlerTest
             PageCount = -1;
             Title = "";
 
-            Index = Chapter.Serie.Chapters.IndexOf(Chapter);
+            Index = Chapter.Serie.Chapters.IndexOf(Chapter) + 1;
             URL = Chapter.URL;
 
             Chapter.State = ChapterState.Waiting;
