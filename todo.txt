@@ -1,3 +1,8 @@
+przerobic testy - xml wzorcowy - wraz z plikami pobranymi
+podczas testu generowany jest nowy xml i nowe pliki, 
+po tescie jesli nasz chapter nie jest najnowszy, to wystarczy zmienic tytul i 
+dokonac ponownego testu, pozniej sprawdzic obrazki i przekopiowac dane do xml z testem
+musi sie dac latwo porownac xml jak i pliki graficzne, powinny byc generowane do tego samego katalogu ale z innymi koncowkami nazw
 
 zmiana nazwy nie tracimy powiazania, tak samo teraz nie tracimy go dla zmiany url
 lepsza obluga dwoch elementow o takich samych urlach ale roznych nazwach, powinien to byc najlepiej 
