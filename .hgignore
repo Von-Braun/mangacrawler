@@ -34,3 +34,4 @@ MangaCrawler.v12.suo
 MangaCrawlerTest/TestData/*.jpg
 MangaCrawlerTest/TestData/*.JPG
 MangaCrawlerTest/TestData/*.png
+MangaCrawlerTest/TestData/* - error.xml

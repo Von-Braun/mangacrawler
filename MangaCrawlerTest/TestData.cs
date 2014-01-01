@@ -61,7 +61,7 @@ namespace MangaCrawlerTest
             ptd.Index = Int32.Parse(a_node.Element("Index").Value);
 
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Name));
-            Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Hash));
+            //Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Hash)); // TODO: 
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.URL));
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.ImageURL));
 
@@ -84,7 +84,6 @@ namespace MangaCrawlerTest
             ChapterTestData = a_chapter_test_data;
             Page = ChapterTestData.Chapter.Pages.FirstOrDefault(el => el.Name == Name);
             Index = Page.Index;
-            ImageURL = Path.GetFileName(Page.ImageURL) + Page.Crawler.GetImageURLExtension(Page.ImageURL);
             URL = Page.URL;
 
             Name = "";
@@ -96,6 +95,8 @@ namespace MangaCrawlerTest
                 var stream = Page.GetImageStream();
 
                 Image = System.Drawing.Image.FromStream(stream);
+                ImageURL = Page.ImageURL;
+
                 stream.Position = 0;
 
                 Hash = TomanuExtensions.Utils.Hash.CalculateSHA256(stream);
@@ -278,7 +279,7 @@ namespace MangaCrawlerTest
             Serie.State = SerieState.Waiting;
             Serie.DownloadChapters();
 
-            ChapterCount = Chapters.Count;
+            ChapterCount = Serie.Chapters.Count;
             Title = Serie.Title;
 
             foreach (var chapter in Chapters)
@@ -360,7 +361,7 @@ namespace MangaCrawlerTest
             Server.DownloadSeries();
 
             Name = Server.Name;
-            SerieCount = Series.Count;
+            SerieCount = Server.Series.Count;
 
             foreach (var serie in Series)
                 serie.Download(this);
