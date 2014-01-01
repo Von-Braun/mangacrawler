@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MangaCrawler;
 using MangaCrawlerLib;
+using MangaCrawlerLib.Crawlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TomanuExtensions;
 
@@ -13,7 +15,15 @@ namespace MangaCrawlerTest
     [TestClass]
     public class TestXmls
     {
-        private static string ERROR_SUFFIX = " - downloaded.xml";
+        private static string ERROR_SUFFIX = " - error";
+
+        [TestInitialize]
+        public void Setup()
+        {
+            DownloadManager.Create(
+                   new MangaSettings(),
+                   Settings.GetSettingsDir());
+        }
 
         public static string GetTestDataDir()
         {
@@ -31,44 +41,14 @@ namespace MangaCrawlerTest
             return dir;
         }
 
-        private List<ServerTestData> LoadTestDataList()
+        private void DeleteErrors(string a_server_name)
         {
-            return (from test_data_xml in Directory.EnumerateFiles(GetTestDataDir(), "*.xml")
-                    select ServerTestData.Load(test_data_xml)).ToList();
-        }
-
-        private void Download(List<ServerTestData> a_list)
-        {
-            Parallel.ForEach(a_list, std => std.Download());
-        }
-
-        private void DeleteTestData(string a_server_name)
-        {
-            foreach (var file in from f in Directory.GetFiles(GetTestDataDir())
-                                 let fn = Path.GetFileName(f)
-                                 where fn.StartsWith(a_server_name)
-                                 select f)
-            {
+            foreach (var file in Directory.GetFiles(GetTestDataDir()).
+                                   Where(el => Path.GetFileNameWithoutExtension(el).EndsWith(ERROR_SUFFIX)).
+                                   Where(el => el.StartsWith(a_server_name)))
+           {
                 File.Delete(file);
             }
-        }
-
-        private void DeleteErrors()
-        {
-            foreach (var file in Directory.GetFiles(GetTestDataDir(), ERROR_SUFFIX))
-                File.Delete(file);
-        }
-
-        private bool Compare(List<ServerTestData> a_from_xml, List<ServerTestData> a_downloaded)
-        {
-            Assert.AreEqual(a_from_xml.Count, a_downloaded.Count);
-
-            bool result = true;
-
-            for (int i = 0; i < a_from_xml.Count; i++)
-                    result &= Compare(a_from_xml[i], a_downloaded[i]);
-
-            return result;
         }
 
         private bool Compare(ServerTestData a_from_xml, ServerTestData a_downloaded)
@@ -108,24 +88,110 @@ namespace MangaCrawlerTest
             }
         }
 
-        private void CheckOngoing(List<ServerTestData> a_downloaded)
+        private void CheckOngoing(ServerTestData a_downloaded)
         {
-            Assert.IsTrue((from std in a_downloaded
-                           select (from serie in std.Series
-                                   where serie.Chapters.Count(ch => ch.Index == ch.SerieTestData.ChapterCount - 1) >= 1
-                                   where serie.Chapters.Count(ch => ch.Index == 0) >= 1
-                                   select serie).Count()).All(c => c >= 2));
+            Assert.IsTrue((from serie in a_downloaded.Series
+                           where serie.Chapters.Count(ch => ch.Index == ch.SerieTestData.ChapterCount - 1) >= 1
+                           where serie.Chapters.Count(ch => ch.Index == 0) >= 1
+                           select serie).Count() >= 2);
+        }
+
+        private void TestXml(string a_server_name)
+        {
+            DeleteErrors(a_server_name);
+            var from_xml = ServerTestData.Load(Path.Combine(GetTestDataDir(), a_server_name + ".xml"));
+            var downloaded = ServerTestData.Load(Path.Combine(GetTestDataDir(), a_server_name + ".xml"));
+            downloaded.Download();
+            Assert.IsTrue(Compare(from_xml, downloaded));
+            CheckOngoing(downloaded);
         }
 
         [TestMethod]
-        public void TestXmls_()
+        public void TestAnimea()
         {
-            DeleteErrors();
-            var from_xml = LoadTestDataList();
-            var downloaded = LoadTestDataList();
-            Download(downloaded);
-            Assert.IsTrue(Compare(from_xml, downloaded));
-            CheckOngoing(downloaded);
+            var server_name = DownloadManager.Instance.Servers.First(
+                el => el.Crawler is MangaCrawlerLib.Crawlers.AnimeaCrawler).Name;
+            TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void TestAnimeSource()
+        {
+           var server_name = DownloadManager.Instance.Servers.First(
+               el => el.Crawler is MangaCrawlerLib.Crawlers.AnimeSourceCrawler).Name;
+           TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void TestMangaFox()
+        {
+            var server_name = DownloadManager.Instance.Servers.First(
+              el => el.Crawler is MangaCrawlerLib.Crawlers.MangaFoxCrawler).Name;
+            TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void TestMangaHere()
+        {
+            var server_name = DownloadManager.Instance.Servers.First(
+              el => el.Crawler is MangaCrawlerLib.Crawlers.MangaHereCrawler).Name;
+            TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void TestMangaReader()
+        {
+            var server_name = DownloadManager.Instance.Servers.First(
+              el => el.Crawler is MangaCrawlerLib.Crawlers.MangaReaderCrawler).Name;
+            TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void TestMangaShare()
+        {
+            var server_name = DownloadManager.Instance.Servers.First(
+              el => el.Crawler is MangaCrawlerLib.Crawlers.MangaShareCrawler).Name;
+            TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void TestMangaStream()
+        {
+            var server_name = DownloadManager.Instance.Servers.First(
+              el => el.Crawler is MangaCrawlerLib.Crawlers.MangaStreamCrawler).Name;
+            TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void TestMangaVolume()
+        {
+            var server_name = DownloadManager.Instance.Servers.First(
+              el => el.Crawler is MangaCrawlerLib.Crawlers.MangaVolumeCrawler).Name;
+            TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void TestSpectrumNexus()
+        {
+            var server_name = DownloadManager.Instance.Servers.First(
+              el => el.Crawler is MangaCrawlerLib.Crawlers.SpectrumNexusCrawler).Name;
+            TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void TestStarkana()
+        {
+            var server_name = DownloadManager.Instance.Servers.First(
+              el => el.Crawler is MangaCrawlerLib.Crawlers.StarkanaCrawler).Name;
+            TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void TestUnixManga()
+        {
+            var server_name = DownloadManager.Instance.Servers.First(
+              el => el.Crawler is MangaCrawlerLib.Crawlers.UnixMangaCrawler).Name;
+            TestXml(server_name);
         }
     }
 }

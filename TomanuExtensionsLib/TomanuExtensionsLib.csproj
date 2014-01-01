@@ -143,16 +143,10 @@
     <Compile Include="Extensions\NumberExtensions.cs" />
     <Compile Include="Extensions\RichTextBoxExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
-    <Compile Include="Extensions\XmlNodeExtensions.cs" />
-    <Compile Include="Extensions\XmlReaderExtensions.cs" />
-    <Compile Include="Extensions\XmlWriterExtensions.cs" />
     <Compile Include="Utils\Hex.cs" />
     <Compile Include="Utils\MersenneTwister.cs" />
-    <Compile Include="Utils\NoNamespacesXmlWriter.cs" />
     <Compile Include="Utils\Profiler.cs" />
     <Compile Include="Utils\Hash.cs" />
-    <Compile Include="Utils\ValueClass.cs" />
-    <Compile Include="Utils\XmlBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestUtils\ProgressForm.resx">
