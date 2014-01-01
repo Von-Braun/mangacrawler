@@ -64,7 +64,17 @@ namespace MangaCrawlerLib.Crawlers
             HtmlDocument doc = DownloadDocument(a_serie);
 
             var nodes = doc.DocumentNode.SelectNodes("//b");
-            var node = nodes.Where(n => n.InnerText.StartsWith("Current Status")).First();
+            var node = nodes.Where(n => n.InnerText.StartsWith("Current Status")).FirstOrDefault();
+
+            if (node == null)
+            {
+                var note = doc.DocumentNode.SelectSingleNode("//div[@class='mainbgtop']/p/em").InnerText;
+                if (note.Contains("has been taken down as per request from the publisher"))
+                {
+                    a_progress_callback(100, new Chapter[0]);
+                    return;
+                }
+            }
 
             for (;;)
             {
