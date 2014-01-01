@@ -180,7 +180,7 @@ namespace log4net.Repository.Hierarchy
 					} 
 					else if (currentElement.LocalName == CATEGORY_TAG)
 					{
-						// TODO: deprecated use of category
+						// TODOx: deprecated use of category
 						ParseLogger(currentElement);
 					} 
 					else if (currentElement.LocalName == ROOT_TAG)
@@ -896,7 +896,7 @@ namespace log4net.Repository.Hierarchy
 		/// </returns>
 		protected object ConvertStringTo(Type type, string value)
 		{
-			// Hack to allow use of Level in property
+			// Hackx to allow use of Level in property
 			if (typeof(Level) == type)
 			{
 				// Property wants a level
@@ -1068,9 +1068,9 @@ namespace log4net.Repository.Hierarchy
 		private const string APPENDER_REF_TAG 			= "appender-ref";  
 		private const string PARAM_TAG					= "param";
 
-		// TODO: Deprecate use of category tags
+		// TODOx: Deprecate use of category tags
 		private const string CATEGORY_TAG				= "category";
-		// TODO: Deprecate use of priority tag
+		// TODOx: Deprecate use of priority tag
 		private const string PRIORITY_TAG				= "priority";
 
 		private const string LOGGER_TAG					= "logger";
