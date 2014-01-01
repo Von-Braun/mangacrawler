@@ -40,7 +40,7 @@ namespace MangaCrawlerTest
                                     Name,
                                     Path.GetFileNameWithoutExtension(ImageURL) + Page.Crawler.GetImageURLExtension(ImageURL));
                 file_name = TomanuExtensions.Utils.FileUtils.RemoveInvalidFileCharacters(file_name);
-                file_name = Path.Combine(Helpers.GetTestDataDir(), file_name);
+                file_name = Path.Combine(TestXmls.GetTestDataDir(), file_name);
 
                 Assert.IsTrue(new string[] { ".jpg", ".png", ".gif", ".bmp" }.Contains(Path.GetExtension(file_name).ToLower()));
 
