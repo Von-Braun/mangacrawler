@@ -33,14 +33,17 @@ namespace MangaCrawlerTest
         {
             get
             {
-                var file_name = String.Format("{0} - {1} - {2} - {3}{4}", 
+                var file_name = String.Format("{0} - {1} - {2} - {3}{4}",
                                     ChapterTestData.SerieTestData.ServerTestData.Name,
-                                    ChapterTestData.SerieTestData.Title, 
-                                    ChapterTestData.Title, 
-                                    Name, 
-                                    Path.GetExtension(ImageURL));
+                                    ChapterTestData.SerieTestData.Title,
+                                    ChapterTestData.Title,
+                                    Name,
+                                    Path.GetFileNameWithoutExtension(ImageURL) + Page.Crawler.GetImageURLExtension(ImageURL));
                 file_name = TomanuExtensions.Utils.FileUtils.RemoveInvalidFileCharacters(file_name);
                 file_name = Path.Combine(Helpers.GetTestDataDir(), file_name);
+
+                Assert.IsTrue(new string[] { ".jpg", ".png", ".gif", ".bmp" }.Contains(Path.GetExtension(file_name).ToLower()));
+
                 return file_name;
             }
         }
@@ -81,7 +84,7 @@ namespace MangaCrawlerTest
             ChapterTestData = a_chapter_test_data;
             Page = ChapterTestData.Chapter.Pages.FirstOrDefault(el => el.Name == Name);
             Index = Page.Index;
-            ImageURL = Path.GetExtension(Page.ImageURL);
+            ImageURL = Path.GetFileName(Page.ImageURL) + Page.Crawler.GetImageURLExtension(Page.ImageURL);
             URL = Page.URL;
 
             Name = "";
