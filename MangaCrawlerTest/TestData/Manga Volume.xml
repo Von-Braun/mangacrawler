@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServerTestData>
+  <Name>Manga Volume</Name>
+  <SerieCount>1141</SerieCount>
+  <Series>
+    <SerieTestData>
+      <Title>666 Satan</Title>
+      <ChapterCount>76</ChapterCount>
+      <URL>http://www.mangavolume.com/serie-archive/mangas-666-satan</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>666 Satan 1</Title>
+          <PageCount>80</PageCount>
+          <Index>75</Index>
+          <URL>http://www.mangavolume.com/666-satan/chapter-666-satan-1/</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>03D423DB-2EA355AB-CD152179-D58C3BE0-0F8ED502-34989FCC-D32BE720-BD687C64</Hash>
+              <URL>http://www.mangavolume.com/666-satan/chapter-666-satan-1/1</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/1/9/397_8635.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>80</Name>
+              <Hash>E17484D0-F2D05001-1CD97224-B306B528-A9B2FC87-4D2712BB-46DB2C7B-F5347844</Hash>
+              <URL>http://www.mangavolume.com/666-satan/chapter-666-satan-1/80</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/1/9/397_8714.jpg</ImageURL>
+              <Index>80</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>666 Satan 76</Title>
+          <PageCount>51</PageCount>
+          <Index>0</Index>
+          <URL>http://www.mangavolume.com/666-satan/chapter-666-satan-76/</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>78FCFE4A-6C6E827A-411E5398-58FDCA1D-3C448073-314051D7-CFE2AD14-B0F114FC</Hash>
+              <URL>http://www.mangavolume.com/666-satan/chapter-666-satan-76/1</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/1/6/336_6098.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>51</Name>
+              <Hash>45FFDA0C-43E220F7-6BCC3705-D775E37B-F48B3876-548FDD38-B7D604EA-A2B9A9C6</Hash>
+              <URL>http://www.mangavolume.com/666-satan/chapter-666-satan-76/51</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/1/6/336_6148.jpg</ImageURL>
+              <Index>51</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+  </Series>
+</ServerTestData>

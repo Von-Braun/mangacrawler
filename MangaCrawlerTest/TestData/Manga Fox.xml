@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServerTestData>
+  <Name>Manga Fox</Name>
+  <SerieCount>9167</SerieCount>
+  <Series>
+    <SerieTestData>
+      <Title>10, 20, and 30</Title>
+      <ChapterCount>79</ChapterCount>
+      <URL>http://mangafox.me/manga/10_20_and_30/</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>10, 20, and 30 1</Title>
+          <PageCount>17</PageCount>
+          <Index>77</Index>
+          <URL>http://mangafox.me/manga/10_20_and_30/v01/c001/1.html</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>D9FFCBE8-1072AD51-1E0AA6F6-BE5CCFDD-7CF584AD-E8221713-C49AA2F4-AEA62DC0</Hash>
+              <URL>http://mangafox.me/manga/10_20_and_30/v01/c001/1.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/9595/01-001.0/compressed/b010_020_and_030_v001_-_cover.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>17</Name>
+              <Hash>1CB42BA2-0B8F29DF-98435B81-9C072CDA-BAF7AE44-486B60E8-92265042-929FE0CE</Hash>
+              <URL>http://mangafox.me/manga/10_20_and_30/v01/c001/17.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/9595/01-001.0/compressed/b010_020_and_030_v001_c001_-_016.jpg</ImageURL>
+              <Index>17</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>10, 20, and 30 78</Title>
+          <PageCount>14</PageCount>
+          <Index>0</Index>
+          <URL>http://mangafox.me/manga/10_20_and_30/v07/c078/1.html</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>2BCC333B-6850F08E-CFF72D4C-E8FDACB8-E79D2D3A-FDCE387D-24CC936B-1660CAD6</Hash>
+              <URL>http://mangafox.me/manga/10_20_and_30/v07/c078/1.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/9595/07-078.0/compressed/i010_020_and_030_v007_c078_-_159.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>14</Name>
+              <Hash>95383B54-35E02D1D-DF94CA10-8455F7F0-63789ABC-5C3282E2-67BEB278-2BFEC769</Hash>
+              <URL>http://mangafox.me/manga/10_20_and_30/v07/c078/14.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/9595/07-078.0/compressed/i010_020_and_030_v007_c078_-_172.jpg</ImageURL>
+              <Index>14</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>1/2 Prince</Title>
+      <ChapterCount>9</ChapterCount>
+      <URL>http://mangafox.me/manga/1_2_prince/</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>1/2 Prince 1</Title>
+          <PageCount>73</PageCount>
+          <Index>64</Index>
+          <URL>http://mangafox.me/manga/1_2_prince/v01/c001/1.html</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>8209C173-CED82809-1B4DBB32-BE7487AE-CEA8F7C3-1FA4A608-BDBFA73B-1DF3FA00</Hash>
+              <URL>http://mangafox.me/manga/1_2_prince/v01/c001/1.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/1484/01-001.0/compressed/f01.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>73</Name>
+              <Hash>924EA537-2BFAE86B-EFE6B628-1B3B3236-4C14D399-54517F07-C121DD08-E7365305</Hash>
+              <URL>http://mangafox.me/manga/1_2_prince/v01/c001/73.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/1484/01-001.0/compressed/fcredits.jpg</ImageURL>
+              <Index>73</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>1/2 Prince 64</Title>
+          <PageCount>0</PageCount>
+          <Index>0</Index>
+          <URL>http://mangafox.me/manga/1_2_prince/v12/c064/1.html</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash></Hash>
+              <URL>http://mangafox.me/manga/1_2_prince/v12/c064/1.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/1484/12-064.0/compressed/chp064credits.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>48</Name>
+              <Hash></Hash>
+              <URL>http://mangafox.me/manga/1_2_prince/v12/c064/48.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/1484/12-064.0/compressed/cz_recruit.jpg</ImageURL>
+              <Index>48</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+  </Series>
+</ServerTestData>

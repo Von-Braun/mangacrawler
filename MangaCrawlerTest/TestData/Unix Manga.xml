@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServerTestData>
+  <Name>Unix Manga</Name>
+  <SerieCount>1613</SerieCount>
+  <Series>
+    <SerieTestData>
+      <Title>Bleach</Title>
+      <ChapterCount>505</ChapterCount>
+      <URL>http://unixmanga.com/onlinereading/Bleach.html</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>Bleach c Calendar</Title>
+          <PageCount>8</PageCount>
+          <Index>579</Index>
+          <URL>http://unixmanga.net/onlinereading/Bleach/Bleach_c_Calendar.html</URL>
+          <Pages>
+            <PageTestData>
+              <Name>00</Name>
+              <Hash>E018B7DF-C64538D1-95A9B6C9-49A8DBE9-18C11E68-C52EDDFB-B800B51A-FA7E354F</Hash>
+              <URL />
+              <ImageURL />
+              <Index>1</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+  </Series>
+</ServerTestData>

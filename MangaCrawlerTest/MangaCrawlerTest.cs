@@ -44,10 +44,10 @@ namespace MangaCrawlerTest
         [TestCleanup]
         public void CheckError()
         {
-            //Assert.IsTrue(m_error == false); // TODO: 
-
             Helpers.DeleteTestData(m_server_test_data.Name);
             Helpers.GenerateInfo(m_server_test_data, false);
+
+            Assert.IsTrue(m_error == false);
         }
 
         [TestInitialize]
@@ -99,7 +99,9 @@ namespace MangaCrawlerTest
             m_server_test_data.AddSeries(new SerieTestData()
             {
                 ChapterCount = a_count, 
-                Title = a_serie.Title
+                Title = a_serie.Title, 
+                URL = a_serie.URL
+
             });
 
             TestContext.WriteLine("  Testing serie {0}", a_serie.Title);
@@ -148,14 +150,21 @@ namespace MangaCrawlerTest
         private List<Page> TestChapter(string a_title, Chapter a_chapter, int a_count, 
             bool a_ongoing = false)
         {
-            m_server_test_data.Series.First(el => el.Title == a_chapter.Serie.Title).AddChapter(new ChapterTestData()
+            var chapter_test_data = new ChapterTestData()
             {
-                PageCount = a_count,
-                Title = a_title
-            });
+                PageCount = a_ongoing ? a_count : a_chapter.Pages.Count, 
+                Title = a_ongoing ? a_chapter.Title : a_title, 
+                URL = a_chapter.URL,
+                Index = a_chapter.Serie.Chapters.IndexOf(a_chapter)
+            };
+
+            m_server_test_data.Series.First(el => el.Title == a_chapter.Serie.Title).AddChapter(chapter_test_data);
 
             if (a_ongoing)
+            {
                 Assert.IsTrue(a_count == 0);
+                Assert.IsTrue(String.IsNullOrEmpty(a_title));
+            }
 
             TestContext.WriteLine("    Testing chapter {0}", a_chapter.Title);
 
@@ -215,13 +224,15 @@ namespace MangaCrawlerTest
 
         private void TestPage(Page a_page, string a_hash, string a_name, bool a_ongoing = false)
         {
-            m_server_test_data.Series.First(el => el.Title == a_page.Chapter.Serie.Title).Chapters.First(
-                el => el.Title == a_page.Chapter.Title).AddPage(new PageTestData()
+            PageTestData page_test_data = new PageTestData()
             {
-                Hash = a_hash, 
-                Name = a_name,
-                PageIndex = a_page.Index
-            });
+                Hash = a_hash,
+                Name = a_ongoing ? a_page.Name : a_name,
+                Index = a_page.Index
+            };
+
+            m_server_test_data.Series.First(el => el.Title == a_page.Chapter.Serie.Title).Chapters.First(
+                el => el.Title == a_page.Chapter.Title).AddPage(page_test_data);
 
             Assert.IsTrue(a_hash != null);
 
@@ -256,12 +267,17 @@ namespace MangaCrawlerTest
 
                 Assert.IsTrue(stream.Length > 0);
 
-                System.Drawing.Image.FromStream(stream);
+                page_test_data.Image = System.Drawing.Image.FromStream(stream);
+                page_test_data.ImageURL = a_page.ImageURL;
+                page_test_data.URL = a_page.URL;
                 stream.Position = 0;
 
                 if (!a_ongoing)
                 {
                     string hash = Hash.CalculateSHA256(stream);
+
+                    if (a_ongoing)
+                        page_test_data.Hash = hash;
 
                     if (a_hash != hash)
                     {
@@ -603,8 +619,7 @@ namespace MangaCrawlerTest
             {
                 var chapters = TestSerie(series.First(s => s.Title == "Freezing"), 33, true);
 
-                var pages = TestChapter("Volume 06 - Chapter 33", 
-                    chapters.First(), 0, true);
+                var pages = TestChapter("", chapters.First(), 0, true);
 
                 TestPage(pages.First(), "", "", true);
                 TestPage(pages.Last(), "", "", true);
@@ -698,19 +713,6 @@ namespace MangaCrawlerTest
                 TestPage(pages.First(), "", "", true);
                 TestPage(pages.Last(), "", "", true);
             }
-            
-            {
-                var chapters = TestSerie(series.First(s => s.Title == 
-                    "Samayoeru Ookami ni Junai wo"), 1, true);
-            
-                Assert.IsTrue(chapters.Count() == 1);
-
-                var pages = TestChapter("Samayoeru Ookami ni Junai wo 1", chapters.First(), 0); 
-            
-                Assert.IsTrue(pages.Count() == 0);
-            }
-
-            Assert.IsTrue(series.All(s => s.Title != "[switch]"));
         }
 
         [TestMethod]
@@ -1015,11 +1017,12 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void TestXmls()
         {
-            Helpers.DeleteDownloaded();
+            Helpers.DeleteErrors();
             var from_xml = Helpers.LoadTestDataList();
             var downloaded = Helpers.LoadTestDataList();
             Helpers.Download(downloaded);
             Assert.IsTrue(Helpers.Compare(from_xml, downloaded));
+            Helpers.CheckOngoing(downloaded);
         }
 
     }
