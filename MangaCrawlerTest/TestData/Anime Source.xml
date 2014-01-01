@@ -10,7 +10,7 @@
       <Chapters>
         <ChapterTestData>
           <Title>KOR (Volume 18 Chapter 156 part 4 original ending)</Title>
-          <PageCount>0</PageCount>
+          <PageCount>4</PageCount>
           <Index>0</Index>
           <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=471</URL>
           <Pages>
@@ -32,20 +32,20 @@
         </ChapterTestData>
         <ChapterTestData>
           <Title>KOR (Volume 1 Chapter 1)</Title>
-          <PageCount>0</PageCount>
+          <PageCount>34</PageCount>
           <Index>166</Index>
           <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=242</URL>
           <Pages>
             <PageTestData>
               <Name>1</Name>
-              <Hash>D3DBFB1A-2BB55A85-FECE3DF7-766C73D1-F0A8C43C-282046C1-9E181C0A-C709F948</Hash>
+              <Hash>38FBB6A5-D0D7B833-A2010C4A-BFC54B7F-286C7FD0-F6FB9C6B-5F5FC35F-16F91CCA</Hash>
               <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=242&amp;page=1</URL>
               <ImageURL>http://www.anime-source.com/html/images/kor/chapter1/cover.jpg</ImageURL>
               <Index>1</Index>
             </PageTestData>
             <PageTestData>
               <Name>34</Name>
-              <Hash>A09BB75E-43DBE864-1DA21C19-6D204131-81C9BDF6-790B8549-9825A636-35F9A95B</Hash>
+              <Hash>A1E7E121-0CCB6F23-9F29EE6A-72552092-5447D56B-5FCF9784-5F398237-B8DA9C61</Hash>
               <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=242&amp;page=34</URL>
               <ImageURL>http://www.anime-source.com/html/images/kor/chapter1/035.jpg</ImageURL>
               <Index>34</Index>
@@ -61,20 +61,20 @@
       <Chapters>
         <ChapterTestData>
           <Title>Volume 06 - Chapter 33</Title>
-          <PageCount>0</PageCount>
+          <PageCount>27</PageCount>
           <Index>0</Index>
           <URL>http://www.anime-source.com/banzai/modules.php?name=Manga&amp;rop=display&amp;chapterid=6283&amp;pagenumber=1&amp;totalpages=27</URL>
           <Pages>
             <PageTestData>
               <Name>1</Name>
-              <Hash></Hash>
+              <Hash>356BCA98-FC4FE6AC-BD018479-8DFBFE74-C3C835DE-E6004A27-10984F59-6D2B24CF</Hash>
               <URL>http://www.anime-source.com/banzai/modules.php?name=Manga&amp;rop=display&amp;chapterid=6283&amp;pagenumber=1&amp;totalpages=27</URL>
               <ImageURL>http://www.anime-source.com/manga/Freezing/c033/01.jpg</ImageURL>
               <Index>1</Index>
             </PageTestData>
             <PageTestData>
               <Name>27</Name>
-              <Hash></Hash>
+              <Hash>21377143-D1A4BD14-EECEF2BB-39D94A27-955F1036-32398D82-C017A68D-6FD18217</Hash>
               <URL>http://www.anime-source.com/banzai/modules.php?name=Manga&amp;rop=display&amp;chapterid=6283&amp;pagenumber=27&amp;totalpages=27</URL>
               <ImageURL>http://www.anime-source.com/manga/Freezing/c033/27.jpg</ImageURL>
               <Index>27</Index>
@@ -83,13 +83,13 @@
         </ChapterTestData>
         <ChapterTestData>
           <Title>Volume 01 - Chapter 01</Title>
-          <PageCount>0</PageCount>
+          <PageCount>40</PageCount>
           <Index>32</Index>
           <URL>http://www.anime-source.com/banzai/modules.php?name=Manga&amp;rop=display&amp;chapterid=4644&amp;pagenumber=1&amp;totalpages=40</URL>
           <Pages>
             <PageTestData>
               <Name>1</Name>
-              <Hash>F5C2644E-C4F18D93-D1D6550F-ACFD6A90-B08606FD-C82BC561-5C6EE22E-D15A7CD8</Hash>
+              <Hash>0183E6C6-9C429847-EF998289-35340B15-9622CBC8-CF7F7A3F-1FC12415-4EC299E4</Hash>
               <URL>http://www.anime-source.com/banzai/modules.php?name=Manga&amp;rop=display&amp;chapterid=4644&amp;pagenumber=1&amp;totalpages=40</URL>
               <ImageURL>http://www.anime-source.com/manga/Freezing/c001/credits.jpg</ImageURL>
               <Index>1</Index>

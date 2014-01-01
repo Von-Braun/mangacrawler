@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServerTestData>
   <Name>Manga Here</Name>
-  <SerieCount>8356</SerieCount>
+  <SerieCount>12066</SerieCount>
   <Series>
     <SerieTestData>
       <Title>666 Satan</Title>
@@ -56,7 +56,7 @@
     </SerieTestData>
     <SerieTestData>
       <Title>Fairy Tail</Title>
-      <ChapterCount>287</ChapterCount>
+      <ChapterCount>381</ChapterCount>
       <URL>http://www.mangahere.com/manga/fairy_tail/</URL>
       <Chapters>
         <ChapterTestData>
@@ -67,7 +67,7 @@
           <Pages>
             <PageTestData>
               <Name>1</Name>
-              <Hash>F78B1798-A2FC4CCD-A6773D62-D9803D04-D2B54352-AD25D299-174F97C3-D956F41E</Hash>
+              <Hash>978FFC24-1070EB90-7602B2D6-616409F4-14772286-8C21101B-21683864-E5C97D73</Hash>
               <URL>http://www.mangahere.com/manga/fairy_tail/v01/c001/</URL>
               <ImageURL>http://z.mhcdn.net/store/manga/246/01-001.0/compressed/fairy_001_01.jpg?v=11197426008</ImageURL>
               <Index>1</Index>
@@ -83,20 +83,20 @@
         </ChapterTestData>
         <ChapterTestData>
           <Title>Fairy Tail 365</Title>
-          <PageCount>0</PageCount>
+          <PageCount>38</PageCount>
           <Index>0</Index>
           <URL>http://www.mangahere.com/manga/fairy_tail/v38/c365/</URL>
           <Pages>
             <PageTestData>
               <Name>1</Name>
-              <Hash></Hash>
+              <Hash>A10DFC65-FA37B0FC-70C56CC4-30A9A167-F33A34CD-738914E7-472EAE2A-1FF0F0C7</Hash>
               <URL>http://www.mangahere.com/manga/fairy_tail/v38/c365/</URL>
               <ImageURL>http://z.mhcdn.net/store/manga/246/38-365.0/compressed/l001.jpg?v=11388279763</ImageURL>
               <Index>1</Index>
             </PageTestData>
             <PageTestData>
               <Name>38</Name>
-              <Hash></Hash>
+              <Hash>54971FF0-AB4FEFF0-270DC2A7-F2156337-18C81D01-4B73E385-270B7E31-28E1C3DC</Hash>
               <URL>http://www.mangahere.com/manga/fairy_tail/v38/c365/38.html</URL>
               <ImageURL>http://z.mhcdn.net/store/manga/246/38-365.0/compressed/l037.jpg?v=11388279763</ImageURL>
               <Index>38</Index>

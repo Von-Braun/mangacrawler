@@ -43,10 +43,12 @@ namespace MangaCrawlerTest
 
         private void DeleteErrors(string a_server_name)
         {
-            foreach (var file in Directory.GetFiles(GetTestDataDir()).
-                                   Where(el => Path.GetFileNameWithoutExtension(el).EndsWith(ERROR_SUFFIX)).
-                                   Where(el => el.StartsWith(a_server_name)))
-           {
+            foreach (var file in Directory.GetFiles(GetTestDataDir(), "*" + a_server_name + "*"))
+            {
+                if (!Path.GetFileNameWithoutExtension(file).EndsWith(ERROR_SUFFIX))
+                    continue;
+                if (!Path.GetFileName(file).StartsWith(a_server_name))
+                    continue;
                 File.Delete(file);
             }
         }
