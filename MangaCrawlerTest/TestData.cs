@@ -29,6 +29,21 @@ namespace MangaCrawlerTest
 
         public string ImageURL { get; set; }
 
+        public string FileNameBegin
+        {
+            get
+            {
+                var file_name = String.Format("{0} - {1} - {2} - ",
+                                    ChapterTestData.SerieTestData.ServerTestData.Name,
+                                    ChapterTestData.SerieTestData.Title,
+                                    ChapterTestData.Title);
+                file_name = TomanuExtensions.Utils.FileUtils.RemoveInvalidFileCharacters(file_name);
+                file_name = Path.Combine(TestXmls.GetTestDataDir(), file_name);
+
+                return file_name;
+            }
+        }
+
         public string FileName
         {
             get
@@ -37,6 +52,7 @@ namespace MangaCrawlerTest
                                     ChapterTestData.SerieTestData.ServerTestData.Name,
                                     ChapterTestData.SerieTestData.Title,
                                     ChapterTestData.Title,
+                                    // TODO: generacja na nowo beda inne nazwy
                                     Name,
                                     Path.GetFileNameWithoutExtension(ImageURL) + Page.Crawler.GetImageURLExtension(ImageURL));
                 file_name = TomanuExtensions.Utils.FileUtils.RemoveInvalidFileCharacters(file_name);
@@ -61,7 +77,7 @@ namespace MangaCrawlerTest
             ptd.Index = Int32.Parse(a_node.Element("Index").Value);
 
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Name));
-            //Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Hash)); // TODO: 
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Hash));
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.URL));
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.ImageURL));
 
@@ -83,10 +99,11 @@ namespace MangaCrawlerTest
         {
             ChapterTestData = a_chapter_test_data;
             Page = ChapterTestData.Chapter.Pages.FirstOrDefault(el => el.Name == Name);
-            Index = Page.Index;
-            URL = Page.URL;
 
             Name = "";
+
+            Index = Page.Index;
+            URL = Page.URL;
 
             Limiter.BeginChapter(Page.Chapter);
 
@@ -174,11 +191,12 @@ namespace MangaCrawlerTest
         {
             SerieTestData = a_serie_test_data;
             Chapter = SerieTestData.Serie.Chapters.FirstOrDefault(el => el.Title == Title);
-            Index = Chapter.Serie.Chapters.IndexOf(Chapter);
-            URL = Chapter.URL;
 
             PageCount = -1;
             Title = "";
+
+            Index = Chapter.Serie.Chapters.IndexOf(Chapter);
+            URL = Chapter.URL;
 
             Chapter.State = ChapterState.Waiting;
             Limiter.BeginChapter(Chapter);
@@ -271,10 +289,11 @@ namespace MangaCrawlerTest
         {
             ServerTestData = a_server_test_data;
             Serie = ServerTestData.Server.Series.FirstOrDefault(el => el.Title == Title);
-            URL = Serie.URL;
 
             ChapterCount = -1;
             Title = "";
+
+            URL = Serie.URL;
 
             Serie.State = SerieState.Waiting;
             Serie.DownloadChapters();
@@ -352,19 +371,27 @@ namespace MangaCrawlerTest
 
         public void Download()
         {
-            Server = DownloadManager.Instance.Servers.First(s => s.Name == Name);
+            try
+            {
+                Server = DownloadManager.Instance.Servers.First(s => s.Name == Name);
 
-            Name = "";
-            SerieCount = -1;
+                Name = "";
+                SerieCount = -1;
 
-            Server.State = ServerState.Waiting;
-            Server.DownloadSeries();
+                Server.State = ServerState.Waiting;
+                Server.DownloadSeries();
 
-            Name = Server.Name;
-            SerieCount = Server.Series.Count;
+                Name = Server.Name;
+                SerieCount = Server.Series.Count;
 
-            foreach (var serie in Series)
-                serie.Download(this);
+                foreach (var serie in Series)
+                    serie.Download(this);
+            }
+            catch (Exception ex)
+            {
+                TestXmls.GenerateInfo(this);
+                throw ex;
+            }
         }
 
         public bool Compare(ServerTestData a_downloaded)

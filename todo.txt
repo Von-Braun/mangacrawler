@@ -1,3 +1,11 @@
+regeneracja xmli - nazwy obrazko sie zmienily
+chapter index base 1
+page index nad page w pagetestdata
+page index jest wiodacy, nie page
+random test - pamietanie bledow - zwlaszcza empty chapters and series
+kasowanie nieuzywanych obrazkow
+code coverage
+
 zmiana nazwy nie tracimy powiazania, tak samo teraz nie tracimy go dla zmiany url
 lepsza obluga dwoch elementow o takich samych urlach ale roznych nazwach, powinien to byc najlepiej 
   jeden obiekt wskazywany przez dwa inne - czy to w ogole ma sens, to moze byc bardzo skomplikowane pod 
@@ -21,8 +29,7 @@ http://www.readmangaonline.net/
 http://www.mangamonger.com/
 
 czy musze all testowac, czy zmiany sa bezpieczne
-instalator - 4.5.1
+instalator - 4.5.1 - zmiana na 4.0 - nie ma sensu
 instalator - instlacja nowej wersji na starej
 uruchomienie nowej wersji na starej
 edycja strony tytulowej - odswiezenie listy stron i ich adresow
-code coverage

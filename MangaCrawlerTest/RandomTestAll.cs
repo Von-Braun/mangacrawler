@@ -20,22 +20,8 @@ using TomanuExtensions.TestUtils;
 namespace MangaCrawlerTest
 {
     [TestClass]
-    public class RandomTestAll
+    public class RandomTestAll : TestBase
     {
-        private TestContext m_test_context_instance;
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return m_test_context_instance;
-            }
-            set
-            {
-                m_test_context_instance = value;
-            }
-        }
-
         private ProgressIndicator m_pi;
         private bool m_error = false;
 
@@ -43,14 +29,6 @@ namespace MangaCrawlerTest
         public void CheckError()
         {
             Assert.IsTrue(m_error == false);
-        }
-
-        [TestInitialize]
-        public void Setup()
-        {
-            DownloadManager.Create(
-                   new MangaSettings(),
-                   Settings.GetSettingsDir());
         }
 
         private void WriteLine(string a_str, params object[] a_args)

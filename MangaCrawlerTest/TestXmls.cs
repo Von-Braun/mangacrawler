@@ -13,17 +13,9 @@ using TomanuExtensions;
 namespace MangaCrawlerTest
 {
     [TestClass]
-    public class TestXmls
+    public class TestXmls : TestBase
     {
         private static string ERROR_SUFFIX = " - error";
-
-        [TestInitialize]
-        public void Setup()
-        {
-            DownloadManager.Create(
-                   new MangaSettings(),
-                   Settings.GetSettingsDir());
-        }
 
         public static string GetTestDataDir()
         {
@@ -72,7 +64,7 @@ namespace MangaCrawlerTest
             }
         }
 
-        private void GenerateInfo(ServerTestData a_server_test_data, bool a_downloaded = true)
+        public static void GenerateInfo(ServerTestData a_server_test_data, bool a_downloaded = true)
         {
             string a_suffix = a_downloaded ? ERROR_SUFFIX : "";
 
@@ -194,6 +186,61 @@ namespace MangaCrawlerTest
             var server_name = DownloadManager.Instance.Servers.First(
               el => el.Crawler is MangaCrawlerLib.Crawlers.UnixMangaCrawler).Name;
             TestXml(server_name);
+        }
+
+        [TestMethod]
+        public void DeleteUnusedImages()
+        {
+            var xmls = Directory.GetFiles(GetTestDataDir(), "*.xml");
+
+            List<string> all_used_pages = new List<string>();
+
+            var all_images = (from f in Directory.GetFiles(GetTestDataDir())
+                              let ext = Path.GetExtension(f).RemoveFromLeft(1).ToLower()
+                              where new string[] { "bmp", "jpg", "gif", "png" }.Contains(ext)
+                              select f).ToList();
+
+            foreach (var xml in xmls)
+            {
+                var std = ServerTestData.Load(xml);
+                DeleteErrors(Path.GetFileNameWithoutExtension(xml));
+
+                var pages = from serie in std.Series
+                            from chapter in serie.Chapters
+                            from page in chapter.Pages
+                            select page;
+
+                foreach (var page in pages)
+                {
+                    page.ChapterTestData.SerieTestData.ServerTestData.Download();
+
+                    all_used_pages.Add(page.FileName);
+                }
+            }
+
+            var unused_images = all_images.Except(all_used_pages);
+
+            foreach (var ui in unused_images)
+            {
+                TestContext.WriteLine("Deleting: {0}", ui);
+                //File.Delete(ui);
+            }
+
+            Assert.IsTrue(!unused_images.Any());
+        }
+
+        [TestMethod]
+        public void RegeneratedXmlsAndImages()
+        {
+            var xmls = Directory.GetFiles(GetTestDataDir(), "*.xml");
+
+            foreach (var xml in xmls)
+            {
+                var std = ServerTestData.Load(xml);
+                DeleteErrors(std.Name);
+                std.Download();
+                GenerateInfo(std, false);
+            }
         }
     }
 }
