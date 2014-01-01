@@ -2,9 +2,11 @@ regeneracja xmli - nazwy obrazko sie zmienily
 chapter index base 1
 page index nad page w pagetestdata
 page index jest wiodacy, nie page
+dokladnie posprawdzac wszystkie obrazki - czy sa takie same jak na stronach www
 random test - pamietanie bledow - zwlaszcza empty chapters and series
 kasowanie nieuzywanych obrazkow
-code coverage
+po trzy obrazki na chapter - jeden jakis srodkowy
+code coverage - usunac kod albo znalesc test ktory te warunki wykorzysta
 
 zmiana nazwy nie tracimy powiazania, tak samo teraz nie tracimy go dla zmiany url
 lepsza obluga dwoch elementow o takich samych urlach ale roznych nazwach, powinien to byc najlepiej 

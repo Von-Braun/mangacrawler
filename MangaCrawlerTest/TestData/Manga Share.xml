@@ -11,44 +11,44 @@
         <ChapterTestData>
           <Title>001 - Super Elite</Title>
           <PageCount>50</PageCount>
-          <Index>72</Index>
+          <Index>73</Index>
           <URL>http://read.mangashare.com/akumetsu/chapter-001/page001.html</URL>
           <Pages>
             <PageTestData>
+              <Index>1</Index>
               <Name>1</Name>
               <Hash>D655644C-0FA7F439-972225D4-6B1751B8-9D5D1931-3C1F0955-8B94D69E-57D66DFA</Hash>
               <URL>http://read.mangashare.com/akumetsu/chapter-001/page001.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/akumetsu/001/001.jpg</ImageURL>
-              <Index>1</Index>
             </PageTestData>
             <PageTestData>
+              <Index>50</Index>
               <Name>50</Name>
               <Hash>29D78C4A-865EB5F7-4F8D0804-8285079F-1F4B8CB1-99E0C567-08DC0F90-FA526F05</Hash>
               <URL>http://read.mangashare.com/akumetsu/chapter-001/page050.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/akumetsu/001/050.jpg</ImageURL>
-              <Index>50</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>
         <ChapterTestData>
           <Title>073 - Gutter Scum</Title>
           <PageCount>21</PageCount>
-          <Index>0</Index>
+          <Index>1</Index>
           <URL>http://read.mangashare.com/akumetsu/chapter-073/page001.html</URL>
           <Pages>
             <PageTestData>
+              <Index>1</Index>
               <Name>1</Name>
               <Hash>2854EE0C-4AAA4EAB-851D3821-420E7015-1A3E812D-4AB41A87-E840B1D2-F3BE83C8</Hash>
               <URL>http://read.mangashare.com/akumetsu/chapter-073/page001.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/akumetsu/073/001.jpg</ImageURL>
-              <Index>1</Index>
             </PageTestData>
             <PageTestData>
+              <Index>21</Index>
               <Name>21</Name>
               <Hash>BD1AC2C1-24309DD4-0B50F5E0-A98AED14-1A5CA57B-BB27A8E8-FA0AAE65-063132AF</Hash>
               <URL>http://read.mangashare.com/akumetsu/chapter-073/page021.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/akumetsu/073/021.jpg</ImageURL>
-              <Index>21</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>
@@ -59,91 +59,91 @@
       <ChapterCount>263</ChapterCount>
       <URL>http://read.mangashare.com/Fairy-Tail</URL>
       <Chapters>
-	    <ChapterTestData>
+        <ChapterTestData>
           <Title>000 - Crossover</Title>
           <PageCount>22</PageCount>
-          <Index>262</Index>
+          <Index>263</Index>
           <URL>http://read.mangashare.com/Fairy-Tail/chapter-000/page001.html</URL>
           <Pages>
             <PageTestData>
+              <Index>1</Index>
               <Name>1</Name>
               <Hash>DC2164DD-52743BBE-AEFBC398-469B01A4-AA0EFEBD-2F423E3E-44308396-6C72C743</Hash>
               <URL>http://read.mangashare.com/Fairy-Tail/chapter-000/page001.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/000/001.jpg</ImageURL>
-              <Index>1</Index>
             </PageTestData>
             <PageTestData>
+              <Index>22</Index>
               <Name>22</Name>
               <Hash>5065658C-BA82ABF0-AAC122CD-B38D7AB7-5F9198AE-C792FEB7-587ACB8A-142969D8</Hash>
               <URL>http://read.mangashare.com/Fairy-Tail/chapter-000/page022.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/000/022.jpg</ImageURL>
-              <Index>22</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>
         <ChapterTestData>
           <Title>001 - Fairy Tail</Title>
           <PageCount>74</PageCount>
-          <Index>261</Index>
+          <Index>262</Index>
           <URL>http://read.mangashare.com/Fairy-Tail/chapter-001/page001.html</URL>
           <Pages>
             <PageTestData>
+              <Index>1</Index>
               <Name>1</Name>
               <Hash>ED6CC5F6-2D7CAC33-032E4DB2-234D3C98-3F558200-A44DA361-2D91188C-C73EDBF4</Hash>
               <URL>http://read.mangashare.com/Fairy-Tail/chapter-001/page001.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/001/001.jpg</ImageURL>
-              <Index>1</Index>
             </PageTestData>
             <PageTestData>
+              <Index>74</Index>
               <Name>74</Name>
               <Hash>6ED47FC8-4A463FC1-8622C3B3-BD8ABCD4-F73F1630-EED840AA-7FED6A03-1C93DFB4</Hash>
               <URL>http://read.mangashare.com/Fairy-Tail/chapter-001/page074.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/001/074.jpg</ImageURL>
-              <Index>74</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>
         <ChapterTestData>
           <Title>266 - Sky Labyrinth</Title>
           <PageCount>21</PageCount>
-          <Index>1</Index>
+          <Index>2</Index>
           <URL>http://read.mangashare.com/Fairy-Tail/chapter-266/page001.html</URL>
           <Pages>
             <PageTestData>
+              <Index>1</Index>
               <Name>1</Name>
               <Hash>046BA85F-2AE50ACA-AAD3622B-9877A481-3E27B484-20A4BB57-22BA62E3-F532C50B</Hash>
               <URL>http://read.mangashare.com/Fairy-Tail/chapter-266/page001.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/266/001.jpg</ImageURL>
-              <Index>1</Index>
             </PageTestData>
             <PageTestData>
+              <Index>21</Index>
               <Name>21</Name>
               <Hash>A9050EB9-25C90F9A-4D7A639F-FF126CC0-ED52591F-A875F6EA-3D8ACC4C-0F589966</Hash>
               <URL>http://read.mangashare.com/Fairy-Tail/chapter-266/page021.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/266/021.jpg</ImageURL>
-              <Index>21</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>
-		<ChapterTestData>
+        <ChapterTestData>
           <Title>Special_Chapter - Special Chapter</Title>
           <PageCount>12</PageCount>
-          <Index>0</Index>
+          <Index>1</Index>
           <URL>http://read.mangashare.com/Fairy-Tail/chapter-Special_Chapter/page001.html</URL>
           <Pages>
             <PageTestData>
+              <Index>1</Index>
               <Name>1</Name>
               <Hash>91E2DF0D-48986D63-02D3CC1B-8A05B4A7-9FCD99A4-50D4D77D-21B8490B-4BE20E66</Hash>
               <URL>http://read.mangashare.com/Fairy-Tail/chapter-Special_Chapter/page001.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/Special_Chapter/001.jpg</ImageURL>
-              <Index>1</Index>
             </PageTestData>
             <PageTestData>
+              <Index>12</Index>
               <Name>12</Name>
               <Hash>7337923D-62308607-C97405CC-D350ACCD-2BB794C7-BE6C2D79-FF4A4437-8926841D</Hash>
               <URL>http://read.mangashare.com/Fairy-Tail/chapter-Special_Chapter/page012.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/Special_Chapter/012.jpg</ImageURL>
-              <Index>12</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>

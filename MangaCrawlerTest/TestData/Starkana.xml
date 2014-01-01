@@ -11,44 +11,44 @@
         <ChapterTestData>
           <Title>090 ~Eko to Issho~ chapter 60.5</Title>
           <PageCount>9</PageCount>
-          <Index>0</Index>
+          <Index>1</Index>
           <URL>http://starkana.com/manga/0/090_~Eko_to_Issho~/chapter/60.5</URL>
           <Pages>
             <PageTestData>
+              <Index>1</Index>
               <Name>1</Name>
               <Hash>B78F72BD-3F61C1D9-5372890D-6405F402-C89732D4-1E34435A-FE4E6E7A-B4FBF273</Hash>
               <URL>http://starkana.com/manga/0/090_~Eko_to_Issho~/chapter/60.5/1</URL>
               <ImageURL>http://img.starkana.com/2/130520/img000001.png</ImageURL>
-              <Index>1</Index>
             </PageTestData>
             <PageTestData>
+              <Index>9</Index>
               <Name>9</Name>
               <Hash>4444A347-A69A36AC-1DC1948E-C624BF1C-D5103BEE-F03C030B-4B96FCDA-E3B1BBAE</Hash>
               <URL>http://starkana.com/manga/0/090_~Eko_to_Issho~/chapter/60.5/9</URL>
               <ImageURL>http://img.starkana.com/2/130520/img000009.png</ImageURL>
-              <Index>9</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>
         <ChapterTestData>
           <Title>090 ~Eko to Issho~ chapter 1</Title>
           <PageCount>25</PageCount>
-          <Index>60</Index>
+          <Index>61</Index>
           <URL>http://starkana.com/manga/0/090_~Eko_to_Issho~/chapter/1</URL>
           <Pages>
             <PageTestData>
+              <Index>1</Index>
               <Name>1</Name>
               <Hash>7065E9C9-E1BC872F-3D3D72A7-6D4F8EB6-6C1B2A3F-1D64D446-E37EC166-BC51AA0E</Hash>
               <URL>http://starkana.com/manga/0/090_~Eko_to_Issho~/chapter/1/1</URL>
               <ImageURL>http://img.starkana.com/2/52/eko01_000a.jpg</ImageURL>
-              <Index>1</Index>
             </PageTestData>
             <PageTestData>
+              <Index>25</Index>
               <Name>25</Name>
               <Hash>E088EAE7-8D5A8A67-0A35FC77-BE548D2D-F6BBB3CE-02412A6E-E18F65B5-8B050E7E</Hash>
               <URL>http://starkana.com/manga/0/090_~Eko_to_Issho~/chapter/1/25</URL>
               <ImageURL>http://img.starkana.com/2/52/eko01_022.jpg</ImageURL>
-              <Index>25</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>
@@ -62,44 +62,44 @@
         <ChapterTestData>
           <Title>Fairy Tail chapter 365</Title>
           <PageCount>38</PageCount>
-          <Index>0</Index>
+          <Index>1</Index>
           <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/365</URL>
           <Pages>
             <PageTestData>
+              <Index>1</Index>
               <Name>1</Name>
               <Hash>87C57CBA-8DC3F7C5-40EED408-58AF7493-6FC9018D-1F0D9C40-7930D24D-F61B8525</Hash>
               <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/365/1</URL>
               <ImageURL>http://img.starkana.com/317/161859/0001.jpg</ImageURL>
-              <Index>1</Index>
             </PageTestData>
             <PageTestData>
+              <Index>38</Index>
               <Name>38</Name>
               <Hash>4FA2BEF1-3B161EC5-A6A5BB15-E60F97DF-A07A3B33-4C90C4A3-2E9EE299-47BDCC62</Hash>
               <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/365/38</URL>
               <ImageURL>http://img.starkana.com/317/161859/0039.jpg</ImageURL>
-              <Index>38</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>
         <ChapterTestData>
           <Title>Fairy Tail chapter 1</Title>
           <PageCount>73</PageCount>
-          <Index>369</Index>
+          <Index>370</Index>
           <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/1</URL>
           <Pages>
             <PageTestData>
+              <Index>1</Index>
               <Name>1</Name>
               <Hash>53F08C59-6EBA8CFA-7C56D7D6-85548233-9B398E8C-27CFD069-71F83F4D-21835235</Hash>
               <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/1/1</URL>
               <ImageURL>http://img.starkana.com/317/11616/fairy-001-01.jpg</ImageURL>
-              <Index>1</Index>
             </PageTestData>
             <PageTestData>
+              <Index>73</Index>
               <Name>73</Name>
               <Hash>BB71EA96-80D001F8-B7244F62-32C002BF-4F911F96-DF6DBEBE-860025D9-D88DC9EE</Hash>
               <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/1/73</URL>
               <ImageURL>http://img.starkana.com/317/11616/fairy-001-79-80.png</ImageURL>
-              <Index>73</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>
