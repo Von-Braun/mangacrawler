@@ -64,7 +64,52 @@
       <Title>Battle Angel Alita</Title>
       <ChapterCount>10</ChapterCount>
       <URL>http://www.thespectrum.net/manga_scans/?preview=manga_Battle-Angel-Alita</URL>
-      <Chapters />
+      <Chapters>
+	    <ChapterTestData>
+          <Title>Volume 1</Title>
+          <PageCount>238</PageCount>
+          <Index>9</Index>
+          <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Volume+1&amp;page=1</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>AC20E5C3-340149EB-1746B2BB-9D139286-9EB4C8EB-1E96EB9A-28AC26BB-D50A7A4E</Hash>
+              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Volume+1&amp;page=1&amp;page=1</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Volume 1/battleangel_v1_001.JPG</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>238</Name>
+              <Hash>D5BE4309-7CB09299-C2A7EB68-A405BC17-C1BCE890-4708DBEF-E01890E9-A59A3202</Hash>
+              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Volume+1&amp;page=1&amp;page=238</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Volume 1/battleangel_v1_240.JPG</ImageURL>
+              <Index>238</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Chapter Extra Stories</Title>
+          <PageCount>202</PageCount>
+          <Index>0</Index>
+          <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Chapter+Extra+Stories&amp;page=1</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>239234E2-5EE04438-53F2286F-56A10301-DF8316F9-14FB6AF8-85DA95DD-BA2153F2</Hash>
+              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Chapter+Extra+Stories&amp;page=1&amp;page=1</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Chapter Extra Stories/battleangel_extra_001.JPG</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>202</Name>
+              <Hash>431068EC-39736790-5D94B838-2E70FFE5-F5D6A27C-78CE4F22-F1BEBB5E-7A9A929D</Hash>
+              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Chapter+Extra+Stories&amp;page=1&amp;page=202</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Chapter Extra Stories/battleangel_extra_202.JPG</ImageURL>
+              <Index>202</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+	  </Chapters>
     </SerieTestData>
   </Series>
 </ServerTestData>

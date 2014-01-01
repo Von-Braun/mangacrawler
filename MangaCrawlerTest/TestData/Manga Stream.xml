@@ -54,5 +54,56 @@
         </ChapterTestData>
       </Chapters>
     </SerieTestData>
+	<SerieTestData>
+      <Title>Attack on Titan</Title>
+      <ChapterCount>7</ChapterCount>
+      <URL>http://mangastream.com/manga/attack_on_titan</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>52 - Krista Lenz</Title>
+          <PageCount>46</PageCount>
+          <Index>0</Index>
+          <URL>http://readms.com/r/attack_on_titan/52/2175/1</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>3E485EF5-7D1395EB-0A2E6B94-CECC3603-0583F350-2124A23D-FCF1495A-447A3667</Hash>
+              <URL>http://readms.com/r/attack_on_titan/52/2175/1</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/76/2175/01.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>46</Name>
+              <Hash>B8BF3F8B-E0F9577C-C5D30DA6-CA37D9F8-1BE31BD4-FEA4C53E-B6A1B961-C259741A</Hash>
+              <URL>http://readms.com/r/attack_on_titan/52/2175/46</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/76/2175/46.png</ImageURL>
+              <Index>46</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>46 - Opening Up</Title>
+          <PageCount>48</PageCount>
+          <Index>6</Index>
+          <URL>http://readms.com/r/attack_on_titan/46/1938/1</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>26DB79FF-A4EB1F83-0782C3D9-2DA88B4D-31357C83-BD2CDD1C-101EFE78-C21CBEB7</Hash>
+              <URL>http://readms.com/r/attack_on_titan/46/1938/1</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/76/1938/01.png</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>48</Name>
+              <Hash>B702B342-AC166F4E-1CA39CB3-6D769F27-75AB976A-156FC00B-82C839C0-C8990DE2</Hash>
+              <URL>http://readms.com/r/attack_on_titan/46/1938/48</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/76/1938/45.png</ImageURL>
+              <Index>48</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
   </Series>
 </ServerTestData>
