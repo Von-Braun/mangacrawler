@@ -228,7 +228,8 @@ namespace MangaCrawlerTest
             {
                 Hash = a_hash,
                 Name = a_ongoing ? a_page.Name : a_name,
-                Index = a_page.Index
+                Index = a_page.Index, 
+                Page = a_page
             };
 
             m_server_test_data.Series.First(el => el.Title == a_page.Chapter.Serie.Title).Chapters.First(
@@ -804,10 +805,6 @@ namespace MangaCrawlerTest
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 0);
-            }
-
-            {
                 var chapters = TestSerie(series.First(s => s.Title == "Freezing"), 56, true);
 
                 var pages = TestChapter("Freezing 1", chapters.Last(), 40);
@@ -850,19 +847,7 @@ namespace MangaCrawlerTest
             }
 
             {
-                var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 13, true);
-
-                var pages = TestChapter("", chapters.First(), 0, true);
-
-                TestPage(pages.First(), "", "", true);
-                TestPage(pages.Last(), "", "", true);
-
-                pages = TestChapter("Chapter 470", chapters.Last(), 23);
-
-                TestPage(pages.First(),
-                    "40CE9E35-301F9E63-B0FB16B4-264CCCD2-7510FC7A-8C043C04-1EF8A8F3-1DEC06ED", "1");
-                TestPage(pages.Last(),
-                    "B78E367D-C2CF75B6-99550DB7-CA263562-86D0A3F3-8F97B1A6-D43ABCB7-0451E857", "23");
+                var chapters = TestSerie(series.First(s => s.Title == "Bleach"), 0);
             }
 
             {

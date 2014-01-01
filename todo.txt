@@ -22,6 +22,7 @@ http://mangable.com/manga-list/
 http://www.readmangaonline.net/
 http://www.mangamonger.com/
 
+czy musze all testowac, czy zmiany sa bezpieczne
 instalator - 4.5.1
 instalator - instlacja nowej wersji na starej
 uruchomienie nowej wersji na starej
