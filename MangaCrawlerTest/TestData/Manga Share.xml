@@ -59,6 +59,28 @@
       <ChapterCount>263</ChapterCount>
       <URL>http://read.mangashare.com/Fairy-Tail</URL>
       <Chapters>
+	    <ChapterTestData>
+          <Title>000 - Crossover</Title>
+          <PageCount>22</PageCount>
+          <Index>262</Index>
+          <URL>http://read.mangashare.com/Fairy-Tail/chapter-000/page001.html</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>DC2164DD-52743BBE-AEFBC398-469B01A4-AA0EFEBD-2F423E3E-44308396-6C72C743</Hash>
+              <URL>http://read.mangashare.com/Fairy-Tail/chapter-000/page001.html</URL>
+              <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/000/001.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>22</Name>
+              <Hash>5065658C-BA82ABF0-AAC122CD-B38D7AB7-5F9198AE-C792FEB7-587ACB8A-142969D8</Hash>
+              <URL>http://read.mangashare.com/Fairy-Tail/chapter-000/page022.html</URL>
+              <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/000/022.jpg</ImageURL>
+              <Index>22</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
         <ChapterTestData>
           <Title>001 - Fairy Tail</Title>
           <PageCount>74</PageCount>
@@ -100,6 +122,28 @@
               <URL>http://read.mangashare.com/Fairy-Tail/chapter-266/page021.html</URL>
               <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/266/021.jpg</ImageURL>
               <Index>21</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+		<ChapterTestData>
+          <Title>Special_Chapter - Special Chapter</Title>
+          <PageCount>12</PageCount>
+          <Index>0</Index>
+          <URL>http://read.mangashare.com/Fairy-Tail/chapter-Special_Chapter/page001.html</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>91E2DF0D-48986D63-02D3CC1B-8A05B4A7-9FCD99A4-50D4D77D-21B8490B-4BE20E66</Hash>
+              <URL>http://read.mangashare.com/Fairy-Tail/chapter-Special_Chapter/page001.html</URL>
+              <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/Special_Chapter/001.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>12</Name>
+              <Hash>7337923D-62308607-C97405CC-D350ACCD-2BB794C7-BE6C2D79-FF4A4437-8926841D</Hash>
+              <URL>http://read.mangashare.com/Fairy-Tail/chapter-Special_Chapter/page012.html</URL>
+              <ImageURL>http://dl01.mangashare.com/manga/Fairy-Tail/Special_Chapter/012.jpg</ImageURL>
+              <Index>12</Index>
             </PageTestData>
           </Pages>
         </ChapterTestData>
