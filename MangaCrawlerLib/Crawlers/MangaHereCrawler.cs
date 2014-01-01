@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 
 namespace MangaCrawlerLib.Crawlers
@@ -77,6 +78,13 @@ namespace MangaCrawlerLib.Crawlers
             HtmlDocument doc = DownloadDocument(a_page);
             var image = doc.DocumentNode.SelectSingleNode("//img[@id='image']");
             return image.GetAttributeValue("src", "");
+        }
+
+        public override string GetImageURLExtension(string a_image_url)
+        {
+            var ext = base.GetImageURLExtension(a_image_url);
+            var match = Regex.Match(ext, "\\.(?i)(jpg|gif|png|bmp)");
+            return match.Value;
         }
     }
 }

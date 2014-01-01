@@ -145,10 +145,10 @@ namespace MangaCrawlerLib
 
                 string file_name = Rename(a_pns, Name);
 
-                ImageFilePath =
-                    Chapter.GetDirectory() +
-                    FileUtils.RemoveInvalidFileCharacters(file_name) +
-                    FileUtils.RemoveInvalidFileCharacters(Path.GetExtension(ImageURL).ToLower());
+                ImageFilePath = Path.Combine(
+                    Chapter.GetDirectory(),
+                    FileUtils.RemoveInvalidFileCharacters(
+                        Path.GetFileNameWithoutExtension(file_name) + Crawler.GetImageURLExtension(ImageURL).ToLower()));
 
                 FileInfo image_file = new FileInfo(ImageFilePath);
 

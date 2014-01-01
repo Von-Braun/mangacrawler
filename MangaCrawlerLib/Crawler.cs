@@ -171,5 +171,10 @@ namespace MangaCrawlerLib
                 return DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer;
             }
         }
+
+        public virtual string GetImageURLExtension(string a_image_url)
+        {
+            return Path.GetExtension(a_image_url);
+        }
     }
 }
