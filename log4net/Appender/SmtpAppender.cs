@@ -498,7 +498,7 @@ namespace log4net.Appender
 				mailMessage.SubjectEncoding = m_subjectEncoding;
                 mailMessage.Priority = m_mailPriority;
 
-                // TODO: Consider using SendAsync to send the message without blocking. This would be a change in
+                // TODOx: Consider using SendAsync to send the message without blocking. This would be a change in
                 // behaviour compared to .NET 1.x. We would need a SendCompletedCallback to log errors.
                 smtpClient.Send(mailMessage);
             }

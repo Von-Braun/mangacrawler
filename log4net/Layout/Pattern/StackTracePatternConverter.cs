@@ -115,7 +115,7 @@ namespace log4net.Layout.Pattern
                 writer.Write("{0}.{1}", stackFrame.ClassName, GetMethodInformation(stackFrame.Method));
 				if (stackFrameIndex > 0)
 				{
-                    // TODO: make this user settable?
+                    // TODOx: make this user settable?
 					writer.Write(" > ");
 				}
 				stackFrameIndex--;
