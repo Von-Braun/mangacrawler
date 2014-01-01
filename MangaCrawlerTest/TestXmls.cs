@@ -10,7 +10,8 @@ using TomanuExtensions;
 
 namespace MangaCrawlerTest
 {
-    public static class Helpers
+    [TestClass]
+    public class TestXmls
     {
         private static string ERROR_SUFFIX = " - downloaded.xml";
 
@@ -30,18 +31,18 @@ namespace MangaCrawlerTest
             return dir;
         }
 
-        public static List<ServerTestData> LoadTestDataList()
+        private List<ServerTestData> LoadTestDataList()
         {
             return (from test_data_xml in Directory.EnumerateFiles(GetTestDataDir(), "*.xml")
                     select ServerTestData.Load(test_data_xml)).ToList();
         }
 
-        public static void Download(List<ServerTestData> a_list)
+        private void Download(List<ServerTestData> a_list)
         {
             Parallel.ForEach(a_list, std => std.Download());
         }
 
-        public static void DeleteTestData(string a_server_name)
+        private void DeleteTestData(string a_server_name)
         {
             foreach (var file in from f in Directory.GetFiles(GetTestDataDir())
                                  let fn = Path.GetFileName(f)
@@ -52,13 +53,13 @@ namespace MangaCrawlerTest
             }
         }
 
-        public static void DeleteErrors()
+        private void DeleteErrors()
         {
             foreach (var file in Directory.GetFiles(GetTestDataDir(), ERROR_SUFFIX))
                 File.Delete(file);
         }
 
-        public static bool Compare(List<ServerTestData> a_from_xml, List<ServerTestData> a_downloaded)
+        private bool Compare(List<ServerTestData> a_from_xml, List<ServerTestData> a_downloaded)
         {
             Assert.AreEqual(a_from_xml.Count, a_downloaded.Count);
 
@@ -70,7 +71,7 @@ namespace MangaCrawlerTest
             return result;
         }
 
-        private static bool Compare(ServerTestData a_from_xml, ServerTestData a_downloaded)
+        private bool Compare(ServerTestData a_from_xml, ServerTestData a_downloaded)
         {
             try
             {
@@ -89,7 +90,7 @@ namespace MangaCrawlerTest
             }
         }
 
-        public static void GenerateInfo(ServerTestData a_server_test_data, bool a_downloaded = true)
+        private void GenerateInfo(ServerTestData a_server_test_data, bool a_downloaded = true)
         {
             string a_suffix = a_downloaded ? ERROR_SUFFIX : "";
 
@@ -107,13 +108,24 @@ namespace MangaCrawlerTest
             }
         }
 
-        public static void CheckOngoing(List<ServerTestData> a_downloaded)
+        private void CheckOngoing(List<ServerTestData> a_downloaded)
         {
             Assert.IsTrue((from std in a_downloaded
                            select (from serie in std.Series
                                    where serie.Chapters.Count(ch => ch.Index == ch.SerieTestData.ChapterCount - 1) >= 1
                                    where serie.Chapters.Count(ch => ch.Index == 0) >= 1
                                    select serie).Count()).All(c => c >= 2));
+        }
+
+        [TestMethod]
+        public void TestXmls_()
+        {
+            DeleteErrors();
+            var from_xml = LoadTestDataList();
+            var downloaded = LoadTestDataList();
+            Download(downloaded);
+            Assert.IsTrue(Compare(from_xml, downloaded));
+            CheckOngoing(downloaded);
         }
     }
 }

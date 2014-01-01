@@ -54,5 +54,56 @@
         </ChapterTestData>
       </Chapters>
     </SerieTestData>
+    <SerieTestData>
+      <Title>Freezing</Title>
+      <ChapterCount>56</ChapterCount>
+      <URL>http://www.mangavolume.com/serie-archive/mangas-freezing</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>Freezing 1</Title>
+          <PageCount>40</PageCount>
+          <Index>136</Index>
+          <URL>http://www.mangavolume.com/freezing/chapter-freezing-1/</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>E407F903-98205296-23019348-AB0235B6-F414FD7A-63D80052-C29695CD-B7305CD6</Hash>
+              <URL>http://www.mangavolume.com/freezing/chapter-freezing-1/1</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/9/87/manga_886415.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>40</Name>
+              <Hash>1BA1BF69-1BA4DA38-171034AA-B3A22C99-1F300185-1A71DF8E-379F4B12-97C2AA6B</Hash>
+              <URL>http://www.mangavolume.com/freezing/chapter-freezing-1/40</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/9/87/manga_886454.png</ImageURL>
+              <Index>40</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Freezing 141</Title>
+          <PageCount>0</PageCount>
+          <Index>0</Index>
+          <URL>http://www.mangavolume.com/freezing/chapter-freezing-141/</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash></Hash>
+              <URL>http://www.mangavolume.com/freezing/chapter-freezing-141/1</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/45/manga_1044435.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>19</Name>
+              <Hash></Hash>
+              <URL>http://www.mangavolume.com/freezing/chapter-freezing-141/19</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/45/manga_1044453.jpg</ImageURL>
+              <Index>19</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
   </Series>
 </ServerTestData>

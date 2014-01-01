@@ -56,8 +56,14 @@
     </SerieTestData>
     <SerieTestData>
       <Title>Bleach</Title>
-      <ChapterCount>13</ChapterCount>
+      <ChapterCount>0</ChapterCount>
       <URL>http://www.thespectrum.net/manga_scans/bleach/</URL>
+      <Chapters />
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Battle Angel Alita</Title>
+      <ChapterCount>10</ChapterCount>
+      <URL>http://www.thespectrum.net/manga_scans/?preview=manga_Battle-Angel-Alita</URL>
       <Chapters />
     </SerieTestData>
   </Series>
