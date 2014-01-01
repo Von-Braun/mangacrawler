@@ -16,7 +16,7 @@ namespace MangaCrawlerLib
     {
         private string m_manga_root_dir = Environment.GetFolderPath(
             Environment.SpecialFolder.DesktopDirectory) +
-            Path.DirectorySeparatorChar + Application.ProductName;
+            Path.DirectorySeparatorChar + "Manga Crawler";
 
         private bool m_use_cbz = false;
 
