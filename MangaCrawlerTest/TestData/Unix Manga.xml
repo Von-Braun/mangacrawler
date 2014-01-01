@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServerTestData>
   <Name>Unix Manga</Name>
-  <SerieCount>1613</SerieCount>
+  <SerieCount>2027</SerieCount>
   <Series>
     <SerieTestData>
       <Title>Bleach</Title>
-      <ChapterCount>505</ChapterCount>
+      <ChapterCount>580</ChapterCount>
       <URL>http://unixmanga.com/onlinereading/Bleach.html</URL>
       <Chapters>
         <ChapterTestData>
           <Title>Bleach c Calendar</Title>
           <PageCount>8</PageCount>
-          <Index>578</Index>
+          <Index>579</Index>
           <URL>http://unixmanga.net/onlinereading/Bleach/Bleach_c_Calendar.html</URL>
           <Pages>
             <PageTestData>
               <Name>00</Name>
-              <Hash>E018B7DF-C64538D1-95A9B6C9-49A8DBE9-18C11E68-C52EDDFB-B800B51A-FA7E354F</Hash>
+              <Hash>262ED4DC-7C5B3D1F-B0918BB3-3DACD75A-60D2119B-17A29A97-04E12601-051312D8</Hash>
               <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c Calendar/00.jpg&amp;server=nas.html</URL>
               <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c Calendar/thumb/105000.jpg</ImageURL>
               <Index>1</Index>
@@ -32,20 +32,20 @@
         </ChapterTestData>
         <ChapterTestData>
           <Title>Bleach c563</Title>
-          <PageCount>0</PageCount>
+          <PageCount>19</PageCount>
           <Index>2</Index>
           <URL>http://unixmanga.net/onlinereading/Bleach/Bleach_c563.html</URL>
           <Pages>
             <PageTestData>
               <Name>bleach-4658355</Name>
-              <Hash></Hash>
+              <Hash>3AA30E1D-09EFC453-A8462021-255A22E6-340CFF6D-5D1C2FB0-EBABA7B0-A8F0AFE3</Hash>
               <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c563/bleach-4658355.jpg&amp;server=nas.html</URL>
               <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c563/bleach-4658355.jpg</ImageURL>
               <Index>1</Index>
             </PageTestData>
             <PageTestData>
               <Name>bleach-4658391</Name>
-              <Hash></Hash>
+              <Hash>C1D5451C-74CB2BA6-F470AF85-B6A6FED8-3B5AD585-AAF1A96F-DD7222B6-3B545013</Hash>
               <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c563/bleach-4658391.jpg&amp;server=nas.html</URL>
               <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c563/bleach-4658391.jpg</ImageURL>
               <Index>19</Index>
@@ -67,14 +67,14 @@
           <Pages>
             <PageTestData>
               <Name>666Satan-01-00</Name>
-              <Hash>5E06A425-528A10D1-A3B02CCC-69F21166-5EC8C51D-F4F6601E-59247E93-A46DB54A</Hash>
+              <Hash>408A4442-0CDE316E-1E41544D-B8DFB08C-402CDC6E-9128EF2E-6B2E1ECE-8496E9D7</Hash>
               <URL>http://ex2.unixmanga.net/onlinereading/?image=666 Satan/666 Satan vol 001/666Satan-v01-c01a[TW]/666Satan-01-00.jpg&amp;server=nas.html</URL>
               <ImageURL>http://nas.unixmanga.com/onlinereading/666 Satan/666 Satan vol 001/666Satan-v01-c01a[TW]/666Satan-01-00.jpg</ImageURL>
               <Index>1</Index>
             </PageTestData>
             <PageTestData>
               <Name>666Satan-01-24</Name>
-              <Hash>6DABC33C-5106B55F-CD3E4C3F-6C4088D6-0BE589FC-FBA4764D-41B27F65-AC88904D</Hash>
+              <Hash>1595E11D-A302BA42-7A33F0E1-4ADEF4BD-C5365FBF-0B89123E-B61C9E8B-E7E08A2D</Hash>
               <URL>http://ex2.unixmanga.net/onlinereading/?image=666 Satan/666 Satan vol 001/666Satan-v01-c01a[TW]/666Satan-01-24.jpg&amp;server=nas.html</URL>
               <ImageURL>http://nas.unixmanga.com/onlinereading/666 Satan/666 Satan vol 001/666Satan-v01-c01a[TW]/666Satan-01-24.jpg</ImageURL>
               <Index>25</Index>
@@ -118,7 +118,7 @@
           <Pages>
             <PageTestData>
               <Name>0001</Name>
-              <Hash>4EB61381-57D3E2E2-3BCA169A-513A154A-293D39BD-56CF793F-ADD02D7E-A8BDACBC</Hash>
+              <Hash>BA438114-F68B9CDD-42198F17-8C72B2D3-78882EC9-C9A2A995-BFE19D26-FDD0A9C5</Hash>
               <URL>http://ex2.unixmanga.net/onlinereading/?image=Kamisama no Tsukurikata/kamisama 001/0001.jpg&amp;server=nas.html</URL>
               <ImageURL>http://nas.unixmanga.com/onlinereading/Kamisama no Tsukurikata/kamisama 001/0001.jpg</ImageURL>
               <Index>1</Index>
@@ -140,7 +140,7 @@
           <Pages>
             <PageTestData>
               <Name>0001</Name>
-              <Hash>E1D1A575-88D45C6A-8BFEBF16-349CA8BC-FB90D4A4-1AC4F831-EAF1385F-7F55F315</Hash>
+              <Hash>49C0AACF-CEFCBFD1-626AF6D5-3E3F444A-252DCBCC-CB109F3A-BEB2FCB7-F2C39DA0</Hash>
               <URL>http://ex2.unixmanga.net/onlinereading/?image=Kamisama no Tsukurikata/kamisama 017/0001.jpg&amp;server=nas.html</URL>
               <ImageURL>http://nas.unixmanga.com/onlinereading/Kamisama no Tsukurikata/kamisama 017/0001.jpg</ImageURL>
               <Index>1</Index>
@@ -169,7 +169,7 @@
           <Pages>
             <PageTestData>
               <Name>00 _ Nekohana</Name>
-              <Hash>83AE7BA3-A1554FA6-0FB46772-FD94DD15-057EAF75-5AF15ED5-A41C1DEF-94FE6F56</Hash>
+              <Hash>ABC41912-39037D79-66ED232B-E4F0EC7B-907F9E02-18CB640D-FF6E32D2-68750D27</Hash>
               <URL>http://ex2.unixmanga.net/onlinereading/?image=16 Sai Kissu Complete/00%20_%20Nekohana.jpg&amp;server=nas.html</URL>
               <ImageURL>http://nas.unixmanga.com/onlinereading/16 Sai Kissu Complete/00 _ Nekohana.jpg</ImageURL>
               <Index>1</Index>

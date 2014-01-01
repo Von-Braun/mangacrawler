@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServerTestData>
   <Name>Spectrum Nexus</Name>
-  <SerieCount>121</SerieCount>
+  <SerieCount>131</SerieCount>
   <Series>
     <SerieTestData>
       <Title>Fullmetal Alchemist</Title>
@@ -16,14 +16,14 @@
           <Pages>
             <PageTestData>
               <Name>1</Name>
-              <Hash>18812B42-DD6F41A6-88F6133C-FF978311-7DDF6D98-0A9E1017-C741E91B-678EBE39</Hash>
+              <Hash>7E9DF42D-ED8C16A2-E67248FF-F57702BB-2ED646B3-0C9C60D3-83506320-328A86D4</Hash>
               <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+27&amp;page=1&amp;page=1</URL>
               <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 27/fma_c107_001.JPG</ImageURL>
               <Index>1</Index>
             </PageTestData>
             <PageTestData>
               <Name>212</Name>
-              <Hash>E878290F-6BB23E8D-E0E80036-511E584D-2C73FA3D-8BB78286-DEC5D4D7-70885E20</Hash>
+              <Hash>2C9D7E26-477ECEB2-F29C4CFC-7F5979B3-84DF750C-D270B456-B72AC73E-9012517F</Hash>
               <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+27&amp;page=1&amp;page=212</URL>
               <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 27/fmagaiden_030.JPG</ImageURL>
               <Index>212</Index>
@@ -38,14 +38,14 @@
           <Pages>
             <PageTestData>
               <Name>1</Name>
-              <Hash>74DC3FF3-B47172FD-824F95E0-7E62196E-BFE20CFB-3F21EDC2-4D77FEDB-A21C7035</Hash>
+              <Hash>3EB9F663-30BFA500-B792DC8E-63CB6950-E20635F7-4A7B0069-4E5E8B18-C36321E5</Hash>
               <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+01&amp;page=1&amp;page=1</URL>
               <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 01/fma-v01_000.jpg</ImageURL>
               <Index>1</Index>
             </PageTestData>
             <PageTestData>
               <Name>177</Name>
-              <Hash>F78693E3-835389EE-C4575D98-516DA069-5226F579-6DE02CD3-7EB350DE-17534749</Hash>
+              <Hash>4465CA14-0C186340-8C3DF8D0-13409713-C81030F1-344510E6-BBFB2A9C-308AC1F9</Hash>
               <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+01&amp;page=1&amp;page=177</URL>
               <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 01/fma-v01_176.jpg</ImageURL>
               <Index>177</Index>
