@@ -53,7 +53,7 @@ namespace MangaCrawlerTest
                                     ChapterTestData.SerieTestData.Title,
                                     ChapterTestData.Title,
                                     Index,
-                                    Page.Crawler.GetImageURLExtension(ImageURL));
+                                    Page.Crawler.GetImageURLExtension(ImageURL).ToLower());
                 file_name = TomanuExtensions.Utils.FileUtils.RemoveInvalidFileCharacters(file_name);
                 file_name = Path.Combine(TestXmls.GetTestDataDir(), file_name);
 
@@ -97,11 +97,10 @@ namespace MangaCrawlerTest
         public void Download(ChapterTestData a_chapter_test_data)
         {
             ChapterTestData = a_chapter_test_data;
-            Page = ChapterTestData.Chapter.Pages.FirstOrDefault(el => el.Name == Name);
+            Page = ChapterTestData.Chapter.Pages.ElementAtOrDefault(Index - 1);
 
             Name = "";
 
-            Index = Page.Index;
             URL = Page.URL;
 
             Limiter.BeginChapter(Page.Chapter);
@@ -189,12 +188,11 @@ namespace MangaCrawlerTest
         public void Download(SerieTestData a_serie_test_data)
         {
             SerieTestData = a_serie_test_data;
-            Chapter = SerieTestData.Serie.Chapters.FirstOrDefault(el => el.Title == Title);
+            Chapter = SerieTestData.Serie.Chapters.ElementAtOrDefault(Index - 1);
 
             PageCount = -1;
             Title = "";
 
-            Index = Chapter.Serie.Chapters.IndexOf(Chapter) + 1;
             URL = Chapter.URL;
 
             Chapter.State = ChapterState.Waiting;
