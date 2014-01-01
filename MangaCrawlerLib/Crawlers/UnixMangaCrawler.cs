@@ -173,8 +173,19 @@ namespace MangaCrawlerLib.Crawlers
         internal override string GetImageURL(Page a_page)
         {
             HtmlDocument doc = DownloadDocument(a_page);
-            string script = doc.DocumentNode.SelectSingleNode("//div[@id='contentRH']/div[4]/script").InnerText;
-            return Regex.Match(script, ".*SRC=\"(.*)\".*").Groups[1].Value;
+            var nodes = doc.DocumentNode.SelectNodes("//div[@id='contentRH']/div/script");
+
+            foreach (var node in nodes)
+            {
+                string script = node.InnerText;
+                string url = Regex.Match(script, ".*SRC=\"(.*)\".*").Groups[1].Value;
+
+                if (!String.IsNullOrWhiteSpace(url))
+                    return url;
+
+            }
+
+            throw new InvalidDataException();
         }
 
         public override string GetServerURL()
