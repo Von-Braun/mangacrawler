@@ -30,3 +30,7 @@ TestResults
 
 MangaCrawler.v12.suo
 *.csproj.user
+
+MangaCrawlerTest/TestData/*.jpg
+MangaCrawlerTest/TestData/*.JPG
+MangaCrawlerTest/TestData/*.png

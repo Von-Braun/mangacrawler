@@ -12,7 +12,7 @@ namespace MangaCrawlerTest
 {
     public static class Helpers
     {
-        private static string DOWNLOADED_SUFFIX = " - downloaded.xml";
+        private static string ERROR_SUFFIX = " - downloaded.xml";
 
         public static string GetTestDataDir()
         {
@@ -38,27 +38,23 @@ namespace MangaCrawlerTest
 
         public static void Download(List<ServerTestData> a_list)
         {
-            foreach (var test_data in a_list)
-            {
-                try
-                {
-                    test_data.Download();
-                }
-                catch
-                {
-                }
-            }
+            Parallel.ForEach(a_list, std => std.Download());
         }
 
         public static void DeleteTestData(string a_server_name)
         {
-            foreach (var file in Directory.GetFiles(GetTestDataDir()).Where(el => el.StartsWith(a_server_name)))
+            foreach (var file in from f in Directory.GetFiles(GetTestDataDir())
+                                 let fn = Path.GetFileName(f)
+                                 where fn.StartsWith(a_server_name)
+                                 select f)
+            {
                 File.Delete(file);
+            }
         }
 
-        public static void DeleteDownloaded()
+        public static void DeleteErrors()
         {
-            foreach (var file in Directory.GetFiles(GetTestDataDir(), DOWNLOADED_SUFFIX))
+            foreach (var file in Directory.GetFiles(GetTestDataDir(), ERROR_SUFFIX))
                 File.Delete(file);
         }
 
@@ -95,7 +91,7 @@ namespace MangaCrawlerTest
 
         public static void GenerateInfo(ServerTestData a_server_test_data, bool a_downloaded = true)
         {
-            string a_suffix = a_downloaded ? DOWNLOADED_SUFFIX : "";
+            string a_suffix = a_downloaded ? ERROR_SUFFIX : "";
 
             a_server_test_data.Save(Path.Combine(GetTestDataDir(), a_server_test_data.Name + a_suffix + ".xml"));
 
@@ -104,10 +100,20 @@ namespace MangaCrawlerTest
                                  from page in chapter.Pages
                                  select page)
             {
-                var image_name = Path.GetFileNameWithoutExtension(page.FileName) + a_suffix + 
-                    Path.GetExtension(page.FileName);
+                var image_name = Path.Combine(
+                    Path.GetDirectoryName(page.FileName), 
+                    Path.GetFileNameWithoutExtension(page.FileName) + a_suffix + Path.GetExtension(page.FileName));
                 page.Image.Save(image_name);
             }
+        }
+
+        public static void CheckOngoing(List<ServerTestData> a_downloaded)
+        {
+            Assert.IsTrue((from std in a_downloaded
+                           select (from serie in std.Series
+                                   where serie.Chapters.Count(ch => ch.Index == ch.SerieTestData.ChapterCount - 1) >= 1
+                                   where serie.Chapters.Count(ch => ch.Index == 0) >= 1
+                                   select serie).Count()).All(c => c >= 2));
         }
     }
 }

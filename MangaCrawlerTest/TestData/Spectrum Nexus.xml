@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServerTestData>
+  <Name>Spectrum Nexus</Name>
+  <SerieCount>121</SerieCount>
+  <Series>
+    <SerieTestData>
+      <Title>Fullmetal Alchemist</Title>
+      <ChapterCount>27</ChapterCount>
+      <URL>http://www.thespectrum.net/manga_scans/fullmetal_alchemist/</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>Volume 27</Title>
+          <PageCount>212</PageCount>
+          <Index>0</Index>
+          <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+27&amp;page=1</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>18812B42-DD6F41A6-88F6133C-FF978311-7DDF6D98-0A9E1017-C741E91B-678EBE39</Hash>
+              <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+27&amp;page=1&amp;page=1</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 27/fma_c107_001.JPG</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>212</Name>
+              <Hash>E878290F-6BB23E8D-E0E80036-511E584D-2C73FA3D-8BB78286-DEC5D4D7-70885E20</Hash>
+              <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+27&amp;page=1&amp;page=212</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 27/fmagaiden_030.JPG</ImageURL>
+              <Index>212</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Volume 01</Title>
+          <PageCount>177</PageCount>
+          <Index>26</Index>
+          <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+01&amp;page=1</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>74DC3FF3-B47172FD-824F95E0-7E62196E-BFE20CFB-3F21EDC2-4D77FEDB-A21C7035</Hash>
+              <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+01&amp;page=1&amp;page=1</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 01/fma-v01_000.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>177</Name>
+              <Hash>F78693E3-835389EE-C4575D98-516DA069-5226F579-6DE02CD3-7EB350DE-17534749</Hash>
+              <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+01&amp;page=1&amp;page=177</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 01/fma-v01_176.jpg</ImageURL>
+              <Index>177</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Bleach</Title>
+      <ChapterCount>13</ChapterCount>
+      <URL>http://www.thespectrum.net/manga_scans/bleach/</URL>
+      <Chapters />
+    </SerieTestData>
+  </Series>
+</ServerTestData>

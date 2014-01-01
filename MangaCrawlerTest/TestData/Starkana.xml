@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServerTestData>
+  <Name>Starkana</Name>
+  <SerieCount>4240</SerieCount>
+  <Series>
+    <SerieTestData>
+      <Title>090 ~Eko to Issho~</Title>
+      <ChapterCount>59</ChapterCount>
+      <URL>http://starkana.com/manga/0/090_~Eko_to_Issho~</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>090 ~Eko to Issho~ chapter 59</Title>
+          <PageCount>9</PageCount>
+          <Index>0</Index>
+          <URL>http://starkana.com/manga/0/090_~Eko_to_Issho~/chapter/60.5</URL>
+          <Pages />
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+  </Series>
+</ServerTestData>

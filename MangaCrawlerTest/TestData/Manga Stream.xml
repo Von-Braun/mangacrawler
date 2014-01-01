@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServerTestData>
+  <Name>Manga Stream</Name>
+  <SerieCount>33</SerieCount>
+  <Series>
+    <SerieTestData>
+      <Title>Fairy Tail</Title>
+      <ChapterCount>9</ChapterCount>
+      <URL>http://mangastream.com/manga/fairy_tail</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>365 - Fairy in the Jail</Title>
+          <PageCount>38</PageCount>
+          <Index>0</Index>
+          <URL>http://readms.com/r/fairy_tail/365/2200/1</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>87C57CBA-8DC3F7C5-40EED408-58AF7493-6FC9018D-1F0D9C40-7930D24D-F61B8525</Hash>
+              <URL>http://readms.com/r/fairy_tail/365/2200/1</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/2200/01.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>38</Name>
+              <Hash>4FA2BEF1-3B161EC5-A6A5BB15-E60F97DF-A07A3B33-4C90C4A3-2E9EE299-47BDCC62</Hash>
+              <URL>http://readms.com/r/fairy_tail/365/2200/38</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/2200/37.jpg</ImageURL>
+              <Index>38</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Special - The Fairy's Punishment Game</Title>
+          <PageCount>28</PageCount>
+          <Index>8</Index>
+          <URL>http://readms.com/r/fairy_tail/Special/1997/1</URL>
+          <Pages>
+            <PageTestData>
+              <Name>1</Name>
+              <Hash>F4606D9C-DBC3EA2A-665F9FF2-7175E58F-29164759-9E1CBF8C-502856C8-A1E96050</Hash>
+              <URL>http://readms.com/r/fairy_tail/Special/1997/1</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/1997/01.jpg</ImageURL>
+              <Index>1</Index>
+            </PageTestData>
+            <PageTestData>
+              <Name>28</Name>
+              <Hash>844B0F93-28235BB9-9663E6DB-238C7EE9-0F622603-23A32CCF-5D39497B-91E8DEC9</Hash>
+              <URL>http://readms.com/r/fairy_tail/Special/1997/28</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/1997/28.jpg</ImageURL>
+              <Index>28</Index>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+  </Series>
+</ServerTestData>

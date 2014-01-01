@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using MangaCrawlerLib;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TomanuExtensions;
 using TomanuExtensions.Utils;
 
@@ -18,23 +19,28 @@ namespace MangaCrawlerTest
 
         public Page Page { get; set; }
 
-        public int PageIndex { get; set; }
+        public int Index { get; set; }
 
         public string Name { get; set; }
 
         public Image Image { get; set; }
 
+        public string URL { get; set; }
+
+        public string ImageURL { get; set; }
+
         public string FileName
         {
             get
             {
-                var file_name = String.Format("{0} - {1} - {2} - {3}", 
+                var file_name = String.Format("{0} - {1} - {2} - {3}{4}", 
                                     ChapterTestData.SerieTestData.ServerTestData.Name,
                                     ChapterTestData.SerieTestData.Title, 
                                     ChapterTestData.Title, 
-                                    Name);
-                file_name = Path.Combine(Helpers.GetTestDataDir(), file_name);
+                                    Name, 
+                                    Path.GetExtension(ImageURL));
                 file_name = TomanuExtensions.Utils.FileUtils.RemoveInvalidFileCharacters(file_name);
+                file_name = Path.Combine(Helpers.GetTestDataDir(), file_name);
                 return file_name;
             }
         }
@@ -47,7 +53,14 @@ namespace MangaCrawlerTest
 
             ptd.Name = a_node.Element("Name").Value;
             ptd.Hash = a_node.Element("Hash").Value;
-            ptd.PageIndex = Int32.Parse(a_node.Element("PageIndex").Value);
+            ptd.URL = a_node.Element("URL").Value;
+            ptd.ImageURL = a_node.Element("ImageURL").Value;
+            ptd.Index = Int32.Parse(a_node.Element("Index").Value);
+
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Name));
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Hash));
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.URL));
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.ImageURL));
 
             return ptd;
         }
@@ -58,13 +71,18 @@ namespace MangaCrawlerTest
             return new XElement("PageTestData",
                 new XElement("Name", Name),
                 new XElement("Hash", Hash),
-                new XElement("PageIndex", PageIndex));
+                new XElement("URL", URL),
+                new XElement("ImageURL", ImageURL),
+                new XElement("Index", Index));
         }
 
         public void Download(ChapterTestData a_chapter_test_data)
         {
             ChapterTestData = a_chapter_test_data;
-            Page = ChapterTestData.Chapter.Pages.ElementAt(PageIndex);
+            Page = ChapterTestData.Chapter.Pages.FirstOrDefault(el => el.Name == Name);
+            Index = Page.Index;
+            ImageURL = Path.GetExtension(Page.ImageURL);
+            URL = Page.URL;
 
             Name = "";
 
@@ -91,8 +109,11 @@ namespace MangaCrawlerTest
         {
             if (a_downloaded.Hash != Hash)
                 return false;
-
             if (a_downloaded.Name != Name)
+                return false;
+            if (a_downloaded.ImageURL != ImageURL)
+                return false;
+            if (a_downloaded.URL != URL)
                 return false;
 
             return true;
@@ -109,6 +130,10 @@ namespace MangaCrawlerTest
 
         public int PageCount { get; set; }
 
+        public string URL { get; set; }
+
+        public int Index { get; set; }
+
         public List<PageTestData> Pages = new List<PageTestData>();
 
         public static ChapterTestData Load(XElement a_node)
@@ -116,7 +141,12 @@ namespace MangaCrawlerTest
             ChapterTestData ctd = new ChapterTestData();
 
             ctd.PageCount = Int32.Parse(a_node.Element("PageCount").Value);
+            ctd.Index = Int32.Parse(a_node.Element("Index").Value);
             ctd.Title = a_node.Element("Title").Value;
+            ctd.URL = a_node.Element("URL").Value;
+
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(ctd.Title));
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(ctd.URL));
 
             foreach (var page_node in a_node.Element("Pages").Elements())
                 ctd.Pages.Add(PageTestData.Load(page_node));
@@ -128,7 +158,9 @@ namespace MangaCrawlerTest
         {
             return new XElement("ChapterTestData", 
                 new XElement("Title", Title), 
-                new XElement("PageCount", PageCount), 
+                new XElement("PageCount", PageCount),
+                new XElement("Index", Index),
+                new XElement("URL", URL), 
                 new XElement("Pages", 
                     from page in Pages
                     select page.GetAsXml()));
@@ -138,6 +170,8 @@ namespace MangaCrawlerTest
         {
             SerieTestData = a_serie_test_data;
             Chapter = SerieTestData.Serie.Chapters.FirstOrDefault(el => el.Title == Title);
+            Index = Chapter.Serie.Chapters.IndexOf(Chapter);
+            URL = Chapter.URL;
 
             PageCount = -1;
             Title = "";
@@ -164,8 +198,11 @@ namespace MangaCrawlerTest
         {
             if (a_downloaded.PageCount != PageCount)
                 return false;
-
             if (a_downloaded.Title != Title)
+                return false;
+            if (a_downloaded.URL != URL)
+                return false;
+            if (a_downloaded.Index != Index)
                 return false;
 
             for (int i = 0; i < Pages.Count; i++)
@@ -194,6 +231,8 @@ namespace MangaCrawlerTest
 
         public int ChapterCount { get; set; }
 
+        public string URL { get; set; }
+
         public List<ChapterTestData> Chapters = new List<ChapterTestData>();
 
         public static SerieTestData Load(XElement a_node)
@@ -202,6 +241,10 @@ namespace MangaCrawlerTest
 
             std.ChapterCount = Int32.Parse(a_node.Element("ChapterCount").Value);
             std.Title = a_node.Element("Title").Value;
+            std.URL = a_node.Element("URL").Value;
+
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(std.Title));
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(std.URL));
 
             foreach (var chapter_node in a_node.Element("Chapters").Elements())
                 std.Chapters.Add(ChapterTestData.Load(chapter_node));
@@ -213,7 +256,8 @@ namespace MangaCrawlerTest
         {
             return new XElement("SerieTestData", 
                 new XElement("Title", Title), 
-                new XElement("ChapterCount", ChapterCount), 
+                new XElement("ChapterCount", ChapterCount),
+                new XElement("URL", URL), 
                 new XElement("Chapters", 
                     from chapter in Chapters
                     select chapter.GetAsXml()));
@@ -223,6 +267,7 @@ namespace MangaCrawlerTest
         {
             ServerTestData = a_server_test_data;
             Serie = ServerTestData.Server.Series.FirstOrDefault(el => el.Title == Title);
+            URL = Serie.URL;
 
             ChapterCount = -1;
             Title = "";
@@ -241,8 +286,9 @@ namespace MangaCrawlerTest
         {
             if (a_downloaded.ChapterCount != ChapterCount)
                 return false;
-
             if (a_downloaded.Title != Title)
+                return false;
+            if (a_downloaded.URL != URL)
                 return false;
 
             for (int i = 0; i < Chapters.Count; i++)
@@ -279,6 +325,8 @@ namespace MangaCrawlerTest
 
             std.Name = root.Element("Name").Value;
             std.SerieCount = Int32.Parse(root.Element("SerieCount").Value);
+
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(std.Name));
 
             foreach (var serie_node in root.Element("Series").Elements())
                 std.Series.Add(SerieTestData.Load(serie_node));
