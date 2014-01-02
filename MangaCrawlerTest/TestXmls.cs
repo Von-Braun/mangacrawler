@@ -85,8 +85,8 @@ namespace MangaCrawlerTest
         private void CheckOngoing(ServerTestData a_downloaded)
         {
             Assert.IsTrue((from serie in a_downloaded.Series
-                           where serie.Chapters.Count(ch => ch.Index == ch.SerieTestData.ChapterCount - 1) >= 1
-                           where serie.Chapters.Count(ch => ch.Index == 0) >= 1
+                           where serie.Chapters.Count(ch => ch.Index == ch.SerieTestData.ChapterCount) >= 1
+                           where serie.Chapters.Count(ch => ch.Index == 1) >= 1
                            select serie).Count() >= 2);
         }
 
