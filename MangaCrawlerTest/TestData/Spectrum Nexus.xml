@@ -4,6 +4,77 @@
   <SerieCount>131</SerieCount>
   <Series>
     <SerieTestData>
+      <Title>Battle Angel Alita</Title>
+      <ChapterCount>10</ChapterCount>
+      <URL>http://www.thespectrum.net/manga_scans/?preview=manga_Battle-Angel-Alita</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>Chapter Extra Stories</Title>
+          <PageCount>202</PageCount>
+          <Index>1</Index>
+          <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Chapter+Extra+Stories&amp;page=1</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>239234E2-5EE04438-53F2286F-56A10301-DF8316F9-14FB6AF8-85DA95DD-BA2153F2</Hash>
+              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Chapter+Extra+Stories&amp;page=1&amp;page=1</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Chapter Extra Stories/battleangel_extra_001.JPG</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>22</Index>
+              <Name>22</Name>
+              <Hash>425C9ABB-D996D06F-07CFECA9-FC6DE1C2-D7C1B8F9-24FA6D98-D20AEEC3-0C7CB3F0</Hash>
+              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Chapter+Extra+Stories&amp;page=1&amp;page=22</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Chapter Extra Stories/battleangel_extra_022.JPG</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>202</Index>
+              <Name>202</Name>
+              <Hash>431068EC-39736790-5D94B838-2E70FFE5-F5D6A27C-78CE4F22-F1BEBB5E-7A9A929D</Hash>
+              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Chapter+Extra+Stories&amp;page=1&amp;page=202</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Chapter Extra Stories/battleangel_extra_202.JPG</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Volume 1</Title>
+          <PageCount>238</PageCount>
+          <Index>10</Index>
+          <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Volume+1&amp;page=1</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>AC20E5C3-340149EB-1746B2BB-9D139286-9EB4C8EB-1E96EB9A-28AC26BB-D50A7A4E</Hash>
+              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Volume+1&amp;page=1&amp;page=1</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Volume 1/battleangel_v1_001.JPG</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>41</Index>
+              <Name>41</Name>
+              <Hash>4918B59F-911FE5DE-4839DA4C-612BD809-A3154053-CADE69D9-2D6F7ED8-E14F6200</Hash>
+              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Volume+1&amp;page=1&amp;page=41</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Volume 1/battleangel_v1_043.JPG</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>238</Index>
+              <Name>238</Name>
+              <Hash>D5BE4309-7CB09299-C2A7EB68-A405BC17-C1BCE890-4708DBEF-E01890E9-A59A3202</Hash>
+              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Volume+1&amp;page=1&amp;page=238</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Volume 1/battleangel_v1_240.JPG</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Bleach</Title>
+      <ChapterCount>0</ChapterCount>
+      <URL>http://www.thespectrum.net/manga_scans/bleach/</URL>
+      <Chapters />
+    </SerieTestData>
+    <SerieTestData>
       <Title>Fullmetal Alchemist</Title>
       <ChapterCount>27</ChapterCount>
       <URL>http://www.thespectrum.net/manga_scans/fullmetal_alchemist/</URL>
@@ -20,6 +91,13 @@
               <Hash>7E9DF42D-ED8C16A2-E67248FF-F57702BB-2ED646B3-0C9C60D3-83506320-328A86D4</Hash>
               <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+27&amp;page=1&amp;page=1</URL>
               <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 27/fma_c107_001.JPG</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>56</Index>
+              <Name>56</Name>
+              <Hash>B0FB5D87-CF2CFFB1-F7755A0B-C9C1344D-EFC50223-D55A015C-BDED06AD-41B19CBB</Hash>
+              <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+27&amp;page=1&amp;page=56</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 27/fma_c107_056.png.JPG</ImageURL>
             </PageTestData>
             <PageTestData>
               <Index>212</Index>
@@ -44,68 +122,18 @@
               <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 01/fma-v01_000.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
+              <Index>100</Index>
+              <Name>100</Name>
+              <Hash>E2C05C61-AD1BC101-B27FF646-86B7CF20-B6677DBC-997BF9B7-55CCD803-25732E41</Hash>
+              <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+01&amp;page=1&amp;page=100</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 01/fma-v01_099.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
               <Index>177</Index>
               <Name>177</Name>
               <Hash>4465CA14-0C186340-8C3DF8D0-13409713-C81030F1-344510E6-BBFB2A9C-308AC1F9</Hash>
               <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+01&amp;page=1&amp;page=177</URL>
               <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 01/fma-v01_176.jpg</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-      </Chapters>
-    </SerieTestData>
-    <SerieTestData>
-      <Title>Bleach</Title>
-      <ChapterCount>0</ChapterCount>
-      <URL>http://www.thespectrum.net/manga_scans/bleach/</URL>
-      <Chapters />
-    </SerieTestData>
-    <SerieTestData>
-      <Title>Battle Angel Alita</Title>
-      <ChapterCount>10</ChapterCount>
-      <URL>http://www.thespectrum.net/manga_scans/?preview=manga_Battle-Angel-Alita</URL>
-      <Chapters>
-        <ChapterTestData>
-          <Title>Volume 1</Title>
-          <PageCount>238</PageCount>
-          <Index>10</Index>
-          <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Volume+1&amp;page=1</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>AC20E5C3-340149EB-1746B2BB-9D139286-9EB4C8EB-1E96EB9A-28AC26BB-D50A7A4E</Hash>
-              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Volume+1&amp;page=1&amp;page=1</URL>
-              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Volume 1/battleangel_v1_001.JPG</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>238</Index>
-              <Name>238</Name>
-              <Hash>D5BE4309-7CB09299-C2A7EB68-A405BC17-C1BCE890-4708DBEF-E01890E9-A59A3202</Hash>
-              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Volume+1&amp;page=1&amp;page=238</URL>
-              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Volume 1/battleangel_v1_240.JPG</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-        <ChapterTestData>
-          <Title>Chapter Extra Stories</Title>
-          <PageCount>202</PageCount>
-          <Index>1</Index>
-          <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Chapter+Extra+Stories&amp;page=1</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>239234E2-5EE04438-53F2286F-56A10301-DF8316F9-14FB6AF8-85DA95DD-BA2153F2</Hash>
-              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Chapter+Extra+Stories&amp;page=1&amp;page=1</URL>
-              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Chapter Extra Stories/battleangel_extra_001.JPG</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>202</Index>
-              <Name>202</Name>
-              <Hash>431068EC-39736790-5D94B838-2E70FFE5-F5D6A27C-78CE4F22-F1BEBB5E-7A9A929D</Hash>
-              <URL>http://view.thespectrum.net/series/battle-angel-alita-volume-1.html?ch=Chapter+Extra+Stories&amp;page=1&amp;page=202</URL>
-              <ImageURL>http://view.thespectrum.net/manga/Battle Angel Alita/Chapter Extra Stories/battleangel_extra_202.JPG</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>

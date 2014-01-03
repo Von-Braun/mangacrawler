@@ -9,28 +9,6 @@
       <URL>http://www.mangahere.com/manga/666_satan/</URL>
       <Chapters>
         <ChapterTestData>
-          <Title>666 Satan 1</Title>
-          <PageCount>80</PageCount>
-          <Index>76</Index>
-          <URL>http://www.mangahere.com/manga/666_satan/c001/</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>F32A16E3-40787969-1321CF99-60E56266-5C193674-8567D887-9D07160E-618BB267</Hash>
-              <URL>http://www.mangahere.com/manga/666_satan/c001/</URL>
-              <ImageURL>http://z.mhcdn.net/store/manga/13/001.0/compressed/666Satan_01_00.jpg?v=11192122003</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>80</Index>
-              <Name>80</Name>
-              <Hash>80ED3880-3AEA69C9-8F6ED876-14EF1B8D-B47C7779-8842C9F5-C1A8721A-9B962CFC</Hash>
-              <URL>http://www.mangahere.com/manga/666_satan/c001/80.html</URL>
-              <ImageURL>http://z.mhcdn.net/store/manga/13/001.0/compressed/666Satan_01_79.jpg?v=11192122003</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-        <ChapterTestData>
           <Title>666 Satan 76</Title>
           <PageCount>51</PageCount>
           <Index>1</Index>
@@ -44,11 +22,47 @@
               <ImageURL>http://z.mhcdn.net/store/manga/13/076.0/compressed/01.jpg?v=11198581656</ImageURL>
             </PageTestData>
             <PageTestData>
+              <Index>15</Index>
+              <Name>15</Name>
+              <Hash>3D1A1A45-1870376E-8A1D9350-C2090DF9-FF39D55A-1AAC7881-35C9F4F2-C1D124FE</Hash>
+              <URL>http://www.mangahere.com/manga/666_satan/c076/15.html</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/13/076.0/compressed/16.jpg?v=11198581656</ImageURL>
+            </PageTestData>
+            <PageTestData>
               <Index>51</Index>
               <Name>51</Name>
               <Hash>E4B30831-9ED853CD-C2E4A0D5-1AEFE087-427D3C55-CC6FAEB2-98DD20BE-802438F4</Hash>
               <URL>http://www.mangahere.com/manga/666_satan/c076/51.html</URL>
               <ImageURL>http://z.mhcdn.net/store/manga/13/076.0/compressed/credits.jpg?v=11198581656</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>666 Satan 1</Title>
+          <PageCount>80</PageCount>
+          <Index>76</Index>
+          <URL>http://www.mangahere.com/manga/666_satan/c001/</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>F32A16E3-40787969-1321CF99-60E56266-5C193674-8567D887-9D07160E-618BB267</Hash>
+              <URL>http://www.mangahere.com/manga/666_satan/c001/</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/13/001.0/compressed/666Satan_01_00.jpg?v=11192122003</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>26</Index>
+              <Name>26</Name>
+              <Hash>B2EA1A53-9B123680-7A872758-EC567D93-EAF0D4EC-02D286D4-A8F3352B-7F45349B</Hash>
+              <URL>http://www.mangahere.com/manga/666_satan/c001/26.html</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/13/001.0/compressed/666Satan_01_25.jpg?v=11192122003</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>80</Index>
+              <Name>80</Name>
+              <Hash>80ED3880-3AEA69C9-8F6ED876-14EF1B8D-B47C7779-8842C9F5-C1A8721A-9B962CFC</Hash>
+              <URL>http://www.mangahere.com/manga/666_satan/c001/80.html</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/13/001.0/compressed/666Satan_01_79.jpg?v=11192122003</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
@@ -59,28 +73,6 @@
       <ChapterCount>381</ChapterCount>
       <URL>http://www.mangahere.com/manga/fairy_tail/</URL>
       <Chapters>
-        <ChapterTestData>
-          <Title>Fairy Tail 1</Title>
-          <PageCount>74</PageCount>
-          <Index>381</Index>
-          <URL>http://www.mangahere.com/manga/fairy_tail/v01/c001/</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>978FFC24-1070EB90-7602B2D6-616409F4-14772286-8C21101B-21683864-E5C97D73</Hash>
-              <URL>http://www.mangahere.com/manga/fairy_tail/v01/c001/</URL>
-              <ImageURL>http://z.mhcdn.net/store/manga/246/01-001.0/compressed/fairy_001_01.jpg?v=11197426008</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>74</Index>
-              <Name>74</Name>
-              <Hash>7CC1FA04-490266B7-BC68BC1A-BAD34324-D8CA551F-D3204F46-C4DC052A-D0EDEB8C</Hash>
-              <URL>http://www.mangahere.com/manga/fairy_tail/v01/c001/74.html</URL>
-              <ImageURL>http://z.mhcdn.net/store/manga/246/01-001.0/compressed/fairy_001_credit.jpg?v=11197426008</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
         <ChapterTestData>
           <Title>Fairy Tail 365</Title>
           <PageCount>38</PageCount>
@@ -95,11 +87,47 @@
               <ImageURL>http://z.mhcdn.net/store/manga/246/38-365.0/compressed/l001.jpg?v=11388279763</ImageURL>
             </PageTestData>
             <PageTestData>
+              <Index>32</Index>
+              <Name>32</Name>
+              <Hash>1CC72374-01F6D395-5C18C9C8-B0B15949-90CDB3D5-633A038E-29B88055-E9C73A7D</Hash>
+              <URL>http://www.mangahere.com/manga/fairy_tail/v38/c365/32.html</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/246/38-365.0/compressed/l030.jpg?v=11388279763</ImageURL>
+            </PageTestData>
+            <PageTestData>
               <Index>38</Index>
               <Name>38</Name>
               <Hash>54971FF0-AB4FEFF0-270DC2A7-F2156337-18C81D01-4B73E385-270B7E31-28E1C3DC</Hash>
               <URL>http://www.mangahere.com/manga/fairy_tail/v38/c365/38.html</URL>
               <ImageURL>http://z.mhcdn.net/store/manga/246/38-365.0/compressed/l037.jpg?v=11388279763</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Fairy Tail 1</Title>
+          <PageCount>74</PageCount>
+          <Index>381</Index>
+          <URL>http://www.mangahere.com/manga/fairy_tail/v01/c001/</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>978FFC24-1070EB90-7602B2D6-616409F4-14772286-8C21101B-21683864-E5C97D73</Hash>
+              <URL>http://www.mangahere.com/manga/fairy_tail/v01/c001/</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/246/01-001.0/compressed/fairy_001_01.jpg?v=11197426008</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>17</Index>
+              <Name>17</Name>
+              <Hash>B199AAD4-44FF008E-B42188DB-7AFB8B4D-64EB46A8-FDA8B9BD-920BCF58-91C7BD8C</Hash>
+              <URL>http://www.mangahere.com/manga/fairy_tail/v01/c001/17.html</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/246/01-001.0/compressed/fairy_001_19.jpg?v=11197426008</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>74</Index>
+              <Name>74</Name>
+              <Hash>7CC1FA04-490266B7-BC68BC1A-BAD34324-D8CA551F-D3204F46-C4DC052A-D0EDEB8C</Hash>
+              <URL>http://www.mangahere.com/manga/fairy_tail/v01/c001/74.html</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/246/01-001.0/compressed/fairy_001_credit.jpg?v=11197426008</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>

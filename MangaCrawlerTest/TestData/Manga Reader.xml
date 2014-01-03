@@ -1,35 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServerTestData>
   <Name>Manga Reader</Name>
-  <SerieCount>3445</SerieCount>
+  <SerieCount>3449</SerieCount>
   <Series>
     <SerieTestData>
       <Title>37 Degrees Kiss</Title>
       <ChapterCount>5</ChapterCount>
       <URL>http://www.mangareader.net/37-degrees-kiss</URL>
       <Chapters>
-        <ChapterTestData>
-          <Title>37 Degrees Kiss 1</Title>
-          <PageCount>50</PageCount>
-          <Index>5</Index>
-          <URL>http://www.mangareader.net/37-degrees-kiss/1</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>F3B30BE7-2F7C32EC-750C80C4-C7EDE44B-90BE239D-FD36F310-F0B0A2D9-81495505</Hash>
-              <URL>http://www.mangareader.net/37-degrees-kiss/1</URL>
-              <ImageURL>http://i30.mangareader.net/37-degrees-kiss/1/37-degrees-kiss-1584945.jpg</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>50</Index>
-              <Name>50</Name>
-              <Hash>1B4B713B-E09744D5-144A1E97-35515624-AEF6E37B-B56DCE4C-F89D9845-1CEACE9A</Hash>
-              <URL>http://www.mangareader.net/37-degrees-kiss/1/50</URL>
-              <ImageURL>http://i40.mangareader.net/37-degrees-kiss/1/37-degrees-kiss-1585009.jpg</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
         <ChapterTestData>
           <Title>37 Degrees Kiss 5</Title>
           <PageCount>14</PageCount>
@@ -44,11 +22,47 @@
               <ImageURL>http://i14.mangareader.net/37-degrees-kiss/5/37-degrees-kiss-1585142.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
+              <Index>8</Index>
+              <Name>8</Name>
+              <Hash>CF521B7C-0F911902-66856A2D-6320F287-4CB5BA97-2C6B8E2A-F37E9CC6-A7F73A87</Hash>
+              <URL>http://www.mangareader.net/37-degrees-kiss/5/8</URL>
+              <ImageURL>http://i33.mangareader.net/37-degrees-kiss/5/37-degrees-kiss-1585157.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
               <Index>14</Index>
               <Name>14</Name>
               <Hash>4A59FF2C-5CC28F4A-08B3D791-E95971B1-7ED3F4C3-5522E783-8589523F-5EA54189</Hash>
               <URL>http://www.mangareader.net/37-degrees-kiss/5/14</URL>
               <ImageURL>http://i39.mangareader.net/37-degrees-kiss/5/37-degrees-kiss-1585163.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>37 Degrees Kiss 1</Title>
+          <PageCount>50</PageCount>
+          <Index>5</Index>
+          <URL>http://www.mangareader.net/37-degrees-kiss/1</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>F3B30BE7-2F7C32EC-750C80C4-C7EDE44B-90BE239D-FD36F310-F0B0A2D9-81495505</Hash>
+              <URL>http://www.mangareader.net/37-degrees-kiss/1</URL>
+              <ImageURL>http://i30.mangareader.net/37-degrees-kiss/1/37-degrees-kiss-1584945.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>32</Index>
+              <Name>32</Name>
+              <Hash>8F661793-FFCAB9EB-338325BA-6CDAC9B2-FA86BA0E-E02A9BA1-2CD8F52E-47400198</Hash>
+              <URL>http://www.mangareader.net/37-degrees-kiss/1/32</URL>
+              <ImageURL>http://i20.mangareader.net/37-degrees-kiss/1/37-degrees-kiss-1584976.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>50</Index>
+              <Name>50</Name>
+              <Hash>1B4B713B-E09744D5-144A1E97-35515624-AEF6E37B-B56DCE4C-F89D9845-1CEACE9A</Hash>
+              <URL>http://www.mangareader.net/37-degrees-kiss/1/50</URL>
+              <ImageURL>http://i40.mangareader.net/37-degrees-kiss/1/37-degrees-kiss-1585009.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
@@ -59,28 +73,6 @@
       <ChapterCount>365</ChapterCount>
       <URL>http://www.mangareader.net/135/fairy-tail.html</URL>
       <Chapters>
-        <ChapterTestData>
-          <Title>Fairy Tail 1</Title>
-          <PageCount>80</PageCount>
-          <Index>365</Index>
-          <URL>http://www.mangareader.net/135-7116-1/fairy-tail/chapter-1.html</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>7D18EDEB-B070A7CE-B1C18F99-D8229ADD-C470E351-CE64EF06-E7F6DABA-599DFF37</Hash>
-              <URL>http://www.mangareader.net/135-7116-1/fairy-tail/chapter-1.html</URL>
-              <ImageURL>http://i18.mangareader.net/fairy-tail/1/fairy-tail-1766997.jpg</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>80</Index>
-              <Name>80</Name>
-              <Hash>D85306B9-F6955701-45E3FDF5-892621F5-98A0A87F-4B7BD383-FC425804-AF1D0205</Hash>
-              <URL>http://www.mangareader.net/135-7116-80/fairy-tail/chapter-1.html</URL>
-              <ImageURL>http://i37.mangareader.net/fairy-tail/1/fairy-tail-1767076.jpg</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
         <ChapterTestData>
           <Title>Fairy Tail 365</Title>
           <PageCount>35</PageCount>
@@ -95,11 +87,47 @@
               <ImageURL>http://i998.mangareader.net/fairy-tail/365/fairy-tail-4674511.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
+              <Index>9</Index>
+              <Name>9</Name>
+              <Hash>93E20C6A-830A19E3-BA4FC90B-51FE8F8C-5AA19946-BC84C076-EB9C63BB-33AF29E2</Hash>
+              <URL>http://www.mangareader.net/fairy-tail/365/9</URL>
+              <ImageURL>http://i998.mangareader.net/fairy-tail/365/fairy-tail-4674527.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
               <Index>35</Index>
               <Name>35</Name>
               <Hash>2CACA85A-5009EA75-6AC976E4-C71A7E93-54E3AE3D-8A2056F2-CB6329AD-5EAC06E7</Hash>
               <URL>http://www.mangareader.net/fairy-tail/365/35</URL>
               <ImageURL>http://i997.mangareader.net/fairy-tail/365/fairy-tail-4674579.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Fairy Tail 1</Title>
+          <PageCount>80</PageCount>
+          <Index>365</Index>
+          <URL>http://www.mangareader.net/135-7116-1/fairy-tail/chapter-1.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>7D18EDEB-B070A7CE-B1C18F99-D8229ADD-C470E351-CE64EF06-E7F6DABA-599DFF37</Hash>
+              <URL>http://www.mangareader.net/135-7116-1/fairy-tail/chapter-1.html</URL>
+              <ImageURL>http://i18.mangareader.net/fairy-tail/1/fairy-tail-1766997.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>11</Index>
+              <Name>11</Name>
+              <Hash>D668E6C5-12EEAFA1-880E3B7D-E6522CEF-3B55B8D1-C0C6E4F5-AD5ECC12-2676DB86</Hash>
+              <URL>http://www.mangareader.net/135-7116-11/fairy-tail/chapter-1.html</URL>
+              <ImageURL>http://i29.mangareader.net/fairy-tail/1/fairy-tail-1767007.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>80</Index>
+              <Name>80</Name>
+              <Hash>D85306B9-F6955701-45E3FDF5-892621F5-98A0A87F-4B7BD383-FC425804-AF1D0205</Hash>
+              <URL>http://www.mangareader.net/135-7116-80/fairy-tail/chapter-1.html</URL>
+              <ImageURL>http://i37.mangareader.net/fairy-tail/1/fairy-tail-1767076.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>

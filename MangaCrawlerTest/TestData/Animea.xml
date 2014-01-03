@@ -4,64 +4,6 @@
   <SerieCount>7959</SerieCount>
   <Series>
     <SerieTestData>
-      <Title>-6mm no Taboo</Title>
-      <ChapterCount>5</ChapterCount>
-      <URL>http://manga.animea.net/-6mm-no-taboo.html</URL>
-      <Chapters>
-        <ChapterTestData>
-          <Title>-6mm no Taboo 6</Title>
-          <PageCount>41</PageCount>
-          <Index>1</Index>
-          <URL>http://manga.animea.net/-6mm-no-taboo-chapter-6.html</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>68148F55-ED14DF5B-0623AFDA-2C5A33C9-3A54D1D7-81A4A68A-ADDDC97B-9FE8359F</Hash>
-              <URL>http://manga.animea.net/-6mm-no-taboo-chapter-6-page-1.html</URL>
-              <ImageURL>http://i04a.animea.net/3657%2F6_SWRVZ%2F00_tokudane_insert.jpg</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>41</Index>
-              <Name>41</Name>
-              <Hash>6E088ED0-0119F8DC-6A8D2A40-A7C0CEA2-A76F3D2F-251F5902-96349761-CD54BAFC</Hash>
-              <URL>http://manga.animea.net/-6mm-no-taboo-chapter-6-page-41.html</URL>
-              <ImageURL>http://i04a.animea.net/3657%2F6_SWRVZ%2Fnezi_no_kaiten_ex_40.jpg</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-      </Chapters>
-    </SerieTestData>
-    <SerieTestData>
-      <Title>√P</Title>
-      <ChapterCount>1</ChapterCount>
-      <URL>http://manga.animea.net/-p.html</URL>
-      <Chapters>
-        <ChapterTestData>
-          <Title>√P 1</Title>
-          <PageCount>25</PageCount>
-          <Index>1</Index>
-          <URL>http://manga.animea.net/-p-chapter-1.html</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>BFB70C59-C8873C4C-062E38C7-F5DD7CE8-A3092598-8A5D9832-6C702833-A897D1D5</Hash>
-              <URL>http://manga.animea.net/-p-chapter-1-page-1.html</URL>
-              <ImageURL>http://san.animea.net/7161%2F1_1_PUFXS%2Fcredits.png</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>25</Index>
-              <Name>25</Name>
-              <Hash>1C37C381-BE8312C7-A488CAFD-A6073622-C8BDCE67-7BD2DE04-B50F67EC-9F880D2A</Hash>
-              <URL>http://manga.animea.net/-p-chapter-1-page-25.html</URL>
-              <ImageURL>http://san.animea.net/7161%2F1_1_PUFXS%2Ftl-notes-v01_c01.png</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-      </Chapters>
-    </SerieTestData>
-    <SerieTestData>
       <Title>+Anima</Title>
       <ChapterCount>59</ChapterCount>
       <URL>http://manga.animea.net/-anima.html</URL>
@@ -78,6 +20,13 @@
               <Hash>639A3D2D-AD0967DD-28A8F27A-549D7A21-3F21D5FC-3EA21CBD-9EFB7C21-A6C0C7BD</Hash>
               <URL>http://manga.animea.net/-anima-chapter-56-page-1.html</URL>
               <ImageURL>http://i04a.animea.net/2304%2F56%20%5BEnd%5D_DTRRN%2F%2FV10_086..jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>11</Index>
+              <Name>11</Name>
+              <Hash>414BC602-D54D810E-3A0ACE3E-4C109C10-03BA48B5-4F0AA9FB-0DFCED2C-AA5111C6</Hash>
+              <URL>http://manga.animea.net/-anima-chapter-56-page-11.html</URL>
+              <ImageURL>http://i04a.animea.net/2304%2F56%20%5BEnd%5D_DTRRN%2F%2FV10_096..jpg</ImageURL>
             </PageTestData>
             <PageTestData>
               <Index>19</Index>
@@ -102,6 +51,13 @@
               <ImageURL>http://i04a.animea.net/2304%2F1-fixed_WHZXW%2F1-CAOZZ.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
+              <Index>8</Index>
+              <Name>8</Name>
+              <Hash>21326AD3-C33DB3F3-396EBDE5-6E92E1BE-C3CC9C39-8D152C48-99A866C4-4EA01A1C</Hash>
+              <URL>http://manga.animea.net/-anima-chapter-1-page-8.html</URL>
+              <ImageURL>http://i04a.animea.net/2304%2F1-fixed_WHZXW%2F8-SUJYS.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
               <Index>51</Index>
               <Name>51</Name>
               <Hash>53DB141A-D2D77053-1903E430-7E578168-644D86EA-5B5AE6D9-112AC077-26EFCDF3</Hash>
@@ -113,10 +69,76 @@
       </Chapters>
     </SerieTestData>
     <SerieTestData>
-      <Title>Fairy Tail</Title>
-      <ChapterCount>0</ChapterCount>
-      <URL>http://manga.animea.net/fairy-tail.html</URL>
-      <Chapters />
+      <Title>√P</Title>
+      <ChapterCount>1</ChapterCount>
+      <URL>http://manga.animea.net/-p.html</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>√P 1</Title>
+          <PageCount>25</PageCount>
+          <Index>1</Index>
+          <URL>http://manga.animea.net/-p-chapter-1.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>BFB70C59-C8873C4C-062E38C7-F5DD7CE8-A3092598-8A5D9832-6C702833-A897D1D5</Hash>
+              <URL>http://manga.animea.net/-p-chapter-1-page-1.html</URL>
+              <ImageURL>http://san.animea.net/7161%2F1_1_PUFXS%2Fcredits.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>5</Index>
+              <Name>5</Name>
+              <Hash>AAE33F0E-3BE10FEE-132A2AD7-EFA5F299-A09DBCED-2A363094-89D67B6A-CD1CD926</Hash>
+              <URL>http://manga.animea.net/-p-chapter-1-page-5.html</URL>
+              <ImageURL>http://198.24.151.226/7161%2F1_1_PUFXS%2Fru-para01_005.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>25</Index>
+              <Name>25</Name>
+              <Hash>1C37C381-BE8312C7-A488CAFD-A6073622-C8BDCE67-7BD2DE04-B50F67EC-9F880D2A</Hash>
+              <URL>http://manga.animea.net/-p-chapter-1-page-25.html</URL>
+              <ImageURL>http://san.animea.net/7161%2F1_1_PUFXS%2Ftl-notes-v01_c01.png</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>-6mm no Taboo</Title>
+      <ChapterCount>5</ChapterCount>
+      <URL>http://manga.animea.net/-6mm-no-taboo.html</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>-6mm no Taboo 6</Title>
+          <PageCount>41</PageCount>
+          <Index>1</Index>
+          <URL>http://manga.animea.net/-6mm-no-taboo-chapter-6.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>68148F55-ED14DF5B-0623AFDA-2C5A33C9-3A54D1D7-81A4A68A-ADDDC97B-9FE8359F</Hash>
+              <URL>http://manga.animea.net/-6mm-no-taboo-chapter-6-page-1.html</URL>
+              <ImageURL>http://i04a.animea.net/3657%2F6_SWRVZ%2F00_tokudane_insert.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>21</Index>
+              <Name>21</Name>
+              <Hash>4CF5D513-453202BD-6213DC73-8BC1E4D5-20F7443C-2A6840E7-BDDEDDEE-78D8D700</Hash>
+              <URL>http://manga.animea.net/-6mm-no-taboo-chapter-6-page-21.html</URL>
+              <ImageURL>http://i04a.animea.net/3657%2F6_SWRVZ%2Fnezi_no_kaiten_ex_20.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>41</Index>
+              <Name>41</Name>
+              <Hash>6E088ED0-0119F8DC-6A8D2A40-A7C0CEA2-A76F3D2F-251F5902-96349761-CD54BAFC</Hash>
+              <URL>http://manga.animea.net/-6mm-no-taboo-chapter-6-page-41.html</URL>
+              <ImageURL>http://i04a.animea.net/3657%2F6_SWRVZ%2Fnezi_no_kaiten_ex_40.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
     </SerieTestData>
     <SerieTestData>
       <Title>Detective Conan</Title>
@@ -137,6 +159,13 @@
               <ImageURL>http://i04a.animea.net/70%2F880%2Fimg_1_10261.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
+              <Index>8</Index>
+              <Name>8</Name>
+              <Hash>48622623-ADECE39B-AE00539B-251E2B61-80F35921-660D8FBF-A93CBE7B-9AA9A1C1</Hash>
+              <URL>http://manga.animea.net/detective-conan-chapter-880-page-8.html</URL>
+              <ImageURL>http://i04a.animea.net/70%2F880%2Fimg_8_99440.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
               <Index>16</Index>
               <Name>16</Name>
               <Hash>0715989A-4E8FC141-02E9BA18-163A4B88-B672D893-2547D39E-3C6513BF-AFA66008</Hash>
@@ -146,6 +175,12 @@
           </Pages>
         </ChapterTestData>
       </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Fairy Tail</Title>
+      <ChapterCount>0</ChapterCount>
+      <URL>http://manga.animea.net/fairy-tail.html</URL>
+      <Chapters />
     </SerieTestData>
   </Series>
 </ServerTestData>
