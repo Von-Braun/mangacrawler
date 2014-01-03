@@ -106,64 +106,64 @@
     </SerieTestData>
     <SerieTestData>
       <Title>Bleach</Title>
-      <ChapterCount>581</ChapterCount>
+      <ChapterCount>580</ChapterCount>
       <URL>http://unixmanga.com/onlinereading/Bleach.html</URL>
       <Chapters>
-        <ChapterTestData>
-          <Title>Bleach c563</Title>
-          <PageCount>19</PageCount>
-          <Index>3</Index>
-          <URL>http://unixmanga.net/onlinereading/Bleach/Bleach_c563.html</URL>
+	    <ChapterTestData>
+          <Title>Bleach Omake</Title>
+          <PageCount>15</PageCount>
+          <Index>1</Index>
+          <URL>http://unixmanga.net/onlinereading/Bleach/Bleach_Omake.html</URL>
           <Pages>
             <PageTestData>
               <Index>1</Index>
-              <Name>bleach-4658355</Name>
-              <Hash>3AA30E1D-09EFC453-A8462021-255A22E6-340CFF6D-5D1C2FB0-EBABA7B0-A8F0AFE3</Hash>
-              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c563/bleach-4658355.jpg&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c563/bleach-4658355.jpg</ImageURL>
+              <Name>[manga-rain]Bleach-Omake0.8-vol12-01</Name>
+              <Hash>99285B2F-50490ECA-D0D8A9E4-818032F2-186D0AC4-B75331FD-3818B301-FA0F2CA2</Hash>
+              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach Omake/%5Bmanga-rain%5DBleach-Omake0.8-vol12-01.png&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach Omake/[manga-rain]Bleach-Omake0.8-vol12-01.png</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>13</Index>
-              <Name>bleach-4658379</Name>
-              <Hash>34C0C0AA-8A4B93D7-04167420-1297F61F-42B1EEE7-BA74679C-839B0FDF-0A392E32</Hash>
-              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c563/bleach-4658379.jpg&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c563/bleach-4658379.jpg</ImageURL>
+              <Index>3</Index>
+              <Name>[manga-rain]Bleach-Omake0.8-vol12-03</Name>
+              <Hash>1E73572F-D0E2E6CD-FB28BF9D-2178B284-49418A9D-8B117750-88906ED7-ED3F4604</Hash>
+              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach Omake/%5Bmanga-rain%5DBleach-Omake0.8-vol12-03.png&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach Omake/[manga-rain]Bleach-Omake0.8-vol12-03.png</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>19</Index>
-              <Name>bleach-4658391</Name>
-              <Hash>C1D5451C-74CB2BA6-F470AF85-B6A6FED8-3B5AD585-AAF1A96F-DD7222B6-3B545013</Hash>
-              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c563/bleach-4658391.jpg&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c563/bleach-4658391.jpg</ImageURL>
+              <Index>8</Index>
+              <Name>[manga-rain]Bleach-Omake0.8-vol12-08</Name>
+              <Hash>47DC8521-579EB2C3-5F290912-B6B96A2F-D197200B-1A83C97A-FCD1C918-B242D408</Hash>
+              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach Omake/%5Bmanga-rain%5DBleach-Omake0.8-vol12-08.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach Omake/[manga-rain]Bleach-Omake0.8-vol12-08.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
         <ChapterTestData>
-          <Title>Bleach c-017</Title>
-          <PageCount>30</PageCount>
+          <Title>Bleach c Calendar</Title>
+          <PageCount>8</PageCount>
           <Index>580</Index>
-          <URL>http://unixmanga.net/onlinereading/Bleach/Bleach_c_Minus/Bleach_c-017.html</URL>
+          <URL>http://unixmanga.net/onlinereading/Bleach/Bleach_c_Calendar.html</URL>
           <Pages>
             <PageTestData>
               <Index>1</Index>
-              <Name>[DoNotDistributeOurReleases]</Name>
-              <Hash>6F95C1A9-0ECF268A-2734B9AA-190ACAF7-03FB8042-D182C28D-2ED2B848-B9F6753F</Hash>
-              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c Minus/Bleach c-017/%5BDoNotDistributeOurReleases%5D.jpg&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c Minus/Bleach c-017/[DoNotDistributeOurReleases].jpg</ImageURL>
+              <Name>00</Name>
+              <Hash>262ED4DC-7C5B3D1F-B0918BB3-3DACD75A-60D2119B-17A29A97-04E12601-051312D8</Hash>
+              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c Calendar/00.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c Calendar/thumb/105000.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
               <Index>3</Index>
-              <Name>[manga-rain]bleach-ch-17-02</Name>
-              <Hash>11DE81A6-DB3E6958-FED80260-B2437811-90347920-25D96E7B-96081332-C6CD8CC9</Hash>
-              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c Minus/Bleach c-017/%5Bmanga-rain%5Dbleach-ch-17-02.png&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c Minus/Bleach c-017/[manga-rain]bleach-ch-17-02.png</ImageURL>
+              <Name>03_04</Name>
+              <Hash>A59232DA-2B257F80-F8A0D79E-BF57E6AC-1B3B522C-91CC7710-62BB83F5-97D57070</Hash>
+              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c Calendar/03_04.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c Calendar/thumb/105003_04.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
               <Index>8</Index>
-              <Name>[manga-rain]bleach-ch-17-07</Name>
-              <Hash>D4BCAFD8-96DF782A-909C0BF8-A0795357-8C802FFB-76727423-0F7F0892-0045A075</Hash>
-              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c Minus/Bleach c-017/%5Bmanga-rain%5Dbleach-ch-17-07.png&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c Minus/Bleach c-017/[manga-rain]bleach-ch-17-07.png</ImageURL>
+              <Name>xxxhomeunixxxx</Name>
+              <Hash>B8177447-C74F7AA8-0521B396-2B7119F8-E173C00B-27F6B894-C997C530-2566F1E6</Hash>
+              <URL>http://ex1.unixmanga.net/onlinereading/?image=Bleach/Bleach c Calendar/xxxhomeunixxxx.png&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.net/onlinereading/Bleach/Bleach c Calendar/xxxhomeunixxxx.png</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
