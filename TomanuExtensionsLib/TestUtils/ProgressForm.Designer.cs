@@ -33,10 +33,13 @@
             // 
             // richTextBox
             // 
+            this.richTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox.Location = new System.Drawing.Point(12, 12);
             this.richTextBox.Name = "richTextBox";
             this.richTextBox.ReadOnly = true;
-            this.richTextBox.Size = new System.Drawing.Size(720, 293);
+            this.richTextBox.Size = new System.Drawing.Size(751, 303);
             this.richTextBox.TabIndex = 0;
             this.richTextBox.Text = "";
             // 
@@ -44,7 +47,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(744, 317);
+            this.ClientSize = new System.Drawing.Size(775, 327);
             this.Controls.Add(this.richTextBox);
             this.MaximizeBox = false;
             this.Name = "ProgressForm";
