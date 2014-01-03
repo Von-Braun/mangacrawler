@@ -53,7 +53,7 @@ namespace MangaCrawlerTest
                                     ChapterTestData.SerieTestData.Title,
                                     ChapterTestData.Title,
                                     Index,
-                                    Page.Crawler.GetImageURLExtension(ImageURL).ToLower());
+                                    ChapterTestData.SerieTestData.ServerTestData.Server.Crawler.GetImageURLExtension(ImageURL).ToLower());
                 file_name = TomanuExtensions.Utils.FileUtils.RemoveInvalidFileCharacters(file_name);
                 file_name = Path.Combine(TestXmls.GetTestDataDir(), file_name);
 
@@ -65,7 +65,7 @@ namespace MangaCrawlerTest
 
         public string Hash { get; set; }
 
-        public static PageTestData Load(XElement a_node)
+        public static PageTestData Load(XElement a_node, ChapterTestData a_chapter_test_data)
         {
             PageTestData ptd = new PageTestData();
 
@@ -73,6 +73,7 @@ namespace MangaCrawlerTest
             ptd.Name = a_node.Element("Name").Value;
             ptd.Hash = a_node.Element("Hash").Value;
             ptd.URL = a_node.Element("URL").Value;
+            ptd.ChapterTestData = a_chapter_test_data;
             ptd.ImageURL = a_node.Element("ImageURL").Value;
 
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ptd.Name));
@@ -83,7 +84,6 @@ namespace MangaCrawlerTest
             return ptd;
         }
 
-        
         public XElement GetAsXml()
         {
             return new XElement("PageTestData",
@@ -94,9 +94,8 @@ namespace MangaCrawlerTest
                 new XElement("ImageURL", ImageURL));
         }
 
-        public void Download(ChapterTestData a_chapter_test_data)
+        public void Download()
         {
-            ChapterTestData = a_chapter_test_data;
             Page = ChapterTestData.Chapter.Pages.ElementAtOrDefault(Index - 1);
 
             Name = "";
@@ -137,6 +136,15 @@ namespace MangaCrawlerTest
 
             return true;
         }
+
+        public override string ToString()
+        {
+            return String.Format("PageTestData: server: {0}, serie: {1}, chapter: {2}, page: {3}",
+                ChapterTestData.SerieTestData.ServerTestData.Name,
+                ChapterTestData.SerieTestData.Title,
+                ChapterTestData.Title,
+                Index);
+        }
     }
 
     public class ChapterTestData
@@ -155,7 +163,7 @@ namespace MangaCrawlerTest
 
         public List<PageTestData> Pages = new List<PageTestData>();
 
-        public static ChapterTestData Load(XElement a_node)
+        public static ChapterTestData Load(XElement a_node, SerieTestData a_serie_test_data)
         {
             ChapterTestData ctd = new ChapterTestData();
 
@@ -163,12 +171,13 @@ namespace MangaCrawlerTest
             ctd.Index = Int32.Parse(a_node.Element("Index").Value);
             ctd.Title = a_node.Element("Title").Value;
             ctd.URL = a_node.Element("URL").Value;
+            ctd.SerieTestData = a_serie_test_data;
 
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ctd.Title));
             Assert.IsTrue(!String.IsNullOrWhiteSpace(ctd.URL));
 
             foreach (var page_node in a_node.Element("Pages").Elements())
-                ctd.Pages.Add(PageTestData.Load(page_node));
+                ctd.Pages.Add(PageTestData.Load(page_node, ctd));
 
             return ctd;
         }
@@ -185,9 +194,8 @@ namespace MangaCrawlerTest
                     select page.GetAsXml()));
         }
 
-        public void Download(SerieTestData a_serie_test_data)
+        public void Download()
         {
-            SerieTestData = a_serie_test_data;
             Chapter = SerieTestData.Serie.Chapters.ElementAtOrDefault(Index - 1);
 
             PageCount = -1;
@@ -210,7 +218,7 @@ namespace MangaCrawlerTest
             Title = Chapter.Title;
 
             foreach (var page in Pages)
-                page.Download(this);
+                page.Download();
         }
 
         public bool Compare(ChapterTestData a_downloaded)
@@ -238,6 +246,15 @@ namespace MangaCrawlerTest
             Pages.Add(a_page);
             a_page.ChapterTestData = this;
         }
+
+        public override string ToString()
+        {
+            return String.Format("ChapterTestData: server: {0}, serie: {1}, chapter: {2}, pages: {3}",
+                SerieTestData.ServerTestData.Name,
+                SerieTestData.Title,
+                Title,
+                PageCount);
+        }
     }
 
     public class SerieTestData
@@ -254,19 +271,20 @@ namespace MangaCrawlerTest
 
         public List<ChapterTestData> Chapters = new List<ChapterTestData>();
 
-        public static SerieTestData Load(XElement a_node)
+        public static SerieTestData Load(XElement a_node, ServerTestData a_server_test_data)
         {
             SerieTestData std = new SerieTestData();
 
             std.ChapterCount = Int32.Parse(a_node.Element("ChapterCount").Value);
             std.Title = a_node.Element("Title").Value;
             std.URL = a_node.Element("URL").Value;
+            std.ServerTestData = a_server_test_data;
 
             Assert.IsTrue(!String.IsNullOrWhiteSpace(std.Title));
             Assert.IsTrue(!String.IsNullOrWhiteSpace(std.URL));
 
             foreach (var chapter_node in a_node.Element("Chapters").Elements())
-                std.Chapters.Add(ChapterTestData.Load(chapter_node));
+                std.Chapters.Add(ChapterTestData.Load(chapter_node, std));
 
             return std;
         }
@@ -282,9 +300,8 @@ namespace MangaCrawlerTest
                     select chapter.GetAsXml()));
         }
 
-        public void Download(ServerTestData a_server_test_data)
+        public void Download()
         {
-            ServerTestData = a_server_test_data;
             Serie = ServerTestData.Server.Series.FirstOrDefault(el => el.Title == Title);
 
             ChapterCount = -1;
@@ -299,7 +316,7 @@ namespace MangaCrawlerTest
             Title = Serie.Title;
 
             foreach (var chapter in Chapters)
-                chapter.Download(this);
+                chapter.Download();
         }
 
         public bool Compare(SerieTestData a_downloaded)
@@ -320,10 +337,12 @@ namespace MangaCrawlerTest
             return true;
         }
 
-        public void AddChapter(ChapterTestData a_chapter)
+        public override string ToString()
         {
-            Chapters.Add(a_chapter);
-            a_chapter.SerieTestData = this;
+            return String.Format("SerieTestData: server: {0}, serie: {1}, chapters: {2}",
+                ServerTestData.Name,
+                Title, 
+                ChapterCount);
         }
     }
 
@@ -349,7 +368,9 @@ namespace MangaCrawlerTest
             Assert.IsTrue(!String.IsNullOrWhiteSpace(std.Name));
 
             foreach (var serie_node in root.Element("Series").Elements())
-                std.Series.Add(SerieTestData.Load(serie_node));
+                std.Series.Add(SerieTestData.Load(serie_node, std));
+
+            std.Server = DownloadManager.Instance.Servers.First(s => s.Name == std.Name);
 
             return std;
         }
@@ -370,8 +391,6 @@ namespace MangaCrawlerTest
         {
             try
             {
-                Server = DownloadManager.Instance.Servers.First(s => s.Name == Name);
-
                 Name = "";
                 SerieCount = -1;
 
@@ -382,7 +401,7 @@ namespace MangaCrawlerTest
                 SerieCount = Server.Series.Count;
 
                 foreach (var serie in Series)
-                    serie.Download(this);
+                    serie.Download();
             }
             catch (Exception ex)
             {
@@ -412,6 +431,13 @@ namespace MangaCrawlerTest
         {
             Series.Add(a_serie);
             a_serie.ServerTestData = this;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("ServerTestData: server: {0}, series: {1}",
+                Name,
+                SerieCount);
         }
     }
 }
