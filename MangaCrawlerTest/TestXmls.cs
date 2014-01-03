@@ -17,22 +17,6 @@ namespace MangaCrawlerTest
     {
         private static string ERROR_SUFFIX = " - error";
 
-        public static string GetTestDataDir()
-        {
-            string dir = new DirectoryInfo(
-                System.Reflection.Assembly.GetAssembly(typeof(Crawler)).Location).Parent.Parent.Parent.Parent.FullName +
-                Path.DirectorySeparatorChar + "MangaCrawlerTest" + Path.DirectorySeparatorChar + "TestData";
-
-            if (!Directory.Exists(dir))
-            {
-                dir = new DirectoryInfo(
-                    System.Reflection.Assembly.GetAssembly(typeof(Crawler)).Location).Parent.Parent.Parent.Parent.Parent.FullName +
-                    Path.DirectorySeparatorChar + "MangaCrawlerTest" + Path.DirectorySeparatorChar + "TestData";
-            }
-
-            return dir;
-        }
-
         private void DeleteErrors(string a_server_name)
         {
             foreach (var file in Directory.GetFiles(GetTestDataDir(), "*" + a_server_name + "*"))
@@ -84,29 +68,17 @@ namespace MangaCrawlerTest
 
         private void Check(ServerTestData a_server_test_data)
         {
-            Func<PageTestData, bool> check_page = p =>
-                File.Exists(p.FileName) &&
-                (TomanuExtensions.Utils.Hash.CalculateSHA256(File.OpenRead(p.FileName)) == p.Hash);
-
-            Func<ChapterTestData, bool> check_chapter = ch =>
-                (ch.Pages.Count == 0) 
-                ||
-                (ch.Pages.Any(p => p.Index == 1) &&
-                 ch.Pages.Select(p => p.Index).Unique() &&
-                 ch.Pages.Any(p => p.Index == ch.PageCount) &&
-                 ch.Pages.All(p => check_page(p)) &&
-                 ch.Pages.Count == 3);
-
-            Func<SerieTestData, bool> check_serie = s =>
-                (s.Chapters.Count == 0)
-                ||
-                (s.Chapters.Any(ch => ch.Index == 1) &&
-                 s.Chapters.Select(ch => ch.Index).Unique() &&
-                 s.Chapters.Any(ch => ch.Index == s.ChapterCount) &&
-                 (s.Chapters.Count == 3) &&
-                 s.Chapters.Count(ch => check_chapter(ch)) == 3);
-
-            Assert.IsTrue(a_server_test_data.Series.Count(s => check_serie(s)) >= 3);
+            foreach (var serie_test_data in a_server_test_data.Series)
+            {
+                foreach (var chapter_test_data in serie_test_data.Chapters)
+                {
+                    foreach (var page_test_data in chapter_test_data.Pages)
+                    {
+                        Assert.IsTrue(File.Exists(page_test_data.FileName));
+                    }
+                }
+            };
+                
         }
 
         private void TestXml(string a_server_name)
@@ -249,6 +221,8 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void RegeneratedXmlsAndImages()
         {
+            DeleteErrors("");
+
             var xmls = Directory.GetFiles(GetTestDataDir(), "*.xml");
 
             foreach (var xml in xmls)
@@ -256,30 +230,6 @@ namespace MangaCrawlerTest
                 WriteLine(xml);
 
                 var std = ServerTestData.Load(xml);
-                DeleteErrors(std.Name);
-
-                // 3 pages when 2 pages
-                var x = (from serie in std.Series
-                         from chapter in serie.Chapters
-                         where chapter.Pages.Count == 2
-                         select chapter).ToList();
-                if (!x.Any())
-                    continue;
-                Random r = new Random();
-                foreach (var ch in x)
-                {
-                    WriteLine(ch.ToString());
-
-                    PageTestData ptd = new PageTestData();
-                    ptd.ChapterTestData = ch;
-                    ptd.Name = "X";
-                    ptd.Hash = "X";
-                    ptd.ImageURL = "X";
-                    ptd.URL = "X";
-                    ptd.Index = r.Next(2, ch.PageCount);
-                    ch.Pages.Insert(1, ptd);
-                }
-                //
 
                 std.Series = std.Series.OrderBy(s => s.Title).ToList();
                 foreach (var serie in std.Series)
