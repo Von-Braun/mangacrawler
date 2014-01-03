@@ -4,57 +4,6 @@
   <SerieCount>53</SerieCount>
   <Series>
     <SerieTestData>
-      <Title>Kimagure Orange Road</Title>
-      <ChapterCount>167</ChapterCount>
-      <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=list_pages_categories&amp;cid=11</URL>
-      <Chapters>
-        <ChapterTestData>
-          <Title>KOR (Volume 18 Chapter 156 part 4 original ending)</Title>
-          <PageCount>4</PageCount>
-          <Index>1</Index>
-          <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=471</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>97895BDE-0DE30690-79305713-6CCF2D22-A5B83C1F-586BA24C-AC7DC3F7-8826E214</Hash>
-              <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=471&amp;page=1</URL>
-              <ImageURL>http://www.anime-source.com/html/images/kor/chapter156/187.png</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>4</Index>
-              <Name>4</Name>
-              <Hash>25476017-BDD69A52-FAEEC980-8B6D2BB0-F36BD832-8AFA63B9-335FCB0A-C4C6AE50</Hash>
-              <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=471&amp;page=4</URL>
-              <ImageURL>http://www.anime-source.com/html/images/kor/chapter156/192.png</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-        <ChapterTestData>
-          <Title>KOR (Volume 1 Chapter 1)</Title>
-          <PageCount>34</PageCount>
-          <Index>167</Index>
-          <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=242</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>38FBB6A5-D0D7B833-A2010C4A-BFC54B7F-286C7FD0-F6FB9C6B-5F5FC35F-16F91CCA</Hash>
-              <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=242&amp;page=1</URL>
-              <ImageURL>http://www.anime-source.com/html/images/kor/chapter1/cover.jpg</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>34</Index>
-              <Name>34</Name>
-              <Hash>A1E7E121-0CCB6F23-9F29EE6A-72552092-5447D56B-5FCF9784-5F398237-B8DA9C61</Hash>
-              <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=242&amp;page=34</URL>
-              <ImageURL>http://www.anime-source.com/html/images/kor/chapter1/035.jpg</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-      </Chapters>
-    </SerieTestData>
-    <SerieTestData>
       <Title>Freezing</Title>
       <ChapterCount>33</ChapterCount>
       <URL>http://www.anime-source.com/banzai/modules.php?name=Manga&amp;id=80</URL>
@@ -71,6 +20,13 @@
               <Hash>356BCA98-FC4FE6AC-BD018479-8DFBFE74-C3C835DE-E6004A27-10984F59-6D2B24CF</Hash>
               <URL>http://www.anime-source.com/banzai/modules.php?name=Manga&amp;rop=display&amp;chapterid=6283&amp;pagenumber=1&amp;totalpages=27</URL>
               <ImageURL>http://www.anime-source.com/manga/Freezing/c033/01.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>10</Index>
+              <Name>10</Name>
+              <Hash>1F65FF54-B2614DE4-7D2170D6-15AFA864-33D7BB0D-82E52643-F45F4835-6E2BD70C</Hash>
+              <URL>http://www.anime-source.com/banzai/modules.php?name=Manga&amp;rop=display&amp;chapterid=6283&amp;pagenumber=10&amp;totalpages=27</URL>
+              <ImageURL>http://www.anime-source.com/manga/Freezing/c033/10.png</ImageURL>
             </PageTestData>
             <PageTestData>
               <Index>27</Index>
@@ -95,11 +51,83 @@
               <ImageURL>http://www.anime-source.com/manga/Freezing/c001/credits.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
+              <Index>18</Index>
+              <Name>18</Name>
+              <Hash>DEFE1C87-9246B11A-17D6AB91-FBB17338-F9B8D376-573440A0-98217E5D-AAE4FC86</Hash>
+              <URL>http://www.anime-source.com/banzai/modules.php?name=Manga&amp;rop=display&amp;chapterid=4644&amp;pagenumber=18&amp;totalpages=40</URL>
+              <ImageURL>http://www.anime-source.com/manga/Freezing/c001/freezing_020.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
               <Index>40</Index>
               <Name>40</Name>
               <Hash>07E027F6-FC08FFF0-B49F310E-6A03A5BE-C4F58938-A48DD527-DA2BED7F-22616F0E</Hash>
               <URL>http://www.anime-source.com/banzai/modules.php?name=Manga&amp;rop=display&amp;chapterid=4644&amp;pagenumber=40&amp;totalpages=40</URL>
               <ImageURL>http://www.anime-source.com/manga/Freezing/c001/freezing_044.png</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Kimagure Orange Road</Title>
+      <ChapterCount>167</ChapterCount>
+      <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=list_pages_categories&amp;cid=11</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>KOR (Volume 18 Chapter 156 part 4 original ending)</Title>
+          <PageCount>4</PageCount>
+          <Index>1</Index>
+          <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=471</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>97895BDE-0DE30690-79305713-6CCF2D22-A5B83C1F-586BA24C-AC7DC3F7-8826E214</Hash>
+              <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=471&amp;page=1</URL>
+              <ImageURL>http://www.anime-source.com/html/images/kor/chapter156/187.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>2</Index>
+              <Name>2</Name>
+              <Hash>E571E6AF-9B5A7380-C21B7CCE-F008F006-3B5DF8BC-05A0B5EE-85668F36-7666A545</Hash>
+              <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=471&amp;page=2</URL>
+              <ImageURL>http://www.anime-source.com/html/images/kor/chapter156/188-189.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>4</Index>
+              <Name>4</Name>
+              <Hash>25476017-BDD69A52-FAEEC980-8B6D2BB0-F36BD832-8AFA63B9-335FCB0A-C4C6AE50</Hash>
+              <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=471&amp;page=4</URL>
+              <ImageURL>http://www.anime-source.com/html/images/kor/chapter156/192.png</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>KOR (Volume 1 Chapter 1)</Title>
+          <PageCount>34</PageCount>
+          <Index>167</Index>
+          <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=242</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>38FBB6A5-D0D7B833-A2010C4A-BFC54B7F-286C7FD0-F6FB9C6B-5F5FC35F-16F91CCA</Hash>
+              <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=242&amp;page=1</URL>
+              <ImageURL>http://www.anime-source.com/html/images/kor/chapter1/cover.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>11</Index>
+              <Name>11</Name>
+              <Hash>580B679D-3B2F1EB3-EDB0FC4A-FF768A23-35D7B2C3-630F19F1-C06CF03F-75584104</Hash>
+              <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=242&amp;page=11</URL>
+              <ImageURL>http://www.anime-source.com/html/images/kor/chapter1/012.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>34</Index>
+              <Name>34</Name>
+              <Hash>A1E7E121-0CCB6F23-9F29EE6A-72552092-5447D56B-5FCF9784-5F398237-B8DA9C61</Hash>
+              <URL>http://www.anime-source.com/banzai/modules.php?name=Content&amp;pa=showpage&amp;pid=242&amp;page=34</URL>
+              <ImageURL>http://www.anime-source.com/html/images/kor/chapter1/035.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>

@@ -4,57 +4,6 @@
   <SerieCount>33</SerieCount>
   <Series>
     <SerieTestData>
-      <Title>Fairy Tail</Title>
-      <ChapterCount>9</ChapterCount>
-      <URL>http://mangastream.com/manga/fairy_tail</URL>
-      <Chapters>
-        <ChapterTestData>
-          <Title>365 - Fairy in the Jail</Title>
-          <PageCount>38</PageCount>
-          <Index>1</Index>
-          <URL>http://readms.com/r/fairy_tail/365/2200/1</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>87C57CBA-8DC3F7C5-40EED408-58AF7493-6FC9018D-1F0D9C40-7930D24D-F61B8525</Hash>
-              <URL>http://readms.com/r/fairy_tail/365/2200/1</URL>
-              <ImageURL>http://img.mangastream.com/cdn/manga/3/2200/01.jpg</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>38</Index>
-              <Name>38</Name>
-              <Hash>4FA2BEF1-3B161EC5-A6A5BB15-E60F97DF-A07A3B33-4C90C4A3-2E9EE299-47BDCC62</Hash>
-              <URL>http://readms.com/r/fairy_tail/365/2200/38</URL>
-              <ImageURL>http://img.mangastream.com/cdn/manga/3/2200/37.jpg</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-        <ChapterTestData>
-          <Title>Special - The Fairy's Punishment Game</Title>
-          <PageCount>28</PageCount>
-          <Index>9</Index>
-          <URL>http://readms.com/r/fairy_tail/Special/1997/1</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>1</Name>
-              <Hash>F4606D9C-DBC3EA2A-665F9FF2-7175E58F-29164759-9E1CBF8C-502856C8-A1E96050</Hash>
-              <URL>http://readms.com/r/fairy_tail/Special/1997/1</URL>
-              <ImageURL>http://img.mangastream.com/cdn/manga/3/1997/01.jpg</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>28</Index>
-              <Name>28</Name>
-              <Hash>844B0F93-28235BB9-9663E6DB-238C7EE9-0F622603-23A32CCF-5D39497B-91E8DEC9</Hash>
-              <URL>http://readms.com/r/fairy_tail/Special/1997/28</URL>
-              <ImageURL>http://img.mangastream.com/cdn/manga/3/1997/28.jpg</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-      </Chapters>
-    </SerieTestData>
-    <SerieTestData>
       <Title>Attack on Titan</Title>
       <ChapterCount>7</ChapterCount>
       <URL>http://mangastream.com/manga/attack_on_titan</URL>
@@ -71,6 +20,13 @@
               <Hash>3E485EF5-7D1395EB-0A2E6B94-CECC3603-0583F350-2124A23D-FCF1495A-447A3667</Hash>
               <URL>http://readms.com/r/attack_on_titan/52/2175/1</URL>
               <ImageURL>http://img.mangastream.com/cdn/manga/76/2175/01.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>27</Index>
+              <Name>27</Name>
+              <Hash>57407F0A-3C9A559E-6599E51C-7F5366B2-5BD058F8-53C22B24-DBB462F2-05B4D2ED</Hash>
+              <URL>http://readms.com/r/attack_on_titan/52/2175/27</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/76/2175/27.png</ImageURL>
             </PageTestData>
             <PageTestData>
               <Index>46</Index>
@@ -95,11 +51,83 @@
               <ImageURL>http://img.mangastream.com/cdn/manga/76/1938/01.png</ImageURL>
             </PageTestData>
             <PageTestData>
+              <Index>16</Index>
+              <Name>16</Name>
+              <Hash>6FE7BDE4-2B58A2C6-14377B50-CFF0CF61-A9D0B26C-D2B257EF-ED6E8EC6-E5A2D1FB</Hash>
+              <URL>http://readms.com/r/attack_on_titan/46/1938/16</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/76/1938/13.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
               <Index>48</Index>
               <Name>48</Name>
               <Hash>B702B342-AC166F4E-1CA39CB3-6D769F27-75AB976A-156FC00B-82C839C0-C8990DE2</Hash>
               <URL>http://readms.com/r/attack_on_titan/46/1938/48</URL>
               <ImageURL>http://img.mangastream.com/cdn/manga/76/1938/45.png</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Fairy Tail</Title>
+      <ChapterCount>9</ChapterCount>
+      <URL>http://mangastream.com/manga/fairy_tail</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>365 - Fairy in the Jail</Title>
+          <PageCount>38</PageCount>
+          <Index>1</Index>
+          <URL>http://readms.com/r/fairy_tail/365/2200/1</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>87C57CBA-8DC3F7C5-40EED408-58AF7493-6FC9018D-1F0D9C40-7930D24D-F61B8525</Hash>
+              <URL>http://readms.com/r/fairy_tail/365/2200/1</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/2200/01.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>8</Index>
+              <Name>8</Name>
+              <Hash>7F8F2FFA-A7887B30-8E49E8C3-9EBC383B-8FCC757E-F78EACBB-48C2CA3E-849B29FB</Hash>
+              <URL>http://readms.com/r/fairy_tail/365/2200/8</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/2200/06.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>38</Index>
+              <Name>38</Name>
+              <Hash>4FA2BEF1-3B161EC5-A6A5BB15-E60F97DF-A07A3B33-4C90C4A3-2E9EE299-47BDCC62</Hash>
+              <URL>http://readms.com/r/fairy_tail/365/2200/38</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/2200/37.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Special - The Fairy's Punishment Game</Title>
+          <PageCount>28</PageCount>
+          <Index>9</Index>
+          <URL>http://readms.com/r/fairy_tail/Special/1997/1</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>F4606D9C-DBC3EA2A-665F9FF2-7175E58F-29164759-9E1CBF8C-502856C8-A1E96050</Hash>
+              <URL>http://readms.com/r/fairy_tail/Special/1997/1</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/1997/01.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>4</Index>
+              <Name>4</Name>
+              <Hash>6C1A0800-F32AB07E-CF51371F-9BD71F41-0752CEFF-DE032B14-8E08CFB5-278FDC85</Hash>
+              <URL>http://readms.com/r/fairy_tail/Special/1997/4</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/1997/03.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>28</Index>
+              <Name>28</Name>
+              <Hash>844B0F93-28235BB9-9663E6DB-238C7EE9-0F622603-23A32CCF-5D39497B-91E8DEC9</Hash>
+              <URL>http://readms.com/r/fairy_tail/Special/1997/28</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/1997/28.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
