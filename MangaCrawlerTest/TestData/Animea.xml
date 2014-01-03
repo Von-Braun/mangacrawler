@@ -138,6 +138,35 @@
             </PageTestData>
           </Pages>
         </ChapterTestData>
+		<ChapterTestData>
+          <Title>-6mm no Taboo 1</Title>
+          <PageCount>49</PageCount>
+          <Index>5</Index>
+          <URL>http://manga.animea.net/-6mm-no-taboo-chapter-1.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>0D18901E-C359ABF9-7228AF2D-8B26CEC1-58241C9E-5396DFFF-88BC5F25-3EF5F77F</Hash>
+              <URL>http://manga.animea.net/-6mm-no-taboo-chapter-1-page-1.html</URL>
+              <ImageURL>http://i04a.animea.net/3657%2F1%2Fimg_1_25410.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>21</Index>
+              <Name>21</Name>
+              <Hash>06DD1044-09CB5288-B7E42F17-F08BD176-D8153D32-30DDB9A2-B728686A-6AE74D31</Hash>
+              <URL>http://manga.animea.net/-6mm-no-taboo-chapter-1-page-21.html</URL>
+              <ImageURL>http://i04a.animea.net/3657%2F1%2Fimg_21_377.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>41</Index>
+              <Name>41</Name>
+              <Hash>14631095-E3108CC8-BC662719-9F4E63B5-56252912-ABDF88EF-6192DFF8-2D4C5B47</Hash>
+              <URL>http://manga.animea.net/-6mm-no-taboo-chapter-1-page-41.html</URL>
+              <ImageURL>http://i04a.animea.net/3657%2F1%2Fimg_41_91116.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
       </Chapters>
     </SerieTestData>
     <SerieTestData>
@@ -171,6 +200,35 @@
               <Hash>0715989A-4E8FC141-02E9BA18-163A4B88-B672D893-2547D39E-3C6513BF-AFA66008</Hash>
               <URL>http://manga.animea.net/detective-conan-chapter-880-page-16.html</URL>
               <ImageURL>http://i04a.animea.net/70%2F880%2Fimg_16_6806.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+		<ChapterTestData>
+          <Title>Detective Conan 1</Title>
+          <PageCount>40</PageCount>
+          <Index>874</Index>
+          <URL>http://manga.animea.net/detective-conan-chapter-1.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>F4C3C345-01E92CEF-AF179615-4077365B-80F1CD65-32002B26-BA1D1C4E-ED360873</Hash>
+              <URL>http://manga.animea.net/detective-conan-chapter-1-page-1.html</URL>
+              <ImageURL>http://i04a.animea.net/70%2F1_CMCGA%2F%2FDetective%20Conan%20v01%20003..jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>8</Index>
+              <Name>8</Name>
+              <Hash>8E13BD11-C6181172-697B9F3D-B6E2414F-7DB99814-2205DE73-EF062524-D7ED942B</Hash>
+              <URL>http://manga.animea.net/detective-conan-chapter-1-page-8.html</URL>
+              <ImageURL>http://i04a.animea.net/70%2F1_CMCGA%2FDetective%20Conan%20v01%20file01%20011.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>16</Index>
+              <Name>16</Name>
+              <Hash>D81E3293-5ADF563F-778B09D1-D0CC2AAE-F5981EFD-26D5F831-1B9466F6-231F10FC</Hash>
+              <URL>http://manga.animea.net/detective-conan-chapter-1-page-16.html</URL>
+              <ImageURL>http://i04a.animea.net/70%2F1_CMCGA%2FDetective%20Conan%20v01%20file01%20019.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
