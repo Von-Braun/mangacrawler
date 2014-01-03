@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MangaCrawlerLib;
 using MangaCrawler;
 using System.Diagnostics;
+using System.IO;
 
 namespace MangaCrawlerTest
 {
@@ -33,6 +34,23 @@ namespace MangaCrawlerTest
                    new MangaSettings(),
                    Settings.GetSettingsDir());
         }
+
+        public static string GetTestDataDir()
+        {
+            string dir = new DirectoryInfo(
+                System.Reflection.Assembly.GetAssembly(typeof(Crawler)).Location).Parent.Parent.Parent.Parent.FullName +
+                Path.DirectorySeparatorChar + "MangaCrawlerTest" + Path.DirectorySeparatorChar + "TestData";
+
+            if (!Directory.Exists(dir))
+            {
+                dir = new DirectoryInfo(
+                    System.Reflection.Assembly.GetAssembly(typeof(Crawler)).Location).Parent.Parent.Parent.Parent.Parent.FullName +
+                    Path.DirectorySeparatorChar + "MangaCrawlerTest" + Path.DirectorySeparatorChar + "TestData";
+            }
+
+            return dir;
+        }
+
 
         protected virtual void WriteLine(string a_str, params object[] a_args)
         {

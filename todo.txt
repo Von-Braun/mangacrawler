@@ -1,4 +1,3 @@
-po trzy serie po trzy chaptery po trzy page - wszystkiego moze byc wiecej, ale to musi byc
 dokladnie posprawdzac wszystkie obrazki - czy sa takie same jak na stronach www
 random test - pamietanie wyjatkow - empty chapters and series
 code coverage - usunac kod albo znalesc test ktory te warunki wykorzysta
@@ -25,7 +24,7 @@ http://mangable.com/manga-list/
 http://www.readmangaonline.net/
 http://www.mangamonger.com/
 
-czy musze all testowac, czy zmiany sa bezpieczne
+sprawdzic pamietanie opcji
 instalator - 4.5.1 - zmiana na 4.0 - nie ma sensu
 instalator - instlacja nowej wersji na starej
 uruchomienie nowej wersji na starej

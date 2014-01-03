@@ -23,6 +23,9 @@ namespace MangaCrawlerTest
     [TestClass]
     public class RandomTestAll : TestBase
     {
+        private static string EXCEPTIONS = "Exceptions.txt";
+        private static string EXCEPTIONS_CANDIDATES = "Exceptions-candidates.txt";
+
         private ProgressIndicator m_pi;
         private bool m_error = false;
 
@@ -63,8 +66,30 @@ namespace MangaCrawlerTest
             TimeSpan report_delta = new TimeSpan(0, 15, 0);
             int errors = 0;
             int warnings = 0;
-
+            var exceptions = new List<string>();
+            var exceptions_candidates = new List<string>();
             m_pi = new ProgressIndicator("RandomTestAll");
+            Object locker = new Object();
+
+            if (File.Exists(Path.Combine(GetTestDataDir(), EXCEPTIONS)))
+            {
+                exceptions = File.ReadAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS)).ToList();
+                WriteLine("{0} entries in {1}", exceptions.Count, EXCEPTIONS);
+            }
+            else
+            {
+                WriteLine("File doesn't exists: {0}", EXCEPTIONS);
+            }
+
+            if (File.Exists(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES)))
+            {
+                exceptions_candidates = File.ReadAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES)).ToList();
+                WriteLine("{0} entries in {1}", exceptions_candidates.Count, EXCEPTIONS_CANDIDATES);
+            }
+            else
+            {
+                WriteLine("File doesn't exists: {0}", EXCEPTIONS_CANDIDATES);
+            }
 
             foreach (var server in DownloadManager.Instance.Servers)
             {
@@ -75,20 +100,23 @@ namespace MangaCrawlerTest
 
             Action<bool> report = (force) =>
             {
-                if (!force)
+                lock (locker)
                 {
-                    if (DateTime.Now - last_report < report_delta)
-                        return;
-                }
+                    if (!force)
+                    {
+                        if (DateTime.Now - last_report < report_delta)
+                            return;
+                    }
 
-                last_report = DateTime.Now;
+                    last_report = DateTime.Now;
+                }
 
                 WriteLine("");
                 WriteLine("Report ({0}):", DateTime.Now);
 
                 foreach (var server in DownloadManager.Instance.Servers)
                 {
-                    WriteLine("Server: {0}, Serie chapters: {1}, Chapters pages list: {2}, Chapter images: {3}",
+                    WriteLine("Server: {0}, Serie chapters: {1}, Chapters pages: {2}, Chapter images: {3}",
                         server.Name, serie_chapters[server], chapter_pageslist[server], chapter_images[server]);
                 }
 
@@ -96,7 +124,6 @@ namespace MangaCrawlerTest
                 WriteLine("");
             };
 
-            report(true);
 
             Parallel.ForEach(DownloadManager.Instance.Servers,
                 new ParallelOptions()
@@ -141,8 +168,13 @@ namespace MangaCrawlerTest
                             }
                             else if (serie.Chapters.Count == 0)
                             {
-                                WriteLineWarning("WARN - {0} - Serie has no chapters", serie);
-                                warnings++;
+                                if (!exceptions.Contains(serie.ToString()))
+                                {
+                                    exceptions_candidates.Add(serie.ToString());
+                                    File.WriteAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES), exceptions_candidates);
+                                    WriteLineWarning("WARN - {0} - Serie has no chapters", serie);
+                                    warnings++;
+                                }
                             }
 
                             Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
@@ -172,8 +204,14 @@ namespace MangaCrawlerTest
 
                                         if (chapter.Pages.Count == 0)
                                         {
-                                            WriteLineWarning("WARN - {0} - Chapter have no pages", chapter);
-                                            warnings++;
+                                            if (!exceptions.Contains(chapter.ToString()))
+                                            {
+                                                exceptions_candidates.Add(chapter.ToString());
+                                                File.WriteAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES), 
+                                                    exceptions_candidates);
+                                                WriteLineWarning("WARN - {0} - Chapter have no pages", chapter);
+                                                warnings++;
+                                            }
                                         }
                                     }
                                     catch
