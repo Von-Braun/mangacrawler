@@ -1,5 +1,5 @@
+po trzy serie po trzy chaptery po trzy page - wszystkiego moze byc wiecej, ale to musi byc
 dokladnie posprawdzac wszystkie obrazki - czy sa takie same jak na stronach www
-po trzy obrazki na chapter - jeden jakis srodkowy
 random test - pamietanie wyjatkow - empty chapters and series
 code coverage - usunac kod albo znalesc test ktory te warunki wykorzysta
 

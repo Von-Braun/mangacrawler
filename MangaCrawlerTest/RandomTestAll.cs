@@ -16,6 +16,7 @@ using MangaCrawler;
 using TomanuExtensions;
 using System.Drawing;
 using TomanuExtensions.TestUtils;
+using System.Diagnostics;
 
 namespace MangaCrawlerTest
 {
@@ -31,21 +32,11 @@ namespace MangaCrawlerTest
             Assert.IsTrue(m_error == false);
         }
 
-        private void WriteLine(string a_str, params object[] a_args)
+        protected override void WriteLine(string a_str, params object[] a_args)
         {
+            base.WriteLine(a_str, a_args);
             String str = String.Format(a_str, a_args);
             m_pi.AddLine(str);
-            TestContext.WriteLine(str);
-        }
-
-        private void WriteLineError(string a_str, params object[] a_args)
-        {
-            WriteLine(a_str, a_args);
-        }
-
-        private void WriteLineWarning(string a_str, params object[] a_args)
-        {
-            WriteLine(a_str, a_args);
         }
 
         private static IEnumerable<T> TakeRandom<T>(IEnumerable<T> a_enum, double a_percent)

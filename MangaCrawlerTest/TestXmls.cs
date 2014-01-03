@@ -82,12 +82,31 @@ namespace MangaCrawlerTest
             }
         }
 
-        private void CheckOngoing(ServerTestData a_downloaded)
+        private void Check(ServerTestData a_server_test_data)
         {
-            Assert.IsTrue((from serie in a_downloaded.Series
-                           where serie.Chapters.Count(ch => ch.Index == ch.SerieTestData.ChapterCount) >= 1
-                           where serie.Chapters.Count(ch => ch.Index == 1) >= 1
-                           select serie).Count() >= 2);
+            Func<PageTestData, bool> check_page = p =>
+                File.Exists(p.FileName) &&
+                (TomanuExtensions.Utils.Hash.CalculateSHA256(File.OpenRead(p.FileName)) == p.Hash);
+
+            Func<ChapterTestData, bool> check_chapter = ch =>
+                (ch.Pages.Count == 0) 
+                ||
+                (ch.Pages.Any(p => p.Index == 1) &&
+                 ch.Pages.Select(p => p.Index).Unique() &&
+                 ch.Pages.Any(p => p.Index == ch.PageCount) &&
+                 ch.Pages.All(p => check_page(p)) &&
+                 ch.Pages.Count == 3);
+
+            Func<SerieTestData, bool> check_serie = s =>
+                (s.Chapters.Count == 0)
+                ||
+                (s.Chapters.Any(ch => ch.Index == 1) &&
+                 s.Chapters.Select(ch => ch.Index).Unique() &&
+                 s.Chapters.Any(ch => ch.Index == s.ChapterCount) &&
+                 (s.Chapters.Count == 3) &&
+                 s.Chapters.Count(ch => check_chapter(ch)) == 3);
+
+            Assert.IsTrue(a_server_test_data.Series.Count(s => check_serie(s)) >= 3);
         }
 
         private void TestXml(string a_server_name)
@@ -97,7 +116,8 @@ namespace MangaCrawlerTest
             var downloaded = ServerTestData.Load(Path.Combine(GetTestDataDir(), a_server_name + ".xml"));
             downloaded.Download();
             Assert.IsTrue(Compare(from_xml, downloaded));
-            CheckOngoing(downloaded);
+            Check(from_xml);
+            Check(downloaded);
         }
 
         [TestMethod]
@@ -203,7 +223,6 @@ namespace MangaCrawlerTest
             foreach (var xml in xmls)
             {
                 var std = ServerTestData.Load(xml);
-                std.Download();
 
                 DeleteErrors(Path.GetFileNameWithoutExtension(xml));
 
@@ -220,7 +239,7 @@ namespace MangaCrawlerTest
 
             foreach (var ui in unused_images)
             {
-                TestContext.WriteLine("Deleting: {0}", ui);
+                WriteLine("Deleting: {0}", ui);
                 File.Delete(ui);
             }
 
@@ -234,8 +253,43 @@ namespace MangaCrawlerTest
 
             foreach (var xml in xmls)
             {
+                WriteLine(xml);
+
                 var std = ServerTestData.Load(xml);
                 DeleteErrors(std.Name);
+
+                // 3 pages when 2 pages
+                var x = (from serie in std.Series
+                         from chapter in serie.Chapters
+                         where chapter.Pages.Count == 2
+                         select chapter).ToList();
+                if (!x.Any())
+                    continue;
+                Random r = new Random();
+                foreach (var ch in x)
+                {
+                    WriteLine(ch.ToString());
+
+                    PageTestData ptd = new PageTestData();
+                    ptd.ChapterTestData = ch;
+                    ptd.Name = "X";
+                    ptd.Hash = "X";
+                    ptd.ImageURL = "X";
+                    ptd.URL = "X";
+                    ptd.Index = r.Next(2, ch.PageCount);
+                    ch.Pages.Insert(1, ptd);
+                }
+                //
+
+                std.Series = std.Series.OrderBy(s => s.Title).ToList();
+                foreach (var serie in std.Series)
+                {
+                    serie.Chapters = serie.Chapters.OrderBy(ch => ch.Index).ToList();
+                
+                    foreach (var chapter in serie.Chapters)
+                        chapter.Pages = chapter.Pages.OrderBy(p => p.Index).ToList();
+                }
+
                 std.Download();
                 GenerateInfo(std, false);
             }

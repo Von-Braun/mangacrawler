@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MangaCrawlerLib;
 using MangaCrawler;
+using System.Diagnostics;
 
 namespace MangaCrawlerTest
 {
@@ -31,6 +32,22 @@ namespace MangaCrawlerTest
             DownloadManager.Create(
                    new MangaSettings(),
                    Settings.GetSettingsDir());
+        }
+
+        protected virtual void WriteLine(string a_str, params object[] a_args)
+        {
+            TestContext.WriteLine(a_str, a_args);
+            Debug.WriteLine(a_str, a_args);
+        }
+
+        protected void WriteLineError(string a_str, params object[] a_args)
+        {
+            WriteLine(a_str, a_args);
+        }
+
+        protected void WriteLineWarning(string a_str, params object[] a_args)
+        {
+            WriteLine(a_str, a_args);
         }
     }
 }
