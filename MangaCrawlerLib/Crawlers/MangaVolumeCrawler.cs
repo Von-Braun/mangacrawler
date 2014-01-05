@@ -210,12 +210,6 @@ namespace MangaCrawlerLib.Crawlers
                     var page_series = page_doc.DocumentNode.SelectNodes(
                         "//table[@id='MainList']/tr/td[1]/a");
 
-                    if ((pages.Count == 1) && (page_series == null))
-                    {
-                        // No chapters in serie.
-                        return;
-                    }
-
                     int index = 0;
                     foreach (var serie in page_series)
                     {
@@ -248,6 +242,8 @@ namespace MangaCrawlerLib.Crawlers
 
             var pages = doc.DocumentNode.SelectNodes("//select[@id='pages']/option");
 
+            var result = new List<Page>();
+
             int index = 0;
             foreach (var page in pages)
             {
@@ -260,8 +256,13 @@ namespace MangaCrawlerLib.Crawlers
                     index, 
                     "");
 
-                yield return pi;
+                result.Add(pi);
             }
+
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
+            return result;
         }
 
         internal override string GetImageURL(Page a_page)

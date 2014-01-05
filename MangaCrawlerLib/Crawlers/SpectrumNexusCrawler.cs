@@ -115,15 +115,22 @@ namespace MangaCrawlerLib.Crawlers
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='page']/option");
 
+            var result = new List<Page>();
+
             int index = 0;
             foreach (var page in pages)
             {
                 index++;
 
-                yield return new Page(a_chapter, 
-                                      a_chapter.URL + "&page=" + page.GetAttributeValue("value", ""),
-                                      index, page.NextSibling.InnerText);
+                result.Add(new Page(a_chapter,
+                                    a_chapter.URL + "&page=" + page.GetAttributeValue("value", ""),
+                                    index, page.NextSibling.InnerText));
             }
+
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
+            return result;
         }
 
         internal override string GetImageURL(Page a_page)

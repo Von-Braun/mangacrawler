@@ -185,7 +185,7 @@ namespace MangaCrawlerLib
             Catalog.Save(this);
         }
 
-        internal void DownloadPages()
+        internal void DownloadPagesAndImages()
         {
             try
             {

@@ -131,17 +131,25 @@ namespace MangaCrawlerLib.Crawlers
 
             var pages = doc.DocumentNode.SelectSingleNode("//select[@name='page']").SelectNodes("option");
 
+            var result = new List<Page>();
+
             foreach (var page in pages)
             {
                 var url =  a_chapter.URL.RemoveFromRight(5) + "-page-" +
                     page.GetAttributeValue("value", "") + ".html";
 
-                yield return new Page(
-                    a_chapter,
-                    url, 
-                    pages.IndexOf(page) + 1,
-                    page.NextSibling.InnerText);
+                result.Add(
+                    new Page(
+                        a_chapter,
+                        url, 
+                        pages.IndexOf(page) + 1,
+                        page.NextSibling.InnerText));
             }
+
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
+            return result;
         }
 
         public override string GetServerURL()

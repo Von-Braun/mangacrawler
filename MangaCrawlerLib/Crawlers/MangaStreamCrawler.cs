@@ -68,6 +68,9 @@ namespace MangaCrawlerLib.Crawlers
             for (int i = first_page; i <= last_page; i++)
                 result.Add(new Page(a_chapter, link + i.ToString(), i, i.ToString()));
 
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
             return result;
         }
 
