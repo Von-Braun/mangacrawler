@@ -52,7 +52,7 @@ namespace MangaCrawlerTest
         {
             string a_suffix = a_downloaded ? ERROR_SUFFIX : "";
 
-            a_server_test_data.Save(Path.Combine(GetTestDataDir(), a_server_test_data.Name + a_suffix + ".xml"));
+            a_server_test_data.Save("_" + Path.Combine(GetTestDataDir(), a_server_test_data.Name + a_suffix + ".xml"));
 
             foreach (var page in from serie in a_server_test_data.Series
                                  from chapter in serie.Chapters
@@ -83,8 +83,8 @@ namespace MangaCrawlerTest
         private void TestXml(string a_server_name)
         {
             DeleteErrors(a_server_name);
-            var from_xml = ServerTestData.Load(Path.Combine(GetTestDataDir(), a_server_name + ".xml"));
-            var downloaded = ServerTestData.Load(Path.Combine(GetTestDataDir(), a_server_name + ".xml"));
+            var from_xml = ServerTestData.Load("_" + Path.Combine(GetTestDataDir(), a_server_name + ".xml"));
+            var downloaded = ServerTestData.Load("_" + Path.Combine(GetTestDataDir(), a_server_name + ".xml"));
             try
             {
                 downloaded.Download();
@@ -188,7 +188,7 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
-        public void DeleteUnusedImages()
+        public void _DeleteUnusedImages()
         {
             var xmls = Directory.GetFiles(GetTestDataDir(), "*.xml");
 
@@ -226,7 +226,7 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
-        public void RegeneratedXmlsAndImages()
+        public void _RegeneratedXmlsAndImages()
         {
             DeleteErrors("");
 

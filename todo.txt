@@ -1,3 +1,4 @@
+wywolac test findempties
 dokladnie posprawdzac wszystkie obrazki - czy sa takie same jak na stronach www
 random test - pamietanie wyjatkow - empty chapters and series
 code coverage - usunac kod albo znalesc test ktory te warunki wykorzysta
