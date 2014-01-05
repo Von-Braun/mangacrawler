@@ -45,10 +45,10 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_serie);
 
-            var warnings = doc.DocumentNode.SelectNodes("//div[@class='warning']");
-            if (warnings != null)
+            var warning = doc.DocumentNode.SelectSingleNode("//div[@class='warning']");
+            if (warning != null)
             {
-                if (warnings.Any(n => n.InnerHtml.Contains("has been licensed, it is not available in")))
+                if (warning.InnerHtml.Contains("has been licensed, it is not available in"))
                 {
                     a_progress_callback(100, new Chapter[0]);
                     return;
