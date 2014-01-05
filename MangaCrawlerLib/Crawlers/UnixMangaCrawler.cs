@@ -14,14 +14,6 @@ namespace MangaCrawlerLib.Crawlers
 {
     internal class UnixMangaCrawler : Crawler
     {
-        public override int MaxConnectionsPerServer
-        {
-            get
-            {
-                return 1;
-            }
-        }
-
         public override string Name
         {
             get 
@@ -82,7 +74,7 @@ namespace MangaCrawlerLib.Crawlers
             Parallel.ForEach(chapters_or_volumes, 
                 new ParallelOptions() 
                 {
-                    MaxDegreeOfParallelism = MaxConnectionsPerServer,
+                    MaxDegreeOfParallelism = MaxConnectionsPerServer, 
                     TaskScheduler = Limiter.Scheduler
                 },
                 (chapter_or_volume, state) =>

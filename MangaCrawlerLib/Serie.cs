@@ -118,17 +118,15 @@ namespace MangaCrawlerLib
                 {
                     lock (locker)
                     {
-                        if (!ChaptersDownloadedFirstTime)
+                        if (progress == 100)
                         {
-                            result.ForEach(ch => ch.Visited = true);
-                            result = EliminateDoubles(result.ToList());
-                            m_chapters.ReplaceInnerCollection(result, false, c => c.Title, null);
+                            if (!ChaptersDownloadedFirstTime)
+                                result.ForEach(ch => ch.Visited = true);
+
+                            EliminateDoubles(result.ToList());
+                            m_chapters.ReplaceInnerCollection(result, ChaptersDownloadedFirstTime, c => c.Title, null);
                         }
-                        else if (progress == 100)
-                        {
-                            result = EliminateDoubles(result.ToList());
-                            m_chapters.ReplaceInnerCollection(result, true, c => c.Title, merge);
-                        }
+
                         DownloadProgress = progress;
                     }
                 });

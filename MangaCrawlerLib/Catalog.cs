@@ -121,7 +121,7 @@ namespace MangaCrawlerLib
             }
         }
 
-        private static string CatalogDir
+        public static string CatalogDir
         {
             get
             {

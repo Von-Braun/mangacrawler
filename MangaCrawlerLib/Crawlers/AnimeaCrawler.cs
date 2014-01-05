@@ -108,7 +108,6 @@ namespace MangaCrawlerLib.Crawlers
                     return;
                 }
                 
-                
                 var skip_link = doc.DocumentNode.SelectSingleNode("//li[@class='notice']/strong/a");
                 doc = DownloadDocument(a_serie, a_serie.URL + 
                     skip_link.GetAttributeValue("href", ""));
