@@ -385,20 +385,26 @@ namespace MangaCrawlerTest
 
         public static ServerTestData Load(string a_file_path)
         {
-            ServerTestData std = new ServerTestData();
-
             XElement root = XElement.Load(a_file_path);
 
-            std.Name = root.Element("Name").Value;
-            std.SerieCount = Int32.Parse(root.Element("SerieCount").Value);
+            var name = root.Element("Name").Value;
+            Assert.IsTrue(!String.IsNullOrWhiteSpace(name));
 
-            Assert.IsTrue(!String.IsNullOrWhiteSpace(std.Name));
+            var std = Create(DownloadManager.Instance.Servers.First(s => s.Name == name));
+
+            std.SerieCount = Int32.Parse(root.Element("SerieCount").Value);
 
             foreach (var serie_node in root.Element("Series").Elements())
                 std.Series.Add(SerieTestData.Load(serie_node, std));
 
-            std.Server = DownloadManager.Instance.Servers.First(s => s.Name == std.Name);
+            return std;
+        }
 
+        public static ServerTestData Create(Server a_server)
+        {
+            ServerTestData std = new ServerTestData();
+            std.Name = a_server.Name;
+            std.Server = a_server;
             return std;
         }
 

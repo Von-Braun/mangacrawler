@@ -57,11 +57,16 @@ namespace MangaCrawlerTest
             return dir;
         }
 
-
         protected virtual void WriteLine(string a_str, params object[] a_args)
         {
             TestContext.WriteLine(a_str, a_args);
             Debug.WriteLine(a_str, a_args);
+
+            using (FileStream fs = File.OpenWrite(Path.Combine(GetTestDataDir(), "_test.log")))
+            {
+                StreamWriter sw = new StreamWriter(fs);
+                sw.WriteLine(DateTime.Now.ToString("YYYY-mm-DD HH-MM-SS : ") + a_str, a_args);
+            };
         }
 
         protected void WriteLineError(string a_str, params object[] a_args)
