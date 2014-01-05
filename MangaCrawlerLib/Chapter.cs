@@ -222,8 +222,7 @@ namespace MangaCrawlerLib
 
                         new ParallelOptions()
                         {
-                            MaxDegreeOfParallelism = Crawler.MaxConnectionsPerServer,
-                            TaskScheduler = Limiter.Scheduler
+                            MaxDegreeOfParallelism = Crawler.MaxConnectionsPerServer
                         },
                         (page, state) =>
                         {

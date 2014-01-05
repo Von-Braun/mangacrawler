@@ -90,7 +90,7 @@ namespace MangaCrawlerLib
             {
                 a_server.DownloadSeries();
 
-            }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
+            }, TaskCreationOptions.LongRunning).Start();
         }
 
         public void DownloadChapters(Serie a_serie, bool a_force)
@@ -111,7 +111,7 @@ namespace MangaCrawlerLib
             new Task(() =>
             {
                 a_serie.DownloadChapters();
-            }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
+            }, TaskCreationOptions.LongRunning).Start();
         }
 
         public void DownloadPages(IEnumerable<Chapter> a_chapters)
@@ -142,7 +142,7 @@ namespace MangaCrawlerLib
                     new Task(() =>
                     {
                         chapter_sync.DownloadPages();
-                    }, TaskCreationOptions.LongRunning).Start(Limiter.Scheduler);
+                    }, TaskCreationOptions.LongRunning).Start();
                 }
             }).Start();
         }

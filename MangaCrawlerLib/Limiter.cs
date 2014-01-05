@@ -58,8 +58,6 @@ namespace MangaCrawlerLib
         private static Dictionary<Server, bool> s_one_chapter_per_server = new Dictionary<Server, bool>();
         private static int s_connections = 0;
 
-        public static TaskScheduler Scheduler = TaskScheduler.Current;
-
         static Limiter()
         {
             foreach (var server in DownloadManager.Instance.Servers)
