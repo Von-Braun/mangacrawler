@@ -204,6 +204,7 @@ namespace MangaCrawler
                 }
             });
 
+            thread.Name = "RestoreEvent";
             thread.IsBackground = true;
             thread.Start();
         }

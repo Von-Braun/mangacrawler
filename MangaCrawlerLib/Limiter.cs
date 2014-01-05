@@ -69,6 +69,7 @@ namespace MangaCrawlerLib
             }
 
             Thread loop_thread = new Thread(Loop);
+            loop_thread.Name = "Limiter";
             loop_thread.IsBackground = true;
             loop_thread.Start();
 
