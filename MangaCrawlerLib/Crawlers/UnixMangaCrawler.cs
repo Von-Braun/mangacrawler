@@ -74,8 +74,7 @@ namespace MangaCrawlerLib.Crawlers
             Parallel.ForEach(chapters_or_volumes, 
                 new ParallelOptions() 
                 {
-                    MaxDegreeOfParallelism = MaxConnectionsPerServer, 
-                    TaskScheduler = Limiter.Scheduler
+                    MaxDegreeOfParallelism = MaxConnectionsPerServer
                 },
                 (chapter_or_volume, state) =>
             {

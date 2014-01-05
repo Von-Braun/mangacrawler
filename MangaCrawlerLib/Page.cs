@@ -87,11 +87,15 @@ namespace MangaCrawlerLib
                     Chapter, Index, Chapter.Pages.Count);
         }
 
-        internal MemoryStream GetImageStream()
+        internal void GetImageURL()
         {
             if (ImageURL == null)
                 ImageURL = HtmlDecode(Crawler.GetImageURL(this));
+        }
 
+        internal MemoryStream GetImageStream()
+        {
+            GetImageURL();
             return Crawler.GetImageStream(this);  
         }
 
