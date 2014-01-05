@@ -30,40 +30,55 @@ namespace MangaCrawlerLib.Crawlers
             HtmlDocument doc = DownloadDocument(a_server);
 
             List<string> pages = new List<string>();
+
+            Func<object, string> prepare_page_url = index =>
+                 String.Format(
+                    "http://www.mangavolume.com/manga-archive/mangas/npage-{0}",
+                    index);
+
+            int current_page = 1;
             pages.Add(a_server.URL);
 
-            do
+            for (;;)
             {
-                var nodes_enum = doc.DocumentNode.SelectNodes(
-                    "//div[@id='NavigationPanel']/ul/li/a");
+                var links = doc.DocumentNode.SelectNodes(
+                    "//div[@id='NavigationPanel']/ul/li/a | //div[@id='NavigationPanel']/ul/li/span");
+                var nodes = links.Select(el => el.InnerText.ToLower()).ToList();
 
-                var nodes = nodes_enum.ToList();
+                nodes.Remove("next");
+                nodes.Remove("prev");
 
-                if (nodes.First().InnerText.ToLower() == "prev")
-                    nodes.RemoveAt(0);
-                if (nodes.Last().InnerText.ToLower() == "next")
-                    nodes.RemoveLast();
+                var indexes = nodes.Select(el => Int32.Parse(el)).ToList();
 
-                pages.AddRange(from node in nodes
-                               select "http://www.mangavolume.com" +
-                               node.GetAttributeValue("href", ""));
+                foreach (var index in indexes)
+                {
+                    if (index != 1)
+                        pages.Add(prepare_page_url(index));
+                }
 
-                string next_pages_group = String.Format(
-                    "http://www.mangavolume.com/manga-archive/mangas/npage-{0}",
-                    Int32.Parse(nodes.Last().InnerText) + 1);
+                string next_pages_group = null;
+
+                if (current_page == indexes.Last())
+                {
+                    if (links.Last().Name == "span")
+                        break;
+
+                    next_pages_group = prepare_page_url(indexes.Last() + 1);
+                    current_page = indexes.Last() + 1;
+                }
+                else
+                {
+                    next_pages_group = prepare_page_url(indexes.Last());
+                    current_page = indexes.Last();
+                }
 
                 doc = DownloadDocument(a_server, next_pages_group);
-
-                if (doc != null)
-                    pages.Add(next_pages_group);
             }
-            while (doc != null);
-
-            pages = pages.Distinct().ToList();
 
             ConcurrentBag<Tuple<int, int, string, string>> series =
                 new ConcurrentBag<Tuple<int, int, string, string>>();
 
+            pages = pages.Distinct().ToList();
             int series_progress = 0;
 
             Action<int> update = (progress) =>
@@ -75,20 +90,20 @@ namespace MangaCrawlerLib.Crawlers
                 a_progress_callback(progress, result.ToArray());
             };
 
-            Parallel.For(0, pages.Count,
+            Parallel.ForEach(pages, 
                 new ParallelOptions()
                 {
                     MaxDegreeOfParallelism = MaxConnectionsPerServer,
                     TaskScheduler = Limiter.Scheduler
                 },
-                (page, state) =>
+                (page, state, page_index) =>
             {
                 try
                 {
                     IEnumerable<HtmlNode> page_series = null;
 
                     HtmlDocument page_doc = DownloadDocument(
-                        a_server, pages[page]);
+                        a_server, page);
                     page_series = page_doc.DocumentNode.SelectNodes(
                         "//table[@id='MostPopular']/tr/td/a");
 
@@ -96,7 +111,7 @@ namespace MangaCrawlerLib.Crawlers
                     foreach (var serie in page_series)
                     {
                         Tuple<int, int, string, string> s =
-                            new Tuple<int, int, string, string>(page, index++, 
+                            new Tuple<int, int, string, string>((int)page_index, index++, 
                                 serie.SelectSingleNode("span").InnerText,
                                 "http://www.mangavolume.com" + serie.GetAttributeValue("href", ""));
 
