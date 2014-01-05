@@ -66,6 +66,8 @@ namespace MangaCrawlerLib.Crawlers
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='pageid']/option");
 
+            var result = new List<Page>();
+
             if (pages == null)
             {
                 string pages_str = doc.DocumentNode.SelectSingleNode(
@@ -77,7 +79,7 @@ namespace MangaCrawlerLib.Crawlers
                 {
                     Page pi = new Page(a_chapter, a_chapter.URL + "&page=" + page, page, "");
 
-                    yield return pi;
+                    result.Add(pi);
                 }
             }
             else
@@ -91,9 +93,14 @@ namespace MangaCrawlerLib.Crawlers
                                        "http://www.anime-source.com/banzai/" + page.GetAttributeValue("value", ""),
                                        index, "");
 
-                    yield return pi;
+                    result.Add(pi);
                 }
             }
+
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
+            return result;
         }
 
         internal override string GetImageURL(Page a_page)

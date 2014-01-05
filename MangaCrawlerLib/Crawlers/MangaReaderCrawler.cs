@@ -38,12 +38,6 @@ namespace MangaCrawlerLib.Crawlers
 
             var chapters = doc.DocumentNode.SelectNodes("//table[@id='listing']/tr/td/a");
 
-            if (chapters == null)
-            {
-                a_progress_callback(100, new Chapter[0]);
-                return;
-            }
-
             var result = (from chapter in chapters.Reverse()
                           select new Chapter(
                               a_serie,
@@ -62,12 +56,17 @@ namespace MangaCrawlerLib.Crawlers
 
             var pages = doc.DocumentNode.SelectNodes("//div[@id='selectpage']/select/option");
 
-            return from page in pages
-                   select new Page(
-                       a_chapter, 
-                       "http://www.mangareader.net" + page.GetAttributeValue("value", ""), 
-                       pages.IndexOf(page) + 1,
-                       page.NextSibling.InnerText);
+            var result = (from page in pages
+                          select new Page(
+                              a_chapter,
+                              "http://www.mangareader.net" + page.GetAttributeValue("value", ""),
+                              pages.IndexOf(page) + 1,
+                              page.NextSibling.InnerText)).ToList();
+
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
+            return result;
         }
 
         public override string GetServerURL()

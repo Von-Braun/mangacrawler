@@ -47,13 +47,6 @@ namespace MangaCrawlerLib.Crawlers
             var chapters_or_volumes_enum =
                 doc.DocumentNode.SelectNodes("//table[@class='snif']/tr/td/a");
 
-            if (chapters_or_volumes_enum == null)
-            {
-                a_progress_callback(100, 
-                    new [] { new Chapter(a_serie, a_serie.URL, a_serie.Title) } );
-                return;
-            }
-
             int chapters_progress = 0;
 
             ConcurrentBag<Tuple<int, int, Chapter>> chapters = 
@@ -114,9 +107,6 @@ namespace MangaCrawlerLib.Crawlers
 
             List<Chapter> result = new List<Chapter>();
 
-            if (doc.DocumentNode.InnerText.Contains("500 - Internal server error"))
-                return result;
-
             var chapter = doc.DocumentNode.SelectNodes(
                 "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
 
@@ -129,8 +119,6 @@ namespace MangaCrawlerLib.Crawlers
             {
                 var chapters_or_volumes = doc.DocumentNode.SelectNodes(
                     "//tr[@class='snF snEven' or @class='snF snOdd']/td/a").Skip(1).ToList();
-                if (chapters_or_volumes[0].InnerText.ToLower() == "thumbs.jpg")
-                    chapters_or_volumes.RemoveAt(0);
 
                 foreach (var chapter_or_volume in chapters_or_volumes)
                     result.AddRange(SearchChaptersOrVolumes(a_serie, chapter_or_volume));
@@ -146,8 +134,7 @@ namespace MangaCrawlerLib.Crawlers
             var pages = doc.DocumentNode.SelectNodes(
                 "/html/body/center/div/div[2]/div/fieldset/ul/label/a");
 
-            if (pages == null)
-                yield break;
+            var result = new List<Page>();
 
             int index = 0;
             foreach (var page in pages)
@@ -157,8 +144,13 @@ namespace MangaCrawlerLib.Crawlers
                 Page pi = new Page(a_chapter, page.GetAttributeValue("href", ""), index, 
                     Path.GetFileNameWithoutExtension(page.InnerText));
 
-                yield return pi;
+                result.Add(pi);
             }
+
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
+            return result;
         }
 
         internal override string GetImageURL(Page a_page)

@@ -70,11 +70,16 @@ namespace MangaCrawlerLib.Crawlers
 
             var pages = doc.DocumentNode.SelectNodes("//select[@id='page_switch']/option");
 
-            return from page in pages
-                   select new Page(a_chapter,
-                                   "http://starkana.com" + page.GetAttributeValue("value", ""), 
-                                   pages.IndexOf(page) + 1,
-                                   page.NextSibling.InnerText);
+            var result = (from page in pages
+                          select new Page(a_chapter,
+                                          "http://starkana.com" + page.GetAttributeValue("value", ""),
+                                          pages.IndexOf(page) + 1,
+                                          page.NextSibling.InnerText)).ToList();
+
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
+            return result;
         }
 
         internal override string GetImageURL(Page a_page)

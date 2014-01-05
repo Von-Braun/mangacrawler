@@ -141,7 +141,7 @@ namespace MangaCrawlerLib
 
                     new Task(() =>
                     {
-                        chapter_sync.DownloadPages();
+                        chapter_sync.DownloadPagesAndImages();
                     }, TaskCreationOptions.LongRunning).Start();
                 }
             }).Start();

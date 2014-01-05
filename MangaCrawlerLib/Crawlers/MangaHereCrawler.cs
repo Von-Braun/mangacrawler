@@ -60,12 +60,17 @@ namespace MangaCrawlerLib.Crawlers
 
             var pages = doc.DocumentNode.SelectNodes("//section[@class='readpage_top']/div[3]/span/select/option");
 
-            return from page in pages
-                   select new Page(
-                       a_chapter, 
-                       page.GetAttributeValue("value", ""), 
-                       pages.IndexOf(page) + 1,
-                       page.NextSibling.InnerText);
+            var result = (from page in pages
+                          select new Page(
+                              a_chapter,
+                              page.GetAttributeValue("value", ""),
+                              pages.IndexOf(page) + 1,
+                              page.NextSibling.InnerText)).ToList();
+
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
+            return result;
         }
 
         public override string GetServerURL()

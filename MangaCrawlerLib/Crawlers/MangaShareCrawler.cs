@@ -59,6 +59,8 @@ namespace MangaCrawlerLib.Crawlers
 
             var pages = doc.DocumentNode.SelectNodes("//select[@name='pagejump']/option");
 
+            var result = new List<Page>();
+
             int index = 0;
             foreach (var page in pages)
             {
@@ -71,8 +73,13 @@ namespace MangaCrawlerLib.Crawlers
 
                 Page pi = new Page(a_chapter, link, index, "");
 
-                yield return pi;
+                result.Add(pi);
             }
+
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
+            return result;
         }
 
         internal override string GetImageURL(Page a_page)

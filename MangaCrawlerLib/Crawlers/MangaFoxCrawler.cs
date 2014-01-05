@@ -84,12 +84,9 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_chapter);
 
-            var m = doc.DocumentNode.SelectSingleNode("//div[@class='r m']");
+            List<Page> result = new List<Page>();
 
-            if (m == null)
-                yield break;
-
-            var pages = m.SelectNodes("div[@class='l']/select[@class='m']/option");
+            var pages = doc.DocumentNode.SelectNodes("//div[@class='r m']/div[@class='l']/select[@class='m']/option");
 
             int index = 1;
 
@@ -109,8 +106,13 @@ namespace MangaCrawlerLib.Crawlers
 
                 index++;
 
-                yield return pi;
+                result.Add(pi);
             }
+
+            if (result.Count == 0)
+                throw new Exception("Chapter has no pages");
+
+            return result;
         }
 
         internal override string GetImageURL(Page a_page)

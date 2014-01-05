@@ -25,11 +25,8 @@ namespace MangaCrawlerTest
     public class RandomTestAll : TestBase
     {
         public static string EXCEPTIONS_NO_CHAPTERS = "_Exceptions - no chapters.txt";
-        public static string EXCEPTIONS_NO_CHAPTERS_CANDIDATES = "_Exceptions - no chapters - candidates.txt";
         public static string EXCEPTIONS_NO_PAGES = "_Exceptions - no pages.txt";
-        public static string EXCEPTIONS_NO_PAGES_CANDIDATES = "_Exceptions - no pages - candidates.txt";
         public static string EXCEPTIONS_NO_IMAGES = "_Exceptions - no images.txt";
-        public static string EXCEPTIONS_NO_IMAGES_CANDIDATES = "_Exceptions - no images - candidates.txt";
 
         private ProgressIndicator m_pi;
         private bool m_error = false;
@@ -71,7 +68,7 @@ namespace MangaCrawlerTest
             TimeSpan report_delta = new TimeSpan(0, 15, 0);
             int errors = 0;
             int warnings = 0;
-            m_pi = new ProgressIndicator("RandomTestAll");
+            m_pi = new ProgressIndicator("_RandomTestAll");
             Object locker = new Object();
 
             Func<string, List<string>> load_exceptions = file_name =>
@@ -84,33 +81,14 @@ namespace MangaCrawlerTest
                 }
                 else
                 {
-                    WriteLine("File doesn't exists: {0}", EXCEPTIONS_NO_CHAPTERS);
+                    WriteLine("File doesn't exists: {0}", file_name);
                     return new List<string>();
                 }
             };
 
-            Action<string, string> add_candidate_exception = (file, line) =>
-            {
-                using (FileStream fs = File.OpenWrite(Path.Combine(GetTestDataDir(), file)))
-                {
-                    StreamWriter sw = new StreamWriter(fs);
-                    sw.WriteLine(line);
-                };
-            };
-
-            var exceptions_no_series = load_exceptions(EXCEPTIONS_NO_CHAPTERS);
-            var exceptions_no_chapters = load_exceptions(EXCEPTIONS_NO_PAGES);
+            var exceptions_no_chapters = load_exceptions(EXCEPTIONS_NO_CHAPTERS);
             var exceptions_no_pages = load_exceptions(EXCEPTIONS_NO_PAGES);
             var exceptions_no_images = load_exceptions(EXCEPTIONS_NO_IMAGES);
-
-            if (File.Exists(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_CHAPTERS_CANDIDATES)))
-                File.Delete(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_CHAPTERS_CANDIDATES));
-            if (File.Exists(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_PAGES_CANDIDATES)))
-                File.Delete(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_PAGES_CANDIDATES));
-            if (File.Exists(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_IMAGES)))
-                File.Delete(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_IMAGES_CANDIDATES));
-
-            new DirectoryInfo(Catalog.CatalogDir).DeleteContent();
 
             foreach (var server in DownloadManager.Instance.Servers)
             {
@@ -145,7 +123,8 @@ namespace MangaCrawlerTest
                 WriteLine("");
             };
 
-            Parallel.ForEach(DownloadManager.Instance.Servers,
+            Parallel.ForEach(
+                DownloadManager.Instance.Servers,
                 new ParallelOptions()
                 {
                     MaxDegreeOfParallelism = DownloadManager.Instance.Servers.Count()
@@ -182,24 +161,11 @@ namespace MangaCrawlerTest
 
                             if (serie.State == SerieState.Error)
                             {
-                                if (!exceptions_no_chapters.Contains(serie.ToString()))
-                                {
-                                    WriteLineError("ERROR - {0} {1} - Error while downloading chapters from serie",
-                                        serie, serie.URL);
-                                    errors++;
-                                }
+                                WriteLineError("ERROR - {0} {1} - Error while downloading chapters from serie",
+                                    serie, serie.URL);
+                                errors++;
                             }
-                            else if (serie.Chapters.Count == 0)
-                            {
-                                if (!exceptions_no_chapters.Contains(serie.ToString()))
-                                {
-                                    add_candidate_exception(EXCEPTIONS_NO_CHAPTERS_CANDIDATES, serie.ToString());
-                                    WriteLineWarning("WARN - {0} {1} - Serie have no chapters",
-                                        serie, serie.URL);
-                                    warnings++;
-                                }
-                            }
-                            else
+                            else if (serie.Chapters.Count != 0)
                             {
                                 if (exceptions_no_chapters.Contains(serie.ToString()))
                                 {
@@ -233,17 +199,7 @@ namespace MangaCrawlerTest
 
                                         chapter_pageslist[server]++;
 
-                                        if (chapter.Pages.Count == 0)
-                                        {
-                                            if (!exceptions_no_pages.Contains(chapter.ToString()))
-                                            {
-                                                add_candidate_exception(EXCEPTIONS_NO_PAGES_CANDIDATES, chapter.ToString());
-                                                WriteLineWarning("WARN - {0} {1} - Chapter have no pages",
-                                                    chapter, chapter.URL);
-                                                warnings++;
-                                            }
-                                        }
-                                        else
+                                        if (chapter.Pages.Count != 0)
                                         {
                                             if (exceptions_no_pages.Contains(chapter.ToString()))
                                             {
@@ -319,7 +275,6 @@ namespace MangaCrawlerTest
                                                 {
                                                     if (!exceptions_no_images.Contains(page.Chapter.ToString()))
                                                     {
-                                                        add_candidate_exception(EXCEPTIONS_NO_IMAGES_CANDIDATES, page.Chapter.ToString());
                                                         WriteLineError("ERROR - {0} {1} - Exception while detecting image url",
                                                             page, page.URL);
                                                         errors++;
@@ -343,7 +298,7 @@ namespace MangaCrawlerTest
         public void _FindEmpties()
         {
             var xmls = Directory.GetFiles(GetTestDataDir(), "*.xml");
-            m_pi = new ProgressIndicator("RandomTestAll");
+            m_pi = new ProgressIndicator("_FindEmpties");
 
             ConcurrentBag<string> empty_no_chapters = new ConcurrentBag<string>(
                 File.ReadAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_CHAPTERS)));
@@ -382,7 +337,7 @@ namespace MangaCrawlerTest
                         if (serie.Chapters.Count == 0)
                         {
                             empty_no_chapters.Add(serie.ToString());
-                            m_pi.AddLine("NO CHAPTERS:" + serie.ToString());
+                            WriteLine("NO CHAPTERS:" + serie.ToString());
                         }
                         else
                         {
@@ -398,12 +353,12 @@ namespace MangaCrawlerTest
                                         return;
 
                                     chapter.State = ChapterState.Waiting;
-                                    chapter.DownloadPages();
+                                    chapter.DownloadPagesAndImages();
 
                                     if (chapter.Pages.Count == 0)
                                     {
                                         empty_no_pages.Add(chapter.ToString());
-                                        m_pi.AddLine("NO PAGES:" + chapter.ToString());
+                                        WriteLine("NO PAGES:" + chapter.ToString());
                                     }
                                     else
                                     {
@@ -427,7 +382,7 @@ namespace MangaCrawlerTest
                                             catch
                                             {
                                                 empty_no_images.Add(chapter.ToString());
-                                                m_pi.AddLine("NO IMAGES:" + chapter.ToString());
+                                                WriteLine("NO IMAGES:" + chapter.ToString());
                                             }
                                         }
                                         finally
