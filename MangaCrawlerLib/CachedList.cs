@@ -67,9 +67,11 @@ namespace MangaCrawlerLib
         private static void Merge(List<T> a_new, List<T> a_local,
             Func<T, string> a_key_selector, Merge<T> a_merge)
         {
-            var dups = a_local.Select(a_key_selector).ExceptExact(
-                a_local.Select(a_key_selector).Distinct());
-
+            var dups = from el in a_local
+                       group el by a_key_selector(el) into gr
+                       where gr.Count() > 1
+                       select gr.ToList();
+                           
             Dictionary<string, T> local_dict = a_local.ToDictionary(a_key_selector);
 
             for (int i = 0; i < a_new.Count; i++)
