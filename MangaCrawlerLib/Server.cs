@@ -125,7 +125,7 @@ namespace MangaCrawlerLib
                         if (progress == 100)
                         {
                             result = EliminateDoubles(result.ToList());
-                            m_series.ReplaceInnerCollection(result, SeriesDownloadedFirstTime, s => s.URL, merge);
+                            m_series.ReplaceInnerCollection(result, SeriesDownloadedFirstTime, s => s.Title, merge);
                         }
 
                         DownloadProgress = progress;
