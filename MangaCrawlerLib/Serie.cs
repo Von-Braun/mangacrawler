@@ -105,6 +105,8 @@ namespace MangaCrawlerLib
 
         internal void DownloadChapters()
         {
+            Object locker = new Object();
+
             try
             {
                 Merge<Chapter> merge = (catc, newc) =>
@@ -114,18 +116,21 @@ namespace MangaCrawlerLib
 
                 Crawler.DownloadChapters(this, (progress, result) =>
                 {
-                    if (!ChaptersDownloadedFirstTime)
+                    lock (locker)
                     {
-                        result.ForEach(ch => ch.Visited = true);
-                        result = EliminateDoubles(result);
-                        m_chapters.ReplaceInnerCollection(result, false, c => c.Title, null);
+                        if (!ChaptersDownloadedFirstTime)
+                        {
+                            result.ForEach(ch => ch.Visited = true);
+                            result = EliminateDoubles(result.ToList());
+                            m_chapters.ReplaceInnerCollection(result, false, c => c.Title, null);
+                        }
+                        else if (progress == 100)
+                        {
+                            result = EliminateDoubles(result.ToList());
+                            m_chapters.ReplaceInnerCollection(result, true, c => c.Title, merge);
+                        }
+                        DownloadProgress = progress;
                     }
-                    else if (progress == 100)
-                    {
-                        result = EliminateDoubles(result);
-                        m_chapters.ReplaceInnerCollection(result, true, c => c.Title, merge);
-                    }
-                    DownloadProgress = progress; 
                 });
 
                 State = SerieState.Downloaded;
@@ -161,40 +166,42 @@ namespace MangaCrawlerLib
             return String.Format("{0} - {1}", Server.Name, Title);
         }
 
-        private static IEnumerable<Chapter> EliminateDoubles(IEnumerable<Chapter> a_series)
+        private static List<Chapter> EliminateDoubles(List<Chapter> a_chapters)
         {
-            a_series = a_series.ToList();
+            var same_name_same_url = (from serie in a_chapters
+                                      group serie by new { serie.Title, serie.URL } into gr
+                                      from s in gr.Skip(1)
+                                      select s).ToList();
 
-            var doubles =
-                a_series.Select(s => s.Title).ExceptExact(a_series.Select(s => s.Title).Distinct()).ToArray();
+            if (same_name_same_url.Any())
+                a_chapters = a_chapters.Except(same_name_same_url).ToList();
 
-            var same_name_same_url = from serie in a_series
-                                     where doubles.Contains(serie.Title)
-                                     group serie by new { serie.Title, serie.URL } into gr
-                                     from s in gr.Skip(1)
-                                     select s;
-
-            a_series =
-                a_series.Except(same_name_same_url.ToList()).ToList();
-
-            doubles = a_series.Select(s => s.Title).ExceptExact(a_series.Select(s => s.Title).Distinct()).ToArray();
-
-            var same_name_diff_url = from serie in a_series
-                                     where doubles.Contains(serie.Title)
-                                     group serie by serie.Title;
+            var same_name_diff_url = from serie in a_chapters
+                                     group serie by serie.Title into gr
+                                     where gr.Count() > 1
+                                     select gr;
 
             foreach (var gr in same_name_diff_url)
             {
                 int index = 1;
 
-                foreach (var serie in gr)
+                foreach (var chapter in gr)
                 {
-                    serie.Title += String.Format(" ({0})", index);
-                    index++;
+                    for (;;)
+                    {
+                        string new_title = String.Format("{0} ({1})", chapter.Title, index);
+                        index++;
+
+                        if (a_chapters.Any(ch => ch.Title == new_title))
+                            continue;
+
+                        chapter.Title = new_title;
+                        break;
+                    }
                 }
             }
 
-            return a_series;
+            return a_chapters;
         }
 
         public bool IsDownloadRequired(bool a_force)

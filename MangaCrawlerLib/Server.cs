@@ -109,26 +109,31 @@ namespace MangaCrawlerLib
 
         internal void DownloadSeries()
         {
+            Object locker = new Object();
+
             try
             {
                 Crawler.DownloadSeries(this, (progress, result) =>
                 {
-                    Merge<Serie> merge = (cats, news) =>
+                    lock (locker)
                     {
-                        cats.URL = news.URL;
-                    };
+                        Merge<Serie> merge = (cats, news) =>
+                        {
+                            cats.URL = news.URL;
+                        };
 
-                    if (!SeriesDownloadedFirstTime)
-                    {
-                        result = EliminateDoubles(result);
-                        m_series.ReplaceInnerCollection(result, false, s => s.Title, null);
+                        if (!SeriesDownloadedFirstTime)
+                        {
+                            result = EliminateDoubles(result.ToList());
+                            m_series.ReplaceInnerCollection(result, false, s => s.URL, null);
+                        }
+                        else if (progress == 100)
+                        {
+                            result = EliminateDoubles(result.ToList());
+                            m_series.ReplaceInnerCollection(result, true, s => s.URL, merge);
+                        }
+                        DownloadProgress = progress;
                     }
-                    else if (progress == 100)
-                    {
-                        result = EliminateDoubles(result);
-                        m_series.ReplaceInnerCollection(result, true, s => s.Title, merge);
-                    }
-                    DownloadProgress = progress;
                 });
 
                 DownloadManager.Instance.Bookmarks.RemoveNotExisted();
@@ -149,27 +154,20 @@ namespace MangaCrawlerLib
             m_check_date_time = DateTime.Now;
         }
 
-        private static IEnumerable<Serie> EliminateDoubles(IEnumerable<Serie> a_series)
+        private static List<Serie> EliminateDoubles(List<Serie> a_series)
         {
-            a_series = a_series.ToList();
+            var same_name_same_url = (from serie in a_series
+                                      group serie by new { serie.Title, serie.URL } into gr
+                                      from s in gr.Skip(1)
+                                      select s).ToList();
 
-            var doubles = 
-                a_series.Select(s => s.Title).ExceptExact(a_series.Select(s => s.Title).Distinct()).ToArray();
-
-            var same_name_same_url = from serie in a_series
-                                     where doubles.Contains(serie.Title)
-                                     group serie by new { serie.Title, serie.URL } into gr
-                                     from s in gr.Skip(1)
-                                     select s;
-
-            a_series = 
-                a_series.Except(same_name_same_url.ToList()).ToList();
-
-            doubles = a_series.Select(s => s.Title).ExceptExact(a_series.Select(s => s.Title).Distinct()).ToArray();
+            if (same_name_same_url.Any())
+                a_series = a_series.Except(same_name_same_url).ToList();
 
             var same_name_diff_url = from serie in a_series
-                                     where doubles.Contains(serie.Title)
-                                     group serie by serie.Title;
+                                     group serie by serie.Title into gr
+                                     where gr.Count() > 1
+                                     select gr;
 
             foreach (var gr in same_name_diff_url)
             {
@@ -177,8 +175,17 @@ namespace MangaCrawlerLib
 
                 foreach (var serie in gr)
                 {
-                    serie.Title += String.Format(" ({0})", index);
-                    index++;
+                    for (; ; )
+                    {
+                        string new_title = String.Format("{0} ({1})", serie.Title, index);
+                        index++;
+
+                        if (a_series.Any(ch => ch.Title == new_title))
+                            continue;
+
+                        serie.Title = new_title;
+                        break;
+                    }
                 }
             }
 
