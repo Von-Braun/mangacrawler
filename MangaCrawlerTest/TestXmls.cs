@@ -78,7 +78,6 @@ namespace MangaCrawlerTest
                     }
                 }
             };
-                
         }
 
         private void TestXml(string a_server_name)
@@ -86,7 +85,15 @@ namespace MangaCrawlerTest
             DeleteErrors(a_server_name);
             var from_xml = ServerTestData.Load(Path.Combine(GetTestDataDir(), a_server_name + ".xml"));
             var downloaded = ServerTestData.Load(Path.Combine(GetTestDataDir(), a_server_name + ".xml"));
-            downloaded.Download();
+            try
+            {
+                downloaded.Download();
+            }
+            catch
+            {
+                GenerateInfo(downloaded);
+                throw;
+            }
             Assert.IsTrue(Compare(from_xml, downloaded));
             Check(from_xml);
             Check(downloaded);
@@ -240,7 +247,16 @@ namespace MangaCrawlerTest
                         chapter.Pages = chapter.Pages.OrderBy(p => p.Index).ToList();
                 }
 
-                std.Download();
+                try
+                {
+                    std.Download();
+                }
+                catch
+                {
+                    GenerateInfo(std);
+                    throw;
+                }
+
                 GenerateInfo(std, false);
             }
         }

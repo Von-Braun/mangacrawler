@@ -82,14 +82,9 @@ namespace MangaCrawlerTest
             }
 
             if (File.Exists(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES)))
-            {
-                exceptions_candidates = File.ReadAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES)).ToList();
-                WriteLine("{0} entries in {1}", exceptions_candidates.Count, EXCEPTIONS_CANDIDATES);
-            }
-            else
-            {
-                WriteLine("File doesn't exists: {0}", EXCEPTIONS_CANDIDATES);
-            }
+                File.Delete(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES));
+
+            new DirectoryInfo(Catalog.CatalogDir).DeleteContent();
 
             foreach (var server in DownloadManager.Instance.Servers)
             {
@@ -124,7 +119,6 @@ namespace MangaCrawlerTest
                 WriteLine("");
             };
 
-
             Parallel.ForEach(DownloadManager.Instance.Servers,
                 new ParallelOptions()
                 {
@@ -138,17 +132,19 @@ namespace MangaCrawlerTest
 
                     if (server.State == ServerState.Error)
                     {
-                        WriteLineError("ERROR - {0} - Error while downloading series from server",
-                            server.Name);
+                        WriteLineError("ERROR - {0} {1} - Error while downloading series from server",
+                            server.Name, server.URL);
                         Assert.Fail();
                     }
                     else if (server.Series.Count == 0)
                     {
-                        WriteLineError("ERROR - {0} - Server have no series", server.Name);
+                        WriteLineError("ERROR - {0} {1} - Server have no series", 
+                            server.Name, server.URL);
                         Assert.Fail();
                     }
 
-                    Parallel.ForEach(TakeRandom(server.Series, 0.1),
+                    Parallel.ForEach(
+                        TakeRandom(server.Series, 0.1),
                         new ParallelOptions()
                         {
                             MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer,
@@ -162,9 +158,12 @@ namespace MangaCrawlerTest
 
                             if (serie.State == SerieState.Error)
                             {
-                                WriteLineError(
-                                    "ERROR - {0} - Error while downloading chapters from serie", serie);
-                                errors++;
+                                if (!exceptions.Contains(serie.ToString()))
+                                {
+                                    WriteLineError("ERROR - {0} {1} - Error while downloading chapters from serie",
+                                        serie, serie.URL);
+                                    errors++;
+                                }
                             }
                             else if (serie.Chapters.Count == 0)
                             {
@@ -172,7 +171,17 @@ namespace MangaCrawlerTest
                                 {
                                     exceptions_candidates.Add(serie.ToString());
                                     File.WriteAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES), exceptions_candidates);
-                                    WriteLineWarning("WARN - {0} - Serie has no chapters", serie);
+                                    WriteLineWarning("WARN - {0} {1} - Serie have no chapters",
+                                        serie, serie.URL);
+                                    warnings++;
+                                }
+                            }
+                            else
+                            {
+                                if (exceptions.Contains(serie.ToString()))
+                                {
+                                    WriteLineWarning("WARN - {0} {1} - Serie have chapters, remove from exceptions",
+                                        serie, serie.URL);
                                     warnings++;
                                 }
                             }
@@ -207,17 +216,27 @@ namespace MangaCrawlerTest
                                             if (!exceptions.Contains(chapter.ToString()))
                                             {
                                                 exceptions_candidates.Add(chapter.ToString());
-                                                File.WriteAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES), 
+                                                File.WriteAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES),
                                                     exceptions_candidates);
-                                                WriteLineWarning("WARN - {0} - Chapter have no pages", chapter);
+                                                WriteLineWarning("WARN - {0} {1} - Chapter have no pages",
+                                                    chapter, chapter.URL);
+                                                warnings++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (exceptions.Contains(chapter.ToString()))
+                                            {
+                                                WriteLineWarning("WARN - {0} {1} - Chapter have pages, remove from exceptions",
+                                                    chapter, chapter.URL);
                                                 warnings++;
                                             }
                                         }
                                     }
                                     catch
                                     {
-                                        WriteLineError(
-                                            "ERROR - {0} - Exception while downloading pages from chapter", chapter);
+                                        WriteLineError("ERROR - {0} {1} - Exception while downloading pages from chapter", 
+                                            chapter, chapter.URL);
                                         errors++;
                                     }
 
@@ -241,16 +260,22 @@ namespace MangaCrawlerTest
                                                 }
                                                 catch
                                                 {
-                                                    WriteLineError(
-                                                        "ERROR - {0} - Exception while downloading image from page", page);
-                                                    errors++;
+                                                    if (!exceptions.Contains(page.ToString()))
+                                                    {
+                                                        WriteLineError("ERROR - {0} {1} - Exception while downloading image from page", 
+                                                            page, page.URL);
+                                                        errors++;
+                                                    }
                                                 }
 
                                                 if (stream.Length == 0)
                                                 {
-                                                    WriteLineError(
-                                                        "ERROR - {0} - Image stream is zero size for page", page);
-                                                    errors++;
+                                                    if (!exceptions.Contains(page.ToString()))
+                                                    {
+                                                        WriteLineError("ERROR - {0} {1} - Image stream is zero size for page",
+                                                            page, page.URL);
+                                                        errors++;
+                                                    }
                                                 }
 
                                                 try
@@ -259,16 +284,32 @@ namespace MangaCrawlerTest
                                                 }
                                                 catch
                                                 {
-                                                    WriteLineError(
-                                                        "ERROR - {0} - Exception while creating image from stream for page", page);
-                                                    errors++;
+                                                    if (!exceptions.Contains(page.ToString()))
+                                                    {
+                                                        WriteLineError("ERROR - {0} {1} - Exception while creating image from stream for page",
+                                                            page, page.URL);
+                                                        errors++;
+                                                    }
+                                                }
+
+                                                if (exceptions.Contains(page.ToString()))
+                                                {
+                                                    WriteLineWarning("WARN - {0} {1} - Page has image, remove from exceptions",
+                                                        page, page.URL);
+                                                    warnings++;
                                                 }
                                             }
                                             catch
                                             {
-                                                WriteLineError(
-                                                        "ERROR - {0} - EXCEPTION while downloading page", page);
-                                                errors++;
+                                                if (!exceptions.Contains(page.ToString()))
+                                                {
+                                                    exceptions_candidates.Add(page.ToString());
+                                                    File.WriteAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_CANDIDATES),
+                                                        exceptions_candidates);
+                                                    WriteLineError("ERROR - {0} - EXCEPTION while downloading page",
+                                                        page, page.URL);
+                                                    errors++;
+                                                }
                                             }
                                             finally
                                             {

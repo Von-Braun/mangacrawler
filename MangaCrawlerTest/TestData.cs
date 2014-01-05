@@ -120,6 +120,9 @@ namespace MangaCrawlerTest
                 Limiter.EndChapter(Page.Chapter);
             }
 
+            if (Page.State == PageState.Error)
+                throw new Exception("Downloading page error");
+
             Name = Page.Name;
         }
 
@@ -213,6 +216,9 @@ namespace MangaCrawlerTest
             {
                 Limiter.EndChapter(Chapter);
             }
+
+            if (Chapter.State == ChapterState.Error)
+                throw new Exception("Downloading pages list error");
 
             PageCount = Chapter.Pages.Count;
             Title = Chapter.Title;
@@ -312,6 +318,9 @@ namespace MangaCrawlerTest
             Serie.State = SerieState.Waiting;
             Serie.DownloadChapters();
 
+            if (Serie.State == SerieState.Error)
+                throw new Exception("Downloading chapters errorr");
+
             ChapterCount = Serie.Chapters.Count;
             Title = Serie.Title;
 
@@ -389,25 +398,20 @@ namespace MangaCrawlerTest
 
         public void Download()
         {
-            try
-            {
-                Name = "";
-                SerieCount = -1;
+            Name = "";
+            SerieCount = -1;
 
-                Server.State = ServerState.Waiting;
-                Server.DownloadSeries();
+            Server.State = ServerState.Waiting;
+            Server.DownloadSeries();
 
-                Name = Server.Name;
-                SerieCount = Server.Series.Count;
+            if (Server.State == ServerState.Error)
+                throw new Exception("Downloading series errorr");
 
-                foreach (var serie in Series)
-                    serie.Download();
-            }
-            catch (Exception ex)
-            {
-                TestXmls.GenerateInfo(this);
-                throw ex;
-            }
+            Name = Server.Name;
+            SerieCount = Server.Series.Count;
+
+            foreach (var serie in Series)
+                serie.Download();
         }
 
         public bool Compare(ServerTestData a_downloaded)
