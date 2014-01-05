@@ -98,7 +98,7 @@ namespace MangaCrawlerTest
         {
             Page = ChapterTestData.Chapter.Pages.ElementAtOrDefault(Index - 1);
 
-            Name = "";
+            Name = "some error";
 
             URL = Page.URL;
 
@@ -202,7 +202,7 @@ namespace MangaCrawlerTest
             Chapter = SerieTestData.Serie.Chapters.ElementAtOrDefault(Index - 1);
 
             PageCount = -1;
-            Title = "";
+            Title = "some error";
 
             URL = Chapter.URL;
 
@@ -224,7 +224,16 @@ namespace MangaCrawlerTest
             Title = Chapter.Title;
 
             foreach (var page in Pages)
+            {
+                if (page.Index > PageCount)
+                {
+                    page.Index = -1;
+                    page.Name = "index out of range";
+                    Assert.Fail();
+                }
+
                 page.Download();
+            }
         }
 
         public bool Compare(ChapterTestData a_downloaded)
@@ -325,7 +334,16 @@ namespace MangaCrawlerTest
             Title = Serie.Title;
 
             foreach (var chapter in Chapters)
+            {
+                if (chapter.Index > ChapterCount)
+                {
+                    chapter.Index = -1;
+                    chapter.Title = "index out of range";
+                    Assert.Fail();
+                }
+
                 chapter.Download();
+            }
         }
 
         public bool Compare(SerieTestData a_downloaded)
@@ -398,7 +416,7 @@ namespace MangaCrawlerTest
 
         public void Download()
         {
-            Name = "";
+            Name = "some error";
             SerieCount = -1;
 
             Server.State = ServerState.Waiting;
