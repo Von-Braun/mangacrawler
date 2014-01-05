@@ -70,9 +70,68 @@
     </SerieTestData>
     <SerieTestData>
       <Title>Bleach</Title>
-      <ChapterCount>0</ChapterCount>
+      <ChapterCount>170</ChapterCount>
       <URL>http://www.thespectrum.net/manga_scans/bleach/</URL>
-      <Chapters />
+      <Chapters>
+        <ChapterTestData>
+          <Title>Chapter 563</Title>
+          <PageCount>20</PageCount>
+          <Index>1</Index>
+          <URL>http://view.thespectrum.net/series/bleach-volume-01.html?ch=Chapter+563&amp;page=1</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>FCB6F265-7A0B768C-DE12D8C7-71FC98F5-22146F75-BEC7A9D7-52469F27-020F79C5</Hash>
+              <URL>http://view.thespectrum.net/series/bleach-volume-01.html?ch=Chapter+563&amp;page=1&amp;page=1</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Bleach/Chapter 563/bleach_c563_001.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>11</Index>
+              <Name>11</Name>
+              <Hash>377858A3-FAA8F853-DC83BED8-B2B93316-9A52126B-7D1C6F97-23E6266E-A3004541</Hash>
+              <URL>http://view.thespectrum.net/series/bleach-volume-01.html?ch=Chapter+563&amp;page=1&amp;page=11</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Bleach/Chapter 563/bleach_c563_011.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>20</Index>
+              <Name>20</Name>
+              <Hash>6A61B9F2-448B5DF7-AEC0D588-F3C240E8-EEBACAEB-75353848-7D992FAC-9B92CC2A</Hash>
+              <URL>http://view.thespectrum.net/series/bleach-volume-01.html?ch=Chapter+563&amp;page=1&amp;page=20</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Bleach/Chapter 563/bleach_c563_020.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Volume 01</Title>
+          <PageCount>187</PageCount>
+          <Index>170</Index>
+          <URL>http://view.thespectrum.net/series/bleach-volume-01.html?ch=Volume+01&amp;page=1</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>62A96AF0-2818D19A-0A35DAA7-FD513701-6E6670E0-663EC84E-AAA3579D-CC6B8733</Hash>
+              <URL>http://view.thespectrum.net/series/bleach-volume-01.html?ch=Volume+01&amp;page=1&amp;page=1</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Bleach/Volume 01/bleach_v01_001.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>100</Index>
+              <Name>100</Name>
+              <Hash>2B8509EB-1C1BF3CA-A65ACFB3-B8D788FF-E81CC715-8861B89A-44688427-664EA0F0</Hash>
+              <URL>http://view.thespectrum.net/series/bleach-volume-01.html?ch=Volume+01&amp;page=1&amp;page=100</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Bleach/Volume 01/bleach_v01_100.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>187</Index>
+              <Name>187</Name>
+              <Hash>7B541E33-09E0105D-A3B4EEE4-B2E6B819-330AF88E-8FA96087-BCE7DFE4-59A9CA55</Hash>
+              <URL>http://view.thespectrum.net/series/bleach-volume-01.html?ch=Volume+01&amp;page=1&amp;page=187</URL>
+              <ImageURL>http://view.thespectrum.net/manga/Bleach/Volume 01/bleach_v01_187.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
     </SerieTestData>
     <SerieTestData>
       <Title>Fullmetal Alchemist</Title>
