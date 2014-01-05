@@ -62,7 +62,7 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod, Timeout(24 * 60 * 60 * 1000)]
-        public void RandomTestAll_()
+        public void _RandomTestAll()
         {
             Dictionary<Server, int> serie_chapters = new Dictionary<Server, int>();
             Dictionary<Server, int> chapter_pageslist = new Dictionary<Server, int>();
@@ -339,8 +339,8 @@ namespace MangaCrawlerTest
                 });
         }
 
-                [TestMethod]
-        public void FindEmpties()
+        [TestMethod]
+        public void _FindEmpties()
         {
             var xmls = Directory.GetFiles(GetTestDataDir(), "*.xml");
             m_pi = new ProgressIndicator("RandomTestAll");
