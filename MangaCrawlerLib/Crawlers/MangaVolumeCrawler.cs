@@ -224,6 +224,9 @@ namespace MangaCrawlerLib.Crawlers
             });
 
             update(100);
+
+            if (chapters.Count == 0)
+                throw new Exception("Serie has no chapters");
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)

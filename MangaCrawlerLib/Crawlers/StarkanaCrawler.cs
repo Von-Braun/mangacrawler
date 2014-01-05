@@ -42,6 +42,17 @@ namespace MangaCrawlerLib.Crawlers
             var chapters = doc.DocumentNode.SelectNodes(
                 "//div/div/a[@class='download-link']");
 
+            if (chapters == null)
+            {
+                var mature = doc.DocumentNode.SelectSingleNode("//a[@href='?mature_confirm=1']");
+                if (mature != null)
+                {
+                    a_serie.URL = a_serie.URL + "?mature_confirm=1";
+                    DownloadChapters(a_serie, a_progress_callback);
+                    return;
+                }
+            }
+
             var result = (from chapter in chapters
                           select new Chapter(a_serie,
                                              "http://starkana.com" + chapter.GetAttributeValue("href", ""),
