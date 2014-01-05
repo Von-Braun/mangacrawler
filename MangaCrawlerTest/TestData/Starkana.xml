@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServerTestData>
   <Name>Starkana</Name>
-  <SerieCount>5987</SerieCount>
+  <SerieCount>5991</SerieCount>
   <Series>
     <SerieTestData>
       <Title>090 ~Eko to Issho~</Title>
@@ -63,6 +63,71 @@
               <Hash>E088EAE7-8D5A8A67-0A35FC77-BE548D2D-F6BBB3CE-02412A6E-E18F65B5-8B050E7E</Hash>
               <URL>http://starkana.com/manga/0/090_~Eko_to_Issho~/chapter/1/25</URL>
               <ImageURL>http://img.starkana.com/2/52/eko01_022.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>D-ASH</Title>
+      <ChapterCount>54</ChapterCount>
+      <URL>http://starkana.com/manga/D/D-ASH</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>D-ASH chapter 54</Title>
+          <PageCount>25</PageCount>
+          <Index>1</Index>
+          <URL>http://starkana.com/manga/D/D-ASH/chapter/54</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>A70750E5-5F9507CC-DDCDF7D6-F92052DD-B15A4666-6609F38D-391F582B-3D2E7F7D</Hash>
+              <URL>http://starkana.com/manga/D/D-ASH/chapter/54/1</URL>
+              <ImageURL>http://img.starkana.com/244/8321/DASH_v05_189.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>11</Index>
+              <Name>11</Name>
+              <Hash>3BA7695E-E2CAAE42-F350C78C-FEABE628-9F3059CD-0BC54919-7508F958-32546BEA</Hash>
+              <URL>http://starkana.com/manga/D/D-ASH/chapter/54/11</URL>
+              <ImageURL>http://img.starkana.com/244/8321/DASH_v05_199.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>25</Index>
+              <Name>25</Name>
+              <Hash>6384911D-36FB0414-8BB424E4-66DD98E3-0ADC05C8-000BFA79-AE89EF55-AC98E30F</Hash>
+              <URL>http://starkana.com/manga/D/D-ASH/chapter/54/25</URL>
+              <ImageURL>http://img.starkana.com/244/8321/DASH_v05_c54_credits.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>D-ASH chapter 1</Title>
+          <PageCount>36</PageCount>
+          <Index>54</Index>
+          <URL>http://starkana.com/manga/D/D-ASH/chapter/1</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>973219B0-9F02E4F7-9BC970F1-286E5B2F-4B83EE9B-8CA14C51-F0337213-05700BA3</Hash>
+              <URL>http://starkana.com/manga/D/D-ASH/chapter/1/1</URL>
+              <ImageURL>http://img.starkana.com/244/8268/D-ASH%20v01%20c01%20-%20001.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>23</Index>
+              <Name>23</Name>
+              <Hash>12DD7BBE-09E619D8-757547BE-09B26AAF-B6FFAE10-6A29BB8C-B71557BA-E63D3CBC</Hash>
+              <URL>http://starkana.com/manga/D/D-ASH/chapter/1/23</URL>
+              <ImageURL>http://img.starkana.com/244/8268/D-ASH%20v01%20c01%20-%20024.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>36</Index>
+              <Name>36</Name>
+              <Hash>B24B200F-C419D97D-6769589A-92476E41-97BBCE18-E97A11F1-B94F3A90-1D8157A4</Hash>
+              <URL>http://starkana.com/manga/D/D-ASH/chapter/1/36</URL>
+              <ImageURL>http://img.starkana.com/244/8268/D-ASH%20v01%20c01%20-%20Credits.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
