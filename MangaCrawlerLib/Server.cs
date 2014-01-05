@@ -122,16 +122,12 @@ namespace MangaCrawlerLib
                             cats.URL = news.URL;
                         };
 
-                        if (!SeriesDownloadedFirstTime)
+                        if (progress == 100)
                         {
                             result = EliminateDoubles(result.ToList());
-                            m_series.ReplaceInnerCollection(result, false, s => s.URL, null);
+                            m_series.ReplaceInnerCollection(result, SeriesDownloadedFirstTime, s => s.URL, merge);
                         }
-                        else if (progress == 100)
-                        {
-                            result = EliminateDoubles(result.ToList());
-                            m_series.ReplaceInnerCollection(result, true, s => s.URL, merge);
-                        }
+
                         DownloadProgress = progress;
                     }
                 });
