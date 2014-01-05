@@ -35,6 +35,12 @@ namespace MangaCrawlerTest
                    Settings.GetSettingsDir());
         }
 
+        [ClassCleanup]
+        public void Beep()
+        {
+            System.Media.SystemSounds.Beep.Play();
+        }
+
         public static string GetTestDataDir()
         {
             string dir = new DirectoryInfo(
