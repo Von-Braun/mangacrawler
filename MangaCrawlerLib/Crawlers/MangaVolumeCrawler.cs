@@ -195,6 +195,8 @@ namespace MangaCrawlerLib.Crawlers
                 a_progress_callback(progress, result.ToArray());
             };
 
+            bool empty = false;
+
             Parallel.For(0, pages.Count,
                 new ParallelOptions()
                 {
@@ -209,6 +211,35 @@ namespace MangaCrawlerLib.Crawlers
 
                     var page_series = page_doc.DocumentNode.SelectNodes(
                         "//table[@id='MainList']/tr/td[1]/a");
+
+                    if (page_series == null)
+                    {
+                        if (pages.Count == 1)
+                        {
+                            var similiar_series = page_doc.DocumentNode.SelectSingleNode("//table[@id='MostPopular']");
+                            if (similiar_series != null)
+                            {
+                                var h2 = similiar_series.PreviousSibling;
+                                if ((h2 != null) && (h2.Name == "#text"))
+                                {
+                                    h2 = h2.PreviousSibling;
+                                    if ((h2 != null) && (h2.Name == "h2") && (h2.InnerText == "Similar series"))
+                                    {
+                                        var p = h2.PreviousSibling;
+                                        if ((p != null) && (p.Name == "#text"))
+                                        {
+                                            p = p.PreviousSibling;
+                                            if ((p != null) && (p.Name == "p") && (p.InnerText.Trim() == "&nbsp;"))
+                                            {
+                                                empty = true;
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     int index = 0;
                     foreach (var serie in page_series)
@@ -232,8 +263,9 @@ namespace MangaCrawlerLib.Crawlers
 
             update(100);
 
-            if (chapters.Count == 0)
-                throw new Exception("Serie has no chapters");
+            if (!empty)
+                if (chapters.Count == 0)
+                    throw new Exception("Serie has no chapters");
         }
 
         internal override IEnumerable<Page> DownloadPages(Chapter a_chapter)
