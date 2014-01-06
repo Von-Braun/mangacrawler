@@ -107,10 +107,10 @@ namespace MangaCrawlerLib.Crawlers
                     return;
                 }
                 
-                var skip_link = doc.DocumentNode.SelectSingleNode("//li[@class='notice']/strong/a");
-                doc = DownloadDocument(a_serie, a_serie.URL + 
-                    skip_link.GetAttributeValue("href", ""));
-                chapters = doc.DocumentNode.SelectNodes("//ul[@class='chapters_list']/li/a");
+                var mature_skip_link = doc.DocumentNode.SelectSingleNode("//li[@class='notice']/strong/a");
+                a_serie.URL = a_serie.URL + mature_skip_link.GetAttributeValue("href", "");
+                DownloadChapters(a_serie, a_progress_callback);
+                return;
             }
 
             var result = (from chapter in chapters
