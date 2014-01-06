@@ -101,7 +101,7 @@ namespace MangaCrawlerLib.Crawlers
                             result.IndexOf(ch),
                             ch
                         ));
-                    }    
+                    }
 
                     Interlocked.Increment(ref chapters_progress);
                     update(chapters_progress * 100 / chapters_or_volumes.Count);
@@ -137,7 +137,15 @@ namespace MangaCrawlerLib.Crawlers
             else
             {
                 var chapters_or_volumes = doc.DocumentNode.SelectNodes(
-                    "//tr[@class='snF snEven' or @class='snF snOdd']/td/a").Skip(1).ToList();
+                    "//tr[@class='snF snEven' or @class='snF snOdd']/td/a").ToList();
+
+                if (!chapters_or_volumes.First().InnerText.Contains("Goto Main"))
+                {
+                    // We was probably redirected to main page. 
+                    return result;
+                }
+
+                chapters_or_volumes = chapters_or_volumes.Skip(1).ToList();
 
                 if (chapters_or_volumes != null)
                     if (chapters_or_volumes[0].InnerText.ToLower().EndsWith(".jpg"))

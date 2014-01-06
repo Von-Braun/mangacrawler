@@ -4,6 +4,71 @@
   <SerieCount>2027</SerieCount>
   <Series>
     <SerieTestData>
+      <Title>Dragon Quest Dais Adventure</Title>
+      <ChapterCount>346</ChapterCount>
+      <URL>http://unixmanga.com/onlinereading/Dragon_Quest_Dais_Adventure.html</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>as-v20-c6-part-b</Title>
+          <PageCount>30</PageCount>
+          <Index>1</Index>
+          <URL>http://unixmanga.com/onlinereading/Angel_Sanctuary/Angel_Sanctuary_020/as-v20-c6-part-b.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>as_v20ch06_188-189</Name>
+              <Hash>58FBDD26-40F5A263-2DA5AAB6-3DDDB7F4-69C63639-41D1A627-F603FBE6-AA7DB11C</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Angel Sanctuary/Angel Sanctuary 020/as-v20-c6-part-b/as_v20ch06_188-189.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Angel Sanctuary/Angel Sanctuary 020/as-v20-c6-part-b/as_v20ch06_188-189.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>15</Index>
+              <Name>as_v20ch06_202</Name>
+              <Hash>51630E33-AB1EB992-92958864-AFF47039-0F11E10C-3093F61C-C1D133A9-75A44DCF</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Angel Sanctuary/Angel Sanctuary 020/as-v20-c6-part-b/as_v20ch06_202.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Angel Sanctuary/Angel Sanctuary 020/as-v20-c6-part-b/as_v20ch06_202.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>30</Index>
+              <Name>as_v20ch06_215</Name>
+              <Hash>444C9D53-85E58EC4-8A1ED407-29A49A03-19A9DE7D-092448A4-D36E2342-6B964B6A</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Angel Sanctuary/Angel Sanctuary 020/as-v20-c6-part-b/as_v20ch06_215.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Angel Sanctuary/Angel Sanctuary 020/as-v20-c6-part-b/as_v20ch06_215.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>as01-01a-en</Title>
+          <PageCount>24</PageCount>
+          <Index>346</Index>
+          <URL>http://unixmanga.com/onlinereading/Angel_Sanctuary/Angel_Sanctuary_001/as01-01a-en.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>001-01</Name>
+              <Hash>5A8313A0-32050D23-99D1241F-BB28D9D5-B5346C9D-FA0E472C-9555A640-79BC3BBC</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Angel Sanctuary/Angel Sanctuary 001/as01-01a-en/001-01.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Angel Sanctuary/Angel Sanctuary 001/as01-01a-en/001-01.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>10</Index>
+              <Name>001-11</Name>
+              <Hash>7A9D9214-646602DC-F9D8F2B5-123D0CCD-19417D39-9C947CE2-834D6415-34B74BD5</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Angel Sanctuary/Angel Sanctuary 001/as01-01a-en/001-11.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Angel Sanctuary/Angel Sanctuary 001/as01-01a-en/thumb/1050001-11.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>24</Index>
+              <Name>001-25</Name>
+              <Hash>7C893B4E-02455229-C0C9FF0F-5EF9408D-F3704F33-1EB7BE68-602C1916-FA40D76C</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Angel Sanctuary/Angel Sanctuary 001/as01-01a-en/001-25.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Angel Sanctuary/Angel Sanctuary 001/as01-01a-en/001-25.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
       <Title>Angel Sanctuary</Title>
       <ChapterCount>122</ChapterCount>
       <URL>http://unixmanga.com/onlinereading/Angel_Sanctuary.html</URL>
@@ -68,7 +133,7 @@
         </ChapterTestData>
       </Chapters>
     </SerieTestData>
-<SerieTestData>
+    <SerieTestData>
       <Title>16 Sai Kissu Complete</Title>
       <ChapterCount>1</ChapterCount>
       <URL>http://unixmanga.com/onlinereading/16_Sai_Kissu_Complete.html</URL>
