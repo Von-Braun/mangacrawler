@@ -4,6 +4,71 @@
   <SerieCount>2027</SerieCount>
   <Series>
     <SerieTestData>
+      <Title>Angel Sanctuary</Title>
+      <ChapterCount>-1</ChapterCount>
+      <URL>http://unixmanga.com/onlinereading/Angel_Sanctuary.html</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>16 Sai Kissu Complete</Title>
+          <PageCount>30</PageCount>
+          <Index>1</Index>
+          <URL>http://unixmanga.com/onlinereading/16_Sai_Kissu_Complete.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>00 _ Nekohana</Name>
+              <Hash>ABC41912-39037D79-66ED232B-E4F0EC7B-907F9E02-18CB640D-FF6E32D2-68750D27</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=16 Sai Kissu Complete/00%20_%20Nekohana.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/16 Sai Kissu Complete/00 _ Nekohana.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>25</Index>
+              <Name>16 Sai Kissu c01 025</Name>
+              <Hash>905DA34F-86354BE8-2A2DB955-9E737319-C85D8ED8-46C8358F-1E35B6ED-9AA7548E</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=16 Sai Kissu Complete/16%20Sai%20Kissu%20c01%20025.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/16 Sai Kissu Complete/16 Sai Kissu c01 025.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>30</Index>
+              <Name>16 Sai Kissu c01 030</Name>
+              <Hash>3048567C-DF4072AC-01C71054-734C7736-BB6CD48E-92E1EA56-BB5DD04A-4C1048EC</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=16 Sai Kissu Complete/16%20Sai%20Kissu%20c01%20030.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/16 Sai Kissu Complete/16 Sai Kissu c01 030.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+		<ChapterTestData>
+          <Title>16 Sai Kissu Complete</Title>
+          <PageCount>30</PageCount>
+          <Index>100</Index>
+          <URL>http://unixmanga.com/onlinereading/16_Sai_Kissu_Complete.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>00 _ Nekohana</Name>
+              <Hash>ABC41912-39037D79-66ED232B-E4F0EC7B-907F9E02-18CB640D-FF6E32D2-68750D27</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=16 Sai Kissu Complete/00%20_%20Nekohana.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/16 Sai Kissu Complete/00 _ Nekohana.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>25</Index>
+              <Name>16 Sai Kissu c01 025</Name>
+              <Hash>905DA34F-86354BE8-2A2DB955-9E737319-C85D8ED8-46C8358F-1E35B6ED-9AA7548E</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=16 Sai Kissu Complete/16%20Sai%20Kissu%20c01%20025.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/16 Sai Kissu Complete/16 Sai Kissu c01 025.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>30</Index>
+              <Name>16 Sai Kissu c01 030</Name>
+              <Hash>3048567C-DF4072AC-01C71054-734C7736-BB6CD48E-92E1EA56-BB5DD04A-4C1048EC</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=16 Sai Kissu Complete/16%20Sai%20Kissu%20c01%20030.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/16 Sai Kissu Complete/16 Sai Kissu c01 030.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
       <Title>16 Sai Kissu Complete</Title>
       <ChapterCount>1</ChapterCount>
       <URL>http://unixmanga.com/onlinereading/16_Sai_Kissu_Complete.html</URL>

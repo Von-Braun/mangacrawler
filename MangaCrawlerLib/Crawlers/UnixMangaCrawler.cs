@@ -121,8 +121,8 @@ namespace MangaCrawlerLib.Crawlers
 
         private List<Chapter> SearchChaptersOrVolumes(Serie a_serie, HtmlNode a_chapter_or_volume)
         {
-            string doc_url = a_chapter_or_volume.GetAttributeValue("href", "");
-            HtmlDocument doc = DownloadDocument(a_serie, doc_url);
+            HtmlDocument doc = DownloadDocument(a_serie, 
+                a_chapter_or_volume.GetAttributeValue("href", ""));
 
             List<Chapter> result = new List<Chapter>();
 
@@ -140,13 +140,8 @@ namespace MangaCrawlerLib.Crawlers
                     "//tr[@class='snF snEven' or @class='snF snOdd']/td/a").Skip(1).ToList();
 
                 if (chapters_or_volumes != null)
-                    if (chapters_or_volumes[0].InnerText.ToLower() == "thumbs.jpg") 
-                        if (chapters_or_volumes[0].GetAttributeValue("href", "") == "")
-                            chapters_or_volumes.RemoveAt(0);
-
-                if (chapters_or_volumes != null)
                     if (chapters_or_volumes[0].InnerText.ToLower().EndsWith(".jpg"))
-                        if (chapters_or_volumes[0].GetAttributeValue("href", "") == doc_url)
+                        if (chapters_or_volumes[0].GetAttributeValue("href", "") == "")
                             chapters_or_volumes.RemoveAt(0);
 
                 foreach (var chapter_or_volume in chapters_or_volumes)
