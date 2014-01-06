@@ -35,4 +35,4 @@ MangaCrawlerTest/TestData/*.jpg
 MangaCrawlerTest/TestData/*.JPG
 MangaCrawlerTest/TestData/*.png
 MangaCrawlerTest/TestData/* - error.xml
-MangaCrawlerTest/TestData/Exceptions-candidates.txt
+MangaCrawlerTest/TestData/_test.log

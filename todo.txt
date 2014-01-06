@@ -1,6 +1,5 @@
-wywolac test findempties
+random testy
 dokladnie posprawdzac wszystkie obrazki - czy sa takie same jak na stronach www
-random test - pamietanie wyjatkow - empty chapters and series
 code coverage - usunac kod albo znalesc test ktory te warunki wykorzysta
 
 zmiana nazwy nie tracimy powiazania, tak samo teraz nie tracimy go dla zmiany url
@@ -27,7 +26,7 @@ http://www.mangamonger.com/
 
 ** http://wootmanga.com/ ** 
 
-sprawdzic pamietanie opcji
+czy potrzebne sa dok³adne testy
 instalator - 4.5.1 - zmiana na 4.0 - nie ma sensu
 instalator - instlacja nowej wersji na starej
 uruchomienie nowej wersji na starej

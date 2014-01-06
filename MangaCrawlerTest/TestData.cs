@@ -217,9 +217,6 @@ namespace MangaCrawlerTest
                 Limiter.EndChapter(Chapter);
             }
 
-            if (Chapter.State == ChapterState.Error)
-                throw new Exception("Downloading pages list error");
-
             PageCount = Chapter.Pages.Count;
             Title = Chapter.Title;
 

@@ -102,7 +102,7 @@
       <Name>MangaCrawlerLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\MangaCrawler\MangaCrawler.csproj">
-      <Project>{C75DBED1-3FF0-4762-BE86-3865C27FD618}</Project>
+      <Project>{c75dbed1-3ff0-4762-be86-3865c27fd618}</Project>
       <Name>MangaCrawler</Name>
     </ProjectReference>
     <ProjectReference Include="..\TomanuExtensionsLib\TomanuExtensionsLib.csproj">
