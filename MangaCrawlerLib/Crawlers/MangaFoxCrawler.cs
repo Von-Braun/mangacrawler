@@ -86,7 +86,8 @@ namespace MangaCrawlerLib.Crawlers
 
             List<Page> result = new List<Page>();
 
-            var pages = doc.DocumentNode.SelectNodes("//div[@class='r m']/div[@class='l']/select[@class='m']/option");
+            var top_center_bar = doc.DocumentNode.SelectSingleNode("//div[@id='top_center_bar']");
+            var pages = top_center_bar.SelectNodes("div[@class='r m']/div[@class='l']/select[@class='m']/option");
 
             int index = 1;
 
