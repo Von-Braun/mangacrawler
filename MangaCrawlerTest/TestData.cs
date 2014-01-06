@@ -38,7 +38,7 @@ namespace MangaCrawlerTest
                                     ChapterTestData.SerieTestData.Title,
                                     ChapterTestData.Title);
                 file_name = TomanuExtensions.Utils.FileUtils.RemoveInvalidFileCharacters(file_name);
-                file_name = Path.Combine(TestXmls.GetTestDataDir(), file_name);
+                file_name = TestBase.GetTestFilePath(file_name);
 
                 return file_name;
             }
@@ -55,7 +55,7 @@ namespace MangaCrawlerTest
                                     Index,
                                     ChapterTestData.SerieTestData.ServerTestData.Server.Crawler.GetImageURLExtension(ImageURL).ToLower());
                 file_name = TomanuExtensions.Utils.FileUtils.RemoveInvalidFileCharacters(file_name);
-                file_name = Path.Combine(TestXmls.GetTestDataDir(), file_name);
+                file_name = TestBase.GetTestFilePath(file_name);
 
                 Assert.IsTrue(new string[] { ".jpg", ".png", ".gif", ".bmp" }.Contains(Path.GetExtension(file_name).ToLower()));
 
@@ -295,8 +295,11 @@ namespace MangaCrawlerTest
             Assert.IsTrue(!String.IsNullOrWhiteSpace(std.Title));
             Assert.IsTrue(!String.IsNullOrWhiteSpace(std.URL));
 
-            foreach (var chapter_node in a_node.Element("Chapters").Elements())
-                std.Chapters.Add(ChapterTestData.Load(chapter_node, std));
+            if (a_node.Element("Chapters") != null)
+            {
+                foreach (var chapter_node in a_node.Element("Chapters").Elements())
+                    std.Chapters.Add(ChapterTestData.Load(chapter_node, std));
+            }
 
             return std;
         }

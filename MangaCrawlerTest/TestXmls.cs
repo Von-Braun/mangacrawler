@@ -18,7 +18,7 @@ namespace MangaCrawlerTest
 
         private void DeleteErrors(string a_server_name)
         {
-            foreach (var file in Directory.GetFiles(GetTestDataDir(), "*" + a_server_name + "*"))
+            foreach (var file in Directory.GetFiles(TestBase.GetTestDataDir(), "*" + a_server_name + "*"))
             {
                 if (!Path.GetFileNameWithoutExtension(file).EndsWith(ERROR_SUFFIX))
                     continue;
@@ -51,7 +51,7 @@ namespace MangaCrawlerTest
         {
             string a_suffix = a_downloaded ? ERROR_SUFFIX : "";
 
-            a_server_test_data.Save(Path.Combine(GetTestDataDir(), "_" + a_server_test_data.Name + a_suffix + ".xml"));
+            a_server_test_data.Save(TestBase.GetTestFilePath("_" + a_server_test_data.Name + a_suffix + ".xml"));
 
             foreach (var page in from serie in a_server_test_data.Series
                                  from chapter in serie.Chapters
@@ -82,8 +82,8 @@ namespace MangaCrawlerTest
         private void TestXml(string a_server_name)
         {
             DeleteErrors(a_server_name);
-            var from_xml = ServerTestData.Load(Path.Combine(GetTestDataDir(), "_" + a_server_name + ".xml"));
-            var downloaded = ServerTestData.Load(Path.Combine(GetTestDataDir(), "_" + a_server_name + ".xml"));
+            var from_xml = ServerTestData.Load(TestBase.GetTestFilePath("_" + a_server_name + ".xml"));
+            var downloaded = ServerTestData.Load(GetTestFilePath("_" + a_server_name + ".xml"));
             try
             {
                 downloaded.Download();
@@ -189,11 +189,11 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void _DeleteUnusedImages()
         {
-            var xmls = Directory.GetFiles(GetTestDataDir(), "*.xml");
+            var xmls = Directory.GetFiles(TestBase.GetTestDataDir(), "*.xml");
 
             List<string> all_used_pages = new List<string>();
 
-            var all_images = (from f in Directory.GetFiles(GetTestDataDir())
+            var all_images = (from f in Directory.GetFiles(TestBase.GetTestDataDir())
                               let ext = Path.GetExtension(f).RemoveFromLeft(1).ToLower()
                               where new string[] { "bmp", "jpg", "gif", "png" }.Contains(ext)
                               select f).ToList();
@@ -229,7 +229,7 @@ namespace MangaCrawlerTest
         {
             DeleteErrors("");
 
-            var xmls = Directory.GetFiles(GetTestDataDir(), "*.xml");
+            var xmls = Directory.GetFiles(TestBase.GetTestDataDir(), "*.xml");
 
             foreach (var xml in xmls)
             {

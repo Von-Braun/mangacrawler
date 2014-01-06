@@ -35,6 +35,8 @@ namespace MangaCrawlerTest
             DownloadManager.Create(
                    new MangaSettings(),
                    MangaCrawler.Settings.GetSettingsDir());
+
+            WriteLine("---------------");
         }
 
         [ClassCleanup]
@@ -65,17 +67,17 @@ namespace MangaCrawlerTest
             Debug.WriteLine(a_str, a_args);
 
             string str = String.Format(DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss : ") + a_str, a_args);
-            File.AppendAllText(Path.Combine(GetTestDataDir(), "_test.log"), str + Environment.NewLine);
+            File.AppendAllText(TestBase.GetTestFilePath("_test.log"), str + Environment.NewLine);
         }
 
-        protected void WriteLineError(string a_str, params object[] a_args)
+        protected virtual void WriteLineError(string a_str, params object[] a_args)
         {
             WriteLine(a_str, a_args);
         }
 
-        protected void WriteLineWarning(string a_str, params object[] a_args)
+        public static string GetTestFilePath(string a_file_name)
         {
-            WriteLine(a_str, a_args);
+            return Path.Combine(TestBase.GetTestDataDir(), a_file_name);
         }
     }
 }
