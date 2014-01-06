@@ -51,6 +51,16 @@ namespace MangaCrawlerLib.Crawlers
                     DownloadChapters(a_serie, a_progress_callback);
                     return;
                 }
+
+                var no_chapters = doc.DocumentNode.SelectNodes("//div/div/div[@class='c_h2']");
+                if (no_chapters != null)
+                {
+                    if (no_chapters.Any(el => el.InnerText.Contains("We don't have any chapters for this manga. Do you?")))
+                    {
+                        a_progress_callback(100, new Chapter[0]);
+                        return;
+                    }
+                }
             }
 
             var result = (from chapter in chapters
