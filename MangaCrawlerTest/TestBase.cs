@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MangaCrawlerLib;
-using MangaCrawler;
 using System.Diagnostics;
 using System.IO;
+using TomanuExtensions;
 
 namespace MangaCrawlerTest
 {
@@ -30,9 +30,11 @@ namespace MangaCrawlerTest
         [TestInitialize]
         public void Setup()
         {
+            new DirectoryInfo(MangaCrawler.Settings.GetSettingsDir()).DeleteContent();
+
             DownloadManager.Create(
                    new MangaSettings(),
-                   Settings.GetSettingsDir());
+                   MangaCrawler.Settings.GetSettingsDir());
         }
 
         [ClassCleanup]
@@ -62,11 +64,8 @@ namespace MangaCrawlerTest
             TestContext.WriteLine(a_str, a_args);
             Debug.WriteLine(a_str, a_args);
 
-            using (FileStream fs = File.OpenWrite(Path.Combine(GetTestDataDir(), "_test.log")))
-            {
-                StreamWriter sw = new StreamWriter(fs);
-                sw.WriteLine(DateTime.Now.ToString("YYYY-mm-DD HH-MM-SS : ") + a_str, a_args);
-            };
+            string str = String.Format(DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss : ") + a_str, a_args);
+            File.AppendAllText(Path.Combine(GetTestDataDir(), "_test.log"), str + Environment.NewLine);
         }
 
         protected void WriteLineError(string a_str, params object[] a_args)

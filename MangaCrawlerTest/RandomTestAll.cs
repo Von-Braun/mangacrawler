@@ -12,7 +12,6 @@ using System.Text.RegularExpressions;
 using System.Net;
 using TomanuExtensions.Utils;
 using MangaCrawlerLib.Crawlers;
-using MangaCrawler;
 using TomanuExtensions;
 using System.Drawing;
 using TomanuExtensions.TestUtils;
@@ -24,10 +23,6 @@ namespace MangaCrawlerTest
     [TestClass]
     public class RandomTestAll : TestBase
     {
-        public static string EXCEPTIONS_NO_CHAPTERS = "_Exceptions - no chapters.txt";
-        public static string EXCEPTIONS_NO_PAGES = "_Exceptions - no pages.txt";
-        public static string EXCEPTIONS_NO_IMAGES = "_Exceptions - no images.txt";
-
         private ProgressIndicator m_pi;
         private bool m_error = false;
 
@@ -86,10 +81,6 @@ namespace MangaCrawlerTest
                 }
             };
 
-            var exceptions_no_chapters = load_exceptions(EXCEPTIONS_NO_CHAPTERS);
-            var exceptions_no_pages = load_exceptions(EXCEPTIONS_NO_PAGES);
-            var exceptions_no_images = load_exceptions(EXCEPTIONS_NO_IMAGES);
-
             foreach (var server in DownloadManager.Instance.Servers)
             {
                 serie_chapters[server] = 0;
@@ -142,7 +133,7 @@ namespace MangaCrawlerTest
                     }
                     else if (server.Series.Count == 0)
                     {
-                        WriteLineError("ERROR - {0} {1} - Server have no series", 
+                        WriteLineError("ERROR - {0} {1} - Server have no series",
                             server.Name, server.URL);
                         Assert.Fail();
                     }
@@ -167,12 +158,9 @@ namespace MangaCrawlerTest
                             }
                             else if (serie.Chapters.Count != 0)
                             {
-                                if (exceptions_no_chapters.Contains(serie.ToString()))
-                                {
-                                    WriteLineWarning("WARN - {0} {1} - Serie have chapters, remove from exceptions",
-                                        serie, serie.URL);
-                                    warnings++;
-                                }
+                                WriteLineWarning("WARN - {0} {1} - Serie have chapters, remove from exceptions",
+                                    serie, serie.URL);
+                                warnings++;
                             }
 
                             Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
@@ -198,20 +186,10 @@ namespace MangaCrawlerTest
                                         }
 
                                         chapter_pageslist[server]++;
-
-                                        if (chapter.Pages.Count != 0)
-                                        {
-                                            if (exceptions_no_pages.Contains(chapter.ToString()))
-                                            {
-                                                WriteLineWarning("WARN - {0} {1} - Chapter have pages, remove from exceptions",
-                                                    chapter, chapter.URL);
-                                                warnings++;
-                                            }
-                                        }
                                     }
                                     catch
                                     {
-                                        WriteLineError("ERROR - {0} {1} - Exception while downloading pages from chapter", 
+                                        WriteLineError("ERROR - {0} {1} - Exception while downloading pages from chapter",
                                             chapter, chapter.URL);
                                         errors++;
                                     }
@@ -249,12 +227,9 @@ namespace MangaCrawlerTest
                                                             {
                                                                 System.Drawing.Image.FromStream(stream);
 
-                                                                if (exceptions_no_images.Contains(page.Chapter.ToString()))
-                                                                {
-                                                                    WriteLineWarning("WARN - {0} {1} - Page has image, remove from exceptions",
-                                                                        page, page.URL);
-                                                                    warnings++;
-                                                                }
+                                                                WriteLineWarning("WARN - {0} {1} - Page has image, remove from exceptions",
+                                                                    page, page.URL);
+                                                                warnings++;
                                                             }
                                                             catch
                                                             {
@@ -273,12 +248,9 @@ namespace MangaCrawlerTest
                                                 }
                                                 catch
                                                 {
-                                                    if (!exceptions_no_images.Contains(page.Chapter.ToString()))
-                                                    {
-                                                        WriteLineError("ERROR - {0} {1} - Exception while detecting image url",
-                                                            page, page.URL);
-                                                        errors++;
-                                                    }
+                                                    WriteLineError("ERROR - {0} {1} - Exception while detecting image url",
+                                                        page, page.URL);
+                                                    errors++;
                                                 }
                                             }
                                             finally
@@ -292,117 +264,6 @@ namespace MangaCrawlerTest
                                 });
                         });
                 });
-        }
-
-        [TestMethod]
-        public void _FindEmpties()
-        {
-            var xmls = Directory.GetFiles(GetTestDataDir(), "*.xml");
-            m_pi = new ProgressIndicator("_FindEmpties");
-
-            ConcurrentBag<string> empty_no_chapters = new ConcurrentBag<string>(
-                File.ReadAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_CHAPTERS)));
-            ConcurrentBag<string> empty_no_pages = new ConcurrentBag<string>(
-                File.ReadAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_PAGES)));
-            ConcurrentBag<string> empty_no_images = new ConcurrentBag<string>(
-                File.ReadAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_IMAGES)));
-
-            Parallel.ForEach(
-                DownloadManager.Instance.Servers, 
-                new ParallelOptions()
-                {
-                    MaxDegreeOfParallelism = DownloadManager.Instance.Servers.Count()
-                }, 
-                server =>
-            {
-                WriteLine(server.ToString());
-
-                server.State = ServerState.Waiting;
-                server.DownloadSeries();
-
-                Parallel.ForEach(
-                    server.Series,
-                    new ParallelOptions()
-                    {
-                        MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer
-                    },
-                    serie =>
-                    {
-                        if (empty_no_chapters.Contains(serie.ToString()))
-                            return;
-
-                        serie.State = SerieState.Waiting;
-                        serie.DownloadChapters();
-
-                        if (serie.Chapters.Count == 0)
-                        {
-                            empty_no_chapters.Add(serie.ToString());
-                            WriteLine("NO CHAPTERS:" + serie.ToString());
-                        }
-                        else
-                        {
-                            Parallel.ForEach(
-                                serie.Chapters,
-                                new ParallelOptions()
-                                {
-                                    MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer
-                                },
-                                chapter =>
-                                {
-                                    if (empty_no_pages.Contains(chapter.ToString()))
-                                        return;
-
-                                    chapter.State = ChapterState.Waiting;
-                                    chapter.DownloadPagesAndImages();
-
-                                    if (chapter.Pages.Count == 0)
-                                    {
-                                        empty_no_pages.Add(chapter.ToString());
-                                        WriteLine("NO PAGES:" + chapter.ToString());
-                                    }
-                                    else
-                                    {
-                                        if (empty_no_images.Contains(chapter.ToString()))
-                                            return;
-
-                                        Page page = null;
-                                        if (chapter.Pages.Count == 1)
-                                            page = chapter.Pages[0];
-                                        else
-                                            page = chapter.Pages[1];
-
-                                        Limiter.BeginChapter(chapter);
-
-                                        try
-                                        {
-                                            try
-                                            {
-                                                page.GetImageURL();
-                                            }
-                                            catch
-                                            {
-                                                empty_no_images.Add(chapter.ToString());
-                                                WriteLine("NO IMAGES:" + chapter.ToString());
-                                            }
-                                        }
-                                        finally
-                                        {
-                                            Limiter.EndChapter(chapter);
-                                        }
-                                    }
-                                });
-                        }
-                    });
-            });
-
-            File.WriteAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_CHAPTERS), 
-                empty_no_chapters.OrderBy(el => el).Distinct().ToArray());
-
-            File.WriteAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_CHAPTERS), 
-                empty_no_pages.OrderBy(el => el).Distinct().ToArray());
-
-            File.WriteAllLines(Path.Combine(GetTestDataDir(), EXCEPTIONS_NO_CHAPTERS),
-                empty_no_images.OrderBy(el => el).Distinct().ToArray());
         }
     }
 }
