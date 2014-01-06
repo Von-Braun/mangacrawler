@@ -22,6 +22,14 @@ namespace MangaCrawlerLib.Crawlers
             }
         }
 
+        public virtual int MaxConnectionsPerServer
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
         internal override void DownloadSeries(Server a_server, Action<int, 
             IEnumerable<Serie>> a_progress_callback)
         {
