@@ -23,8 +23,12 @@ namespace MangaCrawlerTest
     [TestClass]
     public class RandomTestAll : TestBase
     {
+        private const string FILE_EXCEPTION = "_exceptions.txt";
+        private const string FILE_EXCEPTION_CANDIDATES = "_exceptions-candidates.txt";
+
         private ProgressIndicator m_pi;
         private bool m_error = false;
+        HashSet<string> m_exceptions = new HashSet<string>();
 
         [TestCleanup]
         public void CheckError()
@@ -34,9 +38,26 @@ namespace MangaCrawlerTest
 
         protected override void WriteLine(string a_str, params object[] a_args)
         {
-            base.WriteLine(a_str, a_args);
             String str = String.Format(a_str, a_args);
+            base.WriteLine(a_str, a_args);
             m_pi.AddLine(str);
+        }
+
+        protected override void WriteLineError(string a_str, params object[] a_args)
+        {
+            lock (m_exceptions)
+            {
+                String str = String.Format(a_str, a_args);
+
+                if (!m_exceptions.Contains(str))
+                {
+                    m_exceptions.Add(str);
+                    File.AppendAllText(TestBase.GetTestFilePath(FILE_EXCEPTION_CANDIDATES),
+                        str + Environment.NewLine);
+                }
+            }
+
+            base.WriteLineError(a_str, a_args);
         }
 
         private static IEnumerable<T> TakeRandom<T>(IEnumerable<T> a_enum, double a_percent)
@@ -66,26 +87,28 @@ namespace MangaCrawlerTest
             m_pi = new ProgressIndicator("_RandomTestAll");
             Object locker = new Object();
 
-            Func<string, List<string>> load_exceptions = file_name =>
-            {
-                if (File.Exists(Path.Combine(GetTestDataDir(), file_name)))
-                {
-                    var result = File.ReadAllLines(Path.Combine(GetTestDataDir(), file_name)).ToList();
-                    WriteLine("{0} entries in {1}", result.Count, file_name);
-                    return result;
-                }
-                else
-                {
-                    WriteLine("File doesn't exists: {0}", file_name);
-                    return new List<string>();
-                }
-            };
-
             foreach (var server in DownloadManager.Instance.Servers)
             {
                 serie_chapters[server] = 0;
                 chapter_pageslist[server] = 0;
                 chapter_images[server] = 0;
+            }
+
+            if (File.Exists(TestBase.GetTestFilePath(FILE_EXCEPTION_CANDIDATES)))
+            {
+                File.Delete(TestBase.GetTestFilePath(FILE_EXCEPTION_CANDIDATES));
+                WriteLine("Exception candidates deleted");
+            }
+
+            if (File.Exists(TestBase.GetTestFilePath(FILE_EXCEPTION)))
+            {
+                m_exceptions = new HashSet<string>(
+                    File.ReadAllLines(TestBase.GetTestFilePath(FILE_EXCEPTION)));
+                WriteLine("Exceptions: {0}", m_exceptions.Count);
+            }
+            else
+            {
+                WriteLine("Exceptions: no file");
             }
 
             Action<bool> report = (force) =>
@@ -156,12 +179,6 @@ namespace MangaCrawlerTest
                                     serie, serie.URL);
                                 errors++;
                             }
-                            else if (serie.Chapters.Count != 0)
-                            {
-                                WriteLineWarning("WARN - {0} {1} - Serie have chapters, remove from exceptions",
-                                    serie, serie.URL);
-                                warnings++;
-                            }
 
                             Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
                                 new ParallelOptions()
@@ -219,6 +236,8 @@ namespace MangaCrawlerTest
                                                         {
                                                             WriteLineError("ERROR - {0} {1} - Image stream is zero size for page",
                                                                 page, page.URL);
+                                                            WriteLineError("ERROR - {0} {1} - Image stream is zero size for page",
+                                                                page.Chapter, page.Chapter.URL);
                                                             errors++;
                                                         }
                                                         else
@@ -226,15 +245,13 @@ namespace MangaCrawlerTest
                                                             try
                                                             {
                                                                 System.Drawing.Image.FromStream(stream);
-
-                                                                WriteLineWarning("WARN - {0} {1} - Page has image, remove from exceptions",
-                                                                    page, page.URL);
-                                                                warnings++;
                                                             }
                                                             catch
                                                             {
                                                                 WriteLineError("ERROR - {0} {1} - Exception while creating image from stream for page",
                                                                     page, page.URL);
+                                                                WriteLineError("ERROR - {0} {1} - Exception while creating image from stream for page",
+                                                                     page.Chapter, page.Chapter.URL);
                                                                 errors++;
                                                             }
                                                         }
@@ -243,6 +260,8 @@ namespace MangaCrawlerTest
                                                     {
                                                         WriteLineError("ERROR - {0} {1} - Exception while downloading image from page",
                                                             page, page.URL);
+                                                        WriteLineError("ERROR - {0} {1} - Exception while downloading image from page",
+                                                            page.Chapter, page.Chapter.URL);
                                                         errors++;
                                                     }
                                                 }
@@ -250,6 +269,8 @@ namespace MangaCrawlerTest
                                                 {
                                                     WriteLineError("ERROR - {0} {1} - Exception while detecting image url",
                                                         page, page.URL);
+                                                    WriteLineError("ERROR - {0} {1} - Exception while detecting image url",
+                                                        page.Chapter, page.Chapter.URL);
                                                     errors++;
                                                 }
                                             }
