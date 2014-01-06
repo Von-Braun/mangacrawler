@@ -60,9 +60,6 @@ namespace MangaCrawler
             try
             {
                 s_instance = Load(SettingsFile);
-
-                if (s_instance == null)
-                    s_instance = new Settings();
             }
             catch
             {
@@ -72,6 +69,9 @@ namespace MangaCrawler
 
         private static Settings Load(string a_settings_file)
         {
+            if (!File.Exists(a_settings_file))
+                return new Settings();
+
             var root = XDocument.Load(a_settings_file).Root;
 
             if (root.Name != XML_SETTINGS)
