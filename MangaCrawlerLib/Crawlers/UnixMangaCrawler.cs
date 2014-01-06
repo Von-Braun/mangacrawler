@@ -49,6 +49,17 @@ namespace MangaCrawlerLib.Crawlers
 
             int chapters_progress = 0;
 
+            if (chapters_or_volumes_enum == null)
+            {
+                var pages = doc.DocumentNode.SelectNodes("/html/body/center/div/div[2]/div/fieldset/ul/label/a");
+
+                if (pages != null)
+                {
+                    a_progress_callback(100, new[] { new Chapter(a_serie, a_serie.URL, a_serie.Title) });
+                    return;
+                }
+            }
+
             ConcurrentBag<Tuple<int, int, Chapter>> chapters = 
                 new ConcurrentBag<Tuple<int, int, Chapter>>();
 
@@ -119,6 +130,11 @@ namespace MangaCrawlerLib.Crawlers
             {
                 var chapters_or_volumes = doc.DocumentNode.SelectNodes(
                     "//tr[@class='snF snEven' or @class='snF snOdd']/td/a").Skip(1).ToList();
+
+                if (chapters_or_volumes != null)
+                    if (chapters_or_volumes[0].InnerText.ToLower() == "thumbs.jpg") 
+                        if (chapters_or_volumes[0].GetAttributeValue("href", "") == "")
+                            chapters_or_volumes.RemoveAt(0);
 
                 foreach (var chapter_or_volume in chapters_or_volumes)
                     result.AddRange(SearchChaptersOrVolumes(a_serie, chapter_or_volume));
