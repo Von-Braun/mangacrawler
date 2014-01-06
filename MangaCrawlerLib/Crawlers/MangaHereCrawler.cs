@@ -37,8 +37,15 @@ namespace MangaCrawlerLib.Crawlers
 
             if (chapters == null)
             {
-                if (doc.DocumentNode.SelectSingleNode("//div[@class='detail_list']/ul/li/div").
-                    InnerText.Contains("No Manga Chapter"))
+                var no_chapters = doc.DocumentNode.SelectSingleNode("//div[@class='detail_list']/ul/li/div");
+                if ((no_chapters != null) && no_chapters.InnerText.Contains("No Manga Chapter"))
+                {
+                    a_progress_callback(100, new Chapter[0]);
+                    return;
+                }
+
+                var licensed = doc.DocumentNode.SelectSingleNode("//div[@class='detail_list']/div");
+                if ((licensed != null) && licensed.InnerText.Contains("has been licensed, it is not available in"))
                 {
                     a_progress_callback(100, new Chapter[0]);
                     return;
