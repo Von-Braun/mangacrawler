@@ -124,7 +124,7 @@ namespace MangaCrawlerLib
                                 result.ForEach(ch => ch.Visited = true);
 
                             EliminateDoubles(result.ToList());
-                            m_chapters.ReplaceInnerCollection(result, ChaptersDownloadedFirstTime, c => c.Title, null);
+                            m_chapters.ReplaceInnerCollection(result, ChaptersDownloadedFirstTime, c => c.Title, merge);
                         }
 
                         DownloadProgress = progress;
