@@ -4,6 +4,71 @@
   <SerieCount>2027</SerieCount>
   <Series>
     <SerieTestData>
+      <Title>Karin</Title>
+      <ChapterCount>47</ChapterCount>
+      <URL>http://unixmanga.com/onlinereading/Karin.html</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>Dragon Quest Dais Adventure c349 End</Title>
+          <PageCount>30</PageCount>
+          <Index>1</Index>
+          <URL>http://unixmanga.com/onlinereading/Dragon_Quest_Dais_Adventure/Dragon_Quest_Dais_Adventure_c349_End.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>the_adventure_of_dai_v22_c334_p003</Name>
+              <Hash>CFE2B4D2-CCB809B5-34EFA6E5-74F2D636-8E2F4187-80649BCD-80A39EE8-D93D7990</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/the_adventure_of_dai_v22_c334_p003.png&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/the_adventure_of_dai_v22_c334_p003.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>16</Index>
+              <Name>the_adventure_of_dai_v22_c349_p322</Name>
+              <Hash>F69208DD-08539BC7-D8F3C933-9195E7E2-6118BA3A-06E4630A-CCA1E13D-975DD524</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/the_adventure_of_dai_v22_c349_p322.png&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/thumb/1050the_adventure_of_dai_v22_c349_p322.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>30</Index>
+              <Name>the_adventure_of_dai_v22_c349_p339</Name>
+              <Hash>437425B5-C9AD51C6-F447BF93-BEE5AB5F-6E59D0F2-76C75F4F-9567FF4E-E99D16F1</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/the_adventure_of_dai_v22_c349_p339.png&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/thumb/1050the_adventure_of_dai_v22_c349_p339.png</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Dragon Quest Dais Adventure c001</Title>
+          <PageCount>30</PageCount>
+          <Index>47</Index>
+          <URL>http://unixmanga.com/onlinereading/Dragon_Quest_Dais_Adventure/Dragon_Quest_Dais_Adventure_c001-100/Dragon_Quest_Dais_Adventure_c001.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>dragon_quest_ch01_pg001</Name>
+              <Hash>4B936BF0-F362319B-92D4C7B1-3D339B54-2DFA85C5-1F148574-2068E72E-1FEA3B93</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pg001.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pg001.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>17</Index>
+              <Name>dragon_quest_ch01_pg011</Name>
+              <Hash>D8651DB5-CABB07A9-E340B789-7ADA275E-C4F91776-92CFA9FC-81AC3468-DACAFACC</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pg011.png&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pg011.png</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>30</Index>
+              <Name>dragon_quest_ch01_pgcredits</Name>
+              <Hash>1FA1315D-84E50711-B0D6484C-2F9A109E-69586773-4EE6F64D-A4F572E4-FBC10732</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pgcredits.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/thumb/1050dragon_quest_ch01_pgcredits.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
       <Title>Dragon Quest Dais Adventure</Title>
       <ChapterCount>346</ChapterCount>
       <URL>http://unixmanga.com/onlinereading/Dragon_Quest_Dais_Adventure.html</URL>
