@@ -147,6 +147,9 @@ namespace MangaCrawlerLib.Crawlers
 
                 chapters_or_volumes = chapters_or_volumes.Skip(1).ToList();
 
+                if (!chapters_or_volumes.Any())
+                    return result;
+
                 if (chapters_or_volumes != null)
                     if (chapters_or_volumes[0].InnerText.ToLower().EndsWith(".jpg"))
                         if (chapters_or_volumes[0].GetAttributeValue("href", "") == "")
