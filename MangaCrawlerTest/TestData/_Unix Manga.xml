@@ -4,71 +4,6 @@
   <SerieCount>2027</SerieCount>
   <Series>
     <SerieTestData>
-      <Title>Karin</Title>
-      <ChapterCount>47</ChapterCount>
-      <URL>http://unixmanga.com/onlinereading/Karin.html</URL>
-      <Chapters>
-        <ChapterTestData>
-          <Title>Dragon Quest Dais Adventure c349 End</Title>
-          <PageCount>30</PageCount>
-          <Index>1</Index>
-          <URL>http://unixmanga.com/onlinereading/Dragon_Quest_Dais_Adventure/Dragon_Quest_Dais_Adventure_c349_End.html</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>the_adventure_of_dai_v22_c334_p003</Name>
-              <Hash>CFE2B4D2-CCB809B5-34EFA6E5-74F2D636-8E2F4187-80649BCD-80A39EE8-D93D7990</Hash>
-              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/the_adventure_of_dai_v22_c334_p003.png&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/the_adventure_of_dai_v22_c334_p003.png</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>16</Index>
-              <Name>the_adventure_of_dai_v22_c349_p322</Name>
-              <Hash>F69208DD-08539BC7-D8F3C933-9195E7E2-6118BA3A-06E4630A-CCA1E13D-975DD524</Hash>
-              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/the_adventure_of_dai_v22_c349_p322.png&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/thumb/1050the_adventure_of_dai_v22_c349_p322.png</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>30</Index>
-              <Name>the_adventure_of_dai_v22_c349_p339</Name>
-              <Hash>437425B5-C9AD51C6-F447BF93-BEE5AB5F-6E59D0F2-76C75F4F-9567FF4E-E99D16F1</Hash>
-              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/the_adventure_of_dai_v22_c349_p339.png&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c349 End/thumb/1050the_adventure_of_dai_v22_c349_p339.png</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-        <ChapterTestData>
-          <Title>Dragon Quest Dais Adventure c001</Title>
-          <PageCount>30</PageCount>
-          <Index>47</Index>
-          <URL>http://unixmanga.com/onlinereading/Dragon_Quest_Dais_Adventure/Dragon_Quest_Dais_Adventure_c001-100/Dragon_Quest_Dais_Adventure_c001.html</URL>
-          <Pages>
-            <PageTestData>
-              <Index>1</Index>
-              <Name>dragon_quest_ch01_pg001</Name>
-              <Hash>4B936BF0-F362319B-92D4C7B1-3D339B54-2DFA85C5-1F148574-2068E72E-1FEA3B93</Hash>
-              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pg001.jpg&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pg001.jpg</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>17</Index>
-              <Name>dragon_quest_ch01_pg011</Name>
-              <Hash>D8651DB5-CABB07A9-E340B789-7ADA275E-C4F91776-92CFA9FC-81AC3468-DACAFACC</Hash>
-              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pg011.png&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pg011.png</ImageURL>
-            </PageTestData>
-            <PageTestData>
-              <Index>30</Index>
-              <Name>dragon_quest_ch01_pgcredits</Name>
-              <Hash>1FA1315D-84E50711-B0D6484C-2F9A109E-69586773-4EE6F64D-A4F572E4-FBC10732</Hash>
-              <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pgcredits.jpg&amp;server=nas.html</URL>
-              <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/thumb/1050dragon_quest_ch01_pgcredits.jpg</ImageURL>
-            </PageTestData>
-          </Pages>
-        </ChapterTestData>
-      </Chapters>
-    </SerieTestData>
-    <SerieTestData>
       <Title>Dragon Quest Dais Adventure</Title>
       <ChapterCount>346</ChapterCount>
       <URL>http://unixmanga.com/onlinereading/Dragon_Quest_Dais_Adventure.html</URL>
@@ -128,6 +63,71 @@
               <Hash>1FA1315D-84E50711-B0D6484C-2F9A109E-69586773-4EE6F64D-A4F572E4-FBC10732</Hash>
               <URL>http://ex2.unixmanga.net/onlinereading/?image=Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/dragon_quest_ch01_pgcredits.jpg&amp;server=nas.html</URL>
               <ImageURL>http://nas.unixmanga.com/onlinereading/Dragon Quest Dais Adventure/Dragon Quest Dais Adventure c001-100/Dragon Quest Dais Adventure c001/thumb/1050dragon_quest_ch01_pgcredits.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Karin</Title>
+      <ChapterCount>47</ChapterCount>
+      <URL>http://unixmanga.com/onlinereading/Karin.html</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>karin-special4</Title>
+          <PageCount>30</PageCount>
+          <Index>1</Index>
+          <URL>http://unixmanga.com/onlinereading/Karin/karin-special4.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>0001</Name>
+              <Hash>D0A10988-FA9B6FEF-1FC9B9AD-0A90DD4C-629E111A-0F0E28A7-4800125C-DBC84FBF</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Karin/karin-special4/0001.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Karin/karin-special4/0001.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>16</Index>
+              <Name>0016</Name>
+              <Hash>DC1DB853-B768C7EE-BB5E2CC3-10A8BA14-CD250C81-8A107D80-53263ED3-EBCB87BD</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Karin/karin-special4/0016.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Karin/karin-special4/0016.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>30</Index>
+              <Name>0030</Name>
+              <Hash>478441F7-1C8EF4FC-78B2484D-2566F95E-65255985-AE8B1C8B-57857B8D-00081A4A</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Karin/karin-special4/0030.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Karin/karin-special4/0030.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>karin c001</Title>
+          <PageCount>30</PageCount>
+          <Index>47</Index>
+          <URL>http://unixmanga.com/onlinereading/Karin/karin_c001.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>0001</Name>
+              <Hash>2640F102-E2B0A6B0-DB535358-645AEF24-7BC47084-2F18B67B-D24ABB5A-FB1F0432</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Karin/karin c001/0001.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Karin/karin c001/0001.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>17</Index>
+              <Name>0017</Name>
+              <Hash>8D7D608A-53C4C2BD-1249F2EA-48826421-3D673072-ADAA4FBD-499A7147-E8CC4F5A</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Karin/karin c001/0017.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Karin/karin c001/0017.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>30</Index>
+              <Name>0030</Name>
+              <Hash>4417AF1C-1E4E233A-C13E3662-35DD694B-8588E16C-4DF8DF15-40052D81-904C2C7B</Hash>
+              <URL>http://ex2.unixmanga.net/onlinereading/?image=Karin/karin c001/0030.jpg&amp;server=nas.html</URL>
+              <ImageURL>http://nas.unixmanga.com/onlinereading/Karin/karin c001/0030.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
