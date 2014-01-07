@@ -235,6 +235,9 @@ namespace MangaCrawlerTest
             {
                 WriteLine(xml);
 
+                //if (!xml.Contains("Unix Manga"))
+                //    continue;
+
                 var std = ServerTestData.Load(xml);
 
                 std.Series = std.Series.OrderBy(s => s.Title).ToList();

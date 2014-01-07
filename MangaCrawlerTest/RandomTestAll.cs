@@ -60,6 +60,20 @@ namespace MangaCrawlerTest
             base.WriteLineError(a_str, a_args);
         }
 
+        private void WriteLineErrorForPage(string a_str, Page a_page)
+        {
+            lock (m_exceptions)
+            {
+                String str = String.Format(a_str, a_page.Chapter, a_page.Chapter.URL);
+
+                if (!m_exceptions.Contains(str))
+                {
+                    WriteLineError(a_str, a_page, a_page.URL);
+                    WriteLineError(a_str, a_page.Chapter, a_page.Chapter.URL);
+                }
+            }
+        }
+
         private static IEnumerable<T> TakeRandom<T>(IEnumerable<T> a_enum, double a_percent)
         {
             List<T> list = a_enum.ToList();
@@ -83,9 +97,10 @@ namespace MangaCrawlerTest
             DateTime last_report = DateTime.Now;
             TimeSpan report_delta = new TimeSpan(0, 15, 0);
             int errors = 0;
-            int warnings = 0;
             m_pi = new ProgressIndicator("_RandomTestAll");
             Object locker = new Object();
+
+            WriteLine("------------------------------------------------------------------------------");
 
             foreach (var server in DownloadManager.Instance.Servers)
             {
@@ -129,11 +144,11 @@ namespace MangaCrawlerTest
 
                 foreach (var server in DownloadManager.Instance.Servers)
                 {
-                    WriteLine("Server: {0}, Serie chapters: {1}, Chapters pages: {2}, Chapter images: {3}",
+                    WriteLine("Server: {0}, Series: {1}, Chapters: {2}, Pages and images: {3}",
                         server.Name, serie_chapters[server], chapter_pageslist[server], chapter_images[server]);
                 }
 
-                WriteLine("Errors: {0}, Warnings: {1}", errors, warnings);
+                WriteLine("Errors: {0}", errors);
                 WriteLine("");
             };
 
@@ -234,10 +249,8 @@ namespace MangaCrawlerTest
 
                                                         if (stream.Length == 0)
                                                         {
-                                                            WriteLineError("ERROR - {0} {1} - Image stream is zero size for page",
-                                                                page, page.URL);
-                                                            WriteLineError("ERROR - {0} {1} - Image stream is zero size for page",
-                                                                page.Chapter, page.Chapter.URL);
+                                                            WriteLineErrorForPage("ERROR - {0} {1} - Image stream is zero size for page",
+                                                                page);
                                                             errors++;
                                                         }
                                                         else
@@ -248,29 +261,23 @@ namespace MangaCrawlerTest
                                                             }
                                                             catch
                                                             {
-                                                                WriteLineError("ERROR - {0} {1} - Exception while creating image from stream for page",
-                                                                    page, page.URL);
-                                                                WriteLineError("ERROR - {0} {1} - Exception while creating image from stream for page",
-                                                                     page.Chapter, page.Chapter.URL);
+                                                                WriteLineErrorForPage("ERROR - {0} {1} - Exception while creating image from stream for page",
+                                                                    page);
                                                                 errors++;
                                                             }
                                                         }
                                                     }
                                                     catch
                                                     {
-                                                        WriteLineError("ERROR - {0} {1} - Exception while downloading image from page",
-                                                            page, page.URL);
-                                                        WriteLineError("ERROR - {0} {1} - Exception while downloading image from page",
-                                                            page.Chapter, page.Chapter.URL);
+                                                        WriteLineErrorForPage("ERROR - {0} {1} - Exception while downloading image from page",
+                                                            page);
                                                         errors++;
                                                     }
                                                 }
                                                 catch
                                                 {
-                                                    WriteLineError("ERROR - {0} {1} - Exception while detecting image url",
-                                                        page, page.URL);
-                                                    WriteLineError("ERROR - {0} {1} - Exception while detecting image url",
-                                                        page.Chapter, page.Chapter.URL);
+                                                    WriteLineErrorForPage("ERROR - {0} {1} - Exception while detecting image url",
+                                                        page);
                                                     errors++;
                                                 }
                                             }
