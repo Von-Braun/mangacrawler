@@ -35,8 +35,6 @@ namespace MangaCrawlerTest
             DownloadManager.Create(
                    new MangaSettings(),
                    MangaCrawler.Settings.GetSettingsDir());
-
-            WriteLine("---------------");
         }
 
         [ClassCleanup]
