@@ -4,12 +4,6 @@
   <SerieCount>1161</SerieCount>
   <Series>
     <SerieTestData>
-      <Title>Fire Emblem: Geneaology of the Holy War</Title>
-      <ChapterCount>0</ChapterCount>
-      <URL>http://www.mangavolume.com/serie-archive/mangas-fire-emblem%3A-geneaology-of-the-holy-war</URL>
-      <Chapters />
-    </SerieTestData>
-    <SerieTestData>
       <Title>666 Satan</Title>
       <ChapterCount>76</ChapterCount>
       <URL>http://www.mangavolume.com/serie-archive/mangas-666-satan</URL>
@@ -75,6 +69,12 @@
       </Chapters>
     </SerieTestData>
     <SerieTestData>
+      <Title>Fire Emblem: Geneaology of the Holy War</Title>
+      <ChapterCount>0</ChapterCount>
+      <URL>http://www.mangavolume.com/serie-archive/mangas-fire-emblem%3A-geneaology-of-the-holy-war</URL>
+      <Chapters />
+    </SerieTestData>
+    <SerieTestData>
       <Title>Freezing</Title>
       <ChapterCount>138</ChapterCount>
       <URL>http://www.mangavolume.com/serie-archive/mangas-freezing</URL>
@@ -100,11 +100,11 @@
               <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/48/manga_1047032.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>19</Index>
-              <Name>19</Name>
-              <Hash>4CCEF261-AEB1DA7C-4FC36417-4E21C3BC-0A9071E0-7035DB7F-0817D970-55E16DDA</Hash>
-              <URL>http://www.mangavolume.com/freezing/chapter-freezing-142/19</URL>
-              <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/48/manga_1047035.jpg</ImageURL>
+              <Index>22</Index>
+              <Name>22</Name>
+              <Hash>F1B8F09C-9D8FADBB-075508C8-C3598CC3-CDF31AD3-D38D25D5-56138D33-69DC3E13</Hash>
+              <URL>http://www.mangavolume.com/freezing/chapter-freezing-142/22</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/48/manga_1047038.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
