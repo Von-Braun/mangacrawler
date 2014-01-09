@@ -7,6 +7,7 @@
       <Title>Atashi no Mannaka</Title>
       <ChapterCount>0</ChapterCount>
       <URL>http://manga.animea.net/atashi-no-mannaka.html</URL>
+      <Chapters />
     </SerieTestData>
     <SerieTestData>
       <Title>+Anima</Title>
@@ -243,6 +244,7 @@
       <Title>Fairy Tail</Title>
       <ChapterCount>0</ChapterCount>
       <URL>http://manga.animea.net/fairy-tail.html</URL>
+      <Chapters />
     </SerieTestData>
   </Series>
 </ServerTestData>

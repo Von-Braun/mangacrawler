@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServerTestData>
   <Name>Manga Here</Name>
-  <SerieCount>12082</SerieCount>
+  <SerieCount>12097</SerieCount>
   <Series>
     <SerieTestData>
       <Title>4 Rang</Title>
       <ChapterCount>0</ChapterCount>
       <URL>http://www.mangahere.com/manga/4_rang/</URL>
+      <Chapters />
     </SerieTestData>
     <SerieTestData>
       <Title>666 Satan</Title>
