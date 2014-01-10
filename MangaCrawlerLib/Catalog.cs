@@ -169,20 +169,16 @@ namespace MangaCrawlerLib
                 if (!catalog_servers.Select(s => s.ID).Unique())
                     throw new XmlException();
 
-                
-
                 catalog_servers = (from server in catalog_servers
-                                   where servers.Select(s => s.ID).Contains(server.ID)
+                                   where servers.Any(s => s.Name == server.Name)
                                    select server).ToList();
 
                 for (int i=0; i<servers.Count; i++)
                 {
-                    Server cs = catalog_servers.FirstOrDefault(s => s.ID == servers[i].ID);
+                    Server cs = catalog_servers.FirstOrDefault(s => s.Name == servers[i].Name);
 
                     if (cs == null)
                         continue;
-
-                    Debug.Assert(cs.Name == servers[i].Name);
 
                     servers[i] = new Server(servers[i].URL, servers[i].Name, servers[i].ID, cs.State, 
                         cs.SeriesDownloadedFirstTime);
