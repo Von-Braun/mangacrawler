@@ -187,6 +187,14 @@ namespace MangaCrawlerTest
         }
 
         [TestMethod]
+        public void TestKissManga()
+        {
+            var server_name = DownloadManager.Instance.Servers.First(
+              el => el.Crawler is MangaCrawlerLib.Crawlers.KissMangaCrawler).Name;
+            TestXml(server_name);
+        }
+
+        [TestMethod]
         public void _DeleteUnusedImages()
         {
             var xmls = Directory.GetFiles(TestBase.GetTestDataDir(), "*.xml");
@@ -235,7 +243,7 @@ namespace MangaCrawlerTest
             {
                 WriteLine(xml);
 
-                //if (!xml.Contains("Unix Manga"))
+                //if (!xml.Contains("Kiss"))
                     continue;
 
                 var std = ServerTestData.Load(xml);
