@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServerTestData>
   <Name>Manga Reader</Name>
-  <SerieCount>3460</SerieCount>
+  <SerieCount>3463</SerieCount>
   <Series>
     <SerieTestData>
       <Title>37 Degrees Kiss</Title>
@@ -70,42 +70,42 @@
     </SerieTestData>
     <SerieTestData>
       <Title>Fairy Tail</Title>
-      <ChapterCount>365</ChapterCount>
+      <ChapterCount>366</ChapterCount>
       <URL>http://www.mangareader.net/135/fairy-tail.html</URL>
       <Chapters>
         <ChapterTestData>
-          <Title>Fairy Tail 365</Title>
-          <PageCount>35</PageCount>
+          <Title>Fairy Tail 366</Title>
+          <PageCount>23</PageCount>
           <Index>1</Index>
-          <URL>http://www.mangareader.net/fairy-tail/365</URL>
+          <URL>http://www.mangareader.net/fairy-tail/366</URL>
           <Pages>
             <PageTestData>
               <Index>1</Index>
               <Name>1</Name>
-              <Hash>915366E7-B56F4BEC-8AB08311-A7B09580-E974D813-0D5B431D-AD0DD8F9-E1C3EC7E</Hash>
-              <URL>http://www.mangareader.net/fairy-tail/365</URL>
-              <ImageURL>http://i996.mangareader.net/fairy-tail/365/fairy-tail-4674511.jpg</ImageURL>
+              <Hash>F6F6390E-83139E08-9DA2395F-E25EA857-BFAFC7B6-B881780A-23B103F4-0C3C2257</Hash>
+              <URL>http://www.mangareader.net/fairy-tail/366</URL>
+              <ImageURL>http://i995.mangareader.net/fairy-tail/366/fairy-tail-4707677.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>9</Index>
-              <Name>9</Name>
-              <Hash>93E20C6A-830A19E3-BA4FC90B-51FE8F8C-5AA19946-BC84C076-EB9C63BB-33AF29E2</Hash>
-              <URL>http://www.mangareader.net/fairy-tail/365/9</URL>
-              <ImageURL>http://i999.mangareader.net/fairy-tail/365/fairy-tail-4674527.jpg</ImageURL>
+              <Index>15</Index>
+              <Name>15</Name>
+              <Hash>6B0D000E-DCD1C537-152C1811-1875DBC9-E91E0BEB-F07649B9-32F10852-DBF8F8B3</Hash>
+              <URL>http://www.mangareader.net/fairy-tail/366/15</URL>
+              <ImageURL>http://i999.mangareader.net/fairy-tail/366/fairy-tail-4707705.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>35</Index>
-              <Name>35</Name>
-              <Hash>2CACA85A-5009EA75-6AC976E4-C71A7E93-54E3AE3D-8A2056F2-CB6329AD-5EAC06E7</Hash>
-              <URL>http://www.mangareader.net/fairy-tail/365/35</URL>
-              <ImageURL>http://i995.mangareader.net/fairy-tail/365/fairy-tail-4674579.jpg</ImageURL>
+              <Index>23</Index>
+              <Name>23</Name>
+              <Hash>0E68902F-8451200B-142DEDB2-5A3482D5-B936B02F-A83BC319-BA372DCA-48A197E1</Hash>
+              <URL>http://www.mangareader.net/fairy-tail/366/23</URL>
+              <ImageURL>http://i997.mangareader.net/fairy-tail/366/fairy-tail-4707721.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
         <ChapterTestData>
           <Title>Fairy Tail 1</Title>
           <PageCount>80</PageCount>
-          <Index>365</Index>
+          <Index>366</Index>
           <URL>http://www.mangareader.net/135-7116-1/fairy-tail/chapter-1.html</URL>
           <Pages>
             <PageTestData>

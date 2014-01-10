@@ -7,6 +7,7 @@
       <Title>Mou, Sou Shichau?</Title>
       <ChapterCount>0</ChapterCount>
       <URL>http://starkana.com/manga/M/Mou,_Sou_Shichau</URL>
+      <Chapters />
     </SerieTestData>
     <SerieTestData>
       <Title>090 ~Eko to Issho~</Title>
@@ -140,42 +141,42 @@
     </SerieTestData>
     <SerieTestData>
       <Title>Fairy Tail</Title>
-      <ChapterCount>370</ChapterCount>
+      <ChapterCount>371</ChapterCount>
       <URL>http://starkana.com/manga/F/Fairy_Tail</URL>
       <Chapters>
         <ChapterTestData>
-          <Title>Fairy Tail chapter 365</Title>
-          <PageCount>38</PageCount>
+          <Title>Fairy Tail chapter 366</Title>
+          <PageCount>23</PageCount>
           <Index>1</Index>
-          <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/365</URL>
+          <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/366</URL>
           <Pages>
             <PageTestData>
               <Index>1</Index>
               <Name>1</Name>
-              <Hash>87C57CBA-8DC3F7C5-40EED408-58AF7493-6FC9018D-1F0D9C40-7930D24D-F61B8525</Hash>
-              <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/365/1</URL>
-              <ImageURL>http://img.starkana.com/317/161859/0001.jpg</ImageURL>
+              <Hash>06FFA7D1-D970F709-CDE431E4-462F345B-3FFAA6DB-EF9D3697-A4E238AC-873F88CE</Hash>
+              <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/366/1</URL>
+              <ImageURL>http://img.starkana.com/317/162406/366%20%281%29.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>26</Index>
-              <Name>26</Name>
-              <Hash>90378BBB-D62B67D4-645CB38A-F482BEC6-763AD92E-0F7B956C-7ADF2230-B8B8127D</Hash>
-              <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/365/26</URL>
-              <ImageURL>http://img.starkana.com/317/161859/0026.png</ImageURL>
+              <Index>14</Index>
+              <Name>14</Name>
+              <Hash>3E4A5621-CA985641-DDF0C2AA-2CE8DF82-C241E7EF-5B5FF7F0-8E67947E-DE3A165F</Hash>
+              <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/366/14</URL>
+              <ImageURL>http://img.starkana.com/317/162406/366%20%2821%29.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>38</Index>
-              <Name>38</Name>
-              <Hash>4FA2BEF1-3B161EC5-A6A5BB15-E60F97DF-A07A3B33-4C90C4A3-2E9EE299-47BDCC62</Hash>
-              <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/365/38</URL>
-              <ImageURL>http://img.starkana.com/317/161859/0039.jpg</ImageURL>
+              <Index>23</Index>
+              <Name>23</Name>
+              <Hash>B1648C16-842A37A8-43E550DD-A9A15C6B-EC044038-8A63008D-79D054B7-2EFB0567</Hash>
+              <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/366/23</URL>
+              <ImageURL>http://img.starkana.com/317/162406/366%20%289%29.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
         <ChapterTestData>
           <Title>Fairy Tail chapter 1</Title>
           <PageCount>73</PageCount>
-          <Index>370</Index>
+          <Index>371</Index>
           <URL>http://starkana.com/manga/F/Fairy_Tail/chapter/1</URL>
           <Pages>
             <PageTestData>
