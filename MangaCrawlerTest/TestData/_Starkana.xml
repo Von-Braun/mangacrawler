@@ -3,12 +3,6 @@
   <Name>Starkana</Name>
   <SerieCount>5993</SerieCount>
   <Series>
-  <SerieTestData>
-      <Title>Mou, Sou Shichau?</Title>
-      <ChapterCount>0</ChapterCount>
-      <URL>http://starkana.com/manga/M/Mou,_Sou_Shichau</URL>
-      <Chapters />
-    </SerieTestData>
     <SerieTestData>
       <Title>090 ~Eko to Issho~</Title>
       <ChapterCount>61</ChapterCount>
@@ -203,6 +197,12 @@
           </Pages>
         </ChapterTestData>
       </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Mou, Sou Shichau?</Title>
+      <ChapterCount>0</ChapterCount>
+      <URL>http://starkana.com/manga/M/Mou,_Sou_Shichau</URL>
+      <Chapters />
     </SerieTestData>
   </Series>
 </ServerTestData>
