@@ -15,9 +15,12 @@ wpf
 
 nowe serwisy:
 
+http://kissmanga.com/
 http://www.readmanga.eu/
 http://www.tenmanga.com/
-http://kissmanga.com/
+http://www.goodmanga.net/
+http://www.mangapark.com/
+
 http://mangastream.com
 http://www.anymanga.com/directory/all/
 http://mangable.com/manga-list/
@@ -27,6 +30,7 @@ http://mangaid.com/mangas
 
 ** http://wootmanga.com/ ** 
 
+czy dziala usuwanie i dodawanie serwerow, takze jednoczesnie z zachowaniem powiazania
 czy potrzebne sa dok³adne testy
 instalator - 4.5.1 - zmiana na 4.0 - nie ma sensu
 instalator - instlacja nowej wersji na starej
