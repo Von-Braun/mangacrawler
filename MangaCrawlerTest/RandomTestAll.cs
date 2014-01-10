@@ -154,6 +154,9 @@ namespace MangaCrawlerTest
                 },
                 (server, state) =>
                 {
+                    if (!server.Name.Contains("Kiss"))
+                        return;
+
                     for (int i = 0; i < 10; i++)
                     {
                         server.State = ServerState.Waiting;
