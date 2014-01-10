@@ -109,12 +109,6 @@ namespace MangaCrawlerTest
                 chapter_images[server] = 0;
             }
 
-            if (File.Exists(TestBase.GetTestFilePath(FILE_EXCEPTION_CANDIDATES)))
-            {
-                File.Delete(TestBase.GetTestFilePath(FILE_EXCEPTION_CANDIDATES));
-                WriteLine("Exception candidates deleted");
-            }
-
             if (File.Exists(TestBase.GetTestFilePath(FILE_EXCEPTION)))
             {
                 m_exceptions = new HashSet<string>(
@@ -158,22 +152,31 @@ namespace MangaCrawlerTest
                 {
                     MaxDegreeOfParallelism = DownloadManager.Instance.Servers.Count()
                 },
-                server =>
+                (server, state) =>
                 {
-                    server.State = ServerState.Waiting;
-                    server.DownloadSeries();
+                    for (int i = 0; i < 10; i++)
+                    {
+                        server.State = ServerState.Waiting;
+                        server.DownloadSeries();
+
+                        if (server.State == ServerState.Error)
+                        {
+                            WriteLineError("ERROR - {0} {1} - Error while downloading series from server",
+                                server.Name, server.URL);
+                            continue;
+                        }
+                        else if (server.Series.Count == 0)
+                        {
+                            WriteLineError("ERROR - {0} {1} - Server have no series",
+                                server.Name, server.URL);
+                            continue;
+                        }
+                    }
 
                     if (server.State == ServerState.Error)
                     {
-                        WriteLineError("ERROR - {0} {1} - Error while downloading series from server",
-                            server.Name, server.URL);
-                        Assert.Fail();
-                    }
-                    else if (server.Series.Count == 0)
-                    {
-                        WriteLineError("ERROR - {0} {1} - Server have no series",
-                            server.Name, server.URL);
-                        Assert.Fail();
+                        state.Break();
+                        return;
                     }
 
                     Parallel.ForEach(

@@ -96,7 +96,7 @@ namespace MangaCrawlerLib.Crawlers
         {
             HtmlDocument doc = DownloadDocument(a_page);
             
-            var image = doc.DocumentNode.SelectSingleNode("//div[@id='pic']/img");
+            var image = doc.DocumentNode.SelectSingleNode("//div[@id='pic']/div/img");
 
             return image.GetAttributeValue("src", "");
         }

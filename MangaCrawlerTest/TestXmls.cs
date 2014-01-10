@@ -22,7 +22,7 @@ namespace MangaCrawlerTest
             {
                 if (!Path.GetFileNameWithoutExtension(file).EndsWith(ERROR_SUFFIX))
                     continue;
-                if (!Path.GetFileName(file).StartsWith(a_server_name))
+                if (!Path.GetFileName(file).StartsWith("_" + a_server_name))
                     continue;
                 File.Delete(file);
             }
@@ -96,7 +96,7 @@ namespace MangaCrawlerTest
             Assert.IsTrue(Compare(from_xml, downloaded));
             Check(from_xml);
             Check(downloaded);
-        }
+        } 
 
         [TestMethod]
         public void TestAnimea()
@@ -236,7 +236,7 @@ namespace MangaCrawlerTest
                 WriteLine(xml);
 
                 //if (!xml.Contains("Unix Manga"))
-                //    continue;
+                    continue;
 
                 var std = ServerTestData.Load(xml);
 
