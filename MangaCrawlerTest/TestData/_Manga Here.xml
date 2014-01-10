@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServerTestData>
   <Name>Manga Here</Name>
-  <SerieCount>12097</SerieCount>
+  <SerieCount>12125</SerieCount>
   <Series>
     <SerieTestData>
       <Title>4 Rang</Title>
@@ -76,42 +76,42 @@
     </SerieTestData>
     <SerieTestData>
       <Title>Fairy Tail</Title>
-      <ChapterCount>381</ChapterCount>
+      <ChapterCount>382</ChapterCount>
       <URL>http://www.mangahere.com/manga/fairy_tail/</URL>
       <Chapters>
         <ChapterTestData>
-          <Title>Fairy Tail 365</Title>
-          <PageCount>38</PageCount>
+          <Title>Fairy Tail 366</Title>
+          <PageCount>24</PageCount>
           <Index>1</Index>
-          <URL>http://www.mangahere.com/manga/fairy_tail/v38/c365/</URL>
+          <URL>http://www.mangahere.com/manga/fairy_tail/v38/c366/</URL>
           <Pages>
             <PageTestData>
               <Index>1</Index>
               <Name>1</Name>
-              <Hash>A10DFC65-FA37B0FC-70C56CC4-30A9A167-F33A34CD-738914E7-472EAE2A-1FF0F0C7</Hash>
-              <URL>http://www.mangahere.com/manga/fairy_tail/v38/c365/</URL>
-              <ImageURL>http://z.mhcdn.net/store/manga/246/38-365.0/compressed/l001.jpg?v=11388279763</ImageURL>
+              <Hash>4AD44AFB-7A879202-843E1C4A-53CCF933-8042A164-8AB28FAF-1FC5DE2D-F406F635</Hash>
+              <URL>http://www.mangahere.com/manga/fairy_tail/v38/c366/</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/246/38-366.0/compressed/e001.jpg?v=11389318063</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>32</Index>
-              <Name>32</Name>
-              <Hash>1CC72374-01F6D395-5C18C9C8-B0B15949-90CDB3D5-633A038E-29B88055-E9C73A7D</Hash>
-              <URL>http://www.mangahere.com/manga/fairy_tail/v38/c365/32.html</URL>
-              <ImageURL>http://z.mhcdn.net/store/manga/246/38-365.0/compressed/l030.jpg?v=11388279763</ImageURL>
+              <Index>13</Index>
+              <Name>13</Name>
+              <Hash>08544C20-57E0144D-930C8DFA-F01CD7E4-73A5C435-63F364CA-B235B016-F488FFA6</Hash>
+              <URL>http://www.mangahere.com/manga/fairy_tail/v38/c366/13.html</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/246/38-366.0/compressed/e011.jpg?v=11389318063</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>38</Index>
-              <Name>38</Name>
-              <Hash>54971FF0-AB4FEFF0-270DC2A7-F2156337-18C81D01-4B73E385-270B7E31-28E1C3DC</Hash>
-              <URL>http://www.mangahere.com/manga/fairy_tail/v38/c365/38.html</URL>
-              <ImageURL>http://z.mhcdn.net/store/manga/246/38-365.0/compressed/l037.jpg?v=11388279763</ImageURL>
+              <Index>24</Index>
+              <Name>24</Name>
+              <Hash>6A95B0DC-05C96DD6-5A81D83B-A79B9488-E07ECAAB-3EAF5673-A050846C-6192604F</Hash>
+              <URL>http://www.mangahere.com/manga/fairy_tail/v38/c366/24.html</URL>
+              <ImageURL>http://z.mhcdn.net/store/manga/246/38-366.0/compressed/e022.jpg?v=11389318063</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
         <ChapterTestData>
           <Title>Fairy Tail 1</Title>
           <PageCount>74</PageCount>
-          <Index>381</Index>
+          <Index>382</Index>
           <URL>http://www.mangahere.com/manga/fairy_tail/v01/c001/</URL>
           <Pages>
             <PageTestData>
