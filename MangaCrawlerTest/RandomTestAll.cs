@@ -102,6 +102,10 @@ namespace MangaCrawlerTest
 
             WriteLine("------------------------------------------------------------------------------");
 
+            DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer = 1;
+            DownloadManager.Instance.MangaSettings.MaximumConnections = 20;
+            DownloadManager.Instance.MangaSettings.SleepAfterEachDownloadMS = 4000;
+
             foreach (var server in DownloadManager.Instance.Servers)
             {
                 serie_chapters[server] = 0;
@@ -154,8 +158,8 @@ namespace MangaCrawlerTest
                 },
                 (server, state) =>
                 {
-                    if (!server.Name.Contains("Kiss"))
-                        return;
+                    //if (!server.Name.Contains("Kiss"))
+                    //    return;
 
                     for (int i = 0; i < 10; i++)
                     {

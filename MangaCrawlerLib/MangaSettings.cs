@@ -28,12 +28,14 @@ namespace MangaCrawlerLib
 
         private bool m_pad_page_names_with_zeros;
 
-        // Sync with MangaCrawler/app.config
-        private int m_maximum_connections = 100;
-
-        private int m_maximum_connections_per_server = 4;
-
         private string m_user_agent = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0";
+
+        // Sync with MangaCrawler/app.config
+        public int MaximumConnections { get; set; }
+
+        public int MaximumConnectionsPerServer { get; set; }
+
+        public int SleepAfterEachDownloadMS { get; set; }
 
         public event Action Changed;
 
@@ -44,6 +46,13 @@ namespace MangaCrawlerLib
         private static string XML_CHECKTIMEPERIOD = "CheckTimePeriod";
         private static string XML_PAGENAMINGSTRATEGY = "PageNamingStrategy";
         private static string XML_PADPAGENAMESWITHZEROS = "PadPageNamesWithZeros";
+
+        public MangaSettings()
+        {
+            MaximumConnections = 100;
+            MaximumConnectionsPerServer = 4;
+            SleepAfterEachDownloadMS = 0;
+        }
 
         public string GetMangaRootDir(bool a_remove_slash_on_end)
         {
@@ -131,32 +140,6 @@ namespace MangaCrawlerLib
             set
             {
                 m_pad_page_names_with_zeros = value;
-                OnChanged();
-            }
-        }
-
-        public int MaximumConnections
-        {
-            get
-            {
-                return m_maximum_connections;
-            }
-            private set
-            {
-                m_maximum_connections = value;
-                OnChanged();
-            }
-        }
-
-        public int MaximumConnectionsPerServer
-        {
-            get
-            {
-                return m_maximum_connections_per_server;
-            }
-            private set
-            {
-                m_maximum_connections_per_server = value;
                 OnChanged();
             }
         }
