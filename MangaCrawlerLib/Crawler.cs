@@ -19,7 +19,7 @@ namespace MangaCrawlerLib
         public abstract string GetServerURL();
         internal abstract string GetImageURL(Page a_page);
 
-        internal static T DownloadWithRetry<T>(Func<T> a_func)
+        private static T DownloadWithRetry<T>(Func<T> a_func)
         {
             WebException ex1 = null;
 
@@ -111,6 +111,8 @@ namespace MangaCrawlerLib
 
                     a_token.ThrowIfCancellationRequested();
 
+                    Thread.Sleep(DownloadManager.Instance.MangaSettings.SleepAfterEachDownloadMS);
+
                     return page;
                 }
                 finally
@@ -156,6 +158,8 @@ namespace MangaCrawlerLib
                         mem_stream.Position = 0;
                         return mem_stream;
                     }
+
+                    Thread.Sleep(DownloadManager.Instance.MangaSettings.SleepAfterEachDownloadMS);
                 }
                 finally
                 {

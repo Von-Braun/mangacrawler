@@ -15,7 +15,6 @@ wpf
 
 nowe serwisy:
 
-http://kissmanga.com/
 http://www.readmanga.eu/
 http://www.tenmanga.com/
 http://www.goodmanga.net/
