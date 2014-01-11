@@ -452,7 +452,7 @@ namespace MangaCrawler
 
         private void seriesSearchTextBox_TextChanged(object sender, EventArgs e)
         {
-            Settings.Instance.SeriesFilter = seriesSearchTextBox.Text;
+            Settings.Instance.SeriesFilter = seriesSearchTextBox.Text.Trim();
             seriesListBox.SelectedItem = null;
             GUI.UpdateSeries();
         }
