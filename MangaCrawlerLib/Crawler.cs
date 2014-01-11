@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading;
 using System.Net;
 using HtmlAgilityPack;
+using System.Web;
 
 namespace MangaCrawlerLib
 {
@@ -98,7 +99,7 @@ namespace MangaCrawlerLib
                 try
                 {
                     var web = new HtmlWeb();
-                    var page = web.Load(a_url);
+                    var page = web.Load(Uri.EscapeUriString(a_url));
 
                     if (web.StatusCode == HttpStatusCode.NotFound)
                     {
@@ -131,18 +132,18 @@ namespace MangaCrawlerLib
                     Limiter.Aquire(a_page);
 
                     HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(
-                        a_page.ImageURL);
+                        Uri.EscapeUriString(a_page.ImageURL));
 
                     myReq.UserAgent = DownloadManager.Instance.MangaSettings.UserAgent;
                     myReq.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-                    myReq.Referer = a_page.URL;
+                    myReq.Referer = Uri.EscapeUriString(a_page.URL);
 
                     byte[] buffer = new byte[4*1024];
 
+                    MemoryStream mem_stream = new MemoryStream();
+
                     using (Stream image_stream = myReq.GetResponse().GetResponseStream())
                     {
-                        MemoryStream mem_stream = new MemoryStream();
-
                         for (;;)
                         {
                             int readed = image_stream.Read(buffer, 0, buffer.Length);
@@ -154,12 +155,12 @@ namespace MangaCrawlerLib
 
                             mem_stream.Write(buffer, 0, readed);
                         }
-
-                        mem_stream.Position = 0;
-                        return mem_stream;
                     }
 
                     Thread.Sleep(DownloadManager.Instance.MangaSettings.SleepAfterEachDownloadMS);
+
+                    mem_stream.Position = 0;
+                    return mem_stream;
                 }
                 finally
                 {
