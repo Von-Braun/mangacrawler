@@ -30,21 +30,13 @@ namespace MangaCrawlerTest
 
         private bool Compare(ServerTestData a_from_xml, ServerTestData a_downloaded)
         {
-            try
-            {
-                if (!a_from_xml.Compare(a_downloaded))
-                {
-                    GenerateInfo(a_downloaded);
-                    return false;
-                }
-
-                return true;
-            }
-            catch
+            if (!a_from_xml.Compare(a_downloaded))
             {
                 GenerateInfo(a_downloaded);
                 return false;
             }
+
+            return true;
         }
 
         public static void GenerateInfo(ServerTestData a_server_test_data, bool a_downloaded = true)
@@ -87,15 +79,16 @@ namespace MangaCrawlerTest
             try
             {
                 downloaded.Download();
+
+                Assert.IsTrue(Compare(from_xml, downloaded));
+                Check(from_xml);
+                Check(downloaded);
             }
             catch
             {
                 GenerateInfo(downloaded);
                 throw;
             }
-            Assert.IsTrue(Compare(from_xml, downloaded));
-            Check(from_xml);
-            Check(downloaded);
         } 
 
         [TestMethod]
@@ -243,7 +236,7 @@ namespace MangaCrawlerTest
             {
                 WriteLine(xml);
 
-                //if (!xml.Contains("Kiss"))
+                //if (!xml.Contains("Stream"))
                     continue;
 
                 var std = ServerTestData.Load(xml);
