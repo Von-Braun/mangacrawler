@@ -104,30 +104,30 @@
         </ChapterTestData>
         <ChapterTestData>
           <Title>366 - A Thousand Souls</Title>
-          <PageCount>24</PageCount>
-          <Index>1</Index>
-          <URL>http://readms.com/r/fairy_tail/366/2206/1</URL>
+          <PageCount>28</PageCount>
+          <Index>9</Index>
+          <URL>http://readms.com/r/fairy_tail/Special/1997/1</URL>
           <Pages>
             <PageTestData>
               <Index>1</Index>
               <Name>1</Name>
-              <Hash>07322BF6-3D224B5E-60562583-2D35C929-D6B71002-55891AA1-1318C76D-61B193EE</Hash>
-              <URL>http://readms.com/r/fairy_tail/366/2206/1</URL>
-              <ImageURL>http://img.mangastream.com/cdn/manga/3/2206/01.png</ImageURL>
+              <Hash>F4606D9C-DBC3EA2A-665F9FF2-7175E58F-29164759-9E1CBF8C-502856C8-A1E96050</Hash>
+              <URL>http://readms.com/r/fairy_tail/Special/1997/1</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/1997/01.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>4</Index>
+              <Index>5</Index>
               <Name>4</Name>
-              <Hash>F7CC6AD4-7FB11DFE-C36F76D6-1DD101B7-D437FC19-95AE2DE7-821E8459-9E4949EF</Hash>
-              <URL>http://readms.com/r/fairy_tail/366/2206/4</URL>
-              <ImageURL>http://img.mangastream.com/cdn/manga/3/2206/01c.jpg</ImageURL>
+              <Hash>5E2D6FE0-6D9152B5-87B957B7-3107DF04-658C01A3-622CDF0F-8C8148B1-E3DAA3B0</Hash>
+              <URL>http://readms.com/r/fairy_tail/Special/1997/5</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/1997/04-05.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
-              <Index>24</Index>
-              <Name>24</Name>
-              <Hash>00968FFE-B5D1F57E-B44C166F-E247677E-BA13E56A-17F313FE-2D456541-9FB0B26D</Hash>
-              <URL>http://readms.com/r/fairy_tail/366/2206/24</URL>
-              <ImageURL>http://img.mangastream.com/cdn/manga/3/2206/22.jpg</ImageURL>
+              <Index>28</Index>
+              <Name>28</Name>
+              <Hash>844B0F93-28235BB9-9663E6DB-238C7EE9-0F622603-23A32CCF-5D39497B-91E8DEC9</Hash>
+              <URL>http://readms.com/r/fairy_tail/Special/1997/28</URL>
+              <ImageURL>http://img.mangastream.com/cdn/manga/3/1997/28.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>

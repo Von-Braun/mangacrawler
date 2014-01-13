@@ -64,15 +64,8 @@ namespace MangaCrawlerLib
 
         public static string HtmlDecode(string a_str)
         {
-            for (; ; )
-            {
-                string str = HttpUtility.HtmlDecode(a_str);
-
-                if (a_str == str)
-                    return str;
-
-                a_str = str;
-            }
+            a_str = HttpUtility.HtmlDecode(a_str);
+            return Uri.UnescapeDataString(a_str);
         }
 
         internal abstract Crawler Crawler { get; }
