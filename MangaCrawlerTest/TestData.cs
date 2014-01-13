@@ -98,9 +98,8 @@ namespace MangaCrawlerTest
         {
             Page = ChapterTestData.Chapter.Pages.ElementAtOrDefault(Index - 1);
 
-            Name = "some error";
-
             URL = Page.URL;
+            Index = -1;
 
             Limiter.BeginChapter(Page.Chapter);
 
@@ -123,7 +122,7 @@ namespace MangaCrawlerTest
             if (Page.State == PageState.Error)
                 throw new Exception("Downloading page error");
 
-            Name = Page.Name;
+            Index = Page.Index;
         }
 
         public bool Compare(PageTestData a_downloaded)
@@ -202,7 +201,6 @@ namespace MangaCrawlerTest
             Chapter = SerieTestData.Serie.Chapters.ElementAtOrDefault(Index - 1);
 
             PageCount = -1;
-            Title = "some error";
 
             URL = Chapter.URL;
 
@@ -218,15 +216,14 @@ namespace MangaCrawlerTest
             }
 
             PageCount = Chapter.Pages.Count;
-            Title = Chapter.Title;
 
             foreach (var page in Pages)
             {
                 if (page.Index > PageCount)
                 {
                     page.Index = -1;
-                    page.Name = "index out of range";
-                    Assert.Fail();
+                    page.Name += " - index out of range";
+                    continue;
                 }
 
                 page.Download();
@@ -320,7 +317,6 @@ namespace MangaCrawlerTest
             Serie = ServerTestData.Server.Series.FirstOrDefault(el => el.Title == Title);
 
             ChapterCount = -1;
-            Title = "";
 
             URL = Serie.URL;
 
@@ -328,18 +324,16 @@ namespace MangaCrawlerTest
             Serie.DownloadChapters();
 
             if (Serie.State == SerieState.Error)
-                throw new Exception("Downloading chapters errorr");
+                throw new Exception("Downloading chapters error");
 
             ChapterCount = Serie.Chapters.Count;
-            Title = Serie.Title;
 
             foreach (var chapter in Chapters)
             {
                 if (chapter.Index > ChapterCount)
                 {
                     chapter.Index = -1;
-                    chapter.Title = "index out of range";
-                    Assert.Fail();
+                    continue;
                 }
 
                 chapter.Download();
@@ -422,16 +416,14 @@ namespace MangaCrawlerTest
 
         public void Download()
         {
-            Name = "some error";
             SerieCount = -1;
 
             Server.State = ServerState.Waiting;
             Server.DownloadSeries();
 
             if (Server.State == ServerState.Error)
-                throw new Exception("Downloading series errorr");
+                throw new Exception("Downloading series error");
 
-            Name = Server.Name;
             SerieCount = Server.Series.Count;
 
             foreach (var serie in Series)
