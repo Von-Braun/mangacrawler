@@ -53,5 +53,10 @@ namespace TomanuExtensions.TestUtils
         {
             CreatedEvent.Set();
         }
+
+        private void ProgressForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+        }
     }
 }
