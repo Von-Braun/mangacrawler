@@ -14,6 +14,7 @@ namespace MangaCrawlerTest
     public class TestBase
     {
         private TestContext m_test_context_instance;
+        private Object m_locker = new Object();
 
         public TestContext TestContext
         {
@@ -64,8 +65,11 @@ namespace MangaCrawlerTest
             TestContext.WriteLine(a_str, a_args);
             Debug.WriteLine(a_str, a_args);
 
-            string str = String.Format(DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss : ") + a_str, a_args);
-            File.AppendAllText(TestBase.GetTestFilePath("_test.log"), str + Environment.NewLine);
+            lock (m_locker)
+            {
+                string str = String.Format(DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss : ") + a_str, a_args);
+                File.AppendAllText(TestBase.GetTestFilePath("_test.log"), str + Environment.NewLine);
+            }
         }
 
         protected virtual void WriteLineError(string a_str, params object[] a_args)
