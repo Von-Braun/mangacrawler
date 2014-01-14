@@ -79,7 +79,19 @@ namespace MangaCrawlerTest
             List<T> list = a_enum.ToList();
             Random random = new Random();
 
-            for (int i = 0; i < list.Count * a_percent; i++)
+            if (!list.Any())
+                yield break;
+
+            list.RemoveFirst();
+            yield return list.First();
+
+            if (!list.Any())
+                yield break;
+
+            list.RemoveLast();
+            yield return list.Last();
+
+            for (int i = 0; i < list.Count * a_percent - 2; i++)
             {
                 int r = random.Next(list.Count);
                 T el = list[r];
@@ -199,7 +211,7 @@ namespace MangaCrawlerTest
                 (server, state) =>
                 {
                     Parallel.ForEach(
-                        TakeRandom(server.Series, 0.1),
+                        TakeRandom(server.Series, 0.3),
                         new ParallelOptions()
                         {
                             MaxDegreeOfParallelism = server.Crawler.MaxConnectionsPerServer

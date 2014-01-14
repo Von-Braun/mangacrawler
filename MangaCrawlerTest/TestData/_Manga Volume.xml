@@ -76,42 +76,42 @@
     </SerieTestData>
     <SerieTestData>
       <Title>Freezing</Title>
-      <ChapterCount>138</ChapterCount>
+      <ChapterCount>139</ChapterCount>
       <URL>http://www.mangavolume.com/serie-archive/mangas-freezing</URL>
       <Chapters>
         <ChapterTestData>
           <Title>Freezing 142</Title>
-          <PageCount>22</PageCount>
+          <PageCount>27</PageCount>
           <Index>1</Index>
-          <URL>http://www.mangavolume.com/freezing/chapter-freezing-142/</URL>
+          <URL>http://www.mangavolume.com/freezing/chapter-freezing-143/</URL>
           <Pages>
             <PageTestData>
               <Index>1</Index>
               <Name>1</Name>
-              <Hash>C0FD27DD-3F06E2B0-1AA1DE1F-26491B46-5AE86575-72DBB475-F1A8216D-093FE3BC</Hash>
-              <URL>http://www.mangavolume.com/freezing/chapter-freezing-142/1</URL>
-              <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/48/manga_1047017.jpg</ImageURL>
+              <Hash>0D7978EE-8D55720F-77C3539C-7971B7CE-CE1EEF08-5B99A807-252D0586-9A499AD5</Hash>
+              <URL>http://www.mangavolume.com/freezing/chapter-freezing-143/1</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/48/manga_1047524.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
               <Index>16</Index>
               <Name>16</Name>
-              <Hash>E7CDEFD3-BC824D15-0B1CF1E8-C7419177-0E40EA9E-1B6F8B0D-A92A831C-0CA3304B</Hash>
-              <URL>http://www.mangavolume.com/freezing/chapter-freezing-142/16</URL>
-              <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/48/manga_1047032.jpg</ImageURL>
+              <Hash>57A07579-318721FB-455C232E-1E5A58CA-480543F8-D48D388A-D665A829-3FDDFC45</Hash>
+              <URL>http://www.mangavolume.com/freezing/chapter-freezing-143/16</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/48/manga_1047539.jpg</ImageURL>
             </PageTestData>
             <PageTestData>
               <Index>22</Index>
-              <Name>22</Name>
-              <Hash>F1B8F09C-9D8FADBB-075508C8-C3598CC3-CDF31AD3-D38D25D5-56138D33-69DC3E13</Hash>
-              <URL>http://www.mangavolume.com/freezing/chapter-freezing-142/22</URL>
-              <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/48/manga_1047038.jpg</ImageURL>
+              <Name>27</Name>
+              <Hash>63E7F1F8-C66A1D6F-8F9B7731-0BF1833F-C5D99193-C40A3443-BF49F6C9-A05982E0</Hash>
+              <URL>http://www.mangavolume.com/freezing/chapter-freezing-143/22</URL>
+              <ImageURL>http://media2.mangavolume.com/images/manga/normal/11/48/manga_1047545.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>
         <ChapterTestData>
           <Title>Freezing 1</Title>
           <PageCount>40</PageCount>
-          <Index>138</Index>
+          <Index>139</Index>
           <URL>http://www.mangavolume.com/freezing/chapter-freezing-1/</URL>
           <Pages>
             <PageTestData>
