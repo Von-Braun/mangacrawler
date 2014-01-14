@@ -102,9 +102,8 @@ namespace MangaCrawlerTest
 
             WriteLine("------------------------------------------------------------------------------");
 
-            DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer = 1;
-            DownloadManager.Instance.MangaSettings.MaximumConnections = 20;
-            DownloadManager.Instance.MangaSettings.SleepAfterEachDownloadMS = 4000;
+            DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer = 4;
+            DownloadManager.Instance.MangaSettings.SleepAfterEachDownloadMS = 0;
 
             foreach (var server in DownloadManager.Instance.Servers)
             {
@@ -161,8 +160,10 @@ namespace MangaCrawlerTest
                     //if (!server.Name.Contains("Kiss"))
                     //    return;
 
-                    for (int i = 0; i < 10; i++)
+                    for (; ; )
                     {
+                        WriteLine("{0} - Downloading series", server);
+
                         server.State = ServerState.Waiting;
                         server.DownloadSeries();
 
@@ -178,14 +179,25 @@ namespace MangaCrawlerTest
                                 server.Name, server.URL);
                             continue;
                         }
+                        else
+                        {
+                            WriteLine("{0} - Downloaded series", server);
+                            break;
+                        }
                     }
+                });
 
-                    if (server.State == ServerState.Error)
-                    {
-                        state.Break();
-                        return;
-                    }
+            DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer = 1;
+            DownloadManager.Instance.MangaSettings.SleepAfterEachDownloadMS = 4000;
 
+            Parallel.ForEach(
+                DownloadManager.Instance.Servers,
+                new ParallelOptions()
+                {
+                    MaxDegreeOfParallelism = DownloadManager.Instance.Servers.Count()
+                },
+                (server, state) =>
+                {
                     Parallel.ForEach(
                         TakeRandom(server.Series, 0.1),
                         new ParallelOptions()
@@ -194,6 +206,8 @@ namespace MangaCrawlerTest
                         },
                         serie =>
                         {
+                            WriteLine("{0} - Downloading chapters", serie);
+
                             serie.State = SerieState.Waiting;
                             serie.DownloadChapters();
                             serie_chapters[server]++;
@@ -204,6 +218,10 @@ namespace MangaCrawlerTest
                                     serie, serie.URL);
                                 errors++;
                             }
+                            else
+                            {
+                                WriteLine("{0} - Downloaded chapters", serie);
+                            }
 
                             Parallel.ForEach(TakeRandom(serie.Chapters, 0.1),
                                 new ParallelOptions()
@@ -212,6 +230,8 @@ namespace MangaCrawlerTest
                                 },
                                 (chapter) =>
                                 {
+                                    WriteLine("{0} - Downloading pages list", chapter);
+
                                     try
                                     {
                                         chapter.State = ChapterState.Waiting;
@@ -228,6 +248,8 @@ namespace MangaCrawlerTest
                                         }
 
                                         chapter_pageslist[server]++;
+
+                                        WriteLine("{0} - Downloaded pages list", chapter);
                                     }
                                     catch
                                     {
@@ -243,6 +265,8 @@ namespace MangaCrawlerTest
                                         },
                                         (page) =>
                                         {
+                                            WriteLine("{0} - Downloading image", page);
+
                                             Limiter.BeginChapter(chapter);
 
                                             try
@@ -259,7 +283,8 @@ namespace MangaCrawlerTest
 
                                                         if (stream.Length == 0)
                                                         {
-                                                            WriteLineErrorForPage("ERROR - {0} {1} - Image stream is zero size for page",
+                                                            WriteLineErrorForPage(
+                                                                "ERROR - {0} {1} - Image stream is zero size for page",
                                                                 page);
                                                             errors++;
                                                         }
@@ -268,10 +293,13 @@ namespace MangaCrawlerTest
                                                             try
                                                             {
                                                                 System.Drawing.Image.FromStream(stream);
+
+                                                                WriteLine("{0} - Downloaded image", page);
                                                             }
                                                             catch
                                                             {
-                                                                WriteLineErrorForPage("ERROR - {0} {1} - Exception while creating image from stream for page",
+                                                                WriteLineErrorForPage(
+                                                                    "ERROR - {0} {1} - Exception while creating image from stream for page",
                                                                     page);
                                                                 errors++;
                                                             }
@@ -279,14 +307,16 @@ namespace MangaCrawlerTest
                                                     }
                                                     catch
                                                     {
-                                                        WriteLineErrorForPage("ERROR - {0} {1} - Exception while downloading image from page",
+                                                        WriteLineErrorForPage(
+                                                            "ERROR - {0} {1} - Exception while downloading image from page",
                                                             page);
                                                         errors++;
                                                     }
                                                 }
                                                 catch
                                                 {
-                                                    WriteLineErrorForPage("ERROR - {0} {1} - Exception while detecting image url",
+                                                    WriteLineErrorForPage(
+                                                        "ERROR - {0} {1} - Exception while detecting image url",
                                                         page);
                                                     errors++;
                                                 }
