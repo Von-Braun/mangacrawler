@@ -152,7 +152,7 @@ namespace MangaCrawlerLib
                                 Debug.Assert(s_connections <=
                                     DownloadManager.Instance.MangaSettings.MaximumConnections);
                                 Debug.Assert(s_server_connections[limit.Server] <=
-                                    DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer);
+                                    limit.Server.Crawler.MaxConnectionsPerServer);
                             }
 
                             limit.Event.Set();
@@ -213,7 +213,7 @@ namespace MangaCrawlerLib
             var candidates1 = from limit in s_limits
                               where limit.Priority != Priority.Pages
                               where s_server_connections[limit.Server] <
-                                 DownloadManager.Instance.MangaSettings.MaximumConnectionsPerServer
+                                 limit.Server.Crawler.MaxConnectionsPerServer
                               orderby limit.Priority, limit.LimiterOrder
                               select limit;
 
