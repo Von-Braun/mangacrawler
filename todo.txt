@@ -1,5 +1,3 @@
-random testy
-dokladnie posprawdzac wszystkie obrazki - czy sa takie same jak na stronach www
 code coverage - usunac kod albo znalesc test ktory te warunki wykorzysta
 
 zmiana nazwy nie tracimy powiazania, tak samo teraz nie tracimy go dla zmiany url

@@ -40,6 +40,7 @@ namespace MangaCrawlerLib.Crawlers
                 var no_chapters = doc.DocumentNode.SelectSingleNode("//div[@class='detail_list']/ul/li/div");
                 if ((no_chapters != null) && no_chapters.InnerText.Contains("No Manga Chapter"))
                 {
+                    // TODO: never here
                     a_progress_callback(100, new Chapter[0]);
                     return;
                 }
