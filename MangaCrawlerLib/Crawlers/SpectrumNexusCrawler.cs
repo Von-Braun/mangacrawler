@@ -86,7 +86,6 @@ namespace MangaCrawlerLib.Crawlers
 
                 if (node.InnerText.Contains("Sorry! Series removed as requested"))
                 {
-                    // TODO: never here
                     a_progress_callback(100, new Chapter[0]);
                     return;
                 }

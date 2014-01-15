@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServerTestData>
   <Name>Manga Fox</Name>
-  <SerieCount>12429</SerieCount>
+  <SerieCount>12430</SerieCount>
   <Series>
     <SerieTestData>
       <Title>1/2 Prince</Title>
@@ -128,6 +128,42 @@
               <Hash>9A3905CE-482A8543-2E3F41AE-13594BD4-FB7E0C30-107E2E2F-285CA0FA-96F1307E</Hash>
               <URL>http://mangafox.me/manga/10_20_and_30/v01/c001/17.html</URL>
               <ImageURL>http://z.mfcdn.net/store/manga/9595/01-001.0/compressed/b010_020_and_030_v001_c001_-_016.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>-Rain-</Title>
+      <ChapterCount>1</ChapterCount>
+      <URL>http://mangafox.me/manga/rain/</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>-Rain- 0</Title>
+          <PageCount>17</PageCount>
+          <Index>1</Index>
+          <URL>http://mangafox.me/manga/rain/v00/c000/1.html</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>FE057D30-49A8BCE9-D5131853-A58B3581-4A3133F6-26AA9B2F-BE58EC5F-2998C12C</Hash>
+              <URL>http://mangafox.me/manga/rain/v00/c000/1.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/4680/00-000.0/compressed/01.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>14</Index>
+              <Name>14</Name>
+              <Hash>562BF39B-532A3F60-8FC3AAE6-3BA62ED1-3714D6FD-54305D9C-7DB6CD83-CBE6A735</Hash>
+              <URL>http://mangafox.me/manga/rain/v00/c000/14.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/4680/00-000.0/compressed/14.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>17</Index>
+              <Name>17</Name>
+              <Hash>148B2931-3CEE0F74-485A74CE-57BDF8A4-041145C9-F3D3FA44-EF2630D0-8C28D771</Hash>
+              <URL>http://mangafox.me/manga/rain/v00/c000/17.html</URL>
+              <ImageURL>http://z.mfcdn.net/store/manga/4680/00-000.0/compressed/credits.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>

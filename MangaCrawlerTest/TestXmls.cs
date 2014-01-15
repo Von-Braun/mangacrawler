@@ -51,7 +51,7 @@ namespace MangaCrawlerTest
                                  select page)
             {
                 var image_name = Path.Combine(
-                    Path.GetDirectoryName(page.FileName), 
+                    Path.GetDirectoryName(page.FileName),
                     Path.GetFileNameWithoutExtension(page.FileName) + a_suffix + Path.GetExtension(page.FileName));
                 page.Image.Save(image_name);
             }
@@ -89,7 +89,7 @@ namespace MangaCrawlerTest
                 GenerateInfo(downloaded);
                 throw;
             }
-        } 
+        }
 
         [TestMethod]
         public void TestAnimea()
@@ -102,9 +102,9 @@ namespace MangaCrawlerTest
         [TestMethod]
         public void TestAnimeSource()
         {
-           var server_name = DownloadManager.Instance.Servers.First(
-               el => el.Crawler is MangaCrawlerLib.Crawlers.AnimeSourceCrawler).Name;
-           TestXml(server_name);
+            var server_name = DownloadManager.Instance.Servers.First(
+                el => el.Crawler is MangaCrawlerLib.Crawlers.AnimeSourceCrawler).Name;
+            TestXml(server_name);
         }
 
         [TestMethod]
@@ -236,7 +236,9 @@ namespace MangaCrawlerTest
             {
                 WriteLine(xml);
 
-                //if (!xml.Contains("Stream"))
+                if (!xml.Contains("Fox"))
+                    if (!xml.Contains("Stream"))
+                        if (!xml.Contains("Volume"))
                     continue;
 
                 var std = ServerTestData.Load(xml);
@@ -245,7 +247,7 @@ namespace MangaCrawlerTest
                 foreach (var serie in std.Series)
                 {
                     serie.Chapters = serie.Chapters.OrderBy(ch => ch.Index).ToList();
-                
+
                     foreach (var chapter in serie.Chapters)
                         chapter.Pages = chapter.Pages.OrderBy(p => p.Index).ToList();
                 }

@@ -4,6 +4,11 @@
   <SerieCount>133</SerieCount>
   <Series>
     <SerieTestData>
+      <Title>Soul Eater</Title>
+      <ChapterCount>0</ChapterCount>
+      <URL>http://www.thespectrum.net/manga_scans/?preview=manga_Soul-Eater</URL>
+    </SerieTestData>
+    <SerieTestData>
       <Title>Battle Angel Alita</Title>
       <ChapterCount>10</ChapterCount>
       <URL>http://www.thespectrum.net/manga_scans/?preview=manga_Battle-Angel-Alita</URL>

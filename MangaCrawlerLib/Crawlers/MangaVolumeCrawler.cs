@@ -219,7 +219,6 @@ namespace MangaCrawlerLib.Crawlers
                             var similiar_series = page_doc.DocumentNode.SelectSingleNode("//table[@id='MostPopular']");
                             if (similiar_series != null)
                             {
-                                // TODO: never here
                                 var h2 = similiar_series.PreviousSibling;
                                 if ((h2 != null) && (h2.Name == "#text"))
                                 {
