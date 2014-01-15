@@ -82,19 +82,19 @@ namespace MangaCrawlerTest
             if (!list.Any())
                 yield break;
 
-            list.RemoveFirst();
-            yield return list.First();
+            var el = list.RemoveFirst();
+            yield return el;
 
             if (!list.Any())
                 yield break;
 
-            list.RemoveLast();
-            yield return list.Last();
+            el = list.RemoveLast();
+            yield return el;
 
             for (int i = 0; i < list.Count * a_percent - 2; i++)
             {
                 int r = random.Next(list.Count);
-                T el = list[r];
+                el = list[r];
                 list.RemoveAt(r);
                 yield return el;
             }
@@ -169,7 +169,7 @@ namespace MangaCrawlerTest
                 },
                 (server, state) =>
                 {
-                    //if (!server.Name.Contains("Kiss"))
+                    //if (!server.Name.Contains("Fox"))
                     //    return;
 
                     for (; ; )
@@ -210,6 +210,9 @@ namespace MangaCrawlerTest
                 },
                 (server, state) =>
                 {
+                    //if (!server.Name.Contains("Fox"))
+                    //    return;
+
                     Parallel.ForEach(
                         TakeRandom(server.Series, 0.3),
                         new ParallelOptions()

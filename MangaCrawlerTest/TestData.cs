@@ -123,6 +123,7 @@ namespace MangaCrawlerTest
                 throw new Exception("Downloading page error");
 
             Index = Page.Index;
+            Name = Page.Name;
         }
 
         public bool Compare(PageTestData a_downloaded)
@@ -216,6 +217,7 @@ namespace MangaCrawlerTest
             }
 
             PageCount = Chapter.Pages.Count;
+            Title = Chapter.Title;
 
             foreach (var page in Pages)
             {
