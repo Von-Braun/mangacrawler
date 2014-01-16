@@ -4,11 +4,6 @@
   <SerieCount>133</SerieCount>
   <Series>
     <SerieTestData>
-      <Title>Soul Eater</Title>
-      <ChapterCount>0</ChapterCount>
-      <URL>http://www.thespectrum.net/manga_scans/?preview=manga_Soul-Eater</URL>
-    </SerieTestData>
-    <SerieTestData>
       <Title>Battle Angel Alita</Title>
       <ChapterCount>10</ChapterCount>
       <URL>http://www.thespectrum.net/manga_scans/?preview=manga_Battle-Angel-Alita</URL>
@@ -77,7 +72,7 @@
       <Title>Bleach</Title>
       <ChapterCount>0</ChapterCount>
       <URL>http://www.thespectrum.net/manga_scans/bleach/</URL>
-      <Chapters/>
+      <Chapters />
     </SerieTestData>
     <SerieTestData>
       <Title>Fullmetal Alchemist</Title>
@@ -139,6 +134,77 @@
               <Hash>4465CA14-0C186340-8C3DF8D0-13409713-C81030F1-344510E6-BBFB2A9C-308AC1F9</Hash>
               <URL>http://view.thespectrum.net/series/fullmetal-alchemist-volume-01.html?ch=Volume+01&amp;page=1&amp;page=177</URL>
               <ImageURL>http://view.thespectrum.net/manga/Fullmetal Alchemist/Volume 01/fma-v01_176.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+      </Chapters>
+    </SerieTestData>
+    <SerieTestData>
+      <Title>Soul Eater</Title>
+      <ChapterCount>0</ChapterCount>
+      <URL>http://www.thespectrum.net/manga_scans/?preview=manga_Soul-Eater</URL>
+      <Chapters />
+    </SerieTestData>
+    <SerieTestData>
+      <Title>WASTE</Title>
+      <ChapterCount>2</ChapterCount>
+      <URL>http://www.thespectrum.net/manga_scans/waste</URL>
+      <Chapters>
+        <ChapterTestData>
+          <Title>Chapter 02</Title>
+          <PageCount>22</PageCount>
+          <Index>1</Index>
+          <URL>http://view.thespectrum.net/series/waste.html?ch=Chapter+02&amp;page=1</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>E16FE164-64B40B0D-B324C81F-7E744E05-29DF9770-3F88E68D-ACB9C816-95DCD338</Hash>
+              <URL>http://view.thespectrum.net/series/waste.html?ch=Chapter+02&amp;page=1&amp;page=1</URL>
+              <ImageURL>http://view.thespectrum.net/manga/WASTE/Chapter 02/waste_c02_001.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>20</Index>
+              <Name>20</Name>
+              <Hash>F49BB266-CB4F9415-2EC41516-49ADA800-D8C88F37-F8F743D8-EDFF093F-AF9479BE</Hash>
+              <URL>http://view.thespectrum.net/series/waste.html?ch=Chapter+02&amp;page=1&amp;page=20</URL>
+              <ImageURL>http://view.thespectrum.net/manga/WASTE/Chapter 02/waste_c02_020.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>22</Index>
+              <Name>22</Name>
+              <Hash>4A23C97F-B221230E-C10E59AB-F65675E1-D24471E0-F115A5AB-0EE3D69E-0999C755</Hash>
+              <URL>http://view.thespectrum.net/series/waste.html?ch=Chapter+02&amp;page=1&amp;page=22</URL>
+              <ImageURL>http://view.thespectrum.net/manga/WASTE/Chapter 02/waste_c02_022.jpg</ImageURL>
+            </PageTestData>
+          </Pages>
+        </ChapterTestData>
+        <ChapterTestData>
+          <Title>Chapter 01</Title>
+          <PageCount>46</PageCount>
+          <Index>2</Index>
+          <URL>http://view.thespectrum.net/series/waste.html?ch=Chapter+01&amp;page=1</URL>
+          <Pages>
+            <PageTestData>
+              <Index>1</Index>
+              <Name>1</Name>
+              <Hash>1FB11182-A6D35AF0-C5093113-BF6A0556-C91CA1C8-84158885-ED9BAFE4-F9A5525C</Hash>
+              <URL>http://view.thespectrum.net/series/waste.html?ch=Chapter+01&amp;page=1&amp;page=1</URL>
+              <ImageURL>http://view.thespectrum.net/manga/WASTE/Chapter 01/waste_c01_001.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>41</Index>
+              <Name>41</Name>
+              <Hash>7C26396D-57494309-A0A70BEE-E9521D59-82F42752-62A0C2A7-EB2D5874-1F70A8A4</Hash>
+              <URL>http://view.thespectrum.net/series/waste.html?ch=Chapter+01&amp;page=1&amp;page=41</URL>
+              <ImageURL>http://view.thespectrum.net/manga/WASTE/Chapter 01/waste_c01_041.jpg</ImageURL>
+            </PageTestData>
+            <PageTestData>
+              <Index>46</Index>
+              <Name>46</Name>
+              <Hash>93DAA906-2A8D6DF1-C66EEBF6-591D1062-2C733892-71A5A7EB-96FAE17E-E6A59AB4</Hash>
+              <URL>http://view.thespectrum.net/series/waste.html?ch=Chapter+01&amp;page=1&amp;page=46</URL>
+              <ImageURL>http://view.thespectrum.net/manga/WASTE/Chapter 01/waste_c01_046.jpg</ImageURL>
             </PageTestData>
           </Pages>
         </ChapterTestData>

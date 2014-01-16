@@ -67,17 +67,26 @@ namespace MangaCrawlerLib.Crawlers
             var node = nodes.Where(n => n.InnerText.StartsWith("Current Status")).FirstOrDefault();
 
             if (node == null)
+                node = nodes.Where(n => n.InnerText.StartsWith("View Comic Online")).FirstOrDefault();
+
+            if (node == null)
             {
-                var note = doc.DocumentNode.SelectSingleNode("//div[@class='mainbgtop']/p/em").InnerText;
-                if (note.Contains("has been taken down as per request from the publisher"))
+                var note = doc.DocumentNode.SelectSingleNode("//div[@class='mainbgtop']/p/em");
+                if (note != null)
                 {
-                    a_progress_callback(100, new Chapter[0]);
-                    return;
+                    if (note.InnerText.Contains("has been taken down as per request from the publisher"))
+                    {
+                        a_progress_callback(100, new Chapter[0]);
+                        return;
+                    }
                 }
             }
 
             for (;;)
             {
+                if (node == null)
+                    break;
+
                 if (node.Name == "a")
                     if (node.GetAttributeValue("href", "").Contains("thespectrum.net"))
                         break;
