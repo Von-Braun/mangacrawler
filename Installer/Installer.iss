@@ -1,5 +1,5 @@
 #define AppName "Manga Crawler"
-#define AppVersion "1.2"
+#define AppVersion "1.3"
 
 [Setup]
 AppName={#AppName}
@@ -27,14 +27,13 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\bin\Release\DotNetZip.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\bin\Release\Ionic.Zip.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\bin\Release\HtmlAgilityPack.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\bin\Release\log4net.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\bin\Release\MangaCrawler.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\bin\Release\MangaCrawler.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\bin\Release\MangaCrawlerLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\bin\Release\TomanuExtensions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Programowanie\C#\Moje programy\MangaCrawler\MangaCrawler\bin\Release\YAXLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\MangaCrawler.exe"
@@ -63,7 +62,7 @@ begin
   begin
     Result := False;
     Exit;
-  end
+  end;
 
   for I:=0 to GetArrayLength(Locales) - 1 do
   begin
@@ -75,9 +74,9 @@ begin
       begin
         Result := True;
         Exit;
-      end
-    end
-  end
+      end;
+    end;
+  end;
 
   Result := False;
 

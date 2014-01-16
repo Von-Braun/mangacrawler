@@ -24,8 +24,5 @@ http://mangaid.com/mangas
 
 ** http://wootmanga.com/ ** 
 
-czy dziala usuwanie i dodawanie serwerow, takze jednoczesnie z zachowaniem powiazania
-czy potrzebne sa dok³adne testy
-instalator - instlacja nowej wersji na starej
-uruchomienie nowej wersji na starej
 edycja strony tytulowej - odswiezenie listy stron i ich adresow
+czy zadziala aktualizacja?
