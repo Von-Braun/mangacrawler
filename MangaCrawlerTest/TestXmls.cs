@@ -236,9 +236,7 @@ namespace MangaCrawlerTest
             {
                 WriteLine(xml);
 
-                if (!xml.Contains("Fox"))
-                    if (!xml.Contains("Stream"))
-                        if (!xml.Contains("Volume"))
+                if (!xml.Contains("Nexus"))
                     continue;
 
                 var std = ServerTestData.Load(xml);

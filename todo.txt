@@ -26,7 +26,6 @@ http://mangaid.com/mangas
 
 czy dziala usuwanie i dodawanie serwerow, takze jednoczesnie z zachowaniem powiazania
 czy potrzebne sa dok³adne testy
-instalator - 4.5.1 - zmiana na 4.0 - nie ma sensu
 instalator - instlacja nowej wersji na starej
 uruchomienie nowej wersji na starej
 edycja strony tytulowej - odswiezenie listy stron i ich adresow
