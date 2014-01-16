@@ -137,7 +137,7 @@ begin
   
   StaticText5 := TNewStaticText.Create(Page);
   StaticText5.Top := StaticText4.Top + StaticText4.Height + ScaleY(8);
-  StaticText5.Caption := 'When downloading choose appropriate language';
+  StaticText5.Caption := 'Before downloading choose your language';
   StaticText5.AutoSize := True;
   StaticText5.Parent := Page.Surface;
   
